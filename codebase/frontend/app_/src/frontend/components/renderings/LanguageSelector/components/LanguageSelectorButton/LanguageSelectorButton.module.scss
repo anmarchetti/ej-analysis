@@ -1,0 +1,21 @@
+.button {
+    --btn-size: 33px;
+
+    position: relative;
+    z-index: 12;
+    display: inline-block;
+    width: var(--btn-size);
+    height: var(--btn-size);
+    padding: 0;
+    background: 0;
+    border: 2px solid $colorWhite;
+    border-radius: 50%;
+
+    &[aria-controls] {
+        cursor: pointer;
+    }
+
+    @include media-breakpoint-down(lg) {
+        --btn-size: 24px;
+    }
+}

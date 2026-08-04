@@ -1,0 +1,132 @@
+.dialog {
+    z-index: 10000;
+    width: 360px;
+    max-height: initial;
+
+    @include media-breakpoint-down(lg) {
+        position: relative;
+        top: auto;
+        left: auto;
+        max-height: calc(100% - 60px);
+        transform: none;
+    }
+
+    @include media-breakpoint-down(md) {
+        width: auto;
+    }
+
+    :global {
+        .popup__body {
+            padding: 25px 25px 0;
+        }
+    }
+}
+
+.pinnedTop {
+    &::before {
+        content: '';
+        position: absolute;
+        z-index: 10000;
+        top: 35px;
+        left: 50%;
+        display: block;
+        border-color: transparent transparent $clrSiteBgWhite transparent;
+        border-style: solid;
+        border-width: 0 25px 25px;
+        transform: translateX(-50%);
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+}
+
+.topDialog {
+    position: absolute;
+    top: 30px;
+
+    @media(width >= 992px) {
+        left: -319px;
+    }
+
+    @media(width >= 1300px) {
+        left: -279px;
+    }
+
+    @media(width >= 1500px) {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.rightDialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin: 0;
+    transform: translate(-50%, -50%);
+
+    @include media-breakpoint-down(lg) {
+        right: auto;
+        width: 80%;
+    }
+}
+
+.footer {
+    flex-direction: column;
+    padding: 10px 25px 25px;
+
+    button {
+        width: 260px;
+        margin: 0;
+
+        @include media-breakpoint-down(sm) {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+
+    .button {
+        margin-top: 10px;
+        margin-left: 0;
+        font-weight: 700;
+    }
+}
+
+.dialogContent {
+    box-shadow: none;
+}
+
+.icon {
+    display: block;
+
+    svg {
+        display: block;
+        width: 55px;
+        height: 60px;
+        margin: 0 auto;
+
+        > * {
+            fill: $clrEjOrange;
+            stroke: $clrEjOrange;
+        }
+    }
+}
+
+.title {
+    margin: 15px 0;
+    font-family: $fontRoundedHeadline;
+    font-size: 23px;
+    line-height: 27px;
+    color: $clrTextHeading;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.description {
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    line-height: 19px;
+    color: $clrTextHeading;
+    text-align: center;
+}

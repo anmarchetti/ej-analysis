@@ -1,0 +1,32 @@
+.destination-highlights__slide-button {
+    position: absolute;
+    top: 50%;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: $colorWhite;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 0 4px #c0c0c0;
+    cursor: pointer;
+    transform: translateY(-50%);
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 10px;
+        margin: auto;
+        color: $clrEjOrange;
+        transform: translate(-50%, -50%);
+    }
+
+    &.next {
+        right: -10px;
+    }
+
+    &.prev {
+        left: -10px;
+    }
+}

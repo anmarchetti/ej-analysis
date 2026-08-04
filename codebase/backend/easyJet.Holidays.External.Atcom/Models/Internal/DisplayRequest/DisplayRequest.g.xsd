@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 sp1 (http://www.altova.com) by Kim Howells (Anite Business Systems) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="AtComRes/DisplayRequest" xmlns:p2="AtComRes/Common" targetNamespace="AtComRes/DisplayRequest" elementFormDefault="qualified">
+	<xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+	<xs:element name="DisplayRequest">
+		<xs:annotation>
+			<xs:documentation>Request to display an already existing booking.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="p2:AtcomresBaseRequest">
+					<xs:sequence>
+						<xs:element ref="p2:BkgNum">
+							<xs:annotation>
+								<xs:documentation>Booking identification to be displayed.
+				   If no booking version number is passed, the latest version is meant here.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="p2:ReturnServiceBreakDown" minOccurs="0"/>
+						<xs:element ref="p2:Fetch_Rm_Cost_Prices" minOccurs="0"/>
+						<xs:element ref="p2:Fetch_Item_Cost_Prices" minOccurs="0"/>
+						<xs:element name="Display_Contract" type="xs:boolean" minOccurs="0" default="false">
+							<xs:annotation>
+								<xs:documentation>Fetch Price contract details</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

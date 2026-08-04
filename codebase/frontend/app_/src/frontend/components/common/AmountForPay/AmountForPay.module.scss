@@ -1,0 +1,75 @@
+.amountBlock {
+    h3 {
+        margin-bottom: 17px;
+    }
+
+    :global {
+        .radio {
+            margin-bottom: 27px;
+        }
+
+        .amount__value {
+            font-weight: bold;
+        }
+
+        .radio__label + .amount__value {
+            margin-left: 0.3rem;
+            font-size: 17px;
+            line-height: 20px;
+        }
+    }
+}
+
+.amountFormGroup {
+    --currency-symbols: 1;
+
+    :global(.form-control__input) {
+        padding-left: calc(24px + var(--currency-symbols) * 9px);
+    }
+}
+
+.amountInputContainer {
+    position: relative;
+    font-size: 15px;
+    line-height: 16px;
+}
+
+.fieldError {
+    &:global(.form-field.form-field--error.form-field--error) {
+        :global(.form-control__input) {
+            color: $colorSystemError;
+            border-color: $colorSystemError;
+
+            &::placeholder {
+                color: $colorSystemError;
+            }
+
+            &:focus {
+                border-color: $colorSystemError;
+            }
+
+            &:-webkit-autofill {
+                color: $colorSystemError;
+                border-color: $colorSystemError;
+                -webkit-text-fill-color: $colorSystemError;
+            }
+        }
+
+        :global(.form-control__error) {
+            color: $colorSystemError;
+        }
+
+        :global(.form-control__label) {
+            color: $colorSystemError;
+        }
+    }
+}
+
+.currency {
+    position: absolute;
+    z-index: $z-index-element;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}

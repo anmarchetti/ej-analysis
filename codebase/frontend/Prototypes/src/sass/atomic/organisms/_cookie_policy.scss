@@ -1,0 +1,41 @@
+.cookie-policy {
+    position: fixed;
+    z-index: 1049;
+    bottom: 20px;
+    width: 100%;
+
+    p {
+        margin: 0;
+        line-height: 19px;
+    }
+
+    .wrapper-container--px {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    &__wrapper {
+        overflow: hidden;
+        background: $colorWhite;
+        border-radius: 6px;
+        box-shadow: 0 0 13px 0 rgba(#535353, 0.5);
+    }
+
+    &__content a {
+        font-family: $fontRoundedBook;
+        text-decoration: underline;
+    }
+
+    &__button button {
+        white-space: nowrap;
+        appearance: none;
+
+        &:active {
+            border: none;
+            outline: none;
+        }
+        @include media-breakpoint-up(sm) {
+            max-width: 160px;
+        }
+    }
+}

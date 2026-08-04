@@ -1,0 +1,94 @@
+﻿{
+    "Title": "Fully matched offer",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/fcgi-bin/ezydmo/avcache3_g",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "s_tp",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "4"
+                    }
+                ]
+            },
+            {
+                "Name": "sdate",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "2023-09-11"
+                    }
+                ]
+            },
+            {
+                "Name": "edate",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "2023-09-11"
+                    }
+                ]
+            },
+            {
+                "Name": "stay",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "6"
+                    }
+                ]
+            },
+            {
+                "Name": "pax_ad",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "2"
+                    }
+                ]
+            },
+            {
+                "Name": "pax_ch",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "0"
+                    }
+                ]
+            },
+            {
+                "Name": "pax_in",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "0"
+                    }
+                ]
+            },
+            {
+                "Name": "accom",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "ESTF0007"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "text/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/AmendController/DatesEndpoints/SummaryPageEndpoint/AvCache_FullyMatchedOffer.xml"
+    }
+}

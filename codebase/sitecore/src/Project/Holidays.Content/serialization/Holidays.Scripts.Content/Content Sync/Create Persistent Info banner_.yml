@@ -1,0 +1,36 @@
+﻿---
+ID: "433a49cd-39b1-4aeb-9719-0e084859c029"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Persistent Info banner data source
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $tilesPath = "/sitecore/content/EasyJet/Holidays/Data/Information Tiles/Global Information Tiles";
+    $infoBannerItemId = "{43379DA2-1D47-412C-B527-3889F16BF4B3}"
+    $infoBannerItem = Get-Item -Path $tilesPath -Id $infoBannerItemId -ErrorAction SilentlyContinue
+    
+    if ($infoBannerItem -eq $null){
+        $infoBannerItem = New-Item -Path $tilesPath -Name "Persistent Info Banner" -ItemType "{424BD58C-E281-4DAD-8F46-7FE4DE602C0F}" -ForceId $infoBannerItemId
+    
+        $infoBannerItem.Editing.BeginEdit()
+        $infoBannerItem["Title"] = "We’re working on making a better experience for you. We should be back anytime soon…"
+        $infoBannerItem["Description"] = "Please bear with us. We apologise for any inconveniences caused and thank you for your patience."
+        $infoBannerItem["Icon"] = "<image mediaid='{90267470-172A-4102-B274-CCD136CD9651}' />"
+        $infoBannerItem.Editing.EndEdit()
+    
+        Write-Host "Persistent info banner was created"
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4990
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200916T065140Z

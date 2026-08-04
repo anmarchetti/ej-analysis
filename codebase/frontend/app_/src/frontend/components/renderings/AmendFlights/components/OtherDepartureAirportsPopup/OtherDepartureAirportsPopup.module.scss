@@ -1,0 +1,89 @@
+.popupContent {
+    padding: 44px 30px;
+    @include media-breakpoint-down(md) {
+        padding: 45px 10px 16px;
+    }
+
+    .popupBody {
+        padding: 0;
+
+        .popupButtons {
+            justify-content: space-between;
+        }
+
+        :global(.btn) {
+            width: 220px;
+            border: 1px solid $clrEjOrange;
+            border-radius: 4px;
+
+            @include media-breakpoint-down(md) {
+                width: 100%;
+            }
+        }
+
+        :global(.btn--disabled) {
+            border: 0;
+        }
+    }
+
+    :global(.popup__header) {
+        margin-bottom: 20px;
+        padding: 0;
+    }
+}
+
+.airportCheckboxes {
+    margin: 30px 20px 40px;
+    text-align: left;
+
+    @include media-breakpoint-down(md) {
+        margin: 30px 2px 32px;
+    }
+}
+
+.airportCheckbox {
+    margin-top: 10px;
+
+    :global(.checkbox) {
+        display: inline-flex;
+        justify-content: flex-start;
+    }
+
+    :global(.checkbox__control) {
+        margin-right: 12px;
+    }
+}
+
+.popupButtons {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+
+    :global(.btn + .btn) {
+        margin-left: 15px;
+    }
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        margin-top: 20px;
+
+        :global(.btn) {
+            display: block;
+            width: 100%;
+
+            + :global(.btn) {
+                margin-top: 15px;
+                margin-left: 0;
+            }
+        }
+    }
+}
+
+.container {
+    @include media-breakpoint-up(md) {
+        :global(.popup__dialog) {
+            width: 520px;
+            max-width: 520px;
+        }
+    }
+}

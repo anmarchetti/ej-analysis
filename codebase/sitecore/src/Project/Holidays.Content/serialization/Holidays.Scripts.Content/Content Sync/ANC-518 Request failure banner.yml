@@ -1,0 +1,144 @@
+﻿---
+ID: "e2535f6a-a243-4250-ba8d-68cb013485d8"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-518 Request failure banner"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+            if($item -eq $null){
+                $item = New-Item -Path $path -ItemType $template
+            }
+        return $item
+    }
+    
+    
+    function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+        }
+    
+    $template = '{63D3079B-9A85-4872-AC5E-34D19D8D972E}'
+    $path = '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags/Request Failure Banner'
+    $tradePath = '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Cabin Bags/Request Failure Banner'
+    
+    $banner = Get-Or-Create-Item -Path $path -Template $template
+    
+    if($banner -ne $null) {
+        $banner.Editing.BeginEdit()
+        $banner['Title'] = 'Adding cabin bags is unavailable at this time'
+        $banner['Subtitle'] = "We're sorry, the ability to add large cabin bags is currently unavailable for these flight. You can still book your holiday and add large cabin bags at a later stage. If you wish to add more bags now, please do so by adding hold luggage."
+        $banner.Editing.EndEdit() | Out-Null
+    }
+    
+    $bannerTrade = Get-Or-Create-Item -Path $tradePath -Template $template
+    
+    if($bannerTrade -ne $null) {
+        $bannerTrade.Editing.BeginEdit()
+        $bannerTrade['Title'] = 'Adding cabin bags is unavailable at this time'
+        $bannerTrade['Subtitle'] = "We're sorry, the ability to add large cabin bags is currently unavailable for these flight. You can still book your holiday and add large cabin bags at a later stage. If you wish to add more bags now, please do so by adding hold luggage."
+        $bannerTrade.Editing.EndEdit() | Out-Null
+    }
+    
+    $translations = @{
+            
+            "fr-CH" = @{
+                "Title" = "L'ajout de bagages de cabine n'est pas disponible pour le moment."
+                "Subtitle" = "Nous sommes désolés, la possibilité d'ajouter des bagages de cabine de grande taille n'est pas disponible pour le moment pour ce vol. Vous pouvez toujours réserver vos vacances et ajouter des bagages de cabine à un stade ultérieur. Si vous souhaitez ajouter des bagages supplémentaires maintenant, veuillez le faire en ajoutant des bagages de soute."
+            }
+            "fr-FR" = @{
+                "Title" = "L'ajout de bagages de cabine n'est pas disponible pour le moment."
+                "Subtitle" = "Nous sommes désolés, la possibilité d'ajouter des bagages de cabine de grande taille n'est pas disponible pour le moment pour ce vol. Vous pouvez toujours réserver vos vacances et ajouter des bagages de cabine à un stade ultérieur. Si vous souhaitez ajouter des bagages supplémentaires maintenant, veuillez le faire en ajoutant des bagages de soute."
+            }
+            "de-CH" = @{
+                "Title" = "Das Hinzufügen von Handgepäck ist zur Zeit nicht möglich."
+                "Subtitle" = "Es tut uns leid, die Möglichkeit, großes Handgepäck hinzuzufügen, ist für diese Flüge derzeit nicht verfügbar. Sie können Ihre Reise immer noch buchen und zu einem späteren Zeitpunkt großes Handgepäck hinzufügen. Wenn Sie jetzt mehr Gepäckstücke hinzufügen möchten, tun Sie dies bitte, indem Sie aufgegebenes Gepäck hinzufügen."
+            }
+            "de-DE" = @{
+                "Title" = "Das Hinzufügen von Handgepäck ist zur Zeit nicht möglich."
+                "Subtitle" = "Es tut uns leid, die Möglichkeit, großes Handgepäck hinzuzufügen, ist für diese Flüge derzeit nicht verfügbar. Sie können Ihre Reise immer noch buchen und zu einem späteren Zeitpunkt großes Handgepäck hinzufügen. Wenn Sie jetzt mehr Gepäckstücke hinzufügen möchten, tun Sie dies bitte, indem Sie aufgegebenes Gepäck hinzufügen."
+            }
+        }
+        
+        foreach ($lang in $translations.Keys) {
+            create-lang-version -item $banner -lang $lang -field "Title" -value $translations[$lang]["Title"]
+            create-lang-version -item $banner -lang $lang -field "Subtitle" -value $translations[$lang]["Subtitle"]
+           
+        }    
+    
+    $path = '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags'
+    $bagsItem =  Get-Item -Path $path -ErrorAction SilentlyContinue
+    
+    if($bagsItem -ne $null) {
+        $bagsItem.Editing.BeginEdit()
+        $bagsItem['RequestFailureBanner'] = $banner.ID
+         $bagsItem['RequestFailureTitle'] = 'Your cabin bag allowance'
+        $bagsItem['RequestFailureDescription'] = 'Each passenger is allowed to take a single small under seat bag on their flights'
+        $bagsItem.Editing.EndEdit() | Out-Null
+    }
+    
+    $translations = @{
+            
+            "fr-CH" = @{
+                "RequestFailureTitle" = "Votre franchise de bagages de cabine"
+                "RequestFailureDescription" = "Chaque passager est autorisé à emporter un seul petit sac sous le siège pendant le vol."
+            }
+            "fr-FR" = @{
+                "RequestFailureTitle" = "Votre franchise de bagages de cabine"
+                "RequestFailureDescription" = "Chaque passager est autorisé à emporter un seul petit sac sous le siège pendant le vol."
+            }
+            "de-CH" = @{
+                "RequestFailureTitle" = "Ihr Handgepäck"
+                "RequestFailureDescription" = "Jeder Fluggast darf nur eine einzige kleine Tasche unter dem Sitz mit auf den Flug nehmen."
+            }
+            "de-DE" = @{
+                "RequestFailureTitle" = "Ihr Handgepäck"
+                "RequestFailureDescription" = "Jeder Fluggast darf nur eine einzige kleine Tasche unter dem Sitz mit auf den Flug nehmen."
+            }
+        }
+        
+        foreach ($lang in $translations.Keys) {
+            create-lang-version -item $bagsItem -lang $lang -field "RequestFailureTitle" -value $translations[$lang]["RequestFailureTitle"]
+            create-lang-version -item $bagsItem -lang $lang -field "RequestFailureDescription" -value $translations[$lang]["RequestFailureDescription"]
+           
+        }   
+    
+    
+    $path = '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Cabin Bags'
+    $bagsItem =  Get-Item -Path $path -ErrorAction SilentlyContinue
+    
+    if($bagsItem -ne $null) {
+        $bagsItem.Editing.BeginEdit()
+        $bagsItem['RequestFailureBanner'] = $bannerTrade.ID
+        $bagsItem['RequestFailureTitle'] = 'Your cabin bag allowance'
+        $bagsItem['RequestFailureDescription'] = 'Each passenger is allowed to take a single small under seat bag on their flights'
+        $bagsItem.Editing.EndEdit() | Out-Null
+    }
+    
+    
+     
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1030
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Value: "20240205T155233:638427451537773351Z"

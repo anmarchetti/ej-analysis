@@ -1,0 +1,653 @@
+﻿{
+    "Title": "Activities from musement service for France (api/v3/activities?country_in=FR)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/v3/activities",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Headers": [
+            {
+                "Name": "X-Musement-Version",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "3.4.0"
+                    }
+                ]
+            },
+            {
+                "Name": "X-Musement-Currency",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "GBP"
+                    }
+                ]
+            }
+        ],
+        "Params": [
+            {
+                "Name": "city_in",
+                "Matchers": [
+                    {
+                        "Name": "ExactMatcher",
+                        "Pattern": "47"
+                    }
+                ]
+            },
+            {
+                "Name": "offset",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "0"
+                    }
+                ]
+            },
+            {
+                "Name": "limit",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "10"
+                    }
+                ]
+            },
+            {
+                "Name": "sort_by",
+                "Matchers": [
+                    {
+                        "Name": "ExactMatcher",
+                        "Pattern": "-relevance-city"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "meta": {
+                "count": 4,
+                "match_type": "cities",
+                "match_names": [
+                    "Lyon"
+                ],
+                "match_ids": [
+                    "47"
+                ]
+            },
+            "data": [
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P0D",
+                    "booking_type": "NO-CALENDAR-FIXED-END",
+                    "uuid": "145be6d7-2046-11e7-9cc9-06a7e332783f",
+                    "city": {
+                        "id": 47,
+                        "name": "Lyon",
+                        "country": {
+                            "id": 60,
+                            "name": "France",
+                            "iso_code": "FR"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0002/48/123-jpg_header-147564.jpeg",
+                        "url": "https://musement.com/us/lyon/",
+                        "time_zone": "Europe/Paris"
+                    },
+                    "title": "Lyon City Card",
+                    "relevance": 2000,
+                    "relevance_venue": 800,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Get free unlimited access to the entire public transportation, museums and temporay exhibitions and discounts on activities.",
+                    "about": "Get the most of Lyon in one single card!\nChose the option that best suits you from 1 to 4 days pass and get free unlimited access to the entire public transportation network, to more than 23 museums and temporary exhibitions and many discounts on activities.Click here to see what the City Card gives you access to",
+                    "meeting_point": "Redeem your PRINTED voucher at the Tourist Office located on Bellecour square - 69002 Lyon (Metro A/D : Bellecour) everyday 9am to 6pm (except on 1st january and 25th december).",
+                    "operational_days": "Everyday",
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": true,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "it",
+                            "name": "Italian"
+                        },
+                        {
+                            "code": "fr",
+                            "name": "French"
+                        }
+                    ],
+                    "group_size": [],
+                    "food": [],
+                    "services": [],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0001/69/thumb_68209_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 22.0,
+                        "formatted_value": "£ 22.00",
+                        "formatted_iso_value": "£22.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 22.0,
+                        "formatted_value": "£ 22.00",
+                        "formatted_iso_value": "£22.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 22.0,
+                        "formatted_value": "£ 22.00",
+                        "formatted_iso_value": "£22.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 22.0,
+                        "formatted_value": "£ 22.00",
+                        "formatted_iso_value": "£22.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 45.757877,
+                    "longitude": 4.832005,
+                    "url": "https://musement.com/us/lyon/lyon-city-card-7604/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c19b9549-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/44/thumb_43592_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P0D",
+                    "booking_type": "CALENDAR-NO-TIMESLOTS",
+                    "uuid": "170fc68a-2046-11e7-9cc9-06a7e332783f",
+                    "city": {
+                        "id": 47,
+                        "name": "Lyon",
+                        "country": {
+                            "id": 60,
+                            "name": "France",
+                            "iso_code": "FR"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0002/48/123-jpg_header-147564.jpeg",
+                        "url": "https://musement.com/us/lyon/",
+                        "time_zone": "Europe/Paris"
+                    },
+                    "title": "Lyon city tour hop-on hop-off",
+                    "relevance": 200,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Book an hop-on hop-off bus pass and enjoy the main highlights of Lyon in a day! Stop as often as you like in 13 different stops around the city!",
+                    "about": "The best of Lyon is a pass! This hop-on hop-off tour brings you around the city to discover its main highlights. Hop on and off as often as you like at 13 different stops and explore Lyon at your own pace.\nWe drop you off at the foot of the city’s highlights and bring you to the Colline de Fourvière without any effort to enjoy a breathtaking view of the city. You'll get unique viewpoints from the open top deck of our buses.The commentaries are available in 8 languages: French, English, Spanish, Italian, German, Chinese, Russian and Portuguese.\nThe tour lasts about 1h30 minutes and main departure is located Place Bellecour at the corner with Victor Hugo street.",
+                    "meeting_point": "Exchange your voucher at any stop of the route. Main departure at 35 Place Bellecour, near Café Bellecour.",
+                    "operational_days": "Every day",
+                    "duration_range": {
+                        "max": "PT1H30M"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": true,
+                    "languages": [],
+                    "group_size": [],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "audioguide",
+                            "name": "With audioguide"
+                        },
+                        {
+                            "code": "transport",
+                            "name": "Transport included"
+                        }
+                    ],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0004/81/thumb_380826_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 18.0,
+                        "formatted_value": "£ 18.00",
+                        "formatted_iso_value": "£18.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 18.0,
+                        "formatted_value": "£ 18.00",
+                        "formatted_iso_value": "£18.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 18.0,
+                        "formatted_value": "£ 18.00",
+                        "formatted_iso_value": "£18.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 18.0,
+                        "formatted_value": "£ 18.00",
+                        "formatted_iso_value": "£18.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 3,
+                    "reviews_avg": 4.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 3,
+                        "5": 0
+                    },
+                    "latitude": 45.758398,
+                    "longitude": 4.83022,
+                    "url": "https://musement.com/us/lyon/lyon-city-tour-hop-on-hop-off-10714/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c1a601bf-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/69/thumb_68978_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": true
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P1D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "5520047d-2dc2-420f-af1b-70a2dad27011",
+                    "city": {
+                        "id": 47,
+                        "name": "Lyon",
+                        "country": {
+                            "id": 60,
+                            "name": "France",
+                            "iso_code": "FR"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0002/48/123-jpg_header-147564.jpeg",
+                        "url": "https://musement.com/us/lyon/",
+                        "time_zone": "Europe/Paris"
+                    },
+                    "title": "Guided walking tour of the old Lyon district",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Book now your shared walking tour in Lyon with a local expert guide and discover all the secrets of the Old Lyon district.",
+                    "about": "Discover in 1 hour and 15 minutes the main wonders of the Old Lyon district. You will share the visit with other customers but the group size will stay at 25 people maximum to maintain a certain quality. Experience Lyon, France’s famous gastronomic capital. Enjoy a guided tour with 25 people maximum per visit. This tour is perfect for the first time visitor to Lyon. Get a summary of Lyon's old district: one of France’s most beautiful and historical cities.The tour will take you through the enchanting neighborhood of Saint-Jean. and you'll also be taken through Lyon’s famous ‘Traboules'. Here, your expert guide will explain the fascinating history behind these ancient underground passageways a true highlight for many visitors to Lyon.",
+                    "meeting_point": "You will meet your guide outside the metro station called \"Vieux Lyon - Cathédrale St-Jean\"",
+                    "operational_days": "Every Saturday",
+                    "duration_range": {
+                        "max": "PT1H15M"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        }
+                    ],
+                    "group_size": [
+                        {
+                            "code": "small",
+                            "name": "Small group"
+                        }
+                    ],
+                    "food": [],
+                    "services": [],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        },
+                        {
+                            "code": "ADDVA_GUIDE",
+                            "name": "Guided Tour"
+                        },
+                        {
+                            "code": "ADDVA_SMALL",
+                            "name": "Smaller Group Size"
+                        },
+                        {
+                            "code": "ADDVA_VOUCH",
+                            "name": "e-Voucher"
+                        }
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0041/30/thumb_4029677_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 19.0,
+                        "formatted_value": "£ 19.00",
+                        "formatted_iso_value": "£19.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 19.0,
+                        "formatted_value": "£ 19.00",
+                        "formatted_iso_value": "£19.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 19.0,
+                        "formatted_value": "£ 19.00",
+                        "formatted_iso_value": "£19.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 19.0,
+                        "formatted_value": "£ 19.00",
+                        "formatted_iso_value": "£19.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 45.7629811,
+                    "longitude": 4.8280199,
+                    "url": "https://musement.com/us/lyon/guided-walking-tour-of-the-old-lyon-district-169914/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "fceb9bed-18c6-4dcf-b0bf-d9ac55e4801a"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": true
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P1D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "5589d992-2746-4471-9230-78fd6ed7ea96",
+                    "city": {
+                        "id": 47,
+                        "name": "Lyon",
+                        "country": {
+                            "id": 60,
+                            "name": "France",
+                            "iso_code": "FR"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0002/48/123-jpg_header-147564.jpeg",
+                        "url": "https://musement.com/us/lyon/",
+                        "time_zone": "Europe/Paris"
+                    },
+                    "title": "Private walking tour of the old Lyon district",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Book now your private walking tour in Lyon with a local expert guide and discover all the fascinating history of this UNESCO world heritage city, with Saint-Jean Cathedral, the renowned Hotel Gadagne and Juiverie Street",
+                    "about": "During this private walking tour in Lyon, you will discover France’s famous gastronomy capital. You will have a wonderful overview of one of France’s most beautiful and historic cities. You will see first the enchanting neighborhood of Saint-Jean, including a stop at the magnificent Saint-Jean Cathedral. Your tour will continue along Lyon's famous Juiverie Street and would not be complete without a visit to the renowned Hotel Gadagne.As part of the tour you'll be taken through Lyon’s famous ‘Traboules.’ Here your expert guide will explain the fascinating history behind these ancient underground passageways - a true highlight for many visitors to Lyon. The tour will run at your own rhythm with a high degree of flexibility. Your private guide will have the knowledge and expertise to create the perfect Lyon walking tour, based on your wishes!",
+                    "meeting_point": "You will meet your guide in front of the Saint-Jean Cathedral in Lyon",
+                    "operational_days": "Every day",
+                    "duration_range": {
+                        "min": "PT2H",
+                        "max": "PT2H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "it",
+                            "name": "Italian"
+                        },
+                        {
+                            "code": "fr",
+                            "name": "French"
+                        },
+                        {
+                            "code": "es",
+                            "name": "Spanish"
+                        },
+                        {
+                            "code": "de",
+                            "name": "German"
+                        }
+                    ],
+                    "group_size": [
+                        {
+                            "code": "private",
+                            "name": "Private group"
+                        }
+                    ],
+                    "food": [],
+                    "services": [],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        },
+                        {
+                            "code": "ADDVA_GUIDE",
+                            "name": "Guided Tour"
+                        },
+                        {
+                            "code": "ADDVA_PRITOU",
+                            "name": "Private Tour"
+                        }
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0045/42/thumb_4441280_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 200.0,
+                        "formatted_value": "£ 200.00",
+                        "formatted_iso_value": "£200.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 200.0,
+                        "formatted_value": "£ 200.00",
+                        "formatted_iso_value": "£200.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 200.0,
+                        "formatted_value": "£ 200.00",
+                        "formatted_iso_value": "£200.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 200.0,
+                        "formatted_value": "£ 200.00",
+                        "formatted_iso_value": "£200.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 45.7607438,
+                    "longitude": 4.8266801,
+                    "url": "https://musement.com/us/lyon/private-walking-tour-of-the-old-lyon-district-172423/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "fceb9bed-18c6-4dcf-b0bf-d9ac55e4801a"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": true
+                }
+            ]
+        }
+    }
+}

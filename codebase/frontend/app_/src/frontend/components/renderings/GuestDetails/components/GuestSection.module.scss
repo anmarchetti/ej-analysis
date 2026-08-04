@@ -1,0 +1,192 @@
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-top: 32px;
+
+    :global {
+        .guest-login__change {
+            margin: 0;
+        }
+    }
+}
+
+.title {
+    font-size: 17px;
+    line-height: 1.333;
+    margin: 0;
+}
+
+.description {
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 2px 0 0 0;
+
+    @include media-breakpoint-down(sm) {
+        margin: 6px 0 0 0;
+    }
+}
+
+.fieldWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 24px;
+
+    @include media-breakpoint-down(sm) {
+        margin-top: 12px;
+    }
+}
+
+.passwordInfoWrapper {
+    margin-top: 16px;
+
+    :global(.validation-indicators__title) {
+        font-size: 14px;
+    }
+}
+
+.phoneField {
+    .prefix {
+        display: none;
+    }
+
+    label {
+        visibility: hidden;
+    }
+
+    &.active {
+        .prefix {
+            display: block;
+        }
+
+        label {
+            visibility: visible;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        flex-wrap: unset;
+    }
+}
+
+.pseudoDisabledField {
+    &,
+    span {
+        background-color: $clrSiteBgWhite !important;
+    }
+
+    // override default browser autofill text color
+    input, input:-internal-autofill-selected {
+        color: $borderColorGrayMiddle !important;
+    }
+}
+
+.button {
+    flex: 0 1 180px;
+    height: 44px;
+
+    @include media-breakpoint-down(sm) {
+        flex: 1 1 100%;
+    }
+}
+
+.tooltipWrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    align-self: center;
+    width: auto;
+    max-height: 45px;
+    padding: 0;
+
+    .icon {
+        margin: 0;
+    }
+}
+
+.tooltipContent {
+    @include media-breakpoint-up(xl) {
+        p {
+            font-size: 14px;
+        }
+    }
+}
+
+.note {
+    font-size: 14px;
+    color: $colorBoulder;
+}
+
+.dateOfBirthContainer {
+    :global {
+        .form-field {
+            display: flex;
+            align-items: flex-start;
+            flex-flow: wrap;
+            column-gap: 16px;
+            row-gap: 8px;
+            margin: 0;
+        }
+
+        .form-control__input {
+            width: 363px;
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+            }
+        }
+
+
+        .form-field__trade .form-control__label {
+            font-size: 15px!important;
+            line-height: 15px!important;
+            left: 20px;
+            padding: 0 5px;
+        }
+
+        .form-field.form-field--error .form-control__error {
+            width: auto;
+            max-width: 363px;
+            padding: 0;
+            margin: auto 0;
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+            }
+        }
+
+        .form-control__icon {
+            right: 15px;
+        }
+    }
+}
+
+.inputWrapper {
+    width: 363px;
+    padding: 0;
+
+    @include media-breakpoint-down(sm) {
+        width: 100%;
+    }
+}
+
+.passwordInfo {
+    font-size: 14px;
+}
+
+.emailWrapper {
+    margin: 0 4px;
+    max-width: 355px;
+
+    @include media-breakpoint-down(sm) {
+        max-width: 100%;
+    }
+}

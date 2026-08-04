@@ -1,0 +1,51 @@
+﻿---
+ID: "7a3b540f-766f-4e0b-9df5-98d83ec10eeb"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/5 - SER-788 - Alert message for disruption page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Attention Message"
+                TemplatePath = "/sitecore/templates/Feature/Destinations/Attention Message"
+                Fields      = @{
+                    "Description" = @{
+                        "en" = "If you believe your claim meets the below criteria, you can submit your claim online. Your claim will be reviewed as quickly as possible but please allow up to 28 days for a response."
+                        "fr-CH" = "Si vous estimez que votre demande répond aux critères ci-dessous, vous pouvez la soumettre en ligne. Votre demande sera examinée dans les meilleurs délais, mais veuillez prévoir un délai de réponse pouvant aller jusqu'à 28 jours."
+                        "de-CH" = "Wenn Sie der Meinung sind, dass Ihr Antrag die unten aufgeführten Kriterien erfüllt, können Sie Ihren Antrag online einreichen. Ihr Antrag wird so schnell wie möglich geprüft, bitte rechnen Sie jedoch mit einer Bearbeitungszeit von bis zu 28 Tagen."
+                        "fr-FR" = "Si vous estimez que votre demande répond aux critères ci-dessous, vous pouvez la soumettre en ligne. Votre demande sera examinée dans les meilleurs délais, mais veuillez prévoir un délai de réponse pouvant aller jusqu'à 28 jours."
+                        "de-DE" = "Wenn Sie der Meinung sind, dass Ihr Antrag die unten aufgeführten Kriterien erfüllt, können Sie Ihren Antrag online einreichen. Ihr Antrag wird so schnell wie möglich geprüft, bitte rechnen Sie jedoch mit einer Bearbeitungszeit von bis zu 28 Tagen."
+                    }
+                    "__Sortorder" = @{
+                        "en" = "600"
+                    }
+                }
+            }
+        )
+        
+    ImportContent -itemsToCreate $updates
+    
+    $page= Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption"
+    $componentWrapper = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper"
+    $renderingComponentWrapper = New-Rendering -Item $componentWrapper
+    
+    Add-Rendering -Item $page -PlaceHolder "/body" -Instance $renderingComponentWrapper -Index 8 -Parameter @{ "PaddingTop" = "Padding Top 64px"; "PaddingTopMobile" = "Padding Top Mobile 32px"; "Anchor" = "compensation-forms-section" }
+    $renderingComponentWrapper = Get-Rendering -Item $page -Rendering $componentWrapper
+    
+    $textBlock = Get-Item -Path "/sitecore/layout/Renderings/Feature/Destinations/Attention Message"
+    $renderingTextBlock = New-Rendering -Item $textBlock
+    Add-Rendering -Item $page -PlaceHolder "/body/component-wrapper-inner-$($renderingComponentWrapper[2].UniqueId)-0" -Instance $renderingTextBlock -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Attention Message" -Parameter @{ "Type" = "Blue warning" } -Index 9 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

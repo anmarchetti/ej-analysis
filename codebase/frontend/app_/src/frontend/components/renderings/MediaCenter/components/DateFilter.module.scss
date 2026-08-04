@@ -1,0 +1,91 @@
+.dateFilter,
+.dateFilterMobile {
+    :global {
+        .form-control.input {
+            width: 205px;
+            height: 48px;
+            padding: 0 20px;
+            font-size: 14px;
+            color: $clrTextHeading;
+            border: 1px solid $borderColorGrayMiddle;
+            border-radius: 4px;
+        }
+
+        .form-control__placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%!important;
+            height: 100%;
+            font-family: $fontRoundedBook;
+            font-size: 14px;
+            line-height: 15px;
+            color: $clrTxtLight;
+            pointer-events: none;
+
+            i {
+                padding: 14px;
+
+                :hover {
+                    cursor: pointer;
+                }
+
+                > svg {
+                    display: inline-block;
+                    max-width: 20px;
+                    height: 15px;
+                    margin-right: 10px;
+                    color: $colorOrange;
+                }
+            }
+
+            > span {
+                padding-left: 20px;
+            }
+        }
+
+        .form-field .form-control__input ~ .form-control__label {
+            top: -7.5px;
+            left: 20px;
+            height: auto;
+            padding: 0 5px;
+            font-size: 15px;
+            line-height: 1;
+            background-color: $colorWhite;
+            border-radius: 3px;
+        }
+
+        .form-field .form-control__input:focus ~ .form-control__label {
+            color: $clrEjOrangeDark;
+        }
+
+        .search-bar__input-box {
+            position: static;
+            flex: auto;
+            margin-right: 0;
+            padding: 0;
+        }
+
+        .form-field .form-control__input {
+            height: 48px;
+            border: 1px solid $borderColorGrayMiddle;
+
+            @include media-breakpoint-down(md) {
+                height: 44px;
+                font-size: 16px;
+            }
+
+            &:focus {
+                border-color: $clrEjOrange;
+            }
+        }
+
+        .form-field.form-field--in-progress .form-control__input {
+            border: 1px solid $clrEjOrangeLight;
+        }
+    }
+}

@@ -1,0 +1,57 @@
+﻿---
+ID: "e03412df-5f48-4020-9e28-12213dbec719"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/TRADE-448 Trade Page Header Icons"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Update "Profile > Logged In" icon
+    $itemPath = "master:/sitecore/content/EasyJet/TradePortal/Data/Navigations/Button/Profile Logged In"
+    
+    $item = Get-Item -path $itemPath -ErrorAction SilentlyContinue
+    
+    if ($item -ne $null) {
+        $item.Editing.BeginEdit()
+        $item["Image"] = '<image mediaid="{0D82D124-C499-4A9E-9D43-1ED40D1614EF}" />'
+        $item.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $item.Name "successfully updated"
+    }
+    
+    # Update Trade Logo
+    $slimHeaderPath = "master:/sitecore/content/EasyJet/TradePortal/Data/Navigations/Headers/Slim Header"
+    $fullHeaderPath = "master:/sitecore/content/EasyJet/TradePortal/Data/Navigations/Headers/Full Header"
+    
+    $slimHeader = Get-Item -path $slimHeaderPath -ErrorAction SilentlyContinue
+    $fullHeader = Get-Item -path $fullHeaderPath -ErrorAction SilentlyContinue
+    
+    if ($slimHeader -ne $null) {
+        $slimHeader.Editing.BeginEdit()
+        $slimHeader["TradeLogo"] = '<image mediaid="{06169F1C-C901-4E3F-BBB3-91D192E75A02}" />'
+        $slimHeader.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $slimHeader.Name "successfully updated"
+    }
+    
+    if ($fullHeader -ne $null) {
+        $fullHeader.Editing.BeginEdit()
+        $fullHeader["TradeLogo"] = '<image mediaid="{06169F1C-C901-4E3F-BBB3-91D192E75A02}" />'
+        $fullHeader.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $fullHeader.Name "successfully updated"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240208T172216Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

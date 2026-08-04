@@ -1,0 +1,128 @@
+﻿---
+ID: "c926af9a-87d1-454a-9817-af91ee3bd40b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-16362 Contact Us Form Questions"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+        $item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+         if ($item -eq $null) {
+                $item = New-Item -Path $path -ItemType $templateId
+                Write-Host "Item" $item.Name "successfully created";
+         }
+         return $item
+    }
+    
+    # create question folder and items
+    $folder = Get-Or-Create-Item "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Contact Us Questions Folder" "{C0D3E6B6-A56C-44D4-B90C-2D51325870CF}"
+    
+    $answer1 = Get-Or-Create-Item "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Contact Us Questions Folder/Amend booking" "{5E2EB6D4-B7BA-45A1-A5FE-9FE583874200}"
+    $answer1.Editing.BeginEdit()
+    $answer1["Title"] = "Amend booking"
+    $answer1["State"] = "Future"
+    $answer1.Editing.EndEdit()
+    
+    $answer2 = Get-Or-Create-Item "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Contact Us Questions Folder/Cancel booking" "{5E2EB6D4-B7BA-45A1-A5FE-9FE583874200}"
+    $answer2.Editing.BeginEdit()
+    $answer2["Title"] = "Cancel booking"
+    $answer2["State"] = "Future"
+    $answer2.Editing.EndEdit()
+    
+    $answer3 = Get-Or-Create-Item "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Contact Us Questions Folder/Invoice and payment enquires" "{5E2EB6D4-B7BA-45A1-A5FE-9FE583874200}"
+    $answer3.Editing.BeginEdit()
+    $answer3["Title"] = "Invoice and payment enquires"
+    $answer3["State"] = "Future"
+    $answer3.Editing.EndEdit()
+    
+    $answer4 = Get-Or-Create-Item "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Contact Us Questions Folder/Make a claim" "{5E2EB6D4-B7BA-45A1-A5FE-9FE583874200}"
+    $answer4.Editing.BeginEdit()
+    $answer4["Title"] = "Make a claim"
+    $answer4["State"] = "Past"
+    $answer4.Editing.EndEdit()
+    
+    $answer5 = Get-Or-Create-Item "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Contact Us Questions Folder/Make a compliance" "{5E2EB6D4-B7BA-45A1-A5FE-9FE583874200}"
+    $answer5.Editing.BeginEdit()
+    $answer5["Title"] = "Make a compliance"
+    $answer5["State"] = "Past"
+    $answer5.Editing.EndEdit()
+    
+    $form = Get-Or-Create-Item "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Form" "{1AD42BE9-63BC-4AF2-BC37-2EEE3E75CEFF}"
+    $form.Editing.BeginEdit()
+    $form["QuestionList"] = "$($answer1.ID)|$($answer2.ID)|$($answer3.ID)|$($answer4.ID)|$($answer5.ID)"
+    
+    $form["BookingReferencePlaceholder"] = "Holidays booking reference"
+    $form["QuestionOptionsPlaceholder"] = "Choose question"
+    $form["QuestionPlaceholder"] = "Please tell us more about your question"
+    
+    $form["DetailsFirstNamePlaceholder"] = "Lead passenger's first name"
+    $form["DetailsLastNamePlaceholder"] = "Lead passenger's last name"
+    $form["DetailsEmailPlaceholder"] = "Email address used when booking"
+    $form["DetailsCodePlaceholder"] = "Code"
+    $form["DetailsContactNumberPlaceholder"] = "Contact number"
+    
+    $form["FormSubmittedPopUpTitle"] = "YOU SUCCESSFULLY SUBMIT THE FORM"
+    $form["FormSubmittedPopUpLabel"] = "We will let you know updates come soon"
+    $form["FormSubmittedPopUpButton"] = "Okay"
+    
+    $form["FormFailedPopUpTitle"] = "SORRY, THERE HAS BEEN A PROBLEM"
+    $form["FormFailedPopUpLabel"] = "It looks like we ran into an problem submitting your form. Please check your internet connection and try again."
+    $form["FormFailedPopUpButton"] = "Try again"
+    
+    $form["FormTitle"] = "Tell us more about your booking"
+    $form["FormDescription"] = "<p>If you have a question regarding amending, cancelling a booking, invoice or payment enquiry. Please provide us with as much information as possible.</p>"
+    
+    $form["DepartureAndReturnDatesTitle"] = "1. Departure and return dates"
+    $form["DepartureAndReturnDatesLabel"] = "Departure date and return dates"
+    $form["DepartureAndReturnDatesPlaceholder"] = "Departure date and return dates"
+    
+    $form["BookingReferenceTitle"] = "2. Booking reference"
+    $form["BookingReferenceDescription"] = 'Please enter your easyjet holidays booking reference - this is 7 digits long, containing only numbers. If you are a flight only customer, with a booking reference containing a mix of letters and numbers e.g. EFG123H, please visit <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z">here</a>'
+    $form["BookingReferencePlaceholder"] = "Holidays booking reference"
+    $form["BookingReferenceWarning"] = "It seems that you're a flight only customer. Please, visit the link below"
+    
+    $form["QuestionTitle"] = "3. Your question"
+    $form["QuestionOptionsPlaceholder"] = "Choose question"
+    $form["QuestionLabel"] = "Your question"
+    
+    $form["DetailsTitle"] = "4. Your details"
+    $form["DetailsFirstNamePlaceholder"] = "Lead passenger’s first name"
+    $form["DetailsLastNamePlaceholder"] = "Lead passenger’s last name"
+    $form["DetailsEmailPlaceholder"] = "Email address used when booking"
+    $form["DetailsCodePlaceholder"] = "International dialing code"
+    $form["DetailsContactNumberPlaceholder"] = "Contact number"
+    
+    $form["ScreenshotTitle"] = "5. Screenshots of the holiday (optional)"
+    $form["ScreenshotDescription"] = "Please upload screenshots of the holiday. Maximum size is 10MB."
+    $form["ScreenshotButtonTitle"] = "Choose file"
+    
+    $form["OnHolidayTitle"] = "It looks like you’re currently on holiday" 
+    $form["OnHolidayDescription"] = "<p>Is this correct?</p>"
+    $form["OnHolidayButton"] = '<link text="Yes, I am currently on holiday" anchor="" linktype="internal" class="" title=""  querystring="" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />'
+    
+    $form["SubmitButtonTitle"] = "Submit your request"
+    
+    $form["SuccessTitle"] = "You successfully submit the form" 
+    $form["SuccessText"] = "<p>We will contact you soon about your request.</p>"
+    
+    $form["FailedTitle"] = "Sorry, there has been a problem" 
+    $form["FailedText"] = "<p>It looks like we ran into an problem submitting your form.<br />Please check your internet connection and try again</p>"
+    
+    $form["DatePickerTitle"] = "Departure and return dates of your holiday" 
+    $form["DatePickerText"] = "<p>Please provide the start and end date of your holiday.</p>"
+    $form.Editing.EndEdit()
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 900
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

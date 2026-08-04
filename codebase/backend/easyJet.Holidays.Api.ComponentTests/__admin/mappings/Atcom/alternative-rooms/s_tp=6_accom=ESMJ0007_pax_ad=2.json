@@ -1,0 +1,49 @@
+{
+    "Title": "Accommodation offers for s_tp=6, accom=ESMJ0007, pax_ad=2",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/fcgi-bin/ezydmouk/avcache3_g",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "s_tp",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "6"
+                    }
+                ]
+            },
+            {
+                "Name": "accom",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "ESMJ0007"
+                    }
+                ]
+            },
+            {
+                "Name": "pax_ad",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "2"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/s_tp=6_accom=ESMJ0007_pax_ad=2.xml"
+    }
+}

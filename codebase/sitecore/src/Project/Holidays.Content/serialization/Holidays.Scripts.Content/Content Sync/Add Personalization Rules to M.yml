@@ -1,0 +1,109 @@
+﻿---
+ID: "e59e3b91-b514-4a8e-a700-637ad4852ef0"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Add Personalization Rules to My_Booking Page
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Login Maintenance Mode Popup"
+    $renderingItemId = "{68FFCF4F-8A07-4553-8687-DB9501C09694}" #Login To View Booking Popup rendering id
+    
+    $placeholder = "header"
+    $sourcePath = "/sitecore/system/Settings/Project/Holidays/Personalization/My Booking Page"
+    $targetPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    
+    function Get-Or-Create-Item($path){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        return $item
+    }
+    
+    function Get-ContentRenderingId {
+    	param(
+    		[item]$Item,
+    		[string]$RenderingItemId,
+    		[string]$Placeholder
+    	)
+    
+    	$renderingItem = Get-Item -Path "master:" -Id $RenderingItemId
+    	return (Get-Rendering -Item $Item -Rendering $renderingItem).UniqueId
+    }
+    
+    function Copy-RenderingRules {
+    	[CmdletBinding()]
+    	param(
+    		[Parameter(Mandatory = $true,Position = 0)]
+    		[Sitecore.Data.Items.Item]$SourceItem,
+    		[Parameter(Mandatory = $true,Position = 1)]
+    		$SourceRenderingGUID,
+    		[Parameter(Mandatory = $true,Position = 2)]
+    		[Sitecore.Data.Items.Item]$TargetItem,
+    		[Parameter(Mandatory = $true,Position = 3)]
+    		$TargetRenderingGUID,
+    		[Parameter(Mandatory = $true,Position = 4)]
+    		$Datasource,
+    		[Parameter(Mandatory = $true,Position = 5)]
+    		$RuleName
+    	)
+    
+    	<# Get the rules as an XML Element #>
+    	$sourceItemSharedLayoutField = $SourceItem.Fields[[Sitecore.FieldIDs]::LayoutField]
+        $sourceSharedLayoutXml = [Sitecore.Data.Fields.LayoutField]::GetFieldValue($sourceItemSharedLayoutField)
+        
+    	[xml]$sourceRenderingsXML = New-Object -TypeName XML
+    	$sourceRenderingsXML.loadxml($sourceSharedLayoutXml)
+    	$sourceXpathQ = "r/d/r[@uid='$($SourceRenderingGUID)']/rls"
+    	$sourceRuleElement = $sourceRenderingsXML.SelectSingleNode($sourceXpathQ)
+    	
+    	<# Setup datasource to rule node #>
+        $sourceDatasourceXpathQ = "$($sourceXpathQ)/ruleset/rule[@name='$($RuleName)']/actions/action[@DataSource]"
+    	$datasourceNode = $sourceRenderingsXML.SelectSingleNode($sourceDatasourceXpathQ)
+        $datasourceNode.Datasource = $Datasource.Tostring()
+        
+    	<# Get the target rendering as an XML Element #>
+    	$targetItemSharedLayoutField = $TargetItem.Fields[[Sitecore.FieldIDs]::LayoutField]
+        $targetSharedLayoutXml = [Sitecore.Data.Fields.LayoutField]::GetFieldValue($targetItemSharedLayoutField)
+    	
+    	[xml]$targetRenderingsXML = New-Object -TypeName XML
+    	$targetRenderingsXML.loadxml($targetSharedLayoutXml)
+    	$targetXpathQ = "r/d/r[@uid='$($TargetRenderingGUID)']"
+    	$TargetRendering = $targetRenderingsXML.SelectSingleNode($targetXpathQ)
+        foreach($childNode in $TargetRendering.rls){
+            $TargetRendering.RemoveChild($childNode) > $null
+        }
+        
+    	<#Append the rules element to the target rendering element  #>
+    	$TargetRendering.AppendChild($targetRenderingsXML.ImportNode($sourceRuleElement,$true)) > $null
+    
+    	<# Output the Renderings XML to the final renderings field on the target #>
+    	$TargetItem.Editing.BeginEdit()
+    	$TargetItem["__Renderings"] = $targetRenderingsXML.OuterXML
+    	$TargetItem.Editing.EndEdit() > $null
+    }
+    
+    $datasourceItem = Get-Or-Create-Item -Path $datasourcePath
+    
+    $sourceItem = Get-Item -Path "master:" -Query $sourcePath
+    $sourceRenderingId = Get-ContentRenderingId -Item $sourceItem -RenderingItemId $renderingItemId -PlaceHolder $placeholder 
+    
+    $targetItem = Get-Item -Path "master:" -Query $targetPath
+    $targetRenderingId = Get-ContentRenderingId -Item $targetItem -RenderingItemId $renderingItemId -PlaceHolder $placeholder
+    
+    if($targetRenderingId){
+      Copy-RenderingRules -SourceItem $sourceItem -SourceRenderingGUID $sourceRenderingId -TargetItem $targetItem -TargetRenderingGUID $targetRenderingId -Datasource $datasourceItem.id -RuleName "If Full mode is on"
+      Write-Host "Presentation's rules have been copied from $($sourceItem.ItemPath) to $($targetItem.ItemPath)"
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 5390
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201002T093308Z

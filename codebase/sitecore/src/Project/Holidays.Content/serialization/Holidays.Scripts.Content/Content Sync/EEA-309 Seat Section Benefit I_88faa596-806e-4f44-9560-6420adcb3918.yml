@@ -1,0 +1,74 @@
+﻿---
+ID: "88faa596-806e-4f44-9560-6420adcb3918"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-309 Seat Section Benefit Icon Folder Update - Trade Portal"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seat Section Benefit Icon Folder"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Section Benefit Icon Folder"
+            Id          = [GUID]"{0091A50D-DA36-4F3C-93B1-2DE891D5E6B8}"
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seat Section Benefit Icon Folder/Bag"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Section Benefit Icon Key"
+            Id          = [GUID]"{048E1066-0CA1-400D-801D-BE644E147C11}"
+            Fields      = @{
+                "Key" = @{
+                    "en" = "Bag"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seat Section Benefit Icon Folder/Expand"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Section Benefit Icon Key"
+            Id          = [GUID]"{2D5FA6AD-70CB-4200-860A-16BFF7FDF01A}"
+            Fields      = @{
+                "Key" = @{
+                    "en" = "Expand"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seat Section Benefit Icon Folder/FirstOff"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Section Benefit Icon Key"
+            Id          = [GUID]"{5534E179-C0A7-42DD-94F9-527524818D1C}"
+            Fields      = @{
+                "Key" = @{
+                    "en" = "FirstOff"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seat Section Benefit Icon Folder/Seat"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Section Benefit Icon Key"
+            Id          = [GUID]"{AE7B86EE-709E-496B-9713-070989FBA6F6}"
+            Fields      = @{
+                "Key" = @{
+                    "en" = "Seat"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999944
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250710T111924Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

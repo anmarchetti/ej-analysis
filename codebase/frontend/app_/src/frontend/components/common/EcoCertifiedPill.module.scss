@@ -1,0 +1,30 @@
+.container {
+    width: auto;
+    padding: 3px 8px;
+    color: $clrTextMain;
+    border-radius: 4px;
+
+    :global(.icon-svg) {
+        @include sizeSquare(16px);
+    }
+
+    p {
+        font-size: 11px;
+        font-weight: 700;
+        color: $clrTextMain;
+        text-decoration: underline;
+        text-decoration-style: dotted;
+    }
+
+    :global(.callout__content.right) {
+        right: 0;
+    }
+}
+
+.tooltipContent {
+    text-align: left;
+}
+
+.pill {
+    background-color: $colorGrayLighter;
+}

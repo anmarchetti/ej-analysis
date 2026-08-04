@@ -1,0 +1,375 @@
+﻿---
+ID: "78f6130d-e695-4c58-a914-9e8ca6e57892"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/Advanced Rendering Search
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Root item paths to scan (multiple supported).
+    $rootPaths = @(
+        ""
+    )
+    
+    # Item paths to exclude (subtrees under these are skipped).
+    $excludePaths = @(
+        ""
+    )
+    
+    # Use custom traversal to skip excluded subtrees entirely.
+    # Set to $false if excluded paths cover small subtrees (built-in recursion can be faster).
+    $useCustomTraversal = $true
+    
+    # Rendering IDs to search for.
+    $renderingIds = @(
+        ""
+    )
+    
+    # Layout fields to scan for renderings.
+    $layoutFieldsToSearch = @("__Renderings", "__Final Renderings")
+    # Also check template standard values when true.
+    $checkStandardValues = $true
+    # "Any" = any param match; "All" = all params must match.
+    $paramMatchMode = "Any"
+    # When paramChecks is empty, treat any matching rendering as a hit.
+    $allowEmptyParamChecks = $true
+    # Include template info in standard values output (costly lookups).
+    $includeTemplateInfo = $false
+    
+    # Parameter rules to match (multiple allowed).
+    $paramChecks = @(
+        #@{ Name = ""; AllowedValues = @() }
+    )
+    
+    $defaultDeviceId = "{FE5D7FDF-89C0-4D99-9AA3-B5FBD009C9F3}"
+    
+    $progressEvery = 200
+    $heartbeatSeconds = 30
+    
+    function Normalize-Id {
+        param([string]$Id)
+        if (-not $Id) { return $null }
+        return ([Sitecore.Data.ID]::Parse($Id)).ToString().ToUpperInvariant()
+    }
+    
+    function Normalize-Uid {
+        param([string]$Uid)
+        if (-not $Uid) { return $null }
+        return ($Uid -replace "[\{\}]", "").ToUpperInvariant()
+    }
+    
+    function Get-RenderingUid {
+        param($Rendering)
+        if ($Rendering.UniqueId) { return Normalize-Uid $Rendering.UniqueId.ToString() }
+        if ($Rendering.Uid) { return Normalize-Uid $Rendering.Uid.ToString() }
+        return $null
+    }
+    
+    function Get-RemovedRenderingUids {
+        param([string]$LayoutXml)
+        $removed = @{}
+        if (-not $LayoutXml) { return $removed }
+    
+        try {
+            $doc = [System.Xml.Linq.XDocument]::Parse($LayoutXml)
+            $pNs = "p"
+            foreach ($r in $doc.Descendants("r")) {
+                $uidAttr = $r.Attribute("uid")
+                if (-not $uidAttr) { continue }
+                $hasDelete = $r.Elements([System.Xml.Linq.XName]::Get("d", $pNs)).Count -gt 0
+                if (-not $hasDelete) { continue }
+                $uidN = Normalize-Uid $uidAttr.Value
+                if ($uidN) { $removed[$uidN] = $true }
+            }
+        } catch {
+            # ignore parse errors; no removals detected
+        }
+        return $removed
+    }
+    
+    function Get-ParamValue {
+        param(
+            [string]$RawParams,
+            [string]$Name
+        )
+        if (-not $RawParams) { return $null }
+        $decoded = [System.Web.HttpUtility]::UrlDecode($RawParams)
+        $decoded = $decoded.TrimStart("?")
+        $p = [System.Web.HttpUtility]::ParseQueryString($decoded)
+        return $p[$Name]
+    }
+    
+    function Test-Params {
+        param(
+            [string]$RawParams,
+            [array]$Checks,
+            [string]$Mode
+        )
+        if (-not $Checks -or $Checks.Count -eq 0) {
+            if ($allowEmptyParamChecks) {
+                return $true, @([pscustomobject]@{ ParamName = $null; ParamValue = $null })
+            }
+            return $false, @()
+        }
+    
+        $matches = @()
+        foreach ($check in $Checks) {
+            $name = $check.Name
+            $allowed = $check.AllowedValues
+            $val = Get-ParamValue -RawParams $RawParams -Name $name
+            if (-not $val) { continue }
+            if (-not $allowed -or $allowed.Count -eq 0 -or $val -in $allowed) {
+                $matches += [pscustomobject]@{
+                    ParamName  = $name
+                    ParamValue = $val
+                }
+            }
+        }
+    
+        if ($Mode -eq "All") {
+            return ($matches.Count -eq $Checks.Count), $matches
+        }
+        return ($matches.Count -gt 0), $matches
+    }
+    
+    function Get-LayoutRenderings {
+        param([string]$LayoutXml)
+        if (-not $LayoutXml) { return @() }
+    
+        try {
+            $layout = [Sitecore.Layouts.LayoutDefinition]::Parse($LayoutXml)
+            $results = @()
+            $device = $layout.Devices | Where-Object {
+                (Normalize-Id $_.ID) -eq $defaultDeviceId
+            } | Select-Object -First 1
+    
+            if ($device) {
+                foreach ($rendering in $device.Renderings) {
+                    $results += [pscustomobject]@{
+                        RenderingId = Normalize-Id $rendering.ItemID
+                        Parameters  = $rendering.Parameters
+                        Uid         = Get-RenderingUid $rendering
+                    }
+                }
+            }
+            return $results
+        } catch {
+            Write-Output "Layout parse failed; skipping layout field."
+            return @()
+        }
+    }
+    
+    function Is-ExcludedPath {
+        param([string]$Path, [string[]]$ExcludePrefixes)
+        foreach ($prefix in $ExcludePrefixes) {
+            if ($Path.StartsWith($prefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+                return $true
+            }
+        }
+        return $false
+    }
+    
+    function Get-TemplateInfo {
+        param($Item)
+        $templateName = $Item.TemplateName
+        $templatePath = $null
+        $templateId = $Item.TemplateID
+        if ($Item.Template -and $Item.Template.InnerItem) {
+            $templatePath = $Item.Template.InnerItem.ItemPath
+            $templateId = $Item.Template.InnerItem.ID
+        }
+        if (-not $templatePath -and $templateId) {
+            try {
+                $templateItem = Get-Item -Path $templateId
+                if ($templateItem) { $templatePath = $templateItem.ItemPath }
+            } catch {
+                # ignore template path lookup failures
+            }
+        }
+        return [pscustomobject]@{
+            Name = $templateName
+            Path = $templatePath
+            Id   = $templateId
+        }
+    }
+    
+    function Get-ChildItems {
+        param(
+            [string]$Path,
+            [string[]]$ExcludePrefixes,
+            [bool]$UseCustomTraversal
+        )
+    
+        if (-not $UseCustomTraversal) {
+            Get-ChildItem -Path $Path -Recurse |
+                Where-Object { -not (Is-ExcludedPath -Path $_.ItemPath -ExcludePrefixes $ExcludePrefixes) }
+            return
+        }
+    
+        foreach ($child in (Get-ChildItem -Path $Path)) {
+            if (Is-ExcludedPath -Path $child.ItemPath -ExcludePrefixes $ExcludePrefixes) { continue }
+    
+            $child
+            if ($child.Children.Count -gt 0) {
+                Get-ChildItems -Path $child.ItemPath -ExcludePrefixes $ExcludePrefixes -UseCustomTraversal $true
+            }
+        }
+    }
+    
+    $renderingIdSet = @{}
+    $renderingIdStringsUpper = @()
+    foreach ($rid in $renderingIds) {
+        $ridN = Normalize-Id $rid
+        if ($ridN) { $renderingIdSet[$ridN] = $true }
+        if ($rid) { $renderingIdStringsUpper += $rid.ToUpperInvariant() }
+    }
+    
+    $svRenderingsCache = @{} # templateId -> list of standard values renderings
+    
+    $script:i = 0
+    $script:startedAt = [System.Diagnostics.Stopwatch]::StartNew()
+    $script:lastProgressAt = [TimeSpan]::Zero
+    
+    $processItem = {
+        param($item)
+    
+        $resultKeys = @{}
+    
+        $script:i++
+        $elapsed = $script:startedAt.Elapsed
+        $shouldReport = ($script:i % $progressEvery -eq 0) -or ($script:i -eq 1) -or
+            (($elapsed - $script:lastProgressAt).TotalSeconds -ge $heartbeatSeconds)
+        if ($shouldReport) {
+            $script:lastProgressAt = $elapsed
+            Write-Progress `
+                -Activity "Scanning items" `
+                -Status "$script:i processed ($($elapsed.ToString('hh\:mm\:ss'))) $($item.ItemPath)"
+        }
+    
+        if (-not $item -or -not $item.TemplateID) { return }
+    
+        $removedUids = @{}
+        $finalXml = $item["__Final Renderings"]
+        if ($finalXml) {
+            foreach ($k in (Get-RemovedRenderingUids -LayoutXml $finalXml).Keys) { $removedUids[$k] = $true }
+        }
+        $sharedXml = $item["__Renderings"]
+        if ($sharedXml) {
+            foreach ($k in (Get-RemovedRenderingUids -LayoutXml $sharedXml).Keys) { $removedUids[$k] = $true }
+        }
+    
+        foreach ($fieldName in $layoutFieldsToSearch) {
+            $layoutXml = $item[$fieldName]
+            if (-not $layoutXml) { continue }
+            $layoutXmlU = $layoutXml.ToUpperInvariant()
+            $hasId = $false
+            foreach ($ridU in $renderingIdStringsUpper) {
+                if ($layoutXmlU.Contains($ridU)) { $hasId = $true; break }
+            }
+            if (-not $hasId) { continue }
+            $renderings = Get-LayoutRenderings -LayoutXml $layoutXml
+            foreach ($r in $renderings) {
+                if (-not $r.RenderingId) { continue }
+                if (-not $renderingIdSet.ContainsKey($r.RenderingId)) { continue }
+                $ok, $matches = Test-Params -RawParams $r.Parameters -Checks $paramChecks -Mode $paramMatchMode
+                if (-not $ok) { continue }
+                foreach ($m in $matches) {
+                    $key = "$($item.ID)|$fieldName|$($r.RenderingId)|$($m.ParamName)|$($m.ParamValue)|Item"
+                    if ($resultKeys.ContainsKey($key)) { continue }
+                    $resultKeys[$key] = $true
+                    [pscustomobject]@{
+                        Name       = $item.Name
+                        ItemPath   = $item.ItemPath
+                        ID         = $item.ID
+                        #Template   = $item.TemplateName
+                        Source     = $fieldName
+                        #Rendering  = $r.RenderingId
+                        #ParamName  = $m.ParamName
+                        #ParamValue = $m.ParamValue
+                    }
+                }
+            }
+        }
+    
+        if ($checkStandardValues -and $item.Template.StandardValues) {
+            $tid = $item.TemplateID.ToString()
+            if (-not $svRenderingsCache.ContainsKey($tid)) {
+                $svRenderings = @()
+                $sv = $item.Template.StandardValues
+                foreach ($fieldName in $layoutFieldsToSearch) {
+                    $layoutXml = $sv[$fieldName]
+                    if (-not $layoutXml) { continue }
+                    $renderings = Get-LayoutRenderings -LayoutXml $layoutXml
+                    foreach ($r in $renderings) {
+                        if (-not $r.RenderingId) { continue }
+                        $svRenderings += [pscustomobject]@{
+                            FieldName   = $fieldName
+                            RenderingId = $r.RenderingId
+                            Parameters  = $r.Parameters
+                            Uid         = $r.Uid
+                        }
+                    }
+                }
+                $svRenderingsCache[$tid] = $svRenderings
+            }
+    
+            $templateInfo = $null
+            foreach ($r in $svRenderingsCache[$tid]) {
+                if ($r.Uid -and $removedUids.ContainsKey($r.Uid)) { continue }
+                if (-not $renderingIdSet.ContainsKey($r.RenderingId)) { continue }
+                $ok, $matches = Test-Params -RawParams $r.Parameters -Checks $paramChecks -Mode $paramMatchMode
+                if (-not $ok) { continue }
+                if ($includeTemplateInfo -and -not $templateInfo) {
+                    $templateInfo = Get-TemplateInfo $item
+                }
+                foreach ($m in $matches) {
+                    $key = "$($item.ID)|StandardValues/$($r.FieldName)|$($r.RenderingId)|$($m.ParamName)|$($m.ParamValue)|SV"
+                    if ($resultKeys.ContainsKey($key)) { continue }
+                    $resultKeys[$key] = $true
+                    [pscustomobject]@{
+                        Name       = $item.Name
+                        ItemPath   = $item.ItemPath
+                        ID         = $item.ID
+                        #Template     = $templateInfo.Name
+                        #TemplatePath = $templateInfo.Path
+                        #TemplateId   = $templateInfo.Id
+                        Source     = "StandardValues/$($r.FieldName)"
+                        #Rendering  = $r.RenderingId
+                        #ParamName  = $m.ParamName
+                        #ParamValue = $m.ParamValue
+                        #StandardValues = $true
+                    }
+                }
+            }
+        }
+    }
+    
+    foreach ($root in $rootPaths) {
+        $rootItem = Get-Item -Path $root
+        & $processItem $rootItem
+    
+        $effectiveExcludePaths = $excludePaths | Where-Object {
+            -not $root.StartsWith($_, [System.StringComparison]::OrdinalIgnoreCase)
+        }
+        Get-ChildItems -Path $root -ExcludePrefixes $effectiveExcludePaths -UseCustomTraversal $useCustomTraversal |
+            ForEach-Object { & $processItem $_ }
+    }
+    
+    $totalElapsed = $script:startedAt.Elapsed.ToString("hh\:mm\:ss")
+    Write-Progress -Activity "Scanning items" -Completed
+    Write-Output "Done. Processed $script:i items in $totalElapsed."
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 450
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200408T100643Z

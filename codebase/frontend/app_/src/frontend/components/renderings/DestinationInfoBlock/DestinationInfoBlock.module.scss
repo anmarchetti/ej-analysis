@@ -1,0 +1,39 @@
+.destinationInfoBlock {
+    :global(.promopage-search-pod-description) {
+        padding: 0;
+        border-bottom: none;
+    }
+
+    :global(.seo-read-more-text-block--fixed-height) {
+        // Since the global styles have 'after' with z-index of 2,
+        // I decided to play it safe and stick with 'opacity'.
+        // If z-index is not relevant, it can be replaced with z-index = 0.
+        // https://jira.build.easyjet.com/browse/EJH-18290
+        opacity: 0.999;
+
+        &::after {
+            background-image: linear-gradient(to bottom, rgba(241, 245, 246, 0) 0, rgba(255, 255, 255, 1) 100%);
+        }
+    }
+
+    :global(.text-block) {
+        padding: 0;
+    }
+}
+
+.wrapper {
+    display: flex;
+    gap: 24px;
+    padding: 48px 0 32px;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+    }
+}
+
+.needToKnow {
+    @include media-breakpoint-down(md) {
+        width: calc(100% + calc($container-padding-x_mobile * 2)) !important;
+        margin: 0 calc($container-padding-x_mobile * -1);
+    }
+}

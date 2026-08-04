@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="$(SolutionDir)TestProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\DynamoDb\code\easyJet.Foundation.DynamoDb.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\XConnect\code\easyJet.Foundation.XConnect.Common.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Feature\Enhancment\code\easyJet.Feature.SitecoreEnhancment.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Presentation\code\easyJet.Foundation.Presentation.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,368 @@
+﻿---
+ID: "cbf0b141-03dd-4957-9631-68d94ffb4143"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-940 Add Cabin Bags"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Write-Host  "Start script: ANC-940 Add Cabin Bags"
+    
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item $($item.Name) successfully created"
+        }
+        
+        return $item
+    }
+    
+    $BookingPagePath = '/sitecore/content/EasyJet/Holidays/Home/Booking'
+    $TradeBookingPagePath = '/sitecore/content/EasyJet/TradePortal/Home/Booking'
+    
+    function Add-New-Rendering($item, $placeholder, $renderingId, $datasource, $index){
+        $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $placeholder
+        Add-Rendering -Item $item -Instance $renderingItem -PlaceHolder $placeholder -DataSource $datasource -Index $index
+    }
+    
+    function Add-Rendering-To($item, $renderingId, $newRenderingId, $datasource, $sign){
+        $index = 0
+        Get-Rendering -Item $item |
+        Foreach-Object { 
+            $index++
+            if($_.ItemId -eq $renderingId)
+            {
+                    $incrementIndex = $index
+                    if ($sign -ne 0){
+                        $incrementIndex = $index + $sign
+                    }
+                
+                    Add-New-Rendering -Item $item -Placeholder $_.Placeholder -RenderingId $newRenderingId -Datasource $datasource -Index $incrementIndex 
+                }
+            }
+        }
+    
+    function Add-Cabin-Bags($path){
+        # Cabin Bags on Booking Page
+        $itemPath = "$($path)/Page Components/Cabin Bags"
+        $Item = Get-Or-Create-Item -Path $itemPath -TemplateId "{DC0AF2C8-0371-4A55-B9F7-47847203455B}"
+        $parentItem = Get-Item -Path $path -ErrorAction SilentlyContinue
+        
+        if ($Item -ne $null) {
+            $Item.Editing.BeginEdit()
+            $Item["Icon"] = '<image mediaid="{3728897E-B8B2-4707-8229-EF213B2465A7}" />'
+            $Item["OutboundIcon"] = '<image mediaid="{B9F44575-D18E-4C58-8979-A2FB86D6C682}" />'
+            $Item["ReturnIcon"] = '<image mediaid="{7F225E5B-5B19-4426-98F7-5AF8EF977D50}" />'
+            $Item["IncludedIcon"] = '<image mediaid="{CB598726-D37F-4F61-8B1C-B7A9DEF9DEE9}" />'
+            $Item["OverheadIcon"] = '<image mediaid="{3ADFEC9B-38B7-473E-A770-05D5722E00CE}" />'
+            $Item["SpeedyBoardingIcon"] = '<image mediaid="{1A5CBAB2-657A-4ACE-ADC0-D690B0FBE71C}" />'
+            
+            $Item["Description"] = 'Get an extra 10kg cabin bag, and Speedy Boarding for just {price}'
+            $Item["Title"] = 'Your Cabin bags'
+            $Item["Subtitle"] = 'Add extra cabin bags and Speedy Boarding'
+            $Item["CollapseClose"] = 'Close'
+            $Item["CollapseOpen"] = 'View and edit passenger cabin bags'
+            
+            $Item["CabinBagPriceLabel"] = 'Include for <strong>{price}pp</strong> per flight'
+            $Item["SpeedyBoardingLabel"] = 'Includes Speedy Boarding'
+            $Item["AddCabinBagLabel"] = 'Add for all passengers'
+            $Item["IncludedBagsLabel"] = '{count} x small under seat bags'
+            $Item["OverheadBagLabel"] = 'No large overhead cabin bags. No speedy boarding'
+            $Item["SmallBagDropdownLabel"] = 'Small under seat bag'
+            $Item["OverheadBagDropdownLabel"] = 'Add a large over head cabin bag (10kg) and Speedy Boarding'
+            $Item["IncludedLabel"] = '(included)'
+            
+            $Item.Editing.EndEdit() | Out-Null
+        	
+        	Write-Host "Cabin Bags datasource successfully updated"
+        }
+        
+        # Passengers on Booking Page
+        # 1. Adult passenger
+        $adultItemPath = "$($path)/Page Components/Cabin Bags/Adult"
+        $adultItem = Get-Or-Create-Item -Path $adultItemPath -TemplateId "{3CC028F4-4555-4A87-83EE-15F5AF0C67EB}"
+        
+        if ($adultItem -ne $null) {
+            $adultItem.Editing.BeginEdit()
+          
+            $adultItem["Code"] = 'ADULT'
+            $adultItem["Title"] = '{passengerName}'
+            $adultItem["TitleConstant"] = 'Adult {passengerIndex}'
+            $adultItem["Icon"] = '<image mediaid="{A6FE7575-8ACA-4EDB-8BBA-C9B861EB1262}" />'
+            
+            $adultItem.Editing.EndEdit() | Out-Null
+        	
+        	Write-Host "Adult passenger datasource successfully updated"
+        }
+        
+        # 2. Adult And Infant passenger
+        $adultPlusItemPath = "$($path)/Page Components/Cabin Bags/Adult And Infant"
+        $adultPlusItem = Get-Or-Create-Item -Path $adultPlusItemPath -TemplateId "{3CC028F4-4555-4A87-83EE-15F5AF0C67EB}"
+        
+        if ($adultPlusItem -ne $null) {
+            $adultPlusItem.Editing.BeginEdit()
+          
+            $adultPlusItem["Code"] = 'ADULT INFT'
+            $adultPlusItem["Title"] = '{passengerName} + infant'
+            $adultPlusItem["TitleConstant"] = 'Adult {passengerIndex} + infant'
+            $adultPlusItem["Icon"] = '<image mediaid="{B8474117-27D3-4103-884C-80AC6BCED485}" />'
+            
+            $adultPlusItem.Editing.EndEdit() | Out-Null
+        	
+        	Write-Host "Adult And Infant passenger datasource successfully updated"
+        }
+        
+        # 3. Child passenger
+        $childItemPath = "$($path)/Page Components/Cabin Bags/Child"
+        $childItem = Get-Or-Create-Item -Path $childItemPath -TemplateId "{3CC028F4-4555-4A87-83EE-15F5AF0C67EB}"
+        
+        if ($childItem -ne $null) {
+            $childItem.Editing.BeginEdit()
+          
+            $childItem["Code"] = 'CHILD'
+            $childItem["Title"] = '{passengerName} (aged {passengerAge})'
+            $childItem["TitleConstant"] = 'Child (aged {passengerAge})'
+            $childItem["Icon"] = '<image mediaid="{70DDDF74-3195-4B6D-8872-491F10A550E9}" />'
+            
+            $childItem.Editing.EndEdit() | Out-Null
+        	
+        	Write-Host "Child passenger datasource successfully updated"
+        }
+        
+        $dataSourcePath = $itemPath 
+        $placeholderPath = 'body'
+        $renderingPath = "/sitecore/layout/Renderings/Feature/Luggage/Cabin Bags"
+        $sign = -1
+        $previousRendering = '{89F16941-1EA9-4990-88BD-794D3B45292D}'
+        $myRenderingId = "{EDCABB4F-676C-4418-BBEE-4E0009F946E5}"
+        $existsRendering = Get-Rendering -Item $parentItem -PlaceHolder $placeholderPath | Where-Object {$_.ItemId -eq $renderingId}
+        
+        if($existsRendering -eq $null){
+            Add-Rendering-To -item $parentItem -renderingId $previousRendering -newRenderingId $myRenderingId -datasource  $dataSourcePath -sign $sign
+            Write-Host "Added rendering: Cabin Bags component"
+        } else {
+        	Write-Host "Skip adding rendering: Cabin Bags component already exists"
+        }
+    }
+    
+    Add-Cabin-Bags -Path $BookingPagePath
+    Add-Cabin-Bags -Path $TradeBookingPagePath
+    
+    # translation of cabin bags
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem["Icon"] = '<image mediaid="{3728897E-B8B2-4707-8229-EF213B2465A7}" />'
+            $targetLangItem["OutboundIcon"] = '<image mediaid="{B9F44575-D18E-4C58-8979-A2FB86D6C682}" />'
+            $targetLangItem["ReturnIcon"] = '<image mediaid="{7F225E5B-5B19-4426-98F7-5AF8EF977D50}" />'
+            $targetLangItem["IncludedIcon"] = '<image mediaid="{CB598726-D37F-4F61-8B1C-B7A9DEF9DEE9}" />'
+            $targetLangItem["OverheadIcon"] = '<image mediaid="{3ADFEC9B-38B7-473E-A770-05D5722E00CE}" />'
+            $targetLangItem["SpeedyBoardingIcon"] = '<image mediaid="{1A5CBAB2-657A-4ACE-ADC0-D690B0FBE71C}" />'
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    $cabinBagsDS = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags"
+    $translations = @{
+        "fr-CH" = @{
+            "Title" = "Vos sacs à cabines";
+            "Subtitle" = "Ajouter des bagages de cabine supplémentaires et l'embarquement rapide";
+            "Description" = "Obtenez un sac de cabine supplémentaire de 10 kg et l'embarquement rapide pour seulement {price}";
+            "CollapseClose" = "Fermer";
+            "CollapseOpen" = "Visualiser et modifier les sacs de cabine des passagers";
+            
+            "CabinBagPriceLabel" = "Inclure pour <strong>{price}pp</strong> par vol";
+            "SpeedyBoardingLabel" = "Comprend l'embarquement rapide";
+            "AddCabinBagLabel" = 'Ajouter pour tous les passagers';
+            "IncludedBagsLabel" = '{count} x petits sacs sous le siège';
+            "OverheadBagLabel" = "Pas de grands sacs de cabine en hauteur. Pas d'embarquement rapide";
+            "SmallBagDropdownLabel" = 'Petit sac sous le siège';
+            "OverheadBagDropdownLabel" = "Ajouter un grand sac de cabine (10 kg) et l'embarquement rapide.";
+            "IncludedLabel" = '(inclus)';
+        }
+        "fr-FR" = @{
+            "Title" = "Vos sacs à cabines";
+            "Subtitle" = "Ajouter des bagages de cabine supplémentaires et l'embarquement rapide";
+            "Description" = "Obtenez un sac de cabine supplémentaire de 10 kg et l'embarquement rapide pour seulement {price}";
+            "CollapseClose" = "Fermer";
+            "CollapseOpen" = "Visualiser et modifier les sacs de cabine des passagers";
+            
+            "CabinBagPriceLabel" = "Inclure pour <strong>{price}pp</strong> par vol";
+            "SpeedyBoardingLabel" = "Comprend l'embarquement rapide";
+            "AddCabinBagLabel" = 'Ajouter pour tous les passagers';
+            "IncludedBagsLabel" = '{count} x petits sacs sous le siège';
+            "OverheadBagLabel" = "Pas de grands sacs de cabine en hauteur. Pas d'embarquement rapide";
+            "SmallBagDropdownLabel" = 'Petit sac sous le siège';
+            "OverheadBagDropdownLabel" = "Ajouter un grand sac de cabine (10 kg) et l'embarquement rapide.";
+            "IncludedLabel" = '(inclus)';
+        }
+        "de-CH" = @{
+            "Title" = "Ihre Kabinentaschen";
+            "Subtitle" = "Zusätzliches Kabinengepäck und Speedy Boarding";
+            "Description" = "Holen Sie sich einen zusätzlichen 10-kg-Kabinensack und Speedy Boarding für nur {price}";
+            "CollapseClose" = "Schließen";
+            "CollapseOpen" = "Anzeige und Bearbeitung von Passagierkoffern";
+            
+            "CabinBagPriceLabel" = "Inklusive für <strong>{price}pp</strong> pro Flug";
+            "SpeedyBoardingLabel" = 'Inklusive Speedy Boarding';
+            "AddCabinBagLabel" = 'Hinzufügen für alle Passagiere';
+            "IncludedBagsLabel" = '{count} x kleine Taschen unter dem Sitz';
+            "OverheadBagLabel" = 'Kein großes Gepäck in der Kabine. Kein schnelles Boarding';
+            "SmallBagDropdownLabel" = 'Kleine Tasche unter dem Sitz';
+            "OverheadBagDropdownLabel" = 'Fügen Sie einen großen Überkopf-Kabinensack (10 kg) und Speedy Boarding hinzu.';
+            "IncludedLabel" = '(inklusive)';
+        }
+        "de-DE" = @{
+            "Title" = "Ihre Kabinentaschen";
+            "Subtitle" = "Zusätzliches Kabinengepäck und Speedy Boarding";
+            "Description" = "Holen Sie sich einen zusätzlichen 10-kg-Kabinensack und Speedy Boarding für nur {price}";
+            "CollapseClose" = "Schließen";
+            "CollapseOpen" = "Anzeige und Bearbeitung von Passagierkoffern";
+            
+            "CabinBagPriceLabel" = "Inklusive für <strong>{price}pp</strong> pro Flug";
+            "SpeedyBoardingLabel" = 'Inklusive Speedy Boarding';
+            "AddCabinBagLabel" = 'Hinzufügen für alle Passagiere';
+            "IncludedBagsLabel" = '{count} x kleine Taschen unter dem Sitz';
+            "OverheadBagLabel" = 'Kein großes Gepäck in der Kabine. Kein schnelles Boarding';
+            "SmallBagDropdownLabel" = 'Kleine Tasche unter dem Sitz';
+            "OverheadBagDropdownLabel" = 'Fügen Sie einen großen Überkopf-Kabinensack (10 kg) und Speedy Boarding hinzu.';
+            "IncludedLabel" = '(inklusive)';
+        }
+    }
+        
+    foreach ($lang in $translations.Keys) {
+        create-lang-version -item $cabinBagsDS -lang $lang -field "Title" -value $translations[$lang]["Title"]
+        create-lang-version -item $cabinBagsDS -lang $lang -field "Subtitle" -value $translations[$lang]["Subtitle"]
+        create-lang-version -item $cabinBagsDS -lang $lang -field "Description" -value $translations[$lang]["Description"]
+        create-lang-version -item $cabinBagsDS -lang $lang -field "CollapseClose" -value $translations[$lang]["CollapseClose"]
+        create-lang-version -item $cabinBagsDS -lang $lang -field "CollapseOpen" -value $translations[$lang]["CollapseOpen"]
+        
+        create-lang-version -item $cabinBagsDS -lang $lang -field "CabinBagPriceLabel" -value $translations[$lang]["CabinBagPriceLabel"]
+        create-lang-version -item $cabinBagsDS -lang $lang -field "SpeedyBoardingLabel" -value $translations[$lang]["SpeedyBoardingLabel"]
+        create-lang-version -item $cabinBagsDS -lang $lang -field "AddCabinBagLabel" -value $translations[$lang]["AddCabinBagLabel"]
+        create-lang-version -item $cabinBagsDS -lang $lang -field "IncludedBagsLabel" -value $translations[$lang]["IncludedBagsLabel"]
+        create-lang-version -item $cabinBagsDS -lang $lang -field "OverheadBagLabel" -value $translations[$lang]["OverheadBagLabel"]
+        create-lang-version -item $cabinBagsDS -lang $lang -field "SmallBagDropdownLabel" -value $translations[$lang]["SmallBagDropdownLabel"]
+        create-lang-version -item $cabinBagsDS -lang $lang -field "OverheadBagDropdownLabel" -value $translations[$lang]["OverheadBagDropdownLabel"]
+        create-lang-version -item $cabinBagsDS -lang $lang -field "IncludedLabel" -value $translations[$lang]["IncludedLabel"]
+    }
+    
+    # translation of passengers
+    function create-passengers-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    # adult translation
+    $translationsAdult = @{
+        "fr-CH" = @{
+            "Title" = "{passengerName}";
+            "TitleConstant" = "Adulte {passengerIndex}";
+        }
+        "fr-FR" = @{
+            "Title" = "{passengerName}";
+            "TitleConstant" = "Adulte {passengerIndex}";
+        }
+        "de-CH" = @{
+            "Title" = "{passengerName}";
+            "TitleConstant" = "Erwachsene {passengerIndex}";
+        }
+        "de-DE" = @{
+            "Title" = "{passengerName}";
+            "TitleConstant" = "Erwachsene {passengerIndex}";
+        }
+    }
+    $adultDS = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags/Adult"
+    foreach ($lang in $translationsAdult.Keys) {
+        create-passengers-lang-version -item $adultDS -lang $lang -field "Title" -value $translationsAdult[$lang]["Title"]
+        create-passengers-lang-version -item $adultDS -lang $lang -field "TitleConstant" -value $translationsAdult[$lang]["TitleConstant"]
+    }
+    
+    # adult plus translation
+    $translationsAdultPlus = @{
+        "fr-CH" = @{
+            "Title" = "{passengerName} + nourrisson";
+            "TitleConstant" = "Adulte {passengerIndex} + nourrisson";
+        }
+        "fr-FR" = @{
+            "Title" = "{passengerName} + nourrisson";
+            "TitleConstant" = "Adulte {passengerIndex} + nourrisson";
+        }
+        "de-CH" = @{
+            "Title" = "{passengerName} + Kind";
+            "TitleConstant" = "Erwachsene:r {passengerIndex} + Kind";
+        }
+        "de-DE" = @{
+            "Title" = "{passengerName} + Kind";
+            "TitleConstant" = "Erwachsene:r {passengerIndex} + Kind";
+        }
+    }
+    $adultPlusDS = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags/Adult And Infant"
+    foreach ($lang in $translationsAdultPlus.Keys) {
+        create-passengers-lang-version -item $adultPlusDS -lang $lang -field "Title" -value $translationsAdultPlus[$lang]["Title"]
+        create-passengers-lang-version -item $adultPlusDS -lang $lang -field "TitleConstant" -value $translationsAdultPlus[$lang]["TitleConstant"]
+    }
+    
+    # child translation
+    $translationsChilds = @{
+        "fr-CH" = @{
+            "Title" = "{passengerName} (vieillie {passengerAge})";
+            "TitleConstant" = "Enfant (vieillie {passengerAge})";
+        }
+        "fr-FR" = @{
+            "Title" = "{passengerName} (vieillie {passengerAge})";
+            "TitleConstant" = "Enfant (vieillie {passengerAge})";
+        }
+        "de-CH" = @{
+            "Title" = "{passengerName} (im Alter von {passengerAge})";
+            "TitleConstant" = "Kind (im Alter von {passengerAge})";
+        }
+        "de-DE" = @{
+            "Title" = "{passengerName} (im Alter von {passengerAge})";
+            "TitleConstant" = "Kind (im Alter von {passengerAge})";
+        }
+    }
+    $childDS = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags/Child"
+    foreach ($lang in $translationsChilds.Keys) {
+        create-passengers-lang-version -item $childDS -lang $lang -field "Title" -value $translationsChilds[$lang]["Title"]
+        create-passengers-lang-version -item $childDS -lang $lang -field "TitleConstant" -value $translationsChilds[$lang]["TitleConstant"]
+    }
+    
+    Write-Host  "End script: ANC-940 Add Cabin Bags"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1020
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231130T091142Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\VitaliS

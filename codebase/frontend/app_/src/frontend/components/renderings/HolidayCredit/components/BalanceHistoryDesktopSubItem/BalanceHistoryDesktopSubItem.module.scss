@@ -1,0 +1,51 @@
+.subItemWrapper {
+    position: relative;
+    display: block;
+
+    @include media-breakpoint-up(md) {
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        min-height: 68px;
+    }
+}
+
+.subItem {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 156px 1fr 136px 118px 144px 45px;
+    height: 100%;
+    padding: 8px 0;
+    padding-left: 12px;
+    border-top: 1px solid $clrBorderGray;
+}
+
+.balance {
+    color: #616161;
+    text-align: right;
+
+    @include media-breakpoint-up(md) {
+        font-size: 16px;
+        line-height: 1.375;
+    }
+}
+
+.transferPrice {
+    font-size: 16px;
+    line-height: 1.375;
+    text-align: right;
+}
+
+.refund {
+    color: #03a947;
+}
+
+.purchase {
+    color: $clrTextMain;
+}
+
+.date {
+    font-size: 14px;
+    line-height: 1.285;
+    color: $clrTextMain;
+    text-align: right;
+}

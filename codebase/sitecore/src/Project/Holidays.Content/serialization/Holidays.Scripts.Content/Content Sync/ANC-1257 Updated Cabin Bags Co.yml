@@ -1,0 +1,103 @@
+﻿---
+ID: "4d80d389-197c-4e16-b8be-c59e0b2e0a69"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-1257 Updated Cabin Bags Component Accordion"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+        }
+    
+    $bagsItem =  Get-Item -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags' -ErrorAction SilentlyContinue
+    
+    if($bagsItem -ne $null) {
+        $bagsItem.Editing.BeginEdit()
+        
+        $bagsItem['AddLCBLabel'] = 'Add a large over head cabin bag and Speedy Boarding'
+        $bagsItem['OverheadBagDropdownLabel'] = 'No large over head cabin bag'
+        $bagsItem['OverheadBagAddedDropdownLabel'] = 'Large overhead cabin bags (10kg) with speedy boarding'
+        $bagsItem['Description'] = 'Get an extra 10kg cabin bag, and Speedy Boarding for just {pricePP}'
+        $bagsItem['CabinBagPriceLabel'] = 'Include for <strong>{pricePP}</strong>'
+        
+        $bagsItem.Editing.EndEdit() | Out-Null
+    }
+    
+    $translationsBags = @{
+            "fr-CH" = @{
+                "AddLCBLabel" = "Ajout d'une grande valise cabine et d'un embarquement rapide."
+                "OverheadBagDropdownLabel" = "Pas de grande valise de cabine au-dessus de la tête"
+                "OverheadBagAddedDropdownLabel" = "Grands sacs de cabine (10 kg) avec embarquement rapide"
+                "Description" = "Obtenez un sac de cabine supplémentaire de 10 kg et l'embarquement rapide pour seulement {pricePP}"
+                "CabinBagPriceLabel" = "Inclure pour <strong>{pricePP}</strong>"
+            }
+            "fr-FR" = @{
+                "AddLCBLabel" = "Ajout d'une grande valise cabine et d'un embarquement rapide."
+                "OverheadBagDropdownLabel" = "Pas de grande valise de cabine au-dessus de la tête"
+                "OverheadBagAddedDropdownLabel" = "Grands sacs de cabine (10 kg) avec embarquement rapide"
+                "Description" = "Obtenez un sac de cabine supplémentaire de 10 kg et l'embarquement rapide pour seulement {pricePP}"
+                "CabinBagPriceLabel" = "Inclure pour <strong>{pricePP}</strong>"
+            }
+            "de-CH" = @{
+                "AddLCBLabel" = "Fügen Sie einen großen Überkopf-Kabinensack und Speedy Boarding hinzu"
+                "OverheadBagDropdownLabel" = "Kein großer Überkopf-Kabinensack"
+                "OverheadBagAddedDropdownLabel" = "Großes Handgepäck (10 kg) mit zügigem Boarding"
+                "Description" = "Holen Sie sich einen zusätzlichen 10-kg-Kabinensack und Speedy Boarding für nur {pricePP}"
+                "CabinBagPriceLabel" = "Inklusive für <strong>{pricePP}</strong>"
+            }
+            "de-DE" = @{
+                "AddLCBLabel" = "Fügen Sie einen großen Überkopf-Kabinensack und Speedy Boarding hinzu"
+                "OverheadBagDropdownLabel" = "Kein großer Überkopf-Kabinensack"
+                "OverheadBagAddedDropdownLabel" = "Großes Handgepäck (10 kg) mit zügigem Boarding"
+                "Description" = "Holen Sie sich einen zusätzlichen 10-kg-Kabinensack und Speedy Boarding für nur {pricePP}"
+                "CabinBagPriceLabel" = "Inklusive für <strong>{pricePP}</strong>"
+            }
+        }
+        
+    foreach ($lang in $translationsBags.Keys) {
+        create-lang-version -item $bagsItem -lang $lang -field "AddLCBLabel" -value $translationsBags[$lang]["AddLCBLabel"]
+        create-lang-version -item $bagsItem -lang $lang -field "OverheadBagDropdownLabel" -value $translationsBags[$lang]["OverheadBagDropdownLabel"]
+        create-lang-version -item $bagsItem -lang $lang -field "OverheadBagAddedDropdownLabel" -value $translationsBags[$lang]["OverheadBagAddedDropdownLabel"]
+        create-lang-version -item $bagsItem -lang $lang -field "Description" -value $translationsBags[$lang]["Description"]
+        create-lang-version -item $bagsItem -lang $lang -field "CabinBagPriceLabel" -value $translationsBags[$lang]["CabinBagPriceLabel"]
+    }   
+    
+    $tradeBagsItem =  Get-Item -Path '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Cabin Bags' -ErrorAction SilentlyContinue
+    
+    if($tradeBagsItem -ne $null) {
+        $tradeBagsItem.Editing.BeginEdit()
+        
+        $tradeBagsItem['AddLCBLabel'] = 'Add a large over head cabin bag and Speedy Boarding'
+        $tradeBagsItem['OverheadBagDropdownLabel'] = 'No large over head cabin bag'
+        $tradeBagsItem['OverheadBagAddedDropdownLabel'] = 'Large overhead cabin bags (10kg) with speedy boarding'
+        $tradeBagsItem['Description'] = 'Get an extra 10kg cabin bag, and Speedy Boarding for just {pricePP}'
+        $tradeBagsItem['CabinBagPriceLabel'] = 'Include for <strong>{pricePP}</strong>'
+        
+        $tradeBagsItem.Editing.EndEdit() | Out-Null
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2050
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20240205T155233:638427451537773351Z"

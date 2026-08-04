@@ -1,0 +1,27 @@
+
+{
+    "Information" : [
+        "This file provides default values for the deployment wizard inside Visual Studio and the AWS Lambda commands added to the .NET Core CLI.",
+        "To learn more about the Lambda commands with the .NET Core CLI execute the following command at the command line in the project root directory.",
+        "dotnet lambda help",
+        "All the command line options for the Lambda command can be specified in this file."
+    ],
+    "profile"     : "default",
+    "region"      : "eu-west-1",
+    "configuration" : "Debug",
+    "framework"     : "net8.0",
+    "function-runtime" : "dotnet10",
+    "function-memory-size" : 1024,
+    "function-timeout"     : 300,
+    "function-handler"     : "easyJet.Holidays.External.AWS.SendEmailsToFeefo::easyJet.Holidays.External.AWS.SendEmailsToFeefo.Function_Run_Generated::Run",
+    "function-name"        : "HolidaysNonprodSendEmailsToFeefo",
+    "function-description" : "",
+    "package-type"         : "Zip",
+    "function-role"        : "arn:aws:iam::195883475623:role/HolidaysNonprodSendEmailsToFeefoRole",
+    "function-architecture" : "x86_64",
+    "function-subnets"      : "subnet-0b684bb086d408dfd",
+    "function-security-groups" : "sg-052e97455cc1b8e4f",
+    "tracing-mode"             : "PassThrough",
+    "environment-variables"    : "\"VerboseLog\"=\"true\";\"AwsSecretManagerServiceUrl\"=\"https://vpce-0d880ba7072dd6c94-2jsf5u99.secretsmanager.eu-west-1.vpce.amazonaws.com\";\"FeefoSecretName\"=\"Holidays/FeefoAPI\";\"FeefoSalesEndpoint\"=\"https://api.feefo.com/api/20/entersaleremotely\";\"FeefoMerchantIdentifier\"=\"test-easyjet-holidays\";\"AwsAuthTokenTableName\"=\"HOL-NONPROD-AUTH-TOKENS\";\"SendDataToFeefo\"=\"true\"",
+    "image-tag"                : ""
+}

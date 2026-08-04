@@ -1,0 +1,88 @@
+﻿---
+ID: "ed30e4d9-5ff1-4194-ad46-801ef33d0434"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-440 - Free Kids Banner"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+        $item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+         if ($item -eq $null) {
+                $item = New-Item -Path $path -ItemType $templateId
+                Write-Host "Item" $item.Name "successfully created";
+         }
+         return $item
+    }
+    
+    function Get-Rendering-Index{
+        param($item, $renderingId)
+        $i = 0
+        
+        Get-Rendering -Item $item | ForEach-Object{
+            if ($_.ItemID -eq $renderingId){
+                return $i
+            }
+            $i++
+        }
+        
+        return -1
+    }
+    
+    function Add-Rendering-To($page, $renderingPath, $index, $datasource, $parameter){
+        $renderingItem = Get-Item -Database "master" -Path $renderingPath | New-Rendering -Placeholder "/body/information-tiles-{1008eae0-f450-460d-8674-41789fc3662c}-0"
+    	Add-Rendering -Item $page -PlaceHolder "/body/information-tiles-{1008eae0-f450-460d-8674-41789fc3662c}-0" -Instance $renderingItem -Index $index -DataSource $datasource -Parameter $parameters
+    	Write-Host $item.Name "$renderingPath rendering is added"
+    	
+    	
+    }
+    
+    function Create-Tile($title, $desc, $icon, $order){
+        $item = Get-Or-Create-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/UK/Deals/Free child places/Page Components/Free Child Information Tiles/$title" -templateId "{424BD58C-E281-4DAD-8F46-7FE4DE602C0F}"
+        $item.Editing.BeginEdit()
+        $item["Title"] = $title;
+        $item["Description"] = $desc;
+        $item["Icon"] = $icon;
+        $item["__SortOrder"] = $order
+        $item.Editing.EndEdit() | Out-Null
+    }
+    
+    $tiles = Get-Or-Create-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/UK/Deals/Free child places/Page Components/Free Child Information Tiles" -templateId "{A5727395-0B58-464F-B6CC-83E450109E4E}"
+    
+    Create-Tile -order 1 -title "Free flights" -desc "Flights are all part of the package for your child (standard seat)" -icon '<image mediaid="{CF25BE3C-DE61-49F6-B331-3B1F3909E3DC}" />'
+    Create-Tile -order 2 -title "Free stay" -desc "When sharing a room with two paying adults, your little one’s hotel stay won’t cost a penny " -icon '<image mediaid="{64E88BBF-39A5-4E05-979C-E50C9855706A}" />'
+    Create-Tile -order 3 -title "Free food and drinks" -desc "A free child place comes with whichever standard board basis is offered at the hotel  " -icon '<image mediaid="{8D4FD250-51A8-49DD-A811-F31FB0A57128}" />'
+    Create-Tile -order 4 -title "Free bag" -desc "Kids on a free child place get a 23kg bag included on beach holidays " -icon '<image mediaid="{5407B8AE-7AF3-4633-91BB-9C01C9EA1A62}" />'
+    Create-Tile -order 5 -title "Free play" -desc "The family hotels that offer free child places come with all sorts of fun stuff to keep the kids busy " -icon '<image mediaid="{DA21FF47-A96D-4B42-BFE5-DC06BF948713}" />'
+    
+    $tiles.Editing.BeginEdit()
+    $tiles["Title"] = "What's Included"
+    $tiles.Editing.EndEdit() | Out-Null
+    
+    
+    $pageItem = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Root/UK/Deals/Free child places" -ErrorAction SilentlyContinue
+    
+    if ($pageItem -ne $null) {
+        $searchPodFiltersIndex = Get-Rendering-Index -item $pageItem -renderingId "{0DD57D31-2820-446D-9763-26FBFD3021BE}" | Select -First 1
+        $newIndex = $searchPodFiltersIndex + 1
+    	
+        $parameters = @{
+            "Theme" = "Transparent Carousel Variant"
+            "IsTitleUnderIcon" = "1"
+        }
+            
+        Add-Rendering-To -page $pageItem -renderingPath "/sitecore/layout/Renderings/Feature/PageContent/Information Tiles" -index $newIndex -datasource $tiles.ID -parameter $parameters
+    }
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240905T163335Z

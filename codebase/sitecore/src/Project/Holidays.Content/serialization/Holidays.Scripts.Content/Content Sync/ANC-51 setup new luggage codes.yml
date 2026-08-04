@@ -1,0 +1,269 @@
+﻿---
+ID: "3c55b460-e9e9-424e-b5f4-88f46e67cd84"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-51 setup new luggage codes"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $luggageItemTemplate = '{41775FBB-D551-4813-B3D7-1BDC7C6DB534}'
+    
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+            if($item -eq $null){
+                $item = New-Item -Path $path -ItemType $template
+            }
+        return $item
+    }
+    
+    ### FOLDER AND CATEGORIES
+    
+    function Update-Or-Create-Categories($rootPath) {
+        $lugFolderTemplate = '{8434F506-C87F-4D50-AADA-F50D36E90BFC}'
+        $categoryTemplate = '{928655D3-BFC1-4E24-99A5-096BE1B24D09}'
+        
+        $path =  $rootPath + '/Data/Luggage'
+        $luggage = Get-Or-Create-Item -Path $path -Template $lugFolderTemplate
+        
+        $path =  $rootPath + '/Data/Luggage/Hold Baggage'
+        $holdBaggage = Get-Or-Create-Item -Path $path -Template $categoryTemplate
+        
+        $holdBaggage.Editing.BeginEdit()
+        $holdBaggage["Code"] = "BAGE"
+        $holdBaggage["Type"] = "Bag"
+        $holdBaggage["Name"] = "Hold Baggage"
+        $holdBaggage.Editing.EndEdit() | Out-Null
+        
+        $path = $rootPath + '/Data/Luggage/Extra Hold Luggage'
+        $extraHoldLuggage = Get-Or-Create-Item -Path $path -Template $categoryTemplate
+        
+        $extraHoldLuggage.Editing.BeginEdit()
+        $extraHoldLuggage["Code"] = "ADDB"
+        $extraHoldLuggage["Type"] = "Bag"
+        $extraHoldLuggage["Name"] = "Extra Hold Luggage"
+        $extraHoldLuggage.Editing.EndEdit() | Out-Null
+        
+        #Rename-Item -Item $extraHoldLuggage -NewName "Extra Hold Luggage"
+        
+        Write-Host $rootPath", Categories Added/Updated";
+    }
+    
+    ### EXTRA
+    
+    function Rename-Update-Or-Create-Extra($rootPath) {
+        $path = $rootPath + '/Data/Luggage/Extra Hold Luggage/Hold Baggage 15kg'
+        $extra15 = Get-Or-Create-Item -Path $path -Template $luggageItemTemplate
+        
+        $extra15.Editing.BeginEdit()
+        $extra15["Code"] = "LUSE"
+        $extra15["Name"] = "Extra 15kg Hold bag"
+        $extra15["Description"] = "Maximum 15kg per bag, stored in the plane hold. Outbound and return."
+        $extra15["Icon"] = '<image mediaid="{464888DB-56B8-4DFA-B6FB-182F7623CEF2}"/>'
+        $extra15["IsLuggageItemEnabled"] = "1"
+        $extra15.Name = "Extra Hold Baggage 15kg"
+        $extra15.Editing.EndEdit() | Out-Null
+        
+        #Rename-Item -Item $extra15 -NewName "Extra Hold Baggage 15kg"
+        
+        $path = $rootPath + '/Data/Luggage/Extra Hold Luggage/Hold Baggage 23kg'
+        $extra23 = Get-Or-Create-Item -Path $path -Template $luggageItemTemplate
+        
+        $extra23.Editing.BeginEdit()
+        $extra23["Code"] = "LUGE"
+        $extra23["Name"] = "Extra 23kg Hold bag"
+        $extra23["Description"] = "Maximum 23kg per bag, stored in the plane hold. Outbound and return."
+        $extra23["Icon"] = '<image mediaid="{84AAE8B3-0139-4B87-BB0F-76EB2279CFD9}"/>'
+        $extra23["IsLuggageItemEnabled"] = "1"
+        $extra23.Name = "Extra Hold Baggage 23kg"
+        $extra23.Editing.EndEdit() | Out-Null
+        
+        #Rename-Item -Item $extra23 -NewName "Extra Hold Baggage 23kg"
+        
+        Write-Host $rootPath", Extra Added/Updated";
+    }
+    
+    ### Complementary
+    
+    function Update-Or-Create-Complementary($rootPath) {
+        $path = $rootPath + '/Data/Luggage/Hold Baggage/Hold Baggage 15kg'
+        $hold15 = Get-Or-Create-Item -Path $path -Template $luggageItemTemplate
+        
+        $hold15.Editing.BeginEdit()
+        $hold15["Code"] = "LUS"
+        $hold15["Name"] = "15kg Hold bag"
+        $hold15["Description"] = "Maximum 15kg per bag, stored in the plane hold. Outbound and return."
+        $hold15["Icon"] = '<image mediaid="{464888DB-56B8-4DFA-B6FB-182F7623CEF2}"/>'
+        $hold15["IsLuggageItemEnabled"] = "1"
+        $hold15.Editing.EndEdit() | Out-Null
+        
+        #Rename-Item -Item $hold15 -NewName "Hold Baggage 15kg"
+        
+        $path = $rootPath + '/Data/Luggage/Hold Baggage/Hold Baggage 23kg'
+        $hold23 = Get-Or-Create-Item -Path $path -Template $luggageItemTemplate
+        
+        $hold23.Editing.BeginEdit()
+        $hold23["Code"] = "LUG"
+        $hold23["Name"] = "23kg Hold bag"
+        $hold23["Description"] = "Maximum 23kg per bag, stored in the plane hold. Outbound and return."
+        $hold23["Icon"] = '<image mediaid="{84AAE8B3-0139-4B87-BB0F-76EB2279CFD9}"/>'
+        $hold23["IsLuggageItemEnabled"] = "1"
+        $hold23.Editing.EndEdit() | Out-Null
+        
+        #Rename-Item -Item $hold23 -NewName "Hold Baggage 23kg"
+        
+        Write-Host $rootPath", Complementary Added/Updated";
+    }
+    
+    ### TRANSLATIONS
+    
+    function Create-Lang-Version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    function Update-Luggage-Text($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+        }
+    
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    function Translate-Categories($rootPath) {
+        $translations = @{
+            "fr-CH" = @{
+                "NameHL" = "Bagages de soute"
+                "NameEHL" = "Bagages de soute supplémentaires"
+                
+            }
+            "fr-FR" = @{
+                "NameHL" = "Bagages de soute"
+                "NameEHL" = "Bagages de soute supplémentaires"
+                
+            }
+            "de-CH" = @{
+                "NameHL" = "Aufgegebenes Gepäck"
+                "NameEHL" = "Extra aufgegebenes Gepäck"
+              
+            }
+            "de-DE" = @{
+                "NameHL" = "Aufgegebenes Gepäck"
+                "NameEHL" = "Extra aufgegebenes Gepäck"
+               
+            }
+        }
+    
+        $path = $rootPath + '/Data/Luggage'
+        $luggage = Get-Or-Create-Item -Path $path -Template $lugFolderTemplate
+        
+        $path = $rootPath + '/Data/Luggage/Hold Baggage'
+        $holdBaggage = Get-Or-Create-Item -Path $path -Template $categoryTemplate
+        
+        $path = $rootPath + '/Data/Luggage/Extra Hold Luggage'
+        $extraHoldLuggage = Get-Or-Create-Item -Path $path -Template $categoryTemplate
+        
+        foreach ($lang in $translations.Keys) {
+            Create-Lang-Version -item $luggage -lang $lang
+            Create-Lang-Version -item $holdBaggage -lang $lang -field "Name" -value $translations[$lang]["NameHL"]
+            Create-Lang-Version -item $extraHoldLuggage -lang $lang -field "Name" -value $translations[$lang]["NameEHL"]
+        }
+    }
+    
+    function Translate-Bags($rootPath) {
+        $holdLuggagePath = $rootPath + "/Data/Luggage/Hold Buggage"
+        
+        $luggagePath15kg = $rootPath + "/Data/Luggage/Hold Baggage/Hold Baggage 15kg"
+        $luggagePath23kg = $rootPath + "/Data/Luggage/Hold Baggage/Hold Baggage 23kg"
+        
+        $extraPath15kg = $rootPath + "/Data/Luggage/Extra Hold luggage/Extra Hold Baggage 15kg"
+        $extraPath23kg = $rootPath + "/Data/Luggage/Extra Hold luggage/Extra Hold Baggage 23kg"
+        
+        Update-Luggage-Text -ItemPath $luggagePath15kg -Language 'fr-FR' -Key 'Name' -Translation "Bagages en soute 15kg"
+        Update-Luggage-Text -ItemPath $luggagePath15kg -Language 'fr-FR' -Key 'Description' -Translation "Maximum 15 kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+        Update-Luggage-Text -ItemPath $luggagePath15kg -Language 'fr-CH' -Key 'Name' -Translation "Bagages en soute 15kg"
+        Update-Luggage-Text -ItemPath $luggagePath15kg -Language 'fr-CH' -Key 'Description' -Translation "Maximum 15kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+        Update-Luggage-Text -ItemPath $luggagePath15kg -Language 'de-DE' -Key 'Name' -Translation "Aufgegebenes Gepäck 15kg"
+        Update-Luggage-Text -ItemPath $luggagePath15kg -Language 'de-DE' -Key 'Description' -Translation "Maximal 15kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+        Update-Luggage-Text -ItemPath $luggagePath15kg -Language 'de-CH' -Key 'Name' -Translation "Aufgegebenes Gepäck 15kg"
+        Update-Luggage-Text -ItemPath $luggagePath15kg -Language 'de-CH' -Key 'Description' -Translation "Maximal 15kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+        
+        Update-Luggage-Text -ItemPath $luggagePath23kg -Language 'fr-FR' -Key 'Name' -Translation "Bagages en soute 23kg"
+        Update-Luggage-Text -ItemPath $luggagePath23kg -Language 'fr-FR' -Key 'Description' -Translation "Maximum 23kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+        Update-Luggage-Text -ItemPath $luggagePath23kg -Language 'fr-CH' -Key 'Name' -Translation "Bagages en soute 23kg"
+        Update-Luggage-Text -ItemPath $luggagePath23kg -Language 'fr-CH' -Key 'Description' -Translation "Maximum 23kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+        Update-Luggage-Text -ItemPath $luggagePath23kg -Language 'de-DE' -Key 'Name' -Translation "Aufgegebenes Gepäck 23kg"
+        Update-Luggage-Text -ItemPath $luggagePath23kg -Language 'de-DE' -Key 'Description' -Translation "Maximal 23kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+        Update-Luggage-Text -ItemPath $luggagePath23kg -Language 'de-CH' -Key 'Name' -Translation "Aufgegebenes Gepäck 23kg"
+        Update-Luggage-Text -ItemPath $luggagePath23kg -Language 'de-CH' -Key 'Description' -Translation "Maximal 23kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+        
+        Update-Luggage-Text -ItemPath $extraPath15kg -Language 'fr-FR' -Key 'Name' -Translation "Bagages en soute 15kg supplémentaires"
+        Update-Luggage-Text -ItemPath $extraPath15kg -Language 'fr-FR' -Key 'Description' -Translation "Maximum 15 kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+        Update-Luggage-Text -ItemPath $extraPath15kg -Language 'fr-CH' -Key 'Name' -Translation "Bagages en soute 15kg supplémentaires"
+        Update-Luggage-Text -ItemPath $extraPath15kg -Language 'fr-CH' -Key 'Description' -Translation "Maximum 15kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+        Update-Luggage-Text -ItemPath $extraPath15kg -Language 'de-DE' -Key 'Name' -Translation "Extra aufgegebenes Gepäck 15kg"
+        Update-Luggage-Text -ItemPath $extraPath15kg -Language 'de-DE' -Key 'Description' -Translation "Maximal 15kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+        Update-Luggage-Text -ItemPath $extraPath15kg -Language 'de-CH' -Key 'Name' -Translation "Extra aufgegebenes Gepäck 15kg"
+        Update-Luggage-Text -ItemPath $extraPath15kg -Language 'de-CH' -Key 'Description' -Translation "Maximal 15kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+        
+        Update-Luggage-Text -ItemPath $extraPath23kg -Language 'fr-FR' -Key 'Name' -Translation "Bagages en soute 23kg supplémentaires"
+        Update-Luggage-Text -ItemPath $extraPath23kg -Language 'fr-FR' -Key 'Description' -Translation "Maximum 23kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+        Update-Luggage-Text -ItemPath $extraPath23kg -Language 'fr-CH' -Key 'Name' -Translation "Bagages en soute 23kg supplémentaires"
+        Update-Luggage-Text -ItemPath $extraPath23kg -Language 'fr-CH' -Key 'Description' -Translation "Maximum 23kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+        Update-Luggage-Text -ItemPath $extraPath23kg -Language 'de-DE' -Key 'Name' -Translation "Extra aufgegebenes Gepäck 23kg"
+        Update-Luggage-Text -ItemPath $extraPath23kg -Language 'de-DE' -Key 'Description' -Translation "Maximal 23kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+        Update-Luggage-Text -ItemPath $extraPath23kg -Language 'de-CH' -Key 'Name' -Translation "Extra aufgegebenes Gepäck 23kg"
+        Update-Luggage-Text -ItemPath $extraPath23kg -Language 'de-CH' -Key 'Description' -Translation "Maximal 23kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+        
+        Write-Host $rootPath", Translation Added";
+    }
+    
+    ### EXECUTION
+    
+    $holidaysPath = '/sitecore/content/EasyJet/Holidays'
+    $tradePortalPath = '/sitecore/content/EasyJet/TradePortal'
+    
+    Update-Or-Create-Categories -RootPath $holidaysPath
+    Update-Or-Create-Categories -RootPath $tradePortalPath
+    
+    Rename-Update-Or-Create-Extra -RootPath $holidaysPath
+    Rename-Update-Or-Create-Extra -RootPath $tradePortalPath
+    
+    Update-Or-Create-Complementary -RootPath $holidaysPath
+    Update-Or-Create-Complementary -RootPath $tradePortalPath
+    
+    # Trade Portal does not have translations
+    Translate-Categories -RootPath $holidaysPath
+    Translate-Bags -RootPath $holidaysPath
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1010
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240508T102046Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

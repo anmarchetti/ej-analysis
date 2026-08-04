@@ -1,0 +1,95 @@
+﻿---
+ID: "58808d0d-cbbc-4c81-a7a7-5064f214c077"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-16769 discount filters"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $offerFiltersHolidaysFolder = "/sitecore/content/EasyJet/Holidays/Data/Offer Filters"
+    $offerFiltersTradePortalFolder = "/sitecore/content/EasyJet/TradePortal/Data/Offer Filters"
+    $freeForKidsFilterName = "Free For Kids Only"
+    $offerFilterItemType = "{AC7EC709-724A-4A66-BA98-5E3FCF5E83CB}"
+    $minDiscountFilterItemName = "Holidays with over X off"
+    $minDiscountFilterName = "Holidays with over £100 off"
+    $minDiscountFilterCode = "minds"
+    $maxDiscountFilterItemName = "Holidays with up to X off"
+    $maxDiscountFilterName = "Holidays with up to £100 off"
+    $maxDiscountFilterCode = "maxds"
+    $discountFilterValue = "100"
+    
+    function UpdateFreeForKidsCode($offerFiltersFolder)
+    {
+    	$freeForKidsPath = "$($offerFiltersFolder)/$freeForKidsFilterName"
+    	$freeForKidsFilter = Get-Item $freeForKidsPath -ErrorAction SilentlyContinue
+    
+    	if($freeForKidsFilter -eq $null)
+    	{
+    		Write-Error "Cannot find item at $($freeForKidsPath)"
+    		return
+    	}
+    
+    	$freeForKidsFilter.Editing.BeginEdit()
+        $freeForKidsFilter.Fields["Code"].Value = "ffk"
+        $freeForKidsFilter.Editing.EndEdit()
+    
+        Write-Host "Updated $($freeForKidsPath) code"
+    }
+    
+    function Create-Item($path, $itemName, $itemType){
+            $itemToCreateExist = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+            if($itemToCreateExist -eq $null){
+                $createdItem = New-Item -Path $path -Name $itemName -ItemType $itemType
+        
+                if($createdItem -ne $null){
+                    Write-Host "$($itemName) item is created"
+                    return $createdItem
+                }
+            }
+            return $null
+        }
+    
+    function CreateDiscountFilter($offerFiltersFolder, $filterItemName, $filterName, $filterCode, $filterValue)
+    {
+    	$filterPath = "$($offerFiltersFolder)/$filterItemName"
+    	$filter = Get-Item $filterPath -ErrorAction SilentlyContinue
+    
+    	if($filter -ne $null)
+    	{
+    		Write-Host "Filter $($filterPath) already exists"
+    		return
+    	}
+    
+    	$filter = Create-Item -path $offerFiltersFolder -itemName $filterItemName -itemType $offerFilterItemType
+    
+    	$filter.Editing.BeginEdit()
+        $filter.Fields["Enabled"].Value = "1"
+        $filter.Fields["Name"].Value = $filterName
+        $filter.Fields["Code"].Value = $filterCode
+        $filter.Fields["Value"].Value = $filterValue
+        $filter.Editing.EndEdit()
+    
+        Write-Host "Created filter $($filterPath)"
+    }
+    
+    UpdateFreeForKidsCode -offerFiltersFolder $offerFiltersHolidaysFolder
+    UpdateFreeForKidsCode -offerFiltersFolder $offerFiltersTradePortalFolder
+    
+    CreateDiscountFilter -offerFiltersFolder $offerFiltersHolidaysFolder -filterItemName $minDiscountFilterItemName -filterName $minDiscountFilterName -filterCode $minDiscountFilterCode -filterValue $discountFilterValue
+    CreateDiscountFilter -offerFiltersFolder $offerFiltersHolidaysFolder -filterItemName $maxDiscountFilterItemName -filterName $maxDiscountFilterName -filterCode $maxDiscountFilterCode -filterValue $discountFilterValue
+    CreateDiscountFilter -offerFiltersFolder $offerFiltersTradePortalFolder -filterItemName $minDiscountFilterItemName -filterName $minDiscountFilterName -filterCode $minDiscountFilterCode -filterValue $discountFilterValue
+    CreateDiscountFilter -offerFiltersFolder $offerFiltersTradePortalFolder -filterItemName $maxDiscountFilterItemName -filterName $maxDiscountFilterName -filterCode $maxDiscountFilterCode -filterValue $discountFilterValue
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230329T071911Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

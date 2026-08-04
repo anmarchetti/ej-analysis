@@ -1,0 +1,79 @@
+﻿---
+ID: "40c10d98-0a9b-4fbf-b41c-7e82d203969d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Update Header Navigation New
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $templateId = "{FD0CEA6B-FE05-4106-A496-E8F1C75F9445}";
+                        $itemPath = "master:/content/EasyJet/Holidays/Data/Navigations/Headers/Full Header"
+    
+                        $item = Get-Item -path $itemPath -ErrorAction SilentlyContinue
+    
+                        # Get Main Links
+                        $holidaysPath = "master:/content/EasyJet/Holidays/Data/Navigations/Main/Holidays";
+                        $holidaysLink = Get-Item -path $holidaysPath -ErrorAction SilentlyContinue
+                        $flightsPath = "master:/content/EasyJet/Holidays/Data/Navigations/Main/Flights";
+                        $flightsLink = Get-Item -path $flightsPath -ErrorAction SilentlyContinue
+                        $destinationsPath = "master:/content/EasyJet/Holidays/Data/Navigations/Main/Destinations";
+                        $destinationsLink = Get-Item -path $destinationsPath -ErrorAction SilentlyContinue
+                        $offersPath = "master:/content/EasyJet/Holidays/Data/Navigations/Main/Offers";
+                        $offersLink = Get-Item -path $offersPath -ErrorAction SilentlyContinue
+                        $travelPath = "master:/content/EasyJet/Holidays/Data/Navigations/Main/Travel info";
+                        $travelLink = Get-Item -path $travelPath -ErrorAction SilentlyContinue
+    
+                        # Get Account Link
+                        $bookingsPath = "master:/content/EasyJet/Holidays/Data/Navigations/Account/My bookings";
+                        $bookingsLink = Get-Item -path $bookingsPath -ErrorAction SilentlyContinue
+                        $bookingsNotLoginPath = "master:/content/EasyJet/Holidays/Data/Navigations/Account/My Bookings Not Login";
+                        $bookingsNotLoginLink = Get-Item -path $bookingsNotLoginPath -ErrorAction SilentlyContinue
+    
+                        # Get Button Link
+                        $loggedInPath = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Profile Logged In";
+                        $loggedInLink = Get-Item -path $loggedInPath -ErrorAction SilentlyContinue
+                        $navigationImageLinkPath = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Profile Not Logged In";
+                        $navigationImageLink = Get-Item -path $navigationImageLinkPath -ErrorAction SilentlyContinue
+                        $helpPath = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Help";
+                        $helpLink = Get-Item -path $helpPath -ErrorAction SilentlyContinue
+                        $loginPath = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Login";
+                        $loginLink = Get-Item -path $loginPath -ErrorAction SilentlyContinue
+                        $logoutPath = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Logout";
+                        $logoutLink = Get-Item -path $logoutPath -ErrorAction SilentlyContinue
+    
+                        function update-item(){
+                            $item.Editing.BeginEdit()
+                            $item["MainNav"] = "$($holidaysLink.ID)|$($flightsLink.ID)|$($destinationsLink.ID)|$($offersLink.ID)|$($travelLink.ID)|$($bookingsLink.ID)|$($bookingsNotLoginLink.ID)";
+                            $item["SecondaryNav"] = "$($loggedInLink.ID)|$($navigationImageLink.ID)|$($helpLink.ID)|$($loginLink.ID)|$($logoutLink.ID)";
+                            $item.Editing.EndEdit() | Out-Null;
+                            
+                            Write-Host "Item" $item.Name "successfully updated";
+                        }
+    
+                        function create-or-update-item(){
+                            if ($item -eq $null) {
+                                # Create Item
+                                $item = New-Item -Path $itemPath -ItemType $templateId;
+                                Write-Host "Item" $item.Name "successfully created";
+                                # Update Item
+                                update-item
+                            } else {
+                                Write-Host "Item" $itemPath "already exists";
+                                # Update Item
+                                update-item
+                            }
+                        }
+                        create-or-update-item
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 700
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200508T062917Z

@@ -1,0 +1,86 @@
+.month {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-width: min-content;
+    margin-right: 8px;
+    margin-bottom: 1px;
+    padding: 16px 10px;
+    background: $colorWhite;
+    border: 1px solid $colorGrayMiddle;
+    border-radius: 8px;
+    transition: 0.5s all;
+
+    &:hover {
+        color: $clrSiteBgWhite;
+        background: $clrEjOrangeDarkShadow;
+        border-color: $clrEjOrangeDarkShadow;
+        cursor: pointer;
+
+        .monthName,
+        .tickIcon,
+        .icon {
+            color: $clrSiteBgWhite;
+        }
+    }
+}
+
+.selectedMonth {
+    .tickIcon {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        display: block;
+        color: $clrEjOrange;
+    }
+}
+
+.disabledMonth {
+    border-color: $colorSilver;
+
+    &:hover {
+        background: $colorWhite;
+        border-color: $colorSilver;
+        cursor: not-allowed;
+
+        .monthName,
+        .icon {
+            color: $colorSilver;
+        }
+    }
+
+    .monthName,
+    .year,
+    .icon {
+        color: $colorSilver;
+    }
+}
+
+.tickIcon {
+    display: none;
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    margin-bottom: 8px;
+    color: $colorBoulder;
+}
+
+.monthName {
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    color: $clrEjOrange;
+}
+
+.year {
+    font-family: $fontRoundedBook;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.42;
+    color: $colorBlackMedium;
+}

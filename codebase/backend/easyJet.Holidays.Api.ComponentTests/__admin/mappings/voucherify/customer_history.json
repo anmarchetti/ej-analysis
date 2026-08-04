@@ -1,0 +1,190 @@
+{
+    "Title": "valid code testone",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/v1/redemptions",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "customer",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "24103"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "object": "list",
+            "total": 7,
+            "data_ref": "redemptions",
+            "redemptions": [
+                {
+                    "id": "r_xjMKYA7Q7wpUq2aKDxjyMUVx",
+                    "object": "redemption",
+                    "date": "2020-07-14T13:27:02.071Z",
+                    "customer_id": "cust_623piNIvfyRLtAxRvDVXPzsd",
+                    "tracking_id": "track_TgUW3fKkSCA=",
+                    "order": {
+                        "id": "ord_iveV6UMd21R6VPSL5LbY37MG",
+                        "amount": 17000,
+                        "discount_amount": 17000,
+                        "created_at": "2020-07-14T13:27:00.000Z",
+                        "items": [],
+                        "customer": {
+                            "id": "cust_623piNIvfyRLtAxRvDVXPzsd",
+                            "object": "customer"
+                        },
+                        "referrer": null,
+                        "status": "PAID"
+                    },
+                    "metadata": {
+                        "hotel_name": "Sol Palma Nova",
+                        "hotel_code": "ESMJ0076",
+                        "hotel_location_code": "ESMJ",
+                        "hotel_location_name": "Majorca",
+                        "hotel_resort_code": "ESMJPV",
+                        "hotel_resort_name": "Palma Nova",
+                        "hotel_country_code": "ES",
+                        "hotel_country_name": "Spain",
+                        "booking_ref": "9028489"
+                    },
+                    "result": "SUCCESS",
+                    "customer": {
+                        "id": "cust_623piNIvfyRLtAxRvDVXPzsd",
+                        "name": "Test Two Guest Name Test Two Guest Surname",
+                        "email": "a.svirydzenka@reply.com",
+                        "source_id": "53952",
+                        "metadata": {
+                            "lang": "eng"
+                        },
+                        "object": "customer"
+                    },
+                    "related_object_type": "voucher",
+                    "voucher": {
+                        "object": "voucher",
+                        "code": "2162955602-refund",
+                        "campaign": "easyJet-credit"
+                    },
+                    "gift": {
+                        "amount": 17000
+                    }
+                },
+                {
+                    "id": "r_cS6Ouq0smHy0ygqueNYuWgZw",
+                    "object": "redemption",
+                    "date": "2020-07-14T11:05:41.840Z",
+                    "customer_id": "cust_623piNIvfyRLtAxRvDVXPzsd",
+                    "tracking_id": "track_TgUW3fKkSCA=",
+                    "order": {
+                        "id": "ord_0FYBj5jYw70y3aW0wziDqm86",
+                        "amount": 17000,
+                        "discount_amount": 17000,
+                        "created_at": "2020-07-14T11:05:40.000Z",
+                        "items": [],
+                        "customer": {
+                            "id": "cust_623piNIvfyRLtAxRvDVXPzsd",
+                            "object": "customer"
+                        },
+                        "referrer": null,
+                        "status": "PAID"
+                    },
+                    "metadata": {
+                        "hotel_name": "Playas Cas Saboners",
+                        "hotel_code": "X9030718",
+                        "hotel_location_code": "ESMJ",
+                        "hotel_location_name": "Majorca",
+                        "hotel_resort_code": "ESMJPV",
+                        "hotel_resort_name": "Palma Nova",
+                        "hotel_country_code": "ES",
+                        "hotel_country_name": "Spain",
+                        "booking_ref": "9028450"
+                    },
+                    "result": "SUCCESS",
+                    "customer": {
+                        "id": "cust_623piNIvfyRLtAxRvDVXPzsd",
+                        "name": "Test Two Guest Name Test Two Guest Surname",
+                        "email": "a.svirydzenka@reply.com",
+                        "source_id": "53952",
+                        "metadata": {
+                            "lang": "eng"
+                        },
+                        "object": "customer"
+                    },
+                    "related_object_type": "voucher",
+                    "voucher": {
+                        "object": "voucher",
+                        "code": "2162955602-refund",
+                        "campaign": "easyJet-credit"
+                    },
+                    "gift": {
+                        "amount": 17000
+                    }
+                },
+                {
+                    "id": "r_DyvcLJQRyPfSjtmJ61lbZZO6",
+                    "object": "redemption",
+                    "date": "2020-07-14T08:25:47.713Z",
+                    "customer_id": "cust_623piNIvfyRLtAxRvDVXPzsd",
+                    "tracking_id": "track_TgUW3fKkSCA=",
+                    "order": {
+                        "id": "ord_uK6UEChdRLWdGcdFi7tYMtYa",
+                        "amount": 36028,
+                        "discount_amount": 36028,
+                        "created_at": "2020-07-14T08:25:45.000Z",
+                        "items": [],
+                        "customer": {
+                            "id": "cust_623piNIvfyRLtAxRvDVXPzsd",
+                            "object": "customer"
+                        },
+                        "referrer": null,
+                        "status": "PAID"
+                    },
+                    "metadata": {
+                        "hotel_name": "3HB Falesia Garden",
+                        "hotel_code": "PTAL0028",
+                        "hotel_location_code": "PTAL",
+                        "hotel_location_name": "Algarve",
+                        "hotel_resort_code": "PTALAL",
+                        "hotel_resort_name": "Albufeira",
+                        "hotel_country_code": "PT",
+                        "hotel_country_name": "Portugal",
+                        "booking_ref": "40002335"
+                    },
+                    "result": "SUCCESS",
+                    "customer": {
+                        "id": "cust_623piNIvfyRLtAxRvDVXPzsd",
+                        "name": "Test Two Guest Name Test Two Guest Surname",
+                        "email": "a.svirydzenka@reply.com",
+                        "source_id": "53952",
+                        "metadata": {
+                            "lang": "eng"
+                        },
+                        "object": "customer"
+                    },
+                    "related_object_type": "voucher",
+                    "voucher": {
+                        "object": "voucher",
+                        "code": "2162955578-refund",
+                        "campaign": "easyJet-credit"
+                    },
+                    "gift": {
+                        "amount": 36028
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,54 @@
+﻿---
+ID: "e1a1d2ad-4765-4861-b3ef-b97688012033"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Add Credit Booking Disruption Rendering
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Page
+    $pagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    $page = Get-Item -path $pagePath -ErrorAction SilentlyContinue
+    
+    # Page components
+    $componentsPath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components"
+    $pageComponents = Get-Item -path $componentsPath -ErrorAction SilentlyContinue
+    
+    # Data source
+    $bookingDisruptionPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Credit Booking Disruption"
+    $bookingDisruptionTemplateId = "{DBE716C9-891B-4229-8D09-0147285F0A79}"
+    
+    $bookingDisruption = Get-Item -Database "master" -path $bookingDisruptionPath -ErrorAction SilentlyContinue
+    
+    if ($bookingDisruption -eq $null) {
+        # create item
+        $bookingDisruption = New-Item -Path $bookingDisruptionPath -ItemType $bookingDisruptionTemplateId
+        Write-Host "Item" $bookingDisruption.Name "successfully created"
+    }
+        
+    $bookingDisruption.Editing.BeginEdit()
+    $bookingDisruption["Title"] = "Looking to amend or cancel your holiday?"
+    $bookingDisruption["Description"] = "<p>{name}, we understand there is uncertainty around travel at this time, so if you would prefer not to travel right now, you can credit your holiday to {destination} online at no extra cost.</p>"
+    $bookingDisruption["ButtonText"] = "Credit my holiday"
+    $bookingDisruption["Extra"] = "To read the full T&amp;C's please <a target=`"_blank`" href=`"#`">click here</a>."
+    $bookingDisruption.Editing.EndEdit() | Out-Null
+    
+    $renderingId = "{91012E04-01DC-46B7-BAE2-F5DBC12A842F}"
+    $renderigPlaceholder = "/body/component-wrapper-inner-{b256b26a-da9c-4195-b68a-bc4ed53685e3}-0/credit-booking-disruption-{5500ac44-5df4-4473-8e8c-ea635a187882}-0";
+    $rendering = Get-Rendering -Item $page -PlaceHolder $renderigPlaceholder | Where-Object {$_.ItemId -eq $renderingId}
+    
+    if($rendering -eq $null){
+        $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $renderigPlaceholder
+        Add-Rendering -Item $page -PlaceHolder $renderigPlaceholder -DataSource $bookingDisruptionPath -Instance $renderingItem -index 4
+        Write-Host  "Credit Booking Disruption Rendering was created"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200423T131443Z

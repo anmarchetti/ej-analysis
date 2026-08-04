@@ -1,0 +1,20 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgMultipleImages = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'multiple-images-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <path d='M16.23 4.69H5.16A3.17 3.17 0 002 7.86v11A3.17 3.17 0 005.16 22h11.07a3.17 3.17 0 003.17-3.16v-11a3.17 3.17 0 00-3.17-3.15zm-11.07 2h11.07a1.18 1.18 0 011.17 1.17v8.43l-2.27-2.41a1.7 1.7 0 00-1.23-.53 1.67 1.67 0 00-1.24.54l-2.45 2.61 3.25 3.5h-2.21l-4.44-4.56a.67.67 0 00-.95 0L4 17.24V7.86a1.17 1.17 0 011.16-1.17z' />
+        <ellipse cx={7.47} cy={10.14} rx={1.76} ry={1.72} />
+        <path d='M16.67 2h-11a1 1 0 100 2h11A3.38 3.38 0 0120 7.38v11a1 1 0 102 0v-11A5.38 5.38 0 0016.67 2z' />
+    </svg>
+);
+
+export default SvgMultipleImages;

@@ -1,0 +1,60 @@
+﻿---
+ID: "ac7362f0-60e0-41c8-8a75-88476f4f8f78"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create FCDO Advice Module on Covid-19 Page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $itemName, $templateId){
+        $item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $itemName -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created";
+        }
+        return $item
+    } 
+    
+    function Get-Rendering-Index ($item, $renderingItemId) {
+    	$i = 0
+    	Get-Rendering -Item $item | ForEach-Object {
+    		if ($_.ItemID -eq $renderingItemId) {
+    			return $i
+    		}
+    		$i++
+    	}
+    }
+    
+    $pageItem = Get-Item -Path "master://sitecore/content/EasyJet/Holidays/Home/Root/Info/Covid-19 response" -ErrorAction SilentlyContinue
+    
+    if($pageItem -ne $null) {
+        # Cet index of Help Links Rendering and place FCDO on this index
+        $helpLinksRenderingId = "{9133F3CA-553F-42F5-8529-54734B53A378}"
+        $renderingIndex = Get-Rendering-Index -Item $pageItem -renderingItemId $helpLinksRenderingId
+        
+        if($renderingIndex -ne $null) {
+            # Create empty FCDO component
+            $templateId = "{BC708B57-D5B5-4A08-BB70-2F1B0C106932}"
+            $componentItem = Get-Or-Create-Item -path "$($pageItem.FullPath)/Page Components" -itemName "FCDO Advice Module" -templateId $templateId
+        
+            # Create FCDO Rendering
+            $renderingId = "{507729FF-2917-416A-A731-BD2FB5D5BE90}"
+            $params = @{ "MaxVisibleLinks"=24; "MaxVisibleLinksOnMobile"=20 }
+            $placeholder = "/body/component-wrapper-inner-{DF799241-1784-400B-8EFF-1E35CDE67606}-0"
+            
+            $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering 
+            Add-Rendering -Item $pageItem -Instance $renderingItem -Index $renderingIndex -DataSource $componentItem.ID -Placeholder $placeholder -Parameter $params
+            Write-Host "FCDO Advice Module Rendering is added on" $renderingIndex "place";
+        }
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200911T115519Z

@@ -1,0 +1,82 @@
+﻿---
+ID: "fb84b9e3-6af7-44f2-971c-e435dbc03b4b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-11496 Credit Refund Page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Update-Dictionary ($itemPath,$value) {
+    	$item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+    
+    	if ($item -ne $null) {
+    		$item.Editing.BeginEdit()
+    		$item["Phrase"] = $value
+    		$item.Editing.EndEdit() | Out-Null
+    
+    		Write-Host "Dictionary" $item.DisplayName "successfully updated"
+    	}
+    }
+    
+    Update-Dictionary -ItemPath '/sitecore/content/EasyJet/Holidays/Dictionary/Path Breadcrumbs/Labels/Credit My Holiday' -Value "Credit my holiday"
+    
+    $creditConfirmPath = '/sitecore/content/EasyJet/Holidays/Home/Booking/Confirm Holiday Credit/Page Components/Credit Confirm'
+    $creditConfirmItem = Get-Item -Path $creditConfirmPath -ErrorAction SilentlyContinue
+    
+    # Update Credit Confirm Content
+    if ($creditConfirmItem -ne $null) {
+    	$creditConfirmItem.Editing.BeginEdit();
+    	$creditConfirmItem["TermsConditionsTitle"] = "Please, read the Terms and Conditions before confirming"
+    	$creditConfirmItem["ConfirmTitle"] = "Please, read the Terms and Conditions before confirming"
+    	$creditConfirmItem["CreditIntro"] = "<h1>Credit your holidays</h1><p>If you change your mind, our industry leading easyJet holidays <a rel='noopener noreferrer' rel='noopener noreferrer' href='https://www.easyjet.com/en/holidays/info/protection-promise' target='_blank'>Protection Promise</a> makes it possible for you to cancel your holiday and receive easyJet holidays credit to your online account.</p><h2>How it works:</h2><ul class='circle-list'> <li>If you want to cancel your holiday and get easyJet holidays credit, check the details below carefully.</li><li>Click `"confirm`" and this will cancel your old holiday. The total amount you've paid will be returned to you as easyJet holidays credit and you'll receive an email confirming this. You can use the credit to book your next holiday or use it to make a payment towards another holiday. Just make sure you're logged in and select the `"credit`" option at the checkout.</li><li>You can view your credit by logging in to your easyJet holidays account. Please note that your credit will have a 12 month expiry date.</li></ul>"
+    	$creditConfirmItem["RefundIntro"] = "<h1>Refund your holidays</h1><p>If you change your mind, our industry leading easyJet holidays <a rel='noopener noreferrer' rel='noopener noreferrer' href='https://www.easyjet.com/en/holidays/info/protection-promise' target='_blank'>Protection Promise</a> makes it possible for you to cancel your holiday and receive easyJet holidays credit to your online account.</p><h2>How it works:</h2><ul class='circle-list'> <li>If you want to cancel your holiday and get easyJet holidays credit, check the details below carefully.</li><li>Click `"confirm`" and this will cancel your old holiday. The total amount you've paid will be returned to you as easyJet holidays credit and you'll receive an email confirming this. You can use the credit to book your next holiday or use it to make a payment towards another holiday. Just make sure you're logged in and select the `"credit`" option at the checkout.</li><li>You can view your credit by logging in to your easyJet holidays account. Please note that your credit will have a 12 month expiry date.</li></ul>"
+    	$creditConfirmItem["IsCreditSelected"] = 1
+    	$creditConfirmItem["CreditCardDescription"] = "<p>Choosing to cancel your holiday today. You’ll receive a total of {creditAmount} in holiday to spend on another easyJet holiday when the time is right.</p><p>You’ll receive this amount immediately in your account after you’ve confirmed for us to cancel your holiday</p>"
+    	$creditConfirmItem["RefundCardDescription"] = "Choosing to cancel you holiday today. You’ll receive a total of {cashAmount} cash refund straight into your  account and {creditAmount} holiday credit.<br><a href='#refund-info-popup'>Why can't I get the full value of my holiday back as a refund?</a>"
+    	$creditConfirmItem.Editing.EndEdit() | Out-Null
+    
+    	Write-Host $creditConfirmItem.Name "updated";
+    }
+    
+    # Set Fallback Image to Credit Confirm
+    $creditConfirmPage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirm Holiday Credit/"
+    $creditConfirmRendering = Get-Rendering -Item $creditConfirmPage | Where-Object { $_.ItemId -eq "{56c44d33-3156-49ad-85a5-df71e6b700b2}" } | Select -First 1
+    
+    if ($creditConfirmRendering -ne $null) {
+        # $creditConfirmRendering.Parameters = " />'"
+    	Set-Rendering -Item $creditConfirmPage -Instance $creditConfirmRendering -Parameter @{"FallbackImage"='<image mediaid="{B8BDEFA6-5D0E-4F27-B6C3-53BDD9A3A32C}"/>'}
+    	Write-Host "Credit Confirm Rendering successfully updated"
+    }
+    
+    
+    # Update My Booking Cancell Banner Rendering
+    $myBookingPage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    $bannerRendering = Get-Rendering -Item $myBookingPage | Where-Object { $_.ItemId -eq "{025DDD3B-F1EA-42A6-AECF-D2A2698F6137}" } | Select -First 1
+    
+    if ($bannerRendering -ne $null) {
+        $bannerRendering.DataSource = $null
+    	Set-Rendering -Item $myBookingPage -Instance $bannerRendering -PlaceHolder '/body'
+    	Write-Host "Cancell Banner Rendering successfully updated"
+    }
+    
+    # Remove unnecessary Cancell Banner DataSource
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Cancelled Credited Login Message" -ErrorAction SilentlyContinue
+    
+    
+    
+    # Remove outdated items (Disruption Instructions, Credit To Amend Page)
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirm Holiday Credit/Page Components/Disruption Instructions" -ErrorAction SilentlyContinue
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirm Holiday Credit To Amend" -Recurse -Force -ErrorAction SilentlyContinue
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201224T082132Z

@@ -1,0 +1,94 @@
+$fontSizeSmall: 0.875rem;
+$imageHeight: 16.9375rem;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 1px rgba(51, 51, 51, 0.15);
+}
+
+.image {
+    width: 100%;
+    padding-bottom:68%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 8px 8px 0 0;
+
+    @media (orientation: landscape) {
+        @include media-breakpoint-down(sm) {
+            height: 29.68rem;
+        }
+    }
+}
+
+.pillContainer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.noImageBox {
+    height: $imageHeight;
+    background-color: lightgrey;
+    border-radius: 8px 8px 0 0;
+}
+
+.content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.title {
+    display: block;
+    height: 3.75rem;
+    margin: 0 0 1rem;
+    overflow: hidden;
+    line-height: 2rem;
+}
+
+.text {
+    height: 6.75rem;
+    font-family: $fontRoundedBook;
+    font-size: $fontSizeSmall;
+    font-weight: 400;
+    line-height: 1.125rem;
+
+    p {
+        margin-bottom: 0;
+        font-size: $fontSizeSmall;
+    }
+}
+
+.button {
+    display: block;
+    width: 100%;
+    padding: 0.94rem 1.56rem;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.moreInfoButton {
+    margin-bottom: 16px;
+}
+
+.transferTip {
+    text-transform: capitalize;
+}
+
+.greenBackground {
+    background: $colorGreenSuccess;
+}
+
+.grayBackground {
+    background: #f6f7f8;
+    box-shadow: 0 0 4px 0 #00000040;
+}
+
+.grayBackground p {
+    color:black;
+}

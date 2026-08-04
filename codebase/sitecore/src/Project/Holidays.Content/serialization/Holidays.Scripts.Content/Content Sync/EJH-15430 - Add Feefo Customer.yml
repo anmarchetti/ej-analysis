@@ -1,0 +1,141 @@
+﻿---
+ID: "22a1d6d1-54f4-4997-a99c-8e1fdc0ec6f5"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-15430 - Add Feefo Customer Feedback"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    
+    function Get-Rendering-Index
+    {
+    	param($item, $renderingUniqueId)
+    	$i = 0
+    	Get-Rendering -Item $item | ForEach-Object {
+    		if ($_.UniqueId -eq $renderingUniqueId) {
+    		    return $i
+    		}
+    		$i++
+    	}
+    	return -1
+    }
+    
+    # 1. Create/Modify Feefo Setting
+    function Create-Feefo-Settings($settingsTemplateId, $name) {
+        $settingsPath = "master:/sitecore/content/EasyJet/Holidays/Settings/";
+        $settings = Get-Item -path $settingsPath
+    
+        if ($settings -ne $null) {
+            $item = Get-Or-Create-Item -path $settingsPath$name -templateId $settingsTemplateId
+            
+            $item.Editing.BeginEdit()
+            $item["IsFeefoEnabled"] = "1";
+    
+            $item["ShowReviewsOnHomePage"] = "1";
+            $item["ShowTitlesAndCommentsOnHomePage"] = "1";
+            $item["ReviewsCountDesktopOnHomePage"] = "12";
+            $item["ReviewsCountMobileOnHomePage"] = "12";
+    
+            $item["ShowReviewsOnPromoPage"] = "1"
+            $item["ShowTitlesAndCommentsOnPromoPage"] = "1"
+            $item["ReviewsCountDesktopOnPromoPage"] = "12"
+            $item["ReviewsCountMobileOnPromoPage"] = "12"
+    
+            $item["ShowReviewsOnDestinationPages"] = "1"
+            $item["ShowTitlesAndCommentsOnDestinationPages"] = "1"
+            $item["ReviewsCountDesktopOnDestinationPages"] = "12"
+            $item["ReviewsCountMobileOnDestinationPages"] = "12"
+            
+            $item.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Item" $item.Name "successfully created or updated"
+        }
+    }
+    
+    # 2. Create Data Source
+    function Create-Data-Source($path, $templateId) {
+        $customersFeedbackData = Get-Or-Create-Item -path $path -templateId $templateId
+    
+        if ($customersFeedbackData -ne $null) {
+            $customersFeedbackData.Editing.BeginEdit()
+    
+            $customersFeedbackData["Title"] = "Our customers love us";
+            $customersFeedbackData["SubTitle"] = "Average customer reviews";
+            $customersFeedbackData["Description"] = "Independent service rating based on <strong>{feefoTotalReviewsCount}</strong> verified reviews.&nbsp;<strong><a rel='noopener noreferrer' href='https://feefo.com/' target='_blank' title='feefo reviews'>Read all reviews</a></strong>";
+            $customersFeedbackData["Logo"] = "<image mediaid='{B8A30845-8B02-4B44-A082-E59A45490530}' />";
+            $customersFeedbackData["Link"] = "<link text='Why book with us' anchor='' linktype='internal' class='' title='' querystring='' id='{4A8303A3-E9BA-40CE-BEA3-44C66F6DDA65}' />";
+            $customersFeedbackData["Disclaimer"] = "Only showing 4 and 5* reviews";
+            $customersFeedbackData["DefaultCustomerName"] = "Trusted customer";
+    
+            $customersFeedbackData.Editing.EndEdit() | Out-Null
+        }
+    
+        return $customersFeedbackData
+    }
+    
+    # 3. Add/Update for Home Rendering
+    function Set-Home-Feedback-Rendering($dataSource) {
+        $homePage = Get-Item -Path "master://sitecore/content/EasyJet/Holidays/Home"
+        $oldRenderingId = "{5295B583-8B18-4FCD-A1B0-10F7F965FD4A}"
+        $oldRenderingWrapperId = "{2EA8A9A1-71EB-4490-89B7-F3A6F9E4D05D}"
+        $insertIntoWrapperId = "{56AB96CA-E432-4985-BD6E-1446ED0AC1E5}"
+    
+        $oldRendering = Get-Rendering -Item $homePage | Where-Object { $_.ItemId -eq $oldRenderingId } | Select -First 1
+        $oldRenderingWrapper = Get-Rendering -Item $homePage | Where-Object { $_.ItemId -eq $oldRenderingWrapperId } | Select -First 1
+        
+        
+        if ($oldRendering -ne $null) {
+            Remove-Rendering -Item $homePage -Instance $oldRendering
+            Write-Host "Outdated Home-Feedback-Rendering removed"
+        }
+        
+        if ($oldRenderingWrapper -ne $null) {
+            Remove-Rendering -Item $homePage -Instance $oldRenderingWrapper
+            Write-Host "Outdated wrapper removed"
+        }
+        
+        $insertAfterWrapperIndex = Get-Rendering-Index -item $homePage -renderingUniqueId $insertIntoWrapperId | Select -First 1
+        $wrapperRendering = Get-Item -Path "master:" -Id "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}" | New-Rendering
+        $wrapperIndex = $insertAfterWrapperIndex + 1
+        
+        Add-Rendering -Item $homePage -PlaceHolder $("/body/component-wrapper-inner-$($insertIntoWrapperId)-0") -Instance $wrapperRendering -Index $wrapperIndex
+        
+        $wrapperRenderingItem = Get-Rendering -Item $homePage -Index $wrapperIndex
+        
+        Write-Host "Homepage Wrapper Rendering for Feefo created";
+        
+        # Move Feefo to this Wrapper
+        $placeholder = "/body/component-wrapper-inner-$($insertIntoWrapperId)-0/component-wrapper-inner-$($wrapperRenderingItem.UniqueId)-0"
+        $feefoRendering = Get-Item -Database "master" -Path "/sitecore/layout/Renderings/Feature/PageContent/Customers Feedback" | New-Rendering -Placeholder $placeholder
+    
+        Add-Rendering -Item $homePage -Instance $feefoRendering -Index $($wrapperIndex + 1) -PlaceHolder $placeholder -DataSource $dataSource
+    
+        Write-Host "Home-Feedback-Rendering added to the Home Page"
+    }
+    
+    $customersFeedbackDatasourceTemplateId = "{6AB6A66B-BF21-4D9E-B375-875415CC6571}"
+    $customersFeedbackSettingsTemplateId = "{875064B8-8075-404A-B2CE-CDB870E0A8B3}"
+    $customersFeedbackDatasourcePath = "/sitecore/content/EasyJet/Holidays/Data/Customers Feedback"
+    
+    Create-Feefo-Settings -settingsTemplateId $customersFeedbackSettingsTemplateId -name "Feefo Settings"
+    $customersFeedbackDataSource = Create-Data-Source -path $customersFeedbackDatasourcePath -templateId $customersFeedbackDatasourceTemplateId
+    Set-Home-Feedback-Rendering -DataSource $customersFeedbackDataSource.ID
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20221208T142719Z

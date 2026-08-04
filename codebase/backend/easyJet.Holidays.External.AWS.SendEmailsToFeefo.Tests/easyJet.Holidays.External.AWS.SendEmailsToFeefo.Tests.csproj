@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+    <Nullable>warnings</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.Core" />
+    <PackageReference Include="Amazon.Lambda.SQSEvents" />
+    <PackageReference Include="Amazon.Lambda.TestUtilities" />
+    <PackageReference Include="AutoFixture" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
+    <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\easyJet.Holidays.External.AWS.SendEmailsToFeefo\easyJet.Holidays.External.AWS.SendEmailsToFeefo.csproj" />
+    <ProjectReference Include="..\easyJet.Holidays.Tests.Domain\easyJet.Holidays.Tests.Domain.csproj" />
+  </ItemGroup>
+</Project>

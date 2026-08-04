@@ -1,0 +1,39 @@
+{
+  "Title": "GetHotelTransfers for EGHR0028",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/DestinationsSearch/GetHotelTransfers",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "POST"
+    ],
+    "Body": {
+      "Matcher": {
+        "Name": "ExactMatcher",
+        "Pattern": "AtcomIds%5B0%5D=EGHR0028",
+        "IgnoreCase": true
+      }
+    }
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsJson": [
+      []
+    ],
+    "Headers": {
+      "Content-Type": "application/json; charset=utf-8",
+      "Expires": "-1",
+      "Content-Length": "4",
+      "Cache-Control": "no-store, no-cache",
+      "Pragma": "no-cache",
+      "Server": "Microsoft-IIS/10.0",
+      "Date": "Tue, 07 Nov 2023 13:15:31 GMT"
+    }
+  }
+}

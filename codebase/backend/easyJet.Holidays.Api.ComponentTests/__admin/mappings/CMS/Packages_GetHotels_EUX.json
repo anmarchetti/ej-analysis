@@ -1,0 +1,313 @@
+{
+    "Title": "CMS Hotels data for EUX (ESFU1014, ESFU1015)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetHotels",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "RegexMatcher",
+                "Pattern": "^(?=.*ESFU1014)(?=.*ESFU1015).*"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "Hotels": [
+                {
+                    "Code": "ESFU1014",
+                    "GiataCode": null,
+                    "Name": "KN Matas Blancas",
+                    "Description": "<p>KN Matas Blancas.</p>",
+                    "Longitude": -14.2216,
+                    "Latitude": 28.1733,
+                    "Address": null,
+                    "City": null,
+                    "PostalCode": null,
+                    "Website": null,
+                    "Email": null,
+                    "StarRating": 4,
+                    "BookingPhone": null,
+                    "ManagementPhone": null,
+                    "HotelPhone": null,
+                    "FaxNumber": null,
+                    "Strapline": "Fuerteventura",
+                    "Rating": 3.5,
+                    "NumberOfReviews": 0,
+                    "TripAdvisorId": null,
+                    "ImageUrl": null,
+                    "Images": [],
+                    "BoardTypes": null,
+                    "RoomTypes": [
+                        {
+                            "Code": "DB01",
+                            "Name": "Standard Double Room with Balcony or Terrace",
+                            "Content": "",
+                            "Description": "",
+                            "IconUrl": null,
+                            "Facilities": [
+                                {
+                                    "Id": "{A1B2C3D4-0001-4AC6-9FA9-3141AAE86585}",
+                                    "Distance": "",
+                                    "SortOrder": 0,
+                                    "IsErrataInfo": false,
+                                    "SeasonalFacilitiesDataRange": [],
+                                    "Name": "Outdoor pool",
+                                    "FacilityCode": "363",
+                                    "FacilityGroupCode": "73",
+                                    "Order": "",
+                                    "Number": "",
+                                    "DisclaimerMessage": ""
+                                },
+                                {
+                                    "Id": "{A1B2C3D4-0002-4AC6-9FA9-3141AAE86585}",
+                                    "Distance": "",
+                                    "SortOrder": 0,
+                                    "IsErrataInfo": false,
+                                    "SeasonalFacilitiesDataRange": [],
+                                    "Name": "Wi-fi",
+                                    "FacilityCode": "550",
+                                    "FacilityGroupCode": "70",
+                                    "Order": "1",
+                                    "Number": "",
+                                    "DisclaimerMessage": ""
+                                },
+                                {
+                                    "Id": "{A1B2C3D4-0003-4AC6-9FA9-3141AAE86585}",
+                                    "Distance": "",
+                                    "SortOrder": 0,
+                                    "IsErrataInfo": false,
+                                    "SeasonalFacilitiesDataRange": [],
+                                    "Name": "Spa centre",
+                                    "FacilityCode": "620",
+                                    "FacilityGroupCode": "74",
+                                    "Order": "1",
+                                    "Number": "",
+                                    "DisclaimerMessage": ""
+                                }
+                            ],
+                            "EcoFacility": null
+                        }
+                    ],
+                    "Facilities": [
+                        {
+                            "IconUrl": null,
+                            "Id": "{B1C2D3E4-8175-4BA5-ABE5-91158B313F3D}",
+                            "Description": "",
+                            "Image": null,
+                            "Title": "Overview",
+                            "Items": [
+                                {
+                                    "Id": "{C2D3E4F5-7ABA-4B35-8DAB-AFD315903179}",
+                                    "Distance": "",
+                                    "SortOrder": 0,
+                                    "IsErrataInfo": false,
+                                    "Icon": null,
+                                    "Tooltip": null,
+                                    "Name": "Outdoor pool",
+                                    "FacilityCode": "363",
+                                    "FacilityGroupCode": "73",
+                                    "Order": "",
+                                    "Number": "",
+                                    "DisclaimerMessage": ""
+                                },
+                                {
+                                    "Id": "{C2D3E4F5-7ABA-4B35-8DAB-AFD315903180}",
+                                    "Distance": "",
+                                    "SortOrder": 0,
+                                    "IsErrataInfo": false,
+                                    "Icon": null,
+                                    "Tooltip": null,
+                                    "Name": "Wi-fi",
+                                    "FacilityCode": "550",
+                                    "FacilityGroupCode": "70",
+                                    "Order": "1",
+                                    "Number": "",
+                                    "DisclaimerMessage": ""
+                                },
+                                {
+                                    "Id": "{C2D3E4F5-7ABA-4B35-8DAB-AFD315903181}",
+                                    "Distance": "",
+                                    "SortOrder": 0,
+                                    "IsErrataInfo": false,
+                                    "Icon": null,
+                                    "Tooltip": null,
+                                    "Name": "Spa centre",
+                                    "FacilityCode": "620",
+                                    "FacilityGroupCode": "74",
+                                    "Order": "1",
+                                    "Number": "",
+                                    "DisclaimerMessage": ""
+                                }
+                            ],
+                            "Code": "OV",
+                            "Name": "Overview",
+                            "Type": null
+                        }
+                    ],
+                    "Country": { "Code": "ES", "Name": "Spain", "Type": null },
+                    "Location": { "Code": "ESFU", "Name": "Fuerteventura", "Type": null },
+                    "Resort": { "Code": "ESFUCC", "Name": "Costa Calma", "Type": null },
+                    "KeySellingPoint1": null,
+                    "KeySellingPoint2": null,
+                    "Transfers": [],
+                    "HotelTheme": { "Code": "", "Name": "Default", "Type": null },
+                    "HighestPriorityType": null,
+                    "AirportCodes": [ "FUE" ],
+                    "ErrataFacilities": null
+                },
+                {
+                    "Code": "ESFU1015",
+                    "GiataCode": null,
+                    "Name": "Sample Hotel Fuerteventura",
+                    "Description": "<p>Sample Hotel Fuerteventura.</p>",
+                    "Longitude": -14.2,
+                    "Latitude": 28.2,
+                    "Address": null,
+                    "City": null,
+                    "PostalCode": null,
+                    "Website": null,
+                    "Email": null,
+                    "StarRating": 4,
+                    "BookingPhone": null,
+                    "ManagementPhone": null,
+                    "HotelPhone": null,
+                    "FaxNumber": null,
+                    "Strapline": "Fuerteventura",
+                    "Rating": 3.5,
+                    "NumberOfReviews": 0,
+                    "TripAdvisorId": null,
+                    "ImageUrl": null,
+                    "Images": [],
+                    "BoardTypes": null,
+                    "RoomTypes": [
+                        {
+                            "Code": "DB01",
+                            "Name": "Double Room with Sea View",
+                            "Content": "",
+                            "Description": "",
+                            "IconUrl": null,
+                            "Facilities": [
+                                {
+                                    "Id": "{D2E3F4A5-0001-4AC6-9FA9-3141AAE86585}",
+                                    "Distance": "",
+                                    "SortOrder": 0,
+                                    "IsErrataInfo": false,
+                                    "SeasonalFacilitiesDataRange": [],
+                                    "Name": "Outdoor pool",
+                                    "FacilityCode": "363",
+                                    "FacilityGroupCode": "73",
+                                    "Order": "",
+                                    "Number": "",
+                                    "DisclaimerMessage": ""
+                                },
+                                {
+                                    "Id": "{D2E3F4A5-0002-4AC6-9FA9-3141AAE86585}",
+                                    "Distance": "",
+                                    "SortOrder": 0,
+                                    "IsErrataInfo": false,
+                                    "SeasonalFacilitiesDataRange": [],
+                                    "Name": "Wi-fi",
+                                    "FacilityCode": "550",
+                                    "FacilityGroupCode": "70",
+                                    "Order": "1",
+                                    "Number": "",
+                                    "DisclaimerMessage": ""
+                                },
+                                {
+                                    "Id": "{D2E3F4A5-0003-4AC6-9FA9-3141AAE86585}",
+                                    "Distance": "",
+                                    "SortOrder": 0,
+                                    "IsErrataInfo": false,
+                                    "SeasonalFacilitiesDataRange": [],
+                                    "Name": "Spa centre",
+                                    "FacilityCode": "620",
+                                    "FacilityGroupCode": "74",
+                                    "Order": "1",
+                                    "Number": "",
+                                    "DisclaimerMessage": ""
+                                }
+                            ],
+                            "EcoFacility": null
+                        }
+                    ],
+                    "Facilities": [
+                        {
+                            "IconUrl": null,
+                            "Id": "{E3F4A5B6-8175-4BA5-ABE5-91158B313F3D}",
+                            "Description": "",
+                            "Image": null,
+                            "Title": "Overview",
+                            "Items": [
+                                {
+                                    "Id": "{F4A5B6C7-7ABA-4B35-8DAB-AFD315903179}",
+                                    "Distance": "",
+                                    "SortOrder": 0,
+                                    "IsErrataInfo": false,
+                                    "Icon": null,
+                                    "Tooltip": null,
+                                    "Name": "Outdoor pool",
+                                    "FacilityCode": "363",
+                                    "FacilityGroupCode": "73",
+                                    "Order": "",
+                                    "Number": "",
+                                    "DisclaimerMessage": ""
+                                },
+                                {
+                                    "Id": "{F4A5B6C7-7ABA-4B35-8DAB-AFD315903180}",
+                                    "Distance": "",
+                                    "SortOrder": 0,
+                                    "IsErrataInfo": false,
+                                    "Icon": null,
+                                    "Tooltip": null,
+                                    "Name": "Wi-fi",
+                                    "FacilityCode": "550",
+                                    "FacilityGroupCode": "70",
+                                    "Order": "1",
+                                    "Number": "",
+                                    "DisclaimerMessage": ""
+                                },
+                                {
+                                    "Id": "{F4A5B6C7-7ABA-4B35-8DAB-AFD315903181}",
+                                    "Distance": "",
+                                    "SortOrder": 0,
+                                    "IsErrataInfo": false,
+                                    "Icon": null,
+                                    "Tooltip": null,
+                                    "Name": "Spa centre",
+                                    "FacilityCode": "620",
+                                    "FacilityGroupCode": "74",
+                                    "Order": "1",
+                                    "Number": "",
+                                    "DisclaimerMessage": ""
+                                }
+                            ],
+                            "Code": "OV",
+                            "Name": "Overview",
+                            "Type": null
+                        }
+                    ],
+                    "Country": { "Code": "ES", "Name": "Spain", "Type": null },
+                    "Location": { "Code": "ESFU", "Name": "Fuerteventura", "Type": null },
+                    "Resort": { "Code": "ESFUCC", "Name": "Costa Calma", "Type": null },
+                    "KeySellingPoint1": null,
+                    "KeySellingPoint2": null,
+                    "Transfers": [],
+                    "HotelTheme": { "Code": "", "Name": "Default", "Type": null },
+                    "HighestPriorityType": null,
+                    "AirportCodes": [ "FUE" ],
+                    "ErrataFacilities": null
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,108 @@
+﻿---
+ID: "24570e3a-0d2d-429b-bb12-0bb1bf633778"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14839 Walker Crisps  - Booking flow"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    #Move item to Data
+    Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Redeem Voucher/Page Components/Redeem Voucher"  -ErrorAction SilentlyContinue | Move-Item -Destination "/sitecore/content/EasyJet/Holidays/Data" ;
+    $data = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Redeem Voucher"
+    
+    if($data-ne $null){
+                $data.Editing.BeginEdit()
+                $data["TitleLoginToRedeemPopup"]="APPLY A VOUCHER CODE"
+                $data["SubtitleLoginToRedeemPopup"]="Please log in to use your voucher so we can attach it to your personal account."
+               
+    
+                $data.Editing.EndEdit()
+    }
+    
+    #Add redeem rendering to extras page
+    $page = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking"
+    $priceSummaryPath = "/sitecore/layout/Renderings/Feature/Destinations/Price Summary"
+    $priceSummaryItem = Get-Item -Path $priceSummaryPath 
+    $priceSummary = Get-Rendering -Path '/sitecore/content/EasyJet/Holidays/Home/Booking' -Rendering $priceSummaryItem;
+    
+    $redeemVoucherPlaceholder = $priceSummary.Placeholder
+    $redeemVoucherRenderingPath = '/sitecore/layout/Renderings/Feature/PageContent/Redeem Voucher'
+    $redeemVoucherRendering = Get-Item  -Path $redeemVoucherRenderingPath | New-Rendering -Placeholder $redeemVoucherPlaceholder  -DataSource $data 
+              
+    Add-Rendering -Item $page -PlaceHolder $redeemVoucherPlaceholder -Instance $redeemVoucherRendering
+    
+    #Create account popup datasource
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    $popupData = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Create Account Popup" -templateId "{D7D192E6-BC93-4631-87BA-49E30CEABF27}" 
+    if ($popupData -ne $null) {
+        $popupData.Editing.BeginEdit()
+        $popupData["OffersSectionDescription1"] = "As an easyJet subscriber we’ll send you digital updates about our special offers, holidays and inspiring news on flights and easyJet travel products and even our exclusive Flight Club.";
+        $popupData["OffersSectionDescription2"] = 'Remember you can manage your preferences through your account at any time. View our <a rel="noopener noreferrer" rel="noopener noreferrer" class="text-link" href="https://www.easyjet.com/en/holidays/info/privacy-policy" target="_blank"><strong>privacy policy</strong></a>.';
+        $popupData["PartnerOffersSectionTitle"] = "easyJet partner offers and updates";
+        $popupData["PartnerOffersSectionDescription1"] = 'Would you also like to receive digital updates about our&nbsp;<a class="text-link" href="https://www.easyjet.com/en/policy/privacy-promise#three" title="Follow link">partners&rsquo; travel related products</a><span>&nbsp;to help you get the most from your trip?</span>';
+        $popupData["LoginDetailsTitle"] = "YOUR LOG IN DETAILS";
+        $popupData["LoginDetailsDescription"] = "Please enter the chosen email address and password you’ll use to log in"; 
+        $popupData["AccountDetailsTitle"] = "MY ACCOUNT DETAILS";
+        $popupData["AccountDetailsDescription"] = "Tell us more about you";
+        $popupData["OffersTitle"] = "CONTACT PREFERENCES";
+        $popupData["PopupTitle"] = "MEMBER REGISTRATION";
+        $popupData["PopupSubtitle"] = "Just to let you know";
+        $popupData["PopupDescription"] = "In the rare event that we will need to notify you of changes to your booking, we will contact you via your registered email address or mobile telephone number. From time to time we may use these details to contact you to help us improve our service through customer research and, if you’ve indicted below, to send you digital updates about special offers.";
+        $popupData["ContentSuccessPopup"] = '<p>Your account <b>{email}</b> has successfully been created.<br />Please check your inbox to verfy your email address. You can do this later!</p><p>Click to continue to apply your walkers voucher code to your account.</p>';
+        $popupData.Editing.EndEdit() | Out-Null
+    }
+    
+    #Add Create Account Popup Rendering
+    $redemItem = Get-Item -Path '/sitecore/layout/Renderings/Feature/PageContent/Redeem Voucher';
+    $redeemRend = Get-Rendering -Item $page  -Rendering $redemItem 
+    $destination = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components"
+    
+    $popupPlaceholder = $placeHolder = $redeemVoucherPlaceholder + '/create-account-popup-' + $redeemRend.UniqueId +'-0'
+    $popupRenderingPath = '/sitecore/layout/Renderings/Feature/Destinations/Create Account Popup'
+    $popupRendering = Get-Item  -Path $popupRenderingPath | New-Rendering -Placeholder $popupPlaceholder -DataSource $popupData 
+              
+    Add-Rendering -Item $page -PlaceHolder $popupPlaceholder -Instance $popupRendering 
+    
+    #Create promocode datasource
+    $promocodeData = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Promocode Input" -templateId "{BAB6B707-4D06-4932-A852-5131328360DB}" 
+    if ($promocodeData -ne $null) {
+        $promocodeData.Editing.BeginEdit()
+        $promocodeData["TitleGreatNewsBanner"] = "GREAT NEWS!";
+    $promocodeData["TextGreatNewsBanner"] = 'Your new credit has been added to the account {email}. If you want to use your credit, select the <b>"Pay with credit"</b> option on the payment page.';
+    $promocodeData["IconGreatNewsBanner"] = '<image mediaid="{09D6307F-1905-4B59-A2FB-0FD0B8DBC3F5}" />';
+        
+        $promocodeData.Editing.EndEdit() | Out-Null
+    }
+    
+     Get-Rendering -Item $page | ForEach-Object {
+            if($_.ItemId -eq "{B1C38035-64C4-435A-98BC-33616AD2E83E}") {
+                Set-Rendering -Item $page -Instance $_ -Datasource $promocodeData.Id
+            }
+        }
+    
+    #Update payment data
+     $item = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Payment/Page Components/Payment" -ErrorAction SilentlyContinue
+    if ($item) {
+        $item.Editing.BeginEdit()
+        $item["TextCreditInfoBlock"] = "Hey! Don’t forget to apply your Walkers holiday credit by checking <b>‘use your holiday credit’</b> below.";
+    $item["IconCreditInfoBlock"] = '<image mediaid="{A484212A-377A-4DC9-8754-BABFE7701E3D}" />';
+        
+        $item.Editing.EndEdit() | Out-Null
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210112T150701Z

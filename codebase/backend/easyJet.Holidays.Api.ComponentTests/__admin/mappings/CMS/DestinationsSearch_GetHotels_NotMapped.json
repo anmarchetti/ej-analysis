@@ -1,0 +1,56 @@
+{
+    "Title": "CMS Hotels data for not mapped hotels (api/DestinationsSearch/GetHotels)",
+    "Priority": 999,
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetHotels",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        //"Body": {
+        //    "Matcher": {
+        //        "Name": "ExactMatcher",
+        //        "Pattern": "AtcomIds%5B0%5D=ESMJ0001"
+        //    }
+        //},
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "Hotels": [
+                {
+                    "Code": "NOTMAPPED",
+                    "Name": "Not mapped hotel stub",
+                    "Longitude": "6.7815397",
+                    "Latitude": "43.4132373",
+                    "StarRating": "4*",
+                    "Strapline": "Really good hotel!",
+                    "Rating": 4.45,
+                    "NumberOfReviews": 324,
+                    "Images": [],
+                    "BoardTypes": [],
+                    "RoomTypes": [],                   
+                    "Facilities": [],
+                    "Country": {
+                        "Code": "ES",
+                        "Name": "Spain"
+                    },
+                    "Location": {
+                        "Code": "ESMJ",
+                        "Name": "Majorca"
+                    },
+                    "Resort": {
+                        "Code": "ESMJAL",
+                        "Name": "Alcudia"
+                    }
+                }
+            ]
+        }
+    }
+}

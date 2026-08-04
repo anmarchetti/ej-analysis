@@ -1,0 +1,90 @@
+$paymentBookingPaddingX: 30px;
+$paymentBookingBorderColor: #d8d8d8;
+
+
+.header {
+    display: flex;
+    align-items: top;
+    justify-content: space-between;
+    min-height: 104px;
+    padding: 25px $paymentBookingPaddingX;
+
+    @include media-breakpoint-down(lg) {
+        flex-direction: column;
+        align-items: stretch;
+        min-height: 0;
+        padding: 10px 16px 0;
+    }
+}
+
+.column {
+    position: relative;
+    flex-basis: 0;
+    flex-grow: 1;
+    height: 100%;
+    padding-right: 10px;
+    padding-left: 55px;
+    font-size: 16px;
+    line-height: 1.5625;
+
+    svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 28px;
+        height: 28px;
+
+        @include media-breakpoint-down(lg) {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    @include media-breakpoint-down(lg) {
+        margin: 10px 0;
+        padding-right: 0;
+        padding-left: 35px;
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.buttonWrapper {
+    align-self: flex-start;
+    max-width: 200px;
+
+    :global(.btn) {
+        display: flex;
+        align-items: flex-start;
+        font-size: 16px;
+        font-weight: 400;
+        text-align: right;
+        word-break: break-all;
+
+        svg {
+            min-width: 20px;
+            min-height: 20px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+    }
+
+    @include media-breakpoint-down(lg) {
+        align-self: auto;
+        max-width: 100%;
+        border-top: 1px solid $paymentBookingBorderColor;
+
+        :global(.btn) {
+            width: 100%;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            text-align: left;
+
+            svg {
+                float: right;
+            }
+        }
+    }
+}

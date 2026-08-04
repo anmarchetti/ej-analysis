@@ -1,0 +1,45 @@
+.container {
+    width: 100%;
+    padding: 0 24px;
+    border: 1px solid $colorGeyser;
+
+    :global(.rbc-hotel-board) {
+        display: flex;
+        padding: 24px 0;
+        border-bottom: 1px solid $colorGeyser;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            padding: 16px 0;
+        }
+    }
+
+    :global(.plain-options) {
+        display: flex;
+        padding-top: 24px;
+        border-top: 1px solid $colorGeyser;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            padding: 16px 0;
+        }
+    }
+
+    :global(.holiday-summary-item__text) ul li::before {
+        background-color: $clrTextMain;
+    }
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+        flex-direction: column;
+        padding: 0 12px;
+    }
+}
+
+.container > * {
+    padding: 24px 0;
+
+    @include media-breakpoint-down(md) {
+        padding: 16px 0;
+    }
+}

@@ -1,0 +1,114 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 0 10px;
+}
+
+.selector {
+    width: auto;
+
+    :global {
+        .custom-select__menu-list {
+            @include custom-scrollbar($colorWhite, $colorOrange);
+        }
+
+        .custom-select__indicators {
+            display: none;
+        }
+
+        .custom-select__control {
+            min-height: auto;
+            padding-left: 0;
+            border-color: $colorGeyser;
+            border-radius: 4px;
+        }
+
+        .custom-select__single-value {
+            position: static;
+            width: min-content;
+            max-width: none;
+            margin: 0;
+            padding: 8px 16px;
+            font-family: $fontRoundedDemy;
+            font-size: 14px;
+            line-height: 1.286;
+            color: $colorOrange;
+            text-transform: uppercase;
+            transform: none;
+        }
+
+        .custom-select__value-container {
+            display: flex;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .custom-select__control--is-focused,
+        .custom-select__control--menu-is-open,
+        .custom-select__control:hover {
+            border-color: $colorOrange;
+            box-shadow: none;
+
+            .custom-select__placeholder {
+                color: $colorOrange;
+            }
+
+            .custom-select__single-value {
+                color: $colorOrange;
+            }
+        }
+
+        .custom-select__option--is-selected {
+            color: $colorOrange;
+            background-color: $colorPorcelain;
+        }
+
+        .custom-select__option {
+            padding: 12px 24px;
+            font-size: 14px;
+            line-height: 1.286;
+            text-align: left;
+        }
+
+        .custom-select__menu {
+            border: 1px solid $colorGeyser;
+            border-radius: 4px;
+
+            .custom-select__menu-list {
+                padding: 0;
+
+                &:first-child {
+                    border-top-left-radius: 4px;
+                    border-top-right-radius: 4px;
+                }
+
+                &:last-child {
+                    border-bottom-right-radius: 4px;
+                    border-bottom-left-radius: 4px;
+                }
+            }
+        }
+    }
+}
+
+.monthSelector {
+    flex-grow: 1;
+
+    :global {
+        .custom-select__menu {
+            left: -20%;
+            width: 140%;
+        }
+    }
+}
+
+.yearSelector {
+    :global {
+        .custom-select__menu {
+            left: -50%;
+            width: 200%;
+        }
+    }
+}

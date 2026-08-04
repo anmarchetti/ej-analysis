@@ -1,0 +1,245 @@
+﻿---
+ID: "7a60767a-9864-47d1-b3df-07af828cfb48"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14433 Walker Crisps  - Redeem Your Voucher Code"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    #1. ADD SETTINGS
+    $item = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Credit Booking Settings" -ErrorAction SilentlyContinue
+    if ($item -ne $null) {
+    	$item.Editing.BeginEdit()
+    	$item["EnableWalkerCrisps"] = '1'
+    	$item.Editing.EndEdit() | Out-Null;
+            Write-Host $item.Name "updated";
+    }
+    
+    #2.CREATE PAGE
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    $pagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Redeem Voucher"
+    $pageTemplateId = "{F2DC1C59-9D4A-4735-BE5A-F6D265C949AE}"
+    $page = Get-Or-Create-Item -path $pagePath -templateId $pageTemplateId
+    function add-to-selected($targetItemPath, $templateId, $fieldName){
+        if($targetItemPath -ne $null){
+            $item = Get-Item -Path $targetItemPath -ErrorAction SilentlyContinue
+            if($item -ne $null){
+                $item.Editing.BeginEdit()
+                $item[$fieldName]="$($item["PageTemplates"])|$($templateId)"
+                $item.Editing.EndEdit()
+            }
+        }
+    }
+    add-to-selected -TargetItemPath "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Default Design" -TemplateId $pageTemplateId -FieldName "PageTemplates"
+    
+    #ADD LINKS TO MENU
+    $linkTemplateId = "{BC011F0A-976C-4825-9E01-8BAA7C8E6CCA}";
+    
+    function update-item($rename, $link, $image, $children, $name, $showon){
+        $item.Editing.BeginEdit()
+        if ($rename -ne $null) {
+            $item.Name = $rename;
+        }
+        if ($image -ne $null) {
+            $item["Image"] = $image;
+        }
+        if ($link -ne $null) {
+            $item["Link"] = $link;
+        }
+        if ($children -ne $null) {
+            $item["ChildrenLinks"] = $children;
+        }
+        if ($showon -ne $null) {
+            $item["ShowOn"] = $showon;
+        }
+        if ($name -ne $null) {
+            $item["Name"] = $name;
+        }
+        $item.Editing.EndEdit() | Out-Null;
+    
+        Write-Host "Item" $item.Name "successfully updated";
+    }
+    
+    function create-or-update-item($item, $path, $templateId, $rename, $link, $image, $children, $name, $showon){
+        if ($item -eq $null) {
+            # Create Item
+            $item = New-Item -Path $path -ItemType $templateId;
+            Write-Host "Item" $item.Name "successfully created";
+            # Update Item
+            update-item -Rename $rename -Image $image -Link $link -Children $children -Name $name -Showon $showon
+        } else {
+            Write-Host "Item" $path "already exists";
+            # Update Item
+            update-item -Rename $rename -Image $image -Link $link -Children $children -Name $name -Showon $showon
+        }
+    }
+    
+    $itemPathViewBooking = "/sitecore/content/EasyJet/Holidays/Data/Navigations/Account/View Booking"
+    $viewBooking = Get-Item -path $itemPathViewBooking -ErrorAction SilentlyContinue
+    
+    $itemPathMyAccount = "/sitecore/content/EasyJet/Holidays/Data/Navigations/Account/My account"
+    $myAccount= Get-Item -path $itemPathMyAccount -ErrorAction SilentlyContinue
+    
+    $itemPathCheckIn = "/sitecore/content/EasyJet/Holidays/Data/Navigations/Button/Check in"
+    $checkIn = Get-Item -path $itemPathCheckIn -ErrorAction SilentlyContinue
+    
+    $itemPathLogin = "/sitecore/content/EasyJet/Holidays/Data/Navigations/Button/Login"
+    $login = Get-Item -path $itemPathLogin -ErrorAction SilentlyContinue;
+    
+    $loginPage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Login" -ErrorAction SilentlyContinue;
+    $itemPathRedeemVoucherNotLogIn = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Redeem Voucher Not Logged In"
+    $redeemVoucherNotLogIn= Get-Item -path $itemPathRedeemVoucherNotLogIn -ErrorAction SilentlyContinue
+    create-or-update-item -Item $redeemVoucherNotLogIn -Path $itemPathRedeemVoucherNotLogIn  -TemplateId $linkTemplateId -Link "<link text='Redeem voucher' anchor='' linktype='internal' class='' title=''   id='$($loginPage.ID)' querystring='redirectUrl=/booking/redeem-voucher'/>" -ShowOn 'Show On Loged Out'
+    
+    $itemPathProfileNoLoggedIn = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Profile Not Logged In"
+    $profileNoLoggedIn = Get-Item -path $itemPathProfileNoLoggedIn -ErrorAction SilentlyContinue
+    create-or-update-item -Item $profileNoLoggedIn -Path $itemPathProfileNoLoggedIn -TemplateId $imageLinkTemplateId -Children "$($viewBooking.ID)|$($myAccount.ID)|$($checkIn.ID)|$($redeemVoucherNotLogIn.ID)|$($login.ID)" -Showon 'Show On Loged Out'
+    
+    $itemPathViewMyBookings = "master:/content/EasyJet/Holidays/Data/Navigations/Account/View My Bookings"
+    $viewMyBookings = Get-Item -path $itemPathViewMyBookings -ErrorAction SilentlyContinue
+    
+    $itemPathAvailableCredit = "master:/content/EasyJet/Holidays/Data/Navigations/Account/Holiday Credit"
+    $availableCredit= Get-Item -path $itemPathAvailableCredit -ErrorAction SilentlyContinue
+    
+    $itemPathlogout = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Logout"
+    $logout = Get-Item -path $itemPathlogout -ErrorAction SilentlyContinue
+    
+    $itemPathRedeemVoucherLogIn = "/sitecore/content/EasyJet/Holidays/Data/Navigations/Button/Redeem Voucher Logged In"
+    $redeemVoucherLogIn= Get-Item -path $itemPathRedeemVoucherLogIn -ErrorAction SilentlyContinue
+    create-or-update-item -Item $redeemVoucherLogIn -Path $itemPathRedeemVoucherLogIn  -TemplateId $linkTemplateId -Link "<link text='Redeem voucher' anchor='' linktype='internal' class='' title=''  querystring='' id='$($page.ID)' />" -ShowOn 'Show On Loged In'
+    
+    $itemPathProfileLoggedIn = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Profile Logged In"
+    $profileLoggedIn = Get-Item -path $itemPathProfileLoggedIn -ErrorAction SilentlyContinue
+    create-or-update-item -Item $profileLoggedIn -Path $itemPathProfileLoggedIn -TemplateId $imageLinkTemplateId -Children "$($viewMyBookings.ID)|$($availableCredit.ID)|$($viewBooking.ID)|$($myAccount.ID)|$($redeemVoucherLogIn.ID)|$($checkIn.ID)|$($logout.ID)"
+    
+    #ADD DATASOURCES
+    #Create PageComponents folder
+    $pageComponentsPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Redeem Voucher/Page Components"
+    $pageComponentsTemplateId = "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    $pageComponents = Get-Or-Create-Item -path $pageComponentsPath -templateId $pageComponentsTemplateId
+    
+    $redeemVoucherData = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Redeem Voucher/Page Components/Redeem Voucher" -templateId "{A1BF95E6-46D0-468B-BBE3-E10D8BECD58A}" 
+    
+    if ($redeemVoucherData -ne $null) {
+        $redeemVoucherData.Editing.BeginEdit()
+        $redeemVoucherData["Title"] = "Redeem voucher code";
+        $redeemVoucherData["Subtitle"] = "Enter the voucher code on the back of your crisp packet to redeem your holiday credit.";
+        $redeemVoucherData["Tooltip"] = "Redeem voucher";
+        $redeemVoucherData["FieldPlaceholder"] = "Enter voucher code";
+        $redeemVoucherData["VoucherCostPopupLabel"] = "{price} holiday credit";
+        $redeemVoucherData["VoucherWorthPopupLabel"] = "The voucher code <span class='voucher'>{voucher}</span> is worth:";
+        
+        $redeemVoucherData["TitleValidatedPopup"] = "Great news!";
+        $redeemVoucherData["AddCredit"] = "Do you want to add this credit to your {email} account?";
+        $redeemVoucherData["PreviousCredit"] = "Previous holiday credit";
+        $redeemVoucherData["TotalCredit"] = "Total holiday credit";
+        $redeemVoucherData["VoucherName"] = "<div>NEW</div><div>Walkers crisp promotion</div>";
+        $redeemVoucherData["TooltipValidatedPopup"] = "This is credit that you already have on your account. You'll be able to see the full breakdown on your credit by logging into your credit management area.";
+        
+        $redeemVoucherData["CurrentCreditBalance"] = "Current total holiday credit";
+        $redeemVoucherData["Instruction1"] = "Continue on this journey to the guest details page to the payment page";
+        $redeemVoucherData["Instruction2"] = "On the payment page check the box that you want to use the holiday credit";
+        $redeemVoucherData["InstructionsTitle"] = "TO APPLY THIS PROMOTION:";
+        $redeemVoucherData["TitleAppliedPopup"] = "Your voucher has been successfully added";
+        $redeemVoucherData["VoucherAdded"] = "Has now been added to your account {email}";
+        $redeemVoucherData.Editing.EndEdit() | Out-Null
+    }
+    
+    #ADD RENDERINGS TO THE PAGE
+    
+    # Insert component wrapper
+    $componentWrapperPlaceHolder= 'first-wrapper'
+    $componentWrapperRenderingPath = "/sitecore/layout/Renderings/Project/Holidays/Component Wrapper"
+    $componentWrapperItem = Get-Item -Path $componentWrapperRenderingPath | New-Rendering -Placeholder $componentWrapperPlaceHolder
+    Add-Rendering -Item $page -PlaceHolder $componentWrapperPlaceHolder -Instance $componentWrapperItem 
+    
+    #Insert reddem voucher rendering
+    $componentWrapperRend = Get-Rendering -Item $page -Placeholder $componentWrapperPlaceHolder;
+    
+    $redeemVoucherPlaceholder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0'
+    $redeemVoucherRenderingPath = '/sitecore/layout/Renderings/Feature/PageContent/Redeem Voucher'
+    $redeemVoucherRendering = Get-Item  -Path $redeemVoucherRenderingPath | New-Rendering -Placeholder $redeemVoucherPlaceholder  -DataSource $redeemVoucherData 
+              
+    Add-Rendering -Item $page -PlaceHolder $redeemVoucherPlaceholder -Instance $redeemVoucherRendering
+    
+    Get-Rendering -Item $page -PlaceHolder $componentWrapperPlaceHolder | 
+    Foreach-Object { 
+        $_.Placeholder = "body"; 
+        Set-Rendering -Item $page -Instance $_
+    }
+    
+    # Insert component wrapper
+    $componentWrapperPlaceHolder= 'second-wrapper'
+    $componentWrapperRenderingPath = "/sitecore/layout/Renderings/Project/Holidays/Component Wrapper"
+    $componentWrapperItem = Get-Item -Path $componentWrapperRenderingPath | New-Rendering -Placeholder $componentWrapperPlaceHolder
+    Add-Rendering -Item $page -PlaceHolder $componentWrapperPlaceHolder -Instance $componentWrapperItem 
+    
+    #Create text block data source
+    Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Redeem Voucher/Page Components" -templateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Redeem Voucher/Page Components/Text Blocks" -templateId "{AB8D608B-3B9D-4ECB-9BA3-8C61306D7A41}"
+    $qaTitle = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Redeem Voucher/Page Components/Text Blocks/Questions And Answers Title" -templateId "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}" 
+    if ($qaTitle -ne $null) {
+        $qaTitle.Editing.BeginEdit() 
+        $qaTitle["Title"] = 'Questions about holiday credit'
+        $qaTitle.Editing.EndEdit() | Out-Null
+    }
+    $componentWrapperRend = Get-Rendering -Item $page -Placeholder $componentWrapperPlaceHolder;
+    $textRenderingPath = '/sitecore/layout/Renderings/Feature/PageContent/Text Block'
+    $qaPlaceholder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0'
+    $qaTitleRendering = Get-Item -Path $textRenderingPath | New-Rendering -Placeholder $faqPlaceHolder -DataSource $qaTitle
+    Add-Rendering -Item $page -PlaceHolder $qaPlaceholder -Instance $qaTitleRendering 
+    Get-Rendering -Item $page -PlaceHolder $qaPlaceholder | Set-RenderingParameter -Parameter @{"TitleTag"="h1"; "TitlePosition"="left"; "TitleFontStyle"="rounded"; "ClassName"="redeem-voucher__questions-title"} | 
+        Set-Rendering -Item $page
+    
+    #Create Question and Answers datasource
+    $qaFolder = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Redeem Voucher/Page Components/Questions and Answers" -templateId "{48403D80-0E80-447F-84CC-D2C218D0F2A3}"
+    $testFaq = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Redeem Voucher/Page Components/Questions and Answers/What is holiday credit" -templateId "{C9FD0113-5386-4ACB-B11C-0C14AD77FFD8}"
+    if ($testFaq -ne $null) {
+        $testFaq.Editing.BeginEdit()
+        $testFaq["Question"] = 'What is holiday credit?'
+        $testFaq["Answer"] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+        $testFaq.Editing.EndEdit() | Out-Null
+    }
+    $testFaq = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Redeem Voucher/Page Components/Questions and Answers/How do I use my holiday credit" -templateId "{C9FD0113-5386-4ACB-B11C-0C14AD77FFD8}"
+    if ($testFaq -ne $null) {
+        $testFaq.Editing.BeginEdit()
+        $testFaq["Question"] = 'How do I use my holiday credit?'
+        $testFaq["Answer"] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+        $testFaq.Editing.EndEdit() | Out-Null
+    }
+    $testFaq = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Redeem Voucher/Page Components/Questions and Answers/Will my holiday credit expire" -templateId "{C9FD0113-5386-4ACB-B11C-0C14AD77FFD8}"
+    if ($testFaq -ne $null) {
+        $testFaq.Editing.BeginEdit()
+        $testFaq["Question"] = 'Will my holiday credit expire?'
+        $testFaq["Answer"] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+        $testFaq.Editing.EndEdit() | Out-Null
+    }
+    
+    $qaPlaceholder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0'
+    $qaRenderingPath = '/sitecore/layout/Renderings/Feature/PageContent/Question And Answer'
+    $qaRendering = Get-Item  -Path $qaRenderingPath | New-Rendering -Placeholder $qaPlaceholder -DataSource $qaFolder
+              
+    Add-Rendering -Item $page -PlaceHolder $qaPlaceholder -Instance $qaRendering
+    
+    Get-Rendering -Item $page -PlaceHolder $componentWrapperPlaceHolder | 
+    Foreach-Object { 
+        $_.Placeholder = "body"; 
+        Set-Rendering -Item $page -Instance $_
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210112T150701Z

@@ -1,0 +1,157 @@
+.titleContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 16px;
+
+    @include media-breakpoint-down(md) {
+        align-items: flex-start;
+        margin-right: 12px;
+    }
+}
+
+.infoBlock {
+    display: flex;
+    flex-direction: column;
+}
+
+.luggageSection {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+
+    @include media-breakpoint-down(md) {
+        align-items: flex-start;
+    }
+}
+
+.priceSection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+
+    @include media-breakpoint-down(md) {
+        align-items: flex-start;
+        width: 100%;
+        padding-top: 12px;
+        text-align: unset;
+        border-top: 1px solid $colorGrayMiddle;
+    }
+}
+
+.bagExtraIconSmall {
+    display: none;
+
+    @include media-breakpoint-down(md) {
+        display: block;
+        max-width: 33px;
+        margin-right: 15px;
+    }
+}
+
+.bagExtraIconBig {
+    display: block;
+    width: 78px;
+
+    @include media-breakpoint-down(md) {
+        display: none;
+    }
+}
+
+.bagExtraHeading {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.33;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 6px;
+        font-size: 16px;
+        line-height: 1.13;
+    }
+}
+
+.bagExtraDescription {
+    font-size: 18px;
+    line-height: 1.33;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 8px;
+        font-size: 14px;
+        line-height: 1.28;
+    }
+}
+
+.bagExtraDescription > p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.33;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+        line-height: 1.28;
+    }
+}
+
+.bagExtraPrice {
+    margin-bottom: 5px;
+    font-size: 18px;
+    line-height: 1.33;
+
+    @include media-breakpoint-down(md) {
+        font-size: 16px;
+        line-height: 1.38;
+    }
+}
+
+.sportsExtraPrice {
+    font-size: 16px;
+    line-height: 1.38;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+        line-height: 1.28;
+    }
+}
+
+.addButton {
+    width: 260px;
+    margin-top: 12px;
+    padding: 16px 24px;
+    font-size: 16px;
+    color: $clrSiteBgWhite;
+    background-color: $clrEjOrange;
+    border: none;
+    border-radius: 2px;
+
+    &.outlined {
+        color: $clrEjOrange;
+        background-color: $clrSiteBgWhite;
+        border: 1px solid $clrEjOrange;
+    }
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+    }
+}
+
+.holdLuggageExtras {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 0;
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.border {
+    border-bottom: 1px solid $colorGrayMiddle;
+}

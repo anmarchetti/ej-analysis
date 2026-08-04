@@ -1,0 +1,73 @@
+﻿---
+ID: "d7d57610-e514-42f2-83a6-dba83f6c57f1"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-778 23KG translations"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+     function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    $holidaysHoldBaggage23kgPath = "/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage/Hold Baggage 23kg"
+    $tradePortalHoldBaggage23kgPath = "/sitecore/content/EasyJet/TradePortal/Data/Luggage/Hold Baggage/Hold Baggage 23kg"
+    
+    $holidaysHoldBaggage23kg = Get-Item -Path $holidaysHoldBaggage23kgPath
+    $tradePortalHoldBaggage23kg = Get-Item -Path $tradePortalHoldBaggage23kgPath
+    
+    $translations = @{
+        "en" = @{
+            "Name" = "Hold Baggage 23kg";
+            "Description" = "Maximum 23kg per bag, stored in the plane hold. Outbound and return."
+        }
+        "fr-CH" = @{
+            "Name" = "Bagage en Soute 23kg";
+            "Description" = "Poids maximum de 23 kg par sac, stocké dans la soute de l'avion. Aller et retour."
+        }
+        "fr-FR" = @{
+            "Name" = "Bagage en Soute 23kg";
+            "Description" = "Poids maximum de 23 kg par sac, stocké dans la soute de l'avion. Aller et retour."
+        }
+        "de-CH" = @{
+            "Name" = "Aufgegebenes Gepäck 23kg";
+            "Description" = "Maximal 23kg pro Tasche, verstaut im Flugzeugfrachtraum. Hin- und Rückflug."
+        }
+        "de-DE" = @{
+            "Name" = "Aufgegebenes Gepäck 23kg";
+            "Description" = "Maximal 23kg pro Tasche, verstaut im Flugzeugfrachtraum. Hin- und Rückflug."
+        }
+    }
+    
+    foreach ($lang in $translations.Keys) {
+        create-lang-version -item $holidaysHoldBaggage23kg  -lang $lang -field "Name" -value $translations[$lang]["Name"]
+        create-lang-version -item $tradePortalHoldBaggage23kg -lang $lang -field "Name" -value $translations[$lang]["Name"]
+        
+            create-lang-version -item $holidaysHoldBaggage23kg  -lang $lang -field "Description" -value $translations[$lang]["Description"]
+        create-lang-version -item $tradePortalHoldBaggage23kg -lang $lang -field "Description" -value $translations[$lang]["Description"]
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231128T151409Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

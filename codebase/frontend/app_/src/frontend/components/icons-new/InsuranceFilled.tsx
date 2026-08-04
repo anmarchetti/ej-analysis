@@ -1,0 +1,18 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgInsuranceFilled = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'insurance-filled-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <path d='M20.53 5.52A.58.58 0 0020 5a11.47 11.47 0 01-7.6-2.83.61.61 0 00-.8 0A11.47 11.47 0 014.05 5a.58.58 0 00-.58.56c-.06 5.58-.87 13.19 8.31 16.42a.66.66 0 00.44 0c9.18-3.27 8.37-10.88 8.31-16.46zm-4 6.6h-4v4a.51.51 0 01-.5.5.5.5 0 01-.5-.5v-4h-4a.5.5 0 01-.5-.5.5.5 0 01.5-.5h4v-4a.5.5 0 01.5-.5.5.5 0 01.5.5v4h4a.5.5 0 01.5.5.51.51 0 01-.52.5z' />
+    </svg>
+);
+
+export default SvgInsuranceFilled;

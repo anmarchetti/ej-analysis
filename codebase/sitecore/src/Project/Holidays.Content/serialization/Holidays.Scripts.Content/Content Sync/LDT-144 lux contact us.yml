@@ -1,0 +1,199 @@
+﻿---
+ID: "a6402d5e-0db0-4415-be42-6a3233775e3c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-144 lux contact us"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $icon = @"
+    <image mediaid="{E39765A5-2424-44DC-9FD5-8C05EF0029CF}" alt="Phone icon" height="" width="" hspace="" vspace="" />
+    "@
+    $popup_description_en = @"
+    <p>If you'd like to make a change to your holiday but don't see the option on this page, our dedicated luxury support team is here to help. Please contact us using the number below, and one of our specialists will assist you with your request.</p><p><a href="tel:+03309126594">+03309126594</a></p><p>Please have your seven digit easyJet holidays booking reference ready. Make sure you check with your network provider for call charges while you're away.</p>
+    "@
+    $popup_description_de = @"
+    <p>Wenn Sie eine Änderung an Ihrem Urlaub vornehmen möchten, aber die Option auf dieser Seite nicht sehen, ist unser engagiertes Luxus-Support-Team für Sie da. Bitte kontaktieren Sie uns unter der unten angegebenen Nummer und einer unserer Spezialisten wird Ihnen bei Ihrer Anfrage behilflich sein.</p><p><a href="tel:+03309126594">+03309126594</a></p><p>Bitte halten Sie Ihre siebenstellige easyJet holidays Buchungsnummer bereit. Bitte erkundigen Sie sich bei Ihrem Netzbetreiber nach den Gesprächsgebühren während Ihrer Abwesenheit.</p>
+    "@
+    $popup_description_fr = @"
+    <p>Si vous souhaitez apporter une modification à votre séjour mais que vous ne voyez pas l'option sur cette page, notre équipe d'assistance dédiée au luxe est là pour vous aider. Veuillez nous contacter en utilisant le numéro ci-dessous, et l'un de nos spécialistes vous assistera dans votre demande.</p><p><a href="tel:+03309126594">+03309126594</a></p><p>Veuillez vous munir de votre référence de réservation easyJet holidays à sept chiffres. N'oubliez pas de vérifier auprès de votre fournisseur de réseau les frais d'appel pendant votre absence.</p>
+    "@
+    
+    $itemsToCreate = @(
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Amend Restrictions/Luxury Restriction"
+            TemplatePath = "/sitecore/templates/Feature/Destinations/Amend/Amend Restriction Item"
+            Fields       = @{
+                "Title" = @{
+                    "en"    = "Need help?"
+                    "de-DE" = "Brauchen Sie Hilfe?"
+                    "de-CH" = "Brauchen Sie Hilfe?"
+                    "fr-FR" = "Besoin d'aide?"
+                    "fr-CH" = "Besoin d'aide?"
+                }
+                "Description" = @{
+                    "en"    = "<p>If you need to make a change to your holiday and cannot do so on this page, please get in touch with the prioritized customer service below:</p>"
+                    "de-DE" = "<p>Wenn Sie eine Änderung an Ihrem Urlaub vornehmen müssen und dies auf dieser Seite nicht möglich ist, wenden Sie sich bitte an den unten aufgeführten Kundenservice:</p>"
+                    "de-CH" = "<p>Wenn Sie eine Änderung an Ihrem Urlaub vornehmen müssen und dies auf dieser Seite nicht möglich ist, wenden Sie sich bitte an den unten aufgeführten Kundenservice:</p>"
+                    "fr-FR" = "<p>Si vous devez modifier votre séjour et que vous ne pouvez pas le faire sur cette page, veuillez contacter le service clientèle prioritaire ci-dessous:</p>"
+                    "fr-CH" = "<p>Si vous devez modifier votre séjour et que vous ne pouvez pas le faire sur cette page, veuillez contacter le service clientèle prioritaire ci-dessous:</p>"
+                }
+                "Icon" = $icon
+                "CTA" = @{
+                    "en"    = "Contact us to make a change"
+                    "de-DE" = "Kontaktieren Sie uns, um etwas zu ändern"
+                    "de-CH" = "Kontaktieren Sie uns, um etwas zu ändern"
+                    "fr-FR" = "Contactez-nous pour changer les choses"
+                    "fr-CH" = "Contactez-nous pour changer les choses"
+                }
+                "IsLux" = "1"
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Need Help Popup"
+            TemplatePath = "/sitecore/templates/Feature/Destinations/Need Help Popup"
+            Fields       = @{
+                "Title"    = @{
+                    "en"    = "Contact us to make a change"
+                    "de-DE" = "Kontaktieren Sie uns, um etwas zu ändern"
+                    "de-CH" = "Kontaktieren Sie uns, um etwas zu ändern"
+                    "fr-FR" = "Contactez-nous pour changer les choses"
+                    "fr-CH" = "Contactez-nous pour changer les choses"
+                }
+                "Description" = @{
+                    "en"    = $popup_description_en
+                    "de-DE" = $popup_description_de
+                    "de-CH" = $popup_description_de
+                    "fr-FR" = $popup_description_fr
+                    "fr-CH" = $popup_description_fr
+                }
+                "CTA" = @{
+                    "en"    = "Close"
+                    "de-DE" = "Schließen"
+                    "de-CH" = "Schließen"
+                    "fr-FR" = "Fermer"
+                    "fr-CH" = "Fermer"
+                }
+                "Icon" = $icon
+                "Label" = @{
+                    "en"    = "Need help?"
+                    "de-DE" = "Brauchen Sie Hilfe?"
+                    "de-CH" = "Brauchen Sie Hilfe?"
+                    "fr-FR" = "Besoin d'aide?"
+                    "fr-CH" = "Besoin d'aide?"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking/Page Components/Amend Restrictions"
+            TemplatePath = "/sitecore/templates/Feature/Destinations/Amend/Amend Restrictions"
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking/Page Components/Amend Restrictions/Luxury Restriction"
+            TemplatePath = "/sitecore/templates/Feature/Destinations/Amend/Amend Restriction Item"
+            Fields       = @{
+                "Title" = @{
+                    "en"    = "Need help?"
+                    "de-DE" = "Brauchen Sie Hilfe?"
+                    "de-CH" = "Brauchen Sie Hilfe?"
+                    "fr-FR" = "Besoin d'aide?"
+                    "fr-CH" = "Besoin d'aide?"
+                }
+                "Description" = @{
+                    "en"    = "<p>If you need to make a change to your holiday and cannot do so on this page, please get in touch with the prioritized customer service below:</p>"
+                    "de-DE" = "<p>Wenn Sie eine Änderung an Ihrem Urlaub vornehmen müssen und dies auf dieser Seite nicht möglich ist, wenden Sie sich bitte an den unten aufgeführten Kundenservice:</p>"
+                    "de-CH" = "<p>Wenn Sie eine Änderung an Ihrem Urlaub vornehmen müssen und dies auf dieser Seite nicht möglich ist, wenden Sie sich bitte an den unten aufgeführten Kundenservice:</p>"
+                    "fr-FR" = "<p>Si vous devez modifier votre séjour et que vous ne pouvez pas le faire sur cette page, veuillez contacter le service clientèle prioritaire ci-dessous:</p>"
+                    "fr-CH" = "<p>Si vous devez modifier votre séjour et que vous ne pouvez pas le faire sur cette page, veuillez contacter le service clientèle prioritaire ci-dessous:</p>"
+                }
+                "Icon" = $icon
+                "CTA" = @{
+                    "en"    = "Contact us to make a change"
+                    "de-DE" = "Kontaktieren Sie uns, um etwas zu ändern"
+                    "de-CH" = "Kontaktieren Sie uns, um etwas zu ändern"
+                    "fr-FR" = "Contactez-nous pour changer les choses"
+                    "fr-CH" = "Contactez-nous pour changer les choses"
+                }
+                "IsLux" = "1"
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking/Page Components/Need Help Popup"
+            TemplatePath = "/sitecore/templates/Feature/Destinations/Need Help Popup"
+            Fields       = @{
+                "Title"    = @{
+                    "en"    = "Contact us to make a change"
+                    "de-DE" = "Kontaktieren Sie uns, um etwas zu ändern"
+                    "de-CH" = "Kontaktieren Sie uns, um etwas zu ändern"
+                    "fr-FR" = "Contactez-nous pour changer les choses"
+                    "fr-CH" = "Contactez-nous pour changer les choses"
+                }
+                "Description" = @{
+                    "en"    = $popup_description_en
+                    "de-DE" = $popup_description_de
+                    "de-CH" = $popup_description_de
+                    "fr-FR" = $popup_description_fr
+                    "fr-CH" = $popup_description_fr
+                }
+                "CTA" = @{
+                    "en"    = "Close"
+                    "de-DE" = "Schließen"
+                    "de-CH" = "Schließen"
+                    "fr-FR" = "Fermer"
+                    "fr-CH" = "Fermer"
+                }
+                "Icon" = $icon
+                "Label" = @{
+                    "en"    = "Need help?"
+                    "de-DE" = "Brauchen Sie Hilfe?"
+                    "de-CH" = "Brauchen Sie Hilfe?"
+                    "fr-FR" = "Besoin d'aide?"
+                    "fr-CH" = "Besoin d'aide?"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    
+    
+    Import-Function "Import Renderings"
+    $myRenderings = @(
+        @{ 
+            Title          = "Need Help Popup"
+            PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+            RenderingPath  = "/sitecore/layout/Renderings/Feature/Destinations/Need Help Popup"
+            Placeholder    = "/body"
+            DataSourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Need Help Popup"
+        },
+        @{ 
+            Title          = "Need Help Popup"
+            PagePath       = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking"
+            RenderingPath  = "/sitecore/layout/Renderings/Feature/Destinations/Need Help Popup"
+            Placeholder    = "/body"
+            DataSourcePath = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking/Page Components/Need Help Popup"
+        },
+        @{ 
+            Title          = "Amend Restrictions"
+            PagePath       = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking"
+            RenderingPath  = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Restrictions"
+            Placeholder    = "/body/amend-restrictions-{A0C9D3D6-CE99-4D98-B482-DF23906098AC}-0"
+            DataSourcePath = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking/Page Components/Amend Restrictions"
+            Params = @{
+                "Theme" = "One Row"
+            }
+        }
+    )
+    ImportRenderings -renderingsToAttach $myRenderings
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191118T132901Z

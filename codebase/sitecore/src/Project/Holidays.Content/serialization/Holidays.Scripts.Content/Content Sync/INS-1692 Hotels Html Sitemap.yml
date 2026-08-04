@@ -1,0 +1,419 @@
+﻿---
+ID: "8426838b-25e7-487e-8e64-21282e92d5f9"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-1692 Hotels Html Sitemap"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $databaseName = "master"
+    
+    $targetRootPath = "/sitecore/content/EasyJet/Holidays/Home/Sitemap"
+    $parentItemName = "Hotels"
+    $parentBranchTemplatePath = "/sitecore/templates/Branches/Foundation/Multisite/Hotels Sitemap"
+    
+    $countryBranchTemplatePath = "/sitecore/templates/Branches/Foundation/Multisite/Hotels Sitemap"
+    $branchSitemapBlockDatasourceId = "{89EF4DDA-BD3C-4B53-A6F4-75CCC75A175F}"
+    $sourceDatabaseName = "web"
+    $sourceCountriesPath = "/sitecore/content/EasyJet/Holidays/Home/Destinations"
+    $rootSectionItemName = "Hotels by country"
+    $rootSectionTitleByLanguage = @{
+        "de-CH" = "Hotels nach Ländern"
+        "de-DE" = "Hotels nach Ländern"
+        "en" = "Hotels by country"
+        "fr-CH" = "Hôtels par pays"
+        "fr-FR" = "Hôtels par pays"
+    }
+    
+    $languages = @("de-CH", "de-DE", "en", "fr-CH", "fr-FR")
+    
+    # Parent page localized title
+    $parentTitleByLanguage = @{
+        "de-CH" = "Hotels"
+        "de-DE" = "Hotels"
+        "en" = "Hotels"
+        "fr-CH" = "Hôtels"
+        "fr-FR" = "Hôtels"
+    }
+    
+    # Country page localized title format
+    $pageTitleFormats = @{
+        "de-CH" = "Hotels in {0}"
+        "de-DE" = "Hotels in {0}"
+        "en" = "Hotels in {0}"
+        "fr-CH" = "Hôtels en {0}"
+        "fr-FR" = "Hôtels en {0}"
+    }
+    
+    # Sitemap section localized title format
+    $sectionTitleFormats = @{
+        "de-CH" = "Hotels in {0}"
+        "de-DE" = "Hotels in {0}"
+        "en" = "Hotels in {0}"
+        "fr-CH" = "Hôtels en {0}"
+        "fr-FR" = "Hôtels en {0}"
+    }
+    
+    $targetRoot = Get-Item -Path "${databaseName}:$targetRootPath"
+    $parentBranch = Get-Item -Path "${databaseName}:$parentBranchTemplatePath"
+    $countryBranch = Get-Item -Path "${databaseName}:$countryBranchTemplatePath"
+    $sourceRoot = Get-Item -Path "${sourceDatabaseName}:$sourceCountriesPath"
+    
+    if (-not $targetRoot) { Write-Warning "Target root not found: $targetRootPath. Skipping."; return }
+    if (-not $parentBranch) { Write-Warning "Parent branch not found: $parentBranchTemplatePath. Skipping."; return }
+    if (-not $countryBranch) { Write-Warning "Country branch not found: $countryBranchTemplatePath. Skipping."; return }
+    if (-not $sourceRoot) { Write-Warning "Source countries root not found: $sourceCountriesPath. Skipping."; return }
+    
+    function Get-DbItemInLanguage {
+        param(
+            [Sitecore.Data.Items.Item]$Item,
+            [string]$Language
+        )
+    
+        if (-not $Item) { return $null }
+        $l = [Sitecore.Globalization.Language]::Parse($Language)
+        if (-not $l) { return $null }
+        return $Item.Database.GetItem($Item.ID, $l)
+    }
+    
+    function Ensure-Version {
+        param([string]$ItemPath, [string]$Language)
+    
+        if ([string]::IsNullOrWhiteSpace($ItemPath) -or [string]::IsNullOrWhiteSpace($Language)) { return $null }
+    
+        $baseItem = Get-Item -Path $ItemPath -ErrorAction SilentlyContinue
+        if (-not $baseItem) { return $null }
+    
+        $itemInLanguage = Get-DbItemInLanguage -Item $baseItem -Language $Language
+        if (-not $itemInLanguage) { return $null }
+    
+        if ($itemInLanguage.Versions.Count -eq 0) {
+            $itemInLanguage = $itemInLanguage.Versions.AddVersion()
+        }
+    
+        return $itemInLanguage
+    }
+    
+    function Remove-CountrySitemapTreeVersionsInLanguage {
+        param(
+            [Sitecore.Data.Items.Item]$Page,
+            [Sitecore.Data.Items.Item]$SitemapBlock,
+            [Sitecore.Data.Items.Item]$Section,
+            [string]$Language
+        )
+    
+        $ordered = @()
+        if ($Section)     { $ordered += $Section }
+        if ($SitemapBlock) { $ordered += $SitemapBlock }
+        if ($Page)         { $ordered += $Page }
+    
+        $disabler = New-Object Sitecore.SecurityModel.SecurityDisabler
+        try {
+            foreach ($node in $ordered) {
+                $langItem = Get-DbItemInLanguage -Item $node -Language $Language
+                if ($langItem -and $langItem.Versions.Count -gt 0) {
+                    Remove-ItemVersion -Path "$($node.Database.Name):$($node.Paths.FullPath)" -Language $Language
+                }
+            }
+        } finally {
+            $disabler.Dispose()
+        }
+    }
+    
+    function Get-LocalizedCountryName {
+        param(
+            [Sitecore.Data.Items.Item]$SourceItem,
+            [string]$Language
+        )
+    
+        $localized = Get-DbItemInLanguage -Item $SourceItem -Language $Language
+        if (-not $localized -or $localized.Versions.Count -eq 0) {
+            if ($SourceItem.Fields["Name"] -and -not [string]::IsNullOrWhiteSpace($SourceItem["Name"])) { return $SourceItem["Name"] }
+            return $SourceItem.Name
+        }
+    
+        if ($localized.Fields["Name"] -and -not [string]::IsNullOrWhiteSpace($localized["Name"])) { return $localized["Name"] }
+        if ($SourceItem.Fields["Name"] -and -not [string]::IsNullOrWhiteSpace($SourceItem["Name"])) { return $SourceItem["Name"] }
+        return $SourceItem.Name
+    }
+    
+    function Test-SourceCountryHasLanguageVersion {
+        param(
+            [Sitecore.Data.Items.Item]$SourceItem,
+            [string]$Language
+        )
+    
+        $localized = Get-DbItemInLanguage -Item $SourceItem -Language $Language
+        return ($null -ne $localized -and $localized.Versions.Count -gt 0)
+    }
+    
+    function Update-RenderingsDatasourceToLocalSitemapBlock {
+        param(
+            [Sitecore.Data.Items.Item]$PageItem,
+            [string]$BranchDatasourceId
+        )
+    
+        $localDs = Get-Item -Path "$($PageItem.Database.Name):$($PageItem.Paths.FullPath)/Page Components/Sitemap Block" -ErrorAction SilentlyContinue
+        if (-not $localDs) { return }
+        $expectedDatasourceId = [Sitecore.Data.ID]::Parse($BranchDatasourceId)
+    
+        # Shared layout
+        $sharedRenderings = Get-Rendering -Item $PageItem
+        foreach ($r in $sharedRenderings) {
+            if ([Sitecore.Data.ID]::IsID($r.Datasource) -and ([Sitecore.Data.ID]::Parse($r.Datasource) -eq $expectedDatasourceId)) {
+                $r.Datasource = $localDs.ID.ToString()
+                Set-Rendering -Item $PageItem -Instance $r
+            }
+        }
+    }
+    
+    $parentPath = "$targetRootPath/$parentItemName"
+    $parentItem = Get-Item -Path "${databaseName}:$parentPath" -ErrorAction SilentlyContinue
+    
+    if (-not $parentItem) {
+        $parentItem = New-Item -Path "${databaseName}:$targetRootPath" -Name $parentItemName -ItemType $parentBranch.ID.Guid.ToString()
+    }
+    if (-not $parentItem) { throw "Failed to create/find parent item at $parentPath" }
+    
+    Update-RenderingsDatasourceToLocalSitemapBlock -PageItem $parentItem -BranchDatasourceId $branchSitemapBlockDatasourceId
+    
+    # Normalize root section under parent:
+    $parentSitemapBlock = Get-Item -Path "${databaseName}:$($parentItem.Paths.FullPath)/Page Components/Sitemap Block" -ErrorAction SilentlyContinue
+    $parentSection = $null
+    if ($parentSitemapBlock) {
+        $parentSection = Get-ChildItem -Path "${databaseName}:$($parentSitemapBlock.Paths.FullPath)" -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($parentSection) {
+            if ($parentSection.Name -ne $rootSectionItemName) {
+                Rename-Item -Path "${databaseName}:$($parentSection.Paths.FullPath)" -NewName $rootSectionItemName
+                $parentSection = Get-Item -Path "${databaseName}:$($parentSitemapBlock.Paths.FullPath)/$rootSectionItemName" -ErrorAction SilentlyContinue
+            }
+    
+            if ($parentSection) {
+                [void]$parentSitemapBlock.Editing.BeginEdit()
+                try {
+                    if ($parentSitemapBlock.Fields["Sections"]) { $parentSitemapBlock["Sections"] = $parentSection.ID.ToString() }
+                } finally {
+                    [void]$parentSitemapBlock.Editing.EndEdit()
+                }
+            }
+        }
+    }
+    
+    # Localize parent titles
+    foreach ($lang in $languages) {
+        $parentTitle = if ($parentTitleByLanguage.ContainsKey($lang)) { $parentTitleByLanguage[$lang] } else { $parentTitleByLanguage["en"] }
+    
+        $parentLang = Ensure-Version -ItemPath "${databaseName}:$($parentItem.Paths.FullPath)" -Language $lang
+        if (-not $parentLang) { continue }
+    
+        [void]$parentLang.Editing.BeginEdit()
+        try {
+            if ($parentLang.Fields["PageTitle"]) { $parentLang["PageTitle"] = $parentTitle }
+            if ($parentLang.Fields["Name"])      { $parentLang["Name"] = $parentTitle }
+            $parentLang.Appearance.DisplayName = $parentTitle
+        } finally {
+            [void]$parentLang.Editing.EndEdit()
+        }
+    }
+    
+    $parentTrackingTitle = if ($parentTitleByLanguage.ContainsKey("en")) { $parentTitleByLanguage["en"] } else { $parentItemName }
+    [void]$parentItem.Editing.BeginEdit()
+    try {
+        if ($parentItem.Fields["TrackingPageTitle"]) { $parentItem["TrackingPageTitle"] = $parentTrackingTitle }
+    } finally {
+        [void]$parentItem.Editing.EndEdit()
+    }
+    
+    # Root section title (localized) + clear PageTemplates
+    if ($parentSection) {
+        foreach ($lang in $languages) {
+            if ($parentSitemapBlock) {
+                $parentSitemapBlockLang = Ensure-Version -ItemPath "${databaseName}:$($parentSitemapBlock.Paths.FullPath)" -Language $lang
+                if ($parentSitemapBlockLang) {
+                    [void]$parentSitemapBlockLang.Editing.BeginEdit()
+                    try {
+                        if ($parentSitemapBlockLang.Fields["Sections"]) { $parentSitemapBlockLang["Sections"] = $parentSection.ID.ToString() }
+                    } finally {
+                        [void]$parentSitemapBlockLang.Editing.EndEdit()
+                    }
+                }
+            }
+            $parentSectionLang = Ensure-Version -ItemPath "${databaseName}:$($parentSection.Paths.FullPath)" -Language $lang
+            if (-not $parentSectionLang) { continue }
+            $rootSectionTitle = if ($rootSectionTitleByLanguage.ContainsKey($lang)) { $rootSectionTitleByLanguage[$lang] } else { $rootSectionTitleByLanguage["en"] }
+    
+            [void]$parentSectionLang.Editing.BeginEdit()
+            try {
+                if ($parentSectionLang.Fields["Title"]) { $parentSectionLang["Title"] = $rootSectionTitle }
+                if ($parentSectionLang.Fields["PageTemplates"]) { $parentSectionLang["PageTemplates"] = "" }
+            } finally {
+                [void]$parentSectionLang.Editing.EndEdit()
+            }
+        }
+    }
+    
+    # Create/update country pages under parent
+    $countries = Get-ChildItem -Path "${sourceDatabaseName}:$sourceCountriesPath" -ErrorAction SilentlyContinue |
+        Where-Object { $_.TemplateID -eq "{5F03C6EF-EF52-4F2E-BC5A-B1F065A1E745}" }
+    
+    foreach ($country in $countries) {
+        $itemName = [Sitecore.Data.Items.ItemUtil]::ProposeValidItemName($country.Name)
+        $countryPagePath = "${databaseName}:$($parentItem.Paths.FullPath)/$itemName"
+    
+        $page = Get-Item -Path $countryPagePath -ErrorAction SilentlyContinue
+        if (-not $page) {
+            $page = New-Item -Path "${databaseName}:$($parentItem.Paths.FullPath)" -Name $itemName -ItemType $countryBranch.ID.Guid.ToString()
+        }
+        if (-not $page) {
+            Write-Warning "Failed creating/finding page for $itemName"
+            continue
+        }
+        
+        $countryNameEn = Get-LocalizedCountryName -SourceItem $country -Language "en"
+        if ([string]::IsNullOrWhiteSpace($countryNameEn)) { $countryNameEn = $country.Name }
+        $pageFmtEn = if ($pageTitleFormats.ContainsKey("en")) { $pageTitleFormats["en"] } else { "Hotels in {0}" }
+        $trackingPageTitle = [string]::Format($pageFmtEn, $countryNameEn)
+        [void]$page.Editing.BeginEdit()
+        try {
+            if ($page.Fields["TrackingPageTitle"]) { $page["TrackingPageTitle"] = $trackingPageTitle }
+        } finally {
+            [void]$page.Editing.EndEdit()
+        }
+    
+        Update-RenderingsDatasourceToLocalSitemapBlock -PageItem $page -BranchDatasourceId $branchSitemapBlockDatasourceId
+    
+        # Get local Sitemap Block + first section
+        $sitemapBlock = Get-Item -Path "${databaseName}:$($page.Paths.FullPath)/Page Components/Sitemap Block" -ErrorAction SilentlyContinue
+        $section = $null
+        $sectionTemplatesValue = $null
+        $sectionPageTemplatesValue = $null
+        if ($sitemapBlock) {
+            $section = Get-ChildItem -Path "${databaseName}:$($sitemapBlock.Paths.FullPath)" -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($section) {
+                if ($section.Fields["Templates"]) { $sectionTemplatesValue = $section["Templates"] }
+                if ($section.Fields["PageTemplates"]) { $sectionPageTemplatesValue = $section["PageTemplates"] }
+            }
+        }
+    
+        # Keep links consistent
+        if ($sitemapBlock -and $section) {
+            [void]$sitemapBlock.Editing.BeginEdit()
+            try {
+                if ($sitemapBlock.Fields["Sections"]) { $sitemapBlock["Sections"] = $section.ID.ToString() }
+            } finally {
+                [void]$sitemapBlock.Editing.EndEdit()
+            }
+    
+            [void]$section.Editing.BeginEdit()
+            try {
+                if ($section.Fields["Roots"]) { $section["Roots"] = $country.ID.ToString() }
+            } finally {
+                [void]$section.Editing.EndEdit()
+            }
+        }
+    
+        # Localization (only create/update target language versions when source country has that language version)
+        foreach ($lang in $languages) {
+            if (-not (Test-SourceCountryHasLanguageVersion -SourceItem $country -Language $lang)) { continue }
+    
+            $countryNameLocalized = Get-LocalizedCountryName -SourceItem $country -Language $lang
+            if ([string]::IsNullOrWhiteSpace($countryNameLocalized)) { $countryNameLocalized = $country.Name }
+    
+            $pageFmt = if ($pageTitleFormats.ContainsKey($lang))    { $pageTitleFormats[$lang] }    else { $pageTitleFormats["en"] }
+            $sectionFmt = if ($sectionTitleFormats.ContainsKey($lang)) { $sectionTitleFormats[$lang] } else { $sectionTitleFormats["en"] }
+    
+            $pageTitle = [string]::Format($pageFmt, $countryNameLocalized)
+            $sectionTitle = [string]::Format($sectionFmt, $countryNameLocalized)
+    
+            $pageLang = Ensure-Version -ItemPath "${databaseName}:$($page.Paths.FullPath)" -Language $lang
+            if ($sitemapBlock) {
+                $sitemapBlockLang = Ensure-Version -ItemPath "${databaseName}:$($sitemapBlock.Paths.FullPath)" -Language $lang
+                if ($sitemapBlockLang -and $section) {
+                    [void]$sitemapBlockLang.Editing.BeginEdit()
+                    try {
+                        if ($sitemapBlockLang.Fields["Sections"]) { $sitemapBlockLang["Sections"] = $section.ID.ToString() }
+                    } finally {
+                        [void]$sitemapBlockLang.Editing.EndEdit()
+                    }
+                }
+            }
+            if ($pageLang) {
+                [void]$pageLang.Editing.BeginEdit()
+                try {
+                    if ($pageLang.Fields["PageTitle"]) { $pageLang["PageTitle"] = $pageTitle }
+                    if ($pageLang.Fields["Name"]) { $pageLang["Name"] = $pageTitle }
+                    $pageLang.Appearance.DisplayName = $countryNameLocalized
+                } finally {
+                    [void]$pageLang.Editing.EndEdit()
+                }
+            }
+    
+            if ($section) {
+                $sectionLang = Ensure-Version -ItemPath "${databaseName}:$($section.Paths.FullPath)" -Language $lang
+                if ($sectionLang) {
+                    [void]$sectionLang.Editing.BeginEdit()
+                    try {
+                        if ($sectionLang.Fields["Roots"]) { $sectionLang["Roots"] = $country.ID.ToString() }
+                        if ($sectionLang.Fields["Title"]) { $sectionLang["Title"] = $sectionTitle }
+                        if ($sectionLang.Fields["Templates"]) { $sectionLang["Templates"] = $sectionTemplatesValue }
+                        if ($sectionLang.Fields["PageTemplates"]) { $sectionLang["PageTemplates"] = $sectionPageTemplatesValue }
+                    } finally {
+                        [void]$sectionLang.Editing.EndEdit()
+                    }
+                }
+            }
+        }
+    
+        $countryHasAnyConfiguredLang = $false
+        foreach ($lang in $languages) {
+            if (Test-SourceCountryHasLanguageVersion -SourceItem $country -Language $lang) { $countryHasAnyConfiguredLang = $true; break }
+        }
+        if ($countryHasAnyConfiguredLang) {
+            foreach ($lang in $languages) {
+                if (Test-SourceCountryHasLanguageVersion -SourceItem $country -Language $lang) { continue }
+                Remove-CountrySitemapTreeVersionsInLanguage -Page $page -SitemapBlock $sitemapBlock -Section $section -Language $lang
+            }
+        }
+    }
+    
+    # Populate parent root section (per language: only child pages that have a version in that language)
+    if ($parentSection) {
+        $sitemapTemplateId = [Sitecore.Data.ID]::Parse("{798D918C-E325-421F-8EC2-B91A44D16630}")
+        foreach ($lang in $languages) {
+            $sortedSitemapChildIds = Get-ChildItem -Path "${databaseName}:$($parentItem.Paths.FullPath)" -ErrorAction SilentlyContinue |
+                Where-Object { $_.TemplateID -eq $sitemapTemplateId } |
+                Where-Object {
+                    $itemInLang = Get-DbItemInLanguage -Item $_ -Language $lang
+                    $null -ne $itemInLang -and $itemInLang.Versions.Count -gt 0
+                } |
+                Sort-Object `
+                    @{ Expression = { if (-not [string]::IsNullOrWhiteSpace($_["Name"])) { $_["Name"] } else { $_.Name } }; Ascending = $true }, `
+                    @{ Expression = { $_.Name }; Ascending = $true } |
+                Select-Object -ExpandProperty ID |
+                ForEach-Object { $_.ToString() }
+            $pagesValue = ($sortedSitemapChildIds | ForEach-Object { $_ }) -join "|"
+            $parentSectionLang = Ensure-Version -ItemPath "${databaseName}:$($parentSection.Paths.FullPath)" -Language $lang
+            if (-not $parentSectionLang) { continue }
+    
+            [void]$parentSectionLang.Editing.BeginEdit()
+            try {
+                if ($parentSectionLang.Fields["Pages"]) { $parentSectionLang["Pages"] = $pagesValue }
+            } finally {
+                [void]$parentSectionLang.Editing.EndEdit()
+            }
+        }
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260324T132019Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

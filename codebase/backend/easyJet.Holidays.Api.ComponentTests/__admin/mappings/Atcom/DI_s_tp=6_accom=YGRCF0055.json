@@ -1,0 +1,122 @@
+{
+    "Title": "Accommodation uat offers for s_tp=6&h_tp=P&tpf=Y&direct=N&brnd=F&names=1&accom_no=1&p_tp=TP&cty=1&names=1&sdate=2023-06-23&edate=2023-06-23&stay=15&pax_ad=2&pax_ch=0&pax_in=0&ch_age=&rooms=1&accom=YGRCF0055&tra_o=Ec0f6e86b0e8219209d29f3cfb0bb2299&tra_i=Ec1561c30137c413af2f2df0edbf20f7e&pkg=2154857381%2f2%2f1999%2f15&bb=BB&accom_no=1&fc_pp=Y&rm_1=1,2",
+    "Priority": 5,
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "RegexMatcher",
+                    "Pattern": "/fcgi-bin/ezy.*/avcache3_g",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "s_tp",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "6"
+                    }
+                ]
+            },
+            {
+                "Name": "sdate",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "2023-06-23"
+                    }
+                ]
+            },
+            {
+                "Name": "edate",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "2023-06-23"
+                    }
+                ]
+            },
+            {
+                "Name": "stay",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "15"
+                    }
+                ]
+            },
+            {
+                "Name": "pax_ad",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "2"
+                    }
+                ]
+            },
+            {
+                "Name": "pax_ch",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "0"
+                    }
+                ]
+            },
+            {
+                "Name": "pax_in",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "0"
+                    }
+                ]
+            },
+            {
+                "Name": "rooms",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "1"
+                    }
+                ]
+            },
+            {
+                "Name": "accom",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "YGRCF0055"
+                    }
+                ]
+            },
+            {
+                "Name": "pkg",
+                "Matchers": [
+                    {
+                        "Name": "ExactMatcher",
+                        "Pattern": "2154857380/2/1450/26"
+                    }
+                ]
+            },
+            {
+                "Name": "bb",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "BB"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/DI_s_tp=6_accom=YGRCF0055.xml"
+    }
+}

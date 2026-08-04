@@ -1,0 +1,78 @@
+﻿---
+ID: "3dc7014a-c93b-404a-8946-031be912c3ad"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-1307 trade portal cabin bags content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $itemTradePath = '/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirm/Page Components/Payment'
+    $itemHolidaysPath = '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags'
+    
+    function create-lang-version ($itemPath,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $itemPath -Language $lang
+    
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Path $itemPath -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    			$targetLangItem = Get-Item -Path $itemPath -Language $lang
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $itemPath -Language $lang
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value;
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    create-lang-version -itemPath $itemTradePath -lang 'en' -field 'IncludedBagsLabel' -value '{count} x small under seat bags'
+    create-lang-version -itemPath $itemTradePath -lang 'en' -field 'IncludedWithInfantLabel' -value '{count} x small under seat bags, {infantCount} x baby change bags'
+    create-lang-version -itemPath $itemTradePath -lang 'en' -field 'OverheadBagAddedLabel' -value '{count} x large overhead cabin bags with speedy boarding'
+    create-lang-version -itemPath $itemTradePath -lang 'en' -field 'IncludedIcon' -value '<image mediaid="{CB598726-D37F-4F61-8B1C-B7A9DEF9DEE9}" />'
+    create-lang-version -itemPath $itemTradePath -lang 'en' -field 'OverheadAddedIcon' -value '<image mediaid="{D04439D4-A1E7-409F-B074-CBA5D1B14D5E}" />'
+    
+    create-lang-version -itemPath $itemHolidaysPath -lang 'en' -field 'IncludedBagsLabel' -value '{count} x small under seat bags'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'en' -field 'IncludedWithInfantLabel' -value '{count} x small under seat bags, {infantCount} x baby change bags'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'en' -field 'OverheadBagAddedLabel' -value '{count} x large overhead cabin bags with speedy boarding'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'en' -field 'IncludedIcon' -value '<image mediaid="{CB598726-D37F-4F61-8B1C-B7A9DEF9DEE9}" />'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'en' -field 'OverheadAddedIcon' -value '<image mediaid="{D04439D4-A1E7-409F-B074-CBA5D1B14D5E}" />'
+    
+    create-lang-version -itemPath $itemHolidaysPath -lang 'fr-FR' -field 'IncludedBagsLabel' -value '{count} x petits sacs sous le siège'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'fr-FR' -field 'IncludedWithInfantLabel' -value '{count} x petits sacs sous le siège, {infantCount} x sacs à langer pour bébé'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'fr-FR' -field 'OverheadBagAddedLabel' -value '{count} x grands sacs de cabine à placer en compartiment supérieur avec embarquement prioritaire'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'fr-FR' -field 'IncludedIcon' -value '<image mediaid="{CB598726-D37F-4F61-8B1C-B7A9DEF9DEE9}" />'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'fr-FR' -field 'OverheadAddedIcon' -value '<image mediaid="{D04439D4-A1E7-409F-B074-CBA5D1B14D5E}" />'
+    
+    create-lang-version -itemPath $itemHolidaysPath -lang 'fr-CH' -field 'IncludedBagsLabel' -value '{count} x petits sacs sous le siège'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'fr-CH' -field 'IncludedWithInfantLabel' -value '{count} x petits sacs sous le siège, {infantCount} x sacs à langer pour bébé'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'fr-CH' -field 'OverheadBagAddedLabel' -value '{count} x grands sacs de cabine à placer en compartiment supérieur avec embarquement prioritaire'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'fr-CH' -field 'IncludedIcon' -value '<image mediaid="{CB598726-D37F-4F61-8B1C-B7A9DEF9DEE9}" />'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'fr-CH' -field 'OverheadAddedIcon' -value '<image mediaid="{D04439D4-A1E7-409F-B074-CBA5D1B14D5E}" />'
+    
+    create-lang-version -itemPath $itemHolidaysPath -lang 'de-DE' -field 'IncludedBagsLabel' -value '{count} x kleine Taschen unter dem Sitz'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'de-DE' -field 'IncludedWithInfantLabel' -value '{count} x kleine Taschen unter dem Sitz, {infantCount} x Wickeltaschen für Babys'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'de-DE' -field 'OverheadBagAddedLabel' -value '{count} x große Kabinentaschen für die Gepäckablage mit bevorzugtem Boarding'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'de-DE' -field 'IncludedIcon' -value '<image mediaid="{CB598726-D37F-4F61-8B1C-B7A9DEF9DEE9}" />'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'de-DE' -field 'OverheadAddedIcon' -value '<image mediaid="{D04439D4-A1E7-409F-B074-CBA5D1B14D5E}" />'
+    
+    create-lang-version -itemPath $itemHolidaysPath -lang 'de-CH' -field 'IncludedBagsLabel' -value '{count} x kleine Taschen unter dem Sitz'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'de-CH' -field 'IncludedWithInfantLabel' -value '{count} x kleine Taschen unter dem Sitz, {infantCount} x Wickeltaschen für Babys'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'de-CH' -field 'OverheadBagAddedLabel' -value '{count} x große Kabinentaschen für die Gepäckablage mit bevorzugtem Boarding'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'de-CH' -field 'IncludedIcon' -value '<image mediaid="{CB598726-D37F-4F61-8B1C-B7A9DEF9DEE9}" />'
+    create-lang-version -itemPath $itemHolidaysPath -lang 'de-CH' -field 'OverheadAddedIcon' -value '<image mediaid="{D04439D4-A1E7-409F-B074-CBA5D1B14D5E}" />'
+    
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2070
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240318T125307Z

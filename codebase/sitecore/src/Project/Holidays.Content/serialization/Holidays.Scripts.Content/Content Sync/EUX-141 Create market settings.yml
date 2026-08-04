@@ -1,0 +1,74 @@
+﻿---
+ID: "3c918880-dd0b-4b8b-b4f3-0c1b98ef8c5e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUX-141 Create market settings"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-item($path, $itemName, $itemType){
+        $itemToCreateExist = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($itemToCreateExist -eq $null){
+            $createdItem = New-Item -Path $path -Name $itemName -ItemType $itemType
+    
+            if($createdItem -ne $null){
+                Write-Host "$($itemName) item is created"
+                return $createdItem
+            }
+        }
+        return $null
+    }
+    
+    function create-lang-version($item,$lang,$field,$value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value;
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    $marketSettingsPath = "/sitecore/content/EasyJet/Holidays/Settings/Market Settings"
+    
+    $marketSettingsItem = create-item -Path "/sitecore/content/EasyJet/Holidays/Settings" -ItemName "Market Settings" -ItemType "{575F1DD2-A3FD-4322-8D65-D6B5DBC1668F}"
+    
+    if ($marketSettingsItem -ne $null) {
+    
+    $swissMarket = create-item -Path $marketSettingsPath -ItemName "Switzerland" -ItemType "{F9653205-D2BA-441F-A0EF-526068CA493B}"
+    $ukMarket = create-item -Path $marketSettingsPath -ItemName "United Kingdom" -ItemType "{F9653205-D2BA-441F-A0EF-526068CA493B}"
+    
+    Create-Lang-Version -Item $marketSettingsItem -Lang "en" -Field "Market" -Value $ukMarket.Id
+    Create-Lang-Version -Item $marketSettingsItem -Lang "fr-CH" -Field "Market" -Value $swissMarket.Id
+    Create-Lang-Version -Item $marketSettingsItem -Lang "de-CH" -Field "Market" -Value $swissMarket.Id
+    
+    # shared fields so set values only once
+    Create-Lang-Version -Item $swissMarket -Lang "en" -Field "Code" -Value "CH" 
+    Create-Lang-Version -Item $ukMarket -Lang "en" -Field "Code" -Value "UK"
+    Create-Lang-Version -Item $swissMarket -Lang "en" -Field "DepartureAirports" -Value "{AB734A0E-FE27-454E-BF3A-63AEC930756C}|{27EEC904-5BE8-418E-8FD5-F815BE0FBED4}|{37A0324F-2775-4F67-94CA-C219F49D0BE5}"
+    Create-Lang-Version -Item $ukMarket -Lang "en" -Field "DepartureAirports" -Value "{4FF51C3D-3AF9-47C2-A69B-BA33367391D6}|{12FF5599-2193-4FD5-8ABE-550009497090}|{C9830C37-10A7-49DB-A3EB-55CC866FB92B}|{ECA231B3-9914-42AB-AD07-F410E183F9EE}|{B5627EE5-D6B7-4BD1-8A17-6DE7CBED9DD5}|{B2733BB7-62F4-47CA-BD12-F0AE1A1865F7}|{2DD8300E-6D8A-41CD-A0A9-ED574E632357}|{5FC10463-E7DB-4B73-A0BA-FA4A3391D4BB}|{ED3A6661-531B-4B31-B8E0-2B19EA54E28E}|{B38C4B5D-DE5E-4AA6-BE47-2DC8E2D07A51}|{DE1E1BFF-BD28-4FD4-BDCD-539F601BD4EE}|{0DA52E07-EA03-41AF-A5EC-EBDBC793BCE6}|{D50D20D6-6EE2-47C0-8B77-683EDE4F2BD2}|{1BBAEF11-4795-4168-813C-70B23F99511A}|{49C61188-DFF7-413C-95F6-C5CA9A644780}|{946199ED-202A-4C05-B5B5-6B2908A56262}|{872371D0-9E16-442B-AC5F-614612FF19B2}|{3E35BB94-DEAE-42FE-8055-4C096203F47B}|{9B05EBB8-01D0-4B14-BD20-01DE261DA028}|{54CEDC69-378E-4E10-9FB4-18A389147EF3}|{78837699-359D-41C8-A9EB-BA5BC753875C}|{72E29EE8-15DD-43DE-A935-372A28ECB9D1}"
+    
+    Create-Lang-Version -Item $swissMarket -Lang "fr-CH"
+    Create-Lang-Version -Item $swissMarket -Lang "de-CH"
+    Create-Lang-Version -Item $ukMarket -Lang "fr-CH"
+    Create-Lang-Version -Item $ukMarket -Lang "de-CH"
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 50
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

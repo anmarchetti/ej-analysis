@@ -1,0 +1,102 @@
+//noinspection Stylelint
+$radioLeft: 0rem;
+$radioSize: 1rem;
+$radioDotSize: 0.625rem;
+
+.radioButton {
+    position: relative;
+    display: block;
+    flex: 0 0 auto;
+    cursor: pointer;
+
+
+    input[type="radio"] {
+        position: absolute;
+        left: 0;
+        opacity: 0;
+
+        &:checked +.label::after {
+            display: block;
+        }
+
+        &:checked +.label {
+            font-family: $fontRoundedDemy;
+            font-weight: 400;
+        }
+    }
+}
+
+.disabled {
+    color: $clrTxtLight;
+
+    .label {
+        cursor:default;
+
+        &::after {
+            opacity: 0.4;
+        }
+    }
+}
+
+.pill {
+    input[type="radio"] {
+        &:checked + .label {
+            border-color: $colorOrange;
+        }
+    }
+
+    .label {
+        padding: 0.5rem 0.5rem 0.5rem 2.25rem;
+        font-family: $fontRoundedDemy;
+        font-size: 0.813rem;
+        font-weight: 400;
+        line-height: 1.063rem;
+        color: $colorOrange;
+        border: 1px solid  $colorGrayDark;
+        border-radius: 25px;
+    }
+}
+
+.label {
+    position: relative;
+    display: inline-block;
+    padding-left: 1.875rem;
+    font-size: 0.938rem;
+    cursor: pointer;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        display: inline-block;
+        margin: auto;
+    }
+
+    /* Outer box of the fake radio */
+    &::before {
+        left: $radioLeft;
+        width: $radioSize;
+        height: $radioSize;
+        background-color: #fff;
+        border: 1px solid $colorGrayDark;
+        border-radius: $box_border-radius_round;
+    }
+
+    /* Checkmark of the fake radio */
+    &::after {
+        left: calc($radioLeft + 1px + ($radioSize - $radioDotSize) / 2);
+        display: none;
+        width: $radioDotSize;
+        height: $radioDotSize;
+        background-color: $colorOrange;
+        border-radius: $box_border-radius_round;
+    }
+}
+
+.error {
+    .label::before {
+        border: 1px solid $colorRed;
+    }
+}

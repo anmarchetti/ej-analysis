@@ -1,0 +1,98 @@
+.popup-search-pod {
+    .popup__dialog {
+        justify-content: flex-start;
+        width: 98%;
+        max-width: 1300px;
+        max-height: calc(100% - 30px);
+        margin: 15px auto;
+    }
+
+    .popup__body {
+        display: flex;
+        flex-direction: column;
+        padding: 25px 80px 4px;
+        overflow: hidden;
+    }
+
+    .flatpickr-calendar .dayContainer {
+        margin-top: 15px;
+    }
+
+    .search-bar {
+        margin: 15px auto 10px;
+    }
+
+    .popup-search-pod__title {
+        margin: 0 0 4px;
+        font-family: $fontRoundedHeadline;
+        font-size: 30px;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .popup-search-pod__subtitle {
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .popup-search-pod__form {
+        display: flex;
+
+        .search-bar__input-wr {
+            flex: 1 1 50%;
+        }
+
+        .form-control__input:focus {
+            color: inherit;
+        }
+    }
+
+    .search-bar__input-wr {
+        position: relative;
+    }
+
+    .search-bar .search-bar__input-wr:last-child .search-bar__input-box {
+        margin-right: 0;
+    }
+
+    .popup-search-pod__body {
+        flex: 1;
+        overflow: auto;
+
+        .search-bar__dropdown {
+            display: flex !important;
+            flex-direction: column;
+            height: 100%;
+
+            .search-bar__dropdown-head-wr {
+                flex: 0 0 auto;
+            }
+
+            .search-bar__dropdown-wrapper-btns {
+                border-top: 1px solid #cbd5d8;
+            }
+        }
+    }
+}
+
+@media (width <= 1150px) {
+    .popup-search-pod {
+        .popup__body {
+            padding: 25px 25px 4px;
+        }
+    }
+}
+
+// Safari only fix, so popup is shown with full height
+// TODO: fix Safari so it behaves as other browsers
+@media not all and (resolution >= .001dpcm) {
+    @supports (-webkit-appearance: none) {
+        .popup-search-pod {
+            .popup__content,
+            .popup__body {
+                height: 100%;
+            }
+        }
+    }
+}

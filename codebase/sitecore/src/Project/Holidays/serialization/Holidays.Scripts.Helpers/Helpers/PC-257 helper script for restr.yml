@@ -1,0 +1,100 @@
+﻿---
+ID: "ced1d5e2-2228-4a23-876f-279b1626b546"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/PC-257 helper script for restructuring promo codes"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Parameters
+    $parentPath = "master:/sitecore/content/EasyJet/Holidays/Data/Promotions/Copy of Promotions - France"  # Replace with actual path
+    
+    # Get the parent item
+    $parentItem = Get-Item -Path $parentPath
+    
+    # Ensure it exists and has children
+    if ($parentItem -ne $null -and $parentItem.HasChildren) {
+    
+        # Group children by name prefix (excluding trailing numbers)
+        $groups = $parentItem.Children | Group-Object {
+            if ($_.Name -match "^(.*?)(\d+)?$") {
+                return $matches[1]  # Prefix before digits
+            }
+            else {
+                return $_.Name
+            }
+        }
+    
+        foreach ($group in $groups) {
+            $prefix = $group.Name
+            $items = $group.Group
+    
+            if ($items.Count -eq 0) { continue }
+    
+            # Use first item in the group as template for the copy
+            $firstItem = $items[0]
+    
+            # Generate new item name for copy
+            $copyName = $prefix
+    
+            # Ensure the new name doesn't already exist
+            $existing = Get-ChildItem -Path $parentItem.Paths.FullPath | Where-Object { $_.Name -eq $copyName }
+            if ($existing) {
+                Write-Host "Skipping '$prefix' group — item named '$copyName' already exists." -ForegroundColor Yellow
+                continue
+            }
+    
+            # Copy the first item
+            $newPath = "$($parentItem.Paths.FullPath)/$($prefix)"
+            Copy-Item -Path $firstItem.Paths.FullPath -Destination $newPath -Force
+            $copy = Get-Item -Path $newPath
+    
+            # Move all items from this group under the newly created item
+            foreach ($child in $items) {
+                $AtcomPromoCode = $child.Fields["AtcomPromoCode"].Value
+                $MinimumSpend = $child.Fields["MinimumSpend"].Value
+                $DiscountAmountPerBooking = $child.Fields["DiscountAmountPerBooking"].Value
+                $PercentageDiscountPerBooking = $child.Fields["PercentageDiscountPerBooking"].Value
+                $AdultDiscountAmountPerPerson = $child.Fields["AdultDiscountAmountPerPerson"].Value
+                $AdultPercentageAmountPerPerson = $child.Fields["AdultPercentageAmountPerPerson"].Value
+                $ChildDiscountAmountPerPerson = $child.Fields["ChildDiscountAmountPerPerson"].Value
+                $ChildPercentageAmountPerPerson = $child.Fields["ChildPercentageAmountPerPerson"].Value
+    
+                Set-ItemTemplate -Item $child -Template "/sitecore/templates/Foundation/Voucherify/Promotion/Promotion Code"
+                
+                $child.Editing.BeginEdit()
+                $child.Fields["AtcomPromoCode"].Value = $AtcomPromoCode
+                $child.Fields["MinimumSpend"].Value = $MinimumSpend
+                $child.Fields["DiscountAmountPerBooking"].Value = $DiscountAmountPerBooking
+                $child.Fields["PercentageDiscountPerBooking"].Value = $PercentageDiscountPerBooking
+                $child.Fields["AdultDiscountAmountPerPerson"].Value = $AdultDiscountAmountPerPerson
+                $child.Fields["AdultPercentageAmountPerPerson"].Value = $AdultPercentageAmountPerPerson
+                $child.Fields["ChildDiscountAmountPerPerson"].Value = $ChildDiscountAmountPerPerson
+                $child.Fields["ChildPercentageAmountPerPerson"].Value = $ChildPercentageAmountPerPerson
+                $child.Editing.EndEdit()
+                
+                Move-Item -Path $child.Paths.FullPath -Destination $copy.Paths.FullPath
+            }
+    
+            Write-Host "Created group '$prefix' with items:" -ForegroundColor Cyan
+            $items | ForEach-Object { Write-Host " - $($_.Name)" }
+        }
+    
+    } else {
+        Write-Host "Item not found or has no children." -ForegroundColor Red
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250622T125507Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

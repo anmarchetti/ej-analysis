@@ -1,0 +1,89 @@
+@import "./animation";
+
+/** FROM INITIAL GLOBAL FILE */
+* {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#__next {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#layout {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+// Helper class to visually hide elements but keep them accessible to assistive technologies.
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.brightness-dark {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.brightness-medium {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+#nprogress .bar {
+    background: #ffc299 !important;
+}
+
+#nprogress .peg {
+    box-shadow: 0 0 10px #ffc299, 0 0 5px #ffc299;
+}
+
+body.overflow-hidden {
+    overflow: hidden;
+}
+
+#ensNotifyBanner {
+    @include media-breakpoint-down(lg) {
+        top: 2vh !important;
+    }
+}
+
+[class^="col-"] {
+    position: relative;
+}
+
+.no-gutter-row {
+    @include make-row(0);
+}
+
+.hide-up-lg {
+    @include media-breakpoint-up(lg) {
+        display: none !important;
+    }
+}
+
+.hide-down-lg {
+    @include media-breakpoint-down(lg) {
+        display: none !important;
+    }
+}
+
+.hide {
+    display: none !important;
+}
+
+.hide-down-md {
+    @include media-breakpoint-down(md) {
+        display: none !important;
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "Title": "B2B GetMemberDetails: Member email does not exist for user emailnotexist@easyjet.com",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/MyService.asmx",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Headers": [
+            {
+                "Name": "Authorization",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "Basic *"
+                    }
+                ]
+            }
+        ],
+        "Body": {
+            "Matcher": {
+                "Name": "XPathMatcher",
+                "Pattern": "//GetMemberDetails[@MemberEmailAddress='emailnotexist@easyjet.com']"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "Content-Type: text/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/B2B/member_details_emailnotexist@easyjet.xml"
+    }
+}

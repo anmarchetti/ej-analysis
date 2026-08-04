@@ -1,0 +1,14 @@
+  <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="JWT" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\easyJet.Holidays.External.Domain\easyJet.Holidays.External.Domain.csproj" />
+  </ItemGroup>
+    <ItemGroup>
+      <InternalsVisibleTo Include="easyJet.Holidays.External.Salesforce.Tests" />
+    </ItemGroup>
+</Project>

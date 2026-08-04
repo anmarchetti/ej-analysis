@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <ItemGroup>
+        <PackageReference Include="Sitecore.ContentSearch" />
+        <PackageReference Include="Sitecore.ContentSearch.Linq" />
+        <PackageReference Include="Sitecore.ContentSearch.Data" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)SitecoreProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GeneratedAssemblyInfoFile>Properties\assemblyinfo.cs</GeneratedAssemblyInfoFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="App_Config\Include\Feature\easyJet.Feature.MediaCenter.Solr.CustomIndex.Master.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <None Include="App_Config\Include\Feature\easyJet.Feature.MediaCenter.Solr.CustomIndex.Master.CI.config">
+            <DependentUpon>easyJet.Feature.MediaCenter.Solr.CustomIndex.Master.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Feature\easyJet.Feature.MediaCenter.Solr.CustomIndex.Master.Debug.config">
+            <DependentUpon>easyJet.Feature.MediaCenter.Solr.CustomIndex.Master.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Feature\easyJet.Feature.MediaCenter.Solr.CustomIndex.Master.Release.config">
+            <DependentUpon>easyJet.Feature.MediaCenter.Solr.CustomIndex.Master.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <Content Include="App_Config\Include\Feature\easyJet.Feature.MediaCenter.Solr.CustomIndex.Web.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <None Include="App_Config\Include\Feature\easyJet.Feature.MediaCenter.Solr.CustomIndex.Web.CI.config">
+            <DependentUpon>easyJet.Feature.MediaCenter.Solr.CustomIndex.Web.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Feature\easyJet.Feature.MediaCenter.Solr.CustomIndex.Web.Debug.config">
+            <DependentUpon>easyJet.Feature.MediaCenter.Solr.CustomIndex.Web.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Feature\easyJet.Feature.MediaCenter.Solr.CustomIndex.Web.Release.config">
+            <DependentUpon>easyJet.Feature.MediaCenter.Solr.CustomIndex.Web.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,34 @@
+{
+    "Guid": "ef3a3cfa-b432-4a7f-a714-2d7fe9ecdbf6",
+    "UpdatedAt": "2023-11-10T14:05:03.1410746Z",
+    "Title": "BookingRequest with seats, 43c146d0-719a-4fa1-814b-b1778cec233d",
+    "Priority": 0,
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/EZYDMO/VRPWebservice/AniteGateway/AniteGateway.aspx",
+                    "IgnoreCase": false
+                }
+            ]
+        },
+        "Methods": [
+            "POST"
+        ],
+        "Body": {
+            "Matcher": {
+                "Name": "WildcardMatcher",
+                "Pattern": "*<p2:BookingRequest xmlns:p1=\"AtComRes/Common\" xmlns:p2=\"AtComRes/BookingRequest\"><p1:Adm><p1:SessId>580f370e-34b5-4982-a971-fbd705dbae2b@0</p1:SessId><p1:ReqId>43c146d0-719a-4fa1-814b-b1778cec233d</p1:ReqId>*",
+                "IgnoreCase": true
+            }
+        }
+    },
+    "Response": {
+        "Headers": {
+            "Content-Type": "application/xml; charset=utf-8"
+        },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/commit/BookingRequest_with_seats_43c146d0-719a.xml"
+    }
+}

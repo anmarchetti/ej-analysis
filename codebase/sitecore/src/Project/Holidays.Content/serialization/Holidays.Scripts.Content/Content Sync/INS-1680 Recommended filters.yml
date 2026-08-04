@@ -1,0 +1,205 @@
+﻿---
+ID: "e0ae6aeb-5c3f-43eb-bec3-2212945969fc"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-1680 Recommended filters"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $itemPath = "/sitecore/content/EasyJet/Holidays/Data/Recommended Filters"
+    $itemId = "{CFC06F6A-8B91-444E-9830-1A3859122582}"
+    $templateId = "{0ED3D67E-3DC1-41C8-A5F2-DDF3308DF4E2}"
+    
+    $item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+    if ($null -eq $item) {
+        $parentPath = Split-Path -Path $itemPath -Parent
+        $itemName = Split-Path -Path $itemPath -Leaf
+        
+        $item = New-Item -Path $parentPath -Name $itemName -ItemType $templateId -ForceId $itemId
+        Write-Host "Created item:" $item.Paths.FullPath
+    } else {
+        Write-Host "Item already exists:" $item.Paths.FullPath
+    }
+    
+    $item.Editing.BeginEdit()
+    $item["MinNumberOfOffers"] = "1"
+    $item.Editing.EndEdit() | Out-Null
+    
+    function Set-TranslatedFieldValue(
+        [Sitecore.Data.Items.Item]$sourceItem,
+        [string]$lang,
+        [string]$fieldName,
+        [string]$fieldValue
+    ) {
+        $targetLangItem = Get-Item -Path $sourceItem.Paths.FullPath -Language $lang
+        if ($null -eq $targetLangItem -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $sourceItem -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+        }
+    
+        $targetLangItem = Get-Item -Path $sourceItem.Paths.FullPath -Language $lang
+        $targetLangItem.Editing.BeginEdit()
+        $targetLangItem[$fieldName] = $fieldValue
+        $targetLangItem.Editing.EndEdit() | Out-Null
+    }
+    
+    function Upsert-RecommendedFilterChild(
+        [Sitecore.Data.Items.Item]$parentItem,
+        [string]$childId,
+        [string]$childName,
+        [string]$childTemplateId,
+        [string]$code,
+        [string]$displayName,
+        [string]$filterCode,
+        [string]$type,
+        [int]$sortOrder
+    ) {
+        $childPath = "$($parentItem.Paths.FullPath)/$childName"
+        $childItem = Get-Item -Path $childPath -ErrorAction SilentlyContinue
+    
+        if ($null -eq $childItem) {
+            $childItem = New-Item -Path $parentItem.ID -Name $childName -ItemType $childTemplateId -ForceId $childId
+            Write-Host "Created child item:" $childItem.Paths.FullPath
+        } else {
+            Write-Host "Child item already exists:" $childItem.Paths.FullPath
+        }
+    
+        $childItem.Editing.BeginEdit()
+        $childItem["Code"] = $code
+        $childItem["Name"] = $displayName
+        $childItem["FilterCode"] = $filterCode
+        $childItem["__Sortorder"] = $sortOrder.ToString()
+        if (-not [string]::IsNullOrWhiteSpace($type)) {
+            $childItem["Type"] = $type
+        }
+        $childItem.Editing.EndEdit() | Out-Null
+    }
+    
+    $children = @(
+        @{
+            Id = "{3A0AF31B-683C-4332-BB3C-2E3179DA4C01}";
+            Name = "All Inclusive";
+            TemplateId = "{EE8ACAA4-83E6-40D4-98F3-0F0DDC61BF4D}";
+            Code = "AI";
+            DisplayName = "All Inclusive";
+            FilterCode = "boardType";
+            Type = $null;
+            SortOrder = 100
+        },
+        @{
+            Id = "{44BA36E3-F168-4F46-B2CC-F4C996231443}";
+            Name = "Half Board";
+            TemplateId = "{EE8ACAA4-83E6-40D4-98F3-0F0DDC61BF4D}";
+            Code = "HB";
+            DisplayName = "Half Board";
+            FilterCode = "boardType";
+            Type = $null;
+            SortOrder = 200
+        },
+        @{
+            Id = "{2F35B925-D009-4583-91B1-AE9EAD0B9C57}";
+            Name = "Morning departure";
+            TemplateId = "{42F5F481-5C03-4678-AA41-3960BA7E5144}";
+            Code = "morning";
+            DisplayName = "Morning departure";
+            FilterCode = "timeSlots";
+            Type = "Outbound Departure Time";
+            SortOrder = 300
+        },
+        @{
+            Id = "{0F6AA354-82CF-42EE-85AA-4C7442DE894A}";
+            Name = "4plus TripAdvisor rating";
+            TemplateId = "{EE8ACAA4-83E6-40D4-98F3-0F0DDC61BF4D}";
+            Code = "4";
+            DisplayName = "4+ TripAdvisor rating";
+            FilterCode = "tripAdvisorRating";
+            Type = $null;
+            SortOrder = 400
+        },
+        @{
+            Id = "{3EB4E5DD-C80C-43D3-BA3E-226FECF9E011}";
+            Name = "5 Star Hotels";
+            TemplateId = "{EE8ACAA4-83E6-40D4-98F3-0F0DDC61BF4D}";
+            Code = "5";
+            DisplayName = "5 Star Hotels";
+            FilterCode = "starRating";
+            Type = $null;
+            SortOrder = 500
+        }
+    )
+    
+    foreach ($child in $children) {
+        Upsert-RecommendedFilterChild `
+            -parentItem $item `
+            -childId $child.Id `
+            -childName $child.Name `
+            -childTemplateId $child.TemplateId `
+            -code $child.Code `
+            -displayName $child.DisplayName `
+            -filterCode $child.FilterCode `
+            -type $child.Type `
+            -sortOrder $child.SortOrder
+    }
+    
+    $allInclusiveItem = Get-Item -Path "master:" -ID "{3A0AF31B-683C-4332-BB3C-2E3179DA4C01}" -ErrorAction SilentlyContinue
+    if ($null -ne $allInclusiveItem) {
+        @("fr-CH", "fr-FR") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $allInclusiveItem -lang $_ -fieldName "Name" -fieldValue "Tout compris"
+        }
+        @("de-CH", "de-DE") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $allInclusiveItem -lang $_ -fieldName "Name" -fieldValue "All-inclusive-Verpflegung"
+        }
+    }
+    
+    $halfBoardItem = Get-Item -Path "master:" -ID "{44BA36E3-F168-4F46-B2CC-F4C996231443}" -ErrorAction SilentlyContinue
+    if ($null -ne $halfBoardItem) {
+        @("fr-CH", "fr-FR") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $halfBoardItem -lang $_ -fieldName "Name" -fieldValue "Demi-pension"
+        }
+        @("de-CH", "de-DE") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $halfBoardItem -lang $_ -fieldName "Name" -fieldValue "Halbpension"
+        }
+    }
+    
+    $morningDepartureItem = Get-Item -Path "master:" -ID "{2F35B925-D009-4583-91B1-AE9EAD0B9C57}" -ErrorAction SilentlyContinue
+    if ($null -ne $morningDepartureItem) {
+        @("fr-CH", "fr-FR") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $morningDepartureItem -lang $_ -fieldName "Name" -fieldValue "Départ le matin"
+        }
+        @("de-CH", "de-DE") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $morningDepartureItem -lang $_ -fieldName "Name" -fieldValue "Abflug am Morgen"
+        }
+    }
+    
+    $tripAdvisorRatingItem = Get-Item -Path "master:" -ID "{0F6AA354-82CF-42EE-85AA-4C7442DE894A}" -ErrorAction SilentlyContinue
+    if ($null -ne $tripAdvisorRatingItem) {
+        @("fr-CH", "fr-FR") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $tripAdvisorRatingItem -lang $_ -fieldName "Name" -fieldValue "Note TripAdvisor 4+"
+        }
+        @("de-CH", "de-DE") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $tripAdvisorRatingItem -lang $_ -fieldName "Name" -fieldValue "TripAdvisor-Bewertung 4+"
+        }
+    }
+    
+    $fiveStarHotelsItem = Get-Item -Path "master:" -ID "{3EB4E5DD-C80C-43D3-BA3E-226FECF9E011}" -ErrorAction SilentlyContinue
+    if ($null -ne $fiveStarHotelsItem) {
+        @("fr-CH", "fr-FR") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $fiveStarHotelsItem -lang $_ -fieldName "Name" -fieldValue "Hôtels 5 étoiles"
+        }
+        @("de-CH", "de-DE") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $fiveStarHotelsItem -lang $_ -fieldName "Name" -fieldValue "5-Sterne-Hotels"
+        }
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260316T180512Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

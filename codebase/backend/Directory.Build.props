@@ -1,0 +1,13 @@
+<Project>
+    <PropertyGroup>
+      <TargetFramework>net10.0</TargetFramework>
+      <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <AnalysisMode>All</AnalysisMode>
+        <GenerateDocumentationFile Condition=" !$(MSBuildProjectName.Contains('Tests')) ">True</GenerateDocumentationFile>
+        <!-- TODO: NU1602;NU1603 -->
+        <WarningsAsErrors>NU1504;NU1701</WarningsAsErrors>
+    </PropertyGroup>
+</Project>

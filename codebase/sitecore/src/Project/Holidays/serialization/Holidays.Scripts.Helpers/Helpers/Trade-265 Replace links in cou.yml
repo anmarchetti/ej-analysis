@@ -1,0 +1,46 @@
+﻿---
+ID: "c17ff095-d8de-4209-9d20-9a98ff70f5ef"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/Trade-265 Replace links in countries navigation"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $navigations = Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Data/Navigations/Countries"
+    foreach($navigation in $navigations.Children){
+        try{
+            $destinationUrl = ($navigation.Name -replace " ", "-").ToLower()
+            $url = "/en/holidays/trade-portal/$destinationUrl"
+            $linkText = $navigation.Name
+            $linkValue = '<link text="{0}" linktype="external" url="{1}" anchor="" target="" rel="" />' -f $linkText, $url
+            
+            $navigation.Editing.BeginEdit()
+            $navigation.Fields["Link"].Value = $linkValue
+            $navigation.Editing.EndEdit() | Out-Null 
+        }catch{
+            Write-Warning "Cannot proccess navigation item $($navigation.Name)" 
+            Write-Warning $Error[0]
+        }
+    }
+    
+    $links = Get-Item -Path "master:/sitecore/content/EasyJet/TradePortal/Data/Navigations/Destinations Groups"
+    foreach($item in $links.Children){
+        #skip top adults holiday
+        if($item.Name -ne "Top Adult Holidays"){
+            $linkValue = '<link text="{0}" linktype="external" url="/en/holidays/trade-portal/destinations" anchor="" target="" rel="" />' -f $item.Name
+            $item.Editing.BeginEdit()
+            $item["Link"] = $linkValue
+            $item.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230115T203719Z

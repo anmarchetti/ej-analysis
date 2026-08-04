@@ -1,0 +1,97 @@
+﻿---
+ID: "6b67616f-207b-4d8b-bd91-fe111637e822"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-752 Fix Attention Popup Renderings"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$template) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $template
+    	}
+    	return $item
+    }
+    
+    function Add-Or-Update-Page-Rendering ($page,$renderingPath,$renderingPlaceholder,$dataSourcePath,$parameters = @{}) {
+    	$renderingItem = Get-Item -Database "master" -Path $renderingPath;
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+    
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -DataSource $dataSourcePath
+    		Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath | Set-RenderingParameter -Parameter $parameters | Set-Rendering -Item $page;
+    		Write-Host $renderingItem "Rendering instance added";
+    	}
+    	else {
+    		Write-Host $pageRenderingInstance "Already exists";
+    	}
+    }
+    
+    # Page
+    $viewBookingPagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    $viewBookingPage = Get-Or-Create-Item -Path $viewBookingPagePath
+    
+    $viewBookingRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/View Booking"
+    $viewBookingRendering = Get-Item -Path $viewBookingRenderingPath;
+    
+    $renderedViewBooking = Get-Rendering -Item $viewBookingPage -Render $viewBookingRendering;
+    
+    $renderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Popups/Attention Popup";
+    $renderigPlaceholder = "/body/attention-popup-" + $renderedViewBooking.UniqueId + "-0";
+    
+    $existingInventoryErrorPopupPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Inventory Error Popup";
+    
+    # Get the popup rendering instances on the page
+    $renderingInstances = Get-Rendering -Item $viewBookingPage -PlaceHolder $renderigPlaceholder;
+    
+    $inventoryErrorPopupWithParamsExists = $false
+    
+    # Check if we already have the correct rendering
+    foreach ($renderingInstance in $renderingInstances) {
+    	$popupTypeParameter = Get-RenderingParameter -Instance $renderingInstance -Name "popupType";
+    	if ($popupTypeParameter.popupType -eq "InventoryError") {
+    		Write-Host "Inventory error popup with popupType Parameter already exists"
+    		$inventoryErrorPopupWithParamsExists = $true;
+    		break;
+    	}
+    }
+    
+    if ($inventoryErrorPopupWithParamsExists -eq $false) {
+    	if (Get-Rendering -Item $viewBookingPage -PlaceHolder $renderigPlaceholder) {
+    		# Add params to new inventory error popup and add it to viewBookingPage rendering
+    		Add-Or-Update-Page-Rendering -page $viewBookingPage -renderingPath $renderingPath -renderingPlaceholder $renderigPlaceholder -dataSourcePath $existingInventoryErrorPopupPath -Parameters @{ "popupType" = "InventoryError" }
+    		Write-Host "New Inventory Error Popup rendering added or updated with params"
+    	}
+    } else {
+    	Write-Host "Skipping adding inventory error popup since it already exists"
+    }
+    
+    # Iterate through popup rendering instances and remove any without a popupType parameter
+    foreach ($renderingInstance in $renderingInstances) {
+    	$popupTypeParameter = Get-RenderingParameter -Instance $renderingInstance -Name "popupType";
+    	if ($popupTypeParameter -eq $null) {
+    		Write-Host "Removing existing popup rendering without a popupType Parameter"
+    		Remove-Rendering -Path $viewBookingPagePath -Instance $renderingInstance;
+    	}
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230628T103556Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

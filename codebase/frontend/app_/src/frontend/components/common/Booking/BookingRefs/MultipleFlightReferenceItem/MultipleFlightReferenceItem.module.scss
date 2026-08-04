@@ -1,0 +1,93 @@
+.multipleRefsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.multipleRefs {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+
+    @include media-breakpoint-up(lg) {
+        flex-direction: column;
+    }
+
+    @include media-breakpoint-up(md) {
+        justify-content: flex-start;
+    }
+
+    .drawerFooter {
+        @include media-breakpoint-down(md) {
+            padding: 16px;
+        }
+    }
+}
+
+.refTitleWrapper {
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+    font-size: 14px;
+    text-align: left;
+    white-space: nowrap;
+
+    @include media-breakpoint-up(lg) {
+        margin-right: 0;
+        font-size: 16px;
+    }
+}
+
+.refNumberBox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.drawerTitle {
+    margin: 24px 0;
+}
+
+.callout {
+    align-self: unset;
+
+    :global(.popup__body) {
+        padding: 16px 24px;
+        padding-top: 0;
+    }
+
+    @include media-breakpoint-up(lg) {
+        :global(.callout__content) {
+            padding: 16px;
+            border-radius: 4px;
+        }
+    }
+}
+
+.tooltipText {
+    :global(a) {
+        color: inherit;
+    }
+}
+
+.scrollInfo {
+    padding-top: 16px;
+    font-size: 14px;
+    line-height: 1.285;
+
+    :global(a) {
+        font-family: $fontRoundedDemy;
+        font-weight: 600;
+        color: $clrEjOrange;
+        text-decoration-line: underline;
+    }
+
+    @include media-breakpoint-up(sm) {
+        display: none;
+    }
+}
+
+.callout .noTitle {
+    display: none;
+}

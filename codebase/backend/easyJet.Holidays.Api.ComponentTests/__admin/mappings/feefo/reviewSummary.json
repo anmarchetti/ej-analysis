@@ -1,0 +1,65 @@
+{
+  "Title": "response for feefo summary request",
+  "Request": {
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "WildcardMatcher",
+            "Pattern": "Bearer some.Token.forTesting",
+            "IgnoreCase": true
+          }
+        ]
+      }
+    ],
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "RegexMatcher",
+          "Pattern": "^/api/20/reviews/summary/service",
+          "IgnoreCase": true
+        }
+      ]
+    },
+    "Methods": [ "Get" ]
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsJson": {
+      "merchant": {
+        "identifier": "component-test-easyjet-holidays",
+        "name": "COMPONENT TEST easyJet holidays",
+        "url": "",
+        "logo": "component-test-easyjet-holidays-logo.png",
+        "review_url": "http://localhost:5021/en-GB/reviews/test-easyjet-holidays",
+        "addressCountry": "GB",
+        "addressLocality": "Luton",
+        "addressRegion": "Bedfordshire",
+        "postalCode": "LU2 9PF",
+        "streetAddress": "Hangar 89",
+        "telephone": "02034995248"
+      },
+      "meta": {
+        "count": 23,
+        "pages": 2,
+        "verified_count": 23,
+        "imported_count": 0,
+        "page_size": 20
+      },
+      "rating": {
+        "min": 1.0,
+        "max": 5.0,
+        "rating": 4.2,
+        "service": {
+          "count": 23,
+          "1_star": 1,
+          "2_star": 2,
+          "3_star": 3,
+          "4_star": 3,
+          "5_star": 14
+        }
+      }
+    }
+  }
+}

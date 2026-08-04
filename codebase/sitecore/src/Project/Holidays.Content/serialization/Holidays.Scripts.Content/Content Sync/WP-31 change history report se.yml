@@ -1,0 +1,76 @@
+﻿---
+ID: "72f807ab-f831-4688-98e4-dd7f637aee2c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/WP-31 change history report settings"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+        $changeTrackingItemPath = 'master:/sitecore/content/EasyJet/Holidays/Settings/Change Tracking'
+        $changeTrackingReportFolderPath = 'master:/sitecore/content/EasyJet/Holidays/Settings/Change Tracking/Reports'
+        $changeTrackingHotelReportPath = 'master:/sitecore/content/EasyJet/Holidays/Settings/Change Tracking/Reports/Hotel Description Report'
+        $changeTrackingHotelDescriptionReportPath = 'master:/sitecore/content/EasyJet/Holidays/Settings/Change Tracking/Reports/Hotel Description Report/Hotel Description'
+        
+        $changeTrackingTemplateId = '{E54A4995-50EA-4710-84EC-7AD957515F9F}'
+        $changeTrackingReportFolderTemplateId = '{5F2F3DB1-6208-40DD-99C6-88124664E8A2}'
+        $changeTrackingReportTemplateId = '{7F189636-1B97-42F2-B136-534E2D23B536}'
+        $changeTrackingReportColumnTemplateId = '{D30D14D1-0EA9-4902-9159-14DB17125989}'
+        
+        $observedIds = '{28E5E169-8F72-4F90-A277-280A8302B607}|{5F03C6EF-EF52-4F2E-BC5A-B1F065A1E745}|{2F42EC14-7E56-467A-B300-AB9723C74546}|{538939B3-07EC-4C23-BF8C-3A68DE0FDC93}|{13ECBEA2-A890-4D6E-A4FF-4AD65D455124}|{7E1CEEB8-9A59-4584-91E8-6014A5B0FF56}|{0AE072FB-5BCF-4E09-95B5-239CBE370B2B}|{85911381-FCEA-453C-89A7-D8B86532EBE0}'
+        $hotelDescriptionReportTemplate = '{28E5E169-8F72-4F90-A277-280A8302B607}'
+        $hotelDescriptionReportColumnField = '{4FB8EB00-E06B-4C0A-9371-9BD9CA84716E}'
+        $hotelDescriptionReportColumnSelect = '{5F1A4EAB-5793-4865-872D-192C1B05D272}'
+        
+        $settingsItem = Get-Item -path $changeTrackingItemPath -ErrorAction SilentlyContinue
+        if ($settingsItem -eq $null) {
+            # create item
+            $changeTrackingItem = New-Item -Path $changeTrackingItemPath -ItemType $changeTrackingTemplateId 
+            Write-Host "Item" $changeTrackingItem.Name "successfully created"
+        
+            $changeTrackingItem.Editing.BeginEdit()
+            $changeTrackingItem.Fields["Templates"].Value = $observedIds
+            Write-Host $changeTrackingItem.Name "updated"
+            $changeTrackingItem.Editing.EndEdit() | Out-Null
+        }
+        
+        $folderItem = Get-Item -path $changeTrackingReportFolderPath -ErrorAction SilentlyContinue
+        if ($folderItem -eq $null) {
+            # create item
+            $changeTrackingFolderItem = New-Item -Path $changeTrackingReportFolderPath -ItemType $changeTrackingReportFolderTemplateId 
+            Write-Host "Item" $changeTrackingFolderItem.Name "successfully created"
+        }
+        
+       $reportItem = Get-Item -path $changeTrackingHotelReportPath -ErrorAction SilentlyContinue
+        if ($reportItem -eq $null) {
+            # create item
+            $hotelDescriptionReportItem = New-Item -Path $changeTrackingHotelReportPath -ItemType $changeTrackingReportTemplateId 
+            Write-Host "Item" $hotelDescriptionReportItem.Name "successfully created"
+            
+            $hotelDescriptionReportItem.Editing.BeginEdit()
+            $hotelDescriptionReportItem.Fields["Template"].Value = $hotelDescriptionReportTemplate
+            Write-Host $hotelDescriptionReportItem.Name "updated"
+            $hotelDescriptionReportItem.Editing.EndEdit() | Out-Null
+        }
+        
+        $reportColumnItem = Get-Item -path $changeTrackingHotelDescriptionReportPath -ErrorAction SilentlyContinue
+        if ($reportColumnItem -eq $null) {
+            # create item
+            $hotelDescriptionReportColumnItem = New-Item -Path $changeTrackingHotelDescriptionReportPath -ItemType $changeTrackingReportColumnTemplateId 
+            Write-Host "Item" $hotelDescriptionReportColumnItem.Name "successfully created"
+            
+            $hotelDescriptionReportColumnItem.Editing.BeginEdit()
+            $hotelDescriptionReportColumnItem.Fields["Field"].Value = $hotelDescriptionReportColumnField
+            $hotelDescriptionReportColumnItem.Fields["Select"].Value = $hotelDescriptionReportColumnSelect
+            Write-Host $hotelDescriptionReportColumnItem.Name "updated"
+            $hotelDescriptionReportColumnItem.Editing.EndEdit() | Out-Null
+        }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20230717T114454:638251910942781958Z"

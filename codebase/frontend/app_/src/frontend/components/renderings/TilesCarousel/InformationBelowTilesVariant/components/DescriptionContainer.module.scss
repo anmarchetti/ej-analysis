@@ -1,0 +1,104 @@
+.wrapper {
+    position: relative;
+    height: 200px;
+    margin: 0 12px;
+    padding: 8px 8px 32px;
+    background-color: $colorPorcelain;
+    border-radius: 6px;
+    box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.13);
+
+    &::after {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 64px;
+        background: linear-gradient(180deg, rgba(245, 247, 248, 0) 0%, $colorPorcelain 50%, $colorPorcelain 100%);
+        border-radius: 0 0 6px 6px;
+        pointer-events: none;
+        transform: translateZ(0);
+        will-change: transform;
+    }
+
+    @media (width <= 579px) {
+        width: 100%;
+        height: 250px;
+        margin: 0;
+        padding: 8px 5px 8px 8px;
+        background-color: $clrSiteBgWhite;
+        border-radius: 0 0 6px 6px;
+
+        &::after {
+            height: 32px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, $clrSiteBgWhite 50%, $clrSiteBgWhite 100%);
+        }
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 16px;
+    height: 160px;
+    padding: 24px 32px 0;
+    overflow: hidden auto;
+    color: $colorBlack;
+
+    &::-webkit-scrollbar-track {
+        margin: 8px 0;
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar {
+        width: 4px;
+        background-color: $colorPorcelain;
+
+        @media (width <= 579px) {
+            background-color: $clrSiteBgWhite;
+        }
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $clrEjOrange;
+        border-radius: 60px;
+
+        &:hover {
+            background-color: $clrEjOrangeShadow;
+        }
+    }
+
+    @media (width <= 579px) {
+        gap: 4px;
+        height: 234px;
+        padding: 8px 15px 8px 8px;
+    }
+}
+
+.subtitle {
+    margin: 0;
+    font-family: $fontRoundedDemy;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.3;
+    text-align: left;
+
+    @media (width <= 579px) {
+        font-size: 16px;
+    }
+}
+
+.description {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.3;
+    text-align: left;
+
+    @media (width <= 579px) {
+        font-size: 14px;
+    }
+}

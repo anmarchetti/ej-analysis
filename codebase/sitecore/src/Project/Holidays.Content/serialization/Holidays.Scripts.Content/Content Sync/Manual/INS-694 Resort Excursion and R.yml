@@ -1,0 +1,104 @@
+﻿---
+ID: "a5ade75b-dc77-4d65-83ec-788f0570fe0b"
+Parent: "b8c56fd2-1e24-4961-884b-de21791ff5c5"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/Manual/INS-694 Resort Excursion and Recommended Carousel"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function UpdateRendring {
+      param($item, $renderingPath, $placeholder, $datasource)
+        $renderingItem = Get-Item -Path $renderingPath
+        $rendering = Get-Rendering -Item $item -PlaceHolder $placeholder -Rendering $renderingItem
+        if ($rendering -ne $null) {
+    	    Set-Rendering -Item $item -Instance $rendering -DataSource $datasource.ID
+    	    Write-Host $item.Name "Datasource for $($renderingItem.Name) rendering was successfully updated"
+        }
+    }
+    
+    function Get-Or-Create-Item ($path,$itemName,$templateId,$itemId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $itemId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function create-lang-version ($item,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    # Create Excursion Datasources
+    $excursionFolder = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data" -ItemName "Excursions Folder" -TemplateId "{92F7F233-F727-4135-806D-22564D1BA6CC}"
+    
+    if(($item = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Excursions Folder/Excursions" -ErrorAction SilentlyContinue) -eq $null) {
+        Move-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Excursions" -Destination $excursionFolder.ProviderPath
+    }
+    
+    if(($item = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Excursions Folder/Excursions Resort Level" -ErrorAction SilentlyContinue) -eq $null) {
+        Copy-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Excursions Folder/Excursions" -Destination "master:/sitecore/content/EasyJet/Holidays/Data/Excursions Folder/Excursions Resort Level"
+    }
+    
+    
+    # Create Resort Recommended Carousel
+    $resortRecommendedPath = "master:/sitecore/content/EasyJet/Holidays/Data/Recommended Hotels Carousel Folder/Resort Page Carousel Title"
+    if(($item = Get-Item -Path $resortRecommendedPath -ErrorAction SilentlyContinue) -eq $null) {
+       Copy-Item -Path  "master:/sitecore/content/EasyJet/Holidays/Data/Recommended Hotels Carousel Folder/Destination Page Carousel Title" -Destination $resortRecommendedPath
+    }
+    
+    $resortExcursion = Get-Item "master:/sitecore/content/EasyJet/Holidays/Data/Excursions Folder/Excursions Resort Level" -ErrorAction SilentlyContinue
+    $resortRecommended = Get-Item $resortRecommendedPath -ErrorAction SilentlyContinue
+    
+    @('en') | % {
+    	Create-Lang-Version -Item $resortExcursion -Lang $_ -Field "Title" -Value "Exciting tours and activities"
+    	Create-Lang-Version -Item $resortRecommended -Lang $_ -Field "Title" -Value "Holidays we think you'll like"
+    }
+    
+        
+    @('de-CH','de-DE') | % {
+    	Create-Lang-Version -Item $resortRecommended -Lang $_ -Field "Title" -Value "Funktion vorübergehend nicht verfügbar"
+    	Create-Lang-Version -Item $resortExcursion -Lang $_ -Field "Title" -Value "Spannende Touren und Aktivitäten"
+    }
+        
+    @('fr-CH','fr-FR') | % {
+        Create-Lang-Version -Item $resortRecommended -Lang $_ -Field "Title" -Value "Des vacances qui pourraient vous plaire"
+        Create-Lang-Version -Item $resortExcursion -Lang $_ -Field "Title" -Value "Des visites et des activités passionnantes"
+    }
+    
+    
+    # Update Datasource in Renderings
+    $startItem = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Destinations"
+    $countryItems = Get-ChildItem -Path $startItem.ProviderPath | Where-Object { $_.TemplateName -eq "Country" }
+    
+    foreach ($countryItem in $countryItems) {
+        $regions = Get-ChildItem -Path $countryItem.ProviderPath | Where-Object { $_.TemplateName -eq "Region" -or $_.TemplateName -eq "Region - City" }
+        foreach ($region in $regions) {
+            $resorts = Get-ChildItem -Path $region.ProviderPath | Where-Object { $_.TemplateName -eq "Resort" }
+            foreach($resort in $resorts){
+                UpdateRendring -item $resort -datasource $resortExcursion -placeholder "/body/component-wrapper-inner-*" -renderingPath "/sitecore/layout/Renderings/Feature/Destinations/Excursions"
+                UpdateRendring -item $resort -datasource $resortRecommended -placeholder "/body/component-wrapper-inner-*" -renderingPath "/sitecore/layout/Renderings/Feature/Destinations/Destination Recommended Hotels"
+            }
+        }
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241129T150657Z

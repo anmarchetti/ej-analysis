@@ -1,0 +1,77 @@
+$borderGrey: 1px solid #e2e2e2;
+$borderOrange: 1px solid $clrEjOrangeLight;
+
+.predefined-period {
+    width: 510px;
+    margin: 0 auto;
+    margin-top: 37px;
+    padding-top: 20px;
+    border-top: $borderGrey;
+
+    .predefined-period__pills-block {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+    }
+
+    .predefined-period__pill:hover {
+        border: $borderOrange;
+        cursor: pointer;
+    }
+}
+
+.predefined-period__mobile {
+    width: 100%;
+    padding-top: 20px;
+    border-top: $borderGrey;
+
+    .predefined-period__pills-block {
+        display: block;
+    }
+
+    .predefined-period__pill {
+        display: inline-block;
+        margin-top: 14px;
+        margin-right: 14px;
+    }
+}
+
+.predefined-period__mobile ~ .filter-apply {
+    max-height: 0;
+}
+
+.predefined-period__title {
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    line-height: 24px;
+    color: $clrTxtLight;
+    letter-spacing: 0;
+}
+
+.predefined-period__pill,
+.predefined-period__pill--selected {
+    padding: 6px 13px;
+    background: $colorWhite;
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-radius: 18px;
+    box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.13);
+
+    .predefined-period__pill-label {
+        height: 16px;
+        font-family: $fontRoundedDemy;
+        font-size: 13px;
+        color: $colorDimGray;
+        text-align: center;
+        letter-spacing: 0.2px;
+    }
+}
+
+.predefined-period__pill--selected {
+    border: $borderOrange;
+}
+
+.predefined-period__pills-block--bordered {
+    padding-bottom: 15px;
+    border: 0;
+    border-bottom: $borderGrey;
+}

@@ -1,0 +1,70 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    background: $colorYellowSuperLight;
+
+    @include media-breakpoint-up(sm) {
+        padding: 16px 24px;
+    }
+
+    .contentContainer {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .title {
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        line-height: 22px;
+        color: $colorBlack;
+
+        @include media-breakpoint-up(sm) {
+            font-size: 18px;
+            line-height: 24px;
+        }
+    }
+
+    .description {
+        font-family: $fontRoundedBook;
+        font-size: 14px;
+        line-height: 18px;
+        color: $clrTextMain;
+    }
+
+    .checkbox {
+        margin: 0;
+        
+        :global(.checkbox__control) {
+            border-color: $colorGrayBorder;
+            @include sizeSquare(24px);
+        }
+
+        :global(input:checked ~ .checkbox__control) {
+            border-color: $colorGrayBorder;
+        }
+
+        :global(.checkbox--label) {
+            padding-left: 0;
+            font-size: 16px;
+            line-height: 1.375;
+        }
+    }
+}
+
+.container.error {
+    .checkbox :global(.checkbox__control) {
+        border-color: $colorSystemError;
+    }
+
+    .title {
+        color: $colorSystemError;
+    }
+}

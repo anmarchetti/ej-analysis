@@ -1,0 +1,64 @@
+﻿---
+ID: "ba0a2447-340f-4552-ae0e-0e58b6e0aeb8"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14697 Full Maintenance Mode Shortlist Login"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+    	$item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $templateId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    $datasourceItemPath = "/sitecore/content/EasyJet/Holidays/Data/Login To Shortlist Maintenance Popup";
+    $datasourceTemplateId = "{5C4A2D07-6BE0-409B-97A9-0829970283B1}";
+    $datasourceItem = Get-Item -Path $datasourceItemPath -ErrorAction SilentlyContinue;
+    
+    # Create 'Login To Shortlist Maintenance Popup Datasource'
+    if ($datasourceItem -eq $null) {
+    	$item = New-Item -Path $datasourceItemPath -ItemType $datasourceTemplateId;
+    
+    	$item.Editing.BeginEdit()
+    	$item["Icon"] = '<image mediaid="{90267470-172A-4102-B274-CCD136CD9651}" />';
+    	$item["Title"] = "Unfortunately, you can't log in to view your shortlists. Please, bear with us."
+    	$item["Description"] = "We&rsquo;re working on making a better experience for you.<br />We apologise for any inconveniences caused and thank you for your patience."
+    	$item.Editing.EndEdit() | Out-Null
+    
+    	Write-Host "Item" $item.Name "successfully created"
+    }
+    
+    #Add maintenance shortlist modal to header
+    function Add-Maintenance-Shortlist-Modal ($page) {
+    	if ($page -ne $null) {
+    		$placeholder = '/header'
+    		$renderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Maintenance Shortlist Modal Dialog"
+    		$maintenanceShortlistModalItem = Get-Item -Database "master" -Path $renderingPath | New-Rendering -PlaceHolder $placeholder
+    		Add-Rendering -Item $page -PlaceHolder $placeholder -Instance $maintenanceShortlistModalItem -DataSource $datasourceItemPath 
+    	    
+    	    Write-Host "MaintenanceShortlistModalDialog was added to" $page.Name "successfully"
+    	}
+    }
+    
+    $header = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Full Header" -ErrorAction SilentlyContinue
+    $slim = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Slim Header" -ErrorAction SilentlyContinue
+    
+    Add-Maintenance-Shortlist-Modal -page $header;
+    Add-Maintenance-Shortlist-Modal -page $slim; 
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210405T123057Z

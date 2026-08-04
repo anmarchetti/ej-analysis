@@ -1,0 +1,52 @@
+//This is for A/B testing and should be removed after go live
+.isHidden {
+   display: none;
+}
+
+.container {
+    margin: 80px 0;
+
+    @include media-breakpoint-down(md) {
+        margin: 48px 0;
+    }
+}
+
+.sectionTitle {
+    margin-top: 0;
+    font-family: $fontRoundedBook;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.sectionHeader {
+    display:flex;
+    justify-content: left;
+    gap: 1.625rem;
+
+    @include media-breakpoint-down(md) {
+        display:block;
+    }
+
+    .promotionContainer {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        margin: 0;
+    
+        .promotionText {
+            font-family: $fontRoundedBook;
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.05rem;
+        }
+    
+        @include media-breakpoint-down(xs) {
+            gap: 0.188rem;
+        }
+        
+        @include media-breakpoint-down(sm) {
+            display:none;
+        }
+    }
+}
+

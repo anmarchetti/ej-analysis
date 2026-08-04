@@ -1,0 +1,40 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-shadow: 0 2px 4px 0 $lightShadowColor;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 16px 25px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.333;
+    color: $colorBlack;
+    text-align: left;
+    background-color: $clrSiteBgWhite;
+    border-top: 2px solid $colorGrayLighter;
+    border-radius: 3px;
+
+    svg {
+        flex-shrink: 0;
+        width: 15px;
+        height: 15px;
+        color: $clrEjOrangeLight;
+    }
+
+    &:hover {
+        background-color: $clrSiteBgWhite;
+        opacity: 1;
+    }
+}
+
+.buttonSelected {
+    svg {
+        transform: rotate(180deg);
+    }
+}

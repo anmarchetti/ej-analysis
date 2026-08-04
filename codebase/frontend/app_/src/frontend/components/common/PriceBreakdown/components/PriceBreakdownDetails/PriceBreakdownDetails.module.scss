@@ -1,0 +1,43 @@
+.priceBreakdownDetails {
+    display: flex;
+    box-sizing: content-box;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 60px;
+    padding-top: 16px;
+    font-size: 16px;
+    line-height: 1.375;
+    background-color: $colorWhite;
+    border-top: 1px solid $colorGeyser;
+
+    @include media-breakpoint-up(md) {
+        box-sizing: border-box;
+        min-height: auto;
+    }
+}
+
+.touristTaxSummary {
+    margin-top: 16px;
+}
+
+.breakdownRow {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 16px;
+}
+
+.totalRow {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+
+.creditRow {
+    :global(.price) {
+        color: $colorRed;
+    }
+}

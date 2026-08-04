@@ -1,0 +1,466 @@
+$primary-color: #ff7d00;
+$secondary-color: #a9b9bd;
+$labelColor: #7c7c7c;
+$placeholderColor: #7c7c7c;
+$error-color: #f00;
+$form-disabled-color: $secondary-color;
+$primary-font-family: $fontRoundedBook;
+$error-font-family: $fontRoundedBook;
+$animation-duration: 0.1s;
+$field_boorder-radius: $box_border-radius_bg;
+$field_height: 44px;
+$field-error-height: 34px;
+
+@mixin filled-input($border-color: $secondary-color) {
+    border: 1px solid $border-color;
+    outline: none;
+}
+
+@mixin filled-label($label-color: $labelColor) {
+    top: -7.5px;
+    height: auto;
+    font-size: 15px;
+    line-height: 1;
+    color: $label-color;
+    background-color: #fff;
+    border-radius: 3px;
+}
+
+.form-field {
+    position: relative;
+
+    &.form-field--active,
+    &.form-field--error {
+        .form-control__input {
+            @include filled-input();
+
+            ~ .form-control__label {
+                @include filled-label();
+            }
+        }
+    }
+
+    &.form-field--in-progress {
+        .form-control__input {
+            @include filled-input($primary-color);
+
+            ~ .form-control__label {
+                @include filled-label($primary-color);
+            }
+        }
+
+        #search-when {
+            outline: none;
+        }
+    }
+
+    &.form-field--error {
+        .form-control__input {
+            color: $error-color;
+            border: 1px solid $error-color;
+
+            &::placeholder {
+                /* Chrome, Firefox, Opera, Safari 10.1+ */
+                color: $error-color;
+                opacity: 1; /* Firefox */
+            }
+
+            &:-ms-input-placeholder {
+                /* Internet Explorer 10-11 */
+                color: $error-color;
+            }
+
+            &::-ms-input-placeholder {
+                /* Microsoft Edge */
+                color: $error-color;
+            }
+
+            &:focus {
+                border: 1px solid $error-color;
+
+                ~ .form-control__label {
+                    color: $error-color;
+                }
+            }
+
+            ~ .form-control__label {
+                color: $error-color;
+            }
+
+            // Override Autocomplete Styles in Chrome
+            &:-webkit-autofill {
+                color: $error-color;
+                border-color: $error-color;
+                -webkit-text-fill-color: $error-color;
+
+                ~ .form-control__label {
+                    color: $error-color;
+                }
+            }
+        }
+
+        .form-control__error {
+            display: flex;
+            align-items: center;
+            padding-left: 15px;
+
+            &.password-error {
+                @include media-breakpoint-up(sm) {
+                    align-items: flex-start;
+                }
+            }
+        }
+
+        .vertical__error {
+            padding: 10px 0;
+        }
+
+        .select-group__control {
+            border: 1px solid $error-color;
+
+            .select-group__control--icon {
+                border: 1px solid $error-color;
+                border-left: none;
+            }
+
+            .select-group__label {
+                color: $error-color;
+            }
+        }
+    }
+
+    .form-control__label--focused {
+        .form-control__label {
+            @include filled-label();
+        }
+    }
+
+    .form-control__label {
+        @include text-truncate;
+
+        position: absolute;
+        z-index: 1;
+        top: 11px;
+        left: 20px;
+        display: inline;
+        max-width: 90%;
+        height: 26px;
+        margin: auto;
+        padding: 0 5px;
+        font-family: $primary-font-family;
+        font-size: 15px;
+        line-height: 24px;
+        color: $labelColor;
+        transition: all $animation-duration;
+
+        svg {
+            display: inline-block;
+            max-width: 20px;
+            height: 15px;
+            margin-right: 10px;
+        }
+    }
+
+    .form-control__input {
+        position: relative;
+        width: 100%;
+        height: $field_height;
+        padding: 11px 35px 11px 20px;
+        overflow: hidden;
+        font-family: $primary-font-family;
+        font-size: 16px;
+        color: $colorBlack;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        background-color: #fff;
+        border: 1px solid $secondary-color;
+        border-radius: $field_boorder-radius;
+
+        // remove input boxshadow on Safari
+        -webkit-appearance: none;
+
+        &::-ms-clear,
+        &::-ms-reveal {
+            display: none;
+        }
+
+        &:focus {
+            @include filled-input($primary-color);
+
+            ~ .form-control__label {
+                @include filled-label($primary-color);
+            }
+        }
+
+        // Fix autofill in Webkit browsers.
+        // Use '-webkit-autofill' separate from other css selectors, because it breaks the whole block in FF and IE
+        &:-webkit-autofill {
+            @include filled-input($primary-color);
+
+            ~ .form-control__label {
+                @include filled-label($primary-color);
+            }
+        }
+
+        &:disabled {
+            color: $form-disabled-color;
+            background-color: #fff;
+        }
+
+        &::placeholder {
+            color: $placeholderColor;
+        }
+    }
+
+    &.form-field--disabled {
+        .form-control__input {
+            color: $clrTxtLight;
+            background-color: $clrSiteBgGrey;
+
+            /* Override iOS opacity change affecting text & background color */
+            -webkit-opacity: 1;
+
+            /* Override iOS / Android font color change */
+            -webkit-text-fill-color: $clrTxtLight;
+        }
+
+        .form-control__icon {
+            color: $colorDustyGrey;
+        }
+    }
+
+    [type="file"] {
+        position: absolute;
+        z-index: -1;
+        border: none;
+        opacity: 0;
+
+        &:focus ~ .form-control__label,
+        + .form-control__label {
+            position: static;
+            top: 0;
+            left: 0;
+            display: block;
+            max-width: 135px;
+            height: auto;
+            margin: 0;
+            margin-right: 30px;
+            padding: 8px 25px;
+            font-family: $fontRoundedBook;
+            font-size: 16px;
+            line-height: 24px;
+            color: $clrEjOrangeDark;
+            background-color: $colorGrayLighter;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+    }
+
+    &.form-field__textarea {
+        .form-control__remaining {
+            font-size: 12px;
+        }
+    }
+}
+
+.form-field__note {
+    margin-top: 20px;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.form-field--inner-callout {
+    .more-info svg,
+    .form-control__error__icon svg {
+        display: block;
+    }
+
+    @include media-breakpoint-down(md) {
+        .form-control__input {
+            padding-right: 50px;
+        }
+
+        .form-control__icon {
+            right: 45px;
+        }
+
+        .callout__container {
+            position: absolute;
+            top: 14px;
+            right: 25px;
+        }
+
+        .more-info svg,
+        .form-control__error__icon svg {
+            display: inline-block;
+        }
+    }
+}
+
+.form-control__icon {
+    position: absolute;
+    top: 0;
+    right: 26px;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 21px;
+    height: $field_height;
+    color: $colorOrange;
+    pointer-events: none;
+
+    &.disabled,
+    &.btn--disabled {
+        color: $clrTxtLight;
+    }
+
+    &.btn {
+        $size: 30px;
+
+        top: ($field_height - $size) / 2;
+        width: $size;
+        height: $size;
+        pointer-events: all;
+    }
+
+    &.background-image {
+        width: 38px;
+        height: 64%;
+        margin-top: 8px;
+        margin-right: 4px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        border-radius: 3px;
+        box-shadow: 0 0 4px 0 rgba(178, 175, 175, 0.3);
+    }
+
+    svg {
+        width: 20px;
+        max-width: 100%;
+        height: 20px;
+    }
+}
+
+.form-control__icon-list {
+    position: absolute;
+}
+
+.form-control__error {
+    color: #ff1212;
+
+    @include media-breakpoint-down(lg) {
+        margin-top: 5px;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding-left: 15px;
+    }
+
+    &__multiple {
+        .text {
+            margin: 5px 0 0;
+            font-size: 16px;
+
+            span {
+                margin-left: 5px;
+            }
+        }
+
+        .errors-list {
+            margin-top: 0;
+
+            li {
+                margin: 10px 0;
+            }
+        }
+    }
+
+    .form-control__error__label {
+        margin: auto auto auto 0;
+        font-family: $error-font-family;
+        font-size: 15px;
+        line-height: 15px;
+        word-break: break-word;
+        word-wrap: break-word;
+    }
+
+    .form-control__error__icon {
+        position: relative;
+        display: flex;
+        margin-right: 10px;
+    }
+
+    svg {
+        width: 16px;
+        height: 16px;
+        vertical-align: middle;
+    }
+
+    &.is-fullwidth {
+        display: flex;
+        align-items: flex-start;
+
+        .form-control__error__icon {
+            top: -4px;
+        }
+
+        .form-control__error__icon__multiple {
+            top: 0;
+        }
+    }
+}
+
+.btn-clear-input {
+    position: absolute;
+    top: 0;
+    right: 8px;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    background-color: inherit;
+
+    svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.form-control__optional {
+    padding-top: 10px;
+    font-family: $fontRoundedBook;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    color: $clrTextHeading;
+}
+
+.form-checkbox-tooltip-block {
+    display: flex;
+    align-items: center;
+    padding-left: 0;
+
+    .checkbox--label {
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    .callout__container {
+        margin-left: 5px;
+    }
+}
+
+.form-checkbox-tooltip-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 0;
+}
+
+.surnames-clear-btn {
+    font-family: $fontRoundedDemy;
+    font-size: 13px;
+    line-height: 13px;
+}

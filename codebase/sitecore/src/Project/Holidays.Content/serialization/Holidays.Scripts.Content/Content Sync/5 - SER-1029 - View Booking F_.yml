@@ -1,0 +1,634 @@
+﻿---
+ID: "ee34a4d7-3fe4-4b0a-9f0a-e4639dd26372"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/5 - SER-1029 - View Booking F and H"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+              Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Special Requests F and H" -Recurse -Permanent
+                          
+                      function Get-PlaceholderFromPage {
+                      param (
+                          [string]$PagePath,
+                          [string]$RenderingId
+                      )
+                      $item = Get-Item -Path $PagePath
+                      $layoutField = New-Object -TypeName "Sitecore.Data.Fields.LayoutField" -ArgumentList $item
+                      if ([string]::IsNullOrEmpty($layoutField.Value)) { return "" }
+                  
+                      $layoutXml = [Sitecore.Layouts.LayoutDefinition]::Parse($layoutField.Value)
+                      $device = $layoutXml.Devices[0]
+                      
+                      $rendering = $device.Renderings | Where-Object { $_.ItemID -eq $RenderingId } | Select-Object -First 1
+                      
+                      if ($null -ne $rendering) {
+                          return $rendering.Placeholder
+                      }
+                      return ""
+                      }
+                              
+                      function Get-PageConfiguration {
+                      param (
+                          [Parameter(Mandatory=$true)] [string]$PagePath
+                      )
+                  
+                  
+                      filter ConvertTo-Params {
+                          param($ds, $ph)
+                          $p = [ordered]@{
+                              "Placeholder"           = $ph
+                              "Data Source"            = $ds
+                          }
+                      $params = ($p.Keys | ForEach-Object { 
+                              $k = [System.Web.HttpUtility]::UrlEncode($_).Replace("%20", "+")
+                              $v = [System.Web.HttpUtility]::UrlEncode($p[$_]).Replace("%20", "+")
+                              "$k=$v"
+                          }) -join "&"
+                          return $params
+                      }
+                  
+                      $renderings = @(
+                          @{ id = "{7E2EEFDE-8087-4767-BB9C-398497F6E7C4}"} #policy banner
+                          @{ id = "{6C234F53-080F-4C8E-AC01-CE83E3C28998}"} #html block
+                          @{ id = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"} #component wrapper
+                          @{ id = "{025DDD3B-F1EA-42A6-AECF-D2A2698F6137}"} #cancelled booking banner
+                          @{ id = "{0F60E703-E976-4BE3-9E1A-3F0A7FF80718}"; ds = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos"} #refund info
+                          @{ id = "{B932CD1B-05BD-4F1D-947F-1E6F48C4F649}"; ds = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/View Booking"} #view booking
+                          @{ id = "{8B4B958A-7F3C-4404-9003-DE7F4CC3AABF}"} #eco certified
+                          @{ id = "{92561376-9A31-490C-8876-AF753D8CF335}"} #listed items
+                          @{ id = "{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}"} #booking hero
+                          @{ id = "{3C4B5E64-BD84-48D9-83BE-01D3017B7843}"} #breadcrumbs static
+                          @{ id = "{84E4A703-662D-41CE-9A3E-86946DF9E04B}"} #external extras
+                          @{ id = "{4C8A4AAC-A206-43FD-B7C7-D5B4BE5C0A4B}"; ds = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Not Logged In Banner" } # not logged in banner
+                          @{ id = "{39A44877-7E92-48FD-B57D-BB985B47BE9A}"} # cancellation unavailable
+                          @{ id = "{D6CF6F5C-D137-49CB-A3FB-C2D6ADC47F6C}"} #late checkout post book
+                          @{ id = "{2A35FBE1-E039-4D16-B301-37FD96B0C10F}"; ds = "/sitecore/content/EasyJet/Holidays/Data/Special Requests" }
+                          @{ id = "{72540812-D4CA-4539-A79E-B52F56F06927}"; ds = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Amend Restrictions"; toDelete = @("Luxury Restriction")} # amend restrictions
+                          @{ id = "{68FFCF4F-8A07-4553-8687-DB9501C09694}"} #login to view booking
+                          @{ id = "{7973D16E-B6AF-4E9B-AF02-6072DD7ECB82}"; ds = "/sitecore/content/EasyJet/Holidays/Data/ATOL Protection" }
+                          @{ id = "{752847FB-9A5B-47E4-A1F3-42843C1A7C83}"; ds = "/sitecore/content/EasyJet/Holidays/Data/Health Entry Requirements" }
+                          @{ id = "{9C3DFA27-58E8-466E-AB02-1158188EE582}"} #excucrions
+                          @{ id = "{05F2C26C-4E1D-4CAD-A817-A1B5CBBEF628}"} # card payments
+                          @{ id = "{A38F8E39-55D0-4E54-91D5-95F8D7F19E01}"} # need help block
+                          @{ id = "{CC4D8814-64A1-4FF5-A90A-85C8A91AB66A}"; ds = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Booking Privacy" } #booking privacy
+                          @{ id = "{F7F45094-B88B-47D0-975F-3854B4AE9A41}"} #seat map
+                          @{ id = "{9133F3CA-553F-42F5-8529-54734B53A378}"; ds = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Bottom Help Links"; toDelete = @("Chat To Us")}
+                          @{ id = "{7910DC7C-14B7-48F1-9256-C570F700F085}"} #seats and bags
+                          @{ id = "{8AE530B1-7702-48B7-A4B9-442E50845EFA}"} # seats not available
+                          @{ id = "{66719E6E-3DEE-4A86-BD1A-75BF2093B2BE}"} #successful amendment
+                          @{ id = "{9F57C3E4-AB69-4EB2-9BCA-4834D5E92F6C}"} #attention popup
+                          @{ id = "{EDCABB4F-676C-4418-BBEE-4E0009F946E5}"} # cabin bags
+                          @{ id = "{901B7CDC-B8AA-4196-BFB6-054575D9C283}"} # amend room and board unavailable
+                          @{ id = "{C8B59866-89D9-4E69-9ACB-3A18F7872697}"} #amend dates
+                          @{ id = "{9E8FBF42-EDEA-4700-88F0-0CFFF1157121}"} #amend flights
+                          @{ id = "{34B4FD1F-0FF8-4056-A13E-8BBE210A1B69}"} #amend hotels
+                          @{ id = "{903FBFFC-F57B-4DA0-A67B-AE5AE4A17C44}"} #amed transfers
+                          @{ id = "{881D4BCA-336C-491D-8E8A-74109544519D}"} #booked airport parking
+                          @{ id = "{BCC1C844-A2C7-4808-B061-C06688E90DD4}"} # neeed help popup
+                          @{ id = "{D80590E8-7A27-422E-95E2-D7A686A9206C}"} #contact us banner
+                          @{ id = "{0A32EA7D-D537-4845-A5B2-8D2FF7513D91}"; ds = "/sitecore/content/EasyJet/Holidays/Data/Assisted Travel Common Data/Special Assistance" } # special assistance
+                      )
+    
+                  
+                      $simpleList = @()
+                  $complexMapping = @()
+    
+                  foreach ($r in $renderings) {
+                      $simpleList += $r.id
+                      $finalDs = ""
+    
+                      if ($null -ne $r.ds -and $r.ds -ne "") {
+                              
+                          $currentPh = $r.ph
+                          if ([string]::IsNullOrEmpty($currentPh)) {
+                              $currentPh = Get-PlaceholderFromPage -PagePath "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking" -RenderingId $r.id
+                          }
+                              
+                          $sourceItem = Get-Item -Path $r.ds
+                          $newName = "$($sourceItem.Name) F and H"
+                          $parentPath = $sourceItem.Parent.Paths.FullPath
+                          $targetPath = "$parentPath/$newName"
+                              
+                          $existingItem = Get-Item -Path $targetPath -ErrorAction SilentlyContinue
+                              
+                         if ($null -eq $existingItem) {
+                              $duplicateItem = $sourceItem.Duplicate()
+                              
+                              $duplicateItem.Editing.BeginEdit()
+                              try {
+                                  $duplicateItem.Name = $newName
+                                  $duplicateItem["__Display name"] = "$($sourceItem.Name) F&H"
+                              } finally {
+                                  $duplicateItem.Editing.EndEdit() | Out-Null
+                              }
+                              
+                              $duplicateItem = Get-Item -Path "$parentPath/$newName"
+                              
+                              $childMapping = @{}
+                              function Build-ChildMapping {
+                                  param($SourceParent, $DuplicateParent, [hashtable]$Mapping)
+                                  foreach ($oldChild in $SourceParent.Children) {
+                                      $newChild = $DuplicateParent.Children | Where-Object { $_.Name -eq $oldChild.Name }
+                                      if ($null -ne $newChild) {
+                                          $Mapping[$oldChild.ID.ToString()] = $newChild.ID.ToString()
+                                          # Рекурсия по внукам
+                                          Build-ChildMapping -SourceParent $oldChild -DuplicateParent $newChild -Mapping $Mapping
+                                      } else {
+                                          Write-Host "WARNING: No match for '$($oldChild.Name)' in duplicate!" -ForegroundColor Red
+                                      }
+                                  }
+                              }
+                              Build-ChildMapping -SourceParent $sourceItem -DuplicateParent $duplicateItem -Mapping $childMapping
+                              Write-Host "Total mapping entries (recursive): $($childMapping.Count)" -ForegroundColor Cyan
+                              
+                              $duplicateItem.Fields.ReadAll()
+                              $duplicateItem.Editing.BeginEdit()
+              try {
+                  foreach ($field in $duplicateItem.Fields) {
+                      if ($field.Name.StartsWith("__") -or [string]::IsNullOrEmpty($field.Value)) { continue }
+    
+                      $fieldValue = $field.Value
+                      $isFieldUpdated = $false
+    
+                      foreach ($oldId in $childMapping.Keys) {
+                          if ($fieldValue.ToLower().Contains($oldId.ToLower())) {
+                              $newId = $childMapping[$oldId]
+                              $fieldValue = $fieldValue -ireplace [regex]::Escape($oldId), $newId
+                              $isFieldUpdated = $true
+                          }
+                      }
+    
+                      if ($isFieldUpdated) {
+                          $duplicateItem[$field.Name] = $fieldValue
+                          Write-Host "Auto-fixed field '$($field.Name)' in '$newName'" -ForegroundColor Magenta
+                      }
+                  }
+              } finally {
+                  $duplicateItem.Editing.EndEdit() | Out-Null
+              }
+    
+              function Update-DescendantFields {
+                  param($ParentItem, [hashtable]$Mapping)
+                  foreach ($child in $ParentItem.Children) {
+                      $child.Fields.ReadAll()
+                      $child.Editing.BeginEdit()
+                      $childUpdated = $false
+                      try {
+                          foreach ($field in $child.Fields) {
+                              if ($field.Name.StartsWith("__") -or [string]::IsNullOrEmpty($field.Value)) { continue }
+    
+                              $fieldValue = $field.Value
+                              $isFieldUpdated = $false
+    
+                              foreach ($oldId in $Mapping.Keys) {
+                                  if ($fieldValue.ToLower().Contains($oldId.ToLower())) {
+                                      $newId = $Mapping[$oldId]
+                                      Write-Host "  Replacing '$oldId' -> '$newId' in field '$($field.Name)' on '$($child.Name)'" -ForegroundColor Yellow
+                                      $fieldValue = $fieldValue -ireplace [regex]::Escape($oldId), $newId
+                                      $isFieldUpdated = $true
+                                  }
+                              }
+    
+                              if ($isFieldUpdated) {
+                                  $child[$field.Name] = $fieldValue
+                                  $childUpdated = $true
+                                  Write-Host "Auto-fixed field '$($field.Name)' in '$($child.Name)'" -ForegroundColor Magenta
+                              }
+                          }
+                      } finally {
+                          if ($childUpdated) {
+                              $child.Editing.EndEdit() | Out-Null
+                          } else {
+                              $child.Editing.CancelEdit()
+                          }
+                      }
+                      Update-DescendantFields -ParentItem $child -Mapping $Mapping
+                  }
+              }
+              Update-DescendantFields -ParentItem $duplicateItem -Mapping $childMapping
+    
+                              $finalDs = $duplicateItem.ID.ToString()
+                          } else {
+                              $finalDs = $existingItem.ID.ToString()
+                          }
+    
+                          $pString = ConvertTo-Params -ds $finalDs -ph $currentPh
+                          $complexMapping += "$($r.id):$($r.id):$pString"
+                          
+                          Write-Host "Mapped with DS: $($r.id)" -ForegroundColor Green
+                      } else {
+                          Write-Host "Skipped in mapping (no DS): $($r.id)" -ForegroundColor Gray
+                      }
+                  }
+                          
+                          $item = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider"
+                          $currentValue = $item["Pages"]
+                  
+                      return @(
+                          @{
+                          Path         = $PagePath
+                          TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+                          Fields       = @{
+                              "RenderingReplacements" = @{ "en" = ($complexMapping -join "|") }
+                              "AllowedRenderings"  = @{ "en" = ($simpleList -join "|") }
+                          }
+                      }
+                      )
+                      }
+                  
+              $updates = Get-PageConfiguration -PagePath "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/View Booking"
+              ImportContent -itemsToCreate $updates
+                  
+              $content = @(
+                                        @{
+                                          Path         = "/sitecore/content/EasyJet/Holidays/Data/ATOL Protection F and H"
+                                          TemplatePath = "/sitecore/templates/Feature/Destinations/ATOL Protection"
+                                          Fields      = @{
+                                               "Title" = @{
+                                                  "en" = "Your trip is secure as all easyJet Flight + Hotel bookings are fully protected."
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                              "Text"= @{
+                                                  "en" = "We know it's important to feel protected when booking your trip. Feel completely secure on your easyJet Flight + Hotel booking with the ATOL protection scheme. All the trips sold in UK on this website are financially protected by the ATOL scheme. Find out more about fully ATOL protected trips here."
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" = ""
+                                                  "de-DE" = ""
+                                              }
+                                          }
+                                       }   
+                                       @{
+                                          Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Amend Restrictions/Restrictions Support"
+                                          TemplatePath = "/sitecore/templates/Feature/Destinations/Amend/Amend Restriction Item"
+                                          Fields      = @{
+                                              "Description"= @{
+                                                  "en" = "<p>If you can&rsquo;t see an option to make a particular change for your booking below, or need a bit of support, visit our help centre for more information on amending your booking.</p>"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" = ""
+                                                  "de-DE" = ""
+                                              }
+                                          }
+                                       }   
+                                        @{
+                                          Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Amend Restrictions/Time Warning"
+                                          TemplatePath = "/sitecore/templates/Feature/Destinations/Amend/Amend Restriction Item"
+                                          Fields      = @{
+                                              "Title"= @{
+                                                  "en" = "You’re just hours away from your booking!"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" = ""
+                                                  "de-DE" = ""
+                                              }
+                                              "Description"= @{
+                                                  "en" = "<p>As you’re so close to your trip, you’re no longer able to make any changes to your booking online. If you have any questions, visit our help centre to see if we have the answer for you.</p>"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" = ""
+                                                  "de-DE" = ""
+                                              }
+                                          }
+                                       }   
+                          @{
+                              Path         = "/sitecore/content/EasyJet/Holidays/Data/Special Requests F and H"
+                              TemplatePath = "/sitecore/templates/Foundation/Destinations/Special Requests/Special Requests Folder"
+                              Fields      = @{
+                                  "AddRequestDescription" = @{
+                                                  "en" = "Are you celebrating a special occasion and would like to let the hotel know, or simply have a preference on things like bed type, then make your requests with the hotel now."
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                              }
+                          }   
+                          @{
+                              Path         = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H/Credit And Cash Refund"
+                              TemplatePath = "/sitecore/templates/Feature/Destinations/Refund Info"
+                              Fields       = @{
+                                  "Title" = @{
+                                                  "en" = "Looking to cancel your booking?"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                   "Description" = @{
+                                                  "en" = @'
+    Has something changed and you need to cancel? You're able to cancel this booking with ease online.&nbsp;<strong><a style="text-decoration: underline;" href="~/link.aspx?_id=057B8331443B4FA1B86BBA5BD609FAC9&amp;_z=z" target="_blank" rel="noopener noreferrer">Terms and conditions apply.</a></strong>                                             
+    '@
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                    "CancelButtonText" = @{
+                                        "en" = "Cancel my booking"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                    }
+                              }
+                          }
+                          @{
+                              Path         = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H/Credit Refund By Destination rules"
+                              TemplatePath = "/sitecore/templates/Feature/Destinations/Refund Info"
+                              Fields       = @{
+                                  "Title" = @{
+                                                  "en" = "Looking to cancel your booking?"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                   "Description" = @{
+                                                  "en" = @'
+    Not sure if this booking's still right for you? You&rsquo;re able to cancel your booking with ease online, in line with our <strong><a style="text-decoration: underline;" rel="noopener noreferrer" href="https://www.easyjet.com/en/holidays/info/booking-conditions" target="_blank">booking conditions.</a></strong> So you can book something else instead.
+    '@
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                    "CancelButtonText" = @{
+                                        "en" = "Cancel my booking"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                    }
+                              }
+                          }
+                          @{
+                              Path         = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H/No Refund"
+                              TemplatePath = "/sitecore/templates/Feature/Destinations/Refund Info"
+                              Fields       = @{
+                                  "Title" = @{
+                                                  "en" = "Looking to cancel your booking?"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                   "Description" = @{
+                                                  "en" =@'
+    Has something changed and you need to cancel? You're able to cancel this booking with ease online.&nbsp;<strong><a style="text-decoration: underline;" href="~/link.aspx?_id=057B8331443B4FA1B86BBA5BD609FAC9&amp;_z=z" target="_blank" rel="noopener noreferrer">Terms and conditions apply.</a></strong>                                            
+    '@
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                    "CancelButtonText" = @{
+                                        "en" = "Cancel my booking"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                    }
+                              }
+                          }
+                          @{
+                              Path         = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H/Less X hours after booking"
+                              TemplatePath = "/sitecore/templates/Feature/Destinations/Refund Info"
+                              Fields       = @{
+                                  "Title" = @{
+                                                  "en" = "Looking to cancel your booking?"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                              }
+                          }
+                          @{
+                              Path         = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H/Only Credit Refund"
+                              TemplatePath = "/sitecore/templates/Feature/Destinations/Refund Info"
+                              Fields       = @{
+                                  "Title" = @{
+                                                  "en" = "Looking to cancel your booking?"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                   "Description" = @{
+                                                  "en" = @'
+    Has something changed and you need to cancel? You're able to cancel this booking with ease online.&nbsp;<strong><a style="text-decoration: underline;" href="~/link.aspx?_id=057B8331443B4FA1B86BBA5BD609FAC9&amp;_z=z" target="_blank" rel="noopener noreferrer">Terms and conditions apply.</a></strong>                                             
+    '@
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                    "CancelButtonText" = @{
+                                        "en" = "Cancel my booking"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                    }
+                              }
+                          }
+                          @{
+                              Path         = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H/Original Payment Refund"
+                              TemplatePath = "/sitecore/templates/Feature/Destinations/Refund Info"
+                              Fields       = @{
+                                  "Title" = @{
+                                                  "en" = "Looking to cancel your booking?"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                   "Description" = @{
+                                                  "en" = @'
+    Has something changed and you need to cancel? You're able to cancel this booking with ease online.&nbsp;<strong><a style="text-decoration: underline;" href="~/link.aspx?_id=057B8331443B4FA1B86BBA5BD609FAC9&amp;_z=z" target="_blank" rel="noopener noreferrer">Terms and conditions apply.</a></strong>                                             
+    '@
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                    "CancelButtonText" = @{
+                                                  "en" = "Cancel my booking"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                    }
+                                    "Refund Type" = @{
+                                                  "en" = "{B5F2DD5B-5A68-4C0C-B30E-19C1AA970FD1}"
+                                    }
+                              }
+                          }
+                           @{
+                              Path         = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H/Refund By Agency"
+                              TemplatePath = "/sitecore/templates/Feature/Destinations/Refund Info"
+                              Fields       = @{
+                                  "Title" = @{
+                                                  "en" = "Looking to cancel your booking?"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                   "Description" = @{
+                                                  "en" = "Has something changed and you need to cancel? Please contact your travel agent and they will explain our flexible booking conditions."
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                              }
+                          }
+                           @{
+                              Path         = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H/Refund Unavailable"
+                              TemplatePath = "/sitecore/templates/Feature/Destinations/Refund Info"
+                              Fields       = @{
+                                  "Title" = @{
+                                                  "en" = "Looking to cancel your booking?"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                              }
+                          }
+                          
+                          @{
+                              Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Booking Privacy F and H"
+                              TemplatePath = "/sitecore/templates/Feature/PageContent/Booking Privacy"
+                              Fields       = @{
+                                   "Description" = @{
+                                                  "en" = "When you make a booking, you can view your booking details in two ways. You can log in to your personal easyJet holidays account with your email address and password, so you can check or amend your booking. Or, you and any other person travelling on your booking can access a 'read only' view by entering your booking reference, departure date and last name of the lead passenger through our 'View my booking' option.<br /><br />If you want to block 'read only' access so no one else on your booking can access it, simply turn OFF 'read only' access using the switch below. You can turn this ON again at any time if you change your mind. The setting you choose will only apply to this booking, unless you change the setting on your other booking(s)."
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                              }
+                          }
+                          
+                          @{
+                              Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Not Logged In Banner F and H/Not Logged In"
+                              TemplatePath = "/sitecore/templates/Feature/PageContent/Call To Action Folder/Call To Action Block With Key"
+                              Fields       = @{
+                                   "Title" = @{
+                                                  "en" = "Lead customer? Log in to manage your booking"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                              }
+                          }
+                          
+                          @{
+                              Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/View Booking F and H"
+                              TemplatePath = "/sitecore/templates/Feature/Destinations/View Booking"
+                              Fields       = @{
+                                   "ManageHubLabel" = @{
+                                                  "en" = "Manage your booking"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                    "ManageBookingLabel" = @{
+                                                  "en" = "Manage booking"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                    "ReadMoreLink" = @{
+                                                  "en" = "<link text='Read more about bags' linktype='external' url='/en/holidays/flight-plus-hotel/help?helpCategory=luggage' anchor='' target='_blank' />"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                    "LuggageDisabledHeader" = @{
+                                                  "en" = "Want to take more bags with you?"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                    "LuggageDisabledDescription" = @{
+                                                  "en" = "If you want to add a large overhead cabin bag, or extra hold luggage to your booking package – you can add this via easyJet.com once you have your flight reference number. Just so you know, any extras you add via easyJet.com will not reflect on easyJet holidays."
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                              
+                                              
+                              }
+                          }
+                          @{
+                              Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Amend Restrictions F and H/Restrictions Support"
+                              TemplatePath = "/sitecore/templates/Feature/Destinations/Amend/Amend Restriction Item"
+                              Fields       = @{
+                                   "Description" = @{
+                                                  "en" = "<p>If you can&rsquo;t see an option to make a particular change for your booking below, or need a bit of support, visit our help centre for more information on amending your booking.</p>"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                                    "Link" = @{
+                                                  "en" = "<link text='Get help' linktype='external' url='/en/holidays/flight-plus-hotel/help?helpCategory=changes' anchor='' target='_blank' />"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                              }
+                          }
+                          
+                          @{
+                              Path         = "/sitecore/content/EasyJet/Holidays/Dictionary/Booking Header/Labels/Booking Ref Title"
+                              TemplatePath = "/sitecore/templates/System/Dictionary/Dictionary entry"
+                              Fields       = @{
+                                   "Phrase" = @{
+                                                  "en" = "This is your easyJet booking reference number to view your trip and check-in"
+                                                  "fr-CH" = ""
+                                                  "de-CH" = ""
+                                                  "fr-FR" =""
+                                                  "de-DE" = ""
+                                              }
+                              }
+                          }
+                          
+                          
+                          
+                          
+                          
+                          
+                          )
+                  
+                      ImportContent -itemsToCreate $content
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260515T101500Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

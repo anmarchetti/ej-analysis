@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
+    <PackageReference Include="Moq" />
+    <PackageReference Include="FluentAssertions" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\easyJet.Holidays.External.AWS.HbgHotelDiscountsSync\easyJet.Holidays.External.AWS.HbgHotelDiscountsSync.csproj" />
+    <ProjectReference Include="..\easyJet.Holidays.External.AWS\easyJet.Holidays.External.AWS.csproj" />
+  </ItemGroup>
+</Project>

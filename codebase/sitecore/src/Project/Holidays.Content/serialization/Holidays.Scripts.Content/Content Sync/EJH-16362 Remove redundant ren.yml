@@ -1,0 +1,93 @@
+﻿---
+ID: "a9339c3e-3a0f-44d1-9164-55040319aa98"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-16362 Remove redundant renderings and items and add new promo blocks"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+        $item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+         if ($item -eq $null) {
+                $item = New-Item -Path $path -ItemType $templateId
+                Write-Host "Item" $item.Name "successfully created";
+         }
+         return $item
+    }
+    
+    function Remove-Item-Internal ($path){
+        $item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+        if($item -ne $null){
+            $item | Remove-Item -Recurse
+        }
+    }
+    
+    function Get-Rendering-Index ($item, $renderingItemId) {
+        $i = 0
+        Get-Rendering -Item $item | ForEach-Object {
+            if ($_.ItemID -eq $renderingItemId) {
+                return $i
+            }
+            $i++
+        }
+    }
+    
+    function Remove-Rendering-WithSameSource ($item, $dataSourcePath) {
+        $rendering = Get-Rendering -Item $item -DataSource $dataSourcePath
+        if($rendering -ne $null) {
+           if($rendering -is [array]){
+                for ($i=0; $i -lt $rendering.Count; $i++){
+                    Remove-Rendering -Item $item -Instance $rendering[$i]
+                    Write-Host "Contact Us Page rendering removed"
+                }
+            }else{
+                Remove-Rendering -Item $item -Instance $rendering
+                Write-Host "Contact Us Page rendering removed"
+            }
+        }
+    }
+    
+    
+    # Remove unused items
+    
+    Remove-Item-Internal "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Accordion"
+    Remove-Item-Internal "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Accordion - Contact"
+    Remove-Item-Internal "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Html Blocks"
+    Remove-Item-Internal "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Chatbot"
+    
+    # remove text and add new text
+    Remove-Item-Internal "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Text Blocks/Travel info before accordions"
+    Remove-Item-Internal "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Text Blocks/Travel info after accordions"
+    
+    # edit title and image
+    $itemPath = "master:/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us"
+    
+    $contactUsItem = Get-Item -path $itemPath -ErrorAction SilentlyContinue
+    
+    if ($contactUsItem -ne $null) {
+        $contactUsItem.Editing.BeginEdit()
+        $contactUsItem["Name"] = "Contact the easyJet Holidays Team"
+        $contactUsItem["Image"] = '<image mediaid="{68E23BAD-5A2B-4C1F-A27B-A9CF6C261BCE}" />'
+        $contactUsItem.Editing.EndEdit()
+        
+        Write-Host "Item" $contactUsItem.Name"successfully updated"
+    }
+    
+    # remove unused renderings
+    
+    Remove-Rendering-WithSameSource $contactUsItem "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Accordion"
+    Remove-Rendering-WithSameSource $contactUsItem "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Html Blocks/Contact Us iFrame"
+    Remove-Rendering-WithSameSource $contactUsItem "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Chatbot"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 350
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

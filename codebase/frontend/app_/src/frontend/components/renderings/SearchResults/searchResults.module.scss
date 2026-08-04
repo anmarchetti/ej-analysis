@@ -1,0 +1,53 @@
+.leftColumn {
+    width: 350px;
+    margin-top: 92px;
+    padding: 0 15px;
+}
+
+.searchPodFiltersContainer {
+    min-width: 320px;
+    margin-right: 24px;
+}
+
+.mainColumn {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.searchResultWrapper {
+    width: 100%;
+}
+
+.searchPodFiltersLoadingLayout {
+    display: flex;
+
+    :global(.hotel-search-results) {
+        width: 100%;
+    }
+}
+
+.searchPodFiltersSkeleton {
+    min-width: 320px;
+    margin-right: 20px;
+    background-image: linear-gradient(95deg, $colorWhiter 8%, $colorAlto 18%, $colorWhiter 33%);
+    border-radius: 18px;
+}
+
+.compareWrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    transform: translateY(100%);
+    transition: 0.4s ease-out;
+    z-index: $z-index-fixed;
+}
+
+.compareWrapperActive {
+    transform: translateY(0);
+}
+
+.compareOverlayOpened {
+    z-index: $z-index-popup;
+}

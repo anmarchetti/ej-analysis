@@ -1,0 +1,111 @@
+.content {
+    display: flex;
+    margin-bottom: 25px;
+    font-size: 16px;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 15px;
+    }
+}
+
+.image {
+    margin-right: 13px;
+    @include sizeSquare(40px);
+
+    @include media-breakpoint-up(md) {
+        display: none;
+    }
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    line-height: 1.42;
+
+    p {
+        margin: 0 0 10px;
+
+        @include media-breakpoint-down(md) {
+            margin: 0 0 8px;
+        }
+    }
+
+    p:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.card {
+    margin-bottom: 20px;
+    background: $colorWhite;
+    border-radius: 4px;
+    box-shadow: 0 0 4px 0 rgba($colorMidnightGray, 0.5);
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 0;
+        background: none;
+        border: none;
+        box-shadow: none;
+
+        .cardInner {
+            padding: 0;
+        }
+    }
+}
+
+.cardInner {
+    padding: 25px;
+    border: 2px solid $colorTransparent;
+    border-radius: 4px;
+}
+
+.specialRequestsList {
+    @include media-breakpoint-down(md) {
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+}
+
+.specialRequestsListContainer {
+    margin: 0 -5px -10px;
+}
+
+.buttons {
+    display: none;
+    margin-top: 20px;
+
+    @include media-breakpoint-down(md) {
+        display: block;
+        margin-top: 0;
+    }
+}
+
+.mobileBtn {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.specialRequests {
+    @include media-breakpoint-down(md) {
+        margin-bottom: 20px;
+        padding: 20px;
+        background-color: $clrSiteBgWhite;
+        border: 2px solid $colorTransparent;
+        border-radius: 4px;
+        box-shadow: 0 0 4px 0 rgba($colorMidnightGray, 0.5);
+    }
+}
+
+.headerTitle {
+    margin-top: 40px;
+    font-family: $fontRoundedBook;
+    font-size: 24px;
+    font-weight: 400;
+    color: $clrTextMain;
+    text-transform: uppercase;
+
+    @include media-breakpoint-down(md) {
+        margin: 0 0 10px;
+    }
+}

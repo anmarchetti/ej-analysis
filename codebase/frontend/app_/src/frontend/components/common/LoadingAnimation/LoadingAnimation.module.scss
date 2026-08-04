@@ -1,0 +1,81 @@
+.animationContainer {
+    position: relative;
+    width: 340px;
+    height: 1px;
+    margin-top: 45px;
+    background-image: linear-gradient(to right, $colorOrange 33%, rgba(255, 255, 255, 0) 0%);
+    background-repeat: repeat-x;
+    background-position: bottom;
+    background-size: 5px 1px;
+
+    @include media-breakpoint-down(md) {
+        width: 240px;
+        margin-top: 30px;
+    }
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: 0;
+    transform: translate(-50%, -50%);
+}
+
+.animationContainer::after {
+    right: 0;
+}
+
+.animationContainer::before,
+.animationContainer::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    background: $colorOrange;
+    border-radius: 50%;
+    transform: translateY(-50%);
+}
+
+
+.planeIcon {
+    position: absolute;
+    top: 50%;
+    left: 6px;
+    height: 36px;
+    transform: translateY(-50%);
+    animation: plane-desktop 1s ease-in-out infinite;
+    @include media-breakpoint-down(md) {
+        height: 24px;
+        animation: plane-mobile 1s ease-in-out infinite;
+    }
+}
+
+@keyframes plane-desktop {
+    0% {
+        transform: translate(0, -50%) scale(1);
+    }
+
+    80% {
+        transform: translate(284px, -50%) scale(1.33);
+    }
+
+    100% {
+        transform: translate(284px, -50%) scale(1.33);
+    }
+}
+
+@keyframes plane-mobile {
+    0% {
+        transform: translate(0, -50%) scale(1);
+    }
+
+    80% {
+        transform: translate(196px, -50%) scale(1.5);
+    }
+
+    100% {
+        transform: translate(196px, -50%) scale(1.5);
+    }
+}

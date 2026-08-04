@@ -1,0 +1,93 @@
+﻿---
+ID: "35ec1e8c-3564-4472-9d38-e4b782ac8ba4"
+Parent: "b8c56fd2-1e24-4961-884b-de21791ff5c5"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/Manual/INS-1407 Update Hotels Import Data field"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Generate $updates entries with this SQL (no trailing comma on last row):
+    # WITH cte AS
+    # (
+    #     SELECT ItemId, [Value],
+    #            ROW_NUMBER() OVER (ORDER BY ItemId) AS rn,
+    #            COUNT(*) OVER () AS cnt
+    #     FROM SharedFields
+    #     WHERE FieldId = '2D61770B-D5AE-42EA-BAAE-55AB14760473'
+    #       AND [Value] IS NOT NULL
+    #       AND [Value] <> ''
+    # )
+    # SELECT '@{ Id = "{' + CONVERT(varchar(36), ItemId) + '}"; Value = '''
+    #      + REPLACE([Value], '''', '''''')
+    #      + ''' }'
+    #      + CASE WHEN rn < cnt THEN ',' ELSE '' END
+    # FROM cte
+    # ORDER BY rn;
+    # Copy the output rows into the $updates array below.
+    $databaseName = "master"
+    $fieldName = "HotelsImportData"
+    
+    # Fill this array with item IDs and the value to set.
+    $updates = @(
+        # copy the output rows from the SQL query here
+    )
+    
+    $db = Get-Database $databaseName
+    if (-not $db) {
+        Write-Warning "Database '$databaseName' not found."
+        return
+    }
+    
+    foreach ($entry in $updates) {
+        $idRaw = [string]$entry.Id
+        $newValue = [string]$entry.Value
+    
+        if (-not [Sitecore.Data.ID]::IsID($idRaw)) {
+            Write-Warning "Skipping invalid ID: $idRaw"
+            continue
+        }
+    
+        $itemId = [Sitecore.Data.ID]::Parse($idRaw)
+        $baseItem = $db.GetItem($itemId)
+    
+        if (-not $baseItem) {
+            Write-Warning "Item not found: $idRaw"
+            continue
+        }
+    
+        foreach ($language in $baseItem.Languages) {
+            $languageItem = $db.GetItem($baseItem.ID, $language)
+            if (-not $languageItem) { continue }
+    
+            foreach ($versionItem in $languageItem.Versions.GetVersions()) {
+                if (-not $versionItem.Fields[$fieldName]) {
+                    Write-Warning "Field '$fieldName' is missing on $($versionItem.Paths.FullPath)"
+                    continue
+                }
+    
+                [void]$versionItem.Editing.BeginEdit()
+                try {
+                    $versionItem[$fieldName] = $newValue
+                }
+                finally {
+                    [void]$versionItem.Editing.EndEdit()
+                }
+            }
+        }
+    }
+    
+    Write-Host "Update completed."
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260325T120708Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,15 @@
+.heroSectionWrapper {
+    // EJH-18312 unset z-index of Hero Carousel to prevent it from overlapping the SearchPod when it's sticky
+    [id="hero-carousel"] {
+        z-index: unset;
+    }
+}
+
+.floatingSearchPodWrapper {
+    z-index: $z-index-fixed;
+}
+
+.heroSectionWrapperPositioned {
+    position: relative;
+}
+

@@ -1,0 +1,96 @@
+﻿---
+ID: "fcfca012-9b75-4d36-972b-535aa39eb3d0"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Confidence Module Transformer
+DB: master
+SharedFields:
+    - ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+      Hint: Script
+      Value: |
+          function Get-Or-Create-Item($path, $templateId) {
+              $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+              if (-Not $item) {
+                  $item = New-Item -Path $path -ItemType $templateId
+              }
+              return $item
+          }
+          #Create Confidence Module Transformer datasource
+          $confidenceItemPath = '/sitecore/content/EasyJet/Holidays/Data/Confidence Module Transformer' 
+          $confidenceItem = New-Item -Path $confidenceItemPath  -ItemType "{04A581F4-025F-4898-A3AC-845DB8DD7F86}" -ForceId "{4bb2e1e6-3ba8-4368-aabb-d189f9df2111}"
+          if ($confidenceItem -ne $null) {
+              $confidenceItem.Editing.BeginEdit();
+              $confidenceItem["Variant"] = 'Main Module';
+              $confidenceItem["MainModuleTitle"] = 'WHY BOOK WITH US?';
+              $confidenceItem["MainModuleText"] = "When it comes to your holiday, we know everyone likes to have great flexibility and a memorable experience - so we've designed our getaways with you in mind.";
+              $confidenceItem["ConfidenceIcon"] = '<image mediaid="{74932F81-07DD-4DEA-A899-0B4B574BAB40}" />';
+              $confidenceItem["ConfidenceTitle"] = 'Passport to confidence';
+              $confidenceItem["ConfidenceText"] = "When it comes to your holiday, we know everyone likes to have great flexibility and<br> a memorable experience - so we've designed our getaways with you in mind";
+              $confidenceItem["ConfidenceLink"] = '<link text="Primary" anchor="" linktype="internal" class="" title=""  querystring="" id="{0518D8C6-B7CA-4C73-86C2-A29D971EBEAB}" />';
+              $confidenceItem["Text"] = "<p>When it comes to your holiday, we know everyone likes to have great flexibility and a memorable experience - so we've designed our getaways with you in mind</p>";
+              $confidenceItem.Editing.EndEdit() | Out-Null;
+          }
+          #Create Information Tiles Under Confidence Module Transformer
+          function Create-Information-Tile($path, $title, $description, $icon) {
+            $item = Get-Item -Path $path -ErrorAction SilentlyContinue;
+            if (-Not $item) {
+              $item = New-Item -Path $path -ItemType '{424BD58C-E281-4DAD-8F46-7FE4DE602C0F}'
+                
+              if ($item) {
+                $item.Editing.BeginEdit();
+                $item["Title"] = $title;
+                $item["Description"] = $description;
+                $item["Icon"] = $icon;
+                $item.Editing.EndEdit() | Out-Null;
+              }
+              
+              if ($confidenceItem -ne $null) {
+                [Sitecore.Data.Fields.MultilistField]$linksField = $confidenceItem.Fields["ConfidenceInfoTiles"];
+              
+                $confidenceItem.Editing.BeginEdit();
+                $linksField.add($item.ID);
+                $confidenceItem.Editing.EndEdit() | Out-Null;
+              }
+              
+              return $item;
+            }   
+          }
+          $infoTile1 = Create-Information-Tile -path '/sitecore/content/EasyJet/Holidays/Data/Confidence Module Transformer/Your perfect holiday' -title 'Your perfect holiday' -description "Get flights, hotel, transfer*, cabin and hold bags, all in one booking." -icon '<image mediaid="{BC5C39B1-A8F2-484B-9026-0971AD444B92}" />'
+          $infoTile2 = Create-Information-Tile -path '/sitecore/content/EasyJet/Holidays/Data/Confidence Module Transformer/Flexible flights' -title 'Flexible flights' -description "Keep your options open with flexible flight times that suit you." -icon '<image mediaid="{04966555-D06E-4529-BF81-F7203199E554}" />'
+          $infoTile3 = Create-Information-Tile -path '/sitecore/content/EasyJet/Holidays/Data/Confidence Module Transformer/Bags Included' -title '23kg bags included' -description "A generous 23kg bag plus hand luggage for everybody." -icon '<image mediaid="{0FA712E4-39E2-4E1E-A728-9EDFC91C4026}" />'
+          $infoTile4 = Create-Information-Tile -path '/sitecore/content/EasyJet/Holidays/Data/Confidence Module Transformer/ATOL Protected' -title 'ATOL protected' -description "Relax, every part of your holiday is 100% covered with ATOL protection scheme." -icon '<image mediaid="{0AB63383-AB3C-4038-B74C-5D00919A27F5}" />'
+          $infoTile5 = Create-Information-Tile -path '/sitecore/content/EasyJet/Holidays/Data/Confidence Module Transformer/Spread the cost' -title 'Spread the cost' -description "Book with just a £60pp deposit and pay the remainder 60 days before departure." -icon '<image mediaid="{6824CE2C-3802-4B46-8057-889FF645AE43}" />'
+          #Replace Information Tiles and Text Block rendering with Confidence Module Transformer
+          $whyBookWithUs = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Data/Text Blocks/Why book with us' -ErrorAction SilentlyContinue;
+          $homePage = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Home';
+          $renderings = Get-Rendering -Path '/sitecore/content/EasyJet/Holidays/Home';
+          $renderings| ForEach-Object {
+              if ($_.ItemID -eq '{5C8585BB-1BED-46C8-AD5B-93088A0B2E54}') {
+                  $informationTilesRendering = $_;
+          	}
+          }
+          $whyBookPlaceholder = $informationTilesRendering.Placeholder;
+          if ($whyBookPlaceholder -ne $null) {
+          Remove-Rendering -Item $homePage -PlaceHolder $whyBookPlaceholder -ErrorAction SilentlyContinue;
+          }
+          #Confidence Module Transformer 
+          for ($counter=0; $counter -lt $renderings.Length; $counter++){
+              $placeholder = '/body/component-wrapper-inner-'+ $renderings[$counter].UniqueId +'-0';
+              if ( $placeholder -eq $whyBookPlaceholder) {
+                  $index = $counter + 1;
+                  break;
+          	}
+          }
+          $confidenceRendering = Get-Item -Database "master" -Path '/sitecore/layout/Renderings/Feature/PageContent/Confidence Module Transformer' | New-Rendering -Placeholder $whyBookPlaceholder -DataSource $confidenceItem;
+          Add-Rendering -Item $homePage -PlaceHolder $whyBookPlaceholder -Instance $confidenceRendering -Index $index
+    - ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+      Hint: __Sortorder
+      Value: 4890
+Languages:
+    - Language: en
+      Versions:
+          - Version: 1
+            Fields:
+                - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+                  Hint: __Created
+                  Value: 20200714T084139Z

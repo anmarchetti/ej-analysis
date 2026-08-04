@@ -1,0 +1,224 @@
+﻿---
+ID: "2301e65c-169f-4f70-a3d0-281f519b2da2"
+Parent: "b1e3c34e-a209-4730-a266-ecc77072d88c"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/SPE/Extensions/EasyJet/Functions/Import Content
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function ImportContent {
+        param(
+            [Parameter(Mandatory=$true)]
+            $itemsToCreate
+        )
+        if ($itemsToCreate -is [Array]) {
+            foreach ($itemInfo in $itemsToCreate) {
+                Process -itemInfo $itemInfo
+            }
+        } else {
+            Process -itemInfo $itemsToCreate
+        }
+        Write-Host ""
+        Write-Host ""
+        Write-Host "All items updated successfully" -ForegroundColor Green
+    }
+    
+    function Process {
+        param(
+            [Parameter(Mandatory = $true)]
+            $itemInfo
+        )
+        $itemName     = [System.IO.Path]::GetFileName($itemInfo.Path)
+        $itemIdString = $itemInfo.Id
+        $path         = $itemInfo.Path
+        $fields       = $itemInfo.Fields
+        $templatePath = $itemInfo.TemplatePath
+        $createEnglishVersionByDefault = $itemInfo.CreateEnglishVersionByDefault
+        
+        if($createEnglishVersionByDefault -eq $null) 
+        { 
+            $createEnglishVersionByDefault = $true
+        }
+        
+        if(-not $templatePath.StartsWith("/sitecore/templates"))
+        {
+            $templatePath = [System.IO.Path]::Combine("/sitecore/templates/", $templatePath)
+        }
+    
+        Write-Host ""
+        Write-Host ""
+        Write-Host "Item: '$itemName'" -ForegroundColor Cyan
+    
+        $itemId = New-Object -TypeName "Sitecore.Data.ID" -ArgumentList $itemIdString
+    
+        $masterDatabase = [Sitecore.Configuration.Factory]::GetDatabase("master")
+    
+        $item = $masterDatabase.GetItem($itemId)
+    
+        if (-not $item) {
+            $item = $masterDatabase.GetItem($path)
+    
+            if (-not $item) {
+                Write-Host "Creating..." -ForegroundColor Yellow
+    
+                $parentPath = [System.IO.Path]::GetDirectoryName($path).Replace("\", "/")
+                Write-Host "Parent path: $parentPath" -ForegroundColor Cyan
+    
+                $parentItem = Get-Item -Path $parentPath
+    
+                if (-not $parentItem) {
+                    Write-Host "Parent item not found at $parentPath!" -ForegroundColor Red
+                    return
+                }
+    
+                $template = Get-Item -Path $templatePath
+                if (-not $template) {
+                    Write-Host "Template not found at $templatePath!" -ForegroundColor Red
+                    return
+                } else {
+                    Write-Host "Template: '$templatePath'" -ForegroundColor Green
+                }
+    
+                # Create the new item and assign the ID if provided
+                if (-not $itemIdString) {
+                    $item = New-Item -Path $parentItem.ItemPath -Name $itemName -ItemType $templatePath
+                    $itemIdString = $item.Id
+               
+                } else {
+                    Write-Host "ID: '$itemIdString'..." -ForegroundColor Cyan
+                    $item = New-Item -Path $parentItem.ItemPath -Name $itemName -ItemType $templatePath -ForceId $itemIdString
+                }
+    
+                if (-not $item) {
+                    Write-Host "Error while creating item!" -ForegroundColor Red
+                    return
+                }else  {
+                    if ($createEnglishVersionByDefault -eq $false)
+                    {
+                        $item | Remove-ItemVersion 
+                    }
+                }
+            }
+        } else {
+            if($item.Paths.FullPath -ne $path){
+                Write-Host "Item '$itemName' with ID '$itemIdString' already exists in a different location! " -ForegroundColor Yellow
+                Write-Host "Wanted Path :'$path'" -ForegroundColor Yellow
+                Write-Host "ItemPath :'$($item.Paths.FullPath)'" -ForegroundColor Yellow
+            }
+        }
+        
+        foreach ($fieldName in $fields.Keys) {
+            if ($null -eq $fieldName) {
+                Write-Host "`tField is not defined." -ForegroundColor Red
+                continue
+            }
+            $entry = $fields[$fieldName]
+            $field = $Item.Fields[$FieldName]
+            if ($null -eq $field) {
+                Write-Host "`tField '$FieldName' does not exist in item '$($Item.Paths.FullPath)'." -ForegroundColor Red
+                continue
+            }
+            
+            $fieldType = $field.Type
+    
+            if($field.Shared)
+            {
+                Write-Host "`tField: '$fieldName' Type: '$fieldType' (shared)" -ForegroundColor Yellow
+            }
+            else
+            {
+                 Write-Host "`tField: '$fieldName' Type: '$fieldType'" -ForegroundColor Yellow
+            }
+            
+    
+            if($entry -is [string]){
+                
+                InsertValue -item $item -language "en" -field $field -value $entry
+            }
+            else{
+                foreach ($language in $entry.Keys) {
+                    InsertValue -item $item -language $language -field $field -value $entry[$language]
+                }
+            }
+            Write-Host ""
+            Write-Host ""
+            Write-Host ""
+        }
+    
+    }
+    
+    function InsertValue {
+        param(
+            [Parameter(Mandatory = $true)]
+            $item,
+            [Parameter(Mandatory = $true)]
+            $language,
+            [Parameter(Mandatory = $true)]
+            $field,
+            [Parameter(Mandatory = $true)]
+            $value
+        )
+    
+        $targetLangItem = $masterDatabase.GetItem($item.Id, $language)
+        Write-Host "`t`tLanguage: '$language'" -ForegroundColor Cyan
+        if (-not $targetLangItem -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Write-Host "`t`tCreating new version." -ForegroundColor Yellow
+            Add-ItemLanguage -Item $item -TargetLanguage $language -DoNotCopyFields | Out-Null
+            $targetLangItem = $masterDatabase.GetItem($item.Id, $language)
+        }
+    
+        if (-not $targetLangItem) {
+            Write-Host "`t`tCannot create version for language:: '$language'." -ForegroundColor Red
+            return
+        }
+    
+        UpdateField -Item $targetLangItem -field $field -Value $Value
+    }
+    
+    function UpdateField {
+        param (
+            [Parameter(Mandatory = $true)]
+            $Item,
+    
+            [Parameter(Mandatory = $true)]
+            $field,
+    
+            [Parameter(Mandatory = $true)]
+            $Value
+        )
+    
+    
+        $fieldType = $field.Type
+        $Item.Editing.BeginEdit()
+        try {
+    
+            $Item[$FieldName] = $Value
+            Write-Host "`t`tValue:    '$Value'" -ForegroundColor Green
+    
+        }
+        catch {
+            Write-Host "`t`t`tError while updating field..." -ForegroundColor Red
+            $Item.Editing.CancelEdit()
+            throw $_
+        }
+        finally {
+            if ($Item.Editing.IsEditing) {
+                $Item.Editing.EndEdit() | Out-Null
+            }
+        }
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240125T082214Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

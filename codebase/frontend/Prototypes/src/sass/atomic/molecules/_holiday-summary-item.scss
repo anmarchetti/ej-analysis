@@ -1,0 +1,113 @@
+.holiday-summary-item {
+  position: relative;
+  margin-top: 30px;
+  padding-top: 30px;
+  font-size: 18px;
+  line-height: 1.5;
+  border-top: 1px solid #dadfe0;
+
+  &.btns {
+    &::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    margin-top: 15px;
+    padding-top: 15px;
+    font-size: 14px;
+  }
+}
+
+.holiday-summary-item__details {
+  position: relative;
+  padding-left: $holiday-summary-item_padding-left;
+
+  @include media-breakpoint-down(md) {
+    padding-left: $holiday-summary-item_padding-left_sm;
+  }
+}
+
+.holiday-summary-item__title {
+  margin: 0 0 15px;
+  font-family: $fontRoundedBook;
+  font-size: 20px;
+  line-height: 1.5;
+  color: $clrTextMain;
+
+  @include media-breakpoint-down(md) {
+    font-size: 18px;
+  }
+}
+
+.holiday-summary-item__subtitle {
+  margin: 0 0 15px;
+  font-family: $fontRoundedBook;
+  font-size: 18px;
+  font-weight: 700;
+  color: $clrTextMain;
+
+  @include media-breakpoint-down(md) {
+    font-size: 14px;
+  }
+}
+
+.holiday-summary-item__text {
+  font-size: 16px;
+  line-height: 1.5;
+  color: $clrTextMain;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      position: relative;
+      padding-left: 15px;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 0;
+        width: 6px;
+        height: 6px;
+        margin: auto;
+        background-color: $clrEjOrange;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+.holiday-summary-item__icon {
+  position: absolute;
+  left: 0;
+  width: $holiday-summary-item_icon-size;
+  max-width: $holiday-summary-item_icon-size;
+  height: $holiday-summary-item_icon-size;
+  color: $clrEjOrange;
+
+  @include media-breakpoint-down(md) {
+    width: $holiday-summary-item_icon-size_sm;
+    max-width: $holiday-summary-item_icon-size_sm;
+    height: $holiday-summary-item_icon-size_sm;
+    color: $clrTextMain;
+  }
+
+  svg,
+  img,
+  > div {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+  }
+
+  > div {
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}

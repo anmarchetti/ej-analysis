@@ -1,0 +1,40 @@
+{
+  "Title": "Alternative fligts(s_tp=4) for accom 82551ecc",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/fcgi-bin/ezydmouk/avcache3_g",
+          "IgnoreCase": true
+        }
+      ]
+    },
+    "Params": [
+      {
+        "Name": "s_tp",
+        "Matchers": [
+          {
+            "Name": "WildcardMatcher",
+            "Pattern": "4"
+          }
+        ]
+      },
+      {
+        "Name": "accom",
+        "Matchers": [
+          {
+            "Name": "WildcardMatcher",
+            "Pattern": "82551ecc"
+          }
+        ]
+      }
+    ],
+    "Methods": [ "Get" ]
+  },
+  "Response": {
+    "Headers": { "Content-Type": "application/json; charset=utf-8" },
+    "StatusCode": 200,
+    "BodyAsFile": "__admin/files/Atcom/AmendController/RoomAndBoard/InfoEndpoint/AvCache_82551ecc_ST4.xml"
+  }
+}

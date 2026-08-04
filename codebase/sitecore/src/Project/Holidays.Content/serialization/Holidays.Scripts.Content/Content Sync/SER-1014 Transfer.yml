@@ -1,0 +1,320 @@
+﻿---
+ID: "a2351169-84a1-4892-ba03-ebcc4479b710"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-1014 Transfer"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+                Import-Function "Import Content"
+                $itineraryDatasourcePath = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Itinerary Summary" 
+                $itineraryTemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Itinerary Summary"
+              
+                function New-Content() { 
+                        $updates = @(
+                              @{
+                                Path         = $itineraryDatasourcePath
+                                TemplatePath = $itineraryTemplatePath
+                                Fields      = @{
+                                    "HoursToGrayOut" = @{
+                                        "en" = 24
+                                    }
+                                    
+                                    "PrivateTransfer" = @{
+                                        "en" = "Private transfer"
+                                        "fr-CH" = "Transfert privé"
+                                        "de-CH" = "Privattransfer"
+                                        "fr-FR" = "Transfert privé"
+                                        "de-DE" = "Privattransfer"
+                                    }
+                                    
+                                    "FlightOutbound" = @{
+                                        "en" = "Flight outbound"
+                                        "fr-CH" = "Vol aller"
+                                        "de-CH" = "Hinflug"
+                                        "fr-FR" = "Vol aller"
+                                        "de-DE" = "Hinflug"
+                                    }
+                                    
+                                    "FlightInbound" = @{
+                                        "en" = "Flight return"
+                                        "fr-CH" = "Vol retour"
+                                        "de-CH" = "Rückflug"
+                                        "fr-FR" = "Vol retour"
+                                        "de-DE" = "Rückflug"
+                                    }
+                                    "ExpandAllButton" = @{
+                                        "en" = "Expand all"
+                                        "fr-CH" = "Tout développer"
+                                        "de-CH" = "Alle erweitern"
+                                        "fr-FR" = "Tout développer"
+                                        "de-DE" = "Alle erweitern"
+                                    }
+                                   "CloseAllButton" = @{
+                                        "en" = "Close all"
+                                        "fr-CH" = "Tout fermer"
+                                        "de-CH" = "Alle schließen"
+                                        "fr-FR" = "Tout fermer"
+                                        "de-DE" = "Alle schließen"
+                                    }
+                                    "TimeMayVaryText" = @{
+                                        "en" = "Time may vary based on traffic conditions."
+                                        "fr-CH" = "L’horaire peut varier en fonction des conditions de circulation."
+                                        "de-CH" = "Die Zeit kann je nach Verkehr variieren."
+                                        "fr-FR" = "L’horaire peut varier en fonction des conditions de circulation."
+                                        "de-DE" = "Die Zeit kann je nach Verkehr variieren."
+                                    }
+                                    "SharedTransfer" = @{
+                                    "en" = "Shared transfer"
+                                    "fr-CH" = "Transfert partagé"
+                                    "de-CH" = "Bustransfer"
+                                    "fr-FR" = "Transfert partagé"
+                                    "de-DE" = "Bustransfer"
+                                    }
+                                    
+                                    "ToAirportLabel" = @{
+                                    "en" = "to airport"
+                                    "fr-CH" = "vers l’aéroport"
+                                    "de-CH" = "zum Flughafen"
+                                    "fr-FR" = "vers l’aéroport"
+                                    "de-DE" = "zum Flughafen"
+                                    }
+                                    
+                                    "ToHotelLabel" = @{
+                                        "en" = "to hotel"
+                                        "fr-CH" = "jusqu'à l'hôtel"
+                                        "de-CH" = "zum Hotel"
+                                        "fr-FR" = "jusqu'à l'hôtel"
+                                        "de-DE" = "zum Hotel"
+                                    }
+                                    
+                                    "AllowTimeTitle" = @{
+                                        "en" = "Please allow time"
+                                        "fr-CH" = "Veuillez prévoir du temps"
+                                        "de-CH" = "Bitte Zeit einplanen"
+                                        "fr-FR" = "Veuillez prévoir du temps"
+                                        "de-DE" = "Bitte Zeit einplanen"
+                                    }
+                                    
+                                    "AllowTimeDescription" = @{
+                                        "en" = "As our shared transfers run to a schedule, you may have to wait up to an hour before your transfer departs, but once on board there'll be no more than 8 stops."
+                                        "fr-CH" = "Comme nos transferts partagés suivent un horaire, vous devrez peut-être attendre jusqu’à une heure avant le départ, mais une fois à bord, il n’y aura pas plus de 8 arrêts."
+                                        "de-CH" = "Da unsere Sammeltransfers nach Fahrplan verkehren, müssen Sie möglicherweise bis zu einer Stunde warten, bevor Ihr Transfer abfährt. An Bord gibt es jedoch nicht mehr als 8 Stopps."
+                                        "fr-FR" = "Comme nos transferts partagés suivent un horaire, vous devrez peut-être attendre jusqu’à une heure avant le départ, mais une fois à bord, il n’y aura pas plus de 8 arrêts."
+                                        "de-DE" = "Da unsere Sammeltransfers nach Fahrplan verkehren, müssen Sie möglicherweise bis zu einer Stunde warten, bevor Ihr Transfer abfährt. An Bord gibt es jedoch nicht mehr als 8 Stopps."
+                                    }
+                                    
+                                    "FlightDelayTitle" = @{
+                                        "en" = "If you're experiencing a flight delay"
+                                        "fr-CH" = "En cas de retard de vol"
+                                        "de-CH" = "Bei Flugverspätung"
+                                        "fr-FR" = "En cas de retard de vol"
+                                        "de-DE" = "Bei Flugverspätung"
+                                    }
+                                    
+                                    "FlightDelayDescription" = @{
+                                        "en" = "In the event of a flight delay, please don't worry, our local transfer partners will be updated and when you arrive you'll get on the first transfer available."
+                                        "fr-CH" = "En cas de retard de vol, ne vous inquiétez pas, nos partenaires de transfert locaux seront informés et vous pourrez prendre le premier transfert disponible."
+                                        "de-CH" = "Im Falle einer Flugverspätung keine Sorge: Unsere lokalen Transferpartner werden informiert und Sie können den ersten verfügbaren Transfer nehmen."
+                                        "fr-FR" = "En cas de retard de vol, ne vous inquiétez pas, nos partenaires de transfert locaux seront informés et vous pourrez prendre le premier transfert disponible."
+                                        "de-DE" = "Im Falle einer Flugverspätung keine Sorge: Unsere lokalen Transferpartner werden informiert und Sie können den ersten verfügbaren Transfer nehmen."
+                                    }
+                                    
+                                    "ArriveEarlierPickupText" = @{
+                                        "en" = "Please arrive 15 mins before."
+                                        "fr-CH" = "Veuillez arriver 15 minutes avant."
+                                        "de-CH" = "Bitte 15 Minuten vorher eintreffen."
+                                        "fr-FR" = "Veuillez arriver 15 minutes avant."
+                                        "de-DE" = "Bitte 15 Minuten vorher eintreffen."
+                                    }
+                                    
+                                    "PickupTimeLabel" = @{
+                                        "en" = "Pick up time:"
+                                        "fr-CH" = "Heure de prise en charge:"
+                                        "de-CH" = "Abholzeit:"
+                                        "fr-FR" = "Heure de prise en charge:"
+                                        "de-DE" = "Abholzeit:"
+                                    }
+                                    
+                                    "PickupInstructionsAndHelpLabel" = @{
+                                    "en" = "Pick up instructions & help"
+                                    "fr-CH" = "Informations de prise en charge"
+                                    "de-CH" = "Abholinformationen und Hilfe"
+                                    "fr-FR" = "Informations de prise en charge"
+                                    "de-DE" = "Abholinformationen und Hilfe"
+                                    }
+                                    
+                                    "ArriveEarlierSharedText" = @{
+                                    "en" = "Please arrive at your pick up point 15 mins early with your bags"
+                                    "fr-CH" = "Veuillez arriver à votre lieu de prise en charge 15 minutes avant l’heure indiquée avec vos bagages"
+                                    "de-CH" = "Bitte sei 15 Min. vor der Abfahrt mit deinem Gepäck am Abholort bereit."
+                                    "fr-FR" = "Veuillez arriver à votre lieu de prise en charge 15 minutes avant l’heure indiquée avec vos bagages"
+                                    "de-DE" = "Bitte sei 15 Min. vor der Abfahrt mit deinem Gepäck am Abholort bereit."
+                                    }
+                                    
+                                    "ArriveEarlierPrivateText" = @{
+                                    "en" = "Please be ready with everyone on your booking, and your bags, 15 mins before"
+                                    "fr-CH" = "Veuillez être prêts avec toutes les personnes de votre réservation et vos bagages 15 minutes avant"
+                                    "de-CH" = "Bitte sei 15 Min. vor der Abfahrt mit deinem Gepäck und allen Mitreisenden bereit."
+                                    "fr-FR" = "Veuillez être prêts avec toutes les personnes de votre réservation et vos bagages 15 minutes avant"
+                                    "de-DE" = "Bitte sei 15 Min. vor der Abfahrt mit deinem Gepäck und allen Mitreisenden bereit."
+                                    }
+                                    
+                                    "DurationText" = @{
+                                    "en" = "Approx {duration}."
+                                    "fr-CH" = "Environ {duration}."
+                                    "de-CH" = "Ca. {duration}."
+                                    "fr-FR" = "Environ {duration}."
+                                    "de-DE" = "Ca. {duration}."
+                                    }
+                                    
+                                    "PickupTimeShortText" = @{
+                                    "en" = "approx {time} (local time)."
+                                    "fr-CH" = "environ {time} heure locale."
+                                    "de-CH" = "ca. {time} (Ortszeit)."
+                                    "fr-FR" = "environ {time} heure locale."
+                                    "de-DE" = "ca. {time} (Ortszeit)."
+                                    }
+                                    
+                                    "PickupTimeFullText" = @{
+                                    "en" = "Approx {time} (Local time)."
+                                    "fr-CH" = "Environ {time} heure locale."
+                                    "de-CH" = "Ca. {time} (Ortszeit)."
+                                    "fr-FR" = "Environ {time} heure locale."
+                                    "de-DE" = "Ca. {time} (Ortszeit)."
+                                    }
+                                    
+                                    "SharedStandardBusText" = @{
+                                    "en" = "Shared standard bus operated by {provider}"
+                                    "fr-CH" = "Bus standard opéré par {provider}"
+                                    "de-CH" = "Shuttle-Bus betrieben von {provider}"
+                                    "fr-FR" = "Bus standard opéré par {provider}"
+                                    "de-DE" = "Shuttle-Bus betrieben von {provider}"
+                                    }
+                                    
+                                    "PrivateTransferProviderText" = @{
+                                    "en" = "Private transfer operated by {provider}"
+                                    "fr-CH" = "Transfert privé opéré par {provider}"
+                                    "de-CH" = "Privattransfer betrieben von {provider}"
+                                    "fr-FR" = "Transfert privé opéré par {provider}"
+                                    "de-DE" = "Privattransfer betrieben von {provider}"
+                                    }
+                                    
+                                    "SubjectToChangeText" = @{
+                                    "en" = "(subject to change)"
+                                    "fr-CH" = "(sous réserve de modifications)"
+                                    "de-CH" = "(Änderung vorbehalten)"
+                                    "fr-FR" = "(sous réserve de modifications)"
+                                    "de-DE" = "(Änderung vorbehalten)"
+                                    }
+                                    
+                                    "VehicleRegistrationLabel" = @{
+                                    "en" = "Registration:"
+                                    "fr-CH" = "Immatriculation:"
+                                    "de-CH" = "Kennzeichen:"
+                                    "fr-FR" = "Immatriculation:"
+                                    "de-DE" = "Kennzeichen:"
+                                    }
+                                    
+                                    "VehicleLabel" = @{
+                                    "en" = "Vehicle:"
+                                    "fr-CH" = "Marque du véhicule:"
+                                    "de-CH" = "Automarke:"
+                                    "fr-FR" = "Marque du véhicule:"
+                                    "de-DE" = "Automarke:"
+                                    }
+                                    
+                                    "DriverNameLabel" = @{
+                                    "en" = "Driver's name:"
+                                    "fr-CH" = "Nom du chauffeur:"
+                                    "de-CH" = "Fahrer:"
+                                    "fr-FR" = "Nom du chauffeur:"
+                                    "de-DE" = "Fahrer:"
+                                    }
+                                    
+                                    "DriverNumberLabel" = @{
+                                    "en" = "Driver's number:"
+                                    "fr-CH" = "Numéro du chauffeur:"
+                                    "de-CH" = "Rufnummer:"
+                                    "fr-FR" = "Numéro du chauffeur:"
+                                    "de-DE" = "Rufnummer:"
+                                    }
+                                    
+                                    "DiffPickupLocationText" = @{
+                                    "en" = "Please check directions using the link below"
+                                    "fr-CH" = "Veuillez consultez les indications en utilisant le lien ci-dessous"
+                                    "de-CH" = "Eine Wegbeschreibung findest du unter dem folgenden Link"
+                                    "fr-FR" = "Veuillez consultez les indications en utilisant le lien ci-dessous"
+                                    "de-DE" = "Eine Wegbeschreibung findest du unter dem folgenden Link"
+                                    }
+                                    
+                                    "SameLocationText" = @{
+                                    "en" = "Same location as drop off"
+                                    "fr-CH" = "Même endroit qu'à l’arrivée"
+                                    "de-CH" = "Gleicher Ort wie bei der Ankunft"
+                                    "fr-FR" = "Même endroit qu'à l’arrivée"
+                                    "de-DE" = "Gleicher Ort wie bei der Ankunft"
+                                    }
+                                    
+                                    "NoPickUpTimeText" = @{
+                                    "en" = "Your pick up time isn’t available yet, please come back 24 hours before your flight home for detailed transfer instructions"
+                                    "fr-CH" = "Votre heure de prise en charge n’est pas encore disponible, veuillez revenir 24 heures avant votre vol retour pour consulter vos informations de transfert"
+                                    "de-CH" = "Deine Abholzeit ist noch nicht verfügbar. Schau bitte 24 Stunden vor deinem Rückflug nochmal vorbei, um genauere Infos zum Transfer zu bekommen."
+                                    "fr-FR" = "Votre heure de prise en charge n’est pas encore disponible, veuillez revenir 24 heures avant votre vol retour pour consulter vos informations de transfert"
+                                    "de-DE" = "Deine Abholzeit ist noch nicht verfügbar. Schau bitte 24 Stunden vor deinem Rückflug nochmal vorbei, um genauere Infos zum Transfer zu bekommen."
+                                    }
+                                    
+                                    "PickupInstructionsLabel" = @{
+                                        "en" = "Pick up instructions:"
+                                        "fr-CH" = "Instructions de prise en charge:"
+                                        "de-CH" = "Abholhinweise:"
+                                        "fr-FR" = "Instructions de prise en charge:"
+                                        "de-DE" = "Abholhinweise:"
+                                    }
+                                    
+                                    "NoTransferDescription" = @{
+                                        "en" = "You chose to make your own way"
+                                        "fr-CH" = "Vous avez choisi de vous rendre par vos propres moyens"
+                                        "de-CH" = "Du hast dich entschieden, selbst anzureisen"
+                                        "fr-FR" = "Vous avez choisi de vous rendre par vos propres moyens"
+                                        "de-DE" = "Du hast dich entschieden, selbst anzureisen"
+                                    }
+                                    
+                                    "ErrorLoadingTransferText" = @{
+                                        "en" = "Your transfer is still booked, but we're having trouble loading it right now. Please refresh the page or try again shortly."
+                                        "fr-CH" = "Votre transfert est toujours réservé, mais nous rencontrons actuellement des difficultés pour le charger. Veuillez actualiser la page ou réessayer dans quelques instants."
+                                        "de-CH" = "Dein Transfer ist weiterhin gebucht, aber wir haben momentan Probleme, ihn zu laden. Bitte aktualisiere die Seite oder versuche es in Kürze erneut."
+                                        "fr-FR" = "Votre transfert est toujours réservé, mais nous rencontrons actuellement des difficultés pour le charger. Veuillez actualiser la page ou réessayer dans quelques instants."
+                                        "de-DE" = "Dein Transfer ist weiterhin gebucht, aber wir haben momentan Probleme, ihn zu laden. Bitte aktualisiere die Seite oder versuche es in Kürze erneut."
+                                    }
+                                    
+                                    "PickupLocationLabel" = @{
+                                        "en" = "Pick up location:"
+                                        "fr-CH" = "Lieu de prise en charge:"
+                                        "de-CH" = "Abholort:"
+                                        "fr-FR" = "Lieu de prise en charge:"
+                                        "de-DE" = "Abholort:"
+                                    }
+                                    
+                                    
+                                }
+                             }
+                             
+                        )
+                        ImportContent -itemsToCreate $updates
+                    }
+                    
+                    
+                    New-Content
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260310T151810Z

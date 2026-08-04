@@ -1,0 +1,30 @@
+﻿---
+ID: "f0a5b420-38eb-46f3-b9c4-eb209e1150e4"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-18359-create-destinations-datafolder"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+            if($item -eq $null){
+                $item = New-Item -Path $path -ItemType $template
+            }
+        return $item
+    }
+        
+    $componentPath = "/sitecore/content/EasyJet/Holidays/Data/Destinations Datasource Folder"
+    $templateId = "{22F4DA75-1F74-47DB-9E5B-93B71F12663C}"
+            
+    $item = Get-Or-Create-Item -path $componentPath -template $templateId
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231219T133540Z

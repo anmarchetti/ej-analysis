@@ -1,0 +1,112 @@
+﻿---
+ID: "34ff3776-6b66-481e-9dc2-4b19c545cc24"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-41 fix script"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+                      
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+                      
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    # holidays
+    $template = '{63D3079B-9A85-4872-AC5E-34D19D8D972E}'
+    $path = '/sitecore/content/EasyJet/Holidays/Data/Cabin Bags/Out Of Sync Banner'
+    $banner = Get-Or-Create-Item -Path $path -Template $template
+        if($banner -ne $null) {
+            $banner.Editing.BeginEdit()
+            $banner['Title'] = 'Looking to add more bags?'
+            $banner['Subtitle'] = "We can’t get the bags information for the flights on this holiday package, but don’t worry, any bags you have previously booked will still be valid. In the mean time, you can check on easyJet.com or the easyJet app to see your allowance."
+            $banner['Link'] = "<link text='Go to easyJet.com' linktype='external' url='https://www.easyjet.com/en' anchor='' target='_blank' rel='' />"
+            $banner.Editing.EndEdit() | Out-Null
+        }
+    # trade
+    $tradePath = '/sitecore/content/EasyJet/TradePortal/Data/Cabin Bags/Out Of Sync Banner'
+    $bannerTrade = Get-Or-Create-Item -Path $tradePath -Template $template
+    if($bannerTrade -ne $null) {
+        $bannerTrade.Editing.BeginEdit()
+        $bannerTrade['Title'] = 'Looking to add more bags?'
+        $bannerTrade['Subtitle'] = "We can’t get the bags information for the flights on this holiday package, but don’t worry, any bags you have previously booked will still be valid. In the mean time, you can check on easyJet.com or the easyJet app to see your allowance."
+        $bannerTrade['Link'] = "<link text='Go to easyJet.com' linktype='external' url='https://www.easyjet.com/en' anchor='' target='_blank' rel='' />"
+        $bannerTrade.Editing.EndEdit() | Out-Null
+    }
+        $translations = @{
+            "fr-CH" = @{
+                "Title" = "Vous souhaitez ajouter des sacs ?"
+                "Subtitle" = "Nous ne pouvons pas obtenir les informations sur les sacs pour les vols de ce forfait vacances, mais ne vous inquiétez pas, les sacs que vous avez déjà réservés seront toujours valables. En attendant, vous pouvez vérifier sur easyJet.com ou l'appli easyJet pour connaître votre allocation."
+                "Link" = "<link text='Aller sur easyJet.com' linktype='external' url='https://www.easyjet.com/ch-fr' anchor='' target='_blank' rel='' />"
+            }
+            "fr-FR" = @{
+                "Title" = "Vous souhaitez ajouter des sacs ?"
+                "Subtitle" = "Nous ne pouvons pas obtenir les informations sur les sacs pour les vols de ce forfait vacances, mais ne vous inquiétez pas, les sacs que vous avez déjà réservés seront toujours valables. En attendant, vous pouvez vérifier sur easyJet.com ou l'appli easyJet pour connaître votre allocation."
+                "Link" = "<link text='Aller sur easyJet.com' linktype='external' url='https://www.easyjet.com/fr' anchor='' target='_blank' rel='' />"
+            }
+            "de-CH" = @{
+                "Title" = "Möchten Sie weitere Taschen hinzufügen?"
+                "Subtitle" = "Wir können die Gepäckinformationen für die Flüge dieses Urlaubspakets nicht erhalten, aber keine Sorge, alle Gepäckstücke, die Sie zuvor gebucht haben, sind weiterhin gültig. In der Zwischenzeit können Sie auf easyJet.com oder in der easyJet-App Ihre Freigepäckmenge überprüfen."
+                "Link" = "<link text='Zu easyJet.com gehen' linktype='external' url='https://www.easyjet.com/ch-de' anchor='' target='_blank' rel='' />"
+            }
+            "de-DE" = @{
+                "Title" = "Möchten Sie weitere Taschen hinzufügen?"
+                "Subtitle" = "Wir können die Gepäckinformationen für die Flüge dieses Urlaubspakets nicht erhalten, aber keine Sorge, alle Gepäckstücke, die Sie zuvor gebucht haben, sind weiterhin gültig. In der Zwischenzeit können Sie auf easyJet.com oder in der easyJet-App Ihre Freigepäckmenge überprüfen."
+                "Link" = "<link text='Zu easyJet.com gehen' linktype='external' url='https://www.easyjet.com/de' anchor='' target='_blank' rel='' />"
+            }
+        }
+                  
+    foreach ($lang in $translations.Keys) {
+        create-lang-version -item $banner -lang $lang -field "Title" -value $translations[$lang]["Title"]
+        create-lang-version -item $banner -lang $lang -field "Subtitle" -value $translations[$lang]["Subtitle"]
+        create-lang-version -item $banner -lang $lang -field "Link" -value $translations[$lang]["Link"]
+    }
+    
+    $bagsItem =  Get-Item -Path '/sitecore/content/EasyJet/Holidays/Data/Cabin Bags' -ErrorAction SilentlyContinue
+    if($bagsItem -ne $null) {
+        $bagsItem.Editing.BeginEdit()
+        $bagsItem['OutOfSyncBanner'] = $banner.ID
+        $bagsItem.Editing.EndEdit() | Out-Null
+    }
+    
+    foreach ($lang in $translations.Keys) {
+            $bagsItem =  Get-Item -Path '/sitecore/content/EasyJet/Holidays/Data/Cabin Bags' -Language $lang -ErrorAction SilentlyContinue
+            if($bagsItem -ne $null) {
+                $bagsItem.Editing.BeginEdit()
+                $bagsItem['OutOfSyncBanner'] = $banner.ID
+                $bagsItem.Editing.EndEdit() | Out-Null
+            }
+    }
+    
+    $tradeBagsItem =  Get-Item -Path '/sitecore/content/EasyJet/TradePortal/Data/Cabin Bags' -ErrorAction SilentlyContinue
+    
+    if($tradeBagsItem -ne $null) {
+        $tradeBagsItem.Editing.BeginEdit()
+        $tradeBagsItem['OutOfSyncBanner'] = $bannerTrade.ID
+        $tradeBagsItem.Editing.EndEdit() | Out-Null
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240508T083847Z

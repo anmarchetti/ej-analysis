@@ -1,0 +1,36 @@
+.icon {
+    width: 42px;
+    height: 42px;
+    color: $clrEjOrangeDarkShadow;
+}
+
+.title {
+    margin: 16px 0 8px;
+    font-family: $fontRoundedBook;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.3;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 7px;
+        padding-top: 8px;
+        font-size: 16px;
+        border-top: 1px $colorGeyser solid;
+    }
+}
+
+.description {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    line-height: 1.25;
+    letter-spacing: 0;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+
+    p {
+        margin: 0;
+    }
+}

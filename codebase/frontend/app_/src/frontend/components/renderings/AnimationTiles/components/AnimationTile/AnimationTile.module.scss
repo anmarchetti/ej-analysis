@@ -1,0 +1,47 @@
+$breakpoints: (
+    'flex-change': 1280px,
+);
+
+.animationTileWrapper {
+    position: relative;
+    flex: 1;
+    min-height: 400px;
+    max-height: 500px;
+    margin: 10px;
+    overflow: hidden;
+    border: 1px solid $colorGrayMiddle;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:has(button:focus-visible) {
+        outline: 2px solid $colorBlack !important;
+    }
+
+    @media (width < 1280px) {
+        flex: 40%;
+    }
+
+    @include media-breakpoint-down(md) {
+        height: auto;
+        min-height: fit-content;
+        max-height: none;
+        margin: 0 0 40px;
+        border: none;
+        border-radius: 0;
+        cursor: auto;
+
+        &:last-child {
+            margin-bottom: 20px;
+        }
+    }
+}
+
+.hideContainer {
+    opacity: 0.02;
+}
+
+.frontPanel {
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.5s ease;
+}

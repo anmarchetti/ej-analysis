@@ -1,0 +1,121 @@
+﻿---
+ID: "a9dec625-195d-4263-9ba3-bbe3608d1a96"
+Parent: "aa7b6417-bb86-4ab8-acf2-c33d428e81e0"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/Archive/EJH-14846 Hero banner redesign"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Update-Rendering-Datasource ($datasource,$item,$renderingId) {
+    	Get-Rendering -Item $item |
+    	ForEach-Object {
+    		if ($_.itemId -eq $renderingId) {
+    			$_.DataSource = $datasource.Id;
+    			Set-Rendering -Item $item -Instance $_;
+    		}
+    	}
+    }
+    
+    function Get-First-Rendering($item,$renderingId) {
+        Get-Rendering -Item $item | Where-Object { $_.itemId -eq $renderingId } | Select -First 1;
+    }
+    
+    function Update-HeroBanner {
+    	param([item]$item,$variant,$brightness,$CTAType,$CTA,$textColor,$subtitle,$title,$icon,$image,$mobileOnlyImage,$topText,$textBeforeNumber,$numberValue,$textAfterNumber)
+    
+    	if ($item -ne $null) {
+    		$item.Editing.BeginEdit()
+    		$item["Brightness"] = $brightness;
+    		$item["CTAType"] = $CTAType;
+    		$item["CTA"] = $CTA;
+    		$item["TextColor"] = $textColor;
+    
+    		$item["Variant"] = $variant;
+    
+    		$item["Title"] = $title;
+    		$item["Subtitle"] = $subtitle;
+    		$item["Icon"] = $icon;
+    
+    		$item["Image"] = $image;
+    		$item["MobileOnlyImage"] = $mobileOnlyImage;
+    
+    		$item["TopText"] = $topText;
+    		$item["TextBeforeNumber"] = $textBeforeNumber;
+    
+    		$item["NumberValue"] = $numberValue;
+    		$item["TextAfterNumber"] = $textAfterNumber;
+    		$item["CreditText"] = "T&C's apply";
+    		$item["CreditLink"] = '<link text="Minimum spend &amp; T&amp;Cs apply" linktype="anchor" url="offer-conditions" anchor="offer-conditions" title="" class="" />';
+    		$item.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    function Get-Or-Create-Item {
+    	param($parent,$itemName,$templateId)
+    
+    	$item = Get-ChildItem -Item $parent | Where-Object { $_.Name -eq $itemName } | Select -First 1
+    
+    	if ($item.Count -eq 0) {
+    		New-Item -Parent $parent -Name $itemName -ItemType $templateId
+    	}
+    
+    	return $item
+    }
+    
+    $homeItem = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home" #Home Page
+    $pageComponentItem = Get-Item -Path "master:" -Id "{F396666F-E2F1-4904-9391-3BF98BEA3A35}" #ID Home Page component
+    
+    $heroCarousel = Get-Or-Create-Item -Parent $pageComponentItem -itemName "New Hero Carousel" -templateId "{BD304A2B-7D9A-4465-9EFC-3753BADEA8AE}" # Template ID of HeroCarousel
+    $countdownBanner = Get-Or-Create-Item -Parent $heroCarousel -itemName "With Searchpod" -templateId "{6C23B3A3-1C5E-4968-8720-0240A7F03599}" # Template ID of CountdownBanner
+    $heroBanner1 = Get-Or-Create-Item -Parent $heroCarousel -itemName "Standard" -templateId "{2EB9DAA0-43A7-4A89-8DD2-BBF92C29285D}" # Template ID of HeroBanner
+    $heroBanner2 = Get-Or-Create-Item -Parent $heroCarousel -itemName "One Box" -templateId "{2EB9DAA0-43A7-4A89-8DD2-BBF92C29285D}"
+    $heroBanner3 = Get-Or-Create-Item -Parent $heroCarousel -itemName "Two Boxes" -templateId "{2EB9DAA0-43A7-4A89-8DD2-BBF92C29285D}"
+    
+    $heroCarouselRenderingId = "{36F8D2A1-FFD4-4FA9-A8F3-1104F486AF04}"
+    Update-Rendering-Datasource -DataSource $heroCarousel -Item $homeItem -renderingId $heroCarouselRenderingId
+    
+    $heroCarouselRendering = Get-First-Rendering -item $homeItem -renderingId $heroCarouselRenderingId;
+    $newSearchPodPlaceholder = $heroCarouselRendering.placeholder + '/floating-searchpod-' + $heroCarouselRendering.uniqueID + '-0';
+    $searchPodRenderingId = '{216FE85C-936E-4135-894B-E7DE8BF8A4C2}';
+    $searchPodRendering = Get-First-Rendering -item $homeItem -renderingId $searchPodRenderingId;
+    $searchPodRendering.placeholder = $newSearchPodPlaceholder;
+    Set-Rendering -Item $homeItem -Instance $searchPodRendering;
+    
+    $countdownBanner.Editing.BeginEdit()
+    $countdownBanner["Brightness"] = 'Dark';
+    $countdownBanner["CTAType"] = 'Orange Button With White Text';
+    $countdownBanner["TextColor"] = 'White';
+    
+    $countdownBanner["CountdownVariant"] = 'With Searchpod';
+    
+    $countdownBanner["Title"] = 'summer sale now on';
+    $countdownBanner["Subtitle"] = 'get up to 40%off until 2nd august';
+    $countdownBanner["Image"] = '<image mediaid="{BD3EFF84-9C2D-437C-BB53-789194BB958A}" dfx="97" dfy="7" mfx="96" mfy="8" />';
+    $countdownBanner["MobileOnlyImage"] = '<image mediaid="{E5F8D054-D793-4F6F-87FA-2934CE8164D2}" mfx="52" mfy="84" dfx="45" dfy="73" />';
+    $countdownBanner["DateTime"] = "20220209T000000Z";
+    $countdownBanner["CountdownLabel"] = 'Until the end of the sale remains';
+    $countdownBanner["CTA"] = '<link text="Book now" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{68E262F9-0EC0-4FCB-BA81-0AE9488F939A}" />';
+    $countdownBanner["CreditLink"] = '<link text="Minimum spend &amp; T&amp;Cs apply" linktype="anchor" url="offer-conditions" anchor="offer-conditions" title="" class="" />';
+    $countdownBanner["CreditText"] = "T&C's apply";
+    $countdownBanner.Editing.EndEdit() | Out-Null
+    
+    Update-HeroBanner -Item $heroBanner1 -variant 'Standard' -brightness 'Dark' -CTAType 'White Button With Orange Text' -CTA '<link text="Book now" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{9130DB51-0750-4A1D-A13A-1859CC3FD506}" />' -textColor 'White' -Title 'GO ALL OUT, GO ALL INCLUSIVE' -subtitle 'WITH THE FREEDOM TO CHANGE YOUR BOOKING' -image '<image mediaid="{BD3EFF84-9C2D-437C-BB53-789194BB958A}" dfx=" 97" dfy="7" mfx="96" mfy="8" />' -mobileOnlyImage '<image mediaid="{E5F8D054-D793-4F6F-87FA-2934CE8164D2}" mfx="52" mfy="84" dfx="45" dfy="73" />' -Icon '<image mediaid="{3F7F989F-994E-436E-9003-96562CD6BEE8}" />' -topText "ATOL PROTECTED" -textBeforeNumber "7 nights all inclusive from" -numberValue "£319" -textAfterNumber "pp";
+    Update-HeroBanner -Item $heroBanner2 -variant 'One Box' -brightness 'Light' -CTAType 'Orange Button With White Text' -CTA '<link text="Book now" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{9130DB51-0750-4A1D-A13A-1859CC3FD506}" />' -textColor 'Orange' -Title 'GO ALL OUT, GO ALL INCLUSIVE' -subtitle 'WITH THE FREEDOM TO CHANGE YOUR BOOKING' -image '<image mediaid="{BD3EFF84-9C2D-437C-BB53-789194BB958A}" dfx=" 97" dfy="7" mfx="96" mfy="8" />' -mobileOnlyImage '<image mediaid="{E5F8D054-D793-4F6F-87FA-2934CE8164D2}" mfx="52" mfy="84" dfx="45" dfy="73" />' -Icon '<image mediaid="{D7F11FBF-7984-49DA-A96C-E0BB5F8C33ED}" />' -topText "ATOL PROTECTED" -textBeforeNumber "7 nights all inclusive from" -numberValue "£319" -textAfterNumber "pp";
+    Update-HeroBanner -Item $heroBanner3 -variant 'Two Boxes' -brightness 'Light' -CTAType 'Orange Button With White Text' -CTA '<link text="Book now" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{9130DB51-0750-4A1D-A13A-1859CC3FD506}" />' -textColor 'Black' -Title 'GO ALL OUT, GO ALL INCLUSIVE' -subtitle 'Beach destinations' -image '<image mediaid="{BD3EFF84-9C2D-437C-BB53-789194BB958A}" dfx=" 97" dfy="7" mfx="96" mfy="8" />' -mobileOnlyImage '<image mediaid="{E5F8D054-D793-4F6F-87FA-2934CE8164D2}" mfx="52" mfy="84" dfx="45" dfy="73" />' -textBeforeNumber "7 nights all inclusive from" -numberValue "£319" -textAfterNumber "pp";
+    
+    $heroBanner3.Editing.BeginEdit()
+    $heroBanner3["Subtitle2"] = 'get up to 40%off until 2nd august';
+    $heroBanner3["TextBeforeNumber2"] = "7 nights all inclusive from";
+    $heroBanner3["NumberValue2"] = "£319";
+    $heroBanner3["TextAfterNumber2"] = "pp";
+    $heroBanner3["CTA2"] = '<link text="Book now" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{68E262F9-0EC0-4FCB-BA81-0AE9488F939A}" />';
+    $heroBanner3.Editing.EndEdit() | Out-Null 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Value: "20220126T145857:637788059370216901Z"

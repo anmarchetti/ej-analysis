@@ -1,0 +1,29 @@
+{
+    "Title": "Hotels polygon search(api/DestinationsSearch/GetHotelsByEntryInPolygonBorders)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetHotelsByEntryInPolygonBorders",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "ExactMatcher",
+                "Pattern": "TopLeftAngle.Latitude=90&TopLeftAngle.Longitude=-90&BottomRightAngle.Latitude=90&BottomRightAngle.Longitude=-91"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 500,
+        "BodyAsJson": {
+            "Success": false,
+            "Error": "Arguments topLeftAngle or bottomRightAngle Latitudes or Longitudes are same"
+        }
+    }
+}

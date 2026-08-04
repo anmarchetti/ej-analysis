@@ -1,0 +1,516 @@
+.popupWrap {
+    :global(.popup__body) {
+        padding: 77px 85px 73px;
+
+        @include media-breakpoint-down(md) {
+            padding: 48px 10px 16px;
+        }
+    }
+
+    :global(.popup__content) {
+        border-radius: 4px;
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.title {
+    align-self: center;
+    width: 420px;
+    margin: 0;
+    margin-bottom: 40px;
+    font-family: $fontRoundedBook;
+    font-size: 30px;
+    line-height: 30px;
+    color: $clrTextMain;
+    text-align: center;
+    text-transform: uppercase;
+
+    @include media-breakpoint-down(md) {
+        width: 280px;
+        margin-bottom: 32px;
+        font-size: 20px;
+        line-height: 22px;
+    }
+}
+
+.subtitle {
+    margin: 0 0 24px;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    line-height: 24px;
+    color: $clrTextMain;
+    text-align: center;
+
+    p {
+        margin: 0;
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+        line-height: 18px;
+    }
+}
+
+.messageContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+
+    .confirmationMessage {
+        width: 550px;
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        line-height: 24px;
+        color: $clrTextMain;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
+}
+
+.transferConformationMessage {
+    width: 550px;
+}
+
+.buttonWrap {
+    margin-top: 40px;
+
+    :global(.btn) {
+        width: 384px;
+        height: 50px;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-top: 24px;
+    }
+}
+
+.datesStyles {
+    .datesContent {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        svg {
+            $size: 16px;
+
+            width: $size;
+            height: $size;
+            margin-bottom: 8px;
+        }
+
+        span {
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 32px;
+            text-align: center;
+        }
+    }
+
+    .messageContainer {
+        margin-top: 32px;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 24px;
+        }
+    }
+
+    .buttonWrap {
+        @include media-breakpoint-down(md) {
+            margin-top: 32px;
+        }
+    }
+}
+
+.transferStyles {
+    .messageContainer {
+        margin-top: 4px;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 36px;
+        }
+    }
+}
+
+.seatsStyles {
+    :global(.popup__body):last-child {
+        padding: 46px 10px 14px;
+
+        @include media-breakpoint-up(sm) {
+            padding: 65px 125px 79px;
+        }
+    }
+
+    :global(.popup__content) {
+        border-radius: 4px;
+        box-shadow: $generalBoxShadow;
+    }
+
+    :global(.popup__close) svg {
+        width: 90%;
+        height: 90%;
+    }
+
+    .title {
+        margin-top: 0;
+        margin-bottom: 16px;
+        padding: 0 24px;
+        font-family: $fontRoundedHeadline;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 25px;
+
+        @include media-breakpoint-up(sm) {
+            margin-bottom: 45px;
+            padding: 0 65px;
+            font-family: $fontRoundedBook;
+            font-size: 30px;
+            font-weight: 400;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+    }
+
+    .subtitle {
+        margin-bottom: 44px;
+        font-family: $fontRoundedBook;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 18px;
+
+        @include media-breakpoint-up(sm) {
+            margin-bottom: 16px;
+            font-size: 16px;
+            line-height: 24px;
+        }
+    }
+
+    .itemSeatsDetails {
+        display: flex;
+        flex-direction: column;
+        max-width: 432px;
+        margin: 0 auto;
+        padding: 0 7px;
+
+        @include media-breakpoint-up(sm) {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+
+    .itemSeats {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+
+        @include media-breakpoint-up(sm) {
+            flex-flow: column nowrap;
+            padding-right: 16px;
+        }
+    }
+
+    .itemSeat {
+        display: flex;
+        min-width: 50%;
+        max-width: 50%;
+        margin-bottom: 8px;
+        padding-right: 24px;
+        white-space: nowrap;
+
+        @include media-breakpoint-up(sm) {
+            min-width: 100%;
+            max-width: 100%;
+            margin-bottom: 0;
+        }
+
+        + .itemSeat {
+            @include media-breakpoint-up(sm) {
+                margin-top: 16px;
+            }
+        }
+
+        .itemSeatNotSelected {
+            align-items: center;
+            font-family: $fontRoundedDemy;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1;
+            color: $colorBlackMedium;
+
+            @include media-breakpoint-up(sm) {
+                font-size: 16px;
+                line-height: 1.5;
+            }
+        }
+    }
+
+    .itemFlight {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: flex-start;
+
+        + .itemFlight {
+            margin-top: 42px;
+
+            @include media-breakpoint-up(sm) {
+                margin-top: 0;
+            }
+
+            .itemSeats {
+                @include media-breakpoint-up(sm) {
+                    padding-right: 0;
+                    padding-left: 16px;
+                    border-left: 1px solid $colorGeyser;
+                }
+            }
+
+            .flightDetails {
+                @include media-breakpoint-up(sm) {
+                    padding-right: 0;
+                    padding-left: 16px;
+                }
+            }
+        }
+
+        :global(.seat-confirmation__seat-number) {
+            margin-left: 0;
+            padding: 3px 6px;
+            font-family: $fontRoundedDemy;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 16px;
+        }
+    }
+
+    .flightDetails {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 12px;
+
+        @include media-breakpoint-up(sm) {
+            justify-content: flex-start;
+            margin-bottom: 30px;
+            padding-right: 16px;
+        }
+    }
+
+    .itemPriceBand {
+        display: inline-flex;
+        align-items: center;
+        padding-left: 8px;
+        font-family: $fontRoundedDemy;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1;
+        color: $colorBlackMedium;
+        white-space: nowrap;
+
+        @include media-breakpoint-up(sm) {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+    }
+
+    .itemIcon {
+        margin-right: 8px;
+        font-size: 21px;
+
+        @include media-breakpoint-up(sm) {
+            font-size: 24px;
+        }
+    }
+
+    .itemDirection {
+        font-family: $fontRoundedDemy;
+        font-size: 14px;
+        line-height: 1.7;
+        color: $clrTextMain;
+
+        @include media-breakpoint-up(sm) {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    }
+}
+
+.flightStyles {
+    .flightDetails {
+        display: flex;
+        justify-content: space-between;
+
+        @include media-breakpoint-down(md) {
+            gap: 25px;
+        }
+
+        .confirmedFlight {
+            font-size: 16px;
+            line-height: 26px;
+            color: $clrTextMain;
+
+            @include media-breakpoint-down(md) {
+                width: 234px;
+                font-size: 14px;
+                line-height: 20px;
+            }
+        }
+
+        .flightDate {
+            margin-bottom: 11px;
+
+            @include media-breakpoint-down(md) {
+                margin-bottom: 6px;
+            }
+        }
+
+        .flightTime {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 4px 8px;
+            font-size: 14px;
+            line-height: 1.2;
+            background: rgba(51, 51, 51, 0.04);
+            border-radius: 3px;
+        }
+
+        .flightDirection {
+            font-family: $fontRoundedDemy;
+            text-align: center;
+        }
+
+        .confirmedFlightIcon {
+            position: relative;
+            right: 0;
+            left: 0;
+            width: 120px;
+            height: 0;
+            margin: 65px 20px 0;
+            border-top: 2px solid $colorGrayMiddle;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 30px;
+                height: 30px;
+                background-color: $clrSiteBgWhite;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ccc' d='M23 12c0-1-.8-1.8-1.8-1.8h-6.1l-3.7-7.4c-.1-.2-.4-.4-.6-.4H9.4c-.5-.1-.9.3-.9.6v.2l1.7 7-5.7-.1-1.1-1.4c-.1-.2-.3-.3-.5-.3H1.6c-.3 0-.6.2-.6.5 0 .1 0 .2.1.3l1.3 2.5c.1.2.1.4 0 .5l-1.2 2.5c-.2.3-.1.7.2.8.1.1.2.1.3.1l1.2-.1c.2 0 .4-.1.5-.3l1.1-1.5h5.7l-1.7 7c-.1.4.1.8.5.9H10.6c.3 0 .5-.2.6-.4l3.7-7.5 6.2-.1c1.1.1 1.9-.7 1.9-1.6z'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 80%;
+                transform: translate(-50%, -50%);
+            }
+
+            @include media-breakpoint-down(md) {
+                width: 84px;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+    }
+}
+
+.roomAndBoardName {
+    margin-left: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: justify;
+
+    @include media-breakpoint-up(md) {
+        font-size: 18px;
+    }
+}
+
+.roomAndBoardIcon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.roomAndBoardContainer {
+    max-width: calc(100% - 64px);
+    margin: auto;
+}
+
+.hotelStyles {
+    :global(.popup__content) {
+        max-width: 720px;
+    }
+
+    :global(.popup__body) {
+        padding: 56px 40px 40px;
+
+        @include media-breakpoint-down(sm) {
+            padding: 48px 16px 16px;
+        }
+    }
+
+    .title {
+        margin-bottom: 32px;
+    }
+
+    .buttonWrap {
+        margin-top: 32px;
+    }
+
+    .amendHotelContainer {
+        max-width: calc(100% - 64px);
+        margin: auto;
+
+        @include media-breakpoint-down(sm) {
+            max-width: calc(100% - 8px);
+        }
+    }
+
+    .amendHotelIcon {
+        width: 32px;
+        height: 32px;
+
+        @include media-breakpoint-down(sm) {
+            flex-shrink: 0;
+        }
+    }
+
+    .amendHotelTitle {
+        margin-left: 8px;
+        font-size: 18px;
+        line-height: 24px;
+
+        @include media-breakpoint-down(sm) {
+            font-size: 16px;
+            line-height: 22px;
+            text-align: left;
+        }
+    }
+
+    .confirmationMessage {
+        @include media-breakpoint-down(sm) {
+            max-width: calc(100% - 8px);
+        }
+    }
+}

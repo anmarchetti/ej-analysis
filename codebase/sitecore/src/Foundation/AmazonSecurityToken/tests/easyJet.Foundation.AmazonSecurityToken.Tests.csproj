@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="AWSSDK.Core" />
+        <PackageReference Include="AWSSDK.SecurityToken" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)TestProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src/Foundation/AmazonSecurityToken/code/easyJet.Foundation.AmazonSecurityToken.csproj" />
+    </ItemGroup>
+</Project>

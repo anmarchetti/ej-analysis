@@ -1,0 +1,116 @@
+﻿---
+ID: "e8168362-8fe7-41e5-80a5-946194cb02b4"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/WP-268-delete-HBG-images"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $sourceDb = "master"
+    $rootItemPath = "$($sourceDb):/sitecore/content/EasyJet/Holidays/Home/Destinations"
+    $imagesFolderTemplateId = "{AF7DAAA8-8099-4F22-A607-F0E1FBA6AD0D}"
+    $externalImageTemplateId = "{E4B3BB73-22AB-4843-A816-3AA32EDDC7DC}"
+    $roomsFolderTemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+    $hotelTemplateId = "{28E5E169-8F72-4F90-A277-280A8302B607}"
+    $minRequiredNumberOfImages = 5;
+    $deleteImages = $false;
+    $hbgImagePrefix = "https://photos.hotelbeds.com";
+    
+    function Has-BaseTemplate ($item,$baseTemplateId)
+    {
+    	if ($item -eq $null)
+    	{
+    		return false;
+    	}
+    	$template = [Sitecore.Data.Managers.TemplateManager]::GetTemplate($item);
+    	return $template -ne $null -and $template.InheritsFrom($baseTemplateId);
+    }
+    
+    function Get-Hotels-Recursive ($root,$list) {
+    	foreach ($child in $root.Children) {
+    		if (Has-BaseTemplate -Item $child -baseTemplateId "{168F65DC-9ECD-4A6E-AD93-A46464E45F79}") {
+    			if ($child.TemplateId -eq "{538939B3-07EC-4C23-BF8C-3A68DE0FDC93}")
+    			{
+    				foreach ($item in $child.Children) {
+    					if ($item.TemplateId -ne $hotelTemplateId) {
+    						continue;
+    					}
+    					$list.Add($item) > $null
+    				}
+    			}
+    			else {
+    				Write-Host $child.Paths.FullPath
+    				Get-Hotels-Recursive $child $list
+    			}
+    		}
+    	}
+    }
+    
+    function Run-Images-Check {
+    	$hotels = [System.Collections.ArrayList]@()
+    	$root = Get-Item $rootItemPath
+    	Get-Hotels-Recursive $root $hotels
+    
+    	foreach ($hotel in $hotels) {
+            foreach ($item in $hotel.Children) {
+    					if ($item.TemplateId -ne $imagesFolderTemplateId) {
+    						continue;
+    					}
+    					
+    					$hbgImages = [System.Collections.ArrayList]@()
+    					$nonHbgImages = [System.Collections.ArrayList]@()
+    					foreach ($image in $item.Children) {
+    					    $small = $image['Small'];
+    					    $medium = $image['Medium'];
+    					    $large = $image['Large'];
+    					    #Write-Host "$($image.Paths.FullPath) - small:$($small) - medium:$($medium) - large:$($large)"
+    					    if($small.StartsWith($hbgImagePrefix) -or $medium.StartsWith($hbgImagePrefix) -or $large.StartsWith($hbgImagePrefix))
+    					    {
+    					        $hbgImages.Add($image) > $null
+    					    }
+    					    else
+    					    {
+    					        $nonHbgImages.Add($image) > $null
+    					    }
+    					}
+    					Write-Host "$($hotel.Paths.FullPath) - HBG:$($hbgImages.Count) - Non-HBG:$($nonHbgImages.Count)"
+    					if($deleteImages -eq $false){
+    						continue;
+    					}
+    					if($nonHbgImages.Count -gt $minRequiredNumberOfImages)
+    					{
+    					    if($hbgImages.Count -gt 0)
+    					    {
+    					        foreach($hbgImage in $hbgImages)
+    					        {
+    					            Write-Host "Deleting $($hbgImage.Paths.FullPath)"
+    					            $hbgImage | Remove-Item 
+    					        }
+    					    }
+    					}
+    					
+    				}
+        }
+    }
+    
+    
+    $stopWatch = New-Object -TypeName System.Diagnostics.Stopwatch
+    $stopWatch.Start()
+    
+    Run-Images-Check
+    
+    $stopWatch.Stop()
+    Write-Host "completed. Elapsed time - $($StopWatch.Elapsed)" -ForegroundColor Green 
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 200
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200408T100643Z

@@ -1,0 +1,214 @@
+$holiday-summary_padding-x: 33px;
+$holiday-summary_padding-x-sm: 10px;
+
+.holiday-summary {
+    margin-top: 100px;
+    margin-bottom: 60px;
+    break-inside: avoid;
+
+    @include media-breakpoint-down(md) {
+        margin: 64px 0;
+    }
+
+    & > .page-title {
+        @include media-breakpoint-down(md) {
+            font-size: 30px;
+            word-break: keep-all;
+            hyphens: auto;
+        }
+    }
+
+    &__content {
+        padding: 0 $holiday-summary_padding-x;
+
+        @include media-breakpoint-down(md) {
+            padding: 0 $holiday-summary_padding-x-sm;
+        }
+
+        &__item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            font-size: 18px;
+            color: #2e2e2e;
+            border-top: 1px solid #d8d8d8;
+
+            &:first-child {
+                padding-top: 0;
+                border-top: 0;
+            }
+
+            .small {
+                font-size: 13px;
+            }
+
+            @include media-breakpoint-down(md) {
+                padding: 15px 0;
+                font-size: 16px;
+            }
+
+            .price {
+                font-size: 24px;
+                white-space: nowrap;
+                margin-left: 10px;
+
+                @include media-breakpoint-down(md) {
+                    font-size: 16px;
+                }
+
+                &.discount {
+                    color: $colorRed;
+                }
+
+                &.pp {
+                    font-size: 18px;
+                }
+            }
+
+            &.total-price {
+                margin: 0 (-$holiday-summary_padding-x);
+                padding: 20px $holiday-summary_padding-x;
+                font-size: 35px;
+                background-color: $colorGrayLighter;
+                border-top: none;
+
+                @include media-breakpoint-down(md) {
+                    margin: 0 (-$holiday-summary_padding-x-sm);
+                    padding: 15px $holiday-summary_padding-x-sm;
+                    font-size: 18px;
+                }
+
+                .description {
+                    color: $clrTextHeading;
+                }
+
+                .price {
+                    font-size: 35px;
+                    color: $clrTextMain;
+
+                    @include media-breakpoint-down(md) {
+                        font-size: 18px;
+                    }
+
+                    span {
+                        font-size: 70%;
+                    }
+                }
+            }
+
+            &.total-fees {
+                margin: 0 (-$holiday-summary_padding-x);
+                padding: 20px $holiday-summary_padding-x 0 $holiday-summary_padding-x;
+                background-color: $colorGrayLighter;
+                border-top: none;
+
+                .fees-popup-link {
+                    width: 100%;
+                }
+            }
+
+            &:last-child {
+                margin-bottom: 5px;
+                border-top: none;
+            }
+        }
+
+        &--no-border {
+            border: none;
+        }
+    }
+
+    .holiday-summary__btn {
+        display: block;
+        max-width: 345px;
+        margin-top: 30px;
+        margin-left: auto;
+
+        &:disabled {
+            cursor: not-allowed;
+        }
+
+        @include media-breakpoint-down(sm) {
+            max-width: 100%;
+        }
+    }
+}
+
+.holiday-summary__pills {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+
+    .price-pill {
+        font-size: 16px;
+
+        @include media-breakpoint-down(md) {
+            padding: 3px 10px;
+            font-size: 12px;
+        }
+    }
+
+    .holiday-summary__price-pill-tooltip {
+        display: flex;
+    }
+}
+
+.holiday-summary__button-remove {
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-weight: normal;
+    outline: none;
+
+    svg {
+        width: 12px;
+        margin-top: 1px;
+        margin-right: 4px;
+    }
+
+    span {
+        text-decoration: underline;
+    }
+}
+
+.great-news-banner {
+    display: flex;
+    margin: 40px 0;
+    padding: 25px 20px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+
+    @include media-breakpoint-down(md) {
+        align-items: start;
+        margin: 40px 0 20px;
+        padding: 15px;
+    }
+
+    .great-news-banner__icon {
+        margin-right: 20px;
+
+        @include media-breakpoint-down(md) {
+            width: 30px;
+            margin-right: 10px;
+        }
+    }
+
+    .great-news-banner__title {
+        margin: 0 0 5px;
+        font-family: $fontRoundedBook;
+        font-size: 20px;
+        line-height: 25px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 16px;
+            line-height: 18px;
+        }
+    }
+
+    .great-news-banner__text {
+        margin: 0;
+        font-size: 14px;
+        line-height: 18px;
+    }
+}

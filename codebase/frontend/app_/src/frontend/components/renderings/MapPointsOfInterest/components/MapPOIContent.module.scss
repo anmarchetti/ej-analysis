@@ -1,0 +1,189 @@
+.carouselWrapper {
+    position: relative;
+    margin: 16px 0 8px;
+    padding: 0 56px;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 32px;
+        padding: 0;
+    }
+}
+
+.carouselContainer {
+    position: static;
+
+    :global(.react-multi-carousel-track) {
+        margin-bottom: 8px;
+    }
+}
+
+.next {
+    right: 1px;
+}
+
+.prev {
+    left: 1px; 
+}
+
+.disclaimerWrapper {
+    display: flex;
+    gap: 12px;
+    margin: 0 8px 24px;
+
+    @include media-breakpoint-down(sm) {
+        margin-bottom: 18px;
+    }
+}
+
+.disclaimer {
+    margin: 8px 0 0;
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    line-height: 1.3;
+    color: rgba(51, 51, 51, 0.8);
+    text-align: center;
+
+    @include media-breakpoint-down(sm) {
+        text-align: left;
+    }
+}
+
+.tooltipTrigger {
+    position: relative;
+    top: 2px;
+    margin-left: 6px;
+
+    @include media-breakpoint-down(sm) {
+        top: 3px;
+        margin-left: 0;
+    }
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: flex-end;
+    height: 24px;
+}
+
+.showMore {
+    display: flex;
+    align-items: center;
+    height: unset;
+    padding: 0;
+    font-family: $fontRoundedDemy;
+    border: none;
+}
+
+.arrowWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+
+    .arrow {
+        height: 12px;
+        vertical-align: unset;
+    }
+}
+
+.drawerTitle {
+    margin: 0;
+    padding-bottom: 24px;
+    font-family: $fontRoundedDemy;
+    font-size: 18px;
+    line-height: 1.3;
+    color: $clrTextMain;
+    border-bottom: 1px solid $colorGeyser;
+}
+
+.categoryButton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 16px 8px;
+    color: $clrTextMain;
+
+    svg {
+        width: unset;
+        height: 14px;
+        margin-right: 8px;
+        color: $clrEjOrange;
+    }
+}
+
+.categoryButton:active, .categoryButton:focus {
+  opacity: 1;
+}
+
+
+.categoryWrapper {
+    border-bottom: 1px solid $colorGeyser;
+}
+
+.openedCategoryWrapper {
+    margin-bottom: 8px;
+}
+
+.categoryButtonContent {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.categoryIcon {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) saturate(100%) invert(21%) sepia(0%) saturate(86%) hue-rotate(109deg) brightness(96%)
+        contrast(100%);
+}
+
+.categoryName {
+    font-family: $fontRoundedDemy;
+    font-size: 16px;
+    line-height: 1.3;
+    color: $clrTextMain;
+}
+
+.categoryCount {
+    display: flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 12px;
+    font-family: $fontRoundedDemy;
+    font-size: 11px;
+    line-height: 1;
+    color: $colorWhite;
+    background: $clrEjOrangeLight;
+    border-radius: 12px;
+}
+
+.carouselDotList {
+    top: calc(100% + 16px);
+    display: none;
+    align-items: center;
+
+    :global(.react-multi-carousel-dot) {
+        button {
+            display: block;
+            width: 8px;
+            height: 8px;
+            margin-right: 10px;
+            background: $colorGray;
+            border: none;
+        }
+    }
+
+    :global(.react-multi-carousel-dot--active) {
+        button {
+            width: 10px;
+            height: 10px;
+            background: $clrEjOrange;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+    }
+}

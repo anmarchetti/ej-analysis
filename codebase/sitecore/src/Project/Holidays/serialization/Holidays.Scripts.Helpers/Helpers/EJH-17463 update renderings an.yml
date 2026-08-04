@@ -1,0 +1,56 @@
+﻿---
+ID: "153fe305-03e4-4a74-b122-1e021c574be5"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/EJH-17463 update renderings and change templates"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function UpdateRendring {
+      param($item)
+            $rendering = $item["__Renderings"]
+            write-host $rendering
+            
+            if($rendering.Contains('<r uid="{FB4DBCED-CAB0-4FB7-88D5-5E1C4FDC7097}"><p:d /></r>')){
+                $newValue = $rendering.Replace('<r uid="{FB4DBCED-CAB0-4FB7-88D5-5E1C4FDC7097}"><p:d /></r>','<r uid="{FB4DBCED-CAB0-4FB7-88D5-5E1C4FDC7097}"></r>')
+                $item.Editing.BeginEdit()
+                $item["__Renderings"] = $newValue
+                $item.Editing.EndEdit()
+                Write-Host "Changed rendering"
+            }
+    }
+    
+    function ChangeTemplate {
+      param($item)
+            $trackingValue = $item["__Tracking"]
+            if($trackingValue.Contains('<key name="city" value="10" />')){
+                $item.ChangeTemplate($regionCityTemplate)
+            }
+    }
+    
+    $regionCityTemplatePath = '/sitecore/templates/Project/Holidays/Pages/Destinations/Region - City'
+    $regionCityTemplate = Get-Item -Path "master:$($regionCityTemplatePath)"
+    
+    # Loop through all items
+    
+    $startItem = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Destinations"
+    $countryItems = Get-ChildItem -Path $startItem.ProviderPath | Where-Object { $_.TemplateName -eq "Country" -or $_.TemplateName -eq "VirtualCountry" }
+    
+    foreach ($countryItem in $countryItems) {
+        $regions = Get-ChildItem -Path $countryItem.ProviderPath | Where-Object { $_.TemplateName -eq "Region" -or $_.TemplateName -eq "VirtualRegion" }
+        foreach ($region in $regions) {
+            UpdateRendring -item $region
+            ChangeTemplate -item $region
+        }
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240415T190107Z

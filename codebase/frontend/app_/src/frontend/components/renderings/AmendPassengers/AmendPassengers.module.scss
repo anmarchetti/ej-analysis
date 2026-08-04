@@ -1,0 +1,52 @@
+.footerButtons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 35px;
+
+    button.footerButton,
+    a.footerButton {
+        padding-right: 27px;
+        padding-left: 27px;
+        font-size: 16px;
+    }
+
+    @include media-breakpoint-down(md) {
+        position: fixed;
+        z-index: $z-index-tooltip;
+        bottom: -2px;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 15px;
+        padding: 16px;
+        background-color: $colorWhite;
+        box-shadow: 0 -4px 4px rgba(0, 0, 0, 0.16);
+
+        button.footerButton,
+        a.footerButton {
+            width: calc(50% - 4px);
+            font-size: 14px;
+        }
+    }
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+}
+
+.cardHeaderGuestName {
+    font-size: 18px;
+    font-weight: 23px;
+    color: $clrTextMain;
+}
+
+.infoMessage {
+    margin-top: 40px;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 24px;
+    }
+}

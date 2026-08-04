@@ -1,0 +1,184 @@
+﻿---
+ID: "2b000c84-26ea-4e6c-909e-e640e070ffda"
+Parent: "4c10d78f-07b6-469e-929f-cb4b460bb11e"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Destinations Sync/Hotel Sync/EJH-10761 - Destination Page - Maps - Hide Maps Behind a CTA"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Rendering-Index ($item,$renderingItemId) {
+    	$i = 0
+    	Get-Rendering -Item $item | ForEach-Object {
+    		if ($_.ItemID -eq $renderingItemId) {
+    			return $i
+    		}
+    		$i++
+    	}
+    }
+    
+    function Get-Or-Create-Item {
+    	param($parent,$itemName,$templateId)
+    
+    	$item = Get-ChildItem -Item $parent | Where-Object { $_.Name -eq $itemName } | Select -First 1
+    
+    	if ($item.Count -eq 0) {
+    		$validName = [Sitecore.Data.Items.ItemUtil]::ProposeValidItemName($itemName)
+    		return New-Item -Parent $parent -Name $validName -ItemType $templateId
+    	}
+    
+    	return $item
+    }
+    
+    function Find-Destinations-Items {
+        param($tempateId)
+    	$criteria = @(
+    		@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    	    @{ Filter = "Equal"; Field = "_template"; Value = $tempateId }
+    	)
+    
+    	$props = @{
+    		Index = "sitecore_destinations_master_index"
+    		Criteria = $criteria
+    	}
+    
+    	$items = Find-Item @props
+    
+    	return $items
+    }
+    
+    #Move map and wrapper under the text block
+    function Move-DestinationMapRendering{
+        param($item, $toIndex)
+        
+    		# Find Destination Mapand rendering
+    	    $destinationMapRenderingId = "{73293589-FB88-4DA0-901B-7FDBC9311583}"
+    		$destinationMapRendering = Get-Rendering -Item $item | Where-Object { $_.ItemID -eq $destinationMapRenderingId}
+    	    $destinationMapPlaceholder = $destinationMapRendering.Placeholder
+    
+    	    #Find Component Wrapper for Destination map
+    	    $componentWrapperRenderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+    	    $componentWrapperRendering = Get-Rendering -Item $item | Where-Object { $_.ItemID -eq $componentWrapperRenderingId -and $destinationMapPlaceholder -match $_.UniqueId}
+    
+            #Move map and wrapper under the text block
+    		Set-Rendering -Item $item -Instance $componentWrapperRendering -Index ($toIndex + 1)
+    		Set-Rendering -Item $item -Instance $destinationMapRendering -Index ($toIndex + 2)
+    		Write-Host "Destination Map and Component Wrapper moved under intro Text Block for item: $($item.Name) $($item.Id)"
+    }
+    
+    #Add Destionation info under the text block with Intro info
+    function Add-DestinationInfoRendering{
+        param($item, $placeholder, $index)
+        
+    	$destinationInfoRenderingId = "{C425F05C-0B8B-4EEC-B528-360E18F4EB17}"
+        $destinationInfo = Get-Rendering -Item $item | Where-Object { $_.ItemID -eq $destinationInfoRenderingId }
+        
+        if($destinationInfo -eq $null){
+            $renderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Destination Info Block"
+    	    $renderingItem = Get-Item -Database "master" -Path $renderingPath | New-Rendering -PlaceHolder $placeholder
+            Add-Rendering -Item $item -PlaceHolder $placeholder -Instance $renderingItem
+        }
+                
+        $destinationInfo = Get-Rendering -Item $item | Where-Object { $_.ItemID -eq $destinationInfoRenderingId }
+        Set-Rendering -Item $item -Instance $destinationInfo -Index $index
+        
+        Write-Host "Destination info block added under text block for item: $($item.Name) $($item.Id)"
+    }
+    
+    
+    #Import cvs file
+    $countryItems = Find-Destinations-Items -tempateId "5f03c6efef524f2ebc5ab1f065a1e745"
+    $vregionItems = Find-Destinations-Items -tempateId "799ecb20c6054a6ca32b27222bdbb91e"
+    $regionItems = Find-Destinations-Items -tempateId "2f42ec147e56467ab300ab9723c74546"
+    $resortItems = Find-Destinations-Items -tempateId "538939b307ec4c23bf8c3a68de0fdc93"
+    
+    $destinationsItems = @()
+    $destinationsItems += $countryItems
+    $destinationsItems += $vregionItems
+    $destinationsItems += $regionItems
+    $destinationsItems += $resortItems
+    
+    Write-Host "$($destinationsItems.Count) destinations were found"
+    
+    $destinationsItems = $destinationsItems
+    
+    foreach ($searchResultItem in $destinationsItems)
+    {
+        $item = Get-Item -Path master: -Id $searchResultItem.ItemID
+        
+        $path = $item.Paths.FullPath + "/Page Components/Text Blocks/Intro Heading and Description"
+        $textBlockItem = Get-Item -Path "master:$($path)" -ErrorAction SilentlyContinue
+    
+        $destinationInfoRenderingId = "{C425F05C-0B8B-4EEC-B528-360E18F4EB17}"
+        $destinationInfo = Get-Rendering -Item $item | Where-Object { $_.ItemID -eq $destinationInfoRenderingId }
+        
+        $textBlockId = "{43546A28-D231-4287-96D2-25DEF529F1A5}"
+    
+        if($destinationInfo -eq $null){
+            Write-Host "$($item.Name) $($item.Id) has text block rendering"
+            
+            $textBlockIndex = Get-Rendering-Index -Item $item -RenderingItemId $textBlockId | Select -First 1
+            $textBlockRendering = Get-Rendering -Item $item | Where-Object { $_.ItemID -eq $textBlockId} | Select -First 1
+            
+            Move-DestinationMapRendering -item $item -toIndex $textBlockIndex
+        
+            Add-DestinationInfoRendering -item $item -placeholder $textBlockRendering.Placeholder -index ($textBlockIndex + 1)
+            
+            #Remove text block with intro data
+            Remove-Rendering -Item $item -Instance $textBlockRendering
+            Write-Host "Remove text block item: $($item.Name) $($item.Id)"
+        }else{
+            
+            $textBlockRendering = Get-Rendering -Item $item | Where-Object { $_.ItemID -eq $textBlockId -and $_.Placeholder -eq $destinationInfo.Placeholder} | Select -First 1
+            if($textBlockRendering -ne $null ){
+                #Remove text block with intro data
+                Remove-Rendering -Item $item -Instance $textBlockRendering
+                Write-Host "Remove text block item: $($item.Name) $($item.Id)"
+            }
+    
+        }
+        
+        #Copy all Text block info to new Destination info
+        $pageComponentPath = $item.Paths.FullPath + "/Page Components"
+        $pageComponentItem = Get-Item -Path "master:$($pageComponentPath)" -ErrorAction SilentlyContinue
+        
+        if($pageComponentItem -eq $null){
+            Write-Host "item: $($item.Name) $($item.Id) hasn't got Page Component Folder"
+            continue;
+        }
+        
+        $folderItem = Get-Or-Create-Item -parent $pageComponentItem -itemName "Destination Info Blocks" -templateId "{82C5913D-9B19-4455-B0D3-1D8317FF85EE}"
+        $destinationInfoItem = Get-Or-Create-Item -parent $folderItem -itemName "Intro Heading and Description" -templateId "{3A4782E4-7E02-4065-8BC4-78816838C8F0}"
+        
+        if($textBlockItem -eq $null){
+            Write-Host "item: $($item.Name) $($item.Id) hasn't got Text Block item"
+            continue;
+        }
+        
+        $destinationInfoItem.Editing.BeginEdit()
+        $destinationInfoItem.Fields['Title'].Value = $textBlockItem['Title']
+        $destinationInfoItem.Fields['Description'].Value= $textBlockItem['Description']
+        $wasEdited=$destinationInfoItem.Editing.EndEdit()
+        if($wasEdited)
+        {
+            Write-Host "item: $($destinationInfoItem.Name)  $($destinationInfoItem.Id) was updated"
+        }
+        
+        #Update Datasource for destination info block
+        $destinationInfoRenderingId = "{C425F05C-0B8B-4EEC-B528-360E18F4EB17}"
+        $destinationInfo = Get-Rendering -Item $item | Where-Object { $_.ItemID -eq $destinationInfoRenderingId }
+        Set-Rendering -Item $item -Instance $destinationInfo -DataSource $destinationInfoItem.Id
+        Write-Host "Item: $($item.Name)  $($item.Id) update datasource for destination info"
+    } 
+    
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Value: "20210622T132517:637599651177985468Z"

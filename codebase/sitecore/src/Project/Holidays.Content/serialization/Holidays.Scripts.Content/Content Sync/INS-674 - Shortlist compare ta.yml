@@ -1,0 +1,138 @@
+﻿---
+ID: "10f0a679-009c-49e8-b2b1-bf2c5d53e2a0"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-674 - Shortlist compare table"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$itemName,$templateId,$itemId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $itemId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function create-lang-version ($item,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    
+    function Get-Options-Ids($paths){
+        $separated = $paths | % { (Get-Item -Path $_ -ErrorAction SilentlyContinue).ID }
+        return $separated -join '|'
+    }
+    
+    function CreateCriteria($name, $type){
+        $item = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table" -ItemName $name -TemplateId "{1ED3EB72-A4B0-437B-8D62-82A75E8E8B72}"
+        $item.Editing.BeginEdit()
+    	$item["Name"] = $name
+    	$item["Type"] = $type
+    	$item.Editing.EndEdit() | Out-Null
+    	
+    	return $item
+    }
+    
+    
+    $table = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components" -ItemName "Comparison Table" -TemplateId "{63A74452-BAD9-4C31-8A50-7BC0D13FAC60}"
+    $ta = CreateCriteria -name "Tripadvisor rating" -type "TripAdvisor"
+    $ca = CreateCriteria -name "Customer rating" -type "CustomerRating"
+    $dates = CreateCriteria -name "Dates" -type "Dates"
+    $duration = CreateCriteria -name "Duration" -type "Duration"
+    $airport = CreateCriteria -name "Departure Airport" -type "DepartureAirport"
+    $outbound = CreateCriteria -name "Outgoing flight time" -type "OutboundFlightTime"
+    $returnFlight = CreateCriteria -name "Return flight time" -type "ReturnFlightTime"
+    $board = CreateCriteria -name "Board type" -type "BoardType"
+    $room = CreateCriteria -name "Room type" -type "RoomType"
+    $transfer = CreateCriteria -name "Transfer type" -type "TransferType"
+    $bags = CreateCriteria -name "Bags included" -type "Bags"
+    $location = CreateCriteria -name "Distance to nearest attraction" -type "Location"
+    $facilities = CreateCriteria -name "Facilities" -type "Facilities"
+    
+    
+    # Set languages value
+    
+    @('de-CH','de-DE') | % {
+    	Create-Lang-Version -Item $ta -Lang $_ -Field "Name" -Value "Tripadvisor-Bewertung"
+    	Create-Lang-Version -Item $ca -Lang $_ -Field "Name" -Value "Kundenbewertung"
+    	Create-Lang-Version -Item $dates -Lang $_ -Field "Name" -Value "Daten"
+    	Create-Lang-Version -Item $duration -Lang $_ -Field "Name" -Value "Dauer"
+    	Create-Lang-Version -Item $airport -Lang $_ -Field "Name" -Value "Abflughafen"
+    	Create-Lang-Version -Item $outbound -Lang $_ -Field "Name" -Value "Abflugzeit"
+    	Create-Lang-Version -Item $returnFlight -Lang $_ -Field "Name" -Value "Rückflugzeit"
+    	Create-Lang-Version -Item $board -Lang $_ -Field "Name" -Value "Verpflegungsart"
+    	Create-Lang-Version -Item $room -Lang $_ -Field "Name" -Value "Zimmertyp"
+    	Create-Lang-Version -Item $transfer -Lang $_ -Field "Name" -Value "Transferart"
+    	Create-Lang-Version -Item $bags -Lang $_ -Field "Name" -Value "Inklusive Gepäck"
+    	Create-Lang-Version -Item $location -Lang $_ -Field "Name" -Value "Entfernung zur nächsten Attraktion"
+    	Create-Lang-Version -Item $facilities -Lang $_ -Field "Name" -Value "Ausstattung"
+    }
+    
+    @('fr-CH','fr-FR') | % {
+      	Create-Lang-Version -Item $ta -Lang $_ -Field "Name" -Value "Évaluation Tripadvisor"
+    	Create-Lang-Version -Item $ca -Lang $_ -Field "Name" -Value "Évaluation des clients"
+    	Create-Lang-Version -Item $dates -Lang $_ -Field "Name" -Value "Dates"
+    	Create-Lang-Version -Item $duration -Lang $_ -Field "Name" -Value "Durée"
+    	Create-Lang-Version -Item $airport -Lang $_ -Field "Name" -Value "Aéroport de départ"
+    	Create-Lang-Version -Item $outbound -Lang $_ -Field "Name" -Value "Heure de départ"
+    	Create-Lang-Version -Item $returnFlight -Lang $_ -Field "Name" -Value "Heure de retour"
+    	Create-Lang-Version -Item $board -Lang $_ -Field "Name" -Value "Type de pension"
+    	Create-Lang-Version -Item $room -Lang $_ -Field "Name" -Value "Type de chambre"
+    	Create-Lang-Version -Item $transfer -Lang $_ -Field "Name" -Value "Type de transfert"
+    	Create-Lang-Version -Item $bags -Lang $_ -Field "Name" -Value "Bagages inclus"
+    	Create-Lang-Version -Item $location -Lang $_ -Field "Name" -Value "Distance de la plus proche attraction"
+    	Create-Lang-Version -Item $facilities -Lang $_ -Field "Name" -Value "Installations"
+    }
+    
+    
+    # Set creteria to table
+    $creteriaPaths = @(
+        "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table/Tripadvisor rating",
+        "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table/Customer rating", 
+        "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table/Dates", 
+        "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table/Duration", 
+        "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table/Departure Airport", 
+        "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table/Outgoing flight time", 
+        "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table/Return flight time", 
+        "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table/Board type", 
+        "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table/Room type", 
+        "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table/Transfer type", 
+        "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table/Bags included", 
+        "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table/Facilities"
+        "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table/Distance to nearest attraction"
+    )
+    $criteriaIds = Get-Options-Ids -path $creteriaPaths  
+    @('en') | % {
+    	Create-Lang-Version -Item $table -Lang $_ -Field "ComparisonCriteria" -Value $criteriaIds
+    }
+    
+    #update datasource
+    $item = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists"
+    $rendetingItem = Get-Item -Path "master:/sitecore/layout/Renderings/Feature/Destinations/Comparison Table"
+    $rendering = Get-Rendering -Item $item -PlaceHolder "/body/comparison-table-{494865ee-63ca-4966-b3c1-6bb78c01136f}-0" -Rendering $rendetingItem
+    if ($rendering -ne $null) {
+        Set-Rendering -Item $item -Instance $rendering -DataSource $table.ID
+    	Write-Host $item.Name "Datasource for Comparison Table Rendering was successfully updated"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241114T115930Z

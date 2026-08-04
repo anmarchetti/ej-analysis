@@ -1,0 +1,25 @@
+.filters {
+    width: 100%;
+    min-width: 320px;
+    height: 100%;
+    overflow-x: hidden;
+    background: $colorWhite;
+    border-radius: 6px;
+    box-shadow: 0 0 4px 0 rgba($colorBlack, 0.25);
+
+    @include media-breakpoint-down(sm) {
+        padding-bottom: 120px;
+        
+        &:global(.search-filter .filter-group .filter-group__values .checkbox-item) {
+            margin: 0 1% 14px 0;
+        }
+    }
+}
+
+.allFilters {
+    display: flex;
+    flex: 1 1;
+    flex-direction: column;
+    width: 100%;
+}
+

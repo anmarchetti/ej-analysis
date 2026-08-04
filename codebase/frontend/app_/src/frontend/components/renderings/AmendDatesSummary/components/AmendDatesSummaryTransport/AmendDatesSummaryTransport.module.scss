@@ -1,0 +1,94 @@
+.amendSummaryTransport {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    :global(.holiday-summary-item__btn-amend) {
+        @include media-breakpoint-up(sm) {
+            align-items: flex-end;
+        }
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+}
+
+.transport {
+    width: 80%;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+    }
+}
+
+.title {
+    margin: 0 0 8px;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-weight: 700;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.duration {
+    display: flex;
+    align-items: flex-start;
+    font-family: $fontRoundedBook;
+    color: $colorGreen;
+
+    svg {
+        margin-right: 5px;
+    }
+
+    :global(.callout__container) {
+        align-self: flex-start;
+        margin-left: 10px;
+    }
+
+    :global(.callout__content) {
+        color: $colorBlack;
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.description {
+    margin: 8px 16px 0 0;
+
+    ul {
+        margin: 0;
+        padding-left: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(md) {
+            font-size: 14px;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-right: 0;
+    }
+}
+
+.prevTransfer {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: $colorSilverDark;
+    text-decoration: line-through;
+
+    @include media-breakpoint-down(md) {
+        font-size: 12px;
+    }
+}

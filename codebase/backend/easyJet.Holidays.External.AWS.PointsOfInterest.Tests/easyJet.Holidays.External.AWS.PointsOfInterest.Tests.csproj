@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<Nullable>enable</Nullable>
+
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Amazon.Lambda.Annotations" />
+		<PackageReference Include="Amazon.Lambda.Core" />
+		<PackageReference Include="Amazon.Lambda.Logging.AspNetCore" />
+		<PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" />
+		<PackageReference Include="AWSSDK.Bedrock" />
+		<PackageReference Include="AWSSDK.BedrockRuntime" />
+		<PackageReference Include="AWSSDK.DynamoDBv2" />
+		<PackageReference Include="AWSSDK.Extensions.NETCore.Setup" />
+		<PackageReference Include="AWSSDK.LocationService" />
+		<PackageReference Include="AWSSDK.SSO" />
+		<PackageReference Include="AWSSDK.SSOOIDC" />
+		<PackageReference Include="AWSSDK.SecurityToken" />
+		<PackageReference Include="GeoCoordinate.NetStandard1" />
+		<PackageReference Include="xunit.v3" />
+		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
+		<PackageReference Include="Moq" />
+		<PackageReference Include="FluentAssertions" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="Xunit" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\easyJet.Holidays.External.AWS.PointsOfInterest\easyJet.Holidays.External.AWS.PointsOfInterest.csproj" />
+		<ProjectReference Include="..\easyJet.Holidays.Api.Domain\easyJet.Holidays.Api.Domain.csproj" />
+	</ItemGroup>
+
+</Project>

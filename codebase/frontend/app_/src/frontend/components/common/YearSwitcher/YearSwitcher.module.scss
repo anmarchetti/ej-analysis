@@ -1,0 +1,50 @@
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid $colorGeyser;
+}
+
+.label {
+    font-family: $fontRoundedDemy;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.85;
+    color: $clrTextMain;
+    text-transform: uppercase;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    svg {
+        height: 10px;
+        color: $colorOrange;
+    }
+
+    &:disabled {
+        cursor: default;
+
+        svg {
+            color: $colorSilver;
+        }
+    }
+}
+
+.prevButton {
+    left: 2px;
+
+    svg {
+        transform: rotate(180deg);
+    }
+}
+
+.nextButton {
+    right: 2px;
+}

@@ -1,0 +1,40 @@
+﻿{
+  "Title": "Offers for s_tp=3, ESFU",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/fcgi-bin/ezydmouk/avcache3_g",
+          "IgnoreCase": true
+        }
+      ]
+    },
+    "Params": [
+      {
+        "Name": "s_tp",
+        "Matchers": [
+          {
+            "Name": "ExactMatcher",
+            "Pattern": "3"
+          }
+        ]
+      },
+      {
+        "Name": "accom",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "^(?=.*ESFU0051)(?=.*ESFU0013)(?=.*ESFU0024)(?=.*ESFU0025)(?=.*ESFU0005)(?=.*ESFU0004)(?=.*ESFU0054)(?=.*ESFU0029)(?=.*ESFU0034).*$"
+          }
+        ]
+      }
+    ],
+    "Methods": [ "Get" ]
+  },
+  "Response": {
+    "Headers": { "Content-Type": "application/json; charset=utf-8" },
+    "StatusCode": 200,
+    "BodyAsFile": "__admin/files/Atcom/search/s_tp=3_ESFU.xml"
+  }
+}

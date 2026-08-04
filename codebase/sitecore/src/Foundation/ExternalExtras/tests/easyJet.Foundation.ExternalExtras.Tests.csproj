@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="$(SolutionDir)TestProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src/Foundation/ExternalExtras/code/easyJet.Foundation.ExternalExtras.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Sitecore.Kernel" />
+        <Reference Include="XUnit" />
+    </ItemGroup>
+</Project>

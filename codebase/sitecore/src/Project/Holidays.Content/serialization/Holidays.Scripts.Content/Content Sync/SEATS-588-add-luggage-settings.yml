@@ -1,0 +1,54 @@
+﻿---
+ID: "514249c4-1659-46f4-8ac8-f035deb56c52"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SEATS-588-add-luggage-settings"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-luggage-settings($itemPath) {
+    	$luggageSettings = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+    	$templateId = "{A817DC9E-5CF5-462D-A902-D2B16756AC4A}"
+    	
+    	if ($luggageSettings -eq $null){
+    	   Write-Host "Creating Luggage settings"
+    	   $luggageSettings = New-Item -Path $itemPath -ItemType $templateId
+    	   $luggageSettings.Editing.BeginEdit()
+    	   $luggageSettings.Fields["IsHoldLuggageEnabled"].Value = "1"
+    	   $luggageSettings.Fields["IsSportsEquipmentEnabled"].Value = "1"
+    	   $luggageSettings.Editing.EndEdit() | Out-Null
+    	} else{
+    		Write-Host "Luggage settings already created"
+    	}
+    }
+    
+    function create-lang-version($item, $lang) {
+    	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+    	
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+    	}
+    }
+    
+    create-luggage-settings -ItemPath "/sitecore/content/EasyJet/Holidays/Settings/Luggage Settings"
+    create-luggage-settings -ItemPath "/sitecore/content/EasyJet/TradePortal/Settings/Luggage Settings"
+    
+     @('fr-CH', 'fr-FR', 'de-DE', 'de-CH') | % {
+    	$luggageSettings = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Luggage Settings" -ErrorAction SilentlyContinue
+    	create-lang-version -Item $luggageSettings -Lang $_
+    }
+    
+    Write-Host "Script is completed"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 155
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230811T053203Z

@@ -1,0 +1,88 @@
+﻿---
+ID: "b535ab6f-acee-4999-becd-c0aa6882ee75"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-136  Adding LUX Booking Perks to Holiday Itinerary"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Itinerary Summary"
+            TemplatePath = "Feature/Booking/View Booking/Itinerary Summary"
+            Id          = [GUID]"{72BED460-586C-4D4B-ABD8-C263403D8C5A}"
+            Fields      = @{
+                "FastTrackLabel" = @{
+                    "en" = "Fast Track Security"
+                    "fr-FR" = "Sécurité Fast Track"
+                    "fr-CH" = "Sécurité Fast Track"
+                    "de-DE" = "Fast Track Security"
+                    "de-CH" = "Fast Track Security"
+                }
+                "AirportTitle" = @{
+                    "en" = "Airport"
+                    "fr-FR" = "Aéroport"
+                    "fr-CH" = "Aéroport"
+                    "de-DE" = "Flughafen"
+                    "de-CH" = "Flughafen"
+                }
+                "ArriveByLabel" = @{
+                    "en" = "Arrive by:"
+                    "fr-FR" = "Arrivée par:"
+                    "fr-CH" = "Arrivée par:"
+                    "de-DE" = "Ankommen bis:"
+                    "de-CH" = "Ankommen bis:"
+                }
+                "SpeedyBoardingText" = @{
+                    "en" = "Speedy Boarding is included in your package - head to the priority queue at the gate when boarding is announced"
+                    "fr-FR" = "L'embarquement rapide est inclus dans votre forfait - faites la queue prioritaire à la porte d'embarquement lorsque l'embarquement est annoncé."
+                    "fr-CH" = "L'embarquement rapide est inclus dans votre forfait - faites la queue prioritaire à la porte d'embarquement lorsque l'embarquement est annoncé."
+                    "de-DE" = "Speedy Boarding ist in Ihrem Paket enthalten - begeben Sie sich zur Prioritätsschlange am Flugsteig, wenn das Boarding angekündigt wird."
+                    "de-CH" = "Speedy Boarding ist in Ihrem Paket enthalten - begeben Sie sich zur Prioritätsschlange am Flugsteig, wenn das Boarding angekündigt wird."
+                }
+                "ArriveByText" = @{
+                    "en" = "Arrive at the airport at least 3 hours before your flight departs"
+                    "fr-FR" = "Arriver à l'aéroport au moins 3 heures avant le départ de votre vol"
+                    "fr-CH" = "Arriver à l'aéroport au moins 3 heures avant le départ de votre vol"
+                    "de-DE" = "Kommen Sie mindestens 3 Stunden vor Ihrem Abflug am Flughafen an"
+                    "de-CH" = "Kommen Sie mindestens 3 Stunden vor Ihrem Abflug am Flughafen an"
+                }
+                "SpeedyBoardingIcon" = @{
+                    "en" = '<image mediaid="{C41E6C8D-86F7-400C-AC92-E64BA34A3221}" alt="Speedy boarding icon" height="" width="" hspace="" vspace="" />'
+                }
+                "FastTrackIcon" = @{
+                    "en" = '<image mediaid="{9B9556DA-9DCB-4D63-B6F8-97B074881D9C}" alt="Fast track icon" height="" width="" hspace="" vspace="" />'
+                }
+                "FastTrackText" = @{
+                    "en" = "Fast Track Security is included in your package - look for the Fast Track lane at security"
+                    "fr-FR" = "La sécurité Fast Track est incluse dans votre forfait - cherchez le couloir Fast Track à la sécurité"
+                    "fr-CH" = "La sécurité Fast Track est incluse dans votre forfait - cherchez le couloir Fast Track à la sécurité"
+                    "de-DE" = "Fast Track Security ist in Ihrem Paket enthalten - halten Sie an der Sicherheitskontrolle Ausschau nach der Fast Track-Spur"
+                    "de-CH" = "Fast Track Security ist in Ihrem Paket enthalten - halten Sie an der Sicherheitskontrolle Ausschau nach der Fast Track-Spur"
+                }
+                "SpeedyBoardingLabel" = @{
+                    "en" = "Speedy boarding"
+                    "fr-FR" = "Embarquement rapide"
+                    "fr-CH" = "Embarquement rapide"
+                    "de-DE" = "Schnelles Boarding"
+                    "de-CH" = "Schnelles Boarding"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999936
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250624T075155Z

@@ -1,0 +1,30 @@
+{
+    "Title": "CMS giata mappings reference data: /api/ReferenceData/GetAccommodationToGiataMapping",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/ReferenceData/GetAccommodationToGiataMapping",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "WildcardMatcher",
+                "Pattern": "AtcomIds%5B0%5D=MTMT0026*"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "MTMT0026": "11111",
+            "MTMT0022": "22222",
+            "MTMT0003": "33333"
+        }
+    }
+}

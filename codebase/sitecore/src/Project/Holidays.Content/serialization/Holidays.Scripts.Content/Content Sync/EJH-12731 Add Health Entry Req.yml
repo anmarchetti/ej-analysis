@@ -1,0 +1,85 @@
+﻿---
+ID: "58414770-0492-462c-bef4-6cc0f4d4e17c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-12731 Add Health Entry Requirements to View Booking"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $viewBookingPage = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    $healthEntryRequirements = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Health Entry Requirements" -ErrorAction SilentlyContinue
+    $healthEntryRequirementsRenderingId = "{752847FB-9A5B-47E4-A1F3-42843C1A7C83}"
+    
+    function Get-Or-Create-Item ($path,$name,$templateId) {
+    	$item = Get-Item "$($path)/$name" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $name -ItemType $templateId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function Update-Health-Entry-Requirements () {
+    	# Update Health Requirements Title 
+    	$healthEntryRequirements.Editing.BeginEdit()
+    	$healthEntryRequirements["Title"] = 'Focused on safety, wherever you go';
+    	$healthEntryRequirements.Editing.EndEdit() | Out-Null
+    
+    	# Create Default Block with FCDO tile
+    	$defaultBlock = Get-Or-Create-Item -Path $healthEntryRequirements.FullPath -Name "Default Tiles" -templateId "{AE5DA933-19F8-4B3B-A158-4FE856A6C1F5}"
+    
+    	# Create FCDO World Link
+    	$worldLink = Get-Or-Create-Item -Path "/sitecore/content/EasyJet/Holidays/Data/FCDO Advice Module" -Name "World" -templateId "{BC011F0A-976C-4825-9E01-8BAA7C8E6CCA}"
+    	$worldLink.Editing.BeginEdit()
+    	$worldLink["Link"] = '<link text="World" linktype="external" url="https://www.gov.uk/world" target="_blank" />'
+    	$worldLink.Editing.EndEdit() | Out-Null
+    
+    	# Create FCDO tile
+    	$fcdoTile = Get-Or-Create-Item -Path $defaultBlock.FullPath -Name "FCDO Requirement Tile" -templateId "{26A7902F-6625-42AD-89D3-8E8A332B2311}"
+    	$fcdoTile.Editing.BeginEdit()
+    	$fcdoTile["Title"] = 'FCDO advice';
+    	$fcdoTile["Image"] = '<image mediaid="{781C998B-7E9B-4362-B168-EAAAD60316D8}" />'
+    	$fcdoTile["CTA"] = $worldLink.ID
+    	$fcdoTile.Editing.EndEdit() | Out-Null
+    
+    	$defaultBlock.Editing.BeginEdit()
+    	$defaultBlock.__SortOrder = 0
+    	$defaultBlock["HealthEntryRequirements"] = $fcdoTile.ID;
+    	$defaultBlock["IsDefault"] = '1';
+    	$defaultBlock.Editing.EndEdit() | Out-Null
+    }
+    
+    
+    function Update-View-Booking-Renderings () {
+    	# Remove Travel Insurance
+    	Get-Rendering -Item $viewBookingPage -PlaceHolder '/body/travel-insurance-*' | ForEach-Object {
+    		Remove-Rendering -Item $viewBookingPage -Instance $_
+    	}
+    
+    	# Add Health-Entry-Requirements
+    	$rendering = Get-Rendering -Item $viewBookingPage | Where-Object { $_.ItemId -eq $healthEntryRequirementsRenderingId } | Select -First 1
+    	if ($rendering -eq $null -and $healthEntryRequirements -ne $null) {
+    		$renderingInstance = Get-Item -Path "master:" -Id $healthEntryRequirementsRenderingId | New-Rendering
+    		$placeholder = '/body/health-entry-requirements-{5500ac44-5df4-4473-8e8c-ea635a187882}-0'
+    		Add-Rendering -Item $viewBookingPage -PlaceHolder $placeholder -Instance $renderingInstance -DataSource $healthEntryRequirements.ID -Index 12
+    		Write-Host "Health Requirements Rendering added"
+    	}
+    }
+    
+    Update-Health-Entry-Requirements
+    Update-View-Booking-Renderings
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210405T123057Z

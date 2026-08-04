@@ -1,0 +1,16 @@
+{
+    "extends": "./tsconfig.json",
+    "ts-node": {
+        "files": true
+    },
+    "files": ["src/typings/global.d.ts", "src/typings/mobx-react.d.ts"],
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "outDir": ".next",
+        "noEmit": false,
+        "noImplicitReturns": true
+    },
+    "include": ["src/backend"]
+}

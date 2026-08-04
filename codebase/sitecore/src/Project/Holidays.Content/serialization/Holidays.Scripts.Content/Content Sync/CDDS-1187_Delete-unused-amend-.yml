@@ -1,0 +1,75 @@
+﻿---
+ID: "707eec7e-b732-4402-953b-1f42f8b0cddf"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CDDS-1187_Delete-unused-amend-payment-data"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $holidayAmendItemInfoItem = Get-Item "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Amend Item Info" -ErrorAction SilentlyContinue;
+    $holidayAmendTypeDataItem = Get-Item "/sitecore/content/EasyJet/Holidays/Data/Amend Types" -ErrorAction SilentlyContinue;
+    $tradePortalAmendTypeDataItem = Get-Item "/sitecore/content/EasyJet/TradePortal/Data/Amend Types" -ErrorAction SilentlyContinue;
+    
+    $amendItemInfoRenderingItem = Get-Item "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Item Info" -ErrorAction SilentlyContinue;
+    
+    $amendItemInfoTemplateItem = Get-Item "/sitecore/templates/Feature/Destinations/Amend/Amend Item Info" -ErrorAction SilentlyContinue;
+    $amendTypeTemplateItem = Get-Item "/sitecore/templates/Feature/Destinations/Amend/Amend Type" -ErrorAction SilentlyContinue;
+    $amendTypeFolderTemplateItem = Get-Item "/sitecore/templates/Feature/Destinations/Amend/Amend Type Folder" -ErrorAction SilentlyContinue;
+    
+    if ($holidayAmendItemInfoItem -ne $null) {
+        $holidayAmendItemInfoItem.Delete();
+        
+        Write-Host $holidayAmendItemInfoItem.Name "Deleted";
+    }
+    
+    if ($holidayAmendTypeDataItem -ne $null) {
+        $holidayAmendTypeDataItem.Delete();
+        
+        Write-Host $holidayAmendTypeDataItem.Name "Deleted";
+    }
+    
+    if ($tradePortalAmendTypeDataItem -ne $null) {
+        $tradePortalAmendTypeDataItem.Delete();
+        
+        Write-Host $tradePortalAmendTypeDataItem.Name "Deleted";
+    }
+    
+    if ($amendTypeFolderTemplateItem -ne $null) {
+        $amendTypeFolderTemplateItem.Delete();
+        
+        Write-Host $amendTypeFolderTemplateItem.Name "Deleted";
+    }
+    
+    
+    if ($amendTypeTemplateItem -ne $null) {
+        $amendTypeTemplateItem.Delete();
+        
+        Write-Host $amendTypeTemplateItem.Name "Deleted";
+    }
+    
+    if ($amendItemInfoTemplateItem -ne $null) {
+        $amendItemInfoTemplateItem.Delete();
+        
+        Write-Host $amendItemInfoTemplateItem.Name "Deleted";
+    }
+    
+    if ($amendItemInfoRenderingItem -ne $null) {
+        $amendItemInfoRenderingItem.Delete();
+        
+        Write-Host $amendItemInfoRenderingItem.Name "Deleted";
+    }
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 302
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240502T072819Z

@@ -1,0 +1,43 @@
+.form-field__trade .form-control__label {
+    top: 15px;
+    left: 10px;
+    height: inherit;
+    padding: 0 8px;
+}
+
+.form-field__trade.form-field--error .vertical__error {
+    padding: 10px 0 0;
+}
+
+.form-field__trade.form-field--error {
+    .custom-select__control {
+        border-color: $colorRed;
+    }
+
+    .custom-select__placeholder {
+        color: $colorRed;
+    }
+
+    .select-group__control--icon {
+        svg {
+            color: $colorRed;
+        }
+    }
+}
+
+.form-field__trade .form-control__input ~ .form-control__label {
+    font-size: 14px;
+    line-height: 14px;
+}
+
+.form-field__trade.form-field--active .form-control__input ~ .form-control__label,
+.form-field__trade.form-field--error .form-control__input ~ .form-control__label,
+.form-field__trade .form-control__input:focus ~ .form-control__label {
+    font-size: 13px;
+    line-height: 13px;
+}
+
+.form-field__trade .form-control__error__label {
+    font-size: 12px;
+    line-height: 16px;
+}

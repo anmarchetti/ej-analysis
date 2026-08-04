@@ -1,0 +1,87 @@
+﻿---
+ID: "fd8afb3a-ae97-4d57-9206-d48da1aefe97"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/EUXE-778 swiss market script to update search pod placeholder"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Write-Host "START: EHD-323 Destination Guide Phase 1 Sitecore Script - update Page Hero Banner placeholder for uk market only (en lang only)"
+    Write-Log "START: EHD-323 Destination Guide Phase 1 Sitecore Script - update Page Hero Banner placeholder for uk market only (en lang only)"
+    
+    function Update-Rendering-Placeholder ($item) {
+    	Write-Host "Updating item $($item.FullPath)"
+    	
+    	$placeHolderNEW = "/body/floating-searchpod-{72e319f0-0dea-4c64-b472-054583342cff}-0"
+    	$placeHolderOLD = "header"
+    	$renderingId = "{216FE85C-936E-4135-894B-E7DE8BF8A4C2}" #/sitecore/layout/Renderings/Foundation/Destinations/Search Pod
+    	
+    	$existsRendering = Get-Rendering -Item $item -PlaceHolder $placeHolderOLD -FinalLayout | Where-Object {$_.ItemId -eq $renderingId}
+    	
+    	if($existsRendering -eq $null){
+    		Write-Host "Rendering is missing on $($item.FullPath)"
+    		Write-Log "Rendering is missing on $($item.FullPath)"
+    	} else {
+    		Write-Host "Rendering is in place. Updating placeholder OLD '$($existsRendering.Placeholder)' NEW '$placeHolderNEW'"
+    		Write-Log "Rendering is in place. Updating placeholder OLD '$($existsRendering.Placeholder)' NEW '$placeHolderNEW'"
+    		$existsRendering.Placeholder = $placeHolderNEW
+    		Set-Rendering -Item $item -Instance $existsRendering -FinalLayout
+    	}
+    }
+    
+    function Update-Destinations-Placeholder ($lang) {
+    	$count = 0
+    	
+    	Get-ChildItem "/sitecore/content/EasyJet/Holidays/Home/Destinations" -Language $lang | Where-Object { $_.TemplateId -eq "{5F03C6EF-EF52-4F2E-BC5A-B1F065A1E745}"  } | ForEach-Object {
+    		
+    		Get-ChildItem $_.FullPath -Language $lang | Where-Object { $_.TemplateId -eq "{2F42EC14-7E56-467A-B300-AB9723C74546}" -or $_.TemplateId -eq "{799ECB20-C605-4A6C-A32B-27222BDBB91E}"  } | ForEach-Object {
+    		
+    			Get-ChildItem $_.FullPath -Language $lang | Where-Object { $_.TemplateId -eq "{538939B3-07EC-4C23-BF8C-3A68DE0FDC93}"  } | ForEach-Object {
+    				#Write-Host $_.FullPath
+    				#Write-Log $_.FullPath
+    				
+    				Update-Rendering-Placeholder -Item $_
+    				
+    				$count++
+    			}
+    			
+    			Update-Rendering-Placeholder -Item $_
+    			#Write-Host $_.FullPath
+    			#Write-Log $_.FullPath
+    			
+    			$count++
+    		}
+    		
+    		Update-Rendering-Placeholder -Item $_
+    		#Write-Host $_.FullPath
+    		#Write-Log $_.FullPath
+    		
+    		$count++
+    	}
+    }
+    
+    Set-Location -Path master:
+    #Set-Location -Path web:
+    
+    #Update-Destinations-Placeholder -Lang "en"
+    Update-Destinations-Placeholder -Lang "fr-ch"
+    Update-Destinations-Placeholder -Lang "de-ch"
+    Update-Destinations-Placeholder -Lang "fr"
+    Update-Destinations-Placeholder -Lang "de"
+    
+    Write-Host "END: EHD-323 Destination Guide Phase 1 Sitecore Script"
+    Write-Log "END: EHD-323 Destination Guide Phase 1 Sitecore Script"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240122T070828Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\rkhalupau

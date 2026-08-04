@@ -1,0 +1,16 @@
+I have the following structur in neo4j database:
+
+Nodes: Service, Rendering, Component, Function
+
+Relations: 
+
+- USES, when a Function is uses by a Service, Rendering or Component
+
+- IMPORTS, when a Service, Rendering or Component imports another Service, Rendering or Component
+
+- EXPORTS, when a Service, Rendering or Component exports a Function
+- CALLS, when a Function from Service, Rendering or Component calls another Function
+
+
+
+Starting from a rendering I want to find only the path that starts with a Rendering and finishes with a Service. Not all the possible paths, only the direct one.

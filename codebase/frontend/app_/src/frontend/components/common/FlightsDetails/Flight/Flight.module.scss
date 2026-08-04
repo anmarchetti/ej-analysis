@@ -1,0 +1,137 @@
+.flight {
+    font-size: 14px;
+    line-height: 1.29;
+
+    @include media-breakpoint-up(md) {
+        display: flex;
+        flex: 1 0 0;
+        max-width: 50%;
+        padding-top: 3px;
+        font-size: 16px;
+        line-height: 1.38;
+    }
+}
+
+.icon {
+    margin-bottom: 8px;
+
+    svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    @include media-breakpoint-up(md) {
+        flex-shrink: 0;
+        margin-top: 11px;
+        margin-right: 16px;
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}
+
+.iconOrange {
+    color: $clrEjOrange;
+}
+
+.details {
+    flex-grow: 1;
+    max-width: 100%;
+}
+
+.detailsRow {
+    margin-top: 8px;
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    @include media-breakpoint-up(md) {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.date {
+    font-weight: 700;
+}
+
+.flightNumber {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.28;
+    color: $colorBlackMedium;
+}
+
+.detailsCol {
+    display: inline-block;
+    margin-right: 8px;
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+    @include media-breakpoint-up(md) {
+        flex-basis: 0;
+        flex-grow: 1;
+        max-width: 100%;
+    }
+}
+
+.airportsCol {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 4px;
+}
+
+.timeRow {
+    align-items: center;
+    font-weight: 700;
+    color: $colorBlack;
+
+    .separator {
+        border-bottom: 2px dotted $colorBlack;
+    }
+}
+
+.airportsRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    row-gap: 4px;
+    margin-top: 0;
+
+    @include media-breakpoint-down(md) {
+        align-items: center;
+        margin-top: 8px;
+    }
+}
+
+.separator {
+    display: inline-block;
+    width: 8px;
+    height: 2px;
+    vertical-align: middle;
+    background-color: $colorBlack;
+
+    @include media-breakpoint-up(md) {
+        width: 50px;
+        max-width: 50px;
+        margin-right: 16px;
+        background-color: transparent;
+    }
+}
+
+.terminal {
+    @include media-breakpoint-up(md) {
+        align-self: end;
+    }
+}
+
+.airportCode {
+    @include media-breakpoint-up(md) {
+        width: 100%;
+    }
+}

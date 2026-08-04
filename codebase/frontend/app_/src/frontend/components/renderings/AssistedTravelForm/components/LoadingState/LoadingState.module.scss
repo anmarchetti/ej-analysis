@@ -1,0 +1,57 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+.contentContainer {
+    display: flex;
+    flex: 1 0 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 13px;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 8px;
+    width: 100%;
+
+    @include media-breakpoint-up(sm) {
+        flex-direction: row;
+    }
+}
+
+.shimmer {
+    height: 28px;
+    border-radius: 20px;
+}
+
+.shimmerTitle {
+    width: 427px;
+    height: 30px;
+    border-radius: 20px;
+}
+
+.shimmerLine2 {
+    width: 50%;
+}
+
+.shimmerLine {
+    width: 100%;
+}
+
+.shimmerButton {
+    align-self: flex-end;
+    width: 100%;
+    height: 48px;
+    border-radius: 20px;
+
+    @include media-breakpoint-up(sm) {
+        width: 246px;
+    }
+}

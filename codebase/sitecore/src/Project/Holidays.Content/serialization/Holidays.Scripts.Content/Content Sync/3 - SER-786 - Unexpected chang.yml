@@ -1,0 +1,137 @@
+﻿---
+ID: "c7644410-0d4f-440d-adc7-4cf7e4455705"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/3 - SER-786 - Unexpected changes to your holiday"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    Move-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Promo blocks 2" -Destination "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to expect tiles"
+    Move-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to expect tiles/Compensation" -Destination "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to expect tiles/We ll keep you updated"
+    Move-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to expect tiles/Expenses" -Destination "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to expect tiles/Compensation and expenses forms"
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to expect tiles"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Promo Blocks Folder"
+                Fields      = @{
+                    "__Sortorder" = @{
+                        "en" = "300"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to expect tiles/We ll keep you updated"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Promo Block"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "We’ll keep you updated"
+                        "fr-CH" = "Nous vous tiendrons informé"
+                        "de-CH" = "Wir informieren Sie laufend"
+                        "fr-FR" = "Nous vous tiendrons informé"
+                        "de-DE" = "Wir halten Sie auf dem Laufenden"
+                    }
+                    "Description" = @{
+                        "en" = "If your plans are interrupted, we’re working behind the scenes to arrange alternatives. You’ll get updates by email and text to the contact details you provided when you made your booking, usually within 60 minutes. <a href=""~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#what-to-do-now-section"" style=""text-decoration: underline; font-family: 'easyjet_rounded_demi'; color: #ff6600;"">Scroll to next steps.</a>"
+                        "fr-CH" = 'Si vos projets sont interrompus, nous travaillons en coulisses pour trouver des alternatives. Vous recevrez des informations par e-mail et par SMS aux coordonnées que vous avez fournies lors de votre réservation, généralement dans les 60 minutes. <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#what-to-do-now-section" style="text-decoration: underline; font-family: ''easyjet_rounded_demi''; color: #ff6600;">Faites défiler pour découvrir les prochaines étapes.</a>'
+                        "de-CH" = 'Wenn Ihre Pläne unterbrochen werden, arbeiten wir hinter den Kulissen daran, Alternativen zu organisieren. Sie erhalten Updates per E-Mail und SMS an die Kontaktdaten, die Sie bei Ihrer Buchung angegeben haben, in der Regel innerhalb von 60 Minuten. <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#what-to-do-now-section" style="text-decoration: underline; font-family: ''easyjet_rounded_demi''; color: #ff6600;">Zu den nächsten Schritten scrollen.</a>'
+                        "fr-FR" = 'Si vos projets sont interrompus, nous travaillons en coulisses pour trouver des alternatives. Vous recevrez des informations par e-mail et par SMS aux coordonnées que vous avez fournies lors de votre réservation, généralement dans les 60 minutes. <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#what-to-do-now-section" style="text-decoration: underline; font-family: ''easyjet_rounded_demi''; color: #ff6600;">Faites défiler pour voir les prochaines étapes.</a>'
+                        "de-DE" = 'Wenn Ihre Pläne unterbrochen werden, arbeiten wir hinter den Kulissen daran, Alternativen zu organisieren. Sie erhalten Updates per E-Mail und SMS an die Kontaktdaten, die Sie bei Ihrer Buchung angegeben haben, in der Regel innerhalb von 60 Minuten. <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#what-to-do-now-section" style="text-decoration: underline; font-family: ''easyjet_rounded_demi''; color: #ff6600;">Scrollen Sie zu den nächsten Schritten.</a>'
+                    }
+                    "Image" = @{
+                        "en" = "<image mediaid=""{27A71104-ED7C-429A-BC54-594A2FD784E8}"" />"
+                        "fr-CH" = "<image mediaid=""{27A71104-ED7C-429A-BC54-594A2FD784E8}"" />"
+                        "de-CH" = "<image mediaid=""{27A71104-ED7C-429A-BC54-594A2FD784E8}"" />"
+                        "fr-FR" = "<image mediaid=""{27A71104-ED7C-429A-BC54-594A2FD784E8}"" />"
+                        "de-DE" = "<image mediaid=""{27A71104-ED7C-429A-BC54-594A2FD784E8}"" />"
+                    }
+                    "Link" = @{
+                        "en" = ''
+                        "fr-CH" = ''
+                        "de-CH" = ''
+                        "fr-FR" = ''
+                        "de-DE" = ''
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to expect tiles/Compensation and expenses forms"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Promo Block"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Expense claims and compensation"
+                        "fr-CH" = "Remboursement des frais et indemnités"
+                        "de-CH" = "Spesenabrechnungen und Entschädigungen"
+                        "fr-FR" = "Remboursement des frais et indemnités"
+                        "de-DE" = "Spesenabrechnungen und Entschädigungen"
+                    }
+                    "Description" = @{
+                        "en" = "If your holiday schedule is changed, you may be entitled to expenses and, in some cases, compensation. We’ll help you understand your rights and explain the difference between compensation and expense claims, so you know what to expect. <a href=""~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"" style=""text-decoration: underline; font-family: 'easyjet_rounded_demi'; color: #ff6600;"">Scroll to forms section.</a>"
+                        "fr-CH" = "Si votre programme de vacances est modifié, vous pouvez avoir droit à un remboursement de vos frais et, dans certains cas, à une indemnisation. Nous vous aiderons à comprendre vos droits et vous expliquerons la différence entre une indemnisation et une demande de remboursement de frais, afin que vous sachiez à quoi vous attendre. <a href=""~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"" style=""text-decoration: underline; font-family: 'easyjet_rounded_demi'; color: #ff6600;"">Faites défiler jusqu’à la section des formulaires.</a>"
+                        "de-CH" = "Wenn sich Ihr Urlaubsplan ändert, haben Sie möglicherweise Anspruch auf Kostenerstattung und in einigen Fällen auf Entschädigung. Wir helfen Ihnen, Ihre Rechte zu verstehen, und erklären Ihnen den Unterschied zwischen Entschädigungs- und Kostenerstattungsansprüchen, damit Sie wissen, was Sie erwarten können. <a href=""~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"" style=""text-decoration: underline; font-family: 'easyjet_rounded_demi'; color: #ff6600;"">Zum Formularbereich scrollen.</a>"
+                        "fr-FR" = "Si votre programme de vacances est modifié, vous pouvez avoir droit à un remboursement de vos frais et, dans certains cas, à une indemnisation. Nous vous aiderons à comprendre vos droits et vous expliquerons la différence entre une indemnisation et une demande de remboursement de frais, afin que vous sachiez à quoi vous attendre. <a href=""~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"" style=""text-decoration: underline; font-family: 'easyjet_rounded_demi'; color: #ff6600;"">Faites défiler jusqu’à la section des formulaires.</a>"
+                        "de-DE" = "Wenn sich Ihr Urlaubsplan ändert, haben Sie möglicherweise Anspruch auf Kostenerstattung und in einigen Fällen auf Entschädigung. Wir helfen Ihnen, Ihre Rechte zu verstehen, und erklären Ihnen den Unterschied zwischen Entschädigungs- und Kostenerstattungsansprüchen, damit Sie wissen, was Sie erwarten können. <a href=""~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"" style=""text-decoration: underline; font-family: 'easyjet_rounded_demi'; color: #ff6600;"">Scrollen Sie zum Formularbereich.</a>"
+                    }
+                    "Image" = @{
+                        "en" = '<image mediaid="{7CD9BB97-F3F6-4FC2-B4A4-750ACEF74C77}" />'
+                        "fr-CH" = '<image mediaid="{7CD9BB97-F3F6-4FC2-B4A4-750ACEF74C77}" />'
+                        "de-CH" = '<image mediaid="{7CD9BB97-F3F6-4FC2-B4A4-750ACEF74C77}" />'
+                        "fr-FR" = '<image mediaid="{7CD9BB97-F3F6-4FC2-B4A4-750ACEF74C77}" />'
+                        "de-DE" = '<image mediaid="{7CD9BB97-F3F6-4FC2-B4A4-750ACEF74C77}" />'
+                    }
+                    "Link" = @{
+                        "en" = ''
+                        "fr-CH" = ''
+                        "de-CH" = ''
+                        "fr-FR" = ''
+                        "de-DE" = ''
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to expect - Section Title"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "WHAT TO EXPECT IN TIMES OF DISRUPTION"
+                        "fr-CH" = "À QUOI VOUS ATTENDRE EN CAS DE PERTURBATION"
+                        "de-CH" = "WAS SIE BEI REISESTÖRUNGEN ERWARTEN KÖNNEN"
+                        "fr-FR" = "À QUOI VOUS ATTENDRE EN CAS DE PERTURBATION"
+                        "de-DE" = "WAS SIE BEI STÖRUNGEN ERWARTEN KÖNNEN"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+        )
+        
+    ImportContent -itemsToCreate $updates
+    
+    $page= Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption"
+    $componentWrapper = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper"
+    $renderingComponentWrapper = Get-Rendering -Item $page -Rendering $componentWrapper
+    
+    Set-Rendering -Item $page -Instance $renderingComponentWrapper[0] -PlaceHolder "/body" -Parameter @{ "PaddingBottom" = "Padding Bottom 64px"; "PaddingTop" = "Padding Top 32px"; "PaddingBottomMobile" = "Padding Bottom Mobile 32px"; "PaddingTopMobile" = "Padding Top Mobile 32px" }
+    Set-Rendering -Item $page -Instance $renderingComponentWrapper[1] -PlaceHolder "/body" -Parameter @{ "PaddingBottom" = "Padding Bottom 64px"; "PaddingTop" = "Padding Top 64px"; "PaddingBottomMobile" = "Padding Bottom Mobile 32px"; "PaddingTopMobile" = "Padding Top Mobile 32px"; "Anchor" = "what-to-do-now-section" }
+    
+    $promoBlocks = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/Promo Blocks"
+    $renderingpromoBlocks = Get-Rendering -Item $page -Rendering $promoBlocks
+    Set-Rendering -Item $page -Instance $renderingpromoBlocks -PlaceHolder "/body/component-wrapper-inner-$($renderingComponentWrapper[0].UniqueId)-0" -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to expect tiles" -Parameter @{ "Theme" = "Link Tile With Border Variant" }
+    
+    $textBlock = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/Text Block"
+    $renderingTextBlock = New-Rendering -Item $textBlock
+    Add-Rendering -Item $page -PlaceHolder "/body/component-wrapper-inner-$($renderingComponentWrapper[0].UniqueId)-0" -Instance $renderingTextBlock -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to expect - Section Title" -Parameter @{ "TitleTag" = "h2"; "TitleFontStyle" = "rounded demi"; "TitleFontSize" = "Mobile - 20px Desktop - 32px"; "TitleWeight" = 400; "PaddingSize" = "0px" } -Index 3
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

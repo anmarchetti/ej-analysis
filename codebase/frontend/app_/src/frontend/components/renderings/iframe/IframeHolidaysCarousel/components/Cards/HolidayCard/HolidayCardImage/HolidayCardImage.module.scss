@@ -1,0 +1,52 @@
+.cardImage {
+    position: relative;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+    @include media-breakpoint-up(sm) {
+        aspect-ratio: 260 / 160;
+    }
+
+    :global {
+        .img-carousel-container,
+        .image-gallery-slide {
+            min-height: 160px;
+        }
+
+        .image-gallery-slide {
+            padding-top: 0;
+        }
+
+        .image-gallery-index {
+            height: 32px;
+            background: rgba(0, 0, 0, 0.5);
+
+            span {
+                font-size: 13px;
+                line-height: 1;
+                color: rgba($colorWhite, 0.7);
+            }
+        }
+
+        .slider-nav {
+            width: 30px;
+            height: 30px;
+            box-shadow: 0 0 4px $colorGrayMediumDark;
+
+            svg {
+                width: 12px;
+                height: 12px;
+            }
+        }
+    }
+}
+
+.luxuryBadge {
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    left: 10px;
+    width: 32px;
+    height: 32px;
+}

@@ -1,0 +1,102 @@
+.ancillariesInfo {
+    display: grid;
+    gap: 16px;
+
+    @include media-breakpoint-down(md) {
+        gap: 8px;
+    }
+}
+
+.header {
+    @include media-breakpoint-down(md) {
+        padding: 16px 0;
+    }
+}
+
+.selection {
+    display: grid;
+    gap: 16px;
+
+    @include media-breakpoint-down(md) {
+        gap: 8px;
+    }
+}
+
+.content {
+    padding: 0 24px;
+    background: $clrSiteBgWhite;
+    border-radius: 4px;
+
+    @include media-breakpoint-down(md) {
+        padding: 0 10px;
+    }
+}
+
+.columnsContainer {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 8px;
+    padding-bottom: 16px;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 8px;
+        padding: 0;
+        border: none;
+    }
+}
+
+.columnsContainerAlt {
+    align-items: flex-start;
+}
+
+.returnGapAuto {
+    margin-top: auto;
+}
+
+.whiteWrapper {
+    padding: 24px;
+    background: $clrSiteBgWhite;
+    border: 1px solid $borderColorGray;
+    border-radius: 4px;
+
+    @include media-breakpoint-down(md) {
+        padding: 16px;
+    }
+
+    .columnsContainer {
+        padding-top: 0;
+    }
+}
+
+.noBorders {
+    border: none;
+}
+
+.noPaddings {
+    padding: 0;
+
+    .header {
+        padding: 0;
+    }
+}
+
+.actionPanel {
+    @include media-breakpoint-down(md) {
+        width: 100%;
+    }
+}
+
+.actionPanelWrapper {
+    @include media-breakpoint-down(md) {
+        width: 100%;
+    }
+}
+
+.amendPayment {
+    @include media-breakpoint-down(md) {
+        padding: 16px 16px 0;
+    }
+}

@@ -1,0 +1,173 @@
+.form {
+    @include media-breakpoint-down(md) {
+        padding-bottom: 85px;
+    }
+}
+
+.passangerFields {
+    @include media-breakpoint-down(md) {
+        padding: 24px 16px;
+
+        :global(.form-group .form-field > div:first-child) {
+            width: calc(100% - 32px);
+        }
+
+        :global(.form-group:last-of-type) {
+            margin-bottom: 0;
+        }
+    }
+
+    :global(.custom-select .custom-select__control) {
+        font-size: 14px;
+    }
+
+    :global(.form-field label.form-control__label) {
+        left: 30px;
+        font-size: 13px !important;
+    }
+
+    :global(.form-field input.form-control__input) {
+        font-size: 14px;
+    }
+
+    :global(.custom-select__placeholder) {
+        padding: 0 8px;
+        font-size: 13px;
+        line-height: 1;
+        background-color: $colorConcrete;
+        border-radius: 3px;
+    }
+
+    .nameChange {
+        &::before,
+        &::after {
+            content: '';
+            display: block;
+            height: 1px;
+            margin: 16px 0;
+            background-color: $colorGeyser;
+            @include media-breakpoint-up(md) {
+                flex: 0 0 50%;
+                max-width: calc(50% - 15px);
+            }
+
+            @include media-breakpoint-up(lg) {
+                flex: 0 0 33.3%;
+                max-width: calc(33.3% - 15px);
+            }
+        }
+    }
+
+    h4 {
+        font-size: 16px;
+    }
+}
+
+.card {
+    &:first-of-type {
+        margin-top: 40px;
+    }
+    @include media-breakpoint-down(md) {
+        &:first-of-type {
+            margin-top: 24px;
+        }
+
+        margin-bottom: 16px;
+    }
+}
+
+.cardContentWrap {
+    width: 100%;
+    padding: 40px;
+
+    input:disabled,
+    :global(.custom-select--is-disabled) {
+        color: #7f7f7f;
+        background-color: $colorConcrete !important;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: 8px;
+    }
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+    }
+}
+
+.guestInfo {
+    display: flex;
+    align-items: center;
+}
+
+.guestIcon {
+    $size: 40px;
+
+    width: $size;
+    height: $size;
+    margin-right: 16px;
+
+    @include media-breakpoint-down(md) {
+        display: none;
+    }
+}
+
+.cardHeaderEditButton {
+    font-size: 16px;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        margin-top: 7px;
+        padding: 10px auto;
+        font-size: 13px;
+    }
+}
+
+.drowerHeader {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    overflow: hidden;
+
+    .drawerBackground {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.1;
+    }
+
+    .drowerHeaderPassanger {
+        margin-top: 6px;
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+    }
+
+    .drowerHeaderPassangerName {
+        font-family: $fontRoundedDemy;
+    }
+
+    .backButton {
+        position: relative;
+        left: -10px;
+        display: flex;
+        align-items: center;
+
+        .chevron {
+            $size: 10px;
+
+            width: $size;
+            height: $size;
+            margin-right: 10px;
+        }
+    }
+}

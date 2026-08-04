@@ -1,0 +1,104 @@
+﻿---
+ID: "b6622273-665a-405b-8e1d-a66686e859eb"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/EJH-15498-Remove-Dublicates-Hotel-Facilitites"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Find-Hotels-Items {
+    	$criteria = @(
+    		@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    		@{ Filter = "Equals"; Field = "_template"; Value = "28e5e1698f724f90a277280a8302b607"; }
+    		@{ Filter = "StartsWith"; Field = "_fullpath"; Value = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Croatia/Dubrovnik/Cavtat/Hotel Croatia-HBG"; }
+    		@{ Filter = "Equals"; Field = "_name"; Value = "__Standard Values"; "Invert" = $true }
+    	)
+    
+    	$props = @{
+    		Index = "sitecore_destinations_master_index"
+    		Criteria = $criteria
+    	}
+    
+    	$items = Find-Item @props
+    
+    	Write-Host "$($items.Count) Hotels have been found."
+    
+    	return $items
+    }
+    
+    
+    
+    New-UsingBlock (New-Object Sitecore.Data.BulkUpdateContext) {
+    	New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+    		New-UsingBlock (New-Object Sitecore.Data.DatabaseCacheDisabler) {
+    			New-UsingBlock (New-Object Sitecore.Data.Events.EventDisabler) {
+    
+    				$hotels = Find-Hotels-Items
+    
+    				foreach ($hotel in $hotels) {
+    					$hotelItem = $hotel.GetItem()
+    					if (![string]::IsNullOrWhiteSpace($hotelItem["HotelBedsCode"])) {
+    						$stopwatch = [system.diagnostics.stopwatch]::StartNew()
+    
+    						#remove room code facilities to room folders
+    						$facilityFolder = $hotelItem.Children | Where-Object { $_.TemplateId -eq "{5C397782-6810-460A-AB57-84E9AB67514C}" } | Select-Object -First 1
+    						$hashTable = @{}
+    						foreach ($item in $facilityFolder.Children) {
+    							if ($hashTable[$item["FacilityType"]] -ne $null) {
+    								$newItem = $hashTable[$item["FacilityType"]]
+    								#remove duplicate
+    								$path = $item.Paths.FullPath
+    								Write-Host $path "Deleted"
+    								#$item | Remove-Item 
+    							}
+    							else {
+    								
+                                    if([string]::IsNullOrEmpty($item["FacilityType"])){
+                                         Write-Host $item.Paths.FullPath "Deleted"
+                                         $item | Remove-Item 
+                                         continue
+                                    }
+                                    
+    								$type = Get-Item -Path master: -Id $item["FacilityType"] -ErrorAction SilentlyContinue
+    								if ($type -ne $null) {
+    									$validName = $([Sitecore.Data.Items.ItemUtil]::ProposeValidItemName($type.Name))
+    									try {
+                                           if ($item.Name -ne $validName) {
+    										    $item.Editing.BeginEdit()
+    										    $item.Name = $validName
+    										    $item.Editing.EndEdit() > $null
+    										    $hashTable[$item["FacilityType"]] = $item
+    									    }
+                                        }
+                                        catch {
+                                           Write-Host $item.Paths.FullPath "Deleted"
+                                           $item | Remove-Item 
+                                      
+                                        }
+    									
+    								}
+    							}
+    
+    						}
+    					}
+    					$stopwatch.Stop()
+    					Write-Host "The $($hotelItem.Name) has been updated in: $($stopwatch.Elapsed.TotalMinutes) min."
+    				}
+    			}
+    		}
+    	}
+    } 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220510T120953Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,195 @@
+﻿---
+ID: "0a59c255-9d61-482f-9a43-79433d286361"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUXE-1103 - Inspire Me page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $itemName, $templateId, $itemId){
+        $item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $itemId
+            Write-Host "Item" $item.Name "successfully created";
+        }
+        return $item
+    } 
+    
+    function Set-Page-Design($designPath, $pageTemplateId) {
+        $designItem = Get-Item -Path "$($designPath)" -ErrorAction SilentlyContinue
+        if ($designItem -ne $null) {
+             [Sitecore.Data.Fields.MultilistField]$pageTemplates = $designItem.Fields["PageTemplates"];
+            
+            if(!$pageTemplates.Contains($pageTemplateId)) {
+                $designItem.Editing.BeginEdit();
+                $pageTemplates.add($pageTemplateId);
+                $designItem.Editing.EndEdit() | Out-Null
+                Write-Host "Page Templates of" $designItem.Name "are updated"
+            }
+        }
+    }
+    
+    function Create-Tag($path, $itemName, $code, $name, $icon){
+        $tag = Get-Or-Create-Item -Path $path -ItemName $itemName -TemplateId "{D21E6A0C-4BD2-431A-8F11-583B0550E0FB}"
+        $tag.Editing.BeginEdit()
+        $tag["Code"] = $code
+        $tag["Icon"] = $icon
+        $tag["Name"] = $name
+        $tag.Editing.EndEdit() | Out-Null
+    }
+    
+    function Create-Weather-Tag($path, $itemName, $code, $name, $icon, $from, $to){
+        $tag = Get-Or-Create-Item -Path $path -ItemName $itemName -TemplateId "{A54AD77C-6359-4B81-994C-732E45631657}"
+        $tag.Editing.BeginEdit()
+        $tag["Code"] = $code
+        $tag["Icon"] = $icon
+        $tag["Name"] = $name
+        $tag["TemperatureMin"] = $from
+        $tag["TemperatureMax"] = $to
+        $tag.Editing.EndEdit() | Out-Null
+    }
+    
+    function Get-Options-Ids($path){
+        
+        $items = Get-Item $path -ErrorAction SilentlyContinue
+        if($items -eq $null){
+            return ""
+        }
+        
+        $separated = $items.Children | % { $_.ID }
+        return $separated -join '|'
+    }
+    
+    $pageTemplateId = "{F7E5000F-7741-440D-AB73-60771DCD66B4}"
+    # Create Page
+    $page = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home" -ItemName "Holiday Inspiration" -TemplateId $pageTemplateId
+    
+    # Add Page To PageDesigns
+    Set-Page-Design -designPath "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Default Design" -pageTemplateId $pageTemplateId
+    
+    # Create Page Components
+    $pageComponents = Get-Or-Create-Item -Path $page.FullPath -ItemName "Page Components" -TemplateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    
+    # Create Quiz Tabs
+    $tabs = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Quiz Tabs" -TemplateId "{53C1FBFB-411D-4280-8859-31D2D76E5A78}"
+    $tabs.Editing.BeginEdit()
+    $tabs["ProgressTitle"] = "Let's find your perfect getaway"
+    $tabs["ProgressSubtitle"] = "Your progress"
+    $tabs["ProgressFormatting"] = "{progressCount}%"
+    $tabs.Editing.EndEdit() | Out-Null
+    
+    $entryTab = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Entry Quiz Tab" -TemplateId "{58F997A4-1062-45B4-B1F7-0FE3E11E2B04}"
+    $entryTab.Editing.BeginEdit()
+    $entryTab["Title"] = "Holiday inspiration"
+    $entryTab["Description"] = "Tell us a little bit about what kind of holiday you want, when you want to go, and who’s going. We’ll suggest our best holidays, tailored perfectly to you!"
+    $entryTab["ButtonText"] = "Start the quiz!"
+    $entryTab.Editing.EndEdit() | Out-Null
+    
+    # Update Rendering
+    $tabsRenderingItem = Get-Item -Path "master:" -Id "{35A52048-189B-4426-B54E-CDCD31DC43C6}"
+    $tabsRendering = Get-Rendering -Item $page -PlaceHolder "*body*" -Rendering $tabsRenderingItem 
+    if($tabsRendering -ne $null){
+        Set-Rendering -Item $page -Instance $tabsRendering -DataSource $tabs.ID
+        Write-Host $page.Name  "Tabs Rendering successfully updated"
+    }
+    
+    $EntrytabRenderingItem = Get-Item -Path "master:" -Id "{C9959F97-BFD2-4923-AD8A-D401E56FE823}"
+    $EntryTabRendering = Get-Rendering -Item $page -PlaceHolder "*body*" -Rendering $EntrytabRenderingItem 
+    if($EntryTabRendering -ne $null){
+        Set-Rendering -Item $page -Instance $EntryTabRendering -DataSource $entryTab.ID
+        Write-Host $page.Name  "Entry Tab Rendering successfully updated"
+    }
+    
+    
+    #tags
+    
+    Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data" -ItemName "Tags" -TemplateId "{79F6E95E-8E12-4C16-95E3-178BA4C39927}"
+    Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags" -ItemName "Travel Group" -TemplateId "{79F6E95E-8E12-4C16-95E3-178BA4C39927}"
+    Create-Tag -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Travel Group" -ItemName "Solo" -code "TGSL" -name "Solo"
+    Create-Tag -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Travel Group" -ItemName "Partner" -code "TGPRTNR" -name "Partner"
+    Create-Tag -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Travel Group" -ItemName "Family" -code "TGFML" -name "Family"
+    Create-Tag -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Travel Group" -ItemName "Friends" -code "TGFRND" -name "Friends"
+    
+    Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags" -ItemName "Holiday Type" -TemplateId "{79F6E95E-8E12-4C16-95E3-178BA4C39927}"
+    Create-Tag -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Holiday Type" -ItemName "Beach Holiday" -code "THMBH" -name "Beach Holiday"
+    Create-Tag -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Holiday Type" -ItemName "City Break" -code "THMCB" -name "City Break"
+    Create-Tag -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Holiday Type" -ItemName "Lakes" -code "THML" -name "Lakes"
+    
+    Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags" -ItemName "Holiday Vibe" -TemplateId "{79F6E95E-8E12-4C16-95E3-178BA4C39927}"
+    Create-Tag -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Holiday Vibe" -ItemName "Adults" -code "VBADLT" -name "Adults"
+    Create-Tag -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Holiday Vibe" -ItemName "Family" -code "VBFML" -name "Family"
+    Create-Tag -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Holiday Vibe" -ItemName "Luxury" -code "VBLUX" -name "Luxury"
+    
+    Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags" -ItemName "Weather" -TemplateId "{79F6E95E-8E12-4C16-95E3-178BA4C39927}"
+    Create-Weather-Tag -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Weather" -ItemName "Warm and Sunny" -code "WWS" -name "Warm & Sunny" -from 20
+    Create-Weather-Tag -Path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Weather" -ItemName "Cool and Crisp" -code "WCC" -name "Cool & Crisp" -to 10
+    
+    
+    $pref = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Holiday Theme" -TemplateId "{E4987AF7-CC2C-4269-A4FE-D3BBE2D15130}"
+    $pref.Editing.BeginEdit()
+    $pref["QuestionTitle"] = "What do you look for on a holiday?"
+    $pref["ProgressBarTitle"] = "Theme"
+    $pref["HolidayTypeQuestions"] = "What type of holiday are you looking for?"
+    $pref["HolidayTypeOptions"] = Get-Options-Ids -path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Holiday Type"
+    $pref["HolidayVibeQuestions"] = "What vibe are you looking for?"
+    $pref["HolidayVibeOptions"] = Get-Options-Ids -path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Holiday Vibe"
+    $pref["WeatherQuestions"] = "Which weather do you prefer for your holiday?"
+    $pref["WeatherOptions"] = Get-Options-Ids -path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Weather"
+    $pref.Editing.EndEdit() | Out-Null
+    
+    
+    
+    $trvGroup = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Travel Group" -TemplateId "{D9BA7CBE-F9C9-485C-9A03-2105B615ADCF}"
+    $trvGroup.Editing.BeginEdit()
+    $trvGroup["QuestionTitle"] = "Who will you be travelling with?"
+    $trvGroup["ProgressBarTitle"] = "Travel Group"
+    $trvGroup["TravelGroupQuestion"] = "Select your squad! Who's joining the trip?"
+    $trvGroup["TravelGroupOptions"] = Get-Options-Ids -path "master:/sitecore/content/EasyJet/Holidays/Data/Tags/Travel Group"
+    $trvGroup.Editing.EndEdit() | Out-Null
+    
+    
+    $departureAirport = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Departure Airport" -TemplateId "{AD6BAFD9-E37A-4359-8EB5-8544ED2BC1C6}"
+    $departureAirport.Editing.BeginEdit()
+    $departureAirport["QuestionTitle"] = "Where would you like to depart from?"
+    $departureAirport["ProgressBarTitle"] = "Departure"
+    $departureAirport.Editing.EndEdit() | Out-Null
+    
+    # Update Departure Rendering
+    $departureRenderingItem = Get-Item -Path "master:" -Id "{6FE1EE45-35B7-4488-8F48-1A6E32719CA2}"
+    $departureRendering = Get-Rendering -Item $page -PlaceHolder "*body*" -Rendering $departureRenderingItem 
+    if($departureRendering -ne $null){
+        Set-Rendering -Item $page -Instance $departureRendering -DataSource $departureAirport.ID
+        Write-Host $page.Name  "Departure Rendering successfully updated"
+    }
+    
+    # Update TravelGroup Rendering
+    $travelGroupRenderingItem = Get-Item -Path "master:" -Id "{C0781A8A-9B9E-4A05-BA4F-126600C711BF}"
+    $travelGroupRendering = Get-Rendering -Item $page -PlaceHolder "*body*" -Rendering $travelGroupRenderingItem
+    if ($travelGroupRendering -ne $null) {
+    	Set-Rendering -Item $page -Instance $travelGroupRendering -DataSource $trvGroup.ID
+    	Write-Host $page.Name "Travel Group Rendering successfully updated"
+    } 
+    
+    # Update Theme Rendering
+    $themeRenderingItem = Get-Item -Path "master:" -Id "{D92553FE-2CC0-489F-83B6-63A8CB806010}"
+    $themeRendering = Get-Rendering -Item $page -PlaceHolder "*body*" -Rendering $themeRenderingItem
+    if ($themeRendering -ne $null) {
+    	Set-Rendering -Item $page -Instance $themeRendering -DataSource $pref.ID
+    	Write-Host $page.Name "Theme Rendering successfully updated"
+    } 
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240402T121118Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,38 @@
+﻿---
+ID: "2a65caa6-d8d4-4f23-8061-ca92ec96605f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-308 Amend Passengers Update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+      $item = Get-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Passenger Details/Page Components/Change Passengers Details"
+        if ($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item["Phone"] = "0333 039 4658"
+            $item["RestrictionsPopupTitle"] = "Sorry we can't make this change"
+            $item["CharacterLimitRestriction"] = '<p>Unfortunately you are unable to make a change to both the first name and surname by more than 3 characters in total.</p>
+            <p>However you can still make this change via our call center.</p>
+            <p>Please call {number} in order to make this change.</p>'
+            $item["ChangeLimitRestriction"] = '<p>Unfortunately you can make another change to this passenger as you have reached your maximum number of changes.</p>
+            <p>However you can still make the changes via our call center.</p>
+            <p>Please call {number} in order to make this change.</p>'
+            $item["LeadPassengerRestriction"] = '<p>Unfortunately you are unable to make a change to the lead passenger.</p>
+            <p>If your details are incorrect for the lead passenger then please speak to a member of our call center who will able to support with what to do next.</p>
+            <p>Please call {number} in order to discuss further.</p>'
+            $item.Editing.EndEdit() | Out-Null
+        }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230127T124934Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,26 @@
+{
+    "Title": "Valid BookingSearchResponse for trade agent when search session has expired",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/EZYDMO/VRPWebservice/AniteGateway/AniteGateway.aspx",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "XPathMatcher",
+                "Pattern": "/*:BookingSearchRequest/*:Adm/*:SessId/text()='e9e51b15-6ded-4fb9-b106-9d9643a9e08d@0'"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "text/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/BookingSearchInvalidSessionIdResponse.xml"
+    }
+}

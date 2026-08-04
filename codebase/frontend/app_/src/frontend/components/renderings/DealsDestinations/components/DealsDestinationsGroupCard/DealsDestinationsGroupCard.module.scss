@@ -1,0 +1,72 @@
+@import 'frontend/components/renderings/DealsDestinations/DealsDestinationsVariables.module';
+
+.card {
+    position: relative;
+    padding: 30px 25px 0;
+    background-position: center;
+    background-size: cover;
+    border-radius: $box_border-radius_md;
+    box-shadow: 0 0 13px rgba($colorSilverChalice, 0.4);
+
+    + .card {
+        margin-top: 20px;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        z-index: $z-index-element;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-image: linear-gradient(25deg, rgba(0, 0, 0, 0.7) 5.6%, rgba(0, 0, 0, 0.0001) 53.8%);
+        border-radius: inherit;
+    }
+
+    @include media-breakpoint-down(lg) {
+        padding-bottom: 25px;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: 24px 10px 20px;
+
+        &::before {
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.73) 0%, rgba(0, 0, 0, 0) 100%);
+        }
+    }
+}
+
+.cardInner {
+    position: relative;
+    z-index: $z-index-over-element;
+}
+
+.title {
+    margin: 0 0 20px;
+    font-family: $fontRoundedHeadline;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1;
+    color: $colorWhite;
+    text-shadow: 0 0 8px rgba($colorBlack, 0.18);
+
+    a {
+        color: $colorWhite;
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 5px;
+        font-size: 32px;
+    }
+}
+
+.tiles {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 (-$gap);
+
+    @include media-breakpoint-up(lg) {
+        flex-wrap: nowrap;
+    }
+}

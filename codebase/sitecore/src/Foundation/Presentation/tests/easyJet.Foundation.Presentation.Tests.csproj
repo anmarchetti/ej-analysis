@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Sitecore.ContentTesting" />
+        <PackageReference Include="Sitecore.ContentTesting.Model" />
+        <PackageReference Include="Sitecore.JavaScriptServices.Configuration" />
+        <PackageReference Include="Sitecore.Personalization.Mvc" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)TestProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Analytics\code\easyJet.Foundation.Analytics.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Destinations\code\easyJet.Foundation.Destinations.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Presentation\code\easyJet.Foundation.Presentation.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Multisite\code\easyJet.Foundation.Multisite.csproj" />
+    </ItemGroup>
+</Project>

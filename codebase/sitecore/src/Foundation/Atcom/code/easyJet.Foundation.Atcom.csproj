@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)SitecoreProject.props" />
+  <PropertyGroup>
+    <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratedAssemblyInfoFile>Properties\Assemblyinfo.cs</GeneratedAssemblyInfoFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Connected Services\**\*.datasource">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Config\Include\Foundation\easyJet.Foundation.Atcom.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Atcom.CI.config">
+      <DependentUpon>easyJet.Foundation.Atcom.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Atcom.Debug.config">
+      <DependentUpon>easyJet.Foundation.Atcom.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Atcom.Release.config">
+      <DependentUpon>easyJet.Foundation.Atcom.config</DependentUpon>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Atcom.Serialization.CI.config">
+      <DependentUpon>easyJet.Foundation.Atcom.Serialization.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Atcom.Serialization.Debug.config">
+      <DependentUpon>easyJet.Foundation.Atcom.Serialization.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Atcom.Serialization.Release.config">
+      <DependentUpon>easyJet.Foundation.Atcom.Serialization.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="Connected Services\AtcomSoapServices\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)src\Foundation\Analytics\code\easyJet.Foundation.Analytics.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\Foundation\Destinations\code\easyJet.Foundation.Destinations.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\Foundation\Multisite\code\easyJet.Foundation.Multisite.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\Foundation\Serialization\code\easyJet.Foundation.Serialization.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\AtcomSoapServices\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <SonarQubeSetting Include="sonar.coverage.exclusions">
+      <Value>
+**/Infrastructure/AtcomServiceConfigurator.cs
+</Value>
+    </SonarQubeSetting>
+  </ItemGroup>
+</Project>

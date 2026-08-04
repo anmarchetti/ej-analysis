@@ -1,0 +1,34 @@
+﻿---
+ID: "342808a0-4e09-4e66-a5be-990b28196600"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-118_Add-rooms-labels"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $amendDatesSummaryComponentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary/Page Components/Amend Dates Summary Page";
+    $amendDatesSummaryComponentItem =  Get-Item -Path $amendDatesSummaryComponentPath -ErrorAction SilentlyContinue;
+    
+    #Update Amend DatesSummary title
+    if ($amendDatesSummaryComponentItem -ne $null) {
+        $amendDatesSummaryComponentItem.Editing.BeginEdit();
+    
+        $amendDatesSummaryComponentItem["RoomSingleLabel"]="{rooms} room";
+        $amendDatesSummaryComponentItem["RoomPluralLabel"]="{rooms} rooms";
+        
+        $amendDatesSummaryComponentItem.Editing.EndEdit() | Out-Null;
+        Write-Host $amendDatesSummaryComponentItem.Name "Updated"
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1300
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230731T113832Z

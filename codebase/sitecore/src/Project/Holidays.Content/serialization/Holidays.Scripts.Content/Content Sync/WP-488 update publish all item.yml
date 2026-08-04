@@ -1,0 +1,79 @@
+﻿---
+ID: "58af5623-0860-4e9b-9793-2b3b74d79c17"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/WP-488 update publish all items script"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $script_4b498a8396e84539b9d05dfaf4d3c3b7_en_v1 = @"
+    `$database = Get-Database -Name "master"
+    `$targets = @()
+    foreach(`$publishingTarget in [Sitecore.Publishing.PublishManager]::GetPublishingTargets(`$database)) {
+        `$targets += Get-Database -Name `$publishingTarget[[Sitecore.FieldIDs]::PublishingTargetDatabase]
+    }
+    `$languages = [Sitecore.Data.Managers.LanguageManager]::GetLanguages(`$database) | ? { `$_ -eq "en" } # publish en language only
+    
+    `$templateRoot = Get-Item -Path "master:/sitecore/templates"
+    [Sitecore.Publishing.PublishManager]::PublishItem(`$templateRoot,`$targets,`$languages,`$true,`$false,`$false)
+    
+    `$systemRoot = Get-Item -Path "master:/sitecore/system"
+    [Sitecore.Publishing.PublishManager]::PublishItem(`$systemRoot,`$targets,`$languages,`$true,`$false,`$false)
+    
+    `$mediaRoot = Get-Item -Path "master:/sitecore/media library"
+    [Sitecore.Publishing.PublishManager]::PublishItem(`$mediaRoot,`$targets,`$languages,`$true,`$false,`$false)
+    
+    `$layoutRoot = Get-Item -Path "master:/sitecore/layout"
+    [Sitecore.Publishing.PublishManager]::PublishItem(`$layoutRoot,`$targets,`$languages,`$true,`$false,`$false)
+    
+    `$holidaysSettingsRoot = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Settings"
+    [Sitecore.Publishing.PublishManager]::PublishItem(`$holidaysSettingsRoot,`$targets,`$languages,`$true,`$false,`$true)
+    
+    `$holidaysRulesRoot = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Rules"
+    [Sitecore.Publishing.PublishManager]::PublishItem(`$holidaysRulesRoot,`$targets,`$languages,`$true,`$false,`$true)
+    
+    `$holidaysPresentationRoot = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Presentation"
+    [Sitecore.Publishing.PublishManager]::PublishItem(`$holidaysPresentationRoot,`$targets,`$languages,`$true,`$false,`$true)
+    
+    `$holidaysDictionaryRoot = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Dictionary"
+    [Sitecore.Publishing.PublishManager]::PublishItem(`$holidaysDictionaryRoot,`$targets,`$languages,`$true,`$false,`$true)
+    
+    `$holidaysDataRoot = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data"
+    [Sitecore.Publishing.PublishManager]::PublishItem(`$holidaysDataRoot,`$targets,`$languages,`$true,`$false,`$true)
+    
+    `$holidaysHomeRoot = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home"
+    [Sitecore.Publishing.PublishManager]::PublishItem(`$holidaysHomeRoot,`$targets,`$languages,`$true,`$false,`$true)
+    
+    `$tradePortalRoot = Get-Item -Path "master:/sitecore/content/EasyJet/TradePortal"
+    [Sitecore.Publishing.PublishManager]::PublishItem(`$tradePortalRoot,`$targets,`$languages,`$true,`$false,`$true)
+    
+    `$userManagementRoot = Get-Item -Path "master:/sitecore/content/EasyJet/UserManagement"
+    [Sitecore.Publishing.PublishManager]::PublishItem(`$userManagementRoot,`$targets,`$languages,`$true,`$false,`$true)
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/Recurrence/Publish All Items"
+            TemplatePath = "Modules/PowerShell Console/PowerShell Script"
+            Id          = [GUID]"{4B498A83-96E8-4539-B9D0-5DFAF4D3C3B7}"
+            Fields      = @{
+                "Script" = @{
+                    "en" = $script_4b498a8396e84539b9d05dfaf4d3c3b7_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1000000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250306T145505Z

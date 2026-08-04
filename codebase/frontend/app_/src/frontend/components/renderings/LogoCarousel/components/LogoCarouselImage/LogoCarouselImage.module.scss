@@ -1,0 +1,57 @@
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 90px;
+    padding: 16px;
+    border: 2px solid $colorSilverDark;
+    border-radius: 6px;
+    filter: grayscale(100%);
+    cursor: pointer;
+    transition-timing-function: ease;
+    transition-duration: 0.1s;
+    transition-property: border-color, height;
+    will-change: transform, transition;
+
+    &:hover {
+        border-color: $colorOrange;
+        filter: none;
+    }
+}
+
+:global(.react-multi-carousel-item) {
+    .card {
+        @include media-breakpoint-down(sm) {
+            width: 75%;
+            height: 96px;
+            margin: 0 auto 32px;
+        }
+    }
+}
+
+:global(.react-multi-carousel-item--active) {
+    .card {
+        @include media-breakpoint-down(sm) {
+            height: 96px;
+            border-color: $colorOrange;
+            filter: none;
+        }
+    }
+}
+
+.isActive {
+    height: 96px;
+    border-color: $colorOrange;
+    filter: none;
+
+    @include media-breakpoint-up(sm) {
+        height: 116px;
+    }
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}

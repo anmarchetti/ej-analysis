@@ -1,0 +1,127 @@
+﻿---
+ID: "49f68877-a45d-400f-aa64-a3ed48cf8a51"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-156 - Chat bot in Contact us compoent"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $contactToUsContentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination/Page Components/Contact Us Banner"
+    
+    $callUsContentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination/Page Components/Contact Us Banner/Call us"
+    $emailUsContentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination/Page Components/Contact Us Banner/Email us"
+    $chatToUsContentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination/Page Components/Contact Us Banner/Chat to us"
+    
+    $languageArray = 'fr-CH', 'fr-FR', 'de-CH', 'de-DE', 'en'
+    
+    $contactItemTemplateId = "{E2309726-5469-4764-865B-D5AECE184A57}"
+    
+    function Create-Item ($path, $template) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+            $item = New-Item -Path $path -Name $itemName -ItemType $template
+            Write-Host "Item" $item.Name "successfully created"
+        } else {
+            Write-Host "Item" $item.Name "already exist"
+        }
+        return $item
+    }
+    
+    function Set-Translation-Value($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            $item = Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+            Write-Host "Created" $language "version for" $item.Name "item"
+        } else {
+            Write-Host $language "version for Item" $item.Name "already exist"
+        }
+    
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+            Write-Host "Field" $key "for" $item.Name "item updated with value" $translation
+        }
+    }
+    
+    function Create-Chatbot-Item-Content() {
+        $chatBotItemContent = Create-Item -Path $chatToUsContentPath -Template $contactItemTemplateId
+        $chatBotItemContent.Editing.BeginEdit()
+        $chatBotItemContent.Fields["__Sortorder"].Value = "300"
+        $chatBotItemContent["Title"] = "Chat to us"
+        $chatBotItemContent["Description"] = "If you have any issues while you’re away, we’re here for you 24/7 through our UK based On Holiday Support team via live chat. <p><a href=""#"">Click here to open the chat</a></p>"
+        $chatBotItemContent["DisplayCountries"] = "MA, TN, IL, JO, ME, EG, TR"
+        $chatBotItemContent["OpenChatBot"] = "1"
+        $chatBotItemContent.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $chatToUsContentPath -Language 'fr-FR' -Key 'Title' -Translation "Discutez avec nous"
+        Set-Translation-Value -ItemPath $chatToUsContentPath -Language 'fr-FR' -Key 'Description' -Translation "Si vous rencontrez des problèmes pendant votre séjour, nous sommes là pour vous 24h/24 et 7j/7 grâce à notre équipe de support vacances basée au Royaume-Uni via le chat en direct.<p><a href=""#"">Cliquez ici pour ouvrir le chat</a></p>"
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $chatToUsContentPath -Language 'de-DE' -Key 'Title' -Translation "Chatten Sie mit uns"
+        Set-Translation-Value -ItemPath $chatToUsContentPath -Language 'de-DE' -Key 'Description' -Translation "Wenn Sie während Ihres Urlaubs auf Probleme stoßen, sind wir rund um die Uhr für Sie da, über unser in Großbritannien ansässiges On-Holiday-Support-Team per Live-Chat.<p><a href=""#"">Klicken Sie hier, um den Chat zu öffnen</a></p>"
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $chatToUsContentPath -Language 'fr-CH' -Key 'Title' -Translation "Discutez avec nous"
+        Set-Translation-Value -ItemPath $chatToUsContentPath -Language 'fr-CH' -Key 'Description' -Translation "Si vous rencontrez des problèmes pendant votre séjour, nous sommes là pour vous 24h/24 et 7j/7 grâce à notre équipe de support vacances basée au Royaume-Uni via le chat en direct.<p><a href=""#"">Cliquez ici pour ouvrir le chat</a></p>"
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $chatToUsContentPath -Language 'de-CH' -Key 'Title' -Translation "Chatten Sie mit uns"
+        Set-Translation-Value -ItemPath $chatToUsContentPath -Language 'de-CH' -Key 'Description' -Translation "Wenn Sie während Ihres Urlaubs auf Probleme stoßen, sind wir rund um die Uhr für Sie da, über unser in Großbritannien ansässiges On-Holiday-Support-Team per Live-Chat.<p><a href=""#"">Klicken Sie hier, um den Chat zu öffnen</a></p>"
+    }
+    
+    function Update-Contact-Us-Content() {
+        $callUsContentItem = Get-Item -Path $callUsContentPath -ErrorAction SilentlyContinue
+        $emailUsContentItem = Get-Item -Path $emailUsContentPath -ErrorAction SilentlyContinue
+        $chatToUsContentItem = Get-Item -Path $chatToUsContentPath -ErrorAction SilentlyContinue
+        
+        foreach ($lang in $languageArray) {
+            $contactUsBannerItem = Get-Item -Path $contactToUsContentPath -ErrorAction SilentlyContinue -Language $lang
+            
+            if ($contactUsBannerItem -ne $null) {
+                $arrayContactChannels = [System.Collections.ArrayList]@()
+                
+                if ($callUsContentItem -ne $null) {
+                    $arrayContactChannels.Add($callUsContentItem.ID)
+                }
+                
+                if ($emailUsContentItem -ne $null) {
+                    $arrayContactChannels.Add($emailUsContentItem.ID)
+                }
+                
+                if ($chatToUsContentItem -ne $null) {
+                    $arrayContactChannels.Add($chatToUsContentItem.ID)
+                }
+                
+                $contactUsBannerItem.Editing.BeginEdit()
+                $contactUsBannerItem["ContactChannels"] = $arrayContactChannels -join "|"
+                $contactUsBannerItem.Editing.EndEdit() | Out-Null
+                
+                Write-Host "Contact Us banner content item updated"
+            } else {
+                 Write-Host "Contact Us banner content item is not exist"
+            }
+        }
+    }
+    
+    Create-Chatbot-Item-Content;
+    Update-Contact-Us-Content;
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230628T103556Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,41 @@
+.wrapper {
+    margin: 40px 0;
+
+    &.trade {
+        max-width: 650px;
+    }
+
+    @include media-breakpoint-down(md) {
+        margin: 20px 0;
+    }
+
+    :global {
+        .form-group {
+            width: 100%;
+        }
+
+        .form-field.form-field--error .form-control__input {
+            width: 100%;
+        }
+
+        .form-field .form-control__label {
+            left: 30px;
+        }
+    }
+
+    .title {
+        margin-bottom: 8px;
+        font-family: $fontRoundedBook;
+        font-size: 17px;
+        line-height: 1.17;
+        color: $colorBlack;
+    }
+
+    .subtitle {
+        margin: 0;
+        font-family: $fontRoundedBook;
+        font-size: 14px;
+        line-height: 1.5;
+        color: $clrTextMainLight;
+    }
+}

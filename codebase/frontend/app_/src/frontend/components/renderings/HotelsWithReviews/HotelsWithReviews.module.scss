@@ -1,0 +1,94 @@
+.wrapper {
+    padding: 24px 8px;
+    overflow: clip;
+}
+
+.title {
+    margin: 0 0 30px;
+    font-family: $fontRoundedHeadline;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 115%;
+    text-align: center;
+    text-transform: uppercase;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 14px;
+        font-size: 20px;
+        line-height: 25px;
+    }
+}
+
+.items {
+    --grid-columns: 1;
+
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+    gap: 10px;
+
+    @include media-breakpoint-up(sm) {
+        --grid-columns: 2;
+    }
+
+    @include media-breakpoint-up(md) {
+        --grid-columns: 3;
+    }
+}
+
+.item {
+    margin: 0;
+
+    :global(.star_rating svg) {
+        width: 11px;
+        height: 11px;
+        margin-right: 3px;
+    }
+
+    :global(.star_rating),
+    :global(.eco-certified) {
+        margin-bottom: 0;
+    }
+
+    :global(.tripadvisor_rating svg) {
+        width: 14px;
+        height: 14px;
+    }
+
+    :global(.tripadvisor_rating span) {
+        width: 7px;
+        height: 7px;
+    }
+
+    :global(.tripadvisor-reviews) {
+        display: none;
+    }
+
+    :global(.eco-certified .icon-svg) {
+        width: 10px;
+        height: 10px;
+    }
+
+    :global(.eco-certified__title) {
+        font-size: 11px;
+        line-height: 10px;
+    }
+
+    :global(.star_rating),
+    :global(.hotel-reviews) {
+        margin-right: 15px;
+    }
+}
+
+.hotelName {
+    margin: 0;
+    font-family: $fontRoundedDemy;
+    font-size: 14px;
+    color: $clrEjOrange;
+    cursor: pointer;
+}
+
+.ratingWrapper {
+    display: flex;
+    align-items: center;
+    height: 14px;
+}

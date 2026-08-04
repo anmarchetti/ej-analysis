@@ -1,0 +1,232 @@
+$masonry-item_border-radius: 6px;
+$masonry-item_padding-x: 30px;
+$masonry-item_padding-x_tablet: 10px;
+$masonry-item_padding-x_mobile: 20px;
+
+.masonry-item {
+  position: relative;
+  display: block;
+  margin: 10px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  border-radius: 6px;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  @include media-breakpoint-down(lg) {
+    margin: 5px;
+  }
+
+  @include media-breakpoint-down(md) {
+    height: 180px;
+    margin: 0;
+  }
+
+  &::before {
+    border-radius: inherit;
+    @include image-shadow-overlay(
+      linear-gradient(
+        -45deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.5) 100%
+      )
+    );
+  }
+
+  img {
+    z-index: -1;
+  }
+
+  .unavailable-banner {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    .callout__container {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .callout__content {
+      right: 5px;
+      bottom: 50px;
+      margin-left: 5px;
+      padding: 0;
+      border-radius: 4px;
+      box-shadow: none;
+
+      @include media-breakpoint-down(md) {
+        left: 5px;
+      }
+
+      &.top {
+        &::before,
+        &::after {
+          display: none;
+        }
+      }
+    }
+
+    .callout__parent {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      font-size: 16px;
+      line-height: 22px;
+      color: $colorRed;
+      background-color: $clrSiteBgWhite;
+
+      svg {
+        min-width: 16px;
+        min-height: 16px;
+      }
+
+      p {
+        margin: 0;
+        padding: 12px 0;
+      }
+
+      &.tooltip-visible {
+        &::before {
+          content: "";
+          position: absolute;
+          top: -7px;
+          right: auto;
+          left: 5px;
+          width: 0;
+          height: 0;
+          margin-top: 1px;
+          border: 0.8em solid transparent;
+          border-top-color: rgba(0, 0, 0, 0.2);
+          border-bottom: 0;
+        }
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: -7px;
+          right: auto;
+          left: 5px;
+          width: 0;
+          height: 0;
+          border: 0.8em solid transparent;
+          border-top-color: #fff;
+          border-bottom: 0;
+        }
+      }
+
+      svg {
+        margin-right: 10px;
+        color: $colorRed;
+      }
+    }
+
+    .unavailable-banner__tooltip {
+      display: flex;
+      padding: 15px;
+      color: $colorRed;
+      background: $clrSiteBgWhite;
+
+      svg {
+        min-width: 20px;
+        min-height: 20px;
+        margin-right: 10px;
+        color: $colorRed;
+      }
+
+      span {
+        font-family: $fontRoundedDemy;
+        font-size: 14px;
+        line-height: 22px;
+        color: $clrTextMain;
+      }
+    }
+  }
+
+  .masonry-item__title {
+    position: absolute;
+    margin: $masonry-item_padding-x;
+    font-family: $fontRoundedHeadline;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+    color: $clrSiteBgWhite;
+
+    @include media-breakpoint-down(lg) {
+      margin: $masonry-item_padding-x_tablet;
+      font-size: 16px;
+    }
+
+    @include media-breakpoint-down(md) {
+      margin: $masonry-item_padding-x_mobile;
+      font-size: 20px;
+    }
+  }
+
+  .masonry-item__price-block {
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    left: $masonry-item_padding-x;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    font-family: $fontRoundedBook;
+    color: $clrSiteBgWhite;
+    background-color: $clrEjOrange;
+
+    @include media-breakpoint-down(lg) {
+      left: $masonry-item_padding-x_tablet;
+    }
+
+    @include media-breakpoint-down(md) {
+      left: $masonry-item_padding-x_mobile;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: block;
+      width: 100%;
+      margin-top: -20px;
+      padding-top: 20px;
+      background-image:
+        linear-gradient(
+          6.1deg,
+          $clrEjOrange 49%,
+          $colorTransparent 51%
+        );
+    }
+
+    .from-label,
+    .price__currency,
+    .price__per-person {
+      font-size: 12px;
+      line-height: 14px;
+    }
+
+    .price__currency {
+      vertical-align: top;
+    }
+
+    .price__per-person {
+      vertical-align: bottom;
+    }
+
+    .price__amount {
+      font-size: 35px;
+      line-height: 35px;
+    }
+  }
+}

@@ -1,0 +1,73 @@
+﻿---
+ID: "4742fc18-cbbe-47d1-b30d-767ab920954f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Update Covid Message Placeholder
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Find `Html Block` control at `Home` and `MixedResults`
+    # If datasource is `/sitecore/content/EasyJet/Holidays/Home/Page Components/Html Block/Coronavirus message`
+    # Update placeholder to `header`
+    # Also order must be -1 of `Search Pod`'s rendering
+    
+    # Datasource name of updating message
+    $messageItemName = "Coronavirus message"
+    
+    $homeItem = Get-Item -Path "master:/content/EasyJet/Holidays/Home"
+    $mixedResultListItem = Get-Item -Path "master:/content/EasyJet/Holidays/Home/MixedResultList"
+        
+    $renderingTemplateId = "{6C234F53-080F-4C8E-AC01-CE83E3C28998}";
+    $searchPodTemplateId = "{216FE85C-936E-4135-894B-E7DE8BF8A4C2}"
+    
+    function Set-Rendering-And-Index($rendering, $item, $datasourceid) {
+        if($rendering -ne $null -And $rendering.Datasource -eq $datasourceid){
+            
+            # Order must be -1 of `Search Pod`'s rendering
+            $renderings = Get-Rendering -Item $item
+            $searchPodRendering = $renderings | Where-Object {$_.ItemId -eq $searchPodTemplateId}
+            if($searchPodRendering -ne $null) {
+                $searchPodRenderingIndex = [array]::IndexOf($renderings, $searchPodRendering)
+                
+                if($searchPodRenderingIndex -ne $null) {
+                    $indexWanted = ($searchPodRenderingIndex - 1);
+                    if($indexWanted -lt 0) {
+                        $indexWanted = 0
+                    }
+                    
+                    # Finally
+                    Set-Rendering -Item $item -Instance $rendering -Placeholder "header" -Index $indexWanted
+                    Write-Host "Message placeholder updated at"($item.Name)
+                }
+            }
+        }
+    }
+    
+    function Update-Covid-Message($item, $datasource) {
+        $messageItem = Get-Item -Path $datasource -ErrorAction SilentlyContinue
+        if($messageItem -ne $null) {
+            $existingRendering = Get-Rendering -Item $item | Where-Object {$_.ItemId -eq $renderingTemplateId}
+            
+            if ($existingRendering -is [array]) {
+                ForEach ($existingRenderingItem in $existingRendering) 
+                {
+                    Set-Rendering-And-Index -rendering $existingRenderingItem -Item $item -Datasourceid $messageItem.ID
+                }
+            } else {
+                Set-Rendering-And-Index -rendering $existingRendering -Item $item -Datasourceid $messageItem.ID
+            }
+        }
+    }
+    
+    Update-Covid-Message -Item $homeItem -Datasource "/sitecore/content/EasyJet/Holidays/Home/Page Components/Html Block/$($messageItemName)"
+    Update-Covid-Message -Item $mixedResultListItem -Datasource "/sitecore/content/EasyJet/Holidays/Data/HTML Blocks/$($messageItemName)"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20191118T132901:637096805412053434Z"

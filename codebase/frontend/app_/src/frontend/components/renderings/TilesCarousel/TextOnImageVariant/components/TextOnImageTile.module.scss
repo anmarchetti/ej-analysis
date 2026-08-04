@@ -1,0 +1,103 @@
+.wrapper {
+    height: calc(100% - 12px);
+    margin: 0 12px 10px;
+    border-radius: 6px;
+    box-shadow: 0 0 13px 0 rgba(178, 178, 175, 0.5);
+}
+
+.imageWrapper {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+
+    @include media-breakpoint-down(lg) {
+        height: 176px;
+    }
+}
+
+.image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    color: transparent;
+    border-radius: 6px 6px 0 0;
+}
+
+.textWrapper {
+    position: absolute;
+    z-index: 2;
+    top: 5px;
+    right: 5px;
+    bottom: 5px;
+    left: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.title {
+    margin: 0 -14px 0 0;
+    font-family: $fontUnboundedSans;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1;
+    color: $colorLuxuryWhiteTitle;
+    text-align: center;
+    text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.45);
+    letter-spacing: 14px;
+    
+    @include media-breakpoint-down(lg) {
+        margin-right: -10px;
+        font-size: 40px;
+        letter-spacing: 10px; 
+    }
+}
+
+.subtitle {
+    margin: 0 -7.2px 0 0;
+    font-family: $fontUnboundedSans;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+    color: $colorLuxuryWhiteSubtitle;
+    text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.45);
+    letter-spacing: 7.2px;
+
+    @include media-breakpoint-down(lg) {
+        margin-right: -4.8px;
+        font-size: 16px;
+        letter-spacing: 4.8px;
+    }
+}
+
+.descriptionWrapper {
+    height: calc(100% - 200px);
+    padding: 16px;
+
+    @include media-breakpoint-down(lg) {
+        height: calc(100% - 176px);
+        padding: 16px 8px;
+    }
+}
+
+.description {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: $colorBlackLight;
+    text-align: center;
+}

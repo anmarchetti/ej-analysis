@@ -1,0 +1,117 @@
+﻿---
+ID: "a7aa52de-7af2-4e99-a7a6-083cf7bc4f34"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-15667-create-acmi-settings-and-carriers"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    [hashtable]$carriers = @{
+    "9H-MLE" = "Avion Express";
+    "9H-MLP" = "Avion Express";
+    "9H-MLQ" = "Avion Express";
+    "9H-MLR" = "Avion Express";
+    "9H-MLU" = "Avion Express";
+    "9H-AMK" = "Avion Express";
+    "9H-AMJ" = "Avion Express"; 
+    "9H-AMH" = "Avion Express"; 
+    "9H-AMI" = "Avion Express"; 
+    "9H-AML" = "Avion Express"; 
+    "9H-AMU" = "Avion Express"; 
+    "9H-AMP" = "Avion Express"; 
+    "9H-AMV" = "Avion Express"; 
+    "9H-MLA" = "Avion Express"; 
+    "9H-AMX" = "Avion Express"; 
+    "9H-AMM" = "Avion Express"; 
+    "9H-MLB" = "Avion Express"; 
+    "9H-MLC" = "Avion Express"; 
+    "9H-MLD" = "Avion Express"; 
+    "YL-LDS" = "SmartLynx Latvia";
+    "YL-LDM" = "SmartLynx Latvia";
+    "YL-LDN" = "SmartLynx Latvia";
+    "YL-LDD" = "SmartLynx Latvia";
+    "YL-LDL" = "SmartLynx Latvia";
+    "YL-LDI" = "SmartLynx Latvia";
+    "YL-LDF" = "SmartLynx Latvia";
+    "YL-LDJ" = "SmartLynx Latvia";
+    "YL-LDK" = "SmartLynx Latvia";
+    "YL-LDE" = "SmartLynx Latvia";
+    "YL-LCT" = "SmartLynx Latvia";
+    "YL-LCU" = "SmartLynx Latvia";
+    "YL-LDQ" = "SmartLynx Latvia";
+    "9H-SLD" = "SmartLynx Malta";
+    "9H-SLE" = "SmartLynx Malta";
+    "9H-SLF" = "SmartLynx Malta";
+    "9H-SLB" = "SmartLynx Malta";
+    "9H-SLI" = "SmartLynx Malta";
+    "9H-SLJ" = "SmartLynx Malta";
+    "9H-SLK" = "SmartLynx Malta";
+    "9H-SLH" = "SmartLynx Malta";
+    "9A-BTG" = "Trade Air";
+    "9A-BTH" = "Trade Air";
+    "9A-BTI" = "Trade Air";
+    "9A-BTK" = "Trade Air";
+    "9A-BTJ" = "Trade Air"}
+    
+    $settingsPath = "/sitecore/content/EasyJet/Holidays/Settings/Acmi Settings"
+    $settingsTemplateId = "{4B712E6A-DC42-45A8-A58C-2444551EAE3F}"
+    $carrierPath = "/sitecore/content/EasyJet/Holidays/Settings/Acmi Settings"
+    $carriersTemplateId = "{08664DDC-E8BE-4096-86B8-B25B9BC4F1C5}"
+    $leaseFlightToolPath = "/sitecore/content/EasyJet/Holidays/Data/Lease Flight Tool"
+    $leaseFlightToolTemplateId = "{D434F63A-E43F-4329-B825-5E4A95C4B6DE}"
+    
+    $acmiSettings = Get-Item -path $settingsPath -ErrorAction SilentlyContinue
+    if ($acmiSettings -eq $null) {
+        
+        # create item
+        $settings = New-Item -Path $settingsPath -ItemType $settingsTemplateId
+        
+        $settings.Editing.BeginEdit()
+        $settings["Inbound Message"] = 'Customer informed that their IB flight for their holiday will be operated by our partner airline, {providerX}. Standard terms and conditions apply around amendments and cancellations. Further information is available on our partner airlines page -&nbsp;<a href="https://www.easyjet.com/en/policy/partner-airlines" class="external-link" target="_blank" rel="noopener noreferrer" title="Follow link" style="color: #0065ff; background-color: #ffffff; text-decoration: var(--aui-link-hover-decoration);">https://www.easyjet.com/en/policy/partner-airlines</a>'
+        $settings["Outbound Message"] = 'Customer informed that their OB flight for their holiday will be operated by our partner airline, {providerX}. Standard terms and conditions apply around amendments and cancellations. Further information is available on our partner airlines page -&nbsp;<a href="https://www.easyjet.com/en/policy/partner-airlines" class="external-link" target="_blank" rel="noopener noreferrer" title="Follow link" style="color: #0065ff; background-color: #ffffff; text-decoration: var(--aui-link-hover-decoration);">https://www.easyjet.com/en/policy/partner-airlines</a>'
+        $settings["Inbound and Outbound Same Provider Message"] = 'Customer informed that both their OB and IB flight for their holiday will be operated by our partner airline, {providerX}. Standard terms and conditions apply around amendments and cancellations. Further information is available on our partner airlines page -&nbsp;<a href="https://www.easyjet.com/en/policy/partner-airlines" class="external-link" target="_blank" rel="noopener noreferrer" title="Follow link" style="color: #0065ff; background-color: #ffffff; text-decoration: var(--aui-link-hover-decoration);">https://www.easyjet.com/en/policy/partner-airlines</a>'
+        $settings["Inbound and Outbound Different Providers Message"] = 'Customer informed that both their OB flight for their holiday will be operated by our partner airline, {providerX}, and their IB will be operated by another partner airline, {providerY}. Standard terms and conditions apply around amendments and cancellations. Further information is available on our partner airlines page -&nbsp;<a href="https://www.easyjet.com/en/policy/partner-airlines" class="external-link" target="_blank" rel="noopener noreferrer" title="Follow link" style="color: #0065ff; background-color: #ffffff; text-decoration: var(--aui-link-hover-decoration);">https://www.easyjet.com/en/policy/partner-airlines</a>'
+        $settings.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Settings" $settings.Name "successfully created"
+    }
+    
+    $leaseFlightTool = Get-Item -path $leaseFlightToolPath -ErrorAction SilentlyContinue
+    if ($leaseFlightTool -eq $null) {
+        
+        # create item
+        $leaseFlightToolItem = New-Item -Path $leaseFlightToolPath -ItemType $leaseFlightToolTemplateId
+        Write-Host "Settings" $leaseFlightToolItem.Name "successfully created"
+    }
+    
+    foreach ($Key in $carriers.Keys) {
+        $itemPath = "$($carrierPath)/$($Key)"
+        $carrierItem = Get-Item -path $itemPath -ErrorAction SilentlyContinue
+        if ($carrierItem -eq $null) {
+            
+            # create item
+            $carrierItem = New-Item -Path $itemPath -ItemType $carriersTemplateId
+            Write-Host "Carrier" $carrierItem.Name "successfully created"
+    
+            $carrierItem.Editing.BeginEdit()
+            $carrierItem["Reg Number"] = $Key
+            $carrierItem["Carrier Name"] = $carriers[$Key]
+            $carrierItem.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Item" $carrierItem.Name "successfully updated"
+            }
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220805T112040Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

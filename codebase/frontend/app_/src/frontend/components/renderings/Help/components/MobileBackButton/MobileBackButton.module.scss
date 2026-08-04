@@ -1,0 +1,15 @@
+.container {
+    position: fixed;
+    z-index: $z-index-fixed + 2;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    padding: 10px 16px;
+    font-size: 16px;
+    background-color: $colorWhite;
+    box-shadow: $generalBoxShadow;
+
+       @include media-breakpoint-up(md) {
+        display: none;
+    }
+}

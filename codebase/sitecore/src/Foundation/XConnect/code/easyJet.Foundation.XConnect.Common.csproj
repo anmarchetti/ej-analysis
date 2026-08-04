@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <PackageReference Include="Sitecore.Framework.Conditions" />
+    <PackageReference Include="Sitecore.Framework.Configuration.Extensions" />
+    <PackageReference Include="Sitecore.Framework.Rules" />
+    <PackageReference Include="Sitecore.Framework.Rules.Abstractions" />
+    <PackageReference Include="Sitecore.XConnect" />
+    <PackageReference Include="Sitecore.XConnect.Client" />
+    <PackageReference Include="Sitecore.XConnect.Client.Configuration" />
+    <PackageReference Include="Sitecore.XConnect.Collection.Model" />
+    <PackageReference Include="Sitecore.XConnect.Core" />
+    <PackageReference Include="Sitecore.XConnect.DataTools.Abstractions" />
+    <PackageReference Include="Sitecore.XConnect.Segmentation.Predicates" />
+    <PackageReference Include="Sitecore.XConnect.Segmentation.Predicates.Model" />
+    <PackageReference Include="Sitecore.XConnect.Service" />
+    <PackageReference Include="Sitecore.Xdb.MarketingAutomation.Core" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)SitecoreProject.props" />
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)src\Foundation\PushNotification\code\easyJet.Foundation.PushNotifications.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratedAssemblyInfoFile>Properties\Assemblyinfo.cs</GeneratedAssemblyInfoFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="App_Data\jobs\continuous\AutomationEngine\App_Data\Config\sitecore\PushNotifications\sc.MarketingAutomation.ActivityServices.PushNotifications.xml">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <None Include="App_Data\jobs\continuous\AutomationEngine\App_Data\Config\sitecore\PushNotifications\sc.MarketingAutomation.ActivityServices.PushNotifications.Debug.xml">
+      <DependentUpon>sc.MarketingAutomation.ActivityServices.PushNotifications.xml</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Data\jobs\continuous\AutomationEngine\App_Data\Config\sitecore\PushNotifications\sc.MarketingAutomation.ActivityServices.PushNotifications.Release.xml">
+      <DependentUpon>sc.MarketingAutomation.ActivityServices.PushNotifications.xml</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <Content Include="App_Data\config\Sitecore\**\*.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\jobs\**\*.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\Models\**\*.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sitecore modules\**\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

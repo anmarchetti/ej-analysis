@@ -1,0 +1,113 @@
+.amendCta {
+    @include media-breakpoint-down(lg) {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+.roomWrapper {
+    width: 100%;
+
+    &:not(:last-child) {
+        margin-bottom: 20px;
+        border-bottom: $view-booking-card-border;
+    }
+}
+
+.roomContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.roomItem {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    @include media-breakpoint-down(lg) {
+        gap: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.boardTypeContainer {
+    padding-top: 16px;
+    border-top: $view-booking-card-border;
+}
+
+.offerCardSlider {
+    position: relative;
+    flex-grow: 4;
+    flex-basis: 0;
+
+    @include media-breakpoint-down(lg) {
+        min-height: 228px;
+        width: 100%;
+        flex-grow: 0;
+        flex-basis: auto;
+    }
+}
+
+.roomBoardContainer {
+    flex-grow: 8;
+    flex-basis: 0;
+    padding: 30px 24px 20px 20px;
+
+    @include media-breakpoint-down(lg) {
+        padding: 16px;
+        width: 100%;
+        flex-grow: 0;
+        flex-basis: auto;
+    }
+}
+
+.roomTypeContainer {
+    width: 100%;
+
+    @include media-breakpoint-down(lg) {
+        padding-bottom: 12px;
+        border-bottom: 1px solid $clrBorderGray;
+    }
+}
+
+.room {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    box-shadow: 0px 3px 9px 3px #33333326;
+
+    &:not(:last-child) {
+        margin-bottom: 20px;
+        border-bottom: $view-booking-card-border;
+    }
+
+    .roomItem:not(:first-child) {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: $view-booking-card-border;
+    }
+
+    @include media-breakpoint-down(lg) {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+.roomNumberContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.roomTitle {
+    font-family: $fontRoundedDemy;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.hotelIcon {
+    margin-right: 4px;
+}

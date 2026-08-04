@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" 
+		targetNamespace="AtComRes/ErrorResponse" 
+		xmlns:ns1="AtComRes/ErrorResponse" 
+		xmlns:p2="AtComRes/Common">
+<xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+  <xs:element name="ErrorResponse">
+    <xs:annotation>
+        <xs:documentation>Common generic error response, returned by @ComRes if the request is unknown or unresolvable.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+		<xs:complexContent>
+			<xs:extension base="p2:AtcomresBaseResponse">
+			</xs:extension>
+		</xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

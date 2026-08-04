@@ -1,0 +1,34 @@
+﻿---
+ID: "5aba73d5-f5eb-4d38-b3ad-1ae67f32ff35"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/WP-229 change history report settings - exclude fields"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+        $changeTrackingItemPath = 'master:/sitecore/content/EasyJet/Holidays/Settings/Change Tracking'
+        $changeTrackingTemplateId = '{E54A4995-50EA-4710-84EC-7AD957515F9F}'
+        $excludedFieldIds = '{5A4F826C-3C4E-4F5F-B12F-5D2CB4A72A41}|{AFB5A121-D293-4DE5-8B76-5025A295CF32}|{D7E4C636-69AB-4D39-B587-15A3A6866F4F}|{53407E4D-9591-4E72-BB8D-5C570660C8A7}'
+        $settingsItem = Get-Item -path $changeTrackingItemPath -ErrorAction SilentlyContinue
+        if ($settingsItem -eq $null) {
+            # create item
+             $settingsItem = New-Item -Path $changeTrackingItemPath -ItemType $changeTrackingTemplateId 
+            Write-Host "Item"  $settingsItem.Name "successfully created"
+        }
+        $settingsItem.Editing.BeginEdit()
+        $settingsItem.Fields["Excluded Fields"].Value = $excludedFieldIds 
+        Write-Host  $settingsItem.Name "updated"
+        $settingsItem.Editing.EndEdit() | Out-Null
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: "-100"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20230717T114454:638251910942781958Z"

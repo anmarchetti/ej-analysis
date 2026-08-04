@@ -1,0 +1,35 @@
+{
+    "Title": "CMS Destination titles for (api/DestinationsSearch/GetTitles)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetTitles",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "ExactMatcher",
+                "Pattern": "Codes%5B0%5D=ES&Codes%5B1%5D=ESMJ0001&Page=0&Take=0&Filter=0"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": [
+            {
+                "Code": "ESMJ0001",
+                "Name": "Majorca Atcore Test Accom"
+            },
+            {
+                "Code": "ES",
+                "Name": "Spain"
+            }
+        ]
+    }
+}

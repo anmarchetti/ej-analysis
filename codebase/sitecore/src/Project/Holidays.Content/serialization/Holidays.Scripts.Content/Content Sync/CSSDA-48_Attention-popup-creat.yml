@@ -1,0 +1,78 @@
+﻿---
+ID: "8f16bd68-b575-4d2e-b432-58bee333bbb0"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-48_Attention-popup-create"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    function Add-Or-Update-Page-Rendering($page, $renderingPath, $renderingPlaceholder, $dataSourcePath) {
+        $renderingItem = Get-Item -Database "master" -Path $renderingPath;
+        $pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+        
+        if ($pageRenderingInstance -eq $null) {
+            $renderingInstance = $renderingItem | New-Rendering -Placeholder $renderingPlaceholder;
+            Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -Datasource $dataSourcePath;
+            Write-Host $renderingItem "Rendering instance added";
+        } 
+        else {
+            Write-Host $pageRenderingInstance "Already exists";
+        }
+    }
+    #Page
+    $myBookingPageItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking";
+    
+    $inventoryErrorPopupItemPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Inventory Error Popup";
+    
+    #Creating InventoryErrorPopupItem
+    $inventoryErrorPopupItem = Get-Or-Create-Item -path $inventoryErrorPopupItemPath -template "{C8C39B93-2202-4B2D-937F-8F644B0D3183}";
+    
+    #Update item's details
+    if ($inventoryErrorPopupItem -ne $null) {
+        $inventoryErrorPopupItem.Editing.BeginEdit();
+        
+        $inventoryErrorPopupItem["Title"]="Inventory Error";
+        $inventoryErrorPopupItem["Description"]="<p>Please try again or call the call the call centre {number} for additional support. </p>";
+        $inventoryErrorPopupItem["Icon"]='<image mediaid="{A484212A-377A-4DC9-8754-BABFE7701E3D}" />';
+        $inventoryErrorPopupItem["CTA"]="Close";
+        
+        $inventoryErrorPopupItem.Editing.EndEdit() | Out-Null;
+    }
+    
+    #Add layout controls to page
+    $attentionPopupRenderPath = "/sitecore/layout/Renderings/Feature/Destinations/Popups/Attention Popup";
+    $attentionPopupRenderItem = Get-Item -Path $attentionPopupRenderPath;
+    
+    if ($attentionPopupRenderItem -ne $null) {
+        Add-Or-Update-Page-Rendering -page $myBookingPageItem -renderingPath $attentionPopupRenderPath  -renderingPlaceholder "/body/attention-popup-{5500AC44-5DF4-4473-8E8C-EA635A187882}-0" -dataSourcePath $inventoryErrorPopupItemPath;
+        
+        Write-Host $myBookingPageItem.Name "Updated";
+    }
+    
+    
+    
+    
+    
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2800
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230807T142245Z

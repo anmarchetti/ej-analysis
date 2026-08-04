@@ -1,0 +1,122 @@
+﻿---
+ID: "d2fc0c68-82ed-4fcd-962f-7950d61144d0"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Update Search Pod on Promo Pages
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $promoPagesRootPath = "/sitecore/content/EasyJet/Holidays/Home/Root"
+    $promoPageTemplateId = "{C0CB2F05-AFD2-41CE-B53F-6F15A1033740}"
+    $promoPageStandardValuesPath = "/sitecore/templates/Project/Holidays/Pages/Promo Page/__Standard Values"
+    
+    $searchPodTestId = '101'
+    $searchPodFolderTemplateId = "{CA9B20EB-F054-41A0-873A-F63776B9FE68}"
+    $currentSearchPodTemplateId = "{05D15AAB-CFF6-4FF9-B048-F9E48DA7153E}"
+    $currentSearchPodRenderingId = "{5E2E2A85-2A21-4CD2-B8BC-BB34A2FDA822}"
+    $newSearchPodTemplateId = "{E24DE0D7-390F-424F-B937-761CE71C5E21}"
+    
+    $textBlockTemplateId = "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}"
+    $textBlockRenderingId = "{43546A28-D231-4287-96D2-25DEF529F1A5}"
+    $headerTextPlaceholder = "/body/component-wrapper-inner-{42198C25-DE8E-4AB4-A5B9-6428C115ECF6}-0"
+    
+    function Get-Or-Create-Item($path, $itemName, $templateId){
+        $item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $itemName -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created";
+        }
+        return $item
+    } 
+    
+    function Set-AB-Test-Fields($item, $testId, $testVariant) {
+        $item.Editing.BeginEdit();
+        $item["TestId"] = $testId
+        $item["TestVariant"] = $testVariant
+        $item.Editing.EndEdit() | Out-Null
+    }
+    
+    function Get-Rendering-DataSource-Item($rendering){
+        if($rendering -ne $null){
+            return Get-Item -Path $rendering.DataSource -ErrorAction SilentlyContinue
+        }
+        return $null
+    }
+    
+    function Update-Rendering-DataSource($item, $renderingId, $dataSource){
+        $rendering = Get-Rendering -Item $item | Where-Object {$_.ItemId -eq $renderingId} | Select -First 1
+        
+        if($rendering -ne $null){
+            Set-Rendering -Item $item -Instance $rendering -DataSource $dataSource
+        }
+    }
+    
+    function Update-Promo-Page($page) {
+        $headerTextRendering = Get-Rendering -Item $page | 
+            Where-Object {$_.ItemId -eq $textBlockRenderingId -and $_.Placeholder -eq $headerTextPlaceholder} | 
+            Select -First 1
+        $headerTextItem = Get-Rendering-DataSource-Item -Rendering  $headerTextRendering
+        
+        if($headerTextItem -ne $null) {
+            # Copy Header TextBlock Description to Promo Page Field
+            $page.Editing.BeginEdit();
+            $page["PromoDescription"] = $headerTextItem["Description"]
+            $page.Editing.EndEdit() | Out-Null 
+            
+            # Remove Text Block Rendering and DataSource
+            Remove-Rendering -Item $page -Instance $headerTextRendering
+            $headerTextItem | Remove-Item
+        }
+        
+        Write-Host $page.Name "updated"
+    }
+    
+    function Update-Promo-Pages($path) {
+        $pages = Get-ChildItem -Path $path | Where { $_.TemplateID -eq  $promoPageTemplateId}
+        
+        foreach($page in $pages){
+            # Update current page
+            Update-Promo-Page -Page $page
+          
+            # Update children pages
+            Update-Promo-Pages -Path $page.FullPath
+        }
+    }
+    
+    
+    function Create-Search-Pods() {
+        $searchPodFolder = Get-Or-Create-Item -Path "/sitecore/content/EasyJet/Holidays/Data" -ItemName "Promo Page Search Pods" -TemplateId $searchPodFolderTemplateId
+        $currentSearchPod = Get-Or-Create-Item -Path  $searchPodFolder.FullPath -ItemName "Simple Search Pod" -TemplateId $currentSearchPodTemplateId
+        $newSearchPod = Get-Or-Create-Item -Path  $searchPodFolder.FullPath -ItemName "Search Pod With Hero Image" -TemplateId $newSearchPodTemplateId
+    
+        Set-AB-Test-Fields -item $currentSearchPod -TestId $searchPodTestId -TestVariant 'A'
+        Set-AB-Test-Fields -item $newSearchPod -TestId $searchPodTestId -TestVariant 'B'
+        
+        # Set search pod DataSource on Promo Page StandardValues
+        $promoPageStandardValues = Get-Item -Path $promoPageStandardValuesPath -ErrorAction SilentlyContinue
+        if($promoPageStandardValues -ne $null) {
+            Update-Rendering-DataSource -Item  $promoPageStandardValues -RenderingId $currentSearchPodRenderingId -DataSource $currentSearchPod.ID   
+            Write-Host "Promo Page _StandardValues updated"
+        }
+        
+         Write-Host $currentSearchPod.Name "and" $newSearchPod.Name "created"
+    }
+    
+    
+    Create-Search-Pods
+    Update-Promo-Pages -Path $promoPagesRootPath
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 300
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201006T135905Z

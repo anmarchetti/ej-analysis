@@ -1,0 +1,108 @@
+$roundelSize: 274px;
+$roundelOffsetRight: 67px;
+
+.wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    @include media-breakpoint-down(xl) {
+        flex: 1 0 auto;
+        justify-content: space-between;
+    }
+}
+
+.blocksWrapper {
+    display: grid;
+    grid-template-areas:
+        'first second'
+        'first third';
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-gap: 20px;
+
+    @include media-breakpoint-down(xl) {
+        grid-template-areas:
+            'first first'
+            'second third';
+        grid-template-rows: auto;
+        grid-gap: 32px 12px;
+    }
+}
+
+.firstBox {
+    position: relative;
+    justify-content: space-between;
+    grid-area: first;
+
+    .imageBox {
+        display: none;
+    }
+
+    @include media-breakpoint-down(md) {
+        .imageBox {
+            position: absolute;
+            top: -16px;
+            left: -15px;
+            display: block;
+            width: calc(100% + 30px);
+            height: calc(100% + 32px);
+        }
+    }
+}
+
+.mainBox {
+    height: 100%;
+
+    @include media-breakpoint-down(xl) {
+        width: 100%;
+    }
+}
+
+.secondBox {
+    grid-area: second;
+}
+
+.thirdBox {
+    grid-area: third;
+}
+
+.secondBox,
+.thirdBox {
+    min-height: 160px;
+
+    @include media-breakpoint-down(md) {
+        min-height: auto;
+        box-shadow: 0 0 12px 2px $colorAlto;
+    }
+}
+
+.creditWrapper {
+    z-index: 1;
+    align-self: flex-end;
+
+    .credit {
+        position: static;
+        justify-content: flex-end;
+        padding: 8px 20px;
+        font-family: $fontRoundedDemy;
+        font-size: 0.875rem;
+        line-height: 1.3;
+        color: $colorOrange;
+        text-align: center;
+        background: $colorWhite;
+
+        &:hover {
+            color: $colorOrange;
+        }
+
+        @include media-breakpoint-down(md) {
+            margin-top: 0;
+            padding: 5px 8px;
+            font-size: 0.625rem;
+            box-shadow: 0 0 12px 2px $colorAlto;
+        }
+    }
+}

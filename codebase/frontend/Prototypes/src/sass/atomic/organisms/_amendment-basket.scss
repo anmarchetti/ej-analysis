@@ -1,0 +1,222 @@
+$basket-height: 70px;
+
+.amendment-basket {
+    display: flex;
+    min-height: $basket-height;
+    font-size: 16px;
+    line-height: 1.2;
+    background-color: $colorWhite;
+
+    @include media-breakpoint-down(md) {
+        position: fixed;
+        z-index: 5;
+        bottom: 0;
+        width: 100%;
+        font-size: 14px;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .wrapper-component-container__inner {
+        display: flex;
+        align-content: stretch;
+        justify-content: space-between;
+        width: 100%;
+        min-height: $basket-height;
+
+        @include media-breakpoint-down(md) {
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+    }
+}
+
+.amendment-basket__current-flight {
+    font-family: $fontRoundedDemy;
+    font-size: 13px;
+
+    @include media-breakpoint-down(md) {
+        max-width: 25%;
+    }
+}
+
+.amendment-basket__cell {
+    display: flex;
+    align-items: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.amendment-basket__cell--main {
+    flex-grow: 1;
+    max-width: 100%;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+    }
+}
+
+.amendment-basket__cell--diagonal {
+    position: relative;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    margin-right: 25px;
+    margin-left: 25px;
+    padding-right: 15px;
+    padding-left: 15px;
+    text-align: right;
+    background-color: $colorAlto;
+
+    @include media-breakpoint-down(md) {
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+
+    .amendment-basket__cell-inner {
+        position: relative;
+        z-index: 1;
+        padding: 0 10px;
+
+        @include media-breakpoint-down(md) {
+            padding: 0 5px;
+        }
+    }
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 22px;
+    }
+
+    &::before {
+        left: 0;
+        background-image: linear-gradient(
+            -75deg,
+            $colorAlto 50%,
+            $colorWhite 50%
+        );
+    }
+
+    &::after {
+        right: 0;
+        background-image: linear-gradient(
+            -75deg,
+            $colorWhite 50%,
+            $colorAlto 50%
+        );
+    }
+}
+
+.amendment-basket__price {
+    font-size: 14px;
+    font-weight: 700;
+    color: $clrTextMain;
+
+    .value {
+        font-size: 21px;
+        white-space: nowrap;
+
+        @include media-breakpoint-down(md) {
+            font-size: 16px;
+        }
+    }
+}
+
+.amendment-basket__price-pp {
+    font-size: 12px;
+    color: #666;
+    white-space: nowrap;
+}
+
+.amendment-basket__icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+.amendment-basket__btn {
+    min-width: 140px;
+
+    @include media-breakpoint-down(md) {
+        min-width: 0;
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+}
+
+.amendment-basket__text-content {
+    font-family: $fontRoundedDemy;
+    font-size: 14px;
+}
+
+.amendment-basket__flights {
+    display: flex;
+    align-items: center;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    &:not(:first-child) {
+        margin-left: 20px;
+    }
+}
+
+.amendment-basket__flight {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 30px;
+
+    @include media-breakpoint-down(md) {
+        margin-right: 0;
+
+        + .amendment-basket__flight {
+            margin-top: 4px;
+        }
+    }
+}
+
+.amendment-basket__flight-text {
+    font-size: 14px;
+
+    @include media-breakpoint-down(lg) {
+        font-size: 10px;
+    }
+
+    .date-time {
+        margin-left: 5px;
+        white-space: nowrap;
+
+        @include media-breakpoint-down(xl) {
+            display: block;
+            margin-left: 0;
+        }
+    }
+}
+
+.amendment-basket__transfer {
+    display: flex;
+    align-items: center;
+
+    .card__icon {
+        margin-right: 15px;
+        background-repeat: no-repeat;
+
+        @include media-breakpoint-down(lg) {
+            width: 24px;
+            min-width: 24px;
+            max-width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+    }
+
+    .amendment-basket__text-content {
+        margin: 0;
+    }
+}

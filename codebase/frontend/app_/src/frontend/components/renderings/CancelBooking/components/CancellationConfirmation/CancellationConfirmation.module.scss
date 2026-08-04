@@ -1,0 +1,69 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    :global(.checkbox__control) {
+        margin-top: 3px;
+    }
+}
+
+.infoContainer {
+    padding: 24px; 
+    background-color: $colorPorcelain; 
+    border-radius: 4px;
+
+    @include media-breakpoint-down(md) {
+        padding: 16px;
+    }
+}
+
+.infoTitleContainer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    color: $colorBlackLight;
+
+    svg {
+        width: 24px;
+        height: 24px;
+        padding: 5px;
+    }
+
+    @include media-breakpoint-down(md) {
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+}
+
+.infoTitle {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.33;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+        width: fit-content;
+        padding: 20px 24px;
+        line-height: 1;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: 24px 16px;
+
+        button {
+            width: 100%;
+        }
+    }
+}

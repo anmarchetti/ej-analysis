@@ -1,0 +1,31 @@
+{
+    "Title": "CMS Location image for ESMJ: /api/DestinationsSearch/GetImage?code=ESMJ",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetImage",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "code",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "ESMJ"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": "/-/media/4780746cafc9424d888d5ebac5399991.ashx"
+    }
+}

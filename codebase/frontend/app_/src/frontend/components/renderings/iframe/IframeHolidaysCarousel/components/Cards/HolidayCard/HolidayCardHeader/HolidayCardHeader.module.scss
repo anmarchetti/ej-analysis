@@ -1,0 +1,49 @@
+.cardHeader {
+    position: relative;
+    flex-grow: 1;
+    padding: var(--iframe-card-padding);
+    color: $clrTextMain;
+}
+
+.cardTitle {
+    margin: 0 0 4px;
+    font-family: $fontRoundedDemy;
+    font-size: 18px;
+    line-height: 24px;
+    word-wrap: break-word;
+}
+
+.hotelLocation {
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.hotelRating {
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+
+    :global {
+        .star_rating {
+            margin-bottom: 0;
+
+            svg {
+                width: 10px;
+                height: 10px;
+            }
+        }
+
+        .hotel-reviews {
+            position: relative;
+            margin-bottom: 0;
+            padding-left: 16px;
+        }
+
+        .tripadvisor_rating {
+            --tripadvisor-color: #{$colorTripadvisorLight};
+            --tripadvisor-logo-size: 20px;
+            --tripadvisor-icon-size: 10px;
+            --tripadvisor-border-width: 1px;
+        }
+    }
+}

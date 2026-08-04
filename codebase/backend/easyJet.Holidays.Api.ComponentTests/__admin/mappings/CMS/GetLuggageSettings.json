@@ -1,0 +1,48 @@
+{
+    "Title": "CMS Luggage Settings",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/Content/ByPath",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "path",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "{site}/Settings/Ancillaries/Luggage Settings"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "LargeCabinBagCategoryCode": "CABI",
+            "LargeCabinBagCode": "SCB1",
+            "LargeCabinBagMaxPerPassenger": "1",
+            "HoldLuggageMaximalAdditionalBagsPerNonInfantPassengerCategoryCodes": "ADDB",
+            "HoldLuggageMaximalAdditionalBagsPerNonInfantPassenger": "2",
+            "IsCabinBagsEnabled": "1",
+            "IsSportsEquipmentEnabled": "1",
+            "IsHoldLuggageEnabled": "1",
+            "SportsEquipmentMaximalItemPerNonInfantPassenger": "1",
+            "SportsEquipmentMaximalItemPerNonInfantPassengerCategoryCodes": "SEO,SEC",
+            "SportsEquipmentMaximalLargeItemsPerNonInfantPassengerPerBookingCategoryCodes": "SEO",
+            "SportsEquipmentMaximalLargeItemsPerNonInfantPassengerPerBooking": "6",
+            "DefaultFreeBagsPerNonInfantPassenger": "LUG=1",
+            "IsPublic": "1",
+            "SkipTranslate": "",
+            "LanguagesWithDisabledFallback": ""
+        }
+    }
+}

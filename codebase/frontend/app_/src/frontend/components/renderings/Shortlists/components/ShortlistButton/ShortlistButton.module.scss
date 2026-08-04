@@ -1,0 +1,46 @@
+.button:hover {
+    opacity: 1;
+}
+
+.icon {
+    stroke: $colorOrange;
+
+    &:hover {
+        stroke: $clrEjOrangeDarkShadow;
+    }
+
+    &.active {
+        stroke: $colorOrange;
+        animation-name: pop-in;
+        animation-duration: 0.5s;
+
+        path {
+            fill: $colorOrange;
+        }
+    }
+
+    &.active:hover {
+        opacity: 1;
+        stroke: $clrEjOrangeDarkShadow;
+
+        path {
+            fill: $clrEjOrangeDarkShadow;
+        }
+    }
+}
+
+@keyframes pop-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.contentWrapper.priority {
+    width: 151px;
+}

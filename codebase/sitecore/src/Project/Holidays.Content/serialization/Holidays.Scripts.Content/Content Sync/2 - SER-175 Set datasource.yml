@@ -1,0 +1,33 @@
+﻿---
+ID: "55ac80d0-6ea0-429a-8a29-0ebbd87d9961"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/2 - SER-175 Set datasource"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $itemName, $templateId, $itemId){
+        $item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $itemId
+            Write-Host "Item" $item.Name "successfully created";
+        }
+        return $item
+    } 
+    
+    $data = Get-Item "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Booking Context Provider" -ErrorAction SilentlyContinue
+    $page = Get-Item "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled" -ErrorAction SilentlyContinue
+    Get-Rendering -Item $page | Where-Object -FilterScript {$_.ItemID -eq '{C30624AB-A71F-492A-ADFF-73A1952FF024}' }  | Set-Rendering -Item $page -DataSource  $data.ID
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 7010
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241029T163604Z

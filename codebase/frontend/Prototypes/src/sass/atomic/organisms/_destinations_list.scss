@@ -1,0 +1,128 @@
+.destinations-list {
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+}
+
+.destinations-list__alphabet-nav {
+    margin-bottom: 50px;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 38px;
+    }
+
+    .alphabet-nav__list {
+        justify-content: center;
+    }
+}
+
+.destinations-list__items {
+    a:hover {
+        text-decoration: underline;
+    }
+}
+
+.destinations-list-item {
+    margin-bottom: 45px;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 38px;
+    }
+
+    .destinations-list-item__children {
+        margin-left: 36px;
+
+        @include media-breakpoint-down(md) {
+            margin-left: 32px;
+        }
+    }
+
+    .destinations-list-item__children-flex-grid {
+        margin-left: 36px;
+
+        @include media-breakpoint-down(md) {
+            margin-left: 32px;
+        }
+    }
+}
+
+.destinations-list-item__title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 12px;
+    }
+
+    img {
+        width: 30px;
+
+        @include media-breakpoint-down(md) {
+            width: 26px;
+        }
+    }
+
+    a {
+        margin-left: 6px;
+        font-size: 20px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 18px;
+        }
+    }
+}
+
+.destinations-list-item__children {
+    max-width: 780px;
+    columns: 4;
+    column-gap: 0;
+
+    @include media-breakpoint-up(lg) {
+        column-width: 195px;
+    }
+
+    @include media-breakpoint-down(lg) {
+        columns: 3;
+    }
+
+    @include media-breakpoint-down(md) {
+        columns: 2;
+    }
+}
+
+.destinations-list-item__child {
+    margin-bottom: 10px;
+
+    a {
+        font-size: 18px;
+        color: $clrTextMain;
+
+        @include media-breakpoint-down(md) {
+            font-size: 16px;
+        }
+    }
+}
+
+// Flex grid for Safari issue fix
+.destinations-list-item__children-flex-grid {
+    max-width: 780px;
+    display: flex;
+    flex-direction: row;
+
+    .destinations-list-item__child {
+        @include media-breakpoint-up(lg) {
+            width: 195px;
+        }
+
+        @include media-breakpoint-down(lg) {
+            width: 33.33%;
+        }
+
+        @include media-breakpoint-down(md) {
+            flex: 1;
+        }
+    }
+}

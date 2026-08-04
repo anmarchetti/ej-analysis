@@ -1,0 +1,171 @@
+﻿---
+ID: "6597d959-4753-43c6-b56f-ee48dc231e6a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-143 - Login Form content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $loginPagePath = "/sitecore/content/EasyJet/Holidays/Home/Login"
+    $loginFormRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Login Form"
+    $loginFormDataSourcePath = '/sitecore/content/EasyJet/Holidays/Home/Login/Page Components/Login Form'
+    $loginFormTemplateId = "{2D78A149-6446-4D74-82DB-129C2AC8A8FB}"
+    
+    function Create-Item ($path, $template) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+            $item = New-Item -Path $path -Name $itemName -ItemType $template
+            Write-Host "Item" $item.Name "successfully created"
+        } else {
+            Write-Host "Item" $item.Name "already exist"
+        }
+        return $item
+    }
+    
+    function Set-Translation-Value($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            $item = Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+            Write-Host "Created" $language "version for" $item.Name "item"
+        } else {
+            Write-Host $language "version for Item" $item.Name "already exist"
+        }
+    
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+            Write-Host "Field" $key "for" $item.Name "item updated with value" $translation
+        }
+    }
+    
+    function Create-Login-Form-Content() {
+        $loginFormContent = Create-Item -Path $loginFormDataSourcePath -Template $loginFormTemplateId
+        $loginFormContent.Editing.BeginEdit()
+        $loginFormContent["LoginFormTitle"] = "LOG IN TO SEE YOUR HOLIDAY BOOKING"
+        $loginFormContent["AdditionalInfoTitle"] = "Having trouble logging in?"
+        $loginFormContent["AdditionalInfoDescription"] = "<p>If you're the person who made the booking and want to view your holiday, please follow these steps:<br />
+    <br />
+    &nbsp;1. Log in using your easyJet account&nbsp;<br />
+    &nbsp;2. Then add your holiday to your account by entering your departure date and booking reference<br />
+    <br />Please note: easyJet holidays booking references are numbers only. If your reference includes numbers and letters, this may be your easyJet airline booking reference which can be used on easyJet.com to manage your flight.</p>"
+        $loginFormContent["ViewBookingFormTitle"] = "Your booking"
+        $loginFormContent["ViewBookingFormDescription"] = "<p>To view your booking, please enter your departure date, booking reference and surname.</p>"
+        $loginFormContent.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'fr-FR' -Key 'LoginFormTitle' -Translation "Connectez-vous pour voir la réservation de votre séjour"
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'fr-FR' -Key 'AdditionalInfoTitle' -Translation "Avez-vous des difficultés à vous connecter ?"
+    
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'fr-FR' -Key 'AdditionalInfoDescription' -Translation "<p>Si vous êtes la personne qui a effectué la réservation et que vous souhaitez consulter votre séjour, veuillez suivre les étapes suivantes :<br />
+    <br />
+    &nbsp;1. Connectez-vous en utilisant votre compte easyJet&nbsp;<br />
+    &nbsp;2. Importez ensuite votre séjour à votre compte en saisissant votre date de départ et la référence de votre réservation<br />
+    <br />Remarque : les références de réservation easyJet holidays sont composées de chiffres uniquement. Si votre référence comprend des chiffres et des lettres, il peut s’agir de la référence de réservation de la compagnie aérienne easyJet, qui peut être utilisée sur easyJet.com pour gérer votre vol.</p>"
+    
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'fr-FR' -Key 'ViewBookingFormTitle' -Translation "Afficher mes réservations"
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'fr-FR' -Key 'ViewBookingFormDescription' -Translation "<p>Pour afficher votre réservation, veuillez saisir votre date de départ, la référence de votre réservation et votre nom de famille.</p>"
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'de-DE' -Key 'LoginFormTitle' -Translation "Anmelden, um deine Urlaubsbuchung zu sehen"
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'de-DE' -Key 'AdditionalInfoTitle' -Translation "Haben Sie Probleme beim Einloggen?"
+        
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'de-DE' -Key 'AdditionalInfoDescription' -Translation "<p>Wenn du die Person bist, die die Buchung vorgenommen hat und du deinen Urlaub einsehen möchtest, führe bitte diese Schritte aus:<br />
+    <br />
+    &nbsp;1. Melde dich in deinem easyJet Konto an<br />
+    &nbsp;2. Trage dann deine Reise in dein Konto ein, indem du dein Abflugdatum und deine Buchungsnummer eingibst<br />
+    <br />Bitte beachten: Die Buchungsreferenzen von easyJet holidays bestehen ausschließlich aus Zahlen. Wenn deine Buchungsnummer aus Zahlen und Buchstaben besteht, kann es sich um deine easyJet Buchungsnummer der Fluggesellschaft handeln, die du auf easyJet.com zur Verwaltung deines Fluges verwenden kannst.</p>"
+    
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'de-DE' -Key 'ViewBookingFormTitle' -Translation "Meine Buchung anzeigen"
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'de-DE' -Key 'ViewBookingFormDescription' -Translation "<p>Um deine Buchung einzusehen, gib bitte dein Abflugdatum, deine Buchungsnummer und deinen Nachnamen ein.</p>"
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'fr-CH' -Key 'LoginFormTitle' -Translation "Connectez-vous pour voir la réservation de votre séjour"
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'fr-CH' -Key 'AdditionalInfoTitle' -Translation "Avez-vous des difficultés à vous connecter ?"
+    
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'fr-CH' -Key 'AdditionalInfoDescription' -Translation "<p>Si vous êtes la personne qui a effectué la réservation et que vous souhaitez consulter votre séjour, veuillez suivre les étapes suivantes :<br />
+    <br />
+    &nbsp;1. Connectez-vous en utilisant votre compte easyJet&nbsp;<br />
+    &nbsp;2. Importez ensuite votre séjour à votre compte en saisissant votre date de départ et la référence de votre réservation<br />
+    <br />Remarque : les références de réservation easyJet holidays sont composées de chiffres uniquement. Si votre référence comprend des chiffres et des lettres, il peut s’agir de la référence de réservation de la compagnie aérienne easyJet, qui peut être utilisée sur easyJet.com pour gérer votre vol.</p>"
+    
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'fr-CH' -Key 'ViewBookingFormTitle' -Translation "Afficher mes réservations"
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'fr-CH' -Key 'ViewBookingFormDescription' -Translation "<p>Pour afficher votre réservation, veuillez saisir votre date de départ, la référence de votre réservation et votre nom de famille.</p>"
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'de-CH' -Key 'LoginFormTitle' -Translation "Anmelden, um deine Urlaubsbuchung zu sehen"
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'de-CH' -Key 'AdditionalInfoTitle' -Translation "Haben Sie Probleme beim Einloggen?"
+    
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'de-CH' -Key 'AdditionalInfoDescription' -Translation "<p>Wenn du die Buchung vorgenommen hast und n&auml;here Informationen zu deinem gebuchten Urlaub sehen m&ouml;chtest, befolge bitte diese Schritte:<br />
+    <br />
+    &nbsp;1. Logge dich mit deinem easyJet-Konto ein&nbsp;<br />
+    &nbsp;2. F&uuml;ge dann deinen Urlaub zu deinem Konto hinzu, indem du dein Abreisedatum und deine Buchungsnummer eingibst.<br />
+    <br />
+    Bitte beachte: Die Buchungsreferenzen von easyJet holidays bestehen nur aus Zahlen. Wenn deine Buchungsnummer aus Zahlen und Buchstaben besteht, kann es sich um deine easyJet-Buchungsnummer handeln, die du auf easyJet.com zur Verwaltung deines Fluges verwenden kannst.</p>"
+    
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'de-CH' -Key 'ViewBookingFormTitle' -Translation "Meine Buchung anzeigen"
+        Set-Translation-Value -ItemPath $loginFormDataSourcePath -Language 'de-CH' -Key 'ViewBookingFormDescription' -Translation "<p>Um deine Buchung einzusehen, gib bitte dein Abflugdatum, deine Buchungsnummer und deinen Nachnamen ein.</p>"
+    }
+    
+    function Update-Rendering() {
+        $pageItem = Get-Item -Path $loginPagePath
+        $loginFormItemRendering = Get-Item -Path $loginFormRenderingPath
+        $loginFormPageRendering = Get-Rendering -Item $pageItem -Rendering $loginFormItemRendering
+        $loginFormDataSource = Get-Item -Path $loginFormDataSourcePath
+    
+        if ($loginFormPageRendering -ne $null) {
+            $newPersonalizationRules = '<ruleset>
+            	<rule uid="{89D3392B-AD06-44E1-8821-0B8024D7BB08}" name="If Full mode is on">
+            		<conditions>
+            			<condition uid="25BA9EC6D0094C6B9EEA41AA61ECDC96" id="{47A0321C-C9B7-4035-881B-FAEFF77859C7}" />
+            		</conditions>
+            		<actions>
+            			<action uid="A6B0B52E8FFC4ED4B5D3439DD5671FF7" id="{7B578B65-BD2F-4C7C-9A24-DAE3E98B4F23}" RenderingItem="{FC6E647F-16D4-4D87-8073-1CFCEE7CD012}" />
+            			<action uid="3DB7DFE356954DDA8CED14FC5D28A934" id="{0F3C6BEC-E56B-4875-93D7-2846A75881D2}" DataSource="{186E263C-7B90-484A-9F30-CA032E24CCC8}" />
+            		</actions>
+            	</rule>
+            	<rule uid="{00000000-0000-0000-0000-000000000000}" name="Default">
+            		<conditions>
+            			<condition uid="18A895C895374E6E881820AB06167C49" id="{4888ABBB-F17D-4485-B14B-842413F88732}" />
+            		</conditions>
+            		<actions>
+            		  	<action uid="B34B3ADAE0E64C67813CEAC043D109B9" id="{0F3C6BEC-E56B-4875-93D7-2846A75881D2}" DataSource="' + $loginFormDataSource.ID  + '" />
+            		</actions>
+            	</rule>
+            </ruleset>'
+            $loginFormPageRendering.Rules = $newPersonalizationRules
+            Set-Rendering -Item $pageItem -Instance $loginFormPageRendering -DataSource $loginFormDataSource.ID
+            Write-Host "Login Form data source updated on Login page";
+        }
+    }
+    
+    function Remove-Dictionary() {
+        $dictionaryPath = '/sitecore/content/EasyJet/Holidays/Dictionary/Login/Labels/Title';
+        $item = Get-Item -Path $dictionaryPath -ErrorAction SilentlyContinue
+        if ($item -ne $null) {
+            Remove-Item -Path $dictionaryPath -Permanently
+        }
+    }
+    
+    Create-Login-Form-Content;
+    Update-Rendering;
+    Remove-Dictionary;
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230628T103556Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

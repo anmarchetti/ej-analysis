@@ -1,0 +1,468 @@
+﻿---
+ID: "53df2f8d-03fd-4660-9f76-0aea81fa22ec"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-279 bags by promotion non prod"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $complementSettingTemplate = '{1FA43398-D462-49B9-9E13-8B8FB4317E69}'
+    $complementBaggageTemplate = '{5C2ECD9A-7C7C-417B-BCC6-8C686CB78F4D}'
+    
+    ### FUNCTIONS
+    
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+            if($item -eq $null){
+                $item = New-Item -Path $path -ItemType $template
+            }
+        return $item
+    }
+    
+    function Set-Translation-Value($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+        }
+    
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    ### 15kg
+    function Create-15kg-Complimentary-Settings($rootPath) {
+        ### setup 15kg complimentary bags
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/15kg bags Promotion'
+        $beachOnlySetting = Get-Or-Create-Item -Path $path -Template $complementSettingTemplate
+        
+        $beachOnlySetting.Editing.BeginEdit()
+        $beachOnlySetting["PromotionCodes"] = "EUCO, EUCV"
+        $beachOnlySetting["InternalFallbackCode"] = "EUBO"
+        $beachOnlySetting["Comment"] = "15kg, City Breaks holiday complimentary settings"
+        $beachOnlySetting.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'PromotionCodes' -Translation "NONE15"
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'InternalFallbackCode' -Translation "FRBO"
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'PromotionCodes' -Translation "NONE15"
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'InternalFallbackCode' -Translation "DEBO"
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'PromotionCodes' -Translation "NONE15"
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'InternalFallbackCode' -Translation "CHBO"
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'PromotionCodes' -Translation "NONE15"
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'InternalFallbackCode' -Translation "CHBO"
+        
+        ### LUG
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/15kg bags Promotion/Hold Baggage 23kg'
+        $beachOnlyBaggage23kg = Get-Or-Create-Item -Path $path -Template $complementBaggageTemplate
+        
+        ### en-UK (default)
+        $beachOnlyBaggage23kg.Editing.BeginEdit()
+        $beachOnlyBaggage23kg["Code"] = "LUG"
+        $beachOnlyBaggage23kg["Adult"] = 0
+        $beachOnlyBaggage23kg["Child"] = 0
+        $beachOnlyBaggage23kg["Infant"] = 0
+        $beachOnlyBaggage23kg.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Infant' -Translation 0
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Infant' -Translation 0
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Infant' -Translation 0
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Infant' -Translation 0
+    
+        ### LUS
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/15kg bags Promotion/Hold Baggage 15kg'
+        $beachOnlyBaggage23kg = Get-Or-Create-Item -Path $path -Template $complementBaggageTemplate
+        
+        ### en-UK (default)
+        $beachOnlyBaggage23kg.Editing.BeginEdit()
+        $beachOnlyBaggage23kg["Code"] = "LUS"
+        $beachOnlyBaggage23kg["Adult"] = 1
+        $beachOnlyBaggage23kg["Child"] = 1
+        $beachOnlyBaggage23kg["Infant"] = 0
+        $beachOnlyBaggage23kg.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Adult' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Child' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Infant' -Translation 0
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Adult' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Child' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Infant' -Translation 0
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Adult' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Child' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Infant' -Translation 0
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Adult' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Child' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Infant' -Translation 0
+    
+        Write-Host $rootPath", 15kg complimentary settings were added/updated, with translations";
+    }
+    
+    function Create-15kg-Complimentary-Settings-No-Eux($rootPath) {
+        ### setup 15kg complimentary bags
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/15kg bags Promotion'
+        $beachOnlySetting = Get-Or-Create-Item -Path $path -Template $complementSettingTemplate
+        
+        $beachOnlySetting.Editing.BeginEdit()
+        $beachOnlySetting["PromotionCodes"] = "EUCO, EUCV"
+        $beachOnlySetting["InternalFallbackCode"] = "EUBO"
+        $beachOnlySetting["Comment"] = "15kg, City Breaks holiday complimentary settings"
+        $beachOnlySetting.Editing.EndEdit() | Out-Null
+    
+        ### LUG
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/15kg bags Promotion/Hold Baggage 23kg'
+        $beachOnlyBaggage23kg = Get-Or-Create-Item -Path $path -Template $complementBaggageTemplate
+        
+        ### en-UK (default)
+        $beachOnlyBaggage23kg.Editing.BeginEdit()
+        $beachOnlyBaggage23kg["Code"] = "LUG"
+        $beachOnlyBaggage23kg["Adult"] = 0
+        $beachOnlyBaggage23kg["Child"] = 0
+        $beachOnlyBaggage23kg["Infant"] = 0
+        $beachOnlyBaggage23kg.Editing.EndEdit() | Out-Null
+        
+        ### LUS
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/15kg bags Promotion/Hold Baggage 15kg'
+        $beachOnlyBaggage23kg = Get-Or-Create-Item -Path $path -Template $complementBaggageTemplate
+        
+        ### en-UK (default)
+        $beachOnlyBaggage23kg.Editing.BeginEdit()
+        $beachOnlyBaggage23kg["Code"] = "LUS"
+        $beachOnlyBaggage23kg["Adult"] = 1
+        $beachOnlyBaggage23kg["Child"] = 1
+        $beachOnlyBaggage23kg["Infant"] = 0
+        $beachOnlyBaggage23kg.Editing.EndEdit() | Out-Null
+    
+        Write-Host $rootPath", 15kg complimentary settings were added/updated, no translation";
+    }
+    
+    ### 23kg
+    function Create-23kg-Complimentary-Settings($rootPath) {
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/Beach Holiday Promotion'
+        $beachOnlySetting = Get-Or-Create-Item -Path $path -Template $complementSettingTemplate
+        
+        $beachOnlySetting.Editing.BeginEdit()
+        $beachOnlySetting["PromotionCodes"] = "EUBA, EUBF, EUBO, EUBL, EUBU, EULB, EULL, EULO, EULU"
+        $beachOnlySetting["InternalFallbackCode"] = "EUBO"
+        $beachOnlySetting["Comment"] = "Beach holiday complimentary settings, 23kg for each adult or child"
+        $beachOnlySetting.Editing.EndEdit() | Out-Null
+    
+        ### fr-FR
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'PromotionCodes' -Translation "FRBL, FRBM, FRBO, FRBR"
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'InternalFallbackCode' -Translation "FRBO"
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'PromotionCodes' -Translation "DEBL, DEBM, DEBO, DEBR"
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'InternalFallbackCode' -Translation "DEBO"
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'PromotionCodes' -Translation "CHBL, CHBM, CHBO, CHBR"
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'InternalFallbackCode' -Translation "CHBO"
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'PromotionCodes' -Translation "CHBL, CHBM, CHBO, CHBR"
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'InternalFallbackCode' -Translation "CHBO"
+    
+        ### LUG
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/Beach Holiday Promotion/Hold Baggage 23kg'
+        $beachOnlyBaggage23kg = Get-Or-Create-Item -Path $path -Template $complementBaggageTemplate
+        
+        ### en-UK (default)
+        $beachOnlyBaggage23kg.Editing.BeginEdit()
+        $beachOnlyBaggage23kg["Code"] = "LUG"
+        $beachOnlyBaggage23kg["Adult"] = 1
+        $beachOnlyBaggage23kg["Child"] = 1
+        $beachOnlyBaggage23kg["Infant"] = 0
+        $beachOnlyBaggage23kg.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Adult' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Child' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Infant' -Translation 0
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Adult' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Child' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Infant' -Translation 0
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Adult' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Child' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Infant' -Translation 0
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Adult' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Child' -Translation 1
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Infant' -Translation 0
+    
+        ### LUS
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/Beach Holiday Promotion/Hold Baggage 15kg'
+        $beachOnlyBaggage23kg = Get-Or-Create-Item -Path $path -Template $complementBaggageTemplate
+        
+        ### en-UK (default)
+        $beachOnlyBaggage23kg.Editing.BeginEdit()
+        $beachOnlyBaggage23kg["Code"] = "LUS"
+        $beachOnlyBaggage23kg["Adult"] = 0
+        $beachOnlyBaggage23kg["Child"] = 0
+        $beachOnlyBaggage23kg["Infant"] = 0
+        $beachOnlyBaggage23kg.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Infant' -Translation 0
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Infant' -Translation 0
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Infant' -Translation 0
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Infant' -Translation 0
+    
+        Write-Host $rootPath", 23kg complimentary settings were added/updated, with EUX";
+    }
+    
+    function Create-23kg-Complimentary-Settings-No-Eux($rootPath) {
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/Beach Holiday Promotion'
+        $beachOnlySetting = Get-Or-Create-Item -Path $path -Template $complementSettingTemplate
+        
+        $beachOnlySetting.Editing.BeginEdit()
+        $beachOnlySetting["PromotionCodes"] = "EUBA, EUBF, EUBO, EUBL, EUBU, EULB, EULL, EULO, EULU"
+        $beachOnlySetting["InternalFallbackCode"] = "EUBO"
+        $beachOnlySetting["Comment"] = "Beach holiday complimentary settings, 23kg for each adult or child"
+        $beachOnlySetting.Editing.EndEdit() | Out-Null
+    
+        ### LUG
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/Beach Holiday Promotion/Hold Baggage 23kg'
+        $beachOnlyBaggage23kg = Get-Or-Create-Item -Path $path -Template $complementBaggageTemplate
+        
+        ### en-UK (default)
+        $beachOnlyBaggage23kg.Editing.BeginEdit()
+        $beachOnlyBaggage23kg["Code"] = "LUG"
+        $beachOnlyBaggage23kg["Adult"] = 1
+        $beachOnlyBaggage23kg["Child"] = 1
+        $beachOnlyBaggage23kg["Infant"] = 0
+        $beachOnlyBaggage23kg.Editing.EndEdit() | Out-Null
+    
+        ### LUS
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/Beach Holiday Promotion/Hold Baggage 15kg'
+        $beachOnlyBaggage23kg = Get-Or-Create-Item -Path $path -Template $complementBaggageTemplate
+        
+        ### en-UK (default)
+        $beachOnlyBaggage23kg.Editing.BeginEdit()
+        $beachOnlyBaggage23kg["Code"] = "LUS"
+        $beachOnlyBaggage23kg["Adult"] = 0
+        $beachOnlyBaggage23kg["Child"] = 0
+        $beachOnlyBaggage23kg["Infant"] = 0
+        $beachOnlyBaggage23kg.Editing.EndEdit() | Out-Null
+    
+        Write-Host $rootPath", 23kg complimentary settings were added/updated, no EUX";
+    }
+        
+    ### 0kg
+    function Create-0kg-Complimentary-Settings($rootPath) {
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/City Breaks Promotion'
+        $cityOnlySetting = Get-Or-Create-Item -Path $path -Template $complementSettingTemplate
+        
+        $cityOnlySetting.Editing.BeginEdit()
+        $cityOnlySetting["PromotionCodes"] = "EUCB, EUCL"
+        $cityOnlySetting["InternalFallbackCode"] = "EUBO"
+        $cityOnlySetting["Comment"] = "City Breaks holiday complimentary settings, none bags for all"
+        $cityOnlySetting.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'PromotionCodes' -Translation "FRCO"
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'InternalFallbackCode' -Translation "FRBO"
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'PromotionCodes' -Translation "DECO"
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'InternalFallbackCode' -Translation "DEBO"
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'PromotionCodes' -Translation "CHCO"
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'InternalFallbackCode' -Translation "CHBO"
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'PromotionCodes' -Translation "CHCO"
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'InternalFallbackCode' -Translation "CHBO"
+        
+        ### LUG
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/City Breaks Promotion/Hold Baggage 23kg'
+        $beachOnlyBaggage23kg = Get-Or-Create-Item -Path $path -Template $complementBaggageTemplate
+        
+        ### en-UK (default)
+        $beachOnlyBaggage23kg.Editing.BeginEdit()
+        $beachOnlyBaggage23kg["Code"] = "LUG"
+        $beachOnlyBaggage23kg["Adult"] = 0
+        $beachOnlyBaggage23kg["Child"] = 0
+        $beachOnlyBaggage23kg["Infant"] = 0
+        $beachOnlyBaggage23kg.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Infant' -Translation 0
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Infant' -Translation 0
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Infant' -Translation 0
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Infant' -Translation 0
+    
+        ### LUS
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/City Breaks Promotion/Hold Baggage 15kg'
+        $beachOnlyBaggage23kg = Get-Or-Create-Item -Path $path -Template $complementBaggageTemplate
+        
+        ### en-UK (default)
+        $beachOnlyBaggage23kg.Editing.BeginEdit()
+        $beachOnlyBaggage23kg["Code"] = "LUS"
+        $beachOnlyBaggage23kg["Adult"] = 0
+        $beachOnlyBaggage23kg["Child"] = 0
+        $beachOnlyBaggage23kg["Infant"] = 0
+        $beachOnlyBaggage23kg.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Infant' -Translation 0
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Infant' -Translation 0
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Infant' -Translation 0
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Adult' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Child' -Translation 0
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Infant' -Translation 0
+        
+        Write-Host $rootPath", City Only complimentary settings were added/updated, with EUX";
+    }
+    
+    function Create-0kg-Complimentary-Settings-No-Eux($rootPath) {
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/City Breaks Promotion'
+        $cityOnlySetting = Get-Or-Create-Item -Path $path -Template $complementSettingTemplate
+        
+        $cityOnlySetting.Editing.BeginEdit()
+        $cityOnlySetting["PromotionCodes"] = "EUCB, EUCL"
+        $cityOnlySetting["InternalFallbackCode"] = "EUBO"
+        $cityOnlySetting["Comment"] = "City Breaks holiday complimentary settings, none bags for all"
+        $cityOnlySetting.Editing.EndEdit() | Out-Null
+    
+        ### LUG
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/City Breaks Promotion/Hold Baggage 23kg'
+        $beachOnlyBaggage23kg = Get-Or-Create-Item -Path $path -Template $complementBaggageTemplate
+        
+        ### en-UK (default)
+        $beachOnlyBaggage23kg.Editing.BeginEdit()
+        $beachOnlyBaggage23kg["Code"] = "LUG"
+        $beachOnlyBaggage23kg["Adult"] = 0
+        $beachOnlyBaggage23kg["Child"] = 0
+        $beachOnlyBaggage23kg["Infant"] = 0
+        $beachOnlyBaggage23kg.Editing.EndEdit() | Out-Null
+    
+        ### LUS
+        $path = $rootPath + '/Settings/Ancillaries/Complimentary Settings/City Breaks Promotion/Hold Baggage 15kg'
+        $beachOnlyBaggage23kg = Get-Or-Create-Item -Path $path -Template $complementBaggageTemplate
+        
+        ### en-UK (default)
+        $beachOnlyBaggage23kg.Editing.BeginEdit()
+        $beachOnlyBaggage23kg["Code"] = "LUS"
+        $beachOnlyBaggage23kg["Adult"] = 0
+        $beachOnlyBaggage23kg["Child"] = 0
+        $beachOnlyBaggage23kg["Infant"] = 0
+        $beachOnlyBaggage23kg.Editing.EndEdit() | Out-Null
+    
+        Write-Host $rootPath", City Only complimentary settings were added/updated, no EUX";
+    }
+    
+    ### EXECUTION
+    
+    $holidaysPath = '/sitecore/content/EasyJet/Holidays'
+    
+    Get-ChildItem -Path $holidaysPath'/Settings/Ancillaries/Complimentary Settings/*' -Recurse | Remove-Item -Recurse
+    Write-Host $holidaysPath'/Settings/Ancillaries/Complimentary Settings/*, all removed';
+    
+    Create-15kg-Complimentary-Settings -RootPath $holidaysPath
+    Create-23kg-Complimentary-Settings -RootPath $holidaysPath
+    Create-0kg-Complimentary-Settings -RootPath $holidaysPath
+    
+    $tradePortalPath = '/sitecore/content/EasyJet/TradePortal'
+    
+    Get-ChildItem -Path $tradePortalPath'/Settings/Ancillaries/Complimentary Settings/*' -Recurse | Remove-Item -Recurse
+    Write-Host $tradePortalPath'/Settings/Ancillaries/Complimentary Settings/*, all removed';
+    
+    Create-15kg-Complimentary-Settings-No-Eux -RootPath $tradePortalPath
+    Create-23kg-Complimentary-Settings-No-Eux -RootPath $tradePortalPath
+    Create-0kg-Complimentary-Settings-No-Eux -RootPath $tradePortalPath
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240724T125613Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

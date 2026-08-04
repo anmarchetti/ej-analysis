@@ -1,0 +1,176 @@
+﻿---
+ID: "cf973429-b426-4fb1-b3aa-f84efbcaf6a3"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-1419_Update-trade-portal-amend-payment-page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    ## UPDATE FILEDS WITH LANGS
+    function update-item-with-lang($data, $item) {
+        function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+    };
+    
+        if ($item -ne $null) {
+            $data | ForEach-Object {
+            $fieldName = $_.fieldName;
+            $values = $_.values;
+        
+            if ($values -ne $null) {
+              
+                if ($values.en -ne $null) {
+                    $item.Editing.BeginEdit();
+                    $item[$fieldName] = $values.en;
+                    $item.Editing.EndEdit() | Out-Null
+                }
+                 if ($values.fr -ne $null) {
+                     @('fr-CH', 'fr-FR') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.fr;
+                    }
+                }
+                 if ($values.de -ne $null) {
+                     @('de-CH', 'de-DE') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.de;
+                    }
+                }
+                
+                Write-Host $fieldName "Updated"
+            }
+        }
+        }
+    };
+    ##
+    
+    $amendPaymentItem = Get-Item "/sitecore/content/EasyJet/TradePortal/Home/Booking/Amend Payment" -ErrorAction SilentlyContinue;
+    $componentWrapperRenderingItem = Get-Item "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper" -ErrorAction SilentlyContinue;
+    $amendItemInfoRenderingItem = Get-Item "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Item Info" -ErrorAction SilentlyContinue; 
+    $paymentSummaryRenderingItem = Get-Item "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Payment Summary" -ErrorAction SilentlyContinue;
+    $seatsAndBagsRenderingItem = Get-Item "/sitecore/layout/Renderings/Feature/SeatMap/Seats And Bags" -ErrorAction SilentlyContinue;
+    $amendHeadersRenderingItem = Get-Item "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Payment Header" -ErrorAction SilentlyContinue;
+    
+    ## Remove unused renderings and item
+    Remove-Rendering -Item $amendPaymentItem -Rendering $componentWrapperRenderingItem -ErrorAction SilentlyContinue;
+    Remove-Rendering -Item $amendPaymentItem -Rendering $amendItemInfoRenderingItem -ErrorAction SilentlyContinue;
+    Remove-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Amend Payment/Page Components/Amend Item Info";
+    
+    Write-Host "Renderings and Items Removed";
+    ##
+    
+    ## Replace placeholders for renderings
+    $paymentSummaryRenderingItemInstance = Get-Rendering -Item $amendPaymentItem -Rendering $paymentSummaryRenderingItem;
+    $seatsAndBagsRenderingItemInstance = Get-Rendering -Item $amendPaymentItem -Rendering $seatsAndBagsRenderingItem;
+    $amendHeaderRenderingItemInstance = Get-Rendering -Item $amendPaymentItem -Rendering $amendHeadersRenderingItem;
+    
+    if ($paymentSummaryRenderingItemInstance -ne $null) {
+        Set-Rendering -Item $amendPaymentItem -Instance $paymentSummaryRenderingItemInstance -PlaceHolder "/body";
+        Write-Host $paymentSummaryRenderingItemInstance.Name "Updated";
+    }
+    
+    if ($seatsAndBagsRenderingItemInstance -ne $null) {
+        Set-Rendering -Item $amendPaymentItem -Instance $seatsAndBagsRenderingItemInstance -PlaceHolder "/body/seats-and-bags-{8061c41e-7705-447f-a253-364d01c5cc5e}-0";
+          Write-Host $seatsAndBagsRenderingItemInstance.Name "Updated";
+    }
+    
+    if ($amendHeaderRenderingItemInstance -ne $null) {
+        Set-Rendering -Item $amendPaymentItem -Instance $amendHeaderRenderingItemInstance -PlaceHolder "/body";
+        Write-Host $amendHeaderRenderingItemInstance.Name "Updated";
+    }
+    ##
+    
+    ## Update items fields
+    $amendHeaderItem = Get-Item "/sitecore/content/EasyJet/TradePortal/Home/Booking/Amend Payment/Page Components/Amend Payment Header Trade Portal" -ErrorAction SilentlyContinue;
+    $amendSummaryItem = Get-Item "/sitecore/content/EasyJet/TradePortal/Home/Booking/Amend Payment/Page Components/Amend Payment Summary Trade" -ErrorAction SilentlyContinue;
+    
+    $amendHeaderData = @(
+        @{
+            fieldName = "PayTitle";
+            values = @{
+                en = 'Confirm';
+                fr = 'Confirmer';
+                de = 'Bestätigen Sie';
+            }
+        },
+        @{
+            fieldName = "RefundTitle";
+            values = @{
+                en = 'Confirm';
+                fr = 'Confirmer';
+                de = 'Bestätigen Sie';
+            }
+        },
+        @{
+            fieldName = "Subtitle";
+            values = @{
+                en = 'Review and confirm your changes below';
+                fr = 'Vérifiez et confirmez vos modifications ci-dessous';
+                de = 'Überprüfen und bestätigen Sie Ihre Änderungen unten';
+            }
+        }
+    );
+    
+    $amendSummaryData = @(
+        @{
+            fieldName = "ConfirmButtonLabel";
+            values = @{
+                en = 'Confirm now';
+                fr = 'Confirmer maintenant';
+                de = 'Bestätigen Sie jetzt';
+            }
+        },
+        @{
+            fieldName = "ConfirmChangesLabel";
+            values = @{
+                en = 'Confirm change';
+                fr = 'Confirmer la modification';
+                de = 'Bestätigen Sie die Änderung';
+            }
+        },
+        @{
+            fieldName = "SeatsFlowTitle";
+            values = @{
+                en = 'SEATS';
+                fr = 'SEATS';
+                de = 'SIEGES';
+            }
+        },
+        @{
+            fieldName = "SeatsFlowIcon";
+            values = @{
+                en = '<image mediaid="{912798ED-F604-461C-B660-D2DBFB62F1A5}" />';
+            }
+        }
+    );
+    
+    update-item-with-lang -Item $amendHeaderItem -Data $amendHeaderData;
+    update-item-with-lang -Item $amendSummaryItem -Data $amendSummaryData;
+    ##
+    
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240417T091054Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

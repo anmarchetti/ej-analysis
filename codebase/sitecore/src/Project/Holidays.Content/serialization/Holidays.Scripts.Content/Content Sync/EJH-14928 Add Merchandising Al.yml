@@ -1,0 +1,105 @@
+﻿---
+ID: "7c21d9e5-1bcc-4c83-9faa-b9a0217dd51f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14928 Add Merchandising Alert Banner On HomePage and MixedResults page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if (-not $item) {
+    		$item = New-Item -Path $path -ItemType $templateId
+    	}
+    	return $item
+    }
+    
+    function Get-Last-Rendering-Index ($item,$renderingItemId) {
+    	$i = 0
+    	Get-Rendering -Item $item | ForEach-Object {
+    		if ($_.ItemID -eq $renderingItemId) {
+    			return $i
+    		}
+    		$i++
+    	}
+    }
+    
+    #Create Merchandising Alert Banner datasource on HomePage
+    $ItemPath = '/sitecore/content/EasyJet/Holidays/Home/Page Components/Merchandising Alert Banner'
+    $Item = Get-Or-Create-Item -Path $ItemPath -ItemName "Merchandising Alert Banner" -TemplateId "{108D2D4B-6D0D-46C7-B293-0940E0BC0C0F}"
+    
+    if ($Item -ne $null) {
+    	$Item.Editing.BeginEdit();
+    	$Item["Title"] = 'Covid-19 Travel Restrictions';
+    	$Item["Text"] = "The UK government has announced new Covid-19 travel restrictions. Please check before you travel. <a href='~/link.aspx?_id=49DEBA68F3F54B44912DA07673B64F71&amp;_z=z'>Read more</a>";
+    	$Item["Icon"] = '<image mediaid="{E940D489-CA9A-4CAA-A0A0-69500AEE6FF9}" />';
+    	$Item.Editing.EndEdit() | Out-Null;
+    }
+    
+    # Add Merchandising Alert Banner rendering and Datasource for rendering 
+    $pagePath = Get-Item -Path "master://sitecore/content/EasyJet/Holidays/Home"
+    $dataSourcePath = "/sitecore/content/EasyJet/Holidays/Home/Page Components/Merchandising Alert Banner" 
+    $placeholderPath = '/body'
+    $renderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Merchandising Alert Banner"
+    $rendering = Get-Item -Database "master" -Path $renderingPath | New-Rendering -Placeholder $placeholderPath
+    	
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    	  
+    Add-Rendering -Item $pagePath -Instance $rendering -DataSource $dataSourcePath -Placeholder $placeholderPath -Index 0
+    	  
+    Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Page Components" -templateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    
+    
+    
+    #Create Merchandising Alert Banner datasource on MixedResults Page
+    $ItemPath = '/sitecore/content/EasyJet/Holidays/Home/MixedResultList/Page Components/Merchandising Alert Banner'
+    $Item = Get-Or-Create-Item -Path $ItemPath -ItemName "Merchandising Alert Banner" -TemplateId "{108D2D4B-6D0D-46C7-B293-0940E0BC0C0F}"
+    
+    if ($Item -ne $null) {
+    	$Item.Editing.BeginEdit();
+    	$Item["Title"] = 'Covid-19 Travel Restrictions';
+    	$Item["Text"] = "The UK government has announced new Covid-19 travel restrictions. Please check before you travel. <a href='~/link.aspx?_id=49DEBA68F3F54B44912DA07673B64F71&amp;_z=z'>Read more</a>";
+    	$Item["Icon"] = '<image mediaid="{E940D489-CA9A-4CAA-A0A0-69500AEE6FF9}" />';
+    	$Item.Editing.EndEdit() | Out-Null;
+    }
+    
+    # Add Merchandising Alert Banner rendering and Datasource for rendering on MixedResults Page
+    $pagePath = Get-Item -Path "master://sitecore/content/EasyJet/Holidays/Home/MixedResultList"
+    $dataSourcePath = "/sitecore/content/EasyJet/Holidays/Home/MixedResultList/Page Components/Merchandising Alert Banner" 
+    $placeholderPath = '/header'
+    $renderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Merchandising Alert Banner"
+    $rendering = Get-Item -Database "master" -Path $renderingPath | New-Rendering -Placeholder $placeholderPath
+    	
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    	  
+    Add-Rendering -Item $pagePath -Instance $rendering -DataSource $dataSourcePath -Placeholder $placeholderPath -Index 0
+    	  
+    Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/MixedResultList/Page Components" -templateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230302T124159Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,224 @@
+﻿---
+ID: "d7de27a0-9606-4591-9030-bc55fb6b69b5"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-589 Create Hold Luggage"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Add-New-Rendering($item, $placeholder, $renderingId, $datasource, $index, $parameters){
+        $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $placeholder
+        if($parameters -ne $null)
+        {
+            Add-Rendering -Item $item -Instance $renderingItem -PlaceHolder $placeholder -Parameter $parameters -DataSource $datasource -Index $index
+        }
+        else
+        {
+            Add-Rendering -Item $item -Instance $renderingItem -PlaceHolder $placeholder -DataSource $datasource -Index $index
+        }
+    }
+    
+    function Add-Rendering-To($item, $renderingId, $newRenderingId, $datasource, $sign){
+        $index = 0
+        Get-Rendering -Item $item |
+        Foreach-Object { 
+            $index++
+            if($_.ItemId -eq $renderingId)
+            {
+                
+                    $incrementIndex = $index
+                    if ($sign -ne 0){
+                        $incrementIndex = $index + $sign
+                    }
+                
+                    Add-New-Rendering -Item $item -Placeholder $_.Placeholder -RenderingId $newRenderingId -Datasource $datasource -Index $incrementIndex -Parameters $parameters
+                
+            }
+        }
+    }
+    
+    function Create-Component-For-Site($holdLuggageComponentPath, $pagePath){
+        # Data source
+        $holdLuggageComponentTemplate = "{D0D47EC4-D20D-45B7-8486-58DD5311557A}"
+        
+        $item = Get-Item -Path $holdLuggageComponentPath -ErrorAction SilentlyContinue
+        
+        if($item -eq $null) {
+            #Create Component
+            $item = New-Item -Path $holdLuggageComponentPath -ItemType $holdLuggageComponentTemplate
+            Write-Host "Component" $item.Name "successfully created"
+            
+            # Populate Component with data
+            
+            $item.Editing.BeginEdit()
+            
+            # Component Content
+            $item["Title"] = "YOUR HOLD LUGGAGE"
+            $item["Subtitle"] = "Each passenger has a 23kg bag included, but can add up to 3 more pieces of luggage, or one piece of sports equipment per passenger."
+            $item["OutboundAndReturnTextMultiple"] = "<strong>{count}</strong> Items - Outbound and return"
+            $item["OutboundAndReturnTextSingular"] = "1 Item - Outbound and return"
+            $item["BagCountHeading"] = "<strong>{count}</strong> x 23kg hold bags"
+            $item["BagCountDescription"] = "Maximum 23kg per bag, stores in the plane hold. Outbound and return."
+            $item["BagExtraHeading"] = "Add Extra Hold Luggage or Sports Equipment"
+            $item["BagExtraDescription"] = "<p>Add a {number}kg item to the hold luggage for just <strong>{price}</strong> per item, per flight</p><p>All hold luggage is applicable to both outbound and return flights.</p>"
+            $item["BagExtraPrice"] = "Extra luggage from <strong>{price}</strong> per item"
+            $item["SportsExtraPrice"] = "Sports equipment from <strong>{price}</strong> per item"
+            $item["AddButtonText"] = "Add extra hold luggage"
+            $item["BagExtraIcon"] = '<image mediaid="{52BD44BC-1C14-47F9-9068-9E6ACD889A26}" />'
+            $item["BagCountIcon"] = '<image mediaid="{B23F6D11-D964-4F72-8CED-466D76A7D3BB}" />'
+            $item["OutboundAndReturnIcon"] = '<image mediaid="{B9F44575-D18E-4C58-8979-A2FB86D6C682}" />'
+            $item["IncludedForFreeIcon"] = '<image mediaid="{6C08D0D8-21B8-4F6A-A504-7D7CBA15752A}" />'
+            $item["IncludedForFreeText"] = "Included for free"
+            
+            $item.Editing.EndEdit() | Out-Null
+        }
+        
+        # Rendering
+        $previousRendering = '{62F93471-0DCA-49AE-95AF-2B346D8098D8}'
+        $myRenderingId = '{89F16941-1EA9-4990-88BD-794D3B45292D}'
+        $sign = -1
+        
+        # Page
+        $page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+        
+        Add-Rendering-To -item $page -renderingId $previousRendering -newRenderingId $myRenderingId -datasource $holdLuggageComponentPath -sign $sign
+    }
+    
+    function Get-Or-Create-Item ($path,$templateId) {
+        $item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+         if ($item -eq $null) {
+                $item = New-Item -Path $path -ItemType $templateId
+                Write-Host "Item" $item.Name "successfully created";
+         }
+         return $item
+    }
+    
+    function Create-Item-Add-Children($parentPath, $parentTemplateId, $children, $childTemplateId){
+        $parent = Get-Or-Create-Item -path $parentPath -templateId $parentTemplateId;
+        
+        foreach($child in $children){
+            $name = $child.Name
+            $validName = [Sitecore.Data.Items.ItemUtil]::ProposeValidItemName($name)
+            $path = "$parentPath/$($validName)"
+            $item = Get-Or-Create-Item -path $path -template $childTemplateId
+            $item.Editing.BeginEdit()
+        	$item["Name"] = $validName;
+        	$item["Code"] = $child.Code
+        	$item["Type"] = $child.Type
+        	$item.Editing.EndEdit()
+        	
+        	foreach($bag in $child.Children){
+        	    $validName = [Sitecore.Data.Items.ItemUtil]::ProposeValidItemName($bag.Name)
+        	    $path2 = "$path/$($validName)";
+        	    $bagTemplateId = '{41775FBB-D551-4813-B3D7-1BDC7C6DB534}';
+        	    $item = Get-Or-Create-Item -path $path2 -templateId $bagTemplateId;
+        	    
+        	    $item.Editing.BeginEdit()
+            	$item["Name"] = $bag.Name;
+            	$item["Code"] = $bag.Code
+            	$item.Editing.EndEdit()
+        	}
+        }
+    }
+    
+    $luggagePath = '/sitecore/content/EasyJet/Holidays/Data/Luggage';
+    $luggageTemplateId = '{8434F506-C87F-4D50-AADA-F50D36E90BFC}';
+    $luggageCategories = @(
+        @{
+          'Name' = "Hold Baggage"
+          'Code' = 'BAGE'
+          'Type' = 'Bag'
+          'Children' = @(
+            @{
+              'Name' = "Hold Baggage 15kg"
+              'Code' = 'LUS'
+               },
+            @{
+              'Name' = "Hold Baggage 23kg"
+              'Code' = 'LUG'
+               }
+            )
+           },
+         @{
+          'Name' = "Large Sports Equipment"
+          'Code' = 'SEO'
+          'Type' = 'Sports Equipment'
+          'Children' = @(
+            @{
+              'Name' = "Bicycle"
+              'Code' = 'BIKE'
+               },
+            @{
+              'Name' = "Canoe/Kayak"
+              'Code' = 'CANO'
+               }
+            )
+           },
+         @{
+          'Name' = "Pre Paid Excess Weight"
+          'Code' = 'WGT'
+          'Type' = ''
+          'Children' = @(
+            @{
+              'Name' = "Pre Paid Excess Weight 3kg"
+              'Code' = 'WGT'
+               }
+            )
+           },
+         @{
+          'Name' = "Small Sports Equipment"
+          'Code' = 'SEC'
+          'Type' = 'Sports Equipment'
+          'Children' =  @(
+            @{
+              'Name' = "Golf Bag"
+              'Code' = 'GBAG'
+               }
+            )
+           }
+           );
+    $luggageCatTemplateId = '{928655D3-BFC1-4E24-99A5-096BE1B24D09}'
+    
+    # Create luggage config
+    Create-Item-Add-Children -parentPath $luggagePath -parentTemplateId $luggageTemplateId -children $luggageCategories -childTemplateId $luggageCatTemplateId
+    
+    $luggagePath = '/sitecore/content/EasyJet/TradePortal/Data/Luggage';
+    Create-Item-Add-Children -parentPath $luggagePath -parentTemplateId $luggageTemplateId -children $luggageCategories -childTemplateId $luggageCatTemplateId
+    
+    # Create rendering with datasources
+    $pagePath = "master:/sitecore/content/EasyJet/TradePortal/Home/Booking"
+    $holdLuggageComponentPath = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Hold Luggage";
+    Create-Component-For-Site -holdLuggageComponentPath $holdLuggageComponentPath -pagePath $pagePath
+    
+    $pagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking"
+    $holdLuggageComponentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Hold Luggage";
+    Create-Component-For-Site -holdLuggageComponentPath $holdLuggageComponentPath -pagePath $pagePath
+    
+    #Set smaller image to data source
+    $item = Get-Item -Database "master" -Path '/sitecore/content/EasyJet/Holidays/Data/SeatsMap' -ErrorAction SilentlyContinue
+    if ($item -ne $null) {
+        $item.Editing.BeginEdit()
+        $item["BenefitsHeadImageBackground"] = '<image mediaid="{B9AD5A3C-0B48-4DC6-BB56-0810705065D8}" />';
+        $item.Editing.EndEdit()
+    }
+    
+    $item = Get-Item -Path '/sitecore/content/EasyJet/TradePortal/Data/Seats Map Trade' -ErrorAction SilentlyContinue
+    if ($item -ne $null) {
+        $item.Editing.BeginEdit()
+        $item["BenefitsHeadImageBackground"] = '<image mediaid="{B9AD5A3C-0B48-4DC6-BB56-0810705065D8}" />';
+        $item.Editing.EndEdit()
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 105
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230717T103207Z

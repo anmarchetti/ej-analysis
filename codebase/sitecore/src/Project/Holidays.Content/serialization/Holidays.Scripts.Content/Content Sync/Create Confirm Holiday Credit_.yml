@@ -1,0 +1,90 @@
+﻿---
+ID: "5ab15d50-6788-4d5f-88ab-9ead473df637"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Confirm Holiday Credit Page
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $itemName, $templateId, $itemId){
+        $item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $itemId
+            Write-Host "Item" $item.Name "successfully created";
+        }
+        return $item
+    } 
+    
+    function Update-Rendering-DataSource($item, $placeholder, $renderingId, $newDataSource){
+        $renderingItem = Get-Item -Path "master:" -Id $renderingId
+        $rendering = Get-Rendering -Item $item -PlaceHolder $placeholder -Rendering $renderingItem
+    
+        if($rendering -ne $null){
+            Set-Rendering -Item $item -Instance $rendering -DataSource $newDataSource
+            Write-Host $item.Name  "Rendering successfully updated"
+        }
+    }
+    
+    function Set-Page-Design($designPath, $pageTemplateId) {
+        $designItem = Get-Item -Path "$($designPath)" -ErrorAction SilentlyContinue
+        if ($designItem -ne $null) {
+             [Sitecore.Data.Fields.MultilistField]$pageTemplates = $designItem.Fields["PageTemplates"];
+            
+            if(!$pageTemplates.Contains($pageTemplateId)) {
+                $designItem.Editing.BeginEdit();
+                $pageTemplates.add($pageTemplateId);
+                $designItem.Editing.EndEdit() | Out-Null
+                Write-Host "Page Templates of" $designItem.Name "are updated"
+            }
+        }
+    }
+    
+    $pageTemplateId = "{4CF74561-4E5C-4AFF-8753-A8F15CB35870}"
+    
+    # Add Page To PageDesigns
+    Set-Page-Design -designPath "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Slim Design" -pageTemplateId $pageTemplateId
+    
+    # Create Page
+    $page = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking" -ItemName "Confirm Holiday Credit" -TemplateId $pageTemplateId
+    
+    # Create Page Components
+    $pageComponents = Get-Or-Create-Item -Path $page.FullPath -ItemName "Page Components" -TemplateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    
+    # Create Credit Booking Disruption Component
+    $bookingDisruption = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Disruption Instructions" -TemplateId "{DBE716C9-891B-4229-8D09-0147285F0A79}"
+    
+    $bookingDisruption.Editing.BeginEdit()
+    $bookingDisruption["Title"] = "We understand your holiday might not be right for you"
+    $bookingDisruption["Description"] = "<p>{name}, we understand there is uncertainty around travel at this time, so if you would prefer not to travel right now, you can change your holiday to {destination} online at no extra cost.</p>" +
+    "<p>This means you can cancel your booking at no extra charge and get credits to equal the amount of the original booking. You can rebook at a later date at the same destination or choose a new destination of your choice using your holiday credits. </p>" +
+    "<ul class=`"circle-list`">"+
+      "<li>Click `"Credit my holiday`". This will take you to the easyJet holidays credit page.</li>" +
+      "<li>Read the full T&amp;C's to ensure you are happy for us to cancel your holiday, in return for holiday credits amounting in the original cost.</li>" +
+      "<li>Once you're happy, click `"Confirm`" .</li>" +
+    "</ul>"
+    $bookingDisruption["Extra"] = "To read the full T&amp;C's please <a target=`"_blank`" href=`"#`">click here</a>."
+    $bookingDisruption["IsButtonHidden"] = 1
+    $bookingDisruption.Editing.EndEdit() | Out-Null
+    
+    # Create Credit Confirm Component
+    $creditConfirm = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Credit Confirm" -TemplateId "{DC1B4679-93BC-4824-8FC7-0419E6BDE966}"
+    
+    # Update Rendering
+    $creditConfirmPlaceholder = "/body/component-wrapper-inner-{C40836EB-D2E0-4DD8-9B27-19369EF6EEA7}-0"
+    $creditConfirmRenderingId = "{56C44D33-3156-49AD-85A5-DF71E6B700B2}"
+    Update-Rendering-DataSource -Item $page -PlaceHolder $creditConfirmPlaceholder -RenderingId $creditConfirmRenderingId -NewDataSource $creditConfirm.ID 
+    
+    $bookingDisruptionPlaceholder = "$($creditConfirmPlaceholder)/credit-booking-disruption-{017e742d-09d0-4d9f-8e16-04c065483c4d}-0"
+    $bookingDisruptionRenderingId = "{91012E04-01DC-46B7-BAE2-F5DBC12A842F}"
+    Update-Rendering-DataSource -Item $page -PlaceHolder $bookingDisruptionPlaceholder -RenderingId $bookingDisruptionRenderingId -NewDataSource $bookingDisruption.ID 
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200424T093801Z

@@ -1,0 +1,120 @@
+﻿---
+ID: "6a5fd219-00ed-4172-97ca-4020dec1832e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EHD-112-LeftHand-Filters"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $itemPath = "master:/sitecore/content/EasyJet/Holidays/Home/MixedResultList"
+    $deviceObj = Get-LayoutDevice -Default
+    
+    function Display-Item-Renderings($itemPath, $deviceObj)
+    {
+        $resultObj = @()
+        Get-Rendering -Path $itemPath -Device $deviceObj -FinalLayout  | ForEach {
+            $renderingItem = Get-Item -Path  master: -ID $_.ItemID
+        
+            $Obj = @{
+                RenderingName =  $renderingItem.Name
+                RenderingID =  $renderingItem.ID
+                Placeholder = $_.Placeholder
+                PageItem = $_.OwnerItemID
+                Datasource = $_.Datasource
+            }
+        
+            $resultObj += New-Object psobject -Property $Obj
+        }
+        
+        $resultObj | Format-Table RenderingName, RenderingID, Placeholder, Datasource
+    }
+    
+    function Create-Page-Backup($itemPath)
+    {
+        # Create Package & Set Properties
+        $package = new-package "MixedResultList Page Backup";
+        $package.Sources.Clear();
+    
+        Write-Host "Creating MixedResultList Page Backup..."
+    
+        # Add Test Pages
+        $source = Get-Item $itemPath | New-ItemSource -Name "MixedResultList"
+        $package.Sources.Add($source);
+    
+        # Save package
+        Export-Package -Project $package -Path "$($package.Name).zip" -Zip
+    }
+    
+    Create-Page-Backup($itemPath)
+    
+    Write-Host ******************* Renderings List Before Update ********************
+    Display-Item-Renderings -itemPath $itemPath -deviceObj $deviceObj;
+    
+    Write-Host ******************* Update Renderings ********************
+    
+    $myArray = New-Object System.Collections.ArrayList
+    
+    $renderingsArray =     
+        @{
+            RenderingName =  "Not Found Promo Banner"
+            RenderingID =  "{09F531B3-3B16-415E-924E-043B7F8AA337}"
+            Placeholder = "/body/component-wrapper-inner-{3EDE0AEC-2846-45A7-B9DA-D77E2F356021}-0/not-found-promo-banner-{B48549D9-5748-42AF-BD2F-C08769F5E04E}-0"
+        },
+        @{
+            RenderingName =  "Promotion Banner"
+            RenderingID =  "{F57F9C56-DB96-41CB-83CD-AEFF06F47A11}"
+            Placeholder = "/body/component-wrapper-inner-{3EDE0AEC-2846-45A7-B9DA-D77E2F356021}-0/promo-stripe-{B48549D9-5748-42AF-BD2F-C08769F5E04E}-0"
+        },
+        @{
+            RenderingName =  "Search Results Variant A"
+            RenderingID =  "{A38E9014-220E-482D-A7BC-A69DA4A7BBD3}"
+            Placeholder = "/body/component-wrapper-inner-{3EDE0AEC-2846-45A7-B9DA-D77E2F356021}-0"
+            Datasource = "{4E62E29A-C9D9-471A-B0AA-73A0200D8403}"
+        },
+        @{
+            RenderingName =  "Search Pod Filters Variant A"
+            RenderingID =  "{DDD5C14E-7951-4C82-AF12-ABD3F24D9BCF}"
+            Placeholder = "/body/component-wrapper-inner-{3EDE0AEC-2846-45A7-B9DA-D77E2F356021}-0/search-pod-filters-{B48549D9-5748-42AF-BD2F-C08769F5E04E}-0"
+            Datasource = "{346AD4AD-FAE0-46C5-B737-94E3166A4677}"
+        },
+        @{
+            RenderingName =  "Holiday With Confidence"
+            RenderingID =  "{A9084774-E28B-46EC-B2F9-7871E953CCE5}"
+            Placeholder = "/body/component-wrapper-inner-{3ede0aec-2846-45a7-b9da-d77e2f356021}-0/holiday-with-confidence-{9ED3C2B4-6FBB-4CF6-9464-9D14A0984C93}-0"
+            Datasource = "{63B437AD-3439-4C5F-B1B5-C12DE8166BB0}"
+        }
+    
+    $item = Get-Item -Path $itemPath
+    $renderingsArray | ForEach-Object -Process { 
+        #Search Results Variant A
+        $rendering = Get-Item -Path "master:" -ID $_.RenderingID | New-Rendering -Placeholder $_.Placeholder
+        
+        if($_.Datasource -ne $null) {
+            $rendering.Datasource = $_.Datasource
+        }
+        Add-Rendering -Item $item -PlaceHolder $_.Placeholder -Instance $rendering -FinalLayout
+    }
+    
+    Write-Host ******************* Renderings List After Update ********************
+    Display-Item-Renderings -itemPath $itemPath -deviceObj $deviceObj;
+    
+    
+    
+    
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230614T134104Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

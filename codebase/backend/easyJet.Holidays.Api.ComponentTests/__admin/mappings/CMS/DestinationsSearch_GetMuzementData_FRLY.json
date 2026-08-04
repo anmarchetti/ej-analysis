@@ -1,0 +1,38 @@
+{
+    "Title": "CMS ExcursionMap data for FRLY (Lyon region)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "ExactMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetMuzementData",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "code",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "FRLY"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "MuzementIds": [
+                "47"
+            ],
+            "Type": "Region",
+            "Radius": 100,
+            "Coordinates": null
+        }
+    }
+}

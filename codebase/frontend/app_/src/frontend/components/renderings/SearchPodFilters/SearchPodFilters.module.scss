@@ -1,0 +1,59 @@
+.actions {
+    @include media-breakpoint-down(md) {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        gap: 16px;
+        max-width: 100%;
+    }
+}
+
+.filterWideBtn {
+    @include media-breakpoint-down(md) {
+        min-width: 100%;
+
+        svg {
+            @include sizeSquare(20px);
+            min-height: 20px;
+        }
+
+        :global(.search-pod-filter__button) {
+            padding: 8px;
+            justify-content: center;
+            width: 100%;
+            background: $colorWhite;
+            height: initial;
+            border-width: 2px;
+            font-family: $fontRoundedDemy;
+        }
+    }
+}
+
+$gap: 8px;
+
+.promoActions {
+    @include media-breakpoint-down(md) {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $gap;
+        padding-bottom: 8px;
+
+        :global(.search-pod-filter__button:not(#filter-button)) {
+            height: auto;
+            padding: 4px 8px;
+            max-width: 100%;
+
+            span {
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        }
+
+        .childBtn {
+            flex: initial;
+            max-width: calc(50% - calc($gap / 2));
+        }
+    }
+}
+
+

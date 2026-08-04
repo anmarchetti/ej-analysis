@@ -1,0 +1,210 @@
+.poster {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    background: $colorWhite;
+
+    &:not(:global(.pdf-format)) {
+        .price {
+            font-size: 100px;
+        }
+
+        .roomAndBoard {
+            margin-bottom: 60px;
+        }
+
+        .body {
+            padding: 37px 50px 36px;
+            font-size: 34px;
+        }
+
+        .hotelName {
+            margin-bottom: 75px;
+            font-size: 44px;
+        }
+
+        .facilities {
+            :global(.hotel-card__icons-summ) {
+                :global(.icon--bg-image) {
+                    width: 100px;
+                    height: 100px;
+                    background-size: 60px 60px;
+                }
+            }
+        }
+    }
+}
+
+.globals {
+    :global(.btn),
+    :global(.no-print:not(.view-booking-hotel__gallery)),
+    :global(.hotel-facilities) {
+        display: none;
+    }
+
+    :global(.holiday-summary) {
+        margin-top: 70px;
+        margin-bottom: 0;
+    }
+
+    :global(.holiday-summary-item) {
+        padding: 20px;
+        background-color: $colorWhite;
+        border: none;
+        border-radius: 6px;
+        box-shadow: -2px 2px 13px 0 rgba($colorBlack, 0.07);
+        break-inside: avoid;
+    }
+
+    :global(.view-booking-hotel__gallery) {
+        height: 350px;
+    }
+
+    :global(.holiday-summary-item__details + .holiday-summary-item__details) {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid $colorMercury;
+    }
+
+    :global(.view-booking-hotel__rating) {
+        *::before,
+        *::after {
+            display: none;
+        }
+    }
+
+    &:global(.pdf-format) {
+        box-shadow: none;
+
+        :global(.wrapper-component-container--grey) {
+            background-color: $colorWhite;
+        }
+
+        :global(.luggage.card),
+        :global(.holiday-summary-item) {
+            border: 2px solid $colorMercury;
+            box-shadow: none;
+        }
+
+        :global(.view-booking-hotel__facilities .row) {
+            row-gap: 10px;
+        }
+
+        :global(.view-booking-hotel__facility ul) {
+            padding-left: 12px;
+        }
+
+        :global(.view-booking-hotel__title) {
+            font-size: 18px;
+        }
+
+        :global(.holiday-summary-item__subtitle) {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        :global(.view-booking-hotel__facilities) {
+            padding: 15px 20px;
+        }
+
+        :global(.total-price) {
+            height: 70px;
+            font-size: 24px;
+        }
+
+        :global(.wrapper-shape__triangle-start),
+        :global(.wrapper-shape__triangle-end) {
+            display: none;
+        }
+
+        :global(.holiday-summary-item__details + .holiday-summary-item__details) {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid $colorMercury;
+        }
+
+        :global(.hotel-description) {
+            margin-top: 30px;
+        }
+
+        :global(.view-booking-hotel__facility-title .icon--bg-image) {
+            background-repeat: no-repeat;
+            background-position-x: 0;
+            background-position-y: 0;
+            background-size: 270% 270%; // svg scaling (from 150px) not working correctly in jsPDF
+        }
+    }
+}
+
+.priceBreakdownContainer {
+    div:first-child {
+        width: 100%;
+    }
+
+    h2 {
+        margin-left: 33px;
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    @include media-breakpoint-down(md) {
+        h2 {
+            margin-left: 10px;
+        }
+    }
+}
+
+.viewBookingToolbar {
+    margin-bottom: 10px;
+    padding-right: 8px;
+    padding-left: 8px;
+    background: $clrSiteBgGrey;
+}
+
+.viewBookingQuoteContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    row-gap: 12px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+.viewBookingContainer {
+    margin-top: 16px;
+}
+
+.posterLuxury {
+    box-shadow: 0 3px 9px 3px rgba(51, 51, 51, 0.15);
+
+    &:not(:global(.pdf-format)) {
+        margin-bottom: 85px;
+    }
+
+    .viewBookingToolbarLuxury {
+        margin-bottom: 0;
+        padding-right: 48px;
+        padding-left: 48px;
+    }
+
+    .luxuryWrapper {
+        background: none;
+        border: none;
+        border-radius: 0;
+    }
+
+    .luxuryBanner {
+        padding-right: 48px;
+        padding-left: 48px;
+        border-radius: 0;
+    }
+
+    .luxuryContent {
+        padding-top: 16px;
+        padding-right: 48px;
+        padding-left: 48px;
+    }
+}

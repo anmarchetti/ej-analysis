@@ -1,0 +1,186 @@
+﻿---
+ID: "c8b1fe1d-62c8-4ef5-ad50-c700eae74a72"
+Parent: "b1e3c34e-a209-4730-a266-ecc77072d88c"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/SPE/Extensions/EasyJet/Functions/Move Rendering Child Placeholders
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Get Rendering And Index By RenderingId"
+    Import-Function "Get Rendering Placeholders"
+    
+    function Move-RenderingChildPlaceholders
+    {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$PagePath,
+            
+            [Parameter(Mandatory = $true)]
+            [string]$TargetPlaceholder,
+    
+            [Parameter(Mandatory = $true)]
+            [string]$SourceRenderingId,
+            
+            [Parameter(Mandatory = $false)]
+            [int]$SourceRenderingIndex = 0,
+            
+            [Parameter(Mandatory = $true)]
+            [string]$TargetRenderingId,
+            
+            [Parameter(Mandatory = $false)]
+            [int]$TargetRenderingIndex = 0,
+            
+            [Parameter(Mandatory = $false)]
+            [bool]$FinalLayout
+    
+        )
+    
+        $PagePath = "master:/$($PagePath)"
+        $page = Get-Item -Path $PagePath -ErrorAction SilentlyContinue
+        if ($null -eq $page) 
+        {
+            Write-Host "`tPage '$PagePath' not found" -ForegroundColor Red
+            return
+        }
+        
+        if ([string]::IsNullOrEmpty($TargetPlaceholder)) 
+        {
+            Write-Host "`tTargetPlaceholder '$TargetPlaceholder' not found" -ForegroundColor Red
+            return
+        }
+        
+        $result= Get-RenderingAndIndexByRenderingId -Page $page -ItemId $TargetRenderingId -Index $TargetRenderingIndex -FinalLayout $FinalLayout
+        $targetRendering=$result.Rendering;
+    
+        
+        $result= Get-RenderingAndIndexByRenderingId -Page $page -ItemId $SourceRenderingId -Index $SourceRenderingIndex -FinalLayout $FinalLayout
+        $sourceRendering=$result.Rendering;
+    
+        
+        
+        $existingRendering = $null
+        if($FinalLayout -eq 1 -or $FinalLayout -eq $true)
+        {
+            $existingRendering = Get-Rendering -Item $page -FinalLayout
+        }
+        else
+        {
+            $existingRendering = Get-Rendering -Item $page
+        }
+        
+        if ($null -eq $existingRendering) 
+        {
+            Write-Host ""
+            Write-Host "`tUpdating Placeholder failed. No Renderings found..." -ForegroundColor Red
+            return
+        }
+        else 
+        {
+            Write-Host ""
+            Write-Host "`tUpdating Rendering Placeholders..." -ForegroundColor Yellow
+            
+           $changes = 0
+           $sourcePlaceholders= Get-RenderingPlaceholders -RenderingId $SourceRenderingId -RenderingIndex $SourceRenderingIndex -PagePath $PagePath 
+           
+            foreach($SourcePlaceholder in $SourcePlaceholders){ 
+             Write-Host "SourcePlaceholder: $SourcePlaceholder"
+                $existingRendering |
+                ForEach-Object {
+                    
+                    $original = $_.PlaceHolder
+                    $trimmedPlaceholder=$sourceRendering.Placeholder.Trim("/")
+                    $shouldStartWith="/$($trimmedPlaceholder)/$SourcePlaceholder-$($sourceRendering.UniqueId)-0"
+                    
+                 
+                    if($original.StartsWith($shouldStartWith,[StringComparison]::OrdinalIgnoreCase))
+                    {
+                           Write-Host "shouldStartWith: $shouldStartWith"
+                           Write-Host "TargetPlaceholder: $TargetPlaceholder"
+                           
+                        $subPlaceholder=$original -replace $trimmedPlaceholder, ""
+                        $subPlaceholder=$subPlaceholder.Trim("/")
+        
+                        $updated= "$($targetRendering.Placeholder)/$TargetPlaceholder-$($targetRendering.UniqueId)-0/$($subPlaceholder)"
+                        $updated=$updated.Trim("/")
+                        $updated="/$updated"
+                        if ($original -ne $updated)
+                        {
+                            Write-Host "`tChanging Placeholder replace '$original' with '$updated'" -ForegroundColor Green
+                            $_.PlaceHolder = $updated
+                            if($FinalLayout -eq 1 -or $FinalLayout -eq $true)
+                            {
+                                Set-Rendering -Item $page -Instance $_  -FinalLayout
+                            }
+                            else
+                            {
+                                Set-Rendering -Item $page -Instance $_
+                            }
+        
+                            $changes = $changes +1
+                        }
+                    }
+                }
+        }
+        if($changes -gt 0)
+        {
+            Write-Host "`t$changes Rendering updated successfully!"  -ForegroundColor Green
+        }
+    
+        }
+    
+        Write-Host ""
+        Write-Host ""
+        Write-Host ""
+    }
+    
+    
+    function MoveRenderingChildPlaceholders 
+    {
+        param(
+            [Parameter(Mandatory = $true)]
+            $renderingInfo
+    
+        )
+    
+        $PagePath       = $renderingInfo.PagePath 
+        $TargetPlaceholder   = $renderingInfo.TargetPlaceholder
+    
+        $SourceRenderingId    = $renderingInfo.SourceRenderingId
+        $SourceRenderingIndex= $renderingInfo.SourceRenderingIndex
+        $TargetRenderingId= $renderingInfo.TargetRenderingId
+        $TargetRenderingIndex= $renderingInfo.TargetRenderingIndex
+        $UpdateFinalLayoutAsWell =$renderingInfo.UpdateFinalLayoutAsWell
+        if($UpdateFinalLayoutAsWell -eq $null)
+        {
+            $UpdateFinalLayoutAsWell = $false
+        }
+        Write-Host ""
+        Write-Host ""
+        Write-Host "Processing: '$PagePath'" -ForegroundColor Cyan
+        
+        Move-RenderingChildPlaceholders -SourceRenderingIndex $SourceRenderingIndex -TargetRenderingIndex $TargetRenderingIndex -PagePath $PagePath -TargetPlaceholder $TargetPlaceholder -SourceRenderingId $SourceRenderingId -TargetRenderingId $TargetRenderingId
+        
+        if($UpdateFinalLayoutAsWell -eq 1 -or $UpdateFinalLayoutAsWell -eq $true)
+        {
+                Move-RenderingChildPlaceholders -SourceRenderingIndex $SourceRenderingIndex -TargetRenderingIndex $TargetRenderingIndex -PagePath $PagePath -TargetPlaceholder $TargetPlaceholder -SourceRenderingId $SourceRenderingId -TargetRenderingId $TargetRenderingId -FinalLayout $true
+        }
+    
+        Write-Host "`tAll placeholders adjusted successfully" -ForegroundColor Green
+    }
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240125T082214Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

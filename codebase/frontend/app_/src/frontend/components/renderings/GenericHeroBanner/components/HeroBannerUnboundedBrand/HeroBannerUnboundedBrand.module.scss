@@ -1,0 +1,42 @@
+.wrapper { 
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 90%;
+
+    .subtitle {
+        margin: 0;
+        font-family: $fontUnboundedSans;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 22px;
+        text-transform: uppercase;
+        letter-spacing: 7.2px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 18px;
+            letter-spacing: 5.4px;
+        }
+    }
+
+    .title {
+        margin: 24px 0;
+        font-family: $fontRoundedBook;
+        font-size: 72px;
+        font-weight: 400;
+        line-height: normal;
+        text-transform: uppercase;
+        letter-spacing: 21.6px;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 16px;
+            font-size: 52px;
+        }
+
+        @include media-breakpoint-down(sm) {
+            font-size: 32px;
+            letter-spacing: 9.6px;
+        }
+    }
+}

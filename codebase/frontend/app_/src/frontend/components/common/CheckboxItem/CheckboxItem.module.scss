@@ -1,0 +1,28 @@
+.item {
+    :global {
+        .checkbox {
+            justify-content: flex-start;
+        }
+
+        .checkbox svg {
+            flex: 0 0 auto;
+            max-width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+
+        .checkbox__control {
+            margin-right: 15px;
+        }
+
+        .checkbox input:checked ~ .checkbox__control {
+            border-color: #a9b9bd;
+        }
+    }
+}
+
+.content {
+    display: inline-flex;
+    flex-grow: 1;
+    line-height: 1.2;
+}

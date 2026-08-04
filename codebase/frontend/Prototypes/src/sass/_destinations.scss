@@ -1,0 +1,67 @@
+.destinations__container {
+    position: relative;
+    z-index: -1;
+
+    .wrapper-container {
+        position: relative;
+        margin-bottom: 0 !important;
+        padding: 0;
+    }
+
+    .destinations-main-title {
+        margin: 0;
+        padding-top: 130px;
+        padding-bottom: 160px;
+        font-family: $fontRoundedBook;
+        font-size: 35px;
+        color: $colorWhite;
+
+        &__country {
+            font-family: $fontGenerationHeadline;
+            font-size: 100px;
+        }
+    }
+
+    .destinations-main-price {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 200px;
+        height: 130px;
+        text-align: right;
+        background-color: $colorOrange;
+
+        .price__container {
+            padding: 0 35px;
+            font-family: $fontRoundedBook;
+            font-size: 24px;
+            color: $colorWhite;
+            text-align: right;
+
+            .price-value {
+                font-size: 42px;
+            }
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: -45px;
+            display: block;
+            width: 200px;
+            height: 45px;
+            background: linear-gradient(-12.5deg, $colorOrange 49%, $colorTransparent 51%);
+        }
+    }
+}
+
+.wrapper-triangle--destinations {
+    z-index: 1;
+    margin-top: -4.5%;
+    padding-top: 4.5%;
+    background-image: linear-gradient(1.5deg, #fff 49%, $colorTransparent 51%);
+}
+
+.header__nav {
+    position: static;
+}

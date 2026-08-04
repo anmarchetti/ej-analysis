@@ -1,0 +1,42 @@
+﻿---
+ID: "bf4bf282-e761-4a1b-8a93-815f5a49c6f4"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-309 Seats Map Update - Trade Portal"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $benefitsorderintable_a52fc82b9ca2457b810a4b2ada15cd2e_en_v1 = @"
+    {48AAE254-94A2-4929-BE86-A1B1AF960C08}|{A432BF81-32D2-4F4E-A924-C5E65BB8D0C0}|{B4E63258-6E99-48A6-BE38-35235151D053}|{D10B646A-D461-43CA-A33F-65438B03C2C6}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seats Map Trade"
+            TemplatePath = "Project/Trade Portal/Datasource/Seats Map Trade"
+            Id          = [GUID]"{A52FC82B-9CA2-457B-810A-4B2ADA15CD2E}"
+            Fields      = @{
+                "BenefitsOrderInTable" = @{
+                    "en" = $benefitsorderintable_a52fc82b9ca2457b810a4b2ada15cd2e_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999950
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250714T144009Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

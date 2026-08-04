@@ -1,0 +1,220 @@
+.wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    --autofill-bg: #E8F0FE;
+
+    // override default background for autofill in Safari/Chrome
+    .input:not(:disabled):autofill,
+    .input:not(:disabled):-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px var(--autofill-bg) inset;
+        transition: background-color 9999s ease-in-out 0s;
+
+        + .label {
+            transform: translateY(-23px);
+        }
+    }
+
+    .field:has(.input:not(:disabled):autofill),
+    .field:has(.input:not(:disabled):-webkit-autofill) {
+        border-radius: 6px;
+        background-color: var(--autofill-bg);
+
+        .input {
+            background: var(--autofill-bg);
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        width: 100%;
+    }
+
+    .input:focus + .label {
+        transform: translateY(-23px);
+    }
+}
+
+.wrapper.active {
+    .label {
+        transform: translateY(-23px);
+    }
+}
+
+.wrapper.focused {
+    .field {
+        border: 1px solid $clrEjOrangeLight;
+    }
+
+    .label {
+        color: $clrEjOrangeLight;
+    }
+}
+
+.wrapper.disabled {
+    .field,
+    .validIcon {
+        color: $clrTxtLight;
+        background-color: $colorGrayLighter;
+    }
+}
+
+.wrapper.error {
+    .field {
+        border: 1px solid $colorRed;
+
+        span,
+        .input,
+        .input::placeholder,
+        .validIcon svg {
+            color: $colorRed;
+        }
+
+        .input:autofill {
+            color: $colorRed;
+            -webkit-text-fill-color: $colorRed;
+        }
+    }
+
+    .label {
+        color: $colorRed;
+        transform: translateY(-23px);
+    }
+}
+
+.content {
+    display: flex;
+    align-items: flex-start;
+    flex-flow: wrap;
+    column-gap: 16px;
+    row-gap: 8px;
+
+    &.vertical {
+        flex-direction: column;
+        align-items: unset;
+    }
+}
+
+.fieldWrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+
+    @include media-breakpoint-down(sm) {
+        width: 100%;
+        flex-wrap: unset;
+    }
+}
+
+.field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3px;
+    font-size: 16px;
+    border-radius: 6px;
+    padding: 11px 15px 11px 20px;
+    height: 44px;
+    border: 1px solid $borderColorGrayMiddle;
+    line-height: 1;
+    width: 363px;
+
+    @include media-breakpoint-down(sm) {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+}
+
+.input {
+    position: relative;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    padding: 0;
+    line-height: 1;
+    font-size: 16px;
+    text-overflow: ellipsis;
+}
+
+.label {
+    position: absolute;
+    left: 20px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    margin: auto;
+    padding: 0 5px;
+    font-size: 15px;
+    line-height: 1;
+    background-color: $colorWhite;
+    border-radius: 3px;
+    color: $clrTxtLight;
+    top: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 90%;
+}
+
+.validIcon {
+    color: $clrEjOrange;
+
+    svg {
+        @include sizeSquare(20px);
+    }
+}
+
+.errorWrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: $colorRed;
+    line-height: 1;
+    max-width: 363px;
+    margin: auto 0;
+
+    svg {
+        @include sizeSquare(16px);
+    }
+
+    @include media-breakpoint-down(sm) {
+        max-width: unset;
+    }
+
+    .errorMsg {
+        margin: auto auto auto 0;
+        font-family: $fontRoundedBook;
+        font-size: 15px;
+        line-height: 15px;
+        word-break: break-word;
+        word-wrap: break-word;
+    }
+}
+
+.clear {
+    right: 13px!important;
+
+    &:after {
+        display: none;
+    }
+}
+
+.noOptionBlock {
+    padding: 8px 12px;
+
+    &.default {
+        color: hsl(0, 0%, 60%);
+        text-align: center;
+    }
+
+    &.empty {
+        font-family: $fontRoundedDemy;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 18px;
+    }
+}

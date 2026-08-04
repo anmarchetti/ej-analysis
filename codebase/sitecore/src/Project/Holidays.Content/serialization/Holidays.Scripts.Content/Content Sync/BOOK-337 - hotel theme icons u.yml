@@ -1,0 +1,111 @@
+﻿---
+ID: "1f275a68-629a-42c7-a453-c0b009fee533"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/BOOK-337 - hotel theme icons update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function updateIcon($holidayPath, $tradePortalPath, $language, $icon) {
+        $holidayItem = Get-Item -Path $holidayPath -Language $language -ErrorAction SilentlyContinue;
+        if($holidayItem -ne $null) {
+            $holidayItem.Editing.BeginEdit()
+            $holidayItem["Icon"] = $icon
+            $holidayItem.Editing.EndEdit() | Out-Null
+        }
+        
+        $tradePortalItem = Get-Item -Path $tradePortalPath -Language $language -ErrorAction SilentlyContinue;
+        if($tradePortalItem -ne $null) {
+            $tradePortalItem.Editing.BeginEdit()
+            $tradePortalItem["Icon"] = $icon
+            $tradePortalItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    $datasourcePath15kg = "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Package Icons/Bags/15kg bags"
+    $datasourcePathTradePortal15kg = "/sitecore/content/EasyJet/TradePortal/Data/Hotel Themes/Package Icons/Bags/15kg bags"
+    $iconBag = "<image mediaid='{7D88D7D6-A9CC-4B74-A6C9-461EE1E15247}'/>"
+    
+    updateIcon -HolidayPath $datasourcePath15kg -TradePortalPath $datasourcePathTradePortal15kg -Language "en" -Icon $iconBag
+    updateIcon -HolidayPath $datasourcePath15kg -TradePortalPath $datasourcePathTradePortal15kg -Language "fr-FR" -Icon $iconBag
+    updateIcon -HolidayPath $datasourcePath15kg -TradePortalPath $datasourcePathTradePortal15kg -Language "fr-CH" -Icon $iconBag
+    updateIcon -HolidayPath $datasourcePath15kg -TradePortalPath $datasourcePathTradePortal15kg -Language "de-DE" -Icon $iconBag
+    updateIcon -HolidayPath $datasourcePath15kg -TradePortalPath $datasourcePathTradePortal15kg -Language "de-CH" -Icon $iconBag
+    
+    $datasourcePath23kg = "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Package Icons/Bags/23kg bags"
+    $datasourcePathTradePortal23kg = "/sitecore/content/EasyJet/TradePortal/Data/Hotel Themes/Package Icons/Bags/23kg bags"
+    
+    updateIcon -HolidayPath $datasourcePath23kg -TradePortalPath $datasourcePathTradePortal23kg -Language "en" -Icon $iconBag
+    updateIcon -HolidayPath $datasourcePath23kg -TradePortalPath $datasourcePathTradePortal23kg -Language "fr-FR" -Icon $iconBag
+    updateIcon -HolidayPath $datasourcePath23kg -TradePortalPath $datasourcePathTradePortal23kg -Language "fr-CH" -Icon $iconBag
+    updateIcon -HolidayPath $datasourcePath23kg -TradePortalPath $datasourcePathTradePortal23kg -Language "de-DE" -Icon $iconBag
+    updateIcon -HolidayPath $datasourcePath23kg -TradePortalPath $datasourcePathTradePortal23kg -Language "de-CH" -Icon $iconBag
+    
+    $datasourcePathBackpack = "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Package Icons/Bags/Small under seat bag"
+    $datasourcePathTradePortalBackpack = "/sitecore/content/EasyJet/TradePortal/Data/Hotel Themes/Package Icons/Bags/Small under seat bag"
+    $iconBackpack = "<image mediaid='{1FB30ACA-C307-4EF2-9B71-E237FB6B3D14}'/>"
+    
+    updateIcon -HolidayPath $datasourcePathBackpack -TradePortalPath $datasourcePathTradePortalBackpack -Language "en" -Icon $iconBackpack
+    updateIcon -HolidayPath $datasourcePathBackpack -TradePortalPath $datasourcePathTradePortalBackpack -Language "fr-FR" -Icon $iconBackpack
+    updateIcon -HolidayPath $datasourcePathBackpack -TradePortalPath $datasourcePathTradePortalBackpack -Language "fr-CH" -Icon $iconBackpack
+    updateIcon -HolidayPath $datasourcePathBackpack -TradePortalPath $datasourcePathTradePortalBackpack -Language "de-DE" -Icon $iconBackpack
+    updateIcon -HolidayPath $datasourcePathBackpack -TradePortalPath $datasourcePathTradePortalBackpack -Language "de-CH" -Icon $iconBackpack
+    
+    $datasourcePathFlights = "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Package Icons/Flights/Flight"
+    $datasourcePathTradePortalFlights = "/sitecore/content/EasyJet/TradePortal/Data/Hotel Themes/Package Icons/Flights/Flight"
+    $iconFlights = "<image mediaid='{A058120A-3AAA-4FA2-B55F-8A4F000278C4}'/>"
+    
+    updateIcon -HolidayPath $datasourcePathFlights -TradePortalPath $datasourcePathTradePortalFlights -Language "en" -Icon $iconFlights
+    updateIcon -HolidayPath $datasourcePathFlights -TradePortalPath $datasourcePathTradePortalFlights -Language "fr-FR" -Icon $iconFlights
+    updateIcon -HolidayPath $datasourcePathFlights -TradePortalPath $datasourcePathTradePortalFlights -Language "fr-CH" -Icon $iconFlights
+    updateIcon -HolidayPath $datasourcePathFlights -TradePortalPath $datasourcePathTradePortalFlights -Language "de-DE" -Icon $iconFlights
+    updateIcon -HolidayPath $datasourcePathFlights -TradePortalPath $datasourcePathTradePortalFlights -Language "de-CH" -Icon $iconFlights
+    
+    $datasourcePathHotel = "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Package Icons/Hotels/Hotel"
+    $datasourcePathTradePortalHotel = "/sitecore/content/EasyJet/TradePortal/Data/Hotel Themes/Package Icons/Hotels/Hotel"
+    $iconHotel = "<image mediaid='{73F7C0F7-56CF-41CE-BB08-3033B32651FB}'/>"
+    
+    updateIcon -HolidayPath $datasourcePathHotel -TradePortalPath $datasourcePathTradePortalHotel -Language "en" -Icon $iconHotel
+    updateIcon -HolidayPath $datasourcePathHotel -TradePortalPath $datasourcePathTradePortalHotel -Language "fr-FR" -Icon $iconHotel
+    updateIcon -HolidayPath $datasourcePathHotel -TradePortalPath $datasourcePathTradePortalHotel -Language "fr-CH" -Icon $iconHotel
+    updateIcon -HolidayPath $datasourcePathHotel -TradePortalPath $datasourcePathTradePortalHotel -Language "de-DE" -Icon $iconHotel
+    updateIcon -HolidayPath $datasourcePathHotel -TradePortalPath $datasourcePathTradePortalHotel -Language "de-CH" -Icon $iconHotel
+    
+    $datasourcePathPriv = "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Package Icons/Transfers/Private Transfer"
+    $datasourcePathTradePortalPriv = "/sitecore/content/EasyJet/TradePortal/Data/Hotel Themes/Package Icons/Transfers/Private Transfer"
+    $iconPriv = "<image mediaid='{B67646C7-6DD5-4285-AC57-6A32FBDA88AD}'/>"
+    
+    updateIcon -HolidayPath $datasourcePathPriv -TradePortalPath $datasourcePathTradePortalPriv -Language "en" -Icon $iconPriv
+    updateIcon -HolidayPath $datasourcePathPriv -TradePortalPath $datasourcePathTradePortalPriv -Language "fr-FR" -Icon $iconPriv
+    updateIcon -HolidayPath $datasourcePathPriv -TradePortalPath $datasourcePathTradePortalPriv -Language "fr-CH" -Icon $iconPriv
+    updateIcon -HolidayPath $datasourcePathPriv -TradePortalPath $datasourcePathTradePortalPriv -Language "de-DE" -Icon $iconPriv
+    updateIcon -HolidayPath $datasourcePathPriv -TradePortalPath $datasourcePathTradePortalPriv -Language "de-CH" -Icon $iconPriv
+    
+    $datasourcePathShared = "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Package Icons/Transfers/Shared Transfer"
+    $datasourcePathTradePortalShared = "/sitecore/content/EasyJet/TradePortal/Data/Hotel Themes/Package Icons/Transfers/Shared Transfer"
+    $iconShared = "<image mediaid='{CAC04066-D025-4F00-B780-96AF1EFBAA53}'/>"
+    
+    updateIcon -HolidayPath $datasourcePathShared -TradePortalPath $datasourcePathTradePortalShared -Language "en" -Icon $iconShared
+    updateIcon -HolidayPath $datasourcePathShared -TradePortalPath $datasourcePathTradePortalShared -Language "fr-FR" -Icon $iconShared
+    updateIcon -HolidayPath $datasourcePathShared -TradePortalPath $datasourcePathTradePortalShared -Language "fr-CH" -Icon $iconShared
+    updateIcon -HolidayPath $datasourcePathShared -TradePortalPath $datasourcePathTradePortalShared -Language "de-DE" -Icon $iconShared
+    updateIcon -HolidayPath $datasourcePathShared -TradePortalPath $datasourcePathTradePortalShared -Language "de-CH" -Icon $iconShared
+    
+    
+    
+    Write-Host "finished"
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240717T104215Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

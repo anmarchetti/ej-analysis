@@ -1,0 +1,44 @@
+{
+  "Title": "Offers for s_tp=3, ESRC (dedicated recommended set)",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/fcgi-bin/ezydmouk/avcache3_g",
+          "IgnoreCase": true
+        }
+      ]
+    },
+    "Params": [
+      {
+        "Name": "s_tp",
+        "Matchers": [
+          {
+            "Name": "ExactMatcher",
+            "Pattern": "3"
+          }
+        ]
+      },
+      {
+        "Name": "accom",
+        "Matchers": [
+          {
+            "Name": "RegexMatcher",
+            "Pattern": "^(?=.*ESRC0051)(?=.*ESRC0013)(?=.*ESRC0024)(?=.*ESRC0025)(?=.*ESRC0005)(?=.*ESRC0004)(?=.*ESRC0054)(?=.*ESRC0029)(?=.*ESRC0034).*$"
+          }
+        ]
+      }
+    ],
+    "Methods": [
+      "Get"
+    ]
+  },
+  "Response": {
+    "Headers": {
+      "Content-Type": "application/json; charset=utf-8"
+    },
+    "StatusCode": 200,
+    "BodyAsFile": "__admin/files/Atcom/search/s_tp=3_ESRC.xml"
+  }
+}

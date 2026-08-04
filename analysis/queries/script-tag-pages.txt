@@ -1,0 +1,14 @@
+//Ian Features
+node tag-pages.js -k '["/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings - en","/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking - en"]' -z featureTag -t ViewBooking
+node tag-pages.js -k '["/sitecore/content/EasyJet/Holidays/Home/Booking/Change Flight - en"]' -z featureTag -t ChangeFlight
+node tag-pages.js -k '["/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation - en"]' -z featureTag -t Confirmation
+node tag-pages.js -k '["/sitecore/content/EasyJet/Holidays/Home/Booking/Change Room And Board - en"]' -z featureTag -t ChangeBoardAndRoom
+node tag-pages.js -k '["/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates - en"]' -z featureTag -t DateChange
+node tag-pages.js -k '["/sitecore/content/EasyJet/Holidays/Home/Booking/Change Transfer - en"]' -z featureTag -t TransferChange
+
+//create tech tag
+node tag-technical.js -z technicalFETag -p Reply.96  -r bolt://10.6.21.31:7687  
+node tag-backward.js -z technicalFETag -p Reply.96  -r bolt://10.6.21.31:7687  
+
+//Artur Manage page
+node tag-pages.js -t Manage -z FEPostBook -u neo4j -p Reply.96  -r bolt://10.6.21.31:7687   

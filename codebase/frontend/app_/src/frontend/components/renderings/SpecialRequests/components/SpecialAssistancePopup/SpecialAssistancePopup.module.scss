@@ -1,0 +1,36 @@
+.title {
+    margin: 8px 0 24px;
+    font-family: $fontRoundedBook;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1.3;
+
+    @include media-breakpoint-down(md) {
+        align-self: flex-start;
+        font-size: 18px;
+    }
+}
+
+.text {
+    font-size: 14px;
+    line-height: 1.28;
+
+    p {
+        font-size: 14px;
+        line-height: 1.28;
+    }
+}
+
+.phone {
+    font-size: 14px;
+    line-height: 1.28;
+    color: $clrEjOrange;
+}
+
+.popupContent {
+    border-radius: 4px;
+
+    :global(.popup__footer) {
+        padding: 16px;
+    }
+}

@@ -1,0 +1,32 @@
+﻿---
+ID: "d25b8d7f-0d8a-44d7-bd81-93f37afd353a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Update Promocode Input Parameters
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $itemPath = "/sitecore/content/EasyJet/Holidays/Home/Booking"
+    
+    $item = Get-Item -Path $itemPath;
+    $rendering = Get-Item -Path  "/sitecore/layout/Renderings/Feature/Destinations/Promocode Input";
+    
+    $promocodeRendering = Get-Rendering -Item $item -Rendering $rendering ;
+    
+    if ($promocodeRendering) {
+        Set-Rendering -Item $item  -Instance $promocodeRendering -Parameter @{ 
+                "IsOpenedByDefault" = "1" 
+            }
+        
+        Write-Host "Item" $item.Name "successfully created"
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Value: "20200812T100526:637328235260989939Z"

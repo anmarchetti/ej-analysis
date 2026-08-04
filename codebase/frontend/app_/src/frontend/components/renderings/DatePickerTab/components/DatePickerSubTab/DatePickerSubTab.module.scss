@@ -1,0 +1,53 @@
+.datePickerContent {
+    width: 100%;
+    padding: 12px 80px 40px;
+
+    @include media-breakpoint-down(md) {
+        padding: 0 40px;
+    }
+
+    @include media-breakpoint-down(sm) {
+        padding: 0 15px;
+    }
+}
+
+.wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px 10px;
+    margin: 16px 0 32px;
+
+    @include media-breakpoint-down(sm) {
+        margin: 16px -15px 32px 0;
+    }
+}
+
+.selectedNights {
+    flex-grow: 1;
+    font-family: $fontRoundedDemy;
+    font-size: 14px;
+    line-height: 1.125;
+    color: $clrTextHeading;
+    text-align: end;
+
+
+    @include media-breakpoint-down(sm) {
+        display: none;
+    }
+}
+
+.flexibilityPills {
+    display: flex;
+    gap: 0 10px;
+
+    @include media-breakpoint-down(sm) {
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}

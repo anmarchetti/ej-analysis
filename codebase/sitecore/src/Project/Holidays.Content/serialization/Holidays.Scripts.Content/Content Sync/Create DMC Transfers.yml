@@ -1,0 +1,67 @@
+﻿---
+ID: "de2511b1-bfeb-4c94-8a8b-5ddc59d2c953"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create DMC Transfers
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $folderPath = "master:/content/EasyJet/Holidays/Data/Transfers";
+    
+    $transfersFolderTemplateId = "{8AEED4AD-CCA6-4F7C-A3EE-7545B45734A4}";
+    $folderId = "{8DD9B10A-0B41-4A7A-823F-A391E6E4CB59}";
+    $transfersTemplateId = "{69C67D22-E38F-49FF-8487-F1DFB858AA03}"; 
+    
+    $folderItem = Get-Item -path $folderPath -ErrorAction SilentlyContinue
+    
+    if ($folderItem -eq $null) {
+        # Create Folder
+        $folderItem = New-Item -Path $folderPath -ItemType $transfersFolderTemplateId -ForceId $folderId;
+        Write-Host "Item" $folderItem.Name "successfully created";
+    } else {
+        Write-Host "Item" $folderPath "already exists";
+    }
+    
+    function Create-Default-Tranfer-Item {
+        param([string]$path, [string]$id, [string]$code, [string] $name, [string]$icon, [string]$content)
+        
+        $item = Get-Item -path $path -ErrorAction SilentlyContinue
+        
+        if ($item -eq $null) {
+            # Create Item
+            $item = New-Item -Path $path -ItemType $transfersTemplateId -ForceId $id;
+            Write-Host "Item" $item.Name "successfully created";
+            
+            $item.Editing.BeginEdit()
+            $item["Code"] = $code;
+            $item["Name"] = $name;
+            if($content -ne $null){
+                $item["Content"] = $content;
+            }
+            if($icon -ne $null){
+                $item["Icon"] = '<image mediaid="' + $icon +'" />';
+            }
+            $item.Editing.EndEdit() | Out-Null;
+            
+            Write-Host "Item" $item.Name "successfully updated";
+        } else {
+             Write-Host "Item" $path "already exists";
+        }
+    
+    }
+    
+    Create-Default-Tranfer-Item -path "master:/content/EasyJet/Holidays/Data/Transfers/No Shared DMC" -id "{F607BBAF-76EB-4381-93C1-C1EB54CF75B5}" -code "NS" -name "I will make my own way from and to the airport" -icon "{C5DE84DF-126F-4878-8868-FEC482B9793D}" -content $null;
+    Create-Default-Tranfer-Item -path "master:/content/EasyJet/Holidays/Data/Transfers/No Private DMC" -id "{2448DB8A-35FE-4020-8355-A0F7292EF326}" -code "NP" -name "I will make my own way from and to the airport" -icon "{C5DE84DF-126F-4878-8868-FEC482B9793D}" -content $null;
+    Create-Default-Tranfer-Item -path "master:/content/EasyJet/Holidays/Data/Transfers/Shared DMC" -id "{0DE6CFA7-170F-4FCB-99C5-8CFD54FA9431}" -code "SS" -name "Shared - Shuttle standard bus" -icon "{5C65A0FC-7F04-48B9-95AA-15D8A72BBD3A}" -content "<ul><li>Return transfer from and to the airport</li></ul>";
+    Create-Default-Tranfer-Item -path "master:/content/EasyJet/Holidays/Data/Transfers/Private DMC" -id "{454487F0-D610-41E4-83AB-64A04D45570C}" -code "PP" -name "Private taxi" -icon "{465913CF-A964-42E8-8931-8CF4EF0427CB}" -content "<ul><li>Return transfer from and to the airport</li></ul>";
+    
+    Write-Host "Items was created";
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Value: "20200512T102643:637248760038866476Z"

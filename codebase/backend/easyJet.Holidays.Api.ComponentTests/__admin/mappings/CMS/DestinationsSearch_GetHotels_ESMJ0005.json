@@ -1,0 +1,78 @@
+{
+    "Title": "CMS Hotels data for ESMJ0005 (api/DestinationsSearch/GetHotels)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetHotels",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "ExactMatcher",
+                "Pattern": "AtcomIds%5B0%5D=ESMJ0005"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "Hotels": [
+                {
+                    "Code": "ESMJ0005",
+                    "Name": "Majorca Test Hotel 01",
+                    "Description": null,
+                    "Longitude": null,
+                    "Latitude": null,
+                    "Address": null,
+                    "City": null,
+                    "PostalCode": null,
+                    "Website": null,
+                    "Email": null,
+                    "StarRating": null,
+                    "Rating": 5,
+                    "NumberOfReviews": 78,
+                    "BookingPhone": null,
+                    "ManagementPhone": null,
+                    "HotelPhone": null,
+                    "FaxNumber": null,
+                    "Strapline": null,
+                    "Images": null,
+                    "Airports": null,
+                    "BoardTypes": null,
+                    "RoomTypes": null,
+                    "ClosestFacility": null,
+                    "Facilities": null,
+                    "Country": {
+                        "Code": "ES",
+                        "Name": "Spain"
+                    },
+                    "Location": {
+                        "Code": "ESMJ",
+                        "Name": "Majorca"
+                    },
+                    "Resort": {
+                        "Code": "ESMJCO",
+                        "Name": "Cala D\u0027Or"
+                    },
+                    "HotelTheme": {
+                        "Code": "C",
+                        "Name": "City"
+                    },
+                    "HighestPriorityType": {
+                        "Name": "Luxury",
+                        "Description": "Luxury type",
+                        "Icon": "/-/media/4780746cafc9424d888d5ebac5399991.ashx"
+                    },
+                    "TripAdvisorId": "123",
+                    "isGreatDeal": false
+                }
+            ]
+        }
+    }
+}

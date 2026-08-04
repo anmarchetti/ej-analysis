@@ -1,0 +1,39 @@
+﻿---
+ID: "df57cea1-1c5b-447f-bae4-8a8715eed2f9"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14885 Create Alternative Boards Settings"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $settingsFolderPath = "/sitecore/content/EasyJet/Holidays/Settings"
+    
+    $boardsSettingsTemplateId = "{C2E4F86B-D6DA-4D72-9F9C-910CAFFC8CFE}"
+    $boardsSettingsItemName = "Alternative Boards Settings"
+    
+    $item = Get-Item -Path "$($settingsFolderPath)/$($boardsSettingsItemName)" -ErrorAction SilentlyContinue
+    
+    if ($item -eq $null) {
+    	$item = New-Item -Path $settingsFolderPath -Name $boardsSettingsItemName -ItemType $boardsSettingsTemplateId
+    
+    	$item.Editing.BeginEdit()
+    	$item["EnableAlternativeBoardsSearchResults"] = "1"
+    	$item["EnableAlternativeBoardsPromoPages"] = "1"
+    	$item["AlternativeBoardsExcludedPromoPages"] = "{96F37CEB-6A05-4735-BE89-C237BB8C538F}|{69CF3379-5399-464F-B8CB-3026C6B8F516}|{279A7AB8-05D7-4D1E-BF76-F97370BD58CB}"
+    	$item.Editing.EndEdit() | Out-Null;
+    }
+    
+    Write-Host $item.Name "Alternative Boards settings creation finished"; 
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220418T124410Z

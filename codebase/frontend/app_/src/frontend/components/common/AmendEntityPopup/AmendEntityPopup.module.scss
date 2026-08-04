@@ -1,0 +1,115 @@
+.popupDialog {
+    width: 1200px;
+    max-width: 90%;
+
+    @include media-breakpoint-down(sm) {
+        width: 100vw;
+        max-width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+        margin: 0;
+    }
+}
+
+.popupContainer {
+    padding: 0 !important;
+
+    --wrap-padding: 24px;
+    @include media-breakpoint-down(sm) {
+        --wrap-padding: 16px;
+
+        height: 100vh;
+    }
+}
+
+.wrapper {
+    width: 1200px;
+    max-width: 100%;
+    max-height: 83vh;
+    overflow-y: auto;
+
+    @include custom-scrollbar(transparent, transparent, 0);
+
+    @include media-breakpoint-down(sm) {
+        max-height: 100vh;
+    }
+    
+}
+
+.header {
+    padding: var(--wrap-padding);
+    background-color: $colorPorcelain;
+
+    h2 {
+        margin: 0 0 12px;
+        font-family: $fontRoundedDemy;
+        font-size: 24px;
+        line-height: 1.3;
+
+        @include media-breakpoint-down(sm) {
+            margin-bottom: 4px;
+            font-size: 18px;
+            line-height: 1.3;
+        }
+    }
+
+    span {
+        line-height: 22px;
+        @include media-breakpoint-down(sm) {
+            font-size: 14px;
+            line-height: 1.3;
+        }
+    }
+}
+
+.content {
+    padding-top: var(--wrap-padding);
+    padding-bottom: 100px;
+    
+
+
+    :global(.board-and-room) {
+        margin: 0;
+        padding: 24px 15px;
+
+        h3 {
+            margin: 16px 0;
+        }
+
+        div[data-item-selection='selected'] {
+            margin: 16px 0;
+        }
+    }
+}
+
+.footer {
+    position: absolute;
+    z-index: $z-index-popup;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    width: 100%;
+    padding: 16px var(--wrap-padding);
+    background-color: $colorWhite;
+    box-shadow: $generalBoxShadow;
+
+    @include media-breakpoint-down(sm) {
+        button {
+            flex: 1 1 0;
+            gap: 16px;
+        }
+    }
+
+    :global(.btn) {
+        width: 140px;
+        height: 48px;
+        font-size: 16px;
+
+        @include media-breakpoint-down(sm) {
+            height: 40px;
+            font-size: 14px;
+        }
+    }
+}

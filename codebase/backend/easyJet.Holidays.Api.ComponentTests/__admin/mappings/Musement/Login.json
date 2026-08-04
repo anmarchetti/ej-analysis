@@ -1,0 +1,32 @@
+﻿{
+    "Title": "Get access token in musement service (api/v3/login)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/v3/login",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        //"Body": {
+        //    "Matcher": {
+        //        "Name": "ExactMatcher",
+        //        "Pattern": "{\"client_id\":\"400_3jwe5x6lscowwkco4w4wkw4c4wgg8scg80ww8o8ssokg4g8sg\",\"client_secret\":\"255hip6pcvhccccg008ks88co0kog88wgcwkoc4so0kggk88oo\",\"grant_type\":\"client_credentials\"}",
+        //        "IgnoreCase": true
+        //    }
+        //},
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "access_token": "ZjFhMmIxMmE5YTEyOGJmYWU3NzAyOWIwMWY5YTcwMzRiNjRiMGJhMWFmOTM4Nzg2NDI5YjBkYTg1MDI4YTQwYg",
+            "expires_in": 3600,
+            "token_type": "bearer",
+            "scope": null
+        }
+    }
+}

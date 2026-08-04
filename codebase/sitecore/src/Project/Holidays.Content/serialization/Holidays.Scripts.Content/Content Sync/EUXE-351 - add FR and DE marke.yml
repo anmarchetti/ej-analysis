@@ -1,0 +1,115 @@
+﻿---
+ID: "740d40a8-0652-4a32-9ac3-72f4ccd9b8e4"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUXE-351 - add FR and DE markets"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+            $item = gi -Path "master:$($path)" -ErrorAction SilentlyContinue
+            
+            if ($item -ne $null) {
+               return $item
+            }
+               
+            return New-Item -Path $path -ItemType $template
+        }
+        
+    function create-lang-version($item,$lang,$field,$value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value;
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    function add-all-language-versions($item, $copy) {
+       @('fr-CH', 'de-CH', 'de-DE', 'fr-FR') | % {
+           if ($copy) {
+               Add-ItemLanguage -Item $item -Language 'en' -TargetLanguage $_ -IfExist Skip
+           }
+           else {
+               Add-ItemLanguage -Item $item -TargetLanguage $_ -IfExist Skip -DoNotCopyFields
+           }
+       }
+    }
+    
+    function create-airport($cityPath, $name, $code) {
+       $item = Get-Or-Create-Item -path "$($cityPath)/$($name)" -template "{9B7D85B4-E5CF-42E7-B533-B20FB55EC18D}"
+       
+       $item.Editing.BeginEdit()
+       $item["Code"] = $code
+       $item["Name"] = $name
+       $item.Editing.EndEdit() | Out-Null
+       
+       add-all-language-versions -item $item -copy true
+       
+       return $item
+    }
+    
+    # create currency
+    $EUR = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Data/Currencies/EUR" -template "{D3D0218E-D91A-4165-B844-CA406E254004}"
+    add-all-language-versions -Item $EUR
+    
+    # create new france airports
+    $francePath = "/sitecore/content/EasyJet/Holidays/Data/Airports/France"
+    $bva = create-airport -cityPath $francePath -name "Paris Beauvai" -code "BVA"
+    $rns = create-airport -cityPath $francePath -name "Rennes" -code "RNS"
+    $lig = create-airport -cityPath $francePath -name "Limoges" -code "LIG"
+    
+    $franceDepartureAirports = "{C5CA04DD-1318-4C5D-BEB4-62EB499713E8}|" + $bva.Id[0] + "|{E4556F8D-55C4-4C96-B4DD-E7F06E8FF0FE}|{3653B69E-E7A6-4743-BC5A-DD444938527C}|" + $rns.Id[0] + "|{53F78A14-1675-48F7-A64B-1A4914A281B2}|" + $lig.Id[0] +"|{278E58A9-DE25-4438-89D7-81FCD9E43C07}|{4A61ADA1-CADE-4665-81BA-F77519EA9FA0}|{366195FF-FEFB-485B-BD85-9334FD34EB93}|{C1947CD8-230C-4BA1-838F-95D2C154A51C}|{297ED81A-0052-4501-8C55-81B654F671CD}|{14CC586D-E2E0-4C88-962D-7E2B2D17B884}|{0DBAD01B-0716-4379-9A16-49A8CCE759C2}|{C2E0FC2A-9EE1-4FE2-BF12-4C676334F2E7}|{1862CBDD-BCBF-47B7-8AF5-DD45EB7F7F4D}"
+    
+    # create France and Germany market settings
+        $marketSettingsPath = "/sitecore/content/EasyJet/Holidays/Settings/Market Settings"
+        $marketSettingsItem = gi -Path $marketSettingsPath
+        
+        $franceMarket = Get-Or-Create-Item -path "$($marketSettingsPath)/France" -template "{F9653205-D2BA-441F-A0EF-526068CA493B}"
+        $germanyMarket = Get-Or-Create-Item -path "$($marketSettingsPath)/Germany" -template "{F9653205-D2BA-441F-A0EF-526068CA493B}"
+        
+        $franceMarket.Editing.BeginEdit()
+        $franceMarket["Code"] = "FR" 
+        $franceMarket["Currency"] = $EUR.Id
+        $franceMarket["DepartureAirports"] = $franceDepartureAirports
+        $franceMarket["CountryCode"] = "FR"
+        $franceMarket.Editing.EndEdit() | Out-Null
+        add-all-language-versions -Item $franceMarket
+        
+        $germanyMarket.Editing.BeginEdit()
+        $germanyMarket["Code"] = "DE" 
+        $germanyMarket["Currency"] = $EUR.Id
+        $germanyMarket["DepartureAirports"] = "{807F0CF8-4BD9-4E56-890B-E8E46E9556AB}|{2C739545-88CD-4C39-844C-080A04E0C527}|{4E9BE0C0-670F-43BF-AA66-0FA9157ECF9C}"
+        $germanyMarket["CountryCode"] = "DE"
+        $germanyMarket.Editing.EndEdit() | Out-Null
+        add-all-language-versions -Item $germanyMarket
+        
+    
+    Create-Lang-Version -Item $marketSettingsItem -Lang "fr-FR" -Field "Market" -Value $franceMarket.Id
+    Create-Lang-Version -Item $marketSettingsItem -Lang "de-DE" -Field "Market" -Value $germanyMarket.Id
+    
+    # create lang versions for other markets
+    $swiss = gi -Path "$($marketSettingsPath)/Switzerland"
+    $uk = gi -Path "$($marketSettingsPath)/United Kingdom"
+    add-all-language-versions -Item $swiss
+    add-all-language-versions -Item $uk
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230302T083838Z

@@ -1,0 +1,31 @@
+.container {
+    font-family: $fontRoundedLight;
+}
+
+.button {
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+
+    svg {
+        width: 15px;
+        height: 20px;
+        margin-left: 10px;
+    }
+}
+
+.successLabel {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    
+    :global(.error-message__container) {
+        font-family: $fontRoundedDemy;
+        font-weight: 400;
+        color: $colorGreenDark;
+    }
+
+    :global(.error-message__icon svg) {
+        margin-left: 0;
+    }
+}

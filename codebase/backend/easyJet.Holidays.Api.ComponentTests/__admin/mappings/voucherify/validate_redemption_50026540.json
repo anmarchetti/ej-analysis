@@ -1,0 +1,83 @@
+{
+    "Title": "Validate redemption X9003054",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/v1/vouchers/*/validate",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Methods": [
+            "Post"
+        ],
+        "Body": {
+            "Matcher": {
+                "Name": "WildcardMatcher",
+                "Pattern": "*\"booking_ref\":\"50026540\"*",
+                "IgnoreCase": true
+            }
+        }
+    },
+    "Response": {
+        "Headers": {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "valid": true,
+            "applicable_to": {
+                "data": [],
+                "total": 0,
+                "data_ref": "data",
+                "object": "list"
+            },
+            "inapplicable_to": {
+                "data": [],
+                "total": 0,
+                "data_ref": "data",
+                "object": "list"
+            },
+            "tracking_id": "track_sL1BzFhiuPA=",
+            "order": {
+                "amount": 141983,
+                "discount_amount": 141983,
+                "total_discount_amount": 141983,
+                "total_amount": 0,
+                "applied_discount_amount": 141983,
+                "total_applied_discount_amount": 141983,
+                "items": [],
+                "metadata": {},
+                "customer_id": null,
+                "referrer_id": null,
+                "object": "order"
+            },
+            "code": "2232153980-refund",
+            "gift": {
+                "amount": 1358743,
+                "balance": 1358743
+            },
+            "expiration_date": "2024-11-10T23:59:59.000Z",
+            "metadata": {
+                "action": "Credit and refund",
+                "market": "UK",
+                "reason": "refund",
+                "source": "WEB",
+                "currency": "GBP",
+                "hotel_code": "X9009362",
+                "hotel_name": "Le Bristol Paris",
+                "booking_ref": "50026351",
+                "hotel_resort_code": "FRPAPC",
+                "hotel_resort_name": "Paris",
+                "hotel_country_code": "FR",
+                "hotel_country_name": "France",
+                "hotel_location_code": "FRPA",
+                "hotel_location_name": "Paris"
+            },
+            "campaign": "easyJet-credit",
+            "campaign_id": "camp_Z0S4EQk4eJvQEA4mmwio04MV"
+        }
+    }
+}

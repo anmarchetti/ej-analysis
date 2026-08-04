@@ -1,0 +1,18 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgHotelFilled = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        className={classNames('icon-svg', props.className)}
+        data-tid='hotel-icon'
+    >
+        <path d='M18.84 4.06h-.94V2.94A1 1 0 0017 2H6.87a.94.94 0 00-.94.94v1.12h-.77A1.19 1.19 0 004 5.26v15.55A1.19 1.19 0 005.16 22h13.68A1.19 1.19 0 0020 20.81V5.26a1.19 1.19 0 00-1.16-1.2zM9 10v2H7v-2zM7 9V7h2v2zm2 4v2H7v-2zm3.94-3v2h-2v-2zm-2-1V7h2v2zm2 4v2h-2v-2zm3.95-3v2h-2v-2zm-2-1V7h2v2zm2 4v2h-2v-2zM10 18h.95v2H10zm2.95 0h.95v2h-.95z' />
+    </svg>
+);
+
+export default SvgHotelFilled;

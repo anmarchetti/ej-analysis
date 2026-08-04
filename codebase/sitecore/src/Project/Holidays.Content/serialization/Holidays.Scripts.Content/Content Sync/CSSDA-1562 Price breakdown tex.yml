@@ -1,0 +1,58 @@
+﻿---
+ID: "35e7b642-26c6-4faa-b08d-2651b5ddf51c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-1562 Price breakdown text script"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $tradePath = '/sitecore/content/EasyJet/TradePortal/Home/Booking/Amend Payment/Page Components/Amend Payment Summary Trade'
+    
+    $data = Get-Item -Path $tradePath -ErrorAction SilentlyContinue
+    
+    if($data -ne $null) {
+        $data.Editing.BeginEdit()
+        $data['PriceBreakdownTitle'] = "Price Breakdown"
+        $data['SeatsChange'] = "Seats change"
+        $data['ChangeTooltip'] = "Price subject to change &amp; availability due to daily system updates. The price displayed here does factor in any change to your promotional code."
+        $data['ChangeFeeTitle'] = "Change fee"
+        $data['TotalCostOfChange'] = "Total cost of change"
+        $data['PayNow'] = "Pay now"
+        $data['RefundAmount'] = "Refund amount"
+        $data['NoChangeTotal'] = "Total"
+        $data.Editing.EndEdit() | Out-Null
+        Write-Host $data.Name "Updated";
+    }
+    
+    
+    
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 420
+Languages:
+- Language: "de-DE"
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231229T151225Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\admin
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231229T151257Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\admin

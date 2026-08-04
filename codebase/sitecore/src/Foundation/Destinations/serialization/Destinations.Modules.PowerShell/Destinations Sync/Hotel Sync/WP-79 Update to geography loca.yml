@@ -1,0 +1,83 @@
+﻿---
+ID: "b6b0465c-3524-4525-86bc-21fc7515f6b1"
+Parent: "4c10d78f-07b6-469e-929f-cb4b460bb11e"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Destinations Sync/Hotel Sync/WP-79 Update to geography location"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Find-Resorts {
+    	$criteria = @(
+    	    @{Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+            @{Filter = "Equals"; Field ="_templatename"; Value = "Resort"}
+    	)
+    
+    	$props = @{
+    		Index = "sitecore_destinations_master_index"
+    		Criteria = $criteria
+    	}
+    
+    	$items = Find-Item @props
+    
+    	Write-Host "$($items.Count) Resort were found"
+    
+    	return $items
+    }
+    
+    $resorts = Find-Resorts
+    $languages= "en", "fr-CH", "fr-DE", "de-DE", "fr-FR"
+    
+    New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+        New-UsingBlock (New-Object Sitecore.Data.DatabaseCacheDisabler) {
+            New-UsingBlock (New-Object Sitecore.Data.Events.EventDisabler) {
+                New-UsingBlock (New-Object Sitecore.Data.BulkUpdateContext) {
+                    foreach($language in $languages)
+                    {
+                        foreach($resort in $resorts) 
+                        {
+                            $r = $resort.GetItem()
+                            $resortItem = Get-Item -Path "master:" -ID $r.ID -Language $language
+                            if($resortItem.Versions.Count -ne 0)
+                            {
+                                $resortName = $resortItem.Fields["Name"].Value
+                                if ([string]::IsNullOrEmpty($resortName))
+                                {
+                                }
+                                else
+                                {
+                                    foreach($child in $resortItem.Children)
+                                    {
+                                        if($child.TemplateName -eq "Hotel")
+                                        {
+                                            if($child.Versions.Count -ne 0)
+                                            {
+                                                $value = $child.Fields["Resort"].Value
+                                            	if ([string]::IsNullOrEmpty($value))
+                                                {
+                                                   $child.Editing.BeginEdit()
+                                                   $child["Resort"] = $resortName
+                                                   $child.Editing.EndEdit()
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }   
+    }
+    
+    Write-Host "Script is completed"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230424T121653Z

@@ -1,0 +1,44 @@
+.credit-anchor {
+    display: inline-flex;
+    font-family: $fontRoundedBook;
+    font-size: 11px;
+    line-height: 1.2;
+    color: $colorWhite;
+
+    @include media-breakpoint-down(md) {
+        font-size: 8px;
+    }
+}
+
+a.credit-anchor,
+a.credit-anchor:hover {
+    color: $colorWhite;
+    opacity: 1;
+}
+
+.credit-anchor__icon {
+    display: inline-block;
+    width: 1.1em;
+    height: 1.1em;
+    margin-right: 0.4em;
+}
+
+.credit-anchor--pill {
+    padding: 5px 15px;
+    color: $clrTextMain;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 18px;
+
+    @include media-breakpoint-down(md) {
+        padding: 3px 6px;
+    }
+}
+
+a.credit-anchor--pill {
+    color: $clrTextMain;
+
+    &:hover {
+        color: $clrTextMain;
+        background: rgba(255, 255, 255, 0.7);
+    }
+}

@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Nullable>warnings</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.Core" />
+    <PackageReference Include="AWSSDK.Core" />
+    <PackageReference Include="AWSSDK.S3" />
+    <PackageReference Include="AWSSDK.SecretsManager" />
+    <PackageReference Include="AWSSDK.SecurityToken" />
+    <PackageReference Include="AWSSDK.SimpleEmailV2" />
+    <PackageReference Include="AWSSDK.SimpleNotificationService" />
+    <PackageReference Include="AWSSDK.SQS" />
+    <PackageReference Include="AWSSDK.SSO" />
+    <PackageReference Include="AWSSDK.SSOOIDC" />
+    <PackageReference Include="MimeKitLite" />
+    <PackageReference Include="Polly" />
+    <PackageReference Include="Polly.Extensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\easyJet.Holidays.Api.Domain\easyJet.Holidays.Api.Domain.csproj" />
+    <ProjectReference Include="..\easyJet.Holidays.External.Domain\easyJet.Holidays.External.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\FreeNights\" />
+  </ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="easyJet.Holidays.External.AWS.FreeBoardUpgradeDataSync" />
+	</ItemGroup>
+</Project>

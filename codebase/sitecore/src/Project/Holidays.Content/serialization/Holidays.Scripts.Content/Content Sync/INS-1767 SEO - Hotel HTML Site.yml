@@ -1,0 +1,116 @@
+﻿---
+ID: "3fc99c01-a747-42d7-b33d-0dbc6b54676a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-1767 SEO - Hotel HTML Sitemaps - Regions"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $rootPath      = "/sitecore/content/EasyJet/Holidays/Home/Sitemap/Hotels"
+    $pageTemplate  = "{798D918C-E325-421F-8EC2-B91A44D16630}"
+    
+    $oldRenderingId  = "{407D64CF-69A8-4A04-806F-0B048C4E7A71}"  # Sitemap Block
+    $newRenderingId  = "{C0B63D04-AB03-4451-9E3A-603F23C34C65}"  # Hotels Sitemap Block
+    
+    $sharedLayoutFieldId = "{F1A1FE9E-A60C-4DDB-A3A0-BB5B29FE732E}"
+    
+    $db       = [Sitecore.Configuration.Factory]::GetDatabase("master")
+    $rootItem = $db.GetItem($rootPath)
+    
+    if ($null -eq $rootItem) {
+        Write-Host "ERROR: Root item not found at $rootPath" -ForegroundColor Red
+        return
+    }
+    
+    $children = $rootItem.Children | Where-Object { $_.TemplateID -eq $pageTemplate }
+    Write-Host "Found $($children.Count) item(s) matching template $pageTemplate"
+    
+    foreach ($item in $children) {
+        Write-Host "`nProcessing: $($item.Paths.FullPath)"
+    
+        $layoutField = $item.Fields[$sharedLayoutFieldId]
+        if ($null -eq $layoutField) {
+            Write-Host "SKIP: Shared layout field not found."
+            continue
+        }
+    
+        # GetFieldValue merges the item's own value with Standard Values inheritance
+        $effectiveXml = [Sitecore.Data.Fields.LayoutField]::GetFieldValue($layoutField)
+        if ([string]::IsNullOrWhiteSpace($effectiveXml)) {
+            Write-Host "SKIP: No shared layout found (including Standard Values)."
+            continue
+        }
+    
+        $layoutDef = [Sitecore.Layouts.LayoutDefinition]::Parse($effectiveXml)
+        # Use device 0 (default device)
+        $device = $layoutDef.Devices | Select-Object -First 1
+    
+        if ($null -eq $device) {
+            Write-Host "SKIP: No device in layout."
+            continue
+        }
+    
+        # --- Replace Sitemap Block with Hotels Sitemap Block ---
+        $oldRendering = $device.Renderings | Where-Object { $_.ItemID -eq $oldRenderingId } | Select-Object -First 1
+    
+        if ($null -eq $oldRendering) {
+            Write-Host "SKIP: 'Sitemap Block' rendering not found in shared layout."
+        } else {
+            $datasource = $oldRendering.Datasource
+            Write-Host "Replacing Sitemap Block with Hotels Sitemap Block (datasource: $datasource)"
+    
+            $oldRendering.ItemID = $newRenderingId
+    
+            $item.Editing.BeginEdit()
+            try {
+                $item.Fields[$sharedLayoutFieldId].Value = $layoutDef.ToXml()
+                $item.Editing.EndEdit()
+                Write-Host "Layout saved."
+            } catch {
+                $item.Editing.CancelEdit()
+                Write-Host "ERROR saving layout: $_" -ForegroundColor Red
+                continue
+            }
+        }
+    
+        $sitemapBlockItem = $db.GetItem("$($item.Paths.FullPath)/Page Components/Sitemap Block")
+        if ($null -eq $sitemapBlockItem) {
+            Write-Host "SKIP IsSorted: '$($item.Paths.FullPath)/Page Components/Sitemap Block' not found."
+        } else {
+            $sectionTemplate  = "{AD06F4F5-2C32-48EE-AAF5-0EF4D64C37E9}"
+            $isSortedFieldId  = "{869B8961-6B72-470C-A210-9C488B7F4B63}"
+            $sections = $sitemapBlockItem.Children | Where-Object { $_.TemplateID -eq $sectionTemplate }
+            if ($sections.Count -eq 0) {
+                Write-Host "SKIP IsSorted: No Sitemap Section children found."
+            } else {
+                foreach ($section in $sections) {
+                    $section.Editing.BeginEdit()
+                    try {
+                        $section.Fields[$isSortedFieldId].Value = "1"
+                        $section.Editing.EndEdit()
+                        Write-Host "IsSorted=1 set on: $($section.Paths.FullPath)"
+                    } catch {
+                        $section.Editing.CancelEdit()
+                        Write-Host "ERROR setting IsSorted on $($section.Paths.FullPath): $_" -ForegroundColor Red
+                    }
+                }
+            }
+        }
+    }
+    
+    Write-Host "`nDone."
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260316T180512Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

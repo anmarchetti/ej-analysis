@@ -1,0 +1,103 @@
+.card {
+    composes: card from '../Card.module.scss';
+    position: relative;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.29;
+    }
+}
+
+.title {
+    margin: 0 0 10px;
+    font-family: $fontRoundedBook;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 24px;
+    color: $clrTextMain;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.6s ease-in-out;
+
+    :global(.react-multi-carousel-item--active) & {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 60px;
+    left: 0;
+    overflow: hidden;
+}
+
+.bgIcon {
+    position: absolute;
+    color: $colorGrayMiddle;
+    fill: none;
+    transition: transform 0.6s ease-in-out;
+
+    :global(.stroke) {
+        stroke: currentcolor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    :global(.react-multi-carousel-item--active) & {
+        transform: rotate(0);
+    }
+}
+
+.bgIcon_1 {
+    top: -7px;
+    left: -55px;
+    width: 168px;
+    height: 168px;
+    transform: rotate(15deg) scale(1.2);
+}
+
+.bgIcon_2 {
+    top: 17px;
+    right: -21px;
+    width: 130px;
+    height: 130px;
+    transform: rotate(-9deg) scale(1.2);
+}
+
+.bgIcon_3 {
+    bottom: -61.5px;
+    left: -79px;
+    width: 179px;
+    height: 179px;
+    transform: rotate(-30deg) scale(1.2);
+    transform-origin: 0 0;
+
+    :global(.react-multi-carousel-item--active) & {
+        transform: rotate(-30deg);
+    }
+}
+
+.bgIcon_4 {
+    right: -33px;
+    bottom: -20px;
+    width: 154px;
+    height: 154px;
+    transform: scale(1.2);
+}

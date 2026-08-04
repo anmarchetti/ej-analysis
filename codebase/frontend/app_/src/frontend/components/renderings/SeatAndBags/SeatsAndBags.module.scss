@@ -1,0 +1,42 @@
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: $clrTextMain;
+
+    @include media-breakpoint-up(lg) {
+        margin-bottom: 16px;
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 8px;
+        font-size: 20px;
+    }
+}
+
+.luxuryTitle {
+    margin-bottom: 16px;
+
+    @include media-breakpoint-down(lg) {
+        margin-bottom: 8px;
+        font-size: 20px;
+    }
+}
+
+.internalFlightContainer {
+    @include media-breakpoint-down(md) {
+        margin-bottom: 8px;
+    }
+}
+
+.placeholderSeatsBags {
+    height: 290px;
+
+    @include media-breakpoint-down(sm) {
+        height: 405px;
+    }
+}
+
+.outlineBanner {
+    border: none !important;
+}

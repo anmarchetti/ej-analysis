@@ -1,0 +1,418 @@
+$popup-zindex: 1050;
+$popup-margin-y: 30px;
+$popup-margin-y_mobile: 10px;
+$popup-padding-x: 30px;
+$popup-padding-x_mobile: 15px;
+$popup-bg: #fff;
+$popup-close-size: 28px;
+$popup-close-size_mobile: 24px;
+
+.popup-overlay {
+    position: fixed;
+    z-index: $popup-zindex - 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(#535353, 0.65);
+}
+
+.popup {
+    position: fixed;
+    z-index: $popup-zindex;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    outline: 0;
+
+    &.popup--opened {
+        display: block;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+}
+
+.popup--transparent {
+    background: none;
+}
+
+.popup--centered {
+    .popup__dialog {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .popup__content {
+        max-height: none;
+    }
+
+    .popup__header {
+        padding: 45px 0 0;
+        border-bottom: 0;
+    }
+
+    .popup__body {
+        padding-top: 20px;
+    }
+}
+
+.popup--small {
+    text-align: center;
+
+    .popup__dialog {
+        @include media-breakpoint-up(md) {
+            width: 480px;
+            max-width: 480px;
+        }
+    }
+
+    .popup__content {
+        border-radius: 6px;
+    }
+
+    .popup__header {
+        padding: 45px 0 0;
+        border-bottom: 0;
+    }
+
+    .popup__body {
+        font-size: 18px;
+        line-height: 1.2;
+        color: $clrTextHeading;
+
+        p {
+            font-size: inherit;
+        }
+    }
+
+    .popup__title {
+        color: $clrTextHeading;
+
+        @include media-breakpoint-up(sm) {
+            font-size: 26px;
+        }
+    }
+
+    .popup__footer {
+        flex-direction: column;
+        justify-content: flex-start;
+
+        .btn--md {
+            min-width: 180px;
+            padding: 15px 30px;
+        }
+
+        .btn + .btn {
+            margin-top: 10px;
+            margin-left: 0;
+        }
+    }
+}
+
+.popup--full-width {
+    .popup__dialog {
+        width: calc(100% - #{2 * $container-padding-x_mobile});
+        max-width: $container-max-width + 2 * $container-padding-x_mobile;
+    }
+}
+
+.popup--text-center {
+    text-align: center;
+
+    .popup__body {
+        padding-right: $popup-padding-x;
+    }
+
+    .popup__footer {
+        justify-content: center;
+    }
+}
+
+.popup__dialog {
+    position: relative;
+    display: flex;
+    width: 800px;
+    max-width: 800px;
+    max-height: calc(100% - #{$popup-margin-y * 2});
+    margin: $popup-margin-y auto;
+    pointer-events: none;
+}
+
+.popup__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: calc(100vh - #{$popup-margin-y * 2});
+    overflow: hidden;
+    background-color: $popup-bg;
+    background-clip: padding-box;
+    outline: 0;
+    box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.15);
+    pointer-events: auto;
+}
+
+.popup__close {
+    position: absolute;
+    z-index: 1;
+    top: 20px;
+    right: 20px;
+    width: $popup-close-size;
+    height: $popup-close-size;
+    padding: 0;
+    line-height: 1;
+    background: 0;
+    border: none;
+
+    &:hover {
+        background: 0;
+    }
+
+    svg {
+        width: 80%;
+        height: 80%;
+        color: $clrEjOrange;
+    }
+}
+
+.popup__header {
+    flex-shrink: 0;
+    margin: 0 $popup-padding-x;
+    padding: 22px $popup-close-size 25px 0;
+    border-bottom: 1px solid #cbd5d8;
+
+    + .popup__body {
+        padding-right: $popup-padding-x;
+    }
+}
+
+.popup__title {
+    margin: 0;
+    font-family: $fontRoundedHeadline;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.popup__body {
+    flex: 1 1 auto;
+    padding: 30px 80px 0 $popup-padding-x;
+    overflow-y: auto;
+
+    &:last-child {
+        padding-bottom: 30px;
+    }
+
+    .main-text {
+        padding-bottom: 20px;
+        font-weight: bold;
+    }
+
+    .additional-text {
+        padding: 10px 0 20px;
+    }
+}
+
+.popup__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 30px $popup-padding-x;
+
+    &.start {
+        justify-content: flex-start;
+    }
+
+    .btn {
+        padding: 15px 30px;
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        font-weight: 400;
+    }
+}
+
+.popup__footer--shadowed {
+    background-color: $colorGrayLighter;
+    box-shadow: 0 0 14px 0 rgba(178, 175, 175, 0.5);
+}
+
+@include media-breakpoint-down(lg) {
+    .popup__dialog {
+        max-width: 700px;
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .popup__dialog {
+        max-width: calc(100% - #{2 * $container-padding-x_mobile});
+        max-height: calc(100% - #{$popup-margin-y_mobile * 2});
+        margin: 10px $container-padding-x_mobile;
+    }
+
+    .popup__content {
+        max-height: calc(100vh - #{$popup-margin-y_mobile * 2});
+    }
+
+    .popup__close {
+        top: 10px;
+        right: 10px;
+        width: $popup-close-size_mobile;
+        height: $popup-close-size_mobile;
+    }
+
+    .popup__header {
+        margin: 0 $popup-padding-x_mobile;
+
+        + .popup__body {
+            padding-top: 15px;
+            padding-right: $popup-padding-x_mobile;
+        }
+    }
+
+    .popup__body {
+        padding: 25px 40px 0 $popup-padding-x_mobile;
+
+        &:last-child {
+            padding-bottom: 25px;
+        }
+    }
+
+    .popup__footer {
+        padding: 25px $popup-padding-x_mobile;
+
+        .btn {
+            min-width: 50%;
+            max-width: 50%;
+            font-size: 14px;
+        }
+    }
+
+    .popup__title {
+        font-size: 24px;
+    }
+}
+
+.sitecore-popup {
+    z-index: 10000;
+
+    .popup__dialog {
+        width: 85%;
+        max-width: 1400px;
+        max-height: calc(100% - 60px);
+    }
+
+    .popup__content {
+        min-height: 95%;
+    }
+
+    .popup__body {
+        padding: 30px 66px 0 30px;
+    }
+
+    .popup__footer {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        padding: 15px 30px;
+    }
+
+    iframe {
+        position: absolute;
+        top: 60px;
+
+        // Fix for IE iframe height
+        width: calc(100% - 60px);
+        height: calc(100% - 130px);
+    }
+}
+
+.sort-images-popup {
+    z-index: 10000;
+
+    .popup__body {
+        overflow-x: hidden;
+    }
+}
+
+.popup--with-tabs {
+    .popup__content {
+        max-height: 100%;
+        margin-top: 40px;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .popup__body {
+        min-height: 100%;
+        background: $clrSiteBgWhite;
+    }
+
+    .popup__dialog {
+        height: auto;
+        margin: 0 auto;
+    }
+}
+
+.basket-popup {
+    .popup__dialog {
+        width: 100%;
+        max-width: 1200px;
+
+        .popup__content {
+            border-radius: 4px;
+        }
+
+        .popup__body {
+            padding: 25px 25px 0;
+        }
+
+        .popup__footer {
+            display: flex;
+            justify-content: flex-start;
+            gap: 32px;
+            padding: 17px 25px;
+            background: $colorPorcelain;
+
+            .diagonal-cell__inner {
+                display: grid;
+                align-items: center;
+                grid-template-areas:
+                    "pils price"
+                    "pils pricePP";
+                justify-items: flex-end;
+            }
+
+            .diagonal-cell--alt {
+                margin-left: auto;
+            }
+
+            .basket__price {
+                grid-area: price;
+                min-width: auto;
+                font-size: 18px;
+                line-height: 23px;
+                text-align: right;
+            }
+
+            .basket__price-pp {
+                grid-area: pricePP;
+            }
+
+            .basket__price-pills {
+                grid-area: pils;
+                margin-top: 0;
+                margin-right: 32px;
+            }
+
+            .continue-button {
+                min-width: 180px;
+                margin: 0;
+            }
+        }
+    }
+}

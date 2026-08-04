@@ -1,0 +1,35 @@
+@mixin svgIcon($color) {
+    position: relative;
+    padding-left: 30px;
+
+    svg {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 5px;
+        display: block;
+        width: 15px;
+        height: 15px;
+        margin: auto;
+        color: $color;
+    }
+}
+
+svg {
+    fill: currentColor;
+}
+
+.icon--bg-image {
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.icon--reflect-x {
+    transform: rotateY(180deg);
+}
+
+.icon--reflect-y {
+    transform: rotateX(180deg);
+}

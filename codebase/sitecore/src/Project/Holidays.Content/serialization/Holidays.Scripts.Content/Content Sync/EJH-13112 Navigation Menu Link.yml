@@ -1,0 +1,115 @@
+﻿---
+ID: "75f63031-16e7-4af9-9464-2c538c90125e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-13112 Navigation Menu Links"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Creating DataSource for Promotional Components
+    $dataFolderPath = "/sitecore/content/EasyJet/Holidays/Data"
+    $promoBlocksFolderTemplateId = "{EB30259D-FF9A-46CB-8E0C-4616B148F3A8}"
+    $promoBlocksTemplateId = "{84ACB697-5638-4525-9801-B31CAC2E0394}"
+    
+    function Create-Item($path, $name, $templateId){
+        $item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $name -ItemType $templateId
+        }
+        return $item;
+    }
+    
+    function Get-Rendering-Index ($item, $renderingItemId) {
+    	$i = 0
+    	Get-Rendering -Item $item | ForEach-Object {
+    		if ($_.ItemID -eq $renderingItemId) {
+    			return $i
+    		}
+    		$i++
+    	}
+    }
+    
+    # CREATE DATA SOURCE
+    $headerPromosFolderItem = Create-Item -Path $dataFolderPath -Name "Header Navigation Promotions" -TemplateId $promoBlocksFolderTemplateId
+    Write-Host "Path: $($headerPromosFolderItem.ItemPath)"
+    
+    Create-Item -Path $headerPromosFolderItem.ItemPath -Name "Destinations Promotion" -TemplateId $promoBlocksTemplateId
+    Create-Item -Path $headerPromosFolderItem.ItemPath -Name "Holidays Promotion" -TemplateId $promoBlocksTemplateId
+    Create-Item -Path $headerPromosFolderItem.ItemPath -Name "Travel Info Promotion" -TemplateId $promoBlocksTemplateId
+    
+    
+    # Change Navigation Links
+    function add-link($item, $link){
+        if ($link -ne $null) {
+            $item.Editing.BeginEdit()
+            [Sitecore.Data.Fields.MultilistField]$field = $item.Fields["ChildrenLinks"]
+            $field.Add("$($link.ID)")
+            $item.Editing.EndEdit() > $null
+        }
+    }
+    
+    function clear-links($item){
+        $item.Editing.BeginEdit()
+        $item["ChildrenLinks"] = @()
+        $item.Editing.EndEdit() > $null
+    }
+    
+    function create-links($item, $linkid){
+        $item.Editing.BeginEdit()
+        $item["ChildrenLinks"] = $linkid
+        $item.Editing.EndEdit() > $null
+    }
+    
+    # Change destinations links
+    $itemPathDestNav = "master:/content/EasyJet/Holidays/Data/Navigations/Main/Destinations";
+    $destNav = Get-Item -path $itemPathDestNav -ErrorAction SilentlyContinue
+    
+    clear-links -Item $destNav
+    
+    $topBeachHolidays = Get-Item -path "master:/content/EasyJet/Holidays/Data/Navigations/Destinations Groups/Top Beach Holidays" -ErrorAction SilentlyContinue
+    $topFamilyHolidays = Get-Item -path "master:/content/EasyJet/Holidays/Data/Navigations/Destinations Groups/Top Family Holidays" -ErrorAction SilentlyContinue
+    $topCityBreaks = Get-Item -path "master:/content/EasyJet/Holidays/Data/Navigations/Destinations Groups/Top City Breaks" -ErrorAction SilentlyContinue
+    $topAdultHolidays = Get-Item -path "master:/content/EasyJet/Holidays/Data/Navigations/Destinations Groups/Top Adult Holidays" -ErrorAction SilentlyContinue
+    $luxuryBreaks = Get-Item -path "master:/content/EasyJet/Holidays/Data/Navigations/Destinations Groups/Luxury Breaks" -ErrorAction SilentlyContinue
+    $undiscoveredHolidays = Get-Item -path "master:/content/EasyJet/Holidays/Data/Navigations/Destinations Groups/Undiscovered Holidays" -ErrorAction SilentlyContinue
+    $viewAllDestinations = Get-Item -path "master:/content/EasyJet/Holidays/Data/Navigations/Destinations Groups/View All Destinations" -ErrorAction SilentlyContinue
+    
+    add-link -Item $destNav -link $topBeachHolidays
+    add-link -Item $destNav -link $topFamilyHolidays
+    add-link -Item $destNav -link $topCityBreaks
+    add-link -Item $destNav -link $topAdultHolidays
+    add-link -Item $destNav -link $luxuryBreaks
+    add-link -Item $destNav -link $undiscoveredHolidays
+    add-link -Item $destNav -link $viewAllDestinations
+    
+    # Change Travel Info links
+    $itemPathTravelInfo = "master:/content/EasyJet/Holidays/Data/Navigations/Main/Travel info";
+    $travelInfo = Get-Item -path $itemPathTravelInfo -ErrorAction SilentlyContinue
+    
+    clear-links -Item $travelInfo
+    
+    $covidTravelTips = Get-Item -path "master:/content/EasyJet/Holidays/Data/Navigations/Travel Information/Covid travel tips" -ErrorAction SilentlyContinue
+    $covid19Response = Get-Item -path "master:/content/EasyJet/Holidays/Data/Navigations/Travel Information/Covid-19 response" -ErrorAction SilentlyContinue
+    $customerSafety = Get-Item -path "master:/content/EasyJet/Holidays/Data/Navigations/Travel Information/Customer safety and wellbeing centre" -ErrorAction SilentlyContinue
+    $helpCentre = Get-Item -path "master:/content/EasyJet/Holidays/Data/Navigations/Travel Information/Help centre" -ErrorAction SilentlyContinue
+    $latestTravelInfo = Get-Item -path "master:/content/EasyJet/Holidays/Data/Navigations/Travel Information/Latest travel info" -ErrorAction SilentlyContinue
+    
+    add-link -Item $travelInfo -link $covid19Response
+    add-link -Item $travelInfo -link $customerSafety
+    add-link -Item $travelInfo -link $helpCentre
+    add-link -Item $travelInfo -link $latestTravelInfo
+    add-link -Item $travelInfo -link $covidTravelTips
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4690
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200326T105750Z

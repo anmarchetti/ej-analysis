@@ -1,0 +1,40 @@
+.container {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 20px;
+
+    @include media-breakpoint-down(lg) {
+        grid-template-columns: 1fr;
+    }
+
+    @include media-breakpoint-down(lg) {
+        row-gap: 16px;
+    }
+}
+
+.item {
+    height: 100%;
+
+    &:nth-child(odd):nth-last-child(1) {
+        grid-column: span 2;
+
+        @include media-breakpoint-down(lg) {
+            grid-column: 1;
+        }
+    }
+}
+
+.sustainabilityGridBanners {
+    margin-top: 0;
+    margin-bottom: 64px;
+
+    @include media-breakpoint-up(md) {
+        margin-bottom: 120px;
+    }
+
+    @include media-breakpoint-up(lg) {
+        margin-top: 17px;
+        margin-bottom: 160px;
+    }
+}

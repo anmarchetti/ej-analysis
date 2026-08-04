@@ -1,0 +1,384 @@
+﻿---
+ID: "1c0392da-5ba0-4e3d-a6d1-ce67468f40a7"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14500 Holiday Types Page Updates"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $navigationsPath = "/sitecore/content/EasyJet/Holidays/Data/Navigations"
+    $holidaysNvavigationPath = "/sitecore/content/EasyJet/Holidays/Data/Navigations/Main/Holidays"
+    $holidayTypesNvavigationGroupPath = "/sitecore/content/EasyJet/Holidays/Data/Navigations/Destinations Groups/Holiday types"
+    $holidayTypeGroupsNavigationPath = "/sitecore/content/EasyJet/Holidays/Data/Navigations/Holiday Type Groups"
+    
+    $holidayTypePageTemplateId = "{BCC163B4-00F8-42BC-AD82-1503D412592C}"
+    $navigationLinksFolderTemplateId = "{F2AEDD6F-5BE8-4833-84D2-8DE7ABA3D3D1}"
+    $navigationLinkTemplateId = "{BC011F0A-976C-4825-9E01-8BAA7C8E6CCA}"
+    
+    $pageComponentsTemplateId = "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    
+    $dealsDestinationsFolderTemplateId = "{5F654DDA-BFD7-4774-B08B-B46928B311E0}"
+    $dealsDestinationsTemplateId = "{F4E450A5-ED31-4105-96D1-64D17924A5FF}"
+    $dealsDestinationsGroupCardTemplateId = "{BEB43138-62AA-4A5E-936C-0918E7770FBC}"
+    $dealsDestinationTileTemplateId = "{F8D6F155-2704-4A3E-8656-65591E2484A3}"
+    
+    $destinationsRenderingId = "{6D28E6C9-7135-47B9-8778-F086E33FDDF6}"
+    
+    $allinclusive = @{
+                        IsInsert = $false
+                        PostionInHeader = 0
+                        Name = "All Inclusive"
+                        PromoPage = @{
+                            Name = "All inclusive holidays deals"
+                            OldName = "All inclusive holidays"
+                            ButtonText = "View all inclusive holidays"
+                            Path = "/sitecore/content/EasyJet/Holidays/Home/Root"
+                        }
+                        Countries = @(
+                            [ordered]@{
+                                Name = "Turkey"
+                                Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Turkey"
+                                Regions = @(
+                                    [ordered]@{
+                                        Name = "Antalya"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Turkey/Antalya"
+                                    },
+                                    [ordered]@{
+                                        Name = "Dalaman"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Turkey/Dalaman"
+                                    },
+                                    [ordered]@{
+                                        Name = "Bodrum"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Turkey/Bodrum"
+                                    },
+                                    [ordered]@{
+                                        Name = "Izmir"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Turkey/Izmir"
+                                    }
+                                )
+                            },
+                            [ordered]@{
+                                Name = "Spain"
+                                Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain"
+                                Regions = @(
+                                    [ordered]@{
+                                        Name = "Lanzarote"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Lanzarote"
+                                    },
+                                    [ordered]@{
+                                        Name = "Majorca"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Majorca"
+                                    },
+                                    [ordered]@{
+                                        Name = "Tenerife"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Tenerife"
+                                    },
+                                    [ordered]@{
+                                        Name = "Ibiza"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Ibiza"
+                                    }
+                                )
+                            }
+                        )
+                    }
+    $family = @{
+                        IsInsert = $false
+                        PostionInHeader = 1
+                        Name = "Family"
+                        PromoPage = @{
+                            Name = "Family holidays deals"
+                            OldName = "Family holidays"
+                            ButtonText = "View family holidays"
+                            Path = "/sitecore/content/EasyJet/Holidays/Home/Root"
+                        }
+                        Countries = @(
+                            [ordered]@{
+                                Name = "Greece"
+                                Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Greece"
+                                Regions = @(
+                                    [ordered]@{
+                                        Name = "Crete"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Greece/Crete"
+                                    },
+                                    [ordered]@{
+                                        Name = "Corfu"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Greece/Corfu"
+                                    },
+                                    [ordered]@{
+                                        Name = "Zante"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Greece/Zante"
+                                    },
+                                    [ordered]@{
+                                        Name = "Rhodes"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Greece/Rhodes"
+                                    }
+                                )
+                            },
+                            [ordered]@{
+                                Name = "Spain"
+                                Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain"
+                                Regions = @(
+                                    [ordered]@{
+                                        Name = "Lanzarote"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Lanzarote"
+                                    },
+                                    [ordered]@{
+                                        Name = "Majorca"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Majorca"
+                                    },
+                                    [ordered]@{
+                                        Name = "Tenerife"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Tenerife"
+                                    },
+                                    [ordered]@{
+                                        Name = "Costa Blanca"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Costa Blanca"
+                                    }
+                                )
+                            }
+                        )
+                    }
+    $beach = @{
+                        IsInsert = $true
+                        PostionInHeader = 6
+                        Name = "Beach"
+                        Countries = @(
+                            [ordered]@{
+                                Name = "Spain"
+                                Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain"
+                                Regions = @(
+                                    [ordered]@{
+                                        Name = "Tenerife"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Tenerife"
+                                    },
+                                    [ordered]@{
+                                        Name = "Majorca"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Majorca"
+                                    },
+                                    [ordered]@{
+                                        Name = "Lanzarote"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Lanzarote"
+                                    }
+                                )
+                            },
+                            [ordered]@{
+                                Name = "Portugal"
+                                Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Portugal"
+                                Regions = @(
+                                    [ordered]@{
+                                        Name = "Algarve"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Portugal/Algarve"
+                                    }
+                                )
+                            },
+                            [ordered]@{
+                                Name = "Greece"
+                                Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Greece"
+                                Regions = @(
+                                    [ordered]@{
+                                        Name = "Crete"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Greece/Crete"
+                                    },
+                                    [ordered]@{
+                                        Name = "Rhodes"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Greece/Rhodes"
+                                    }
+                                )
+                            },
+                            [ordered]@{
+                                Name = "Turkey"
+                                Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Turkey"
+                                Regions = @(
+                                    [ordered]@{
+                                        Name = "Antalya"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Turkey/Antalya"
+                                    },
+                                    [ordered]@{
+                                        Name = "Dalaman"
+                                        Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Turkey/Dalaman"
+                                    }
+                                )
+                            }
+                        )
+                    }
+    $adults = @{
+                        IsInsert = $false
+                        PostionInHeader = 7
+                        Name = "Adults"
+                        PromoPage = @{
+                            Name = "Adults holidays deals"
+                            OldName = "Adults holidays"
+                            ButtonText = "View adults holidays"
+                            Path = "/sitecore/content/EasyJet/Holidays/Home/Root"
+                        }
+                        Countries = @(
+                            [ordered]@{
+                                Name = "Turkey"
+                                Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Turkey"
+                                Regions = @()
+                            },
+                            [ordered]@{
+                                Name = "Spain"
+                                Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain"
+                                Regions = @()
+                            },
+                            [ordered]@{
+                                Name = "Portugal"
+                                Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Portugal"
+                                Regions = @()
+                            },
+                            [ordered]@{
+                                Name = "Cyprus"
+                                Path = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Cyprus"
+                                Regions = @()
+                            }
+                        )
+                    }
+    
+    $typesData = @{}
+    
+    $holidayTypesNames = @(
+        "All Inclusive Holidays",
+        "Family Holidays",
+        "Beach Holidays",
+        "Adults Holidays")
+    $paths = @(
+        "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/All Inclusive Holidays"
+        "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Family Holidays",
+        "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Beach Holidays",
+        "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Adults Holidays"
+        )
+    $typesData.Add($paths[0], $allinclusive)
+    $typesData.Add($paths[1], $family)
+    $typesData.Add($paths[2], $beach)
+    $typesData.Add($paths[3], $adults)
+    
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $templateId
+        }
+        
+        return $item
+    }
+    
+    function Create-Destinations-Component-Datasource($item, $data){
+        if($data.PromoPage -ne $null){
+            $promoPageItem = Get-Item -Path "$($data.PromoPage.Path)/$($data.PromoPage.OldName)" -ErrorAction SilentlyContinue
+            if($promoPageItem -eq $null){
+                $promoPageItem = Get-Item -Path "$($data.PromoPage.Path)/$($data.PromoPage.Name)" -ErrorAction SilentlyContinue
+            }
+            if($promoPageItem -ne $null){
+                $promoPageItem.Editing.BeginEdit();
+                $promoPageItem["__DisplayName"] = $data.PromoPage.OldName
+                $promoPageItem.Name = $data.PromoPage.Name;
+                $promoPageItem.Editing.EndEdit();
+                $item.Editing.BeginEdit()> $null
+                $item.Fields["DealPageLink"].Value = "<link text='$($data.PromoPage.ButtonText)' anchor='' linktype='internal' class='' title=''  querystring='' id='$($promoPageItem.ID)' />"
+                $item.Editing.EndEdit() > $null
+            }
+        }
+        
+        $pageComponents =  $item.Children | Where-Object { $_.TemplateId -eq $pageComponentsTemplateId} | Select-Object -First 1
+        $dealsDestinationsFolder = Get-Or-Create-Item -Path "$($pageComponents.Paths.fullpath)/Deals Destinations" -TemplateId $dealsDestinationsFolderTemplateId
+        
+        $dealsDestination = Get-Or-Create-Item -Path "$($pageComponents.Paths.fullpath)/Deals Destinations/$($data.Name)" -TemplateId $dealsDestinationsTemplateId
+            
+        Get-Rendering -Item $item | ForEach-Object {
+            if($_.ItemId -eq $destinationsRenderingId) {
+                Set-Rendering -Item $item -Instance $_ -Datasource $dealsDestination.Id
+            }
+        }
+        
+        $cardsIds = @()
+        foreach($country in $data.Countries){
+            $countryItem = Get-Item -Path $country.Path
+            $dealsDestinationGroupCard = Get-Or-Create-Item -Path "$($pageComponents.Paths.fullpath)/Deals Destinations/$($data.Name)/$($country.Name)" -TemplateId $dealsDestinationsGroupCardTemplateId
+            $cardsIds += $dealsDestinationGroupCard.ID
+            
+            $regionsIds = @()
+            foreach($region in $country.Regions){
+                $regionItem = Get-Item -Path $region.Path
+                $dealsDestinationTitle = Get-Or-Create-Item -Path "$($pageComponents.Paths.fullpath)/Deals Destinations/$($data.Name)/$($country.Name)/$($region.Name)" -TemplateId $dealsDestinationTileTemplateId 
+                $regionsIds += $dealsDestinationTitle.ID
+                $dealsDestinationTitle.Editing.BeginEdit()
+                $dealsDestinationTitle.Fields["Destination"].Value = $regionItem.ID
+                $dealsDestinationTitle.Editing.EndEdit() > $null
+            }
+            
+            $dealsDestinationGroupCard.Editing.BeginEdit()
+            $dealsDestinationGroupCard.Fields["Country"].Value = $countryItem.ID
+            $dealsDestinationGroupCard.Fields["Tiles"].Value = [string]::Join("|", $regionsIds)
+            $dealsDestinationGroupCard.Editing.EndEdit() > $null
+        }
+        
+        $dealsDestination.Editing.BeginEdit()
+        $dealsDestination.Fields["Title"].Value = $data.Name
+        $dealsDestination.Fields["Cards"].Value = [string]::Join("|", $cardsIds)
+        $dealsDestination.Editing.EndEdit() > $null
+    }
+    
+    function Update-Navigation-Item($item, $linkItemId, $childLinksIds){
+        $item.Editing.BeginEdit()
+        if ($linkItemId -ne $null){
+            $item.Fields["Link"].Value = "<link text='$($item.Name)' anchor='' linktype='internal' class='' title=''  querystring='' id='$($linkItemId)' />"        
+        }
+        
+        if($childLinksIds -ne $null){
+            $item.Fields["ChildrenLinks"].Value = [string]::Join("|", $childLinksIds)
+        }
+        $item.Editing.EndEdit() > $null
+    }
+    
+        $holidayTypesPages = @()
+        foreach($holidayTypesPagePath in $paths){
+            $holidayTypesPageItem = Get-Item -Path $holidayTypesPagePath -ErrorAction SilentlyContinue
+            if ($holidayTypesPageItem -ne $null){
+                $holidayTypesPages += $holidayTypesPageItem
+            }
+        }
+        $holidayTypeGroupsNavigation = Get-Or-Create-Item -Path $holidayTypeGroupsNavigationPath -TemplateId $navigationLinksFolderTemplateId
+        
+        $holidayTypesNavigation = Get-Item -Path $holidayTypesNvavigationGroupPath -ErrorAction SilentlyContinue
+        
+        [Collections.Generic.List[string]]$navigationLinks = $holidayTypesNavigation.Fields["ChildrenLinks"].Value.Split("|") | Where-Object { ![string]::IsNullOrWhiteSpace($_) }
+        foreach($holidayTypePage in $holidayTypesPages)
+        {
+            $data = $typesData[$holidayTypePage.Paths.FullPath]
+            Create-Destinations-Component-Datasource -Item $holidayTypePage -Data $data
+            $nvaigationLink = Get-Or-Create-Item -Path "$($holidayTypeGroupsNavigationPath)/$($holidayTypePage.Name)" -TemplateId $navigationLinkTemplateId
+            Update-Navigation-Item -Item $nvaigationLink -LinkItemId $holidayTypePage.ID
+            if(!$navigationLinks.Contains($nvaigationLink.ID)){
+                if($data.IsInsert){
+                    $navigationLinks.Insert($data.PostionInHeader, $nvaigationLink.ID)
+                }
+                else
+                {
+                    $navigationLinks[$data.PostionInHeader] = $nvaigationLink.ID
+                }
+            }
+        }
+        
+        Update-Navigation-Item -Item $holidayTypesNavigation -ChildLinksIds $navigationLinks
+        
+        $holidaysNavigationLink = Get-Item -Path $holidaysNvavigationPath -ErrorAction SilentlyContinue
+        $viewAllTypesNvaigationLink = Get-Or-Create-Item -Path "$($holidayTypeGroupsNavigationPath)/View All Holiday Types" -TemplateId $navigationLinkTemplateId
+        
+        Update-Navigation-Item -Item $viewAllTypesNvaigationLink -LinkItemId $holidayTypesHub.ID
+        $childLinkIds = $holidaysNavigationLink.Fields["ChildrenLinks"].Value.Split("|") | Where-Object { ![string]::IsNullOrWhiteSpace($_) }
+        if(!$childLinkIds.Contains($viewAllTypesNvaigationLink.ID))
+        {
+            $childLinkIds += $viewAllTypesNvaigationLink.ID
+        }
+        
+        Update-Navigation-Item -Item $holidaysNavigationLink -ChildLinksIds $childLinkIds
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210920T175930Z

@@ -1,0 +1,48 @@
+{
+    "Title": "CMS ExcursionMap data for Brindisi (Brindisi region)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "ExactMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetMuzementData",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "code",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "ITBR"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "MuzementIds": null,
+            "Type": "Region",
+            "Radius": 100,
+            "Coordinates": [
+                {
+                    "Latitude": 40.86356,
+                    "Longitude": 17.38704,
+                    "Code": "X9134954",
+                    "Name": "Masseria Torre Coccaro",
+                    "Type": null,
+                    "ShowOnSearchPod": false,
+                    "ShowOnDropdown": false,
+                    "ShowInAutocomplete": false,
+                    "RelatedRegions": null
+                }
+            ]
+        }
+    }
+}

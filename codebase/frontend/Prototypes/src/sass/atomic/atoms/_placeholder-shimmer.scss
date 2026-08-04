@@ -1,0 +1,122 @@
+$placeholderShimmer_bg-image: linear-gradient(-120deg, $colorWhiter 8%, $colorAlto 18%, $colorWhiter 33%);
+$placeholderShimmer_bg-size: 400% 400%;
+
+@keyframes placeHolderShimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.placeholder-shimmer {
+    background-image: $placeholderShimmer_bg-image;
+    background-size: $placeholderShimmer_bg-size;
+    opacity: 0.7;
+    animation-name: placeHolderShimmer;
+    animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+
+    &.hotel-card {
+        height: 333px;
+        margin-bottom: 30px;
+        border-radius: 20px;
+
+        @include media-breakpoint-down(md) {
+            height: 666px;
+        }
+    }
+
+    &.search-pagination {
+        max-width: 300px;
+        height: 30px;
+        margin-right: auto;
+        margin-left: auto;
+        border-radius: 15px;
+    }
+
+    &.placeholder-search-header-item {
+        width: 200px;
+        max-width: 40%;
+        height: 44px;
+        border-radius: 22px;
+    }
+
+    &.placeholder-filter-btn {
+        width: 140px;
+        max-width: 140px;
+        height: 40px;
+        margin: 50px 12px 30px 0;
+        border-radius: 20px;
+        opacity: 1;
+
+        @include media-breakpoint-down(md) {
+            flex: 1;
+            width: auto;
+            max-width: 100%;
+            height: 50px;
+            margin: 10px 5px;
+
+            &:first-child {
+                margin-left: $container-padding-x_mobile;
+            }
+
+            &:last-child {
+                margin-right: $container-padding-x_mobile;
+            }
+        }
+    }
+
+    &.placeholder-search-cta {
+        width: 120px;
+        height: 45px;
+        margin: 0 5px;
+        border-radius: 23px;
+        opacity: 1;
+
+        @include media-breakpoint-down(xs) {
+            width: 45%;
+        }
+    }
+
+    &.placeholder-basket {
+        height: 110px;
+        border-radius: 10px;
+    }
+
+    &.placeholder-thumbnail {
+        display: inline-block;
+        width: 94px;
+        height: 100%;
+        margin-right: 30px;
+        border-radius: 6px;
+    }
+}
+
+.placeholder-thumbnails {
+    height: 75px;
+    overflow: hidden;
+    margin-top: 25px;
+}
+
+.placeholder-sidebar-head {
+    border-radius: 6px;
+    height: 630px;
+
+    @include media-breakpoint-down(lg) {
+        height: 500px;
+        margin-top: 12px;
+        margin-bottom: 12px;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}

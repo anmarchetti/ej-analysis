@@ -1,0 +1,217 @@
+﻿---
+ID: "bd9f4a45-c192-47fd-a96b-b6b5e36ab810"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-15728-seatmap"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    function Update-Benefits($seatMap){
+        $benefits = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Benefits"
+        $seatMap.Editing.BeginEdit();
+        $seatMap["Benefits"] = ""
+    
+        foreach($benefit in $benefits.Children) { 
+            if (![string]::IsNullOrEmpty($seatMap["Benefits"])) {
+                $seatMap["Benefits"] += "|";
+            }
+            $seatMap["Benefits"] += $benefit.ID.ToString()
+        } 
+        $seatMap.Editing.EndEdit()
+    }
+    
+    function Update-InfoPopup($seatMap){
+        $infoPopup = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/SeatsMap"
+        $seatMap.Editing.BeginEdit();
+        $seatMap["InfoPopups"] = ""
+    
+        foreach($infoPopup in $infoPopup.Children) { 
+            if (![string]::IsNullOrEmpty($seatMap["InfoPopups"])) {
+                $seatMap["InfoPopups"] += "|";
+            }
+            $seatMap["InfoPopups"] += $infoPopup.ID.ToString()
+        } 
+        $seatMap.Editing.EndEdit()
+    }
+    
+    
+    $seatMap = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/SeatsMap" -template "{54E8234A-234C-4BDC-9EA6-778F7CC75D76}"
+    $seatMap.Editing.BeginEdit()
+    $seatMap["SeatsMapTitle"] = "PICK WHERE YOU'D LIKE TO SIT"
+    $seatMap["SeatsSubTitle"] = "Tell us where you'd like to sit in the map below"
+    $seatMap["InfoBoxTitle"] = "Help and assistance"
+    $seatMap["MixingSeatsTitle"] = "Are you sure?"
+    $seatMap["MixingSeatsButtonContinue"] = "I’m ok with this"
+    $seatMap["MixingSeatsButtonChangeSeat"] = "I’ll choose other seats"
+    $seatMap["MixingSeatsDescription"] = "Because of your seat choices, your outbound cabin bag allowance does not match your return cabin bag allowance.<br /><br />You can continue with your booking with the cabin bag allowance difference, or go back and choose different seats."
+    $seatMap["CabinBagsPolicyTitle"] = "Our cabin bag policy"
+    $seatMap["CabinBagsPolicyDescription"] = "<p>Customers who do not select a seat can bring on board one small under seat cabin bag (max. 45 x 36 x 20 cm).  The same allowance applies to Standard seats.</p><p>Customers who have purchased an Up front or Extra legroom seat may also bring a large overhead cabin bag (max 56 x 45 x 25 cm)</p>"
+    $seatMap["ConfirmRemoveSelectedSeatTitle"] = "Remove seat?"
+    $seatMap["ConfirmRemoveSelectedSeatDescription"] = "Are you sure you want to remove seat {seatNumber} from {passengerTitle}?"
+    $seatMap["ConfirmRemoveSelectedSeatButtonConfirm"] = "Remove this seat"
+    $seatMap["MsgLoading"] = "Loading seat plan"
+    $seatMap["MsgLoadingError"] = "Error loading seats map. Please, try to reload."
+    $seatMap["MsgNoFlightsSelected"] = "Please go back and select your flights"
+    $seatMap["MsgSelectYourSeat"] = "Select your seat"
+    $seatMap["MsgNoSeatsSelected"] = "No seats selected"
+    $seatMap["SeatsMapTitle"] = "Pick where you'd like to sit"
+    $seatMap["SeatsMapTitleMobile"] = "Pick your seats"
+    $seatMap["MsgEmergencyExitSits"] = "These seats require emergency exit access."
+    $seatMap["MsgCantSitWithInfant"] = "You can’t sit here with an infant"
+    $seatMap["MsgCantSeatInfantHere"] = "Can't seat infant here for safety reasons"
+    $seatMap["MsgCantSeatChildHere"] = "Can't seat child here for safety reasons"
+    $seatMap["MsgTapSelectedSeatToRemoveIt"] = "Tap a selected seat to remove it"
+    $seatMap["BenefitsTitle"] = "Our Extra legroom & Up front seats{0}come with extra benefits" -f [environment]::NewLine
+    $seatMap["BenefitsText"] = "2 Cabin Bags • Speedy boarding • Dedicated Bag drop"
+    $seatMap["SeatBenefitsTextWithIcons"] = "1 Small under seat cabin bag {icon}$([environment]::NewLine)1 Large overhead cabin bag {icon}$([environment]::NewLine)Speedy boarding {icon}$([environment]::NewLine)Dedicated bag drop {icon}"
+    $seatMap["StandartSeatBenefitsTextWithIcons"] = "1 Small under seat cabin bag {icon}$([environment]::NewLine)Choose where you want to sit, window, middle or aisle {icon}"
+    $seatMap["SeatDedicateBagDrop"] = "Save time with dedicated bag drop"
+    $seatMap["LargeCabinBagAdded"] = "Large cabin bag added to your booking"
+    $seatMap["BeFirstOnAircraft"] = "Be first on the aircraft with Speedy Boarding"
+    $seatMap["StandardSeat"] = "Standard seat"
+    $seatMap["DedicatedBagDrop"] = "Dedicated Bag drop"
+    $seatMap["CabinBags"] = "2 Cabin Bags"
+    $seatMap["SpeedyBoarding"] = "Speedy boarding"
+    $seatMap["LegendMobileTitle"] = "HELP & INFORMATION"
+    $seatMap["LegendTitle"] = "Seat guide"
+    $seatMap["LegendFacilityTitle"] = "Other facilities"
+    $seatMap["LegendExtraLegRoom"] = "Extra legroom seat"
+    $seatMap["LegendUpfront"] = "Up front seat"
+    $seatMap["LegendAvailable"] = "Standard seat"
+    $seatMap["LegendSelected"] = "Selected seat"
+    $seatMap["LegendOccupied"] = "Occupied seat"
+    $seatMap["LegendEmergencyExit"] = "Emergency exit"
+    $seatMap["LegendEmergencyExitSymbol"] = "E"
+    $seatMap["LegendServiceDoorSymbol"] = "S"
+    $seatMap["LegendMainDoorSymbol"] = "M"
+    $seatMap["LegendDoorMain"] = "Main door"
+    $seatMap["LegendDoorService"] = "Service door"
+    $seatMap["LegendDoorExit"] = "Exit door"
+    $seatMap["LegendLavatory"] = "Lavatory"
+    $seatMap["LegendRestricted"] = "Restricted seat"
+    $seatMap["BtnSkipOutbound"] = "Skip outbound"
+    $seatMap["BtnSkipReturn"] = "Skip return"
+    $seatMap["BtnNext"] = "Next flight"
+    $seatMap["BtnPrevious"] = "Previous flight"
+    $seatMap["BtnAutoseats"] = "Book same seats"
+    $seatMap["BtnContinue"] = "Continue"
+    $seatMap["BtnFinish"] = "Finish"
+    $seatMap["BtnEdit"] = "Edit"
+    $seatMap["BtnCancel"] = "Cancel"
+    $seatMap["AutoseatsTitle"] = "Would you like to book the same seats on the return flight?"
+    $seatMap["CabinBagsPopupAddSeats"] = "Add seats"
+    $seatMap["CabinBagsPopupBeforeContinue"] = "Before you continue"
+    $seatMap["CabinBagsPopupContinueToBags"] = "Continue to bags"
+    $seatMap["CabinBagsPopupTakeMeBackToSeats"] = "Take me back to seats"
+    $seatMap["ExitSeatsPopupTitle"] = "Information about your seat "
+    $seatMap["ExitSeatsPopupText"] = "Passengers are unable to sit in Exit or Emergency row seats if they are:<br /><ul><li>an infant</li><li>sat with an infant on their lap</li><li>pregnant</li><li>under 16 years of age</li><li>deaf or blind</li><li>mobility impaired</li><li>requiring a seat belt extension</li></ul>If you choose this seat for a passenger in one of the above categories, we will allocate them another seat on boarding."
+    $seatMap["ExitSeatsPopupCancel"] = "I'll choose another seat"
+    $seatMap["ExitSeatsPopupAccept"] = "I want this seat"
+    $seatMap["PassengerBoxClearAll"] = "Clear all seats"
+    $seatMap["PassengerBoxSmallBag"] = "Small under seat bag"
+    $seatMap["PassengerBoxLargeBag"] = "Large overhead cabin bag"
+    $seatMap["PassengerBoxRemoveSeat"] = "Remove seat"
+    $seatMap["PassengerBoxPickingSeat"] = "Picking seat"
+    $seatMap["SeatsMapPassengerBoxPickASeat"] = "Pick a seat"
+    $seatMap["SeatsMapPassengerBoxChildAge"] = "(aged 12)"
+    $seatMap["SeatsSectionUnderSeatBag"] = "under seat bag"
+    $seatMap["SeatsSectionOverheadCabinBag"] = "overhead cabin bag"
+    $seatMap["SeatsSectionTotalSeatsSelected"] = "{seatsSelected} of {totalPassengersQuantity} {flightDirection} seats picked"
+    $seatMap["StandardLabel"] = "Standard"
+    $seatMap["UpFrontLabel"] = "Up front"
+    $seatMap["ExtraLegroomLabel"] = "Extra legroom"
+    $seatMap["SeatLabel"] = "Seat"
+    $seatMap["SeatSelectionLabel"] = "Seat selection"
+    $seatMap["BackToExtrasLabel"] = "Back to extras"
+    $seatMap["AddSmallLabel"] = "+ Small"
+    $seatMap["AddLargeLabel"] = "+ Large"
+    $seatMap["NoLargeLabel"] = "No large"
+    $seatMap["SeatsPassangerChange"] = "Change passenger"
+    $seatMap["PassengerOnLapSuffix"] = "(on lap)"
+    $seatMap["DirectionsOutbound"] = "Outbound"
+    $seatMap["DirectionsInbound"] = "Inbound"
+    $seatMap["DirectionsReturn"] = "Return"
+    $seatMap["PassengerAdult"] = "Adult"
+    $seatMap["PassengerInfant"] = "Infant"
+    $seatMap["PassengerChild"] = "Child"
+    $seatMap["NoInfantsSeatsListSome"] = "Row {rowNumber}: seats {seats}"
+    $seatMap["NoInfantsSeatsListAll"] = "Row {rowNumber}: all seats"
+    $seatMap["UnselectedSeatsPopupTitle"] = "Are you sure?"
+    $seatMap["UnselectedSeatsPopupDescription"] = "You have selected some but not all seats for this flight. If you continue the seats you have selected for this flight will be removed"
+    $seatMap["UnselectedSeatsPopupConfirmButton"] = "I’m ok with this"
+    $seatMap["UnselectedSeatsPopupChoseOtherSeatButton"] = "I’ll choose other seats"
+    $seatMap["UnselectedSeatsPopupTitle"] = "Are you sure?"
+    $seatMap["UnselectedSeatsPopupDescription"] = "You have selected some but not all seats for this flight. If you continue the seats you have selected for this flight will be removed"
+    $seatMap["UnselectedSeatsPopupConfirmButton"] = "I’m ok with this"
+    $seatMap["UnselectedSeatsPopupChoseOtherSeatButton"] = "I’ll choose other seats"
+    $seatMap["MsgBusySeat"] = "Occupied"
+    $seatMap["MsgTapSelectedSeatToRemoveIt"] = "Tap Selected Seat To Remove It"
+    $seatMap["BtnContinue"] = "Continue"
+    $seatMap["BtnFinish"] = "Finish"
+    $seatMap["BtnEdit"] = "Edit"
+    $seatMap["BtnCancel"] = "Cancel"
+    $seatMap["LegendRestricted"] = "Restricted seat"
+    $seatMap["PerPersonLabel"] = "pp";
+    $seatMap["LegendOccupied"] = "Unavailable seat";
+    $seatMap["RearStandardLabel"] = "Rear standard"
+    $seatMap["SpinnerHeader"] = "Loading seat plan"
+    $seatMap["MsgRowRichedInfantCapacity"] = "This row has reached it's infant capacity"
+    $seatMap.Editing.EndEdit()
+    
+    $infoText1 = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/SeatsMap/Special Assistance" -template "{6DFDD4F0-78C8-4D0D-87A1-AC5D1AE293EC}"
+    $infoText1.Editing.BeginEdit();
+    $infoText1["PopupTitle"] = "Special assistance & other restrictions"
+    $infoText1["PopupContent"] = "<p>Special assistance passengers board at the front of the aircraft. If you do decide to choose a specific seat for your comfort we recommend selecting one towards the front of the cabin.</p><p>Not all seats have a liftable armrest. If you need to be seated in a seat with liftable armrests, please contact our Special Assistance team who will discuss your requirements with you.</p><p>Please add any Special Assistance requests before completing your booking. We can then pass on the request to the airports Special Assistance provider in good time.</p><p><strong>You can add a request after you&rsquo;ve booked by:</strong></p><p>&bull; logging into 'Manage Bookings' on easyjet.com and adding your requirements <br /> &bull; calling our Special Assistance team, with your booking reference <br /> &bull; emailing us at&nbsp;<a href='mailto:special.assistance@easyJet.com' target='_blank'>special.assistance@easyJet.com </a> with the subject &lsquo;Special Assistance Request&rsquo;. Where possible, please email 14 days in advance of your departure date</p><p>However, please make sure you let us know your requirements at least 48 hours before the scheduled departure time of your flight.</p>"
+    $infoText1["Label"] = "Special assistance & other restrictions"
+    $infoText1["Icon"] = "wheelchair"
+    $infoText1.Editing.EndEdit()
+    
+    $infoText2 = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/SeatsMap/Travelling With Children" -template "{6DFDD4F0-78C8-4D0D-87A1-AC5D1AE293EC}"
+    $infoText2.Editing.BeginEdit();
+    $infoText2["PopupTitle"] = "Travelling with children"
+    $infoText2["PopupContent"] = "<p>For safety reasons infants must be accompanied by an adults and cannot be seated in the following seats:</p><p>[no-infants-seats-list]</p><p>Only 1 infant can be seated per row of 3 seats. Baby changing facilities are at the front and rear of the plane.</p><p>Please try and seat your family together. If you haven&rsquo;t bought seats for your family then the best chance of sitting together is to check in as early as possible. Our seating system will always try to group you together, but seats are allocated on a first come first served basis so the earlier you check in the more likely you are to sit together.</p><p>If you aren&rsquo;t able to get seats together at check-in, we&rsquo;ll still make sure each child under 12 is seated close to an adult on your booking. However we may only be able to arrange this at the airport or during boarding and not everyone may be seated together.</p>"
+    $infoText2["Label"] = "Travelling with children"
+    $infoText2["Icon"] = "child"
+    $infoText2.Editing.EndEdit()
+    
+    Update-Benefits -seatMap $seatMap
+    Update-InfoPopup -seatMap $seatMap
+    
+    $page = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking"
+    
+    $renderingPath = "/sitecore/layout/Renderings/Feature/SeatMap/Seat Map"
+    $dataSourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/SeatsMap"
+    $rendering = $page | Get-Rendering -Placeholder "*seat-map*" -Device (Get-LayoutDevice "Default")
+    
+    if($rendering -ne $null)
+    {
+        Set-Rendering -Item $page -Instance $rendering -DataSource $dataSourcePath
+    }
+    
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 900
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220811T153833Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

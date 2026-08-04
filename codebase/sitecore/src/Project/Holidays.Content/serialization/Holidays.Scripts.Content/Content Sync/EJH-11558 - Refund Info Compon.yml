@@ -1,0 +1,71 @@
+﻿---
+ID: "5e609290-5bd6-48e0-87b9-1fea19998b27"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-11558 - Refund Info Component"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $name, $templateId){
+        $item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue
+    
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $name -ItemType $templateId
+        }
+    
+        return $item
+    }
+    
+    # Create Datasource
+    $refundInfoFolderTemplateId = "{9C294627-912C-4314-8F43-C16214718F57}"
+    $refundInfoFolderTitle = "Refund Infos"
+    
+    $refundInfoFolder = Get-Or-Create-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components" -Name $refundInfoFolderTitle -TemplateId $refundInfoFolderTemplateId
+    
+    $refundInfoTemplateId = "{A54BDC0C-FE2D-4888-AE8D-7EE5AD704FF0}";
+    
+    $noRefundItem = Get-Or-Create-Item -Path $refundInfoFolder.FullPath -Name "No Refund" -TemplateId $refundInfoTemplateId
+    $noRefundItem.Editing.BeginEdit()
+    $noRefundItem["Title"] = "No credit or cash refund is available"
+    $noRefundItem["Description"] = "<p>No credit or cash refund is available</p>"
+    $noRefundItem["RefundType"] = "{FE262DA5-7D47-45D5-AD29-63E557437720}"
+    $noRefundItem["IsButtonHidden"] = "1"
+    $noRefundItem.Editing.EndEdit()
+    
+    $onlyCreditRefundItem = Get-Or-Create-Item -Path $refundInfoFolder.FullPath -Name "Only Credit Refund" -TemplateId $refundInfoTemplateId
+    $onlyCreditRefundItem.Editing.BeginEdit()
+    $onlyCreditRefundItem["Title"] = "Only a credit refund is available"
+    $onlyCreditRefundItem["Description"] = "<p>Only a credit refund is available</p>"
+    $onlyCreditRefundItem["ButtonText"] = "Find out more"
+    $onlyCreditRefundItem["RefundType"] = "{D619BDB8-52B4-4714-B347-ECCB5338C4EF}"
+    $onlyCreditRefundItem.Editing.EndEdit()
+    
+    $creditAndCashRefundItem = Get-Or-Create-Item -Path $refundInfoFolder.FullPath -Name "Credit And Cash Refund" -TemplateId $refundInfoTemplateId
+    $creditAndCashRefundItem.Editing.BeginEdit()
+    $creditAndCashRefundItem["Title"] = "Both credit refund and a partial cash refund is available"
+    $creditAndCashRefundItem["Description"] = "<p>Both credit refund and a partial cash refund is available</p>"
+    $creditAndCashRefundItem["ButtonText"] = "Find out more"
+    $creditAndCashRefundItem["RefundType"] = "{D27860F2-55D2-45B6-9C03-312C817B5BCA}"
+    $creditAndCashRefundItem.Editing.EndEdit()
+    
+    # Update rendering
+    $page = Get-Item -Path master:/content/EasyJet/Holidays/Home/Booking/My_Booking
+    $renderingId = "{0F60E703-E976-4BE3-9E1A-3F0A7FF80718}"
+    $renderigPlaceholder = "/body/component-wrapper-inner-{b256b26a-da9c-4195-b68a-bc4ed53685e3}-0/credit-booking-disruption-{5500ac44-5df4-4473-8e8c-ea635a187882}-0";
+    $renderingInstance = Get-Rendering -Item $page -PlaceHolder $renderigPlaceholder
+    
+    if($renderingInstance -ne $null){
+        $renderingInstance.ItemID = $renderingId
+        Set-Rendering -Item $page -Instance $renderingInstance -DataSource $refundInfoFolder.FullPath
+        Write-Host  "Rendering was updated"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201103T100222Z

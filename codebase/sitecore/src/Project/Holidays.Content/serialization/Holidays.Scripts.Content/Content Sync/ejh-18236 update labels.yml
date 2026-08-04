@@ -1,0 +1,88 @@
+﻿---
+ID: "9421f352-80de-4caf-9674-12d9abc7f723"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ejh-18236 update labels"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $toDropdownPath = "master:/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/To Dropdown"
+    $fromDropdownPath = "master:/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/From Dropdown"
+    $allCountriesTradePath = "master:/sitecore/content/EasyJet/TradePortal/Dictionary/Search Pod/Labels/All Countries"
+    $toDropdownTradePath = "master:/sitecore/content/EasyJet/TradePortal/Dictionary/Search Pod/Labels/To Dropdown"
+    $fromDropdownTradePath = "master:/sitecore/content/EasyJet/TradePortal/Dictionary/Search Pod/Labels/From Dropdown"
+    
+    $allCountriesTradeItem = Get-Item -path $allCountriesTradePath -ErrorAction SilentlyContinue
+    
+    if ($allCountriesTradeItem -ne $null) {
+        $allCountriesTradeItem.Editing.BeginEdit()
+        $allCountriesTradeItem["Key"] = 'SearchPod.Labels.AllCountries'
+        $allCountriesTradeItem.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $allCountriesTradeItem.DisplayName "successfully updated"
+    }
+    
+    $toDropdownItem = Get-Item -path $toDropdownPath -ErrorAction SilentlyContinue
+    
+    if ($toDropdownItem -ne $null) {
+        $toDropdownItem.Editing.BeginEdit()
+        $toDropdownItem["Phrase"] = 'Where would you like to go?'
+        $toDropdownItem.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $toDropdownItem.DisplayName "successfully updated"
+    }
+    
+    $fromDropdownItem = Get-Item -path $fromDropdownPath -ErrorAction SilentlyContinue
+    
+    if ($fromDropdownItem -ne $null) {
+        $fromDropdownItem.Editing.BeginEdit()
+        $fromDropdownItem["Phrase"] = 'Where would you like to fly from?'
+        $fromDropdownItem.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $fromDropdownItem.DisplayName "successfully updated"
+    }
+    
+    $toDropdownTradeItem = Get-Item -path $toDropdownTradePath -ErrorAction SilentlyContinue
+    
+    if ($toDropdownTradeItem -ne $null) {
+        $toDropdownTradeItem.Editing.BeginEdit()
+        $toDropdownTradeItem["Phrase"] = 'Where would you like to go?'
+        $toDropdownTradeItem.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $toDropdownTradeItem.DisplayName "successfully updated"
+    }
+    
+    $fromDropdownTradeItem = Get-Item -path $fromDropdownTradePath -ErrorAction SilentlyContinue
+    
+    if ($fromDropdownTradeItem -ne $null) {
+        $fromDropdownTradeItem.Editing.BeginEdit()
+        $fromDropdownTradeItem["Phrase"] = 'Where would you like to fly from?'
+        $fromDropdownTradeItem.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $fromDropdownTradeItem.DisplayName "successfully updated"
+    }
+    
+    
+    $folderPath = "/sitecore/content/EasyJet/Holidays/Data"
+    $folderPathTrade = "/sitecore/content/EasyJet/TradePortal/Data"
+    $tempalteId = "{E16615AE-71E2-4FEE-9F85-397A50043FD5}"
+    
+    function create-item($path,$name, $templateId){
+        $item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            New-Item -Path $path -Name $name -ItemType $templateId
+        }
+    }
+    
+    create-item -Path $folderPathTrade -Name "Search Pod Data Folder"  -TemplateId $tempalteId
+    create-item -Path $folderPath -Name "Search Pod Data Folder"  -TemplateId $tempalteId
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231130T142223Z

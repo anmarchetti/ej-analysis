@@ -1,0 +1,37 @@
+{
+    "Title": "OFTFlightSeatPlanRequest flight HRGLGW",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/BasicService.asmx",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Headers": [
+            {
+                "Name": "Authorization",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "Basic *"
+                    }
+                ]
+            }
+        ],
+        "Body": {
+            "Matcher": {
+                "Name": "XPathMatcher",
+                "Pattern": "//OFTFlightSeatPlanRequest[@B2BAPIUserEmailAddress='easyjetb2b@ejholidaysweb.com' and @DepAirportCode='HRG' and @ArrAirportCode='LGW']"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "Content-Type: text/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/B2B/validate-package/seats/seats_plan_HRG_LGW_response_no_cache.xml"
+    }
+}

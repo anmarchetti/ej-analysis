@@ -1,0 +1,46 @@
+.information-block {
+    margin-bottom: 40px;
+    padding: 36px 33px;
+    border: 2px solid $clrEjOrangeLight;
+    border-radius: 6px;
+
+    .information-block__wrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    .information-block__image {
+        display: block;
+        width: 69px;
+        height: 69px;
+        margin-right: 30px;
+        @include media-breakpoint-down(sm) {
+            display: none;
+        }
+    }
+
+    .information-block__title {
+        margin-top: 0;
+        margin-bottom: 11px;
+        font-family: $fontRoundedBook;
+        font-size: 24px;
+        line-height: 26px;
+    }
+
+    .information-block__text {
+        margin: 0;
+        font-size: 18px;
+        line-height: 23px;
+        color: #717171;
+    }
+
+    .information-block__icon {
+        display: none;
+        @include media-breakpoint-down(sm) {
+            display: block;
+            width: 20px;
+            margin-right: 10px;
+            margin-bottom: 11px;
+        }
+    }
+}

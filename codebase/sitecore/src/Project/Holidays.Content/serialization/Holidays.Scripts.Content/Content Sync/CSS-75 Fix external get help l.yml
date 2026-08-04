@@ -1,0 +1,80 @@
+﻿---
+ID: "383e87cf-ecad-4082-9d97-1ca975f7974e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSS-75 Fix external get help link"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId,$forceId) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if (-not $item) {
+    		$item = New-Item -Path $path -ItemType $templateId -ForceId $forceId
+    		Write-Host "Item" $item.Name "successfully created"
+    	}
+    	return $item
+    }
+    
+    function Get-Or-Create-Lang-Version ($path,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $path -Language $lang -ErrorAction SilentlyContinue
+    
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Get-Item -Path $path | Add-ItemLanguage -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    	}
+    
+    	$targetLangItem = Get-Item -Path $path -Language $lang
+    
+    	if ($field -ne $null) {
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value;
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    
+    	return $targetLangItem;
+    }
+    
+    
+    $changeRestrictionsPath = 'master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Amend Restrictions/Restrictions Support'
+    $timeWarningPath = 'master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Amend Restrictions/Time Warning'
+    
+    Get-Or-Create-Lang-Version -Path $changeRestrictionsPath -Lang 'en' -Field 'Link' -Value '<link text="Get help" linktype="external" url="/help?helpCategory=changes&amp;helpQuestion=amend" anchor="" target="_blank" />'
+    
+    Get-Or-Create-Lang-Version -Path $timeWarningPath -Lang 'en' -Field 'Link' -Value '<link text="Get Help" linktype="external" url="/help" anchor="" target="_blank" rel="" />'
+    
+     @( 'fr-CH','fr-FR') | % {
+        	Get-Or-Create-Lang-Version -Path $changeRestrictionsPath -Lang $_ -Field 'Link' -Value '<link text="Obtenir de l`aide" linktype="external" url="/help?helpCategory=changes&amp;helpQuestion=amend" anchor="" target="_blank" />'
+        	Get-Or-Create-Lang-Version -Path $timeWarningPath -Lang $_ -Field 'Link' -Value '<link text="Obtenir de l`aide" linktype="external" url="/help" anchor="" target="_blank" rel="" />'
+        }
+        @( 'de-CH','de-DE') | % {
+        	Get-Or-Create-Lang-Version -Path $changeRestrictionsPath -Lang $_ -Field 'Link' -Value '<link text="Hilfe holen" linktype="external" url="/help?helpCategory=changes&amp;helpQuestion=amend" anchor="" target="_blank" />'
+        	Get-Or-Create-Lang-Version -Path $timeWarningPath -Lang $_ -Field 'Link' -Value '<link text="Hilfe holen" linktype="external" url="/help" anchor="" target="_blank" rel="" />'
+        }
+    
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230531T111956Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\admin
+- Language: "fr-CH"
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230531T104808Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\admin

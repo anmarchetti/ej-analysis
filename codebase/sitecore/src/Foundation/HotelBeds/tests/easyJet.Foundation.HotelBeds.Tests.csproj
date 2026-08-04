@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="$(SolutionDir)TestProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\HotelBeds\code\easyJet.Foundation.HotelBeds.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Multisite\code\easyJet.Foundation.Multisite.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Destinations\code\easyJet.Foundation.Destinations.csproj" />
+    </ItemGroup>
+</Project>

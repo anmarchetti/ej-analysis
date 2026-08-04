@@ -1,0 +1,75 @@
+.button {
+    padding: 15px 10px;
+    overflow: hidden;
+    color: $clrTextMain;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    @include media-breakpoint-down(sm) {
+        padding: 0;
+        overflow: visible;
+    }
+}
+
+.label {
+    display: grid;
+    align-items: center;
+    grid-auto-flow: column;
+    font-size: 14px;
+    font-weight: normal;
+    white-space: nowrap;
+    cursor: pointer;
+
+    svg {
+        display: inline-block;
+        max-width: 20px;
+        height: 15px;
+        margin-right: 5px;
+        vertical-align: text-top;
+        color: $clrEjOrange;
+        text-align: center;
+    }
+
+    @include media-breakpoint-down(sm) {
+        font-size: 12px;
+        vertical-align: top;
+        white-space: normal;
+    }
+}
+
+.title {
+    display: inline-block;
+    padding-right: 5px;
+    font-family: $fontRoundedBook;
+    font-size: 13px;
+    line-height: 19.5px;
+
+    @include media-breakpoint-down(sm) {
+        display: none;
+    }
+}
+
+.value {
+    display: inline-block;
+    overflow: hidden;
+    font-family: $fontRoundedBook;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 22.5px;
+    color: $clrTextMain;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @include media-breakpoint-down(sm) {
+        overflow: visible;
+        font-size: 12px;
+        font-weight: normal;
+        line-height: 1.25;
+        white-space: normal;
+
+        &.bold {
+            font-weight: 700;
+        }
+    }
+}

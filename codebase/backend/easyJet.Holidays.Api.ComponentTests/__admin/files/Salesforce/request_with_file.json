@@ -1,0 +1,72 @@
+{
+    "allOrNone": true,
+    "collateSubrequests": false,
+    "compositeRequest": [
+        {
+            "method": "GET",
+            "url": "/services/data/v56.0/query?q=SELECT+Id+FROM+RecordType+WHERE+SObjectType='Case'+AND+DeveloperName='Pre_Travel'+LIMIT+1",
+            "referenceId": "refRecordType"
+        },
+        {
+            "body": {
+                "Subject": "easyJet holidays Customer Service",
+                "Alternate_Booking_Reference__c": "70147648",
+                "Description": "test",
+                "Primary_Case_Category__c": "Airport",
+                "Origin": "Web",
+                "Stage__c": "Pre-Travel",
+                "Web_First_Name__c": "test",
+                "Web_Last_Name__c": "test",
+                "SuppliedEmail": "test@test.test",
+                "SuppliedPhone": "",
+                "Language__c": "EN_EN",
+                "RecordTypeId": "@{refRecordType.records[0].Id}"
+            },
+            "method": "POST",
+            "url": "/services/data/v56.0/sobjects/Case",
+            "referenceId": "refCase"
+        },
+        {
+            "method": "GET",
+            "url": "/services/data/v56.0/query?q=SELECT+CaseNumber+FROM+Case+where+Id=+'@{refCase.id}'+limit+1",
+            "referenceId": "refCaseNoInfo"
+        },
+        {
+            "body": {
+                "allOrNone": false,
+                "records": [
+                    {
+                        "Title": "purple.bmp",
+                        "PathOnClient": "purple.bmp",
+                        "VersionData": "Qk1GAAAAAAAAADYAAAAoAAAAAgAAAAIAAAABABgAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAApEmjpEmjAACkSaOkSaMAAA==",
+                        "attributes": { "type": "ContentVersion" }
+                    }
+                ]
+            },
+            "method": "POST",
+            "url": "/services/data/v56.0/composite/sobjects",
+            "referenceId": "filedatas"
+        },
+        {
+            "method": "GET",
+            "url": "/services/data/v56.0/composite/sobjects/ContentVersion?ids=@{filedatas[0].id}&fields=id,ContentDocumentId",
+            "referenceId": "refcntInfo"
+        },
+        {
+            "body": {
+                "allOrNone": true,
+                "records": [
+                    {
+                        "ContentDocumentId": "@{refcntInfo[0].ContentDocumentId}",
+                        "LinkedEntityId": "@{refCase.id}",
+                        "Visibility": "AllUsers",
+                        "attributes": { "type": "ContentDocumentLink" }
+                    }
+                ]
+            },
+            "method": "POST",
+            "url": "/services/data/v56.0/composite/sobjects",
+            "referenceId": "refCDL"
+        }
+    ]
+}

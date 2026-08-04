@@ -1,0 +1,42 @@
+{
+    "Title": "CMS Promotion Collections Settings",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/Content/ByPath",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "path",
+                "Matchers": [
+                  {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "{site}/Data/Promotion Collections"
+                  }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "Children": [
+              {
+                "PromotionCodes": "EUBX",
+                "Key": "lux",
+                "ShowNewLabel": "1",
+                "Title": "Luxury Collection",
+                "TooltipText": "",
+                "Icon": null
+              }
+            ]
+        }
+    }
+}

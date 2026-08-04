@@ -1,0 +1,143 @@
+﻿---
+ID: "2e1d078b-32c8-41b8-bd87-0fb877d66774"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/WP-379 rooms with description report"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function -Name ConvertTo-Xlsx
+    Import-Function -Name Export-Xlsx
+    
+    $sourceDb = "master"
+    $rootItemPath = "$($sourceDb):/sitecore/content/EasyJet/Holidays/Home/Destinations"
+    $accommodationRoomTemplateId = "{BA1EC5C3-14C7-40B3-8B69-D020590DA1F3}"
+    $roomsFolderTemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+    $hotelTemplateId = "{28E5E169-8F72-4F90-A277-280A8302B607}"
+    $time = Get-Date -UFormat %s -Millisecond 0
+    $date = Get-Date -Format "dd_MM_yyyy"
+    $filename = "RoomDescriptionReport_$($sourceDb)_Small_$($date)_$($time)"
+    $reportsFolderPath = "$($sourceDb):/sitecore/media library/Files/easyJet Hotel Report Export"
+    $reportFolderName = "Room Description Reports"
+    
+    function Save-Document ($reportsFolderPath,$reportFolderName,$reportName,$data) {
+    	$reportsFolder = Get-Or-Create-Item -Path "$($reportsFolderPath)/$($reportFolderName)" -Template "{FE5DD826-48C6-436D-B87A-7C4210C7413B}"
+    	$item = New-Item -Path "$($reportsFolder.Paths.FullPath)/$reportName" -ItemType "{962B53C4-F93B-4DF9-9821-415C867B8903}"
+    	$data = $data | ForEach-Object { New-Object PSObject -Property $_ }
+    	[byte[]]$data = $data | ConvertTo-Xlsx
+    	[Sitecore.Data.Items.MediaItem]$mediaItem = $item
+    	[Sitecore.Resources.Media.Media]$media = [Sitecore.Resources.Media.MediaManager]::GetMedia($mediaItem);
+    	$stream = New-Object System.IO.MemoryStream
+    	$stream.Write($data,0,$data.Count)
+    	$media.SetStream($stream,"xlsx");
+    	$stream.Close();
+    	Out-Download -Name "$($reportName).xlsx" -InputObject $data
+    }
+    
+    function Has-BaseTemplate ($item,$baseTemplateId)
+    {
+    	if ($item -eq $null)
+    	{
+    		return false;
+    	}
+    	$template = [Sitecore.Data.Managers.TemplateManager]::GetTemplate($item);
+    	return $template -ne $null -and $template.InheritsFrom($baseTemplateId);
+    }
+    
+    function Get-Hotels-Recursive ($root,$list) {
+    	foreach ($child in $root.Children) {
+    		if (Has-BaseTemplate -Item $child -baseTemplateId "{168F65DC-9ECD-4A6E-AD93-A46464E45F79}") {
+    			if ($child.TemplateId -eq "{538939B3-07EC-4C23-BF8C-3A68DE0FDC93}")
+    			{
+    				foreach ($item in $child.Children) {
+    					if ($item.TemplateId -ne $hotelTemplateId) {
+    						continue;
+    					}
+    					$list.Add($item) > $null
+    				}
+    			}
+    			else {
+    				Get-Hotels-Recursive $child $list
+    			}
+    		}
+    	}
+    }
+    
+    function Get-Rooms-Folder($hotels, $list) {
+        foreach($hotel in $hotels) {
+            $roomsFolder = $hotel.Children | Where { $_.TemplateId -eq $roomsFolderTemplateId }
+            foreach($folder in $roomsFolder) {
+                $list.Add($folder) > $null
+            }
+        }
+    }
+    
+    function Get-Rooms($roomsFolder, $list) {
+         foreach($folder in $roomsFolder) {
+            $rooms = $folder.Children | Where { ($_.TemplateId -eq $accommodationRoomTemplateId) -and ($_.Fields["Description"].Value -ne '')  }
+            foreach($room in $rooms) {
+                $list.Add($room) > $null
+            }
+        }   
+    }
+    
+    function Get-Or-Create-Item ($path,$template) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $template
+    	}
+    	return $item
+    }
+    
+    
+    function CreateRoomReport {
+    	$hotels = [System.Collections.ArrayList]@()
+    	$roomsFolder = [System.Collections.ArrayList]@()
+    	$rooms = [System.Collections.ArrayList]@()
+    	$data = @()
+    	
+    	$root = Get-Item $rootItemPath
+    	Get-Hotels-Recursive $root $hotels
+    	Write-Host "Found" $hotels.Count "hotels"
+    	
+        Get-Rooms-Folder $hotels $roomsFolder
+        Write-Host "Found" $roomsFolder.Count "rooms folder"
+        
+        Get-Rooms $roomsFolder $rooms
+        Write-Host "Found" $rooms.Count "rooms with descriptions"
+        Write-Host "Starting to gather data for report"
+        
+        $totalTimes = $rooms.Count
+        $i = 0
+    
+        foreach($room in $rooms) {
+            $i++
+            $data += [ordered]@{
+                    RoomName = $room.Name
+    				Path = $room.Paths.FullPath
+    				Description = $room["Description"]
+    			}
+            $percentComplete = ($i / $totalTimes) * 100
+            Write-Progress -Activity 'Processing' -Status "completed $i rooms" -PercentComplete $percentComplete
+        }
+    	Save-Document -ReportsFolderPath $reportsFolderPath -ReportFolderName $reportFolderName -ReportName $filename -Data $data
+    }
+    
+    Write-Host "start"
+    $stopWatch = New-Object -TypeName System.Diagnostics.Stopwatch
+    $stopWatch.Start()
+    
+    CreateRoomReport
+    
+    $stopWatch.Stop()
+    Write-Host "completed. Elapsed time - $($StopWatch.Elapsed)" -ForegroundColor Green 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241113T122650Z

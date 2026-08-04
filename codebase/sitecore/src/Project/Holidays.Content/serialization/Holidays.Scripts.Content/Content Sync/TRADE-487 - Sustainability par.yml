@@ -1,0 +1,48 @@
+﻿---
+ID: "89c8fc68-febf-4e96-b226-360d625bdebf"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/TRADE-487 - Sustainability partnerships and certs upd"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -Language "en" -ErrorAction SilentlyContinue
+        
+        if (-Not $item){
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item $($item.Name) successfully created"
+        }
+        
+        return $item
+    }
+    
+    # Our partnerships and certifications carousel data sources add button texts
+    $carousel = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Sustainability/Page Components/Partnerships Carousel" -TemplateId "{101A3D9C-063B-4DBD-8A28-39EF80F74754}"
+    
+    if($carousel -ne $null) {
+        $carousel.Editing.BeginEdit()
+        $carousel["ReadMore"] = "Read more"
+        $carousel["ReadLess"] = "Read less"
+        $carousel.Editing.EndEdit()
+        
+        Write-Host "Button text was added to partnerships carousel"
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 150
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230804T102242Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

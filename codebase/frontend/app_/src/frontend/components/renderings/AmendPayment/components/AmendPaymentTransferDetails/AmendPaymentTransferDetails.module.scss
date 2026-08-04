@@ -1,0 +1,48 @@
+.container {
+    width: 100%;
+
+    :global(.amend-transfer-card) {
+        margin-bottom: 0;
+    }
+
+    :global(.card__content) {
+        max-width: 100%;
+        margin: 0 !important;
+        padding-left: 0;
+
+        ul {
+            margin: 0;
+
+            li:not(:last-child) {
+                margin-bottom: 12px;
+            }
+        }
+    }
+
+    :global(.amend-transfer-card__duration) {
+        padding-bottom: 0 !important;
+
+        @include media-breakpoint-down(lg) {
+            margin-top: 16px;
+        }
+    }
+
+    :global(.amend-transfer-card__heading) {
+        margin-bottom: 12px !important;
+        padding-bottom: 0 !important;
+    }
+
+    :global(.card__icon) {
+        @include sizeSquare(32px);
+
+        margin-right: 8px;
+
+        @include media-breakpoint-down(lg) {
+            @include sizeSquare(21px);
+        }
+    }
+}
+
+.cardContent {
+    padding: 24px;
+}

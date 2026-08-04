@@ -1,0 +1,80 @@
+.block {
+    margin-bottom: 20px;
+}
+
+.row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--bs-gutter-x);
+    margin-top: calc(var(--bs-gutter-y) * -1);
+}
+
+.row > * {
+    max-width: 100%;
+}
+
+.balanceCardWrapper {
+    @include media-breakpoint-up(md) {
+        order: 2;
+    }
+}
+
+.rowHalf {
+    width: 100%;
+    @include media-breakpoint-up(md) {
+        flex: 1 1 0;
+        width: 50%;
+    }
+}
+
+.rowFull {
+    width: 100%;
+    @include media-breakpoint-up(md) {
+        flex: 0 0 auto;
+    }
+}
+
+.carousel {
+    border-radius: 6px;
+    box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.13);
+
+    @include media-breakpoint-up(md) {
+        order: 3;
+    }
+}
+
+.history {
+    @include media-breakpoint-up(md) {
+        order: 4;
+    }
+}
+
+.text {
+    margin-top: 0;
+    margin-bottom: 40px;
+    font-family: $fontRoundedBook;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.3;
+    color: $clrTextHeading;
+
+    @include media-breakpoint-down(md) {
+        order: 1;
+        margin-bottom: 27px;
+        font-size: 14px;
+        line-height: 1.3;
+    }
+}
+
+
+.bannerPaddings {
+    margin-bottom: 32px;
+
+     @include media-breakpoint-up(md) {
+        margin-bottom: 48px;
+    }
+}

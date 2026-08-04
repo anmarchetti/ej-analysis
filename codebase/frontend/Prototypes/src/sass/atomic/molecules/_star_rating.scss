@@ -1,0 +1,33 @@
+.star_rating {
+    display: flex;
+    white-space: nowrap;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 10px;
+    }
+
+    i {
+        display: flex;
+    }
+
+    svg {
+        width: 14px;
+        height: 14px;
+        margin-right: 2px;
+        color: #333;
+
+        @include media-breakpoint-down(md) {
+            width: 12px;
+            height: 12px;
+            margin-right: 6px;
+        }
+    }
+
+    span {
+        &:last-child {
+            svg {
+                margin-right: 0;
+            }
+        }
+    }
+}

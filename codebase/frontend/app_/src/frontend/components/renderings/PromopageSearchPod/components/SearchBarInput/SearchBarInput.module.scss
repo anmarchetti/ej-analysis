@@ -1,0 +1,130 @@
+.crossButton {
+    height: 100%;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    svg {
+        box-sizing: content-box;
+        width: 20px;
+        height: 70%;
+        vertical-align: middle;
+        color: $clrEjOrangeLight;
+        max-width: 15px;
+        padding: 0 13px 0 12px;
+    }
+}
+
+.buttonsContainer {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    height: $search-pod-form-control_height;
+
+    @include media-breakpoint-down(md) {
+        top: 10px;
+    }
+}
+
+.inputBox .label {
+    top: -7.5px;
+    left: 12px;
+    height: auto;
+    padding: 0 8px;
+    line-height: 1;
+    color: $clrTxtLight;
+    background: $colorWhite;
+}
+
+.placeholder {
+    position: absolute;
+    top: 0;
+    right: 35px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    color: $clrTxtLight;
+    pointer-events: none;
+
+    svg {
+        display: inline-block;
+        max-width: 20px;
+        height: 15px;
+        margin-right: 10px;
+        color: $clrEjOrange;
+    }
+
+    span {
+        overflow: hidden;
+        white-space: nowrap;
+    }
+}
+
+.input {
+    font-size: 14px;
+    position: relative;
+    width: 100%;
+    padding: 11px 35px 11px 20px;
+    font-family: $fontRoundedBook;
+    color: $colorBlack;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color: $colorWhite;
+    border: 1px solid $clrTxtLight;
+    height: $search-pod-form-control_height;
+    border-radius: $search-pod-form-control_border-radius;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.inputBox {
+    position: relative;
+    flex: 2;
+    margin-right: 20px;
+    padding: {
+        top: 5px;
+        bottom: 5px;
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-right: 0;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+
+.highlighted .errorInput,
+.errorInput {
+    .input {
+        color: $colorRed;
+        border: 1px solid $colorRed;
+    }
+
+    .placeholder {
+        color: $colorRed;
+
+        svg {
+            color: $colorRed;
+        }
+    }
+
+    .label {
+        color: $colorRed;
+    }
+}
+
+.highlighted {
+    input {
+        border: 1px solid $clrEjOrangeLight;
+    }
+
+    .label {
+        color: $clrEjOrangeLight;
+    }
+}

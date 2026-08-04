@@ -1,0 +1,65 @@
+.guests {
+    display: flex;
+    flex-direction: column;
+
+    .guestInfo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        font-family: $fontRoundedBook;
+        font-size: 18px;
+        line-height: 1.333;
+        color: $clrTextHeading;        
+    }
+
+    .guestButton {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;       
+        padding: 16px 8px;
+        background-color: transparent;
+        border: none;
+        border-top: 1px solid $colorGeyser;
+        cursor: pointer;
+    }
+
+    .guestButton:disabled {
+        background: $colorPorcelain;
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    
+    .guestButton:last-child {
+        border-bottom: 1px solid $colorGeyser;
+    }
+
+    .guestButton:hover:not(:disabled) {
+        opacity: 0.6;
+    }
+
+    .guestName {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-align: left;
+
+        svg {
+            @include sizeSquare(24px);
+        }
+    }
+
+    .arrowIcon {
+        @include sizeSquare(32px);
+
+        padding: 8px;
+    }
+
+    .requestedOn {
+        color: #6A6D6F;
+        text-align: left;
+    }
+}
+
+
+

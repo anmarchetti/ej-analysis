@@ -1,0 +1,64 @@
+﻿---
+ID: "95973d38-ee6d-4bcd-a171-241c71c1157b"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/Get regions with countries
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function -Name ConvertTo-Xlsx
+    Import-Function -Name Export-Xlsx
+    
+    $sourceDb = "master"
+    
+    function Generate-Report(){
+        $regions = Find-Regions-Items
+        $reports = @()
+        foreach($region in $regions){
+            $regionItem = $region.GetItem()
+            $report = [ordered]@{}
+            $report.Add("Country (EJH)", $regionItem.Parent.Name)
+            $report.Add("Region (EJH)", $regionItem.Name)
+            $report.Add("Region Code (EJH)", $regionItem["Code"])
+            $report.Add("Notes", "")
+            $report.Add("Muzement Destination", "")
+            $report.Add("Muzement Destination ID", $regionItem["MuzementId"])
+            $reports += $report
+        }
+        $data = $reports | ForEach-Object { New-Object PSObject -Property $_ }
+        [byte[]]$data = $data | ConvertTo-Xlsx
+        Out-Download -Name "report.xlsx" -InputObject $data
+    }
+    
+    function Find-Regions-Items
+    {
+    	$criteria = @(
+    		@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    		@{ Filter = "Equals"; Field = "_template"; Value = "{2F42EC14-7E56-467A-B300-AB9723C74546}"; }
+    		@{ Filter = "StartsWith"; Field = "_fullpath"; Value = "/sitecore/content/EasyJet/Holidays/Home/Destinations"; }
+    		@{ Filter = "Equals"; Field = "_name"; Value = "__Standard Values"; "Invert" = $true}
+    	)
+    
+    	$props = @{
+    		Index = "sitecore_destinations_$($sourceDb)_index"
+    		Criteria = $criteria
+    	}
+    
+    	$items = Find-Item @props
+    
+    	Write-Host "$($items.Count) Regions were found"
+    
+    	return $items
+    }
+    
+    Generate-Report
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20211230T133931Z

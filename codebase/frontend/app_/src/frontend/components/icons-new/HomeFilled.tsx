@@ -1,0 +1,18 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgHomeFilled = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'home-filled-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <path d='M21.64 10l-9-7.71a1 1 0 00-1.3 0L2.36 10A1 1 0 003 11.72a1 1 0 00.61-.22v8.14A2.32 2.32 0 005.92 22H9v-6.3a1.3 1.3 0 011.3-1.3h3.4a1.3 1.3 0 011.3 1.3V22h3.08a2.32 2.32 0 002.3-2.35v-8.16a1 1 0 001.37-.12 1 1 0 00-.11-1.37z' />
+    </svg>
+);
+
+export default SvgHomeFilled;

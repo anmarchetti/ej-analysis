@@ -1,0 +1,188 @@
+@import '../../OfferCardNewVariables.module';
+
+.footer {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 75px;
+    margin-right: 0;
+    margin-left: 0;
+
+    @include media-breakpoint-down(xl) {
+        position: static;
+        flex-direction: column;
+    }
+
+    :global(.hotel-card__icons-summ) {
+        margin: auto;
+    }
+
+    :global(.hotel-price__pills) {
+        justify-content: center;
+        gap: 8px;
+        width: min-content;
+        margin: 12px 0 12px 12px;
+
+        @include media-breakpoint-down(xl) {
+            align-self: flex-start;
+            min-width: fit-content;
+            margin: 0 $hotelCardEdgeSpacing;
+        }
+
+        @include media-breakpoint-down(lg) {
+            line-height: 1.15;
+        }
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        box-shadow: inset 0 8px 6px -6px rgba(178, 175, 175, 0.5);
+        pointer-events: none;
+
+        @include media-breakpoint-down(xl) {
+            display: none;
+        }
+    }
+
+    :global(.offer-card-pills) {
+        align-items: flex-start;
+        margin: 12px $hotelCardEdgeSpacing 8px $hotelCardEdgeSpacing;
+    }
+}
+
+.footer.footerWithTouristTax {
+    :global(.hotel-price__pills) {
+        width: auto;
+    }
+}
+
+.priceWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 18px;
+    padding-left: 8px;
+    border-radius: 0 0 6px;
+
+    :global(.hotel-price__main) {
+        margin-left: auto;
+    }
+
+    @include media-breakpoint-down(xl) {
+        position: static;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 4px $hotelCardEdgeSpacing $hotelCardEdgeSpacing;
+        background-color: transparent;
+    }
+
+    :global(.btn--wide) {
+        min-width: fit-content;
+        height: 48px;
+        margin-left: 10px;
+        padding: 15px 24px;
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+
+        @include media-breakpoint-down(xl) {
+            margin-left: 0;
+        }
+    }
+
+    :global(.callout__container) {
+        margin-left: 5px;
+    }
+
+    :global(.more-info) {
+        width: 11px;
+        height: 11px;
+    }
+
+    :global(.hotel-card-head-bookmark) {
+        margin-left: 6px;
+
+        :global(.btn) {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 48px;
+            height: 48px;
+            padding: 9px;
+            border: 1.2px solid $clrEjOrange;
+            border-radius: 4px;
+
+            @include media-breakpoint-down(xl) {
+                border: none;
+            }
+
+            svg {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+    :global(.total),
+    :global(.price-big__price-info) {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: baseline;
+    }
+
+    .priceToolTip {
+        margin-left: 12px;
+    }
+
+    :global(.price-big__from-label),
+    :global(.price-big__subtext) {
+        margin-left: 4px;
+        font-size: 14px;
+        line-height: 18px;
+        letter-spacing: 0;
+    }
+
+    :global(.price-big__value) {
+        font-size: 22px;
+        line-height: 24px;
+        letter-spacing: 0;
+    }
+}
+
+.priceInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 8px 0;
+
+    @include media-breakpoint-down(xl) {
+        margin-bottom: 10px;
+        padding: 0;
+    }
+}
+
+.packageIconsWrapper {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    margin-left: 16px;
+    padding: 20px 0 16px;
+
+    @include media-breakpoint-down(xl) {
+        width: fit-content;
+        max-width: 100%;
+        margin-left: 11px;
+        padding: 20px 0 16px;
+    }
+}

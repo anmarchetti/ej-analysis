@@ -1,0 +1,727 @@
+{
+  "Title": "response for feefo reviews request",
+  "Request": {
+    "Headers": [
+      {
+        "Name": "Authorization",
+        "Matchers": [
+          {
+            "Name": "WildcardMatcher",
+            "Pattern": "Bearer some.Token.forTesting",
+            "IgnoreCase": true
+          }
+        ]
+      }
+    ],
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "RegexMatcher",
+          "Pattern": "^/api/20/reviews/service",
+          "IgnoreCase": true
+        }
+      ]
+    },
+    "Methods": [ "Get" ]
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsJson": {
+      "summary": {
+        "meta": {
+          "count": 17,
+          "pages": 2,
+          "page_size": 12,
+          "current_page": 1
+        }
+      },
+      "reviews": [
+        {
+          "merchant": { "identifier": "component-test-easyjet-holidays" },
+          "tags": [
+            {
+              "type": "SALE",
+              "key": "numberofpassengers",
+              "values": [ "1" ]
+            },
+            {
+              "type": "SALE",
+              "key": "destinationregion",
+              "values": [ "Hamburg" ]
+            },
+            {
+              "type": "SALE",
+              "key": "date",
+              "values": [ "01-01-2021" ]
+            },
+            {
+              "type": "SALE",
+              "key": "Hostname",
+              "values": [ "localhost" ]
+            }
+          ],
+          "url": "",
+          "social": {
+            "facebook": "",
+            "twitter": ""
+          },
+          "customer": {
+            "name": "f2b7f05dcdbf141759687bfb4d4ecd8ab",
+            "email": "randomfb7f05dcdbf141232759687bfb4d4ecd8ab@test.com",
+            "display_name": "f2b7f05dcdbf141759687bfb4d4ecd8ab",
+            "order_ref": "Ofb32327f05dcdbf141759687bfb4d4ecd8ab"
+          },
+          "service": {
+            "rating": {
+              "min": 1,
+              "max": 5,
+              "rating": 4
+            },
+            "id": "63ce5745e4b07e7871ae4b5f",
+            "title": "great",
+            "review": "Great trips!",
+            "moderation_status": "published",
+            "created_at": "2023-01-23T09:45:40.677Z",
+            "helpful_votes": 0
+          },
+          "locale": "pl_PL",
+          "products_purchased": [ "Test fb7f05dcdbf141759687bfb4d4ecd8ab" ],
+          "last_updated_date": "2023-01-23T09:45:41.208Z"
+        },
+        {
+          "merchant": { "identifier": "component-test-easyjet-holidays" },
+          "tags": [
+            {
+              "type": "SALE",
+              "key": "numberofpassengers",
+              "values": [ "1" ]
+            },
+            {
+              "type": "SALE",
+              "key": "destinationregion",
+              "values": [ "Hamburg" ]
+            },
+            {
+              "type": "SALE",
+              "key": "date",
+              "values": [ "01-01-2021" ]
+            },
+            {
+              "type": "SALE",
+              "key": "Hostname",
+              "values": [ "localhost" ]
+            }
+          ],
+          "url": "",
+          "social": {
+            "facebook": "",
+            "twitter": ""
+          },
+          "customer": {
+            "name": "f2b7f05dcdbf14175sds9687bfb4d4ecd8ab",
+            "email": "randomfb7f05dcdbf141232759687bfb4dsadsa4ecd8ab@test.com",
+            "order_ref": "Ofbsdsds32327f05d23232cdbf141759687bfb4d4ecd8ab"
+          },
+          "service": {
+            "rating": {
+              "min": 1,
+              "max": 5,
+              "rating": 5
+            },
+            "id": "63bd38e8e4b0d90046b6d79f",
+            "title": "Nice",
+            "review": "Nice user experience 10.01.2023",
+            "moderation_status": "published",
+            "created_at": "2023-01-10T10:07:35.794Z",
+            "helpful_votes": 0
+          },
+          "locale": "de_DE",
+          "products_purchased": [ "Test fb7f05dcdbf141759687bfb4d4ecd8ab" ],
+          "last_updated_date": "2023-01-10T10:07:36.290Z"
+        },
+        {
+          "merchant": { "identifier": "component-test-easyjet-holidays" },
+          "tags": [
+            {
+              "type": "FEEDBACK",
+              "key": "Positive booking",
+              "values": [ "Ease of booking" ]
+            },
+            {
+              "type": "SALE",
+              "key": "numberofpassengers",
+              "values": [ "2" ]
+            },
+            {
+              "type": "SALE",
+              "key": "packagetype",
+              "values": [ "Handpicked" ]
+            },
+            {
+              "type": "SALE",
+              "key": "date",
+              "values": [ "31-11-2022" ]
+            },
+            {
+              "type": "SALE",
+              "key": "destinationregion",
+              "values": [ "Marmaris" ]
+            },
+            {
+              "type": "SALE",
+              "key": "Hostname",
+              "values": [ "localhost" ]
+            }
+          ],
+          "url": "",
+          "social": {
+            "facebook": "",
+            "twitter": ""
+          },
+          "customer": {
+            "name": "Customer",
+            "email": "customer@test.com",
+            "order_ref": "34377779",
+            "customer_ref": "Ideal Prime Beach"
+          },
+          "service": {
+            "rating": {
+              "min": 1,
+              "max": 5,
+              "rating": 5
+            },
+            "id": "63627518e4b0a5d3bea8c286",
+            "review": "Excellent service!! Very easy to book!",
+            "moderation_status": "published",
+            "created_at": "2022-11-02T13:48:08.342Z",
+            "helpful_votes": 0
+          },
+          "locale": "en_GB",
+          "products_purchased": [ "Turkey" ],
+          "last_updated_date": "2022-11-02T13:48:08.959Z"
+        },
+        {
+          "merchant": { "identifier": "component-test-easyjet-holidays" },
+          "tags": [
+            {
+              "type": "SALE",
+              "key": "numberofpassengers",
+              "values": [ "2" ]
+            },
+            {
+              "type": "SALE",
+              "key": "packagetype",
+              "values": [ "Handpicked" ]
+            },
+            {
+              "type": "SALE",
+              "key": "date",
+              "values": [ "31-11-2022" ]
+            },
+            {
+              "type": "SALE",
+              "key": "destinationregion",
+              "values": [ "Marmaris" ]
+            },
+            {
+              "type": "SALE",
+              "key": "Hostname",
+              "values": [ "localhost" ]
+            }
+          ],
+          "url": "",
+          "social": {
+            "facebook": "",
+            "twitter": ""
+          },
+          "customer": {
+            "name": "John",
+            "email": "john@test.com",
+            "display_name": "John",
+            "order_ref": "3477778",
+            "customer_ref": "Ideal Prime Beach"
+          },
+          "service": {
+            "rating": {
+              "min": 1,
+              "max": 5,
+              "rating": 5
+            },
+            "id": "6360e39de4b0bfe8e85ffb47",
+            "title": "Speedy booking process",
+            "review": "Very simple booking booking process",
+            "moderation_status": "published",
+            "created_at": "2022-11-01T09:15:08.583Z",
+            "helpful_votes": 0
+          },
+          "locale": "en_GB",
+          "products_purchased": [ "Turkey" ],
+          "last_updated_date": "2022-11-01T09:19:40.330Z"
+        },
+        {
+          "merchant": { "identifier": "component-test-easyjet-holidays" },
+          "tags": [
+            {
+              "type": "SALE",
+              "key": "numberofpassengers",
+              "values": [ "2" ]
+            },
+            {
+              "type": "SALE",
+              "key": "packagetype",
+              "values": [ "Handpicked" ]
+            },
+            {
+              "type": "SALE",
+              "key": "date",
+              "values": [ "31-11-2022" ]
+            },
+            {
+              "type": "SALE",
+              "key": "destinationregion",
+              "values": [ "Marmaris" ]
+            },
+            {
+              "type": "SALE",
+              "key": "Hostname",
+              "values": [ "localhost" ]
+            }
+          ],
+          "url": "",
+          "social": {
+            "facebook": "",
+            "twitter": ""
+          },
+          "customer": {
+            "name": "Steve",
+            "email": "steve@test.com",
+            "display_name": "Steve",
+            "order_ref": "3477777",
+            "customer_ref": "Ideal Prime Beach"
+          },
+          "service": {
+            "rating": {
+              "min": 1,
+              "max": 5,
+              "rating": 5
+            },
+            "id": "6360e35be4b064ad174d8020",
+            "title": "Excellent booking experience",
+            "review": "Excellent booking experience, very quick and easy to book online.",
+            "moderation_status": "published",
+            "created_at": "2022-11-01T09:14:03.431Z",
+            "helpful_votes": 0
+          },
+          "locale": "en_GB",
+          "products_purchased": [ "Turkey" ],
+          "last_updated_date": "2022-11-01T09:17:08.802Z"
+        },
+        {
+          "merchant": { "identifier": "component-test-easyjet-holidays" },
+          "tags": [
+            {
+              "type": "SALE",
+              "key": "numberofpassengers",
+              "values": [ "2" ]
+            },
+            {
+              "type": "SALE",
+              "key": "destinationregion",
+              "values": [ "Paphos" ]
+            },
+            {
+              "type": "SALE",
+              "key": "date",
+              "values": [ "20-10-2022" ]
+            },
+            {
+              "type": "SALE",
+              "key": "packagetype",
+              "values": [ "Luxury Holiday" ]
+            },
+            {
+              "type": "SALE",
+              "key": "Hostname",
+              "values": [ "localhost" ]
+            }
+          ],
+          "url": "",
+          "social": {
+            "facebook": "",
+            "twitter": ""
+          },
+          "customer": {
+            "name": "Leah test",
+            "email": "leah@test.com",
+            "display_name": "Leah Jones",
+            "display_location": "Leighton Buzzard",
+            "order_ref": "9173995",
+            "customer_ref": "Olympic Lagoon Resort Paphos"
+          },
+          "service": {
+            "rating": {
+              "min": 1,
+              "max": 5,
+              "rating": 5
+            },
+            "id": "6352b27fe4b018b2ea722dcf",
+            "title": "Fantastic",
+            "review": "TEST TEST TEST",
+            "moderation_status": "published",
+            "created_at": "2022-10-21T14:53:50.414Z",
+            "helpful_votes": 0
+          },
+          "locale": "en_GB",
+          "products_purchased": [ "Paphos" ],
+          "last_updated_date": "2022-10-21T14:53:51.053Z"
+        },
+        {
+          "merchant": { "identifier": "component-test-easyjet-holidays" },
+          "tags": [
+            {
+              "type": "SALE",
+              "key": "numberofpassengers",
+              "values": [ "2" ]
+            },
+            {
+              "type": "SALE",
+              "key": "destinationregion",
+              "values": [ "Marrakech" ]
+            },
+            {
+              "type": "SALE",
+              "key": "date",
+              "values": [ "20-10-2022" ]
+            },
+            {
+              "type": "SALE",
+              "key": "packagetype",
+              "values": [ "Adults Holiday" ]
+            },
+            {
+              "type": "SALE",
+              "key": "Hostname",
+              "values": [ "localhost" ]
+            }
+          ],
+          "url": "",
+          "social": {
+            "facebook": "",
+            "twitter": ""
+          },
+          "customer": {
+            "name": "Matt test",
+            "email": "matt@test.com",
+            "display_name": "Matt Pink",
+            "order_ref": "9173971",
+            "customer_ref": "Be Live Collection Marrakech Adults Only"
+          },
+          "service": {
+            "rating": {
+              "min": 1,
+              "max": 5,
+              "rating": 5
+            },
+            "id": "63527f54e4b011c2054bfca3",
+            "title": "Was great",
+            "review": "Brilliant!",
+            "moderation_status": "published",
+            "created_at": "2022-10-21T11:15:32.455Z",
+            "helpful_votes": 0
+          },
+          "locale": "en_GB",
+          "products_purchased": [ "Marrakech" ],
+          "last_updated_date": "2022-10-21T11:15:32.991Z"
+        },
+        {
+          "merchant": { "identifier": "component-test-easyjet-holidays" },
+          "tags": [
+            {
+              "type": "SALE",
+              "key": "numberofpassengers",
+              "values": [ "2" ]
+            },
+            {
+              "type": "SALE",
+              "key": "packagetype",
+              "values": [ "Handpicked" ]
+            },
+            {
+              "type": "SALE",
+              "key": "date",
+              "values": [ "20-10-2022" ]
+            },
+            {
+              "type": "SALE",
+              "key": "destinationregion",
+              "values": [ "Sicily" ]
+            },
+            {
+              "type": "SALE",
+              "key": "Hostname",
+              "values": [ "localhost" ]
+            }
+          ],
+          "url": "",
+          "social": {
+            "facebook": "",
+            "twitter": ""
+          },
+          "customer": {
+            "name": "Matt test",
+            "email": "matt2@test.com",
+            "order_ref": "9173997",
+            "customer_ref": "Grande Albergo Maugeri"
+          },
+          "service": {
+            "rating": {
+              "min": 1,
+              "max": 5,
+              "rating": 5
+            },
+            "id": "63527329e4b018b2ea677f0e",
+            "title": "Very Testing",
+            "review": "Testing 123",
+            "moderation_status": "published",
+            "created_at": "2022-10-21T10:23:37.452Z",
+            "helpful_votes": 0
+          },
+          "locale": "en_GB",
+          "products_purchased": [ "Sicily" ],
+          "last_updated_date": "2022-10-21T10:23:37.980Z"
+        },
+        {
+          "merchant": { "identifier": "component-test-easyjet-holidays" },
+          "tags": [
+            {
+              "type": "SALE",
+              "key": "numberofpassengers",
+              "values": [ "2" ]
+            },
+            {
+              "type": "SALE",
+              "key": "packagetype",
+              "values": [ "Handpicked" ]
+            },
+            {
+              "type": "SALE",
+              "key": "destinationregion",
+              "values": [ "Pisa" ]
+            },
+            {
+              "type": "SALE",
+              "key": "date",
+              "values": [ "18-10-2022" ]
+            },
+            {
+              "type": "SALE",
+              "key": "Hostname",
+              "values": [ "localhost" ]
+            }
+          ],
+          "url": "",
+          "social": {
+            "facebook": "",
+            "twitter": ""
+          },
+          "customer": {
+            "name": "Ben test",
+            "email": "ben@test.com",
+            "display_name": "Ben Reid",
+            "order_ref": "9173515",
+            "customer_ref": "Grand Hotel Bonanno"
+          },
+          "service": {
+            "rating": {
+              "min": 1,
+              "max": 5,
+              "rating": 5
+            },
+            "id": "6351195be4b02ceac110306b",
+            "title": "Best hotel food ever!!",
+            "review": "I loved the chicken and chips served at the hotel",
+            "moderation_status": "published",
+            "created_at": "2022-10-20T09:48:10.858Z",
+            "helpful_votes": 0
+          },
+          "locale": "en_GB",
+          "products_purchased": [ "Pisa" ],
+          "last_updated_date": "2022-10-20T09:48:11.318Z"
+        },
+        {
+          "merchant": { "identifier": "component-test-easyjet-holidays" },
+          "tags": [
+            {
+              "type": "SALE",
+              "key": "numberofpassengers",
+              "values": [ "4" ]
+            },
+            {
+              "type": "SALE",
+              "key": "date",
+              "values": [ "18-10-2022" ]
+            },
+            {
+              "type": "SALE",
+              "key": "packagetype",
+              "values": [ "Family Holiday" ]
+            },
+            {
+              "type": "SALE",
+              "key": "destinationregion",
+              "values": [ "Antalya" ]
+            },
+            {
+              "type": "SALE",
+              "key": "Hostname",
+              "values": [ "localhost" ]
+            }
+          ],
+          "url": "",
+          "social": {
+            "facebook": "",
+            "twitter": ""
+          },
+          "customer": {
+            "name": "James test",
+            "email": "james@test.com",
+            "display_name": "James Brant",
+            "order_ref": "9173513",
+            "customer_ref": "The Land of Legends Kingdom Hotel"
+          },
+          "service": {
+            "rating": {
+              "min": 1,
+              "max": 5,
+              "rating": 5
+            },
+            "id": "63511106e4b02ceac10ee5c1",
+            "title": "Simple",
+            "review": "Very easy and quick",
+            "moderation_status": "published",
+            "created_at": "2022-10-20T09:12:38.091Z",
+            "helpful_votes": 0
+          },
+          "locale": "en_GB",
+          "products_purchased": [ "Antalya" ],
+          "last_updated_date": "2022-10-20T09:12:38.615Z"
+        },
+        {
+          "merchant": { "identifier": "component-test-easyjet-holidays" },
+          "tags": [
+            {
+              "type": "SALE",
+              "key": "numberofpassengers",
+              "values": [ "2" ]
+            },
+            {
+              "type": "SALE",
+              "key": "packagetype",
+              "values": [ "Handpicked" ]
+            },
+            {
+              "type": "SALE",
+              "key": "destinationregion",
+              "values": [ "Lanzarote" ]
+            },
+            {
+              "type": "SALE",
+              "key": "date",
+              "values": [ "18-10-2022" ]
+            },
+            {
+              "type": "SALE",
+              "key": "Hostname",
+              "values": [ "localhost" ]
+            }
+          ],
+          "url": "",
+          "social": {
+            "facebook": "",
+            "twitter": ""
+          },
+          "customer": {
+            "name": "Scott test",
+            "email": "scott@test.com",
+            "order_ref": "9173509",
+            "customer_ref": "H10 Rubicon Palace"
+          },
+          "service": {
+            "rating": {
+              "min": 1,
+              "max": 5,
+              "rating": 5
+            },
+            "id": "635102c0e4b02ceac10cb3a7",
+            "title": "Booking with this site was really a big pleasure Booking with this site gre",
+            "review": "Excellent booking experience, very quick and easy to book online. Excellent booking experience, very quick and easy to book online. Excellent booking experience, very quick and easy to book online. Excellent booking experience, very quick and easy to book online. Excellent booking experience, very quick and easy to book online. Excellent booking experience, very quick and easy to book online. Excellent booking experience, very quick and easy to book online. Excellent booking experience, very quick and easy to book online. Excellent booking experience, very quick and easy to book online. Excellent booking experience, very quick and easy to book online.",
+            "moderation_status": "published",
+            "created_at": "2022-10-20T08:11:44.355Z",
+            "helpful_votes": 0
+          },
+          "locale": "en_GB",
+          "products_purchased": [ "Lanzarote" ],
+          "last_updated_date": "2023-08-01T13:28:25.275Z"
+        },
+        {
+          "merchant": { "identifier": "component-test-easyjet-holidays" },
+          "tags": [
+            {
+              "type": "SALE",
+              "key": "numberofpassengers",
+              "values": [ "2" ]
+            },
+            {
+              "type": "SALE",
+              "key": "packagetype",
+              "values": [ "Handpicked" ]
+            },
+            {
+              "type": "SALE",
+              "key": "destinationregion",
+              "values": [ "Algarve" ]
+            },
+            {
+              "type": "SALE",
+              "key": "date",
+              "values": [ "18-10-2022" ]
+            },
+            {
+              "type": "SALE",
+              "key": "Hostname",
+              "values": [ "localhost" ]
+            }
+          ],
+          "url": "",
+          "social": {
+            "facebook": "",
+            "twitter": ""
+          },
+          "customer": {
+            "name": "Matt test",
+            "email": "matt@test.com",
+            "display_name": "Consumer Consumera",
+            "order_ref": "9173512",
+            "customer_ref": "Paladim Alagoamar Hotel"
+          },
+          "service": {
+            "rating": {
+              "min": 1,
+              "max": 5,
+              "rating": 5
+            },
+            "id": "635026bfe4b0eb1993b8116f",
+            "title": "Really easy",
+            "review": "Really easy booking experience - can't wait to book again!",
+            "moderation_status": "published",
+            "created_at": "2022-10-19T16:33:02.930Z",
+            "helpful_votes": 0
+          },
+          "locale": "en_GB",
+          "products_purchased": [ "Algarve" ],
+          "last_updated_date": "2022-10-19T16:33:03.481Z"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,93 @@
+﻿---
+ID: "851740f4-a23b-4aab-ac9c-e90c6cf6c9ee"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-1681 Increased booking size to 16 pax"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Settings
+    function update-item ($path,$field,$value,$lang) {
+    	if ($lang -eq $null) { $lang = "en" }
+    
+    	$item = Get-Item -Path $path -Language $lang -ErrorAction SilentlyContinue
+    
+    	if ($item -ne $null) {
+    		$item.Editing.BeginEdit()
+    		$item[$field] = $value;
+    		$item.Editing.EndEdit() | Out-Null
+    		Write-Host $("Item updated: $($item.Paths.FullPath)")
+    	} else {
+    		Write-Host $("Item not found: $($item.Paths.FullPath)")
+    	}
+    }
+    
+    update-item -Path "/sitecore/content/EasyJet/Holidays/Settings/Guests Validation Settings" -Field "MaxNumberOfGuests" -Value "16"
+    update-item -Path "/sitecore/content/EasyJet/TradePortal/Settings/Guests Validation Settings" -Field "MaxNumberOfGuests" -Value "16"
+    
+    # Dictionary
+    function update-or-create-lang-version ($item,$lang,$field,$value) {
+        	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+        
+        	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+        		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+        	}
+        
+        	if ($null -ne $field) {
+        		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+        		$targetLangItem.Editing.BeginEdit()
+        		$targetLangItem[$field] = $value;
+        		$targetLangItem.Editing.EndEdit() | Out-Null
+        	}
+        }
+    
+    $itemPath = "master:/sitecore/content/EasyJet/Holidays/Dictionary/Room Allocation/Errors/Maximum Number Of Guests HTML"
+    $item = Get-Item -path $itemPath -ErrorAction SilentlyContinue
+    
+    if ($item -ne $null) {
+    	Update-Or-Create-Lang-Version -Item $item -Lang 'en' -Field "Phrase" -Value "<span>The maximum number of guests you can book a holiday for online is 16. If you want to make a booking for a larger group,&nbsp;</span>[GenericMessages.ErrorContactMessageHTML]"
+    	Update-Or-Create-Lang-Version -Item $item -Lang 'de-CH' -Field "Phrase" -Value '<span>Du hast die maximale Anzahl von G&auml;sten erreicht, f&uuml;r die du Ferien online buchen kannst. Wenn du f&uuml;r eine Gruppe von 16 Personen oder mehr&nbsp;buchst, rufe unser Team unter <span data-sheets-root="1" style="color: #000000;">+41 223 24 00 12&nbsp;</span><span data-sheets-root="1">/<span data-sheets-root="1"> <span data-sheets-root="1" style="color: #000000;">+49 302 202 7698&nbsp;</span>an (Mo-So 9 - 18 Uhr. Kosten f&uuml;r ein Ortsgespr&auml;ch. Anrufe aus dem Mobilfunknetz oder anderen Netzen k&ouml;nnen abweichen). </span></span></span>'
+        Write-Host "Item" $item.Name "successfully updated"
+    }
+    
+    $tradeItemPath = "master:/sitecore/content/EasyJet/TradePortal/Dictionary/Room Allocation/Errors/Maximum Number Of Guests HTML"
+    $tradeItem = Get-Item -path $tradeItemPath -ErrorAction SilentlyContinue
+    
+    if ($tradeItem -ne $null) {
+        Update-Or-Create-Lang-Version -Item $tradeItem -Lang 'en' -Field "Phrase" -Value "<span>You&rsquo;ve hit the maximum number of guests you can book a holiday for online. If you want to make a booking for a larger group,</span>&nbsp;[GenericMessages.ErrorContactMessageHTML]"
+        Write-Host "Item" $tradeItem.Name "successfully updated"
+    }
+    
+    # Search pod datasource
+    $itemPath = "/sitecore/content/EasyJet/Holidays/Data/Search Pods/Search Pod"
+    
+    $valuesByLang = @{
+    	"en" = "Max 16 total"
+    	"de-CH" = "max. 16 Personen"
+    	"fr-FR" = "16 personnes maximum"
+    	"de-DE" = "max. 16 Personen"
+    	"fr-CH" = "16 personnes maximum"
+    }
+    $languages = @('en', 'de-DE', 'de-CH', 'fr-CH', 'fr-FR')
+    
+    foreach ($lang in $languages) {
+        $item = Get-Item -Path $itemPath -Language $lang -ErrorAction SilentlyContinue
+    
+        foreach ($version in $item.Versions.GetVersions()) {
+            if ($valuesByLang.ContainsKey($lang)) {
+                $version.Editing.BeginEdit()
+                $version["WhoDropdownGuestsLimitLabel"] = $valuesByLang[$lang]
+                $version.Editing.EndEdit()
+            }
+        }
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20251016T075645Z

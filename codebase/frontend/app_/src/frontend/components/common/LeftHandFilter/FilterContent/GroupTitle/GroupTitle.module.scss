@@ -1,0 +1,167 @@
+.filterTitleButton {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 56px;
+    min-height: 56px;
+    padding: 16px 32px;
+    overflow: hidden;
+    font-family: $fontRoundedDemy;
+    font-size: 16px;
+    line-height: 24px;
+    color: $black;
+    text-align: left;
+    background: $colorWhite;
+    border-top: 1px solid $colorAlto;
+    border-radius: 0;
+    outline: none;
+
+    &:last-child {
+        border-bottom: 1px solid $colorAlto;
+    }
+
+    :global(.icon) {
+        position: absolute;
+        top: 0;
+        right: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 12px;
+        height: 100%;
+        color: $clrEjOrange;
+        background: $colorWhite;
+
+        svg {
+            width: 12px;
+        }
+    }
+
+    &:hover {
+        background: $colorWhite;
+    }
+
+    &:focus-visible, &.active:focus-visible {
+        border: 1px solid $colorBlack;
+        border-radius: 3px;
+        outline: none;
+    }
+
+    &.disabled {
+        color: #ddd;
+        pointer-events: none;
+
+        .titleClear {
+            pointer-events: all;
+        }
+
+        :global(.icon) {
+            color: #ddd;
+        }
+    }
+
+    &:not(.disabled) {
+        &:hover {
+            color: $clrTextMain;
+
+            :global(.icon) {
+                color: $clrEjOrangeLight;
+            }
+        }
+    }
+}
+
+.left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    max-width: fit-content;
+}
+
+.right {
+    display: flex;
+    margin-left: 10px;
+}
+
+.title {
+    @include text-truncate;
+}
+
+.titleClear {
+    display: flex;
+    align-items: center;
+
+    :global(.btn) {
+        font-family: $fontRoundedDemy;
+        font-size: 16px;
+        line-height: 16px;
+    }
+}
+
+.filterCount {
+    padding: 0 12px;
+    font-size: 11px;
+    color: $colorWhite;
+    background: $clrEjOrangeLight;
+    border-radius: 12px;
+}
+
+.counterEntrance {
+    animation: fade-in .3s linear;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.counterExit {
+    animation: fade-out .3s linear;
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.clearEntrance {
+    animation: fade-in-right .3s linear;
+}
+
+@keyframes fade-in-right {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.clearExit {
+    animation: fade-out-left .3s linear;
+}
+
+@keyframes fade-out-left {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+}

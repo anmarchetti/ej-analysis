@@ -1,0 +1,89 @@
+.sizeContainer {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    container-name: refund-info-container;
+    container-type: inline-size;
+
+    @include media-breakpoint-up(md) {
+        margin-top: 25px;
+    }
+}
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 15px;
+    font-size: 16px;
+    line-height: 1.5;
+    background-color: $clrSiteBgWhite;
+    border: 1px solid $colorMercury;
+    border-radius: 3px;
+    box-shadow: none;
+
+    @include media-breakpoint-up(md) {
+        flex-direction: row;
+        gap: 20px;
+        padding: 32px 20px;
+    }
+
+    .contentContainer {
+        display: flex;
+        flex: 1 0 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .cancelButton {
+        width: 220px;
+        min-width: 100px;
+        min-height: auto;
+        padding: 12px 24px;
+        font-size: 16px;
+        line-height: 1.25;
+        border-width: 2px;
+    }
+
+    .title {
+        margin: 0;
+        font-family: $fontRoundedHeadline;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 1.15;
+        color: $clrTextMain;
+    }
+
+    .ctaLink {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 220px;
+        min-height: 48px;
+        padding: 10px;
+    }
+
+    .buttonsContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        gap: 16px;
+
+        @include media-breakpoint-up(md) {
+            gap: 24px;
+        }
+    }
+}
+
+
+@container refund-info-container (max-width: 657px) {
+    .container {
+        flex-direction: column;
+
+        .cancelButton {
+            width: 100%;
+            max-width: none;
+        }
+    }
+}

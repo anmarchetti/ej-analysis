@@ -1,0 +1,412 @@
+﻿---
+ID: "f483104a-c9e7-41b4-aa4d-1760f04ef6b0"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSS-124 Add Hotel Change Summary Page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Set-Page-Design ($designPath,$pageTemplateId) {
+    	$designItem = Get-Item -Path "$($designPath)" -ErrorAction SilentlyContinue
+    	if ($designItem -ne $null) {
+    		[Sitecore.Data.Fields.MultilistField]$pageTemplates = $designItem.Fields["PageTemplates"];
+    
+    		if (!$pageTemplates.Contains($pageTemplateId)) {
+    			$designItem.Editing.BeginEdit();
+    			$pageTemplates.add($pageTemplateId);
+    			$designItem.Editing.EndEdit() | Out-Null
+    			Write-Host $designItem.Name "Page Templates updated"
+    		}
+    	}
+    }
+    
+    function create-lang-version ($item,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+    
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value;
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    function Get-Or-Create-Item ($path,$template) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue;
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $template
+    	}
+    	return $item
+    }
+    
+    function createPage($pagePath, $pageTemplate) {
+    	$templateId = "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    	$changeHotelSummaryPage = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    	
+    	if($changeHotelSummaryPage -ne $null) {
+    		return;
+    	}
+    
+        $page = Get-Or-Create-Item -Path $pagePath -Template $pageTemplate;
+    
+    	if ($page -ne $null) {
+    		$pageTitle =  "Review your changes"
+    		
+        	$page.Editing.BeginEdit();
+    		$page["Name"] = $pageTitle;
+    		$page["TrackingPageTitle"] = $pageTitle
+    		$page["PageTitle"] = $pageTitle;
+    		$page["Description"] = $pageTitle;	
+    		
+    		$page.Editing.EndEdit() | Out-Null;
+    		
+    		Get-Or-Create-Item -Path ($pagePath + "/Page Components") -Template $templateId;
+    	}
+    }
+    
+    function addPageComponents($pagePath) {
+    	addAmendHotelSummary -pagePath $pagePath
+    	addErrataMessage -pagePath $pagePath
+    }
+    
+    function addAmendHotelSummary($pagePath) {
+    	$templateId = "{03F1562D-90EE-4BB0-9564-7CCB948E435A}"
+    	$amendHotelSummaryPath = $pagePath + "/Page Components/Amend Hotel Summary"
+    	$amendHotelSummary = Get-Item -Path $amendHotelSummaryPath -ErrorAction SilentlyContinue
+    
+    	if ($amendHotelSummary -eq $null){
+    		Write-Host "Creating $($amendHotelSummaryPath)"
+    		Get-Or-Create-Item -Path $amendHotelSummaryPath -Template $templateId
+    	} else{
+    		Write-Host "Creating $($amendHotelSummaryPath) already created"
+    	}
+    }
+    
+    function addErrataMessage($pagePath) {
+    	$templateId = "{4E3890D9-808D-4390-BE32-749397BE8A74}"
+    	$errataMessagePath = $pagePath + "/Page Components/Errata Message"
+    	$errataMessage = Get-Item -Path errataMessagePath -ErrorAction SilentlyContinue
+    	
+    	if ($errataMessage -eq $null){
+    		Write-Host "Creating $($errataMessagePath)"
+    		$errataMessage = Get-Or-Create-Item -Path $errataMessagePath -Template $templateId
+    		
+    		$errataMessage.Editing.BeginEdit();
+    		
+    		$errataMessage["Title"] = "Please read carefully";
+        	$errataMessage["Type"] = "errata";
+        	$errataMessage["Description"] = "";
+        	$errataMessage["Icon"] = '<image mediaid="{51A15C31-80B0-4286-9522-30165F61C780}" alt="Exclamation point"/>'
+    		
+    		$errataMessage.Editing.EndEdit() | Out-Null;
+    		
+    	} else{
+    		Write-Host "Creating $($errataMessagePath) already created"
+    	}
+    }
+    
+    function addRenderings($pagePath) {
+    	addAmendHotelRendering -pagePath $pagePath
+    	addMobileBasketRendering -pagePath $pagePath
+    	addErrataMessageRendering -pagePath $pagePath
+    }
+    
+    function addAmendHotelRendering($pagePath) {
+    	$placeholder = "/body"
+    	$amendHotelSummaryRenderingId = "{87265033-8DAA-4548-8FE4-E55E7DE99998}" 
+    	$amendHotelSummaryRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Hotel Summary"
+    	$amendHotelDatasourcePath = $pagePath + "/Page Components/Amend Hotel Summary"
+    	
+    	$amendHotelSummaryRendering = Get-Item -Database "master" -Path $amendHotelSummaryRenderingPath | New-Rendering -Placeholder $placeholder
+    	
+    	$page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    	
+    	$amendHotelSummaryRenderingInstance = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $amendHotelSummaryRenderingId }
+    	
+    	if ($amendHotelSummaryRenderingInstance -eq $null) {
+    		Add-Rendering -Item $page -Instance $amendHotelSummaryRendering -PlaceHolder $placeholder -DataSource $amendHotelDatasourcePath
+    
+    		Write-Host "Creating AmendHotelRendering"
+    	} else{
+    		Write-Host "AmendHotelRendering Already exists";
+    	}
+    }
+    
+    function addMobileBasketRendering($pagePath) {
+    	$amendHotelSummaryRenderingId = "{87265033-8DAA-4548-8FE4-E55E7DE99998}" 
+    	$mobileBasketRenderingId = "{B221E0AC-38AD-4145-A08D-46BAC3634054}"
+    	$page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    	$amendHotelSummaryRenderingInstance = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $amendHotelSummaryRenderingId }
+    	
+    	if ($amendHotelSummaryRenderingInstance -ne $null) {
+    		$amendHotelSummaryRenderingId = $amendHotelSummaryRenderingInstance.UniqueId;
+    		$mobileBasketDatasourcePath = "/sitecore/content/EasyJet/Holidays/Data/Mobile Basket"
+    		$mobileRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Mobile Basket";
+    		$placeholder = "/body/mobile-basket-" + $amendHotelSummaryRenderingId + "-0"
+    		
+    		$mobileBasketRendering = Get-Item -Database "master" -Path $mobileRenderingPath | New-Rendering -Placeholder $placeholder
+    		
+    		$mobileBasketRenderingInstance = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $mobileBasketRenderingId }
+    		
+    		if ($mobileBasketRenderingInstance -eq $null) {
+    			Add-Rendering -Item $page -Instance $mobileBasketRendering -PlaceHolder $placeholder -DataSource $mobileBasketDatasourcePath
+    			Write-Host "Creating MobileBasketRendering"
+    		} else{
+    			Write-Host "MobileBasketRendering Already exists";
+    		}
+    	}
+    }
+    
+    function addErrataMessageRendering($pagePath) {
+    	$amendHotelSummaryRenderingId = "{87265033-8DAA-4548-8FE4-E55E7DE99998}" 
+    	$errataMessageRenderingId = "{2D95BAD8-F895-4481-B3F3-694DFC4D6C94}"
+    	$page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    	$amendHotelSummaryRenderingInstance = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $amendHotelSummaryRenderingId }
+    	
+    	if ($amendHotelSummaryRenderingInstance -ne $null) {
+    		$amendHotelSummaryRenderingId = $amendHotelSummaryRenderingInstance.UniqueId;
+    		$errataMessageDatasourcePath = $pagePath + "/Page Components/Errata Message"
+    		$errataMessageRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Attention Message";
+    		$placeholder = "/body/attention-message-" + $amendHotelSummaryRenderingId + "-0"
+    		
+    		$errataMessageRendering = Get-Item -Database "master" -Path $errataMessageRenderingPath | New-Rendering -Placeholder $placeholder
+    		
+    		$errataMessageRenderingInstance = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $errataMessageRenderingId }
+    		
+    		if ($errataMessageRenderingInstance -eq $null) {
+    			Add-Rendering -Item $page -Instance $errataMessageRendering -PlaceHolder $placeholder -DataSource $errataMessageDatasourcePath
+    			Write-Host "Creating ErrataMessageRendering"
+    		} else{
+    			Write-Host "ErrataMessageRendering Already exists";
+    		}
+    	}
+    }
+    
+    function addTranslations($pagePath) {
+    	translatePage -pagePath $pagePath;
+    	traslateAmendHotelSummary -pagePath $pagePath;
+    	translateErrataMessage -pagePath $pagePath;
+    }
+    
+    function translatePage($pagePath) {	
+    	$item  = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    
+    	if ($item -eq $null) {
+    		Write-Host "Missing $($pagePath) EN language."
+    		return;
+    	}
+    	
+    	@('de-CH', 'de-DE') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Name" -Value "Überprüfen Sie Ihre Änderungen"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "PageTitle" -Value "Überprüfen Sie Ihre Änderungen"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Description" -Value "Überprüfen Sie Ihre Änderungen"
+    	}
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Name" -Value "Examiner vos modifications"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "PageTitle" -Value "Examiner vos modifications"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Description" -Value "Examiner vos modifications"
+    	}
+    }
+    
+    function traslateAmendHotelSummary($pagePath) {
+    	$hotelSummaryPath = $pagePath + "/Page Components/Amend Hotel Summary"
+    	$item  = Get-Item -Path $hotelSummaryPath -ErrorAction SilentlyContinue
+    
+    	if ($item -eq $null) {
+    		Write-Host "Missing $($hotelSummaryPath) EN language."
+    		return;
+    	}
+    	
+    	@('de-CH', 'de-DE') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Überprüfen Sie Ihre Änderungen"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Subtitle" -Value "Gute Nachrichten, wir können Ihr Hotel ändern! Bitte überprüfen Sie die Änderungen an Ihrem Urlaubspaket unten sorgfältig und wir werden Ihre Buchung aktualisieren, nachdem Sie bestätigt und bezahlt haben."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "ConfirmCTA" -Value "Bestätigen Sie Änderungen"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "HotelTitle" -Value "Hotel"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "HotelCTA" -Value "Details zum Hotel anzeigen"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "RoomAndBoardTitle" -Value "Zimmer und Verpflegung"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "RoomAndBoardCTA" -Value "Bearbeiten"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "TransferTitle " -Value "Transfer"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "TransferCTA" -Value "Bearbeiten"	
+    	}
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Examiner vos modifications"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Subtitle" -Value "Bonne nouvelle, nous pouvons changer d'hôtel ! Veuillez lire attentivement les modifications apportées à votre forfait vacances ci-dessous et nous mettrons à jour votre réservation une fois que vous l'aurez confirmée et payée."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "ConfirmCTA" -Value "Confirmer les modifications"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "HotelTitle" -Value "Hôtel"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "HotelCTA" -Value "Voir les détails de l'hôtel"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "RoomAndBoardTitle" -Value "Chambre et hébergement"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "RoomAndBoardCTA" -Value "Editer"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "TransferTitle " -Value "Transfert"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "TransferCTA" -Value "Editer"	
+    	}
+    }
+    
+    function translateErrataMessage($pagePath) {
+    	$errataMessagePath = $pagePath + "/Page Components/Errata Message"
+    	$item  = Get-Item -Path $errataMessagePath -ErrorAction SilentlyContinue
+    
+    	if ($item -eq $null) {
+    		Write-Host "Missing $($errataMessagePath) EN language."
+    		return;
+    	}
+    	
+    	@('de-CH', 'de-DE') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Lisez attentivement s'il vous plaît"
+    	}
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Bitte aufmerksam lesen"
+    	}
+    }
+    
+    function setPageDesign($pageTemplate) {
+    	$designPath = "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Full Header And Slim Footer";
+        Set-Page-Design -designPath $designPath -pageTemplateId $pageTemplate;
+    }
+    
+    $changeHotelSummaryPageTemplate = "{A4239E92-666E-4223-A53B-9F8369784D84}"
+    $pagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary"
+    
+    createPage -pagePath $pagePath -pageTemplate $changeHotelSummaryPageTemplate
+    setPageDesign -pageTemplate $changeHotelSummaryPageTemplate
+    addPageComponents -pagePath $pagePath 
+    addRenderings -pagePath $pagePath 
+    addTranslations -pagePath $pagePath 
+    
+    Write-Host "Script executed sucessfully";
+    
+    ## merged scripts for MAN-528 and MAN-806
+    
+    function update-item-with-lang($data, $item) {
+        function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+    };
+    
+        if ($item -ne $null) {
+            $data | ForEach-Object {
+            $fieldName = $_.fieldName;
+            $values = $_.values;
+        
+            if ($values -ne $null) {
+              
+                if ($values.en -ne $null) {
+                    $item.Editing.BeginEdit();
+                    $item[$fieldName] = $values.en;
+                    $item.Editing.EndEdit() | Out-Null
+                }
+                 if ($values.fr -ne $null) {
+                     @('fr-CH', 'fr-FR') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.fr;
+                    }
+                }
+                 if ($values.de -ne $null) {
+                     @('de-CH', 'de-DE') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.de;
+                    }
+                }
+                
+                Write-Host $fieldName "Updated"
+            }
+        }
+        }
+    };
+      
+    $summaryHotelChangeItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary/Page Components/Amend Hotel Summary" -ErrorAction SilentlyContinue;
+    $tranferData = @(
+        @{
+            fieldName = "TransferPopupTitle";
+            values = @{
+                en = "Change your transfer";
+                fr = "Modifier votre transfert";
+                de = "Ändern Sie Ihre Überweisung";
+            }
+        },
+        @{
+            fieldName = "TransferPopupSubtitle";
+            values = @{
+                en = "Please view and select your transfer from the options below.";
+                fr = "Veuillez visualiser et sélectionner votre transfert parmi les options ci-dessous.";
+                de = "Bitte wählen Sie Ihren Transfer aus den untenstehenden Optionen aus.";
+            }
+        },
+        @{
+            fieldName = "TransferPopupChosenTitle";
+            values = @{
+                en = "Your Transfer";
+                fr = "Votre transfert";
+                de = "Ihr Transfer";
+            }
+        },
+        @{
+            fieldName = "TransferPopupAltOptionsPlural";
+            values = @{
+                en = "{amount} other transfer options available";
+                fr = "{amount} autres options de transfert disponibles";
+                de = "{amount} weitere Transferoptionen verfügbar";
+            }
+        },
+        @{
+            fieldName = "TransferPopupAltOptionsSingle";
+            values = @{
+                en = "{amount} other transfer option available";
+                fr = "{amount} autres option de transfert disponibles";
+                de = "{amount} weitere Transferoption verfügbar";
+            }
+        }
+    );
+    
+    update-item-with-lang -Item $summaryHotelChangeItem -Data $tranferData;    
+    
+    $amendHotelSummaryItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary/Page Components/Amend Hotel Summary" -ErrorAction SilentlyContinue;
+    $changeLabels = @{
+        en = "Change";
+        fr = "Changer";
+        de = "Ändern Sie"
+    }
+    $ctaData = @(
+        @{
+            fieldName = "RoomAndBoardCTA";
+            values = $changeLabels
+        },
+        @{
+            fieldName = "TransferCTA";
+            values = $changeLabels
+        } 
+    );    
+    
+    update-item-with-lang -Data $ctaData -Item $amendHotelSummaryItem;
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 910
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240417T102022Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

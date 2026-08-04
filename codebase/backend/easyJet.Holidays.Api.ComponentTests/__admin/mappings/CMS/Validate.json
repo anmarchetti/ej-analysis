@@ -1,0 +1,24 @@
+{
+    "Title": "Customer promocode for AMD2000",
+    "Priority": 999,
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/Promotion/Validate",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "VoucherCode": "{12345678-1234-1234-1234-1234}",
+            "ValidationResults": []
+        }
+    }
+}

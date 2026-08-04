@@ -1,0 +1,23 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgLuggageDrop = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'luggage-drop-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <path d='M21 20H3a1 1 0 000 2h18a1 1 0 000-2zm-6.73-2H21a1 1 0 000-2H3a1 1 0 000 2h11.27z' />
+        <circle cx={5.2} cy={18.98} r={1} />
+        <circle cx={9.73} cy={18.98} r={1} />
+        <circle cx={14.27} cy={18.98} r={1} />
+        <circle cx={18.8} cy={18.98} r={1} />
+        <path d='M6.24 14.77h1.53v.51a.7.7 0 00.7.7.7.7 0 00.71-.7v-.51h5.64v.51a.7.7 0 00.71.7.7.7 0 00.7-.7v-.51h1.53a1.28 1.28 0 001.29-1.29V6a1.29 1.29 0 00-1.29-1.29h-2.94V3.37A1.34 1.34 0 0013.47 2h-2.94a1.35 1.35 0 00-1.35 1.37v1.32H6.24A1.29 1.29 0 005 6v7.5a1.28 1.28 0 001.24 1.27zm4.35-11.34h2.82v1.25h-2.82zm-1.41 9.93V6.1h5.64v7.26zm8.46 0h-1.41V6.1h1.41zM6.36 6.1h1.41v7.26H6.36z' />
+    </svg>
+);
+
+export default SvgLuggageDrop;

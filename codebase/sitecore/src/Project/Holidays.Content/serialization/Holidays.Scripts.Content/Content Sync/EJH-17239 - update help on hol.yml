@@ -1,0 +1,34 @@
+﻿---
+ID: "469b3824-cc49-4029-9f6c-885f0480de71"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-17239 - update help on holidays modal content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+     $itemPath = "/sitecore/content/EasyJet/Holidays/Home/Help/Help on holiday/Page Components/Help on Holidays - Speak to our team"
+                
+    $item = Get-Item -path $itemPath -ErrorAction SilentlyContinue
+    if ($item -ne $null) {
+        $item.Editing.BeginEdit()
+        $item["ModalDescription"] = "<a href='tel:+44 330 123 5025'>+44 330 123 5025</a><p>Our 24/7 UK based team are here to help with any issues you have while you&rsquo;re away on a complete easyJet holiday package. If you have a flight only booking with easyJet, please see <a href='https://www.easyjet.com/en/help/contact'><span data-tid='modal-description-link'>here</span></a>.</p>"
+        $item.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $item.Name "successfully updated"
+    }
+        
+    Write-Host "Finished"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230620T134105Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

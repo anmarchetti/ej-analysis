@@ -1,0 +1,39 @@
+﻿---
+ID: "47346d72-e3ef-4f65-8981-07f736ebc7ac"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Redesign Footer Fix
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Set target='_blank' to travel aware
+    $travelAwareItem = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Images/Travel aware" -ErrorAction SilentlyContinue
+    if ($travelAwareItem -ne $null) {
+    	$travelAwareItem.Editing.BeginEdit()
+    	$travelAwareItem["Url"] = '<link linktype="external" url="https://travelaware.campaign.gov.uk/" anchor="" target="_blank" />'
+    	$travelAwareItem.Editing.EndEdit() | Out-Null
+    } 
+    
+    # Remove isTriangleEnd Parameter from the last Container Wrapper on Holiday Credit Page
+    $holidayCreditPage = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit" -ErrorAction SilentlyContinue
+    if($holidayCreditPage -ne $null) {
+        $containerRendering = Get-Rendering -Item $holidayCreditPage | Where-Object {$_.UniqueId -eq "{6bad0167-97dd-42fa-bc06-729a2bcdd4fb}"} | Select -First 1
+    
+        if($containerRendering -ne $null) {
+            # $containerRendering.Parameters = "IsGreyBackground=1&amp;IsTriangleStart=1"
+            Set-Rendering -Item $holidayCreditPage -Instance $containerRendering -Parameter @{"IsTriangleEnd"=""}
+            Write-Host "Holiday Credit Rendering updated"
+        }
+    }
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201020T133058Z

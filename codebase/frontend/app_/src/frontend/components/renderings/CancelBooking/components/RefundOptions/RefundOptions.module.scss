@@ -1,0 +1,32 @@
+.sizeContainer {
+    width: 100%;
+    container-name: refunds-options-container;
+    container-type: inline-size;
+}
+
+.container {
+    display: flex;
+    gap: 16px;
+
+    :global(.payment-card.selected) {
+        transform: none;
+    }
+}
+
+.breakdowns {
+    width: 100%;
+
+    > div {
+        margin-bottom: 4px;
+    }
+
+    > div:last-child {
+        margin-bottom: 12px;
+    }
+}
+
+@container refunds-options-container (max-width: 650px) {
+    .container {
+        flex-direction: column;
+    }
+}

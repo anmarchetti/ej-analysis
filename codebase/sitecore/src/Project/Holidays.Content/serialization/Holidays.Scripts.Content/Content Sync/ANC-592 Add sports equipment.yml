@@ -1,0 +1,100 @@
+﻿---
+ID: "7f1f7152-d5f4-457b-b5a6-a128681f84bc"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-592 Add sports equipment"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Set content to luggage items
+    $equipments = @(
+            @{
+              'Name' = "Bicycle"
+              'Code' = 'BIKE'
+              'Path' = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Large Sports Equipment/Bicycle'
+               },
+            @{
+              'Name' = "Golf Bag"
+              'Code' = 'GBAG'
+              'Path' = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Small Sports Equipment/Golf Bag'
+               },
+            @{
+              'Name' = "Canoe"
+              'Code' = 'CANO'
+              'Path' = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Large Sports Equipment/CanoeKayak'
+               },
+            @{
+              'Name' = "Bicycle"
+              'Code' = 'BIKE'
+              'Path' = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Large Sports Equipment/Bicycle'
+               },
+            @{
+              'Name' = "Golf Bag"
+              'Code' = 'GBAG'
+              'Path' = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Small Sports Equipment/Golf Bag'
+               },
+            @{
+              'Name' = "Canoe"
+              'Code' = 'CANO'
+              'Path' = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Large Sports Equipment/CanoeKayak'
+               }
+    )
+    
+    foreach($equipment in $equipments){
+        $item = Get-Item -Path $equipment['Path'];
+        $item.Editing.BeginEdit()
+        $item["Name"] = $equipment['Name']
+        $item["Code"] =  $equipment['Code']
+        $item.Editing.EndEdit()
+    }
+    
+    function Edit-Data-Source ($dataSourcePath, $bagsPath){
+        # Get data source
+        $dataSource = Get-Item -path $dataSourcePath -ErrorAction SilentlyContinue
+        
+        $largeSportPath = $bagsPath + 'Large Sports Equipment';
+        $largeSport = Get-ChildItem -Path $largeSportPath;
+        $largeSportItems = ($largeSport | select -ExpandProperty Id) -join "|"
+        
+        $smallSportPath = $bagsPath + 'Small Sports Equipment';
+        $smallSport = Get-ChildItem -Path $smallSportPath;
+        $smallSportItems = ($smallSport | select -ExpandProperty Id) -join "|"
+        
+        # update data source
+        if ($dataSource -ne $null) {
+            $dataSource.Editing.BeginEdit()
+            $dataSource["ShowMoreLuggage"] = "Show more weights";
+    	    $dataSource["HideAdditionalLuggage"] = "Hide additional weights";
+    	    $dataSource["SportsEquipmentTitle"] = "Sports equipment";
+    	    $dataSource["SportsEquipmentItems"] = $largeSportItems + '|' + $smallSportItems;
+    	    $dataSource["ShowMoreEquipment"] = "Show more sports equipment";
+    	    $dataSource["HideAdditionalEquipment"] = "Hide additional sports equipment";
+            $dataSource.Editing.EndEdit() | Out-Null
+            Write-Host $dataSource.Name "is updated";
+        }
+    
+    }
+    
+    # Holidays
+    Edit-Data-Source -dataSourcePath '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Hold Luggage Popup' -bagsPath '/sitecore/content/EasyJet/Holidays/Data/Luggage/' 
+    
+    # Trade
+    Edit-Data-Source -dataSourcePath '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Hold Luggage Popup' -bagsPath '/sitecore/content/EasyJet/TradePortal/Data/Luggage/'
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 125
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230804T102242Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

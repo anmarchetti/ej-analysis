@@ -1,0 +1,28 @@
+.summary {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: $clrSiteBgGrey;
+    border-radius: 4px;
+}
+
+.paymentContainer {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-bottom: 80px;
+}
+
+.leftColumn {
+    flex-grow: 1;
+    margin-right: 64px;
+
+    @include media-breakpoint-down(md) {
+        margin-right: 0;
+    }
+}
+
+.rightColumn {
+    position: relative;
+    height: 100%;
+    padding-top: 43px;
+}

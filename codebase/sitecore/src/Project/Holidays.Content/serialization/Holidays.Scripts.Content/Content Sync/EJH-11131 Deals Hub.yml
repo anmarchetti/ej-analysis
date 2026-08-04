@@ -1,0 +1,175 @@
+﻿---
+ID: "aa1e8adf-27ef-4167-a7c0-909b783f5589"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-11131 Deals Hub"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$itemName,$templateId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function Update-Rendering-DataSource ($item,$renderingId,$placeHolder,$newDataSource) {
+    	$rendering = Get-Rendering -Item $item -PlaceHolder $placeHolder | Where-Object { $_.ItemId -eq $renderingId } | Select -First 1
+    
+    	if ($rendering -ne $null) {
+    		Set-Rendering -Item $item -Instance $rendering -DataSource $newDataSource
+    		Write-Host $item.Name "Rendering successfully updated"
+    	}
+    }
+    
+    function Set-Page-Design ($designPath,$pageTemplateId) {
+    	$designItem = Get-Item -Path "$($designPath)" -ErrorAction SilentlyContinue
+    	if ($designItem -ne $null) {
+    		[Sitecore.Data.Fields.MultilistField]$pageTemplates = $designItem.Fields["PageTemplates"];
+    
+    		if (!$pageTemplates.Contains($pageTemplateId)) {
+    			$designItem.Editing.BeginEdit();
+    			$pageTemplates.add($pageTemplateId);
+    			$designItem.Editing.EndEdit() | Out-Null
+    			Write-Host $designItem.Name "Page Templates updated"
+    		}
+    	}
+    }
+    
+    
+    $pageTemplateId = "{31CD8743-ED31-4BC4-8763-BD0FE1C24467}"
+    
+    # Add Page To PageDesigns
+    Set-Page-Design -designPath "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Default Design" -pageTemplateId $pageTemplateId
+    
+    # Create Page
+    $page = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home" -ItemName "Deals" -TemplateId $pageTemplateId
+    $page.Editing.BeginEdit();
+    $page["Name"] = "Deals"
+    $page["Title"] = "Summer 2021"
+    $page["TopIcon"] = '<image mediaid="{3F7F989F-994E-436E-9003-96562CD6BEE8}" />'
+    $page["TopText"] = "ATOL PROTECTED"
+    $page.Editing.EndEdit() | Out-Null
+    
+    # Set Confidence Module DataSource
+    $confidenceModule = Get-Item "/sitecore/content/EasyJet/Holidays/Data/Confidence Module Transformer" -ErrorAction SilentlyContinue
+    if ($confidenceModule -ne $null) {
+    	Update-Rendering-DataSource -Item $page -RenderingId "{A467C461-2046-49D3-9EDE-C71FB401BE9B}" -PlaceHolder "/body/component-wrapper-inner-{5B8BC77A-EEBF-4A79-9257-293850989091}-0" -NewDataSource $confidenceModule.ID
+    }
+    
+    # Create Page Components
+    $pageComponents = Get-Or-Create-Item -Path $page.FullPath -ItemName "Page Components" -TemplateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    
+    
+    function Create-Text-Blocks () {
+    	# Create Text Blocks Folder
+    	$textBlocksFolder = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Text Blocks" -TemplateId "{AB8D608B-3B9D-4ECB-9BA3-8C61306D7A41}"
+    	$textBlockTemplateId = "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}"
+    	$textBlockRenderingId = "{43546A28-D231-4287-96D2-25DEF529F1A5}"
+    
+    
+    	# Create "Booking your holiday" Text Block
+    	$bookHolidayTextBlock = Get-Or-Create-Item -Path $textBlocksFolder.FullPath -ItemName "Booking Your Holiday" -TemplateId $textBlockTemplateId
+    	$bookHolidayTextBlock.Editing.BeginEdit();
+    	$bookHolidayTextBlock["Title"] = "Booking your holiday"
+    	$bookHolidayTextBlock["Description"] = "Summer holidays are more than just pampering and relaxation, though. With our summer holidays, you could be snorkelling in Greece, enjoying the great Spanish riviera or exploring exotic Montenegro – and all at a low cost price."
+    	$bookHolidayTextBlock["Icon"] = '<image mediaid="{F09FF61C-BAA6-4DF5-B3E0-26312FCE1730}" />'
+    	$bookHolidayTextBlock.Editing.EndEdit() | Out-Null
+    	# Set "Booking your holiday" DataSource
+    	Update-Rendering-DataSource -Item $page -RenderingId $textBlockRenderingId -PlaceHolder "/body/component-wrapper-inner-{27C36BD0-2E28-473E-90A1-C831547444E7}-0" -NewDataSource $bookHolidayTextBlock.ID
+    	Update-Rendering-DataSource -Item $page -RenderingId $textBlockRenderingId -PlaceHolder "/body/component-wrapper-inner-{DBF54561-A120-4E51-83B8-3D53D2CD932D}-0" -NewDataSource $bookHolidayTextBlock.ID
+    
+    
+    	# Create "Our Best Deals" Text Block
+    	$ourBestDealsTextBlock = Get-Or-Create-Item -Path $textBlocksFolder.FullPath -ItemName "Our Best Deals" -TemplateId $textBlockTemplateId
+    	$ourBestDealsTextBlock.Editing.BeginEdit();
+    	$ourBestDealsTextBlock["Title"] = "Our Best Deals"
+    	$ourBestDealsTextBlock["Description"] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    	$ourBestDealsTextBlock.Editing.EndEdit() | Out-Null
+    
+    	# Set "Our Best Deals" DataSource
+    	Update-Rendering-DataSource -Item $page -RenderingId $textBlockRenderingId -PlaceHolder "/body/component-wrapper-inner-{D8E77A56-A65B-4688-B104-F19F36769C05}-0/title-block-{23BFF50D-9738-4539-9CED-A54A2B7EFB47}-0" -NewDataSource $ourBestDealsTextBlock.ID
+    
+    
+    	# Create "Most Popular Destinations" Text Block
+    	$mostPopularDestinationsTextBlock = Get-Or-Create-Item -Path $textBlocksFolder.FullPath -ItemName "Most Popular Destinations" -TemplateId $textBlockTemplateId
+    	$mostPopularDestinationsTextBlock.Editing.BeginEdit();
+    	$mostPopularDestinationsTextBlock["Title"] = "Most Popular Destinations"
+    	$mostPopularDestinationsTextBlock["Description"] = "The first step of your trip starts today, with amazing destinations for holidays up to March 2022."
+    	$mostPopularDestinationsTextBlock.Editing.EndEdit() | Out-Null
+    
+    	# Set "Most Popular Destinations" DataSource
+    	Update-Rendering-DataSource -Item $page -RenderingId $textBlockRenderingId -PlaceHolder "/body/component-wrapper-inner-{CBBFD113-82FC-4063-A5D9-B3759717F656}-0/title-block-{FEA2B63F-BAFC-404F-B603-9C1BEE02662E}-0" -NewDataSource $mostPopularDestinationsTextBlock.ID
+    
+    }
+    
+    function Create-Promo-Blocks () {
+    	$promoBlocksFolderTemplateId = "{EB30259D-FF9A-46CB-8E0C-4616B148F3A8}"
+    	$promoBlocksRenderingId = "{FF441699-4D65-45C1-B565-E87714B5A278}"
+    
+    	# Create Promo Blocks Folder
+    	$promoBlocksFolder = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Promo Blocks" -TemplateId $promoBlocksFolderTemplateId
+    
+    	# Create "Most Popular Destinations" Promo Blocks
+    	$mostPopularDestinationsFolder = Get-Or-Create-Item -Path $promoBlocksFolder.FullPath -ItemName "Most Popular Destinations" -TemplateId $promoBlocksFolderTemplateId
+    	Update-Rendering-DataSource -Item $page -RenderingId $promoBlocksRenderingId -PlaceHolder "/body/component-wrapper-inner-{CBBFD113-82FC-4063-A5D9-B3759717F656}-0" -NewDataSource $mostPopularDestinationsFolder.ID
+    
+    	# Create "Our Best Deals" Promo Blocks
+    	$ourBestDealsFolder = Get-Or-Create-Item -Path $promoBlocksFolder.FullPath -ItemName "Our Best Deals" -TemplateId $promoBlocksFolderTemplateId
+    	Update-Rendering-DataSource -Item $page -RenderingId $promoBlocksRenderingId -PlaceHolder "/body/component-wrapper-inner-{D8E77A56-A65B-4688-B104-F19F36769C05}-0" -NewDataSource $ourBestDealsFolder.ID
+    
+    }
+    
+    function Get-All-Promo-Pages-IDs () {
+    	$promoPageTemplateId = "{C0CB2F05-AFD2-41CE-B53F-6F15A1033740}"
+    	$recurringPromoPageTemplateId = "{5ED2ED12-F1EC-49CF-B9B9-AF094E587A2C}"
+    	$periodPromoPageTemplateId = "{DB1C19B1-7A2D-4212-BBDE-3CACF53D37C9}"
+    	$promoPages = Get-ChildItem -Path "master:/sitecore/content/EasyJet/Holidays/Home/Root" -Recurse | Where { $_.TemplateID -eq $promoPageTemplateId -or $_.TemplateID -eq $recurringPromoPageTemplateId -or $_.TemplateID -eq $periodPromoPageTemplateId }
+    	$promoPagesIDs = @();
+    
+    	# Get Link For Each PromoPage that doesn't have Redirect
+    	foreach ($promoPage in $promoPages) {
+    		if ($promoPage["RedirectUrl"] -eq "") {
+    			$promoPagesIDs += $promoPage.ID
+    		}
+    	}
+    	
+    	return $promoPagesIDs;
+    }
+    
+    function Create-Deals-Links () {
+        $promoPagesIDs = Get-All-Promo-Pages-IDs
+        
+    	# Create "Our Deals Links" Module
+    	$dealsLinks = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Deals Links" -TemplateId "{E424B693-DAF3-4992-B3F3-ACCE3F30F466}"
+    	$dealsLinks.Editing.BeginEdit();
+    	$dealsLinks["Title"] = "Our deals"
+    	$dealsLinks["Subtitle"] = "Our hand-picked hotels are specially selected, so you get the perfect break. Explore our featured holidays to see where we can take you."
+    	$dealsLinks["Icon"] = '<image mediaid="{D69BC0AA-5047-4BCA-86AB-3A35BDCE1884}" />'
+    	$dealsLinks.Fields["Pages"].Value = ($promoPagesIDs -join "|")
+    	$dealsLinks.Editing.EndEdit() | Out-Null
+    
+    	# Set "Our Deals Links" DataSource
+    	Update-Rendering-DataSource -Item $page -RenderingId "{F7F7C175-5B76-4011-8E12-C505B3068B38}" -PlaceHolder "/body/component-wrapper-inner-{21E16ECD-F936-4E29-9F39-5B05BF10B95A}-0" -NewDataSource $dealsLinks.ID
+    
+    }
+    
+    Create-Text-Blocks
+    Create-Promo-Blocks
+    Create-Deals-Links
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 350
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210301T085839Z

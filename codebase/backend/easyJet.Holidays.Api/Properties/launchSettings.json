@@ -1,0 +1,65 @@
+{
+    "$schema": "http://json.schemastore.org/launchsettings.json",
+    "iisSettings": {
+        "windowsAuthentication": false,
+        "anonymousAuthentication": true,
+        "iisExpress": {
+            "applicationUrl": "http://localhost:57803",
+            "sslPort": 44319
+        }
+    },
+    "profiles": {
+        "easyJet.Holidays.Api": {
+            "commandName": "Project",
+            "launchBrowser": true,
+            "launchUrl": "holidays/_api/hc",
+            "environmentVariables": {
+                "AWS_PROFILE": "ejh-web-dev",
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "applicationUrl": "https://localhost:44319"
+        },
+        "Development": {
+            "commandName": "Project",
+            "launchBrowser": true,
+            "launchUrl": "holidays/_api/hc",
+            "environmentVariables": {
+                "AWS_PROFILE": "ejh-web-dev",
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "applicationUrl": "https://localhost:44319"
+        },
+        "OpenTelemetry-Linux-Arm64": {
+          "commandName": "Project",
+          "launchBrowser": true,
+          "launchUrl": "holidays/_api/hc",
+          "environmentVariables": {
+            "AWS_PROFILE": "ejh-web-dev",
+            "ASPNETCORE_ENVIRONMENT": "Development",
+            "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "OpenTelemetry.AutoInstrumentation.AspNetCoreBootstrapper",
+            "CORECLR_ENABLE_PROFILING": "1",
+            "CORECLR_PROFILER_PATH": "$(ProjectDir)/bin/$(ConfigurationName)/net8.0/runtimes/linux-arm64/native/OpenTelemetry.AutoInstrumentation.Native.so",
+            "CORECLR_PROFILER": "{918728DD-259F-4A6A-AC2B-B85E1B658318}",
+            "DOTNET_STARTUP_HOOKS": "$(ProjectDir)/bin/$(ConfigurationName)/net8.0/OpenTelemetry.AutoInstrumentation.StartupHook.dll",
+            "OTEL_DOTNET_AUTO_HOME": "$(ProjectDir)/bin/$(ConfigurationName)/net8.0",
+            "OTEL_DOTNET_AUTO_PLUGINS": "Splunk.OpenTelemetry.AutoInstrumentation.Plugin, Splunk.OpenTelemetry.AutoInstrumentation",
+            "OTEL_DOTNET_AUTO_RULE_ENGINE_ENABLED": "false",
+            "OTEL_DOTNET_AUTO_METRICS_ADDITIONAL_SOURCES": "OpenTelemetry",
+            "OTEL_EXPORTER_OTLP_ENDPOINT": "http://localhost:4318",
+            "OTEL_SERVICE_NAME": "ejh-web-orchestrator",
+            "OTEL_RESOURCE_ATTRIBUTES": "service.version=local"
+          },
+          "applicationUrl": "https://localhost:44319"
+        },
+        "TradePortal": {
+            "commandName": "Project",
+            "launchBrowser": true,
+            "launchUrl": "holidays/_api/hc",
+            "environmentVariables": {
+                "AWS_PROFILE": "ejh-web-dev",
+                "ASPNETCORE_ENVIRONMENT": "TradePortal"
+            },
+            "applicationUrl": "https://localhost:44319"
+        }
+    }
+}

@@ -1,0 +1,126 @@
+﻿---
+ID: "bd3cfaf2-0532-44bc-b7fb-dbf9ee3a64f9"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-355 Destinations Update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $flightsectiontodestination_c9cc7543763b40739a43a0acbe66dcfe_dede_v1 = @"
+    {departure} bis {return}
+    "@
+    $flightsectiontodestination_c9cc7543763b40739a43a0acbe66dcfe_frch_v1 = @"
+    {departure} à {return}
+    "@
+    $flightsectiontodestination_c9cc7543763b40739a43a0acbe66dcfe_dech_v1 = @"
+    {departure} bis {return}
+    "@
+    $flightsectiontodestination_c9cc7543763b40739a43a0acbe66dcfe_en_v1 = @"
+    {departure} to {return}
+    "@
+    $flightsectiontodestination_c9cc7543763b40739a43a0acbe66dcfe_frfr_v1 = @"
+    {departure} à {return}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Destinations"
+            TemplatePath = "Feature/Destinations/Destination Folder"
+            Id          = [GUID]"{2C73FFE9-41A1-4ACD-88CF-48B0F6E70327}"
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Destinations/Summary Bar"
+            TemplatePath = "Feature/Destinations/Summary Bar"
+            Id          = [GUID]"{C9CC7543-763B-4073-9A43-A0ACBE66DCFE}"
+            Fields      = @{
+                "FlightSectionExtrasDropdown" = @{
+                    "de-CH" = "Extras"
+                    "en" = "Extras"
+                    "fr-FR" = "Extras"
+                    "de-DE" = "Extras"
+                    "fr-CH" = "Extras"
+                }
+                "RoomAndBoardSectionTitle" = @{
+                    "de-CH" = "Unterkunft und Verpflegung"
+                    "en" = "Room and board"
+                    "fr-FR" = "Hébergement et pension"
+                    "de-DE" = "Unterkunft und Verpflegung"
+                    "fr-CH" = "Hébergement et pension"
+                }
+                "CommonFieldsItemIncluded" = @{
+                    "de-CH" = "Inklusive"
+                    "en" = "Included"
+                    "fr-FR" = "Inclus"
+                    "de-DE" = "Inklusive"
+                    "fr-CH" = "Inclus"
+                }
+                "SummaryBarTitle" = @{
+                    "de-CH" = "Ihre Urlaubsübersicht"
+                    "en" = "Your Holiday Summary"
+                    "fr-FR" = "Résumé de vos vacances"
+                    "de-DE" = "Ihre Urlaubsübersicht"
+                    "fr-CH" = "Résumé de vos vacances"
+                }
+                "FlightSectionSeatTypeUpFront" = @{
+                    "de-CH" = "Sitzplatz Up Front"
+                    "en" = "Up Front"
+                    "fr-FR" = "Up Front"
+                    "de-DE" = "Sitzplatz Up Front"
+                    "fr-CH" = "Up Front"
+                }
+                "FlightSectionToDestination" = @{
+                    "de-CH" = $flightsectiontodestination_c9cc7543763b40739a43a0acbe66dcfe_dech_v1
+                    "en" = $flightsectiontodestination_c9cc7543763b40739a43a0acbe66dcfe_en_v1
+                    "fr-FR" = $flightsectiontodestination_c9cc7543763b40739a43a0acbe66dcfe_frfr_v1
+                    "de-DE" = $flightsectiontodestination_c9cc7543763b40739a43a0acbe66dcfe_dede_v1
+                    "fr-CH" = $flightsectiontodestination_c9cc7543763b40739a43a0acbe66dcfe_frch_v1
+                }
+                "FlightSectionSeatTypeRearStandard" = @{
+                    "de-CH" = "Standard hinten"
+                    "en" = "Rear Standard"
+                    "fr-FR" = "Siège à l’arrière standard"
+                    "de-DE" = "Standard hinten"
+                    "fr-CH" = "Siège à l’arrière standard"
+                }
+                "FlightSectionSeatTypeStandard" = @{
+                    "de-CH" = "Standard"
+                    "en" = "Standard"
+                    "fr-FR" = "Standard"
+                    "de-DE" = "Standard"
+                    "fr-CH" = "Standard"
+                }
+                "FlightSectionTitle" = @{
+                    "de-CH" = "Flüge"
+                    "en" = "Flights"
+                    "fr-FR" = "Vols"
+                    "de-DE" = "Flüge"
+                    "fr-CH" = "Vols"
+                }
+                "FlightSectionSeatTypeExtraLegroom" = @{
+                    "de-CH" = "Sitzplatz Extra Legroom"
+                    "en" = "Extra Legroom"
+                    "fr-FR" = "Extra Legroom"
+                    "de-DE" = "Sitzplatz Extra Legroom"
+                    "fr-CH" = "Extra Legroom"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999957
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250731T072913Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

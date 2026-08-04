@@ -1,0 +1,84 @@
+﻿---
+ID: "25b91aff-5d98-45dd-88ab-53d00d3a3aba"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Configure Media Center Content Hub
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    
+    # 1. Add child item from Template `Page Components`
+    Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Media Center/Content Hub/Page Components" -templateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    
+    # 2. Add child item from Template `Media Center Filters`
+    Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Media Center/Content Hub/Page Components/Media Center Filters" -templateId "{866CC425-5FEA-4B4E-B4BE-1B65FFB4C9D3}"
+    
+    # 3. Add text for `Content Hub Heading`
+    $headingItem = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Data/Media Center/Content Hub Heading" -templateId "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}"
+    $headingItem.Title = "Press Releases";
+    
+    # 4. Set `Content Hub` Presentation Details
+    $contentHubItem = Get-Item -path "master:/content/EasyJet/Holidays/Home/Media Center/Content Hub"
+    # - Component Wrapper
+    $wrapperItem = Get-Item -Path "master:/layout/Renderings/Project/Holidays/Component Wrapper" | New-Rendering
+    Add-Rendering -Item $contentHubItem -Parameter @{ "IsFullWidth" = 1; "IsGreyBackground" = 1 } -PlaceHolder "body" -Instance $wrapperItem
+    $wrapperRendering = Get-Rendering -Item $contentHubItem -Index 0
+    # - Media Center Filters
+    $mediaCenterFiltersItem = Get-Item -Path "master:/layout/Renderings/Feature/MediaCenter/Media Center Filters" | New-Rendering
+    $mcfPlaceHolder = "/body/component-wrapper-inner-"+ $wrapperRendering.UniqueId +"-0"
+    $mcfDatasource = "/sitecore/content/EasyJet/Holidays/Home/Media Center/Content Hub/Page Components/Media Center Filters"
+    Add-Rendering -Item $contentHubItem -Placeholder $mcfPlaceHolder -DataSource $mcfDatasource -Instance $mediaCenterFiltersItem
+    # - Component Wrapper
+    $wrapperItem = Get-Item -Path "master:/layout/Renderings/Project/Holidays/Component Wrapper" | New-Rendering
+    Add-Rendering -Item $contentHubItem -Parameter @{ "IgnoreValidation" = 1 } -PlaceHolder "body" -Instance $wrapperItem
+    $wrapperRendering2 = Get-Rendering -Item $contentHubItem -Index 2
+    # - Text Block
+    $textBlockItem = Get-Item -Path "master:/layout/Renderings/Feature/PageContent/Text Block" | New-Rendering
+    $tbPlaceHolder = "/body/component-wrapper-inner-"+ $wrapperRendering2.UniqueId +"-0"
+    $tbDatasource = "/sitecore/content/EasyJet/Holidays/Data/Media Center/Content Hub Heading"
+    Add-Rendering -Item $contentHubItem -Parameter @{ "TitleTag" = "h2"; "TitlePosition" = "left"; "TitleFontStyle" = "default" } -Placeholder $tbPlaceHolder -DataSource $tbDatasource -Instance $textBlockItem
+    # - Press Release Results
+    $resultsItem = Get-Item -Path "master:/layout/Renderings/Feature/MediaCenter/Press Release Results" | New-Rendering
+    $prrPlaceHolder = "/body/component-wrapper-inner-"+ $wrapperRendering2.UniqueId +"-0"
+    Add-Rendering -Item $contentHubItem -Placeholder $prrPlaceHolder -Instance $resultsItem
+    
+    # 5. Copy Partial Design "Page Footer" to new item "Media Center Footer" 
+    Copy-Item -Path "master:/content/EasyJet/Holidays/Presentation/Partial Designs/Full Footer" -Destination "master:/content/EasyJet/Holidays/Presentation/Partial Designs/Media Center Footer"
+    $mediaFooterItem = Get-Item -Path "master:/content/EasyJet/Holidays/Presentation/Partial Designs/Media Center Footer"
+    # Remove unwanted blocks from Presentation Details
+    Remove-Rendering -Item $mediaFooterItem -Index 0
+    Remove-Rendering -Item $mediaFooterItem -Index 1
+    Remove-Rendering -Item $mediaFooterItem -Index 1
+    Remove-Rendering -Item $mediaFooterItem -Index 1
+    # set param for page footer
+    $renderingInstance = Get-Rendering -Item $mediaFooterItem -Index 0;
+    Set-Rendering -Item $mediaFooterItem -Instance $renderingInstance -Parameter @{ "IsTriangleStart" = 0 }
+    
+    # 6. Add new Page Design "Media Center Design"
+    $mcDesign = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Presentation/Page Designs/Media Center Design" -templateId "{4B960AA8-24C3-4A4E-A27F-F4718D189EF6}"
+    $fullHeaderItem = Get-Item -Path "master:/content/EasyJet/Holidays/Presentation/Partial Designs/Full Header"
+    $mcDesign.Editing.BeginEdit()
+        $mcDesign["PartialDesigns"] = "$($fullHeaderItem.ID)|$($mediaFooterItem.ID)"
+        $mcDesign["PageTemplates"] = "$($contentHubItem.ID)"
+    $mcDesign.Editing.EndEdit() | Out-Null
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191118T132901Z

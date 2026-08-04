@@ -1,0 +1,63 @@
+.filtersWrapper {
+    display: flex;
+    flex-direction: column;
+
+    @include media-breakpoint-down(md) {
+        height: 100%;
+        overflow: auto;
+    }
+}
+
+.filtersMapWrapper {
+    height: 100%;
+
+    .searchPodFilters {
+        overflow: hidden auto;
+    }
+}
+
+.searchPodFilters {
+    flex: 1;
+    width: 100%;
+    min-width: 320px;
+    max-width: 320px;
+    height: 100%;
+    overflow: hidden;
+    background: $clrSiteBgWhite;
+    border-radius: 0 4px 4px 0;
+    box-shadow: $generalBoxShadow;
+
+    @include media-breakpoint-down(md) {
+        max-width: unset;
+        overflow: auto;
+    }
+
+    :global(.search-filter) {
+        min-width: 320px;
+    }
+
+    :global(.search-filter .filter-group .filter-group__values .checkbox-item) {
+        margin: 0 1% 14px 0;
+    }
+}
+
+.skeletonWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 320px;
+    height: calc(100% - 29px);
+}
+
+.filtersSkeleton {
+    @include sizeSquare(100%);
+
+    background-image: linear-gradient(-90deg, $colorWhiter 8%, $colorAlto 18%, $colorWhiter 33%);
+    border-radius: 20px;
+}
+
+.mapSkeleton {
+    width: 100%;
+    height: 140px;
+    border-radius: 20px;
+}

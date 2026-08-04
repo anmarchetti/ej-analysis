@@ -1,0 +1,221 @@
+$card_border-radius: $box_border-radius_md;
+$shadowGrey: 0 0 4px 0 rgba(178, 175, 175, 0.5);
+
+.card {
+    margin-bottom: 25px;
+    background: $colorWhite;
+    border-radius: $card_border-radius;
+    box-shadow: 0 0 4px 0 rgba(178, 175, 175, 0.5);
+
+    .image-gallery {
+        overflow: hidden;
+        border-radius: 5px 0 0 5px;
+
+        @include media-breakpoint-down(md) {
+            border-radius: 5px 5px 0 0;
+        }
+    }
+
+    .hotel-card-text-box {
+        border-radius: 0 6px 6px 0;
+
+        @include media-breakpoint-down(md) {
+            border-radius: 0 0 6px 6px;
+        }
+    }
+
+    .hotel-card-head {
+        border-radius: 0 6px 0 0;
+    }
+
+    .hotel-card-body {
+        border-radius: 0 0 6px;
+    }
+
+    &.sponsored {
+        border: 2px solid #ffca00;
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.05), 0 0 0 1px #ffca00 inset;
+
+        .hotel-card {
+            overflow: visible;
+        }
+
+        .hotel-card-img-box-wr {
+            overflow: visible;
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+    }
+
+    &.multicomponent {
+        overflow: visible;
+
+        .search-pod-extended__subitem:first-child {
+            border-radius: $card_border-radius $card_border-radius
+                $border-radius_none $border-radius_none;
+        }
+
+        .search-pod-extended__subitem:last-child {
+            border-radius: $border-radius_none $border-radius_none 6px 6px;
+        }
+
+        .search-pod-extended__subitem:first-child:last-child {
+            border-radius: $card_border-radius;
+        }
+    }
+
+    &__inner {
+        border: 2px solid $colorTransparent;
+        border-radius: inherit;
+    }
+
+    .hotel-card {
+        border-radius: inherit;
+    }
+
+    &--selected {
+        box-shadow: $shadowGrey;
+
+        .card__inner,
+        .hotel-card {
+            border: 2px solid $clrEjOrange;
+        }
+    }
+
+    &--with-label {
+        margin-top: 70px;
+        overflow: visible;
+        border-radius: 0 6px 6px;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 40px;
+        }
+
+        .card__inner {
+            position: relative;
+
+            &--label {
+                position: absolute;
+                bottom: 100%;
+                left: -2px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 36px;
+                font-family: $fontRoundedBook;
+                font-size: 14px;
+                color: $clrEjOrange;
+                text-transform: uppercase;
+                letter-spacing: 0.17px;
+                background-color: $colorWhite;
+                border: inherit;
+                border-bottom: 0;
+                border-radius: 3px 3px 0 0;
+
+                @include media-breakpoint-down(md) {
+                    height: 25px;
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+
+    &__image-box {
+        position: relative;
+        min-height: 200px;
+
+        &__image {
+            position: absolute;
+            top: -2px;
+            right: -3px;
+            bottom: -2px;
+            left: -3px;
+            background-position: center;
+            background-size: cover;
+        }
+    }
+
+    .btn {
+        svg {
+            width: 18px;
+            height: 18px;
+        }
+    }
+
+    &--title {
+        font-family: $fontRoundedBook;
+        font-size: 18px;
+        line-height: 24px;
+        color: $clrTextMainLight;
+    }
+
+    &--subtitle {
+        font-family: $fontRoundedBook;
+        font-size: 18px;
+        line-height: 24px;
+        color: $clrTextMainLight;
+    }
+
+    &__content {
+        display: flex;
+    }
+
+    &__icon {
+        width: 30px;
+        max-width: 30px;
+        height: 30px;
+        margin-right: 20px;
+
+        svg {
+            color: $clrTextMainLight;
+        }
+    }
+
+    .list {
+        li {
+            font-family: $fontRoundedBook;
+            font-size: 14px;
+            line-height: 24px;
+            color: $clrTextMain;
+            letter-spacing: 0.19px;
+
+            @include media-breakpoint-down(md) {
+                font-size: 14px;
+            }
+
+            &::before {
+                top: 7px;
+            }
+        }
+    }
+
+    .option-card .btn {
+        height: 43px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    &.card--pseudo-border {
+        .card__inner {
+            border: none;
+        }
+
+        position: relative;
+
+        &.card--selected::after {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            border: 2px solid $clrEjOrange;
+            border-radius: inherit;
+            pointer-events: none;
+        }
+    }
+}

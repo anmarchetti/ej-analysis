@@ -1,0 +1,39 @@
+﻿---
+ID: "3138770f-dd50-4895-9761-0532214b0268"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUXE-1143 - Add Final Tab Icon"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$itemName,$templateId,$itemId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $itemId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    $final = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Holiday Inspiration/Page Components" -ItemName "Final Tab" -TemplateId "{599B8314-689A-4767-B722-7BE4C9DFE73D}"
+    $final.Editing.BeginEdit()
+    $final['HeaderIconLoader'] ='<image mediaid="{B800E4D7-A0AF-4DAB-8D44-F98D2AD0B0D4}" />'
+    $final.Editing.EndEdit() | Out-Null
+    
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240507T101638Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

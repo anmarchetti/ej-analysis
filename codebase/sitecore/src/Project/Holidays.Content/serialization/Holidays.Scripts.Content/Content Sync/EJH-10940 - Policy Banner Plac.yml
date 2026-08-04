@@ -1,0 +1,41 @@
+﻿---
+ID: "971178ef-7bca-4e49-baaf-0d1f480a7211"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-10940 - Policy Banner Placeholder Fix"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $policyBannerId = "{7E2EEFDE-8087-4767-BB9C-398497F6E7C4}" 
+    
+    
+    $item = Get-Item "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    
+    
+    if($item -ne $null){
+        
+        $rendering = Get-Rendering -Item $item | Where-Object {$_.ItemId -eq "{025DDD3B-F1EA-42A6-AECF-D2A2698F6137}"}
+        
+        Get-Rendering -Item $item |
+        Foreach-Object { 
+            if($_.ItemId -eq $policyBannerId)
+            {
+    
+                $_.Placeholder = $rendering.Placeholder
+                Set-Rendering -Item $item -Instance $_ -Index 1
+            }
+    
+        }
+    }
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201125T124649Z

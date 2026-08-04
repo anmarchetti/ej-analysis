@@ -1,0 +1,52 @@
+.container {
+    display: flex;
+    padding: 24px 16px;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+    }
+}
+
+.hotel {
+    padding-right: 24px;
+}
+
+.container > * {
+    width: 50%;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+    }
+}
+
+.container > *:not(:first-child) {
+    @include media-breakpoint-down(md) {
+        margin-top: 16px;
+    }
+}
+
+.block {
+    display: flex;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-weight: 700;
+}
+
+.icon {
+    width: 24px;
+    min-width: 24px;
+    height: 24px;
+    margin-right: 12px;
+
+    @include media-breakpoint-down(md) {
+        width: 21px;
+        min-width: 21px;
+        height: 21px;
+    }
+}

@@ -1,0 +1,84 @@
+﻿---
+ID: "f224759f-f183-4cdd-9354-ee3ed8f0b888"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-309 Shared Transfer Fees Update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $translations = @{
+        "fr-CH" = @{
+            "SingleSharedFeesDescription" = "Notre partenaire de transfert facture un supplément de {price} pour chaque équipement de sport. Ce montant a été ajouté au coût total de vos vacances."
+            "MultipleSharedFeesDescription" = "Notre partenaire de transfert facture {priceSmall} par petit article et {priceLarge} par grand article pour l'accommodation de votre équipement de sport."
+        }
+        "fr-FR" = @{
+            "SingleSharedFeesDescription" = "Notre partenaire de transfert facture un supplément de {price} pour chaque équipement de sport. Ce montant a été ajouté au coût total de vos vacances."
+            "MultipleSharedFeesDescription" = "Notre partenaire de transfert facture {priceSmall} par petit article et {priceLarge} par grand article pour l'accommodation de votre équipement de sport."
+        }
+        "de-CH" = @{
+            "SingleSharedFeesDescription" = "Unser Transferpartner berechnet zusätzlich {price} für jedes Sportgerät. Dieser Betrag wurde zu Ihren Gesamtkosten für den Urlaub hinzugefügt."
+            "MultipleSharedFeesDescription" = "Unser Transferpartner berechnet {priceSmall} pro kleinem und {priceLarge} pro großem Artikel für die Unterbringung Ihres Sportgeräts."
+        }
+        "de-DE" = @{
+            "SingleSharedFeesDescription" = "Unser Transferpartner berechnet zusätzlich {price} für jedes Sportgerät. Dieser Betrag wurde zu Ihren Gesamtkosten für den Urlaub hinzugefügt."
+            "MultipleSharedFeesDescription" = "Unser Transferpartner berechnet {priceSmall} pro kleinem und {priceLarge} pro großem Artikel für die Unterbringung Ihres Sportgeräts."
+        }
+    }
+    
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+            
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    function Transfer-Update($website){
+        $path ="/sitecore/content/EasyJet/$website/Home/Booking/Page Components/Transfer Section"
+        
+        $item =  Get-Item -Path $path -ErrorAction SilentlyContinue
+        
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item["SingleSharedFeesDescription"] = "Our transfer partner charges an additional {price} for each piece of sports equipment. This has been added to your total holiday cost."
+            $item["MultipleSharedFeesDescription"] = "Our transfer partner charges {priceSmall} per small and {priceLarge} per large item for accommodating your sport equipment."
+            $item.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Transfer Section text updated"
+        }
+        
+        if($website -eq "Holidays"){
+            foreach ($lang in $translations.Keys) {
+                create-lang-version -item $item -lang $lang -field "SingleSharedFeesDescription" -value $translations[$lang]["SingleSharedFeesDescription"]
+                create-lang-version -item $item -lang $lang -field "MultipleSharedFeesDescription" -value $translations[$lang]["MultipleSharedFeesDescription"]
+                
+                Write-Host "Translations added"
+            }
+        }
+        
+        Write-Host "Transfers updated on" $website
+    }
+    
+    Transfer-Update -website "Holidays"
+    Transfer-Update -website "TradePortal"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1070
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240731T105533Z

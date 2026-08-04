@@ -1,0 +1,88 @@
+﻿---
+ID: "387d56c9-9ff5-4e42-a2f7-bb857fde72e6"
+Parent: "2762e315-9061-44d5-af96-9fa775294066"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Dialogs/Change Tracking Report
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $reports=Get-ChildItem -Path "master:/sitecore/content/EasyJet/Holidays/Settings/Change Tracking/Reports"
+    
+    if ($reports -eq $null) 
+    {
+        Show-Alert -Title "No reports configured! Please have a look here: \sitecore\content\EasyJet\Holidays\Settings\Change Tracking\Reports"
+        exit
+    }
+    
+    $options=@{}
+    foreach($report in $reports)
+    {
+        $options[$report.DisplayName] =  $report.ID
+    }
+    
+    $selectedLanguage=Get-Item -Path "master:/sitecore/system/languages/en"
+    
+    $dialog = Read-Variable -Parameters `
+        @{ Name = "selectedTemplateId"; Title="Template"; Options = $options; Tooltip="Choose one."},
+        @{ Name = "selectedLanguage"; Value=$selectedLanguage; Title = "Language"; Source="DataSource=/sitecore/system/languages"; Editor = "droplink"}, `
+        @{ Name = "selectedFrom"; Value=[System.DateTime]::Now.AddYears(-5); Title="From"; Tooltip = "Date since when you want the report to run"; Editor = "date"}, `
+        @{ Name = "selectedTo"; Value=[System.DateTime]::Now; Title = "To"; Tooltip = "Date until you want the report to run"; Editor = "date"} `
+        -Description "Please provide parameters for the Change History Report" `
+        -Title "Change History Report Generator" -Width 600 -Height 450 -OkButtonName "Generate" -CancelButtonName "Abort" -ShowHints
+    
+    if($selectedTemplateId -eq $null)
+    {
+        Show-Alert -Title "No Template selected!!"
+        exit
+    }
+    
+    if($selectedLanguage -eq $null)
+    {
+        Show-Alert -Title "No Language selected!!"
+        exit
+    }
+    
+    if($selectedFrom -eq $null)
+    {
+        Show-Alert -Title "No Startdate selected!!"
+        exit
+    }
+    
+    if($selectedTo -eq $null)
+    {
+        Show-Alert -Title "No Enddate selected!!"
+        exit
+    }
+    
+    if($dialog -ne "ok")
+    {
+        Show-Alert -Title "Reporting aborted!!"
+        exit
+    }
+    $selectedReport = Get-Item -Path "master:" -ID $selectedTemplateId
+    $fieldItems = Get-ChildItem -Path "master:" -ID $selectedTemplateId
+    
+    $allFields=@()
+    $allFields+="Path"
+    foreach ($field in $fieldItems) 
+    {
+       $rawId = $field.Fields["Field"]
+       $f= Get-Item -Path "master:" -ID $rawId.ToString()
+       
+       $allFields+=$f.Name
+    }
+    
+    $templateId = $selectedReport.Fields["Template"]
+    $res= [easyJet.Feature.ChangeTracking.Powershell.Helper]::GetTemplateChanges([Sitecore.Data.ID]$templateId.Value, $selectedLanguage.Language, $selectedFrom, $selectedTo, $fieldItems)
+    
+    $res | Show-ListView -Property $allFields -Title ("Change History - " + $selectedReport.DisplayName) -InfoTitle ($selectedFrom.toShortDateString() + "&nbsp;-&nbsp;" + $selectedTo.toShortDateString() + "&nbsp;(" + $selectedLanguage.Name + ")")
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200408T100643Z

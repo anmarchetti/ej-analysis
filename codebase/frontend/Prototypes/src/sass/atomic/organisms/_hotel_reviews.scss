@@ -1,0 +1,65 @@
+.hotel-reviews {
+    @include media-breakpoint-down(md) {
+        position: inherit;
+        margin-bottom: 10px;
+        padding-left: 0;
+    }
+
+    &, > a {
+        display: flex;
+        align-items: center;
+
+        @include media-breakpoint-down(md) {
+            margin-right: 10px;
+        }
+    }
+
+    .tripadvisor-reviews {
+        margin-left: 5px;
+        font-family: $fontRoundedBook;
+        font-size: 11px;
+        line-height: 1.2;
+        color: $colorBlack;
+        text-decoration: none;
+
+        @include media-breakpoint-down(md) {
+            font-size: 10px;
+        }
+    }
+}
+
+.hotel-search-results,
+.view-booking-hotel {
+    .hotel-reviews {
+        position: relative;
+        padding-left: 10px;
+
+        @include media-breakpoint-down(md) {
+            position: inherit;
+            margin-bottom: 10px;
+            padding-left: 0;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            height: 20px;
+            border-left: 1px solid $colorAlto;
+
+            @include media-breakpoint-down(md) {
+                content: none;
+            }
+        }
+    }
+}
+
+.hotels-carousel__results .card .hotel-reviews,
+.recommended-hotels-grid__offers .card .hotel-reviews {
+    position: inherit;
+    padding-left: inherit;
+
+    &::after {
+        content: none;
+    }
+}

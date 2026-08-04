@@ -1,0 +1,44 @@
+.sizeContainer {
+    width: 100%;
+    container-name: payment-options-container;
+    container-type: inline-size;
+}
+
+@container payment-options-container (max-width: 650px) {
+    .methods {
+        flex-direction: column;
+    }
+}
+
+.methods {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 32px;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        margin-top: 20px;
+    }
+
+    &.disabled {
+        opacity: 0.4;
+        pointer-events: none;
+    }
+}
+
+.methods > * {
+    @include media-breakpoint-down(md) {
+        margin: 0;
+    }
+}
+
+.title {
+    margin-bottom: 25px;
+    font-weight: 700;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 0;
+    }
+}

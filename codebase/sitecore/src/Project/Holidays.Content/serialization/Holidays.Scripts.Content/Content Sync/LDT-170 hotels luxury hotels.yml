@@ -1,0 +1,72 @@
+﻿---
+ID: "e70a5b34-5751-4b70-8566-bbfef818b5ca"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-170 hotels luxury hotels"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Tiles Carousels"
+            TemplatePath = "Feature/PageContent/Tiles Carousel/Tiles Carousels"
+            Id          = [GUID]"{0DD3EE36-5EA5-464E-9CC5-D8A49BB59E5B}"
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Tiles Carousels/Whats Included In Luxury"
+            TemplatePath = "Feature/PageContent/Tiles Carousel/Tiles Carousel"
+            Id          = [GUID]"{C1E2C961-66BF-4A63-9520-F52AE7DB1168}"
+            Fields      = @{
+                "IsLuxuryExclusive" = @{
+                    "en" = "1"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Tiles Carousels/Hotel Highlights Carousel"
+            TemplatePath = "Feature/PageContent/Tiles Carousel/Tiles Carousel"
+            Id          = [GUID]"{C3937F2A-EC37-4ABA-B658-8A3905C19F93}"
+            Fields      = @{
+                "Title" = @{
+                    "de-CH" = "Highlights des Hotels"
+                    "en" = "Hotel highlights"
+                    "fr-FR" = "Points forts de l’hôtel"
+                    "de-DE" = "Highlights des Hotels"
+                    "fr-CH" = "Points forts de l’hôtel"
+                }
+                "Variant" = @{
+                    "de-CH" = "Information Below Tiles"
+                    "en" = "Information Below Tiles"
+                    "fr-FR" = "Information Below Tiles"
+                    "de-DE" = "Information Below Tiles"
+                    "fr-CH" = "Information Below Tiles"
+                }
+                "UseHotelTiles" = @{
+                    "en" = "1"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999940
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250718T111204Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

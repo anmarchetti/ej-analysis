@@ -1,0 +1,197 @@
+﻿---
+ID: "6b1b1686-9598-4938-ac20-ccbe27780954"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CET-0 Rooms - expedia sync"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $updates = @(
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Barcelona/Barcelona City/Torre Melina a Gran Melia Hotel/Rooms - expedia"
+            Id           = "{5061E25B-A766-4AC5-B652-9C65FCE903B5}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0042131" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Barcelona/Barcelona City/Renaissance Barcelona-HBG/Rooms - expedia"
+            Id           = "{D5CA6853-F90B-4F6C-9B79-48D86E4E9108}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0007050" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Barcelona/Barcelona City/Novotel Barcelona City-HBG-HBG/Rooms - expedia"
+            Id           = "{824F6485-A501-4FCF-93BE-472A35EA286B}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0227846" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Barcelona/Barcelona City/Mandarin Oriental Barcelona/Rooms - expedia"
+            Id           = "{C4D40144-AF88-4776-BEE2-31BA300E8878}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0144349" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Barcelona/Barcelona City/Majestic Hotel and Spa Barcelona-HBG/Rooms - expedia"
+            Id           = "{04D8D736-DF0B-45B8-8288-779E36F2EF50}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0016693" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Barcelona/Barcelona City/Hyatt Regency Barcelona Tower-HBG/Rooms - expedia"
+            Id           = "{6490C16E-343E-4A60-89A8-90B6BAA553AB}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0074888" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Barcelona/Barcelona City/Four Points by Sheraton Barcelona Diagonal-HBG/Rooms - expedia"
+            Id           = "{14F623E9-BD16-4DD3-AA21-5A5746525145}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0051609" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Barcelona/Barcelona City/El Palace-HBG/Rooms - Expedia"
+            Id           = "{89BB3ACB-605A-4AF6-BAB5-95FF02832592}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0020387" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Barcelona/Barcelona City/Casa Fuster-HBG-HBG/Rooms - expedia"
+            Id           = "{BE51383B-9BDA-4B10-A211-8E105260C144}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0056343" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Netherlands/Amsterdam/Amsterdam City/Waldorf Astoria Amsterdam-HBG/Rooms - expedia"
+            Id           = "{1EAB5A5B-6730-4378-99DE-6B36DC750331}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0367911" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Netherlands/Amsterdam/Amsterdam City/Sofitel Legend the Grand Amsterdam-HBG/Rooms - expedia"
+            Id           = "{43620759-F54F-412F-A8E2-8B651EDE19AB}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0022774" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Netherlands/Amsterdam/Amsterdam City/Renaissance Amsterdam Hotel-HBG/Rooms - expedia"
+            Id           = "{0BB3BE01-0383-4129-B5B6-F01FD7CB2D08}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0047139" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Netherlands/Amsterdam/Amsterdam City/Radisson Blu Hotel Amsterdam-HBG/Rooms - expedia"
+            Id           = "{E778D910-6168-4C0E-A2E8-32C374FFA887}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0019783" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Netherlands/Amsterdam/Amsterdam City/Park Plaza Victoria Amsterdam-HBG/Rooms - expedia"
+            Id           = "{102ADAA5-89C4-417D-B122-CC58DDBF26DD}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0023680" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Netherlands/Amsterdam/Amsterdam City/NH Collection Amsterdam Barbizon Palace-HBG/Rooms - expedia"
+            Id           = "{51DE571A-4657-4AE2-87CF-00B18B27157B}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0008549" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Netherlands/Amsterdam/Amsterdam City/Movenpick Hotel Amsterdam City Centre-HBG/Rooms - expedia"
+            Id           = "{7F3C1E2C-CB97-4FED-9550-442B90091E61}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0076215" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Netherlands/Amsterdam/Amsterdam City/Kimpton De Witt Hotel-HBG/Rooms - expedia"
+            Id           = "{FDF2A8FD-DEBE-4E4F-ABFD-EC90AE95A6D6}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0035479" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Netherlands/Amsterdam/Amsterdam City/Ink Hotel Amsterdam Mgallery/Rooms - expedia"
+            Id           = "{4856C35D-B9AC-47C1-8D92-DFF081D7079B}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0021781" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/Netherlands/Amsterdam/Amsterdam City/Hilton Amsterdam-HBG/Rooms - expedia"
+            Id           = "{81C8E2DB-471E-4E16-BE9C-80FEF88FCC3E}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0047143" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/France/Paris/Greater Paris/Hyatt Regency Paris Etoile-HBG/Rooms - expedia"
+            Id           = "{F81BE140-8783-4C9B-B058-B1BEE9869EE7}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0010690" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/France/Paris/Montparnasse/Pullman Paris Montparnasse-HBG/Rooms - expedia"
+            Id           = "{A161E646-6EB6-4012-A966-9CEF64A9D54E}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0016104" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/France/Paris/Opera/Intercontinental Paris Le Grand-HBG/Rooms - Expedia"
+            Id           = "{1DE03BAB-75DB-4FA8-A284-BBFA0ACBD712}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0014859" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/France/Paris/Opera/Hilton Paris Opera-HBG/Rooms - expedia"
+            Id           = "{FF04F4A3-5B5C-4079-B266-FA6B02A89DED}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0010691" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/France/Paris/Elysees/Prince De Galles A Luxury Collection Hotel/Rooms - expedia"
+            Id           = "{483AD723-081A-43C4-B35E-AE60F616A298}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0019446" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/France/Paris/Elysees/Marriott Hotel Paris ChampsElysees-HBG/Rooms - Expedia"
+            Id           = "{1EFFE250-1280-4ADE-907E-5EA260BA3B46}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0017041" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/France/Paris/Louvre/Sofitel Paris Le Faubourg-HBG/Rooms - expedia"
+            Id           = "{31A965C0-D9B4-4991-AF99-72339E3C6543}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0021800" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/France/Paris/Louvre/Novotel Paris Les Halles-HBG/Rooms - expedia"
+            Id           = "{AB787411-8A41-4094-990A-68F5E68EBEE2}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0018095" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Destinations/France/Paris/Louvre/Hotel du Louvre in the Unbound Collection by Hyatt-HBG/Rooms - expedia"
+            Id           = "{1F8C7136-6477-4F53-AA46-2A0311A5C02C}"
+            TemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+            Fields       = @{ Code = "W0011771" }
+        }
+    )
+    
+    ImportContent $updates
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260429T094806Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        extranet\Anonymous

@@ -1,0 +1,113 @@
+﻿---
+ID: "0775c128-c721-41b7-82fd-a2b1841e579e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-18779 initialize coordinates for airports"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function set-coordinates($path, $latitude, $longtitude){
+        $item =  Get-Item -Path $path
+        
+        $item.Editing.BeginEdit()
+        $item["Longitude"] = $longtitude
+        $item["Latitude"] = $latitude
+        $item.Editing.EndEdit()
+    }
+    
+    # UK
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/United Kingdom/London/London Southend" -latitude "51.5378" -longtitude "0.7143"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/United Kingdom/Bournemouth" -latitude "50.718395" -longtitude "-1.883377"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/United Kingdom/East midlands" -latitude "52.633331" -longtitude "-1.133333" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/United Kingdom/Isle of Man" -latitude "54.251186" -longtitude "-4.463196" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/United Kingdom/Leeds Bradford" -latitude "53.799999" -longtitude "-1.750000" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/United Kingdom/Newquay" -latitude "50.4156" -longtitude "-5.0732" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/United Kingdom/Southampton" -latitude "50.909698" -longtitude "-1.404351"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/United Kingdom/Belfast/Belfast City" -latitude "54.6175" -longtitude "-5.8702"
+    # Germany
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/Germany/Berlin Brandenburg" -latitude "52.516266" -longtitude "13.377775" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/Germany/Berlin Schoenefeld" -latitude "52.3738" -longtitude "13.5190" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/Germany/Berlin Tegel" -latitude "52.5896" -longtitude "13.27877" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/Germany/Cologne Bonn" -latitude "50.8595" -longtitude "7.1390" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/Germany/Dortmund" -latitude "51.515" -longtitude "7.61239" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/Germany/Dusseldorf" -latitude "51.2870" -longtitude "6.7667" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/Germany/Friedrichshafen" -latitude "47.671317" -longtitude "9.511486" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/Germany/Hamburg" -latitude "53.6248" -longtitude "9.9880" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/Germany/Munich" -latitude "48.1360" -longtitude "11.6875" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/Germany/Stuttgart" -latitude "48.6873" -longtitude "9.2198" 
+    # Switzerland
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/Switzerland/Basel" -latitude "47.5873" -longtitude "7.5242" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/Switzerland/Geneva" -latitude "46.2363" -longtitude "6.1057" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/Switzerland/Zurich" -latitude "47.451542" -longtitude "8.564572" 
+    # France
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Ajaccio Campo Dell Oro" -latitude "41.9210" -longtitude "8.8015" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Bastia" -latitude "42.5500" -longtitude "9.4842" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Biarritz" -latitude "43.472" -longtitude "-1.53137" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Bordeaux" -latitude "44.830593" -longtitude "-0.710305" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Figari" -latitude "41.5013" -longtitude "9.0913"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Grenoble" -latitude "45.36218" -longtitude "5.330236"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/La Rochelle" -latitude "46.1766" -longtitude "-1.19372"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Lille" -latitude "50.5714" -longtitude "3.10725"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Lyon" -latitude "45.7220" -longtitude "5.0753"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Marseille" -latitude "43.4353" -longtitude "5.2090"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Montpellier" -latitude "43.5725" -longtitude "3.9578"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Nantes" -latitude "47.1542" -longtitude "-1.6047"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Nice" -latitude "43.6592" -longtitude "7.2090"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Paris Charles De Gaulle" -latitude "49.009724" -longtitude "2.547778"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Paris Orly" -latitude "50.727699" -longtitude "0.119067"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Toulon" -latitude "43.11667" -longtitude " 5.93333"
+    set-coordinates -path "master:/sitecore/content/EasyJet/Holidays/Data/Airports/France/Toulouse" -latitude "43.6343" -longtitude "1.3673"
+    
+    # UK Trade
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/United Kingdom/London/London Southend" -latitude "51.5378" -longtitude "0.7143"
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/United Kingdom/Bournemouth" -latitude "50.718395" -longtitude "-1.883377"
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/United Kingdom/East midlands" -latitude "52.633331" -longtitude "-1.133333" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/United Kingdom/Isle of Man" -latitude "54.251186" -longtitude "-4.463196" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/United Kingdom/Leeds Bradford" -latitude "53.799999" -longtitude "-1.750000" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/United Kingdom/Newquay" -latitude "50.4156" -longtitude "-5.0732" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/United Kingdom/Southampton" -latitude " 50.909698" -longtitude "-1.404351" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/United Kingdom/Belfast/Belfast City" -latitude "54.6175" -longtitude "-5.8702"
+    # Germany Trade
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/Germany/Berlin Brandenburg" -latitude "52.516266" -longtitude "13.377775" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/Germany/Berlin Schoenefeld" -latitude "52.3738" -longtitude "13.5190" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/Germany/Berlin Tegel" -latitude "52.5896" -longtitude "13.27877" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/Germany/Cologne Bonn" -latitude "50.8595" -longtitude "7.1390" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/Germany/Dortmund" -latitude "51.515" -longtitude "7.61239" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/Germany/Dusseldorf" -latitude "51.2870" -longtitude "6.7667" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/Germany/Friedrichshafen" -latitude "47.671317" -longtitude "9.511486" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/Germany/Hamburg" -latitude "53.6248" -longtitude "9.9880" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/Germany/Munich" -latitude "48.1360" -longtitude "11.6875" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/Germany/Stuttgart" -latitude "48.6873" -longtitude "9.2198" 
+    # Switzerland Trade
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/Switzerland/Basel" -latitude "47.5873" -longtitude "7.5242" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/Switzerland/Geneva" -latitude "46.2363" -longtitude "6.1057" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/Switzerland/Zurich" -latitude "47.451542" -longtitude "8.564572" 
+    # France Trade
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Ajaccio Campo Dell Oro" -latitude "41.9210" -longtitude "8.8015" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Bastia" -latitude "42.5500" -longtitude "9.4842" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Biarritz" -latitude "43.472" -longtitude "-1.53137" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Bordeaux" -latitude "44.830593" -longtitude "-0.710305" 
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Figari" -latitude "41.5013" -longtitude "9.0913"
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Grenoble" -latitude "45.36218" -longtitude "5.330236"
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/La Rochelle" -latitude "46.1766" -longtitude "-1.19372"
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Lille" -latitude "50.5714" -longtitude "3.10725"
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Lyon" -latitude "45.7220" -longtitude "5.0753"
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Marseille" -latitude "43.4353" -longtitude "5.2090"
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Montpellier" -latitude "43.5725" -longtitude "3.9578"
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Nantes" -latitude "47.1542" -longtitude "-1.6047"
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Nice" -latitude "43.6592" -longtitude "7.2090"
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Paris Charles De Gaulle" -latitude "49.009724" -longtitude "2.547778"
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Paris Orly" -latitude "50.727699" -longtitude "0.119067"
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Toulon" -latitude "43.11667" -longtitude " 5.93333"
+    set-coordinates -path "master:/sitecore/content/EasyJet/TradePortal/Data/Airports/France/Toulouse" -latitude "43.6343" -longtitude "1.3673"
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240326T151539Z

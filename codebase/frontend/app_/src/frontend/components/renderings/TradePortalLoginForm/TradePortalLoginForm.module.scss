@@ -1,0 +1,168 @@
+.backgroundWrapper {
+    position: relative;
+    overflow: hidden;
+    background-color: $colorPorcelain;
+
+    &.isFullHeight {
+        min-height: calc(100vh - 105px);
+    }
+}
+
+.wrapper {
+    position: relative;
+    z-index: 2;
+    display: block;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 433px;
+    margin-top: 40px;
+    margin-bottom: 64px;
+    padding: 24px;
+    text-align: center;
+    background-color: $colorWhite;
+    border-radius: 4px;
+    box-shadow: 0 0 12px 2px rgb(0, 0, 0, 0.13);
+
+    &.isCentered {
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+.heading {
+    margin-top: 0;
+    margin-bottom: 17px;
+    padding: 0 16px;
+    font-family: $fontRoundedHeadline;
+    font-size: 32px;
+    line-height: 37px;
+}
+
+.form {
+    width: 100%;
+    max-width: 385px;
+
+    :global(.form-group) {
+        margin: 0 0 25px;
+    }
+
+    :global(.form-control__error) svg {
+        $size: 15px;
+
+        width: $size;
+        height: $size;
+    }
+
+    :global(.form-control__error__icon) {
+        margin-right: 8px;
+    }
+
+    :global(.form-control__input) {
+        font-size: 14px;
+    }
+}
+
+.submit {
+    width: 100%;
+    height: 50px;
+    font-size: 16px;
+}
+
+.bottomInfo {
+    margin-top: 24px;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.maintenanceWrapper {
+    min-height: calc(100vh - 300px);
+
+    :global(.popup__dialog) {
+        max-width: 560px;
+        margin-top: 40px;
+    }
+
+    :global(.popup__body) {
+        padding: 24px;
+    }
+}
+
+.ssoLogin {
+    padding: 30px 24px 24px;
+    color: $colorWhite;
+    border-radius: 4px;
+}
+
+.ssoLoginBackground img {
+    z-index: -1;
+    border-radius: 4px;
+}
+
+.ssoLoginTitle {
+    margin: 0;
+    font-family: $fontGenerationHeadline;
+    font-size: 50px;
+    font-weight: normal;
+    line-height: 1;
+    color: $colorWhite;
+    text-align: center;
+}
+
+.ssoLoginSubtitle {
+    margin-top: 8px;
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.429;
+}
+
+.ssoLoginButton {
+    width: 100%;
+    margin-top: 16px;
+    border-radius: 2px;
+}
+
+.dialogContainer {
+    :global(.popup__dialog) {
+        width: 850px;
+        max-width: 850px;
+
+        @include media-breakpoint-down(lg) {
+            width: 80%;
+            max-width: 80%;
+        }
+
+        @include media-breakpoint-down(md) {
+            width: auto;
+            max-width: unset;
+        }
+    }
+
+    :global(.popup__content) {
+        border-radius: 6px;
+    }
+
+    :global(.popup__body) {
+        padding: 65px 65px 0;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding: 35px 15px 0;
+        }
+    }
+
+    :global(.popup__footer) {
+        justify-content: center;
+        padding: 40px 65px 65px;
+
+        @include media-breakpoint-down(md) {
+            padding: 25px 15px 30px;
+        }
+
+        :global(.btn) {
+            width: 255px;
+        }
+    }
+}
+

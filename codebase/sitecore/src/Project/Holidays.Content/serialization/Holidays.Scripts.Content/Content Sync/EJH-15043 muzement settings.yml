@@ -1,0 +1,37 @@
+﻿---
+ID: "51862e12-df07-4b0b-abbc-d75908713a5d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-15043 muzement settings"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $muzementSettignsPath = "/sitecore/content/EasyJet/Holidays/Settings/Destination Mappings Settings"
+    $templateId = "{26DC94DC-3A89-4BB8-856D-02A3E89897D4}"
+    
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null){
+            $item = New-Item -Path $path -ItemType $templateId
+        }
+        
+        return $item
+    }
+    
+    $item = Get-Or-Create-Item -Path $muzementSettignsPath -Template $templateId
+    if ($item -ne $null){
+        $item.Editing.BeginEdit()
+        $item.Fields["CountryRadius"].Value = "100"
+        $item.Fields["RegionRadius"].Value = "100"
+        $item.Editing.EndEdit()
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20211228T100356Z

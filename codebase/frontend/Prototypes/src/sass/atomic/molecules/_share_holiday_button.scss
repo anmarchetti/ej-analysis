@@ -1,0 +1,150 @@
+.share-holiday {
+    position: relative;
+    width: 24px;
+
+    .share-holiday__alert {
+        position: absolute;
+        z-index: 1;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 170px;
+        padding: 5px 10px;
+        font-size: 14px;
+        background: $colorWhite;
+        border: 1px solid $colorDustyGrey;
+        border-radius: 4px;
+
+        svg {
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+            color: $colorGreen;
+        }
+    }
+
+    .share-holiday__btn {
+        padding: 0;
+        color: $clrEjOrange;
+        background: none;
+        border: none;
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    .share-holiday__callout {
+        .callout__parent {
+            line-height: 24px;
+
+            svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        .callout__content {
+            z-index: 8;
+        }
+
+        .callout__content {
+            padding: 0 10px;
+            border-radius: 4px;
+        }
+    }
+
+    .share-holiday__menu {
+        margin: 0;
+        padding: 0;
+
+        li {
+            list-style: none;
+
+            @include media-breakpoint-up(sm) {
+                &:last-child button,
+                &:last-child a {
+                    border-bottom: none;
+                }
+            }
+        }
+
+        a {
+            display: inline-block;
+            color: $colorBlack;
+
+            &:hover,
+            &:visited,
+            &:focus {
+                color: $colorBlack;
+                text-decoration: none;
+            }
+        }
+
+        button,
+        a {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            line-height: 24px;
+            text-align: left;
+            background: no-repeat;
+            border: none;
+            border-bottom: 1px solid $colorGeyser;
+            cursor: pointer;
+            transition: opacity 0.15s ease-out;
+
+            &:hover {
+                opacity: 0.7;
+            }
+
+            @include media-breakpoint-down(md) {
+                padding: 20px;
+                font-size: 15px;
+                line-height: 15px;
+                color: $clrEjOrange;
+                text-align: center;
+
+                &:hover,
+                &:visited,
+                &:focus {
+                    color: $clrEjOrange;
+                }
+            }
+        }
+    }
+
+    .share-button__popup {
+        .popup__dialog {
+            justify-content: flex-end;
+            width: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            margin: 0;
+        }
+
+        .popup__body {
+            padding: 0 10px;
+        }
+
+        .popup__content {
+            border-radius: 4px;
+        }
+
+        .popup__footer {
+            display: block;
+            width: 100%;
+            padding: 0;
+
+            button {
+                display: block;
+                margin: 0 auto;
+                padding: 19px 30px;
+                font-family: $fontRoundedDemy;
+                font-size: 15px;
+            }
+        }
+    }
+}

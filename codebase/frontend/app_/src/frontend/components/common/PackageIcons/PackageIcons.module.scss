@@ -1,0 +1,119 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+// tooltip trigger
+.triggerWrapper {
+    display: block;
+    padding: 0;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    @media (hover: hover) {
+        &:focus-visible {
+            border-radius: 2px;
+            outline: 1px $colorBlack solid;
+        }
+    }
+}
+
+.trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 4px 12px 4px 16px;
+    background-color: $colorPorcelain;
+    border: 2px solid $colorGeyser;
+    border-radius: 40px;
+
+    .items {
+        flex-direction: row;
+        gap: 4px;
+        margin: 0 4px;
+    }
+}
+
+.label {
+    white-space: nowrap;
+}
+
+.item {
+    img {
+        @include sizeSquare(22px);
+    }
+
+    p {
+        display: none;
+    }
+}
+
+.arrowWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background-color: $colorPorcelain;
+    border: 2px solid $colorGeyser;
+    border-radius: 20px;
+    cursor: pointer;
+
+    svg {
+        width: 16px;
+        height: 16px;
+
+        path {
+            fill: $colorLuxuryOrange;
+        }
+    }
+}
+
+.text {
+    margin: 0;
+    font-size: 14px;
+    color: $clrTextMain;
+}
+
+.triggerLuxury {
+    background-color: $colorLuxuryBlack;
+    border: none;
+
+    .label {
+        color: $colorLuxuryChampagne;
+    }
+
+    .arrowWrapper {
+        border: none;
+
+        svg {
+            width: 32px;
+            height: 32px;
+            fill: $colorLuxuryBlack;
+        }
+    }
+}
+
+// tooltip content
+.tooltipContentWrapper.priority {
+    @include media-breakpoint-up(xl) {
+        max-width: 280px;
+    }
+}
+
+.tooltipContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 5px;
+
+    .header {
+        font-family: $fontRoundedDemy;
+        font-weight: 400;
+        line-height: 18px;
+    }
+}

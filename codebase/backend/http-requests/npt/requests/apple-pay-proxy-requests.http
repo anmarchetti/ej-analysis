@@ -1,0 +1,34 @@
+###
+
+# @name Merchant Validation For easyJet Airlines
+# @expected status=200
+# @description This request is used to validate the Apple Pay merchant session for EasyJet Airlines. The request should include the display name, request domain, and validation URL.
+# {{apple-pay-proxy-host}} is the normal host through Akamai. You can use {{apple-pay-proxy-host-DIRECT}} in "npt", "ci", and "pre-prod (Blue)" if you want to call the proxy directly
+
+POST {{apple-pay-proxy-host}}/api/payment/v1/applepay/merchantvalidation
+Accept: application/json
+Content-Type: application/json
+
+{
+  "displayName": "easyJet",
+  "requestDomain": "easyjet.local",
+  "validationUrl": "https://apple-pay-gateway-cert.apple.com/paymentservices/startSession"
+}
+
+###
+
+# @name Merchant Validation For easyJet Holidays
+# @expected status=200
+# @description This request is used to validate the Apple Pay merchant session for EasyJet Holidays. The request should include the display name, request domain, validation URL, and origin.
+# {{apple-pay-proxy-host}} is the normal host through Akamai. You can use {{apple-pay-proxy-host-DIRECT}} in "npt", "ci", and "pre-prod (Blue)" if you want to call the proxy directly
+
+POST {{apple-pay-proxy-host}}/api/payment/v1/applepay/merchantvalidation
+Accept: application/json
+Content-Type: application/json
+
+{
+  "displayName": "easyJet Holidays",
+  "requestDomain": "easyjet.holidays.local",
+  "validationUrl": "https://apple-pay-gateway-cert.apple.com/paymentservices/startSession",
+  "origin": "EasyjetHolidays"
+}

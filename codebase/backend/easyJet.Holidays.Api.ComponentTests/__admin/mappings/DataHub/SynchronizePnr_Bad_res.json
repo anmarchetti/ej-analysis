@@ -1,0 +1,27 @@
+{
+    "Title": "Synchronise PNR for booking with ref=77881122",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/EZYDMO/anitetravelwsv3/datahub.asmx",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "WildcardMatcher",
+                "Pattern": "*bad_res*",
+                "IgnoreCase": true
+            }
+        },
+        "Method": "Post"
+    },
+    "Response": {
+        "Headers": { "Content-Type": "text/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/DataHub/DataHubResponse_Bad_res.xml"
+    }
+}

@@ -1,0 +1,85 @@
+:global(.room-skeleton-container) {
+    .shimmer {
+        width: 70px;
+        height: 15px;
+        border-radius: 40px;
+    }
+    
+    .card {
+        display: flex;
+        margin-top: 24px;
+        border: 1px solid $colorAlto;
+        box-shadow: none;
+    
+        :global .row {
+            height: 100%;
+        }
+    
+        .details {
+            display: flex;
+            flex-direction: column;
+            padding: 20px 12px;
+        }
+    
+        .img {
+            background-size: 400% 400%;
+        }
+    
+        .shimmerTop {
+            min-height: 15px;
+            margin-bottom: 8px;
+    
+            @include media-breakpoint-down(md) {
+                display: none;
+            }
+        }
+    
+        .shimmerMiddle,
+        .shimmerLarge {
+            margin-bottom: 16px;
+        }
+    
+        .shimmerMiddle:nth-child(2) {
+            width: 239px;
+            margin-bottom: 0;
+        }
+    
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+        }
+    }
+    
+    .large {
+        .img {
+            min-height: 214px;
+        }
+    }
+    
+    .shimmerMiddle {
+        width: 300px;
+        height: 20px;
+    }
+
+    .shimmerLarge {
+        width: 232px;
+        min-height: 40px;
+    }
+
+    .shimmerBtn {
+        width: auto;
+        max-width: 200px;
+        height: 50px;
+    }
+}
+
+.shimmerMiddle {
+    composes: shimmer;
+}
+
+.shimmerLarge {
+    composes: shimmer;
+}
+
+.shimmerBtn {
+    composes: shimmer;
+}

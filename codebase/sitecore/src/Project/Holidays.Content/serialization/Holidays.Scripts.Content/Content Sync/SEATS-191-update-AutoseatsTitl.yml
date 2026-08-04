@@ -1,0 +1,32 @@
+﻿---
+ID: "24925046-5c2b-4032-a774-f4504a38a445"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SEATS-191-update-AutoseatsTitle-value"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    $seatMap = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Data/SeatsMap" -template "{54E8234A-234C-4BDC-9EA6-778F7CC75D76}"
+    $seatMap.Editing.BeginEdit()
+    $seatMap["AutoseatsTitle"] = "Would you like to book the same seats on the {flightDirection} flight?"
+    $seatMap.Editing.EndEdit()
+    
+    Write-Host "updated seatMap - AutoseatsTitle value"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230116T180241Z

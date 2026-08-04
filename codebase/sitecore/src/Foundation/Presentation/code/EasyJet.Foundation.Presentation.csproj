@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <ItemGroup>
+        <PackageReference Include="Sitecore.ContentTesting" />
+        <PackageReference Include="Sitecore.ContentTesting.Model" />
+        <PackageReference Include="Sitecore.JavaScriptServices.Configuration" />
+        <PackageReference Include="Sitecore.Personalization.Mvc" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)SitecoreProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GeneratedAssemblyInfoFile>Properties\Assemblyinfo.cs</GeneratedAssemblyInfoFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Analytics\code\easyJet.Foundation.Analytics.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Multisite\code\easyJet.Foundation.Multisite.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Destinations\code\easyJet.Foundation.Destinations.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <SonarQubeSetting Include="sonar.coverage.exclusions">
+            <Value>
+                **/Pipelines/CustomizeRendering/Personalize.cs
+            </Value>
+        </SonarQubeSetting>
+    </ItemGroup>
+</Project>

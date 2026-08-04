@@ -1,0 +1,40 @@
+{
+  "Guid": "443691b9-e442-4334-be42-e0f89fc79d54",
+  "UpdatedAt": "2023-11-23T16:43:24.7433645Z",
+  "Title": "DisplayMemoResponse for VALID-BOOKING-WITH-SEATS",
+  "Priority": 0,
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/EZYDMO/VRPWebservice/AniteGateway/AniteGateway.aspx",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "POST"
+    ],
+    "Body": {
+      "Matcher": {
+        "Name": "WildcardMatcher",
+        "Pattern": "*<p2:DisplayMemoRequest*<p1:BkgNum><p1:BkgId>VALID-BOOKING-WITH-SEATS</p1:BkgId>*",
+        "IgnoreCase": true
+      }
+    }
+  },
+  "Response": {
+    "StatusCode": 200,
+    "Body": "<p2:DisplayMemoResponse xmlns:p1=\"AtComRes/Common\" xmlns:p2=\"AtComRes/DisplayMemoResponse\"><!-- Response returned from: EZYCON.EJH.ATCOM --><p1:Adm Xsd_Ver=\"T3.20.4.8\"><p1:ReqId>cedcbe8d-64aa-41fd-8060-08589be579aa</p1:ReqId><p1:Tm>2023-11-23T16:43:24.63177+00:00</p1:Tm><p1:Trk From=\"atcomres\" To=\"easyjet\" /></p1:Adm><p1:CltInfo><p1:Locale>en_EN</p1:Locale><p1:CltSysContext>3</p1:CltSysContext><p1:Agt_No>WAGBP</p1:Agt_No><p1:TermCode>ABCD</p1:TermCode><p1:User_Name>EZYVRP</p1:User_Name><p1:Chan>inhouse</p1:Chan><p1:Channel_Type>VRP</p1:Channel_Type><p1:User_Role>INTERNAL</p1:User_Role></p1:CltInfo><p1:BkgNum><p1:BkgId>VALID-BOOKING-WITH-SEATS</p1:BkgId><p1:CurrentVersion>2</p1:CurrentVersion></p1:BkgNum><p1:Memo><p1:Memo_Dt>2023-11-23T16:39:45+00:00</p1:Memo_Dt><p1:Memo_Cd>:OC</p1:Memo_Cd><p1:Memo_Name>Opt created</p1:Memo_Name><p1:Memo_User_Name>EZYVRP</p1:Memo_User_Name><p1:Memo_User_Desc>easyJet Holidays VRP User</p1:Memo_User_Desc><p1:Memo_Key>28777942</p1:Memo_Key><p1:Memo_Rights>READ</p1:Memo_Rights><p1:Memo_Rights>WRITE</p1:Memo_Rights><p1:Memo_Rights>DELETE</p1:Memo_Rights><p1:Memo_Seq>1</p1:Memo_Seq><p1:Agent Cd=\"WAGBP\" Name=\"Web Agent £\" /></p1:Memo><p1:Memo><p1:Memo_Dt>2023-11-23T16:39:52+00:00</p1:Memo_Dt><p1:Memo_Cd>:OB</p1:Memo_Cd><p1:Memo_Name>Opt to booking</p1:Memo_Name><p1:Memo_User_Name>EZYVRP</p1:Memo_User_Name><p1:Memo_User_Desc>easyJet Holidays VRP User</p1:Memo_User_Desc><p1:Memo_Key>28777945</p1:Memo_Key><p1:Memo_Rights>READ</p1:Memo_Rights><p1:Memo_Rights>WRITE</p1:Memo_Rights><p1:Memo_Rights>DELETE</p1:Memo_Rights><p1:Memo_Seq>4</p1:Memo_Seq><p1:Agent Cd=\"WAGBP\" Name=\"Web Agent £\" /></p1:Memo></p2:DisplayMemoResponse>",
+    "Headers": {
+      "Content-Type": "text/xml",
+      "Cache-Control": "private",
+      "Vary": "Accept-Encoding",
+      "Server": "Microsoft-IIS/10.0",
+      "X-AspNet-Version": "4.0.30319",
+      "X-Powered-By": "ASP.NET",
+      "Date": "Thu, 23 Nov 2023 16:43:24 GMT"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "Name": "EmailCollection",
+  "Version": "1.0",
+  "References": [
+    {
+      "Name": "XConnect",
+      "Version": "1.0"
+    },
+    {
+      "Name": "Sitecore.XConnect.Collection.Model",
+      "Version": "10.4"
+    }
+  ],
+  "Types": {
+    "easyJet.Foundation.XConnect.Common.Facets.Email.EmailsListFacet": {
+      "Type": "Facet",
+      "BaseType": "Sitecore.XConnect.Facet",
+      "ClrType": "easyJet.Foundation.XConnect.Common.Facets.Email.EmailsListFacet, easyJet.Foundation.XConnect.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "Emails": {
+          "Type": [
+            "easyJet.Foundation.XConnect.Common.Facets.Email.Email"
+          ]
+        }
+      }
+    },
+    "easyJet.Foundation.XConnect.Common.Facets.Email.Email": {
+      "Type": "Complex",
+      "ClrType": "easyJet.Foundation.XConnect.Common.Facets.Email.Email, easyJet.Foundation.XConnect.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "Id": {
+          "Type": "String",
+          "Annotations": [
+            {
+              "Type": "PIISensitiveAttribute"
+            }
+          ]
+        },
+        "Body": {
+          "Type": "String",
+          "Annotations": [
+            {
+              "Type": "PIISensitiveAttribute"
+            }
+          ]
+        },
+        "SentDate": {
+          "Type": "String"
+        },
+        "Subject": {
+          "Type": "String"
+        }
+      }
+    }
+  },
+  "Facets": [
+    {
+      "Target": "Contact",
+      "Name": "EmailsList",
+      "Type": "easyJet.Foundation.XConnect.Common.Facets.Email.EmailsListFacet"
+    }
+  ]
+}

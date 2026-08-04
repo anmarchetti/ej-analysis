@@ -1,0 +1,174 @@
+﻿---
+ID: "22641f5f-8ede-4ed4-a0cf-ef346d466621"
+Parent: "4c10d78f-07b6-469e-929f-cb4b460bb11e"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Destinations Sync/Hotel Sync/Hotel Facilities Report
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $time = Get-Date -UFormat %s -Millisecond 0
+    $filename = "HotelFacilitiesReport_$time.xlsx"
+    $folderPath = "$($SitecoreDataFolder)\ExportData"
+    $filePath = "$($folderPath)\$filename"
+    $sitePath = "http://sc.holidays.local/en/holidays/"
+    
+    function Create-Data-Folder {
+    	param($path)
+    	if (!(Test-Path $path))
+    	{
+    		New-Item -ItemType Directory -Force -Path $path
+    	}
+    }
+    
+    function Find-Hotels-Items {
+    	$criteria = @(
+    		@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    		@{ Filter = "Equals"; Field = "_template"; Value = "28e5e1698f724f90a277280a8302b607"; }
+    		@{ Filter = "Equals"; Field = "_name"; Value = "__Standard Values"; "Invert" = $true}
+    	)
+    
+    	$props = @{
+    		Index = "sitecore_master_index"
+    		Criteria = $criteria
+    	}
+    
+    	$items = Find-Item @props
+    
+    	Write-Host "$($items.Count) Hotels were found"
+    
+    	return $items
+    }
+    
+    function Prepare-Data {
+    	param($items)
+    
+    	$data = @()
+    	foreach ($searchResultItem in $items) {
+    
+    		$item = Get-Item -Path master: -Id $searchResultItem.ItemId
+    		$rows = Get-Data-From-Item -Item $item
+    		$rows | ForEach-Object { $data += $_}
+    	}
+    
+    	Write-Host "Hotel's report has been prepered"
+    
+    	return $data
+    }
+    
+    
+    function Get-Browse-Url {
+    	param($item)
+    	$path = $item.Paths.ContentPath -replace "/EasyJet/Holidays/Home/Destinations/",$sitePath
+    	$validPath = $path -replace "\s+",'-'
+    	return $validPath.ToLower()
+    }
+    
+    function Get-Children-By-Template {
+    	param($parent,$templateId)
+        
+    	$item = Get-ChildItem -Item $parent | Where-Object { $_.TemplateId -eq $templateId } | Select -First 1
+    
+    	return $item.Children
+    }
+    
+    function Get-Children-Count-By-Template-Deep {
+    	param($parent, $childTemplateId)
+        
+    	$childItems = Get-ChildItem -Item $parent | Where-Object {$_.TemplateId -eq $childTemplateId}
+    	
+    	if ($childItems -eq $null){
+    	    return 0
+    	}
+    	
+    	return $childItems.Children.Count
+    }
+    
+    function Get-Facility-Data {
+        param($facility)
+        
+        $facilityTypeItem = Get-Item "master:" -ID $facility.Fields["FacilityType"].Value
+        $facilityName = ""
+        $facilityCode = ""
+        
+        if($facilityTypeItem -ne $null)
+        {
+            $facilityName = $facilityTypeItem.Fields["Name"].Value
+            if($facilityName -eq ""){
+                $facilityName = $facilityTypeItem.Name
+            }
+            $facilityCode = $facilityTypeItem.Fields["Code"].Value
+        }
+        
+        $result = @{}
+        $result.Add("FacilityName", $facilityName)
+        $result.Add("FacilityCode", $facilityCode)
+        $result.Add("Distance", $facility.Fields["Distance"].Value)
+        $result.Add("ShowOnSite", $facility.Fields["ShowOnSite"].Value)
+    
+        return $result
+    }
+    
+    function Get-Data-From-Item
+    {
+    	param($item)
+    
+    	# closest facility 
+    	if (![string]::IsNullOrEmpty($item['ClosestFacility'])) {
+    		$facility = Get-Item master: -Id $item['ClosestFacility']
+    	}
+    
+    	# hotel' child folders
+    	$facilities = Get-Children-By-Template -Parent $item -templateId "{5C397782-6810-460A-AB57-84E9AB67514C}"
+    	
+    	$facilities_data = @()
+    	$facilities_data += $facilities | Where-Object {$_ -ne $null } | ForEach-Object { Get-Facility-Data $_ }
+    	
+        $data = @()
+        
+        if($facilities_data.Count -eq 0){
+        	$data += [ordered]@{
+        		ATCom = $item['Code']
+        		HotelName = $item["Name"]
+        		FacilityName = ""
+        		Distance = ""
+        		ShowOnSite = ""
+        	}
+        }else{
+            For($i = 0; $i -lt $facilities_data.Count; $i++){
+                $data += [ordered]@{
+                    ATCom = $item['Code']
+            		HotelName = $item["Name"]
+            		FacilityName = $facilities_data[$i]["FacilityName"]
+            		FacilityCode = $facilities_data[$i]["FacilityCode"]
+            		Distance = $facilities_data[$i]["Distance"]
+            		ShowOnSite = $facilities_data[$i]["ShowOnSite"]
+                }
+            }
+        }
+        
+    	return $data
+    }
+    
+    #find hotels items
+    $items = Find-Hotels-Items
+    
+    #Prepare items to table format
+    $table = Prepare-Data -items $items
+    
+    Create-Data-Folder -Path $folderPath
+    
+    Import-Function -Name ConvertTo-Xlsx
+    
+    [byte[]]$outobject = $table | ForEach-Object { New-Object PSObject -Property $_ } | ConvertTo-Xlsx
+    
+    Out-Download -Name $filename -InputObject $outobject 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200312T102616Z

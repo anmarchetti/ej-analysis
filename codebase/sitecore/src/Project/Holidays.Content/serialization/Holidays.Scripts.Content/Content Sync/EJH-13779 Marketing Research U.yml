@@ -1,0 +1,90 @@
+﻿---
+ID: "cdccd1fd-d15e-4e8a-a74b-84ca1451c121"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-13779 Marketing Research Unsubscribe Page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$itemName,$templateId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function Update-Rendering-DataSource ($item,$renderingId,$placeHolder,$newDataSource,$last) {
+        if ($last -eq $null) {
+            $rendering = Get-Rendering -Item $item -PlaceHolder $placeHolder | Where-Object { $_.ItemId -eq $renderingId } | Select -First 1
+        } else {
+            $rendering = Get-Rendering -Item $item -PlaceHolder $placeHolder | Where-Object { $_.ItemId -eq $renderingId } | Select -Last 1
+        }
+    
+    	if ($rendering -ne $null) {
+    		Set-Rendering -Item $item -Instance $rendering -DataSource $newDataSource
+    		Write-Host $item.Name "Rendering successfully updated"
+    	}
+    }
+    
+    function Set-Page-Design ($designPath,$pageTemplateId) {
+    	$designItem = Get-Item -Path "$($designPath)" -ErrorAction SilentlyContinue
+    	if ($designItem -ne $null) {
+    		[Sitecore.Data.Fields.MultilistField]$pageTemplates = $designItem.Fields["PageTemplates"];
+    
+    		if (!$pageTemplates.Contains($pageTemplateId)) {
+    			$designItem.Editing.BeginEdit();
+    			$pageTemplates.add($pageTemplateId);
+    			$designItem.Editing.EndEdit() | Out-Null
+    			Write-Host $designItem.Name "Page Templates updated"
+    		}
+    	}
+    }
+    
+    
+    $pageTemplateId = "{CA213926-3B8C-4C30-9491-A504B252EBC5}"
+    
+    # Add Page To PageDesigns
+    Set-Page-Design -designPath "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Default Design" -pageTemplateId $pageTemplateId
+    
+    # Create Page
+    $page = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home" -ItemName "Marketing Research Unsubscribe" -TemplateId $pageTemplateId
+    
+    # Create Page Components
+    $pageComponents = Get-Or-Create-Item -Path $page.FullPath -ItemName "Page Components" -TemplateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    
+    # Create Marketing Research Unsubscribed datasource and set it to rendering
+    $unsubscribeTemplateId = "{7D7245DC-021D-4B80-B012-73B02B749401}"
+    $unsubscribeRenderingId = "{FB44ACE6-724B-4C83-8D87-D40BC37B6358}"
+    
+    $unsubscribe = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Marketing Research Unsubscribe" -TemplateId $unsubscribeTemplateId
+    
+    $unsubscribe.Editing.BeginEdit();
+    $unsubscribe["Title"] = "Hey {email}"
+    $unsubscribe["Subtitle"] = "<p>Are you sure you want to unsubscribe from any further market research messages from easyJet holidays?</p>"
+    $unsubscribe["UnsubscribedTitle"] = "We’re sorry to see you go!"
+    $unsubscribe["UnsubscribedSubtitle"] = "<p>Thank you, you're now unsubscribed</p>"
+    $unsubscribe["Icon"] = '<image mediaid="{DB300257-36FE-468A-A2DC-13C3E1B9E689}" />'
+    $unsubscribe["UnsubscribedIcon"] = '<image mediaid="{6F9A297C-4848-49A5-9402-7A13294D3535}" />'
+    $unsubscribe["Image"] = '<image mediaid="{C6189DA5-D374-4752-9525-BE31DB3BDDCA}" />'
+    $unsubscribe["AcceptButton"] = "Yes please"
+    $unsubscribe["DeclineButton"] = "No thanks"
+    $unsubscribe["GoHomeButton"] = "Back to homepage"
+    $unsubscribe.Editing.EndEdit() | Out-Null
+    
+    Write-Host "Datasource created"
+    
+    Update-Rendering-DataSource -Item $page -RenderingId $unsubscribeRenderingId -PlaceHolder "body" -NewDataSource $unsubscribe.ID
+    
+    Write-Host "Finished"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20211110T211134Z

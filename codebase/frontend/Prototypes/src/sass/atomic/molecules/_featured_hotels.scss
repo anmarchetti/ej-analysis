@@ -1,0 +1,167 @@
+/* stylelint-disable selector-max-compound-selectors */
+.featured-hotels {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    .featured-hotels__row {
+        display: flex;
+        margin: 0 10px 8px;
+
+        .featured-hotel-card {
+            height: auto;
+            margin: 0;
+            padding-top: 0;
+            padding-left: 0;
+        }
+
+        .featured-hotel-card + .featured-hotel-card {
+            margin-left: 16px;
+        }
+
+        .featured-hotel-card__link {
+            position: static;
+            height: 100%;
+        }
+
+        .featured-hotel-card__bg {
+            height: 245px;
+            @include media-breakpoint-down(md) {
+                height: 188px;
+            }
+        }
+
+        .featured-hotel-card__info {
+            flex-grow: 1;
+            max-height: none;
+
+            .like-badge.promo {
+                max-width: 90%;
+            }
+        }
+
+        .featured-hotel-card__details {
+            margin-top: auto;
+        }
+
+        .featured-hotel-card__destination {
+            margin-left: 0;
+        }
+
+        .featured-hotel-card__destination-wrapper {
+            flex-direction: column;
+            margin-right: 16px;
+        }
+
+        .live-price {
+            line-height: initial;
+            white-space: nowrap;
+        }
+    }
+
+    .featured-hotels__row + .featured-hotels__row {
+        margin-top: 16px;
+    }
+
+    .slider-container {
+        .react-multi-carousel-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .react-multi-carousel-dot-list {
+            align-items: center;
+
+            .react-multi-carousel-dot {
+                button {
+                    display: block;
+                    width: 8px;
+                    height: 8px;
+                    margin-right: 10px;
+                    background: $colorGray;
+                    border: none;
+                }
+            }
+
+            .react-multi-carousel-dot--active {
+                button {
+                    width: 10px;
+                    height: 10px;
+                    background: $clrEjOrange;
+                }
+            }
+        }
+    }
+
+    .carousel-button-group {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        margin-top: -43px;
+
+        .btn {
+            position: absolute;
+            width: 47px;
+            height: 47px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12);
+
+            &.arrow--right {
+                right: 0;
+            }
+
+            &.arrow--left {
+                left: 0;
+            }
+        }
+    }
+}
+
+.featured-hotels--slider {
+    padding: 0 40px;
+}
+
+.featured-hotels-block {
+    padding-bottom: 60px;
+}
+
+@include media-breakpoint-down(md) {
+    .featured-hotels-block {
+        .text-block {
+            .text-block__header {
+                font-size: 28px;
+            }
+        }
+
+        .featured-hotels {
+            margin: 0 -10px;
+            padding: 0;
+
+            .featured-hotels__row + .featured-hotels__row {
+                margin-top: 10px;
+            }
+
+            .carousel-button-group {
+                display: none;
+            }
+        }
+
+        .featured-hotels__row {
+            flex-direction: column;
+
+            .featured-hotel-card + .featured-hotel-card {
+                margin-top: 5%;
+                margin-left: 0;
+            }
+
+            .featured-hotel-card__hotel {
+                .title {
+                    font-size: 32px;
+                }
+            }
+        }
+    }
+}
+/* stylelint-enable selector-max-compound-selectors */

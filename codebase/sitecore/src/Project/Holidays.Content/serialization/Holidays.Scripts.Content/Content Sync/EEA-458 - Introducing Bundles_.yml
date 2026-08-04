@@ -1,0 +1,98 @@
+﻿---
+ID: "0c67088e-0d72-4547-932c-374d504a73be"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-458 - Introducing Bundles Page with TP"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Bundles"
+            TemplatePath = "Project/Holidays/Pages/Bundles Page"
+            Id          = [GUID]"{C84C4059-9AFD-4F14-B3F1-1D1BCEF33F73}"
+            Fields      = @{
+                "PageTitle" = @{
+                    "de-CH" = "Bündel"
+                    "en" = "Bundles"
+                    "fr-FR" = "Forfaits"
+                    "de-DE" = "Pakete"
+                    "fr-CH" = "Forfaits"
+                }
+                "TrackingPageTitle" = @{
+                    "en" = "Bundles"
+                }
+                "Name" = @{
+                    "de-CH" = "Bündel"
+                    "en" = "Bundles"
+                    "fr-FR" = "Forfaits"
+                    "de-DE" = "Pakete"
+                    "fr-CH" = "Forfaits"
+                }
+                "Title" = @{
+                    "de-CH" = "Bündel"
+                    "en" = "Bundles"
+                    "fr-FR" = "Forfaits"
+                    "de-DE" = "Pakete"
+                    "fr-CH" = "Forfaits"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    Import-Function "Import Content"
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Home/Bundles"
+            TemplatePath = "Project/Holidays/Pages/Bundles Page"
+            Id          = [GUID]"{A84C4059-9AFD-4F14-B3F1-1D1BCEF33F79}"
+            Fields      = @{
+                "PageTitle" = @{
+                    "de-CH" = "Bündel"
+                    "en" = "Bundles"
+                    "fr-FR" = "Forfaits"
+                    "de-DE" = "Pakete"
+                    "fr-CH" = "Forfaits"
+                }
+                "TrackingPageTitle" = @{
+                    "en" = "Bundles"
+                }
+                "Name" = @{
+                    "de-CH" = "Bündel"
+                    "en" = "Bundles"
+                    "fr-FR" = "Forfaits"
+                    "de-DE" = "Pakete"
+                    "fr-CH" = "Forfaits"
+                }
+                "Title" = @{
+                    "de-CH" = "Bündel"
+                    "en" = "Bundles"
+                    "fr-FR" = "Forfaits"
+                    "de-DE" = "Pakete"
+                    "fr-CH" = "Forfaits"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999953
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250718T125024Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

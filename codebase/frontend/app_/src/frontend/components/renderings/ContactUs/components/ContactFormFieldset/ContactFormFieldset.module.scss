@@ -1,0 +1,20 @@
+.fieldset {
+    margin-bottom: 3rem;
+
+    @include media-breakpoint-down(lg) {
+        margin-bottom: 1rem;
+    }
+}
+
+.formSectionTitle {
+    display: block;
+    margin: 0 0 20px;
+    margin-top: 0;
+    font-size: 18px;
+    font-weight: 700;
+
+    &::before {
+        content: counter(section-title) '. ';
+        counter-increment: section-title;
+    }
+}

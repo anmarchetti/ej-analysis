@@ -1,0 +1,95 @@
+.select-group {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin: 15px 0;
+
+    .select-group__control {
+        overflow-x: hidden;
+        border: 1px solid $clrTxtLighter;
+        border-radius: 6px;
+
+        label {
+            position: absolute;
+            top: -7.5px;
+            left: 12px;
+            padding: 0 8px;
+            font-family: $fontRoundedBook;
+            font-size: 15px;
+            color: $clrTxtLight;
+            background: $colorWhite;
+        }
+
+        .select-group__control--icon {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            width: 21px;
+            height: 100%;
+            background: $colorWhite;
+            border: 1px solid $clrTxtLighter;
+            border-left: 0;
+            border-radius: 0 6px 6px 0;
+            pointer-events: none;
+
+            svg {
+                width: 80%;
+                color: $clrTxtLight;
+            }
+        }
+
+        select {
+            width: 100%;
+            height: 44px;
+            padding-left: 20px;
+            font-family: $fontRoundedBook;
+            background: $colorTransparent;
+            border: none;
+            outline: none;
+        }
+    }
+}
+
+.form-group .select-group {
+    margin: 0;
+}
+
+.select-group--error {
+    .select-group__control {
+        color: $error-color;
+        border: 1px solid $error-color;
+
+        label {
+            color: $error-color;
+        }
+
+        &:focus {
+            border: 1px solid $error-color;
+
+            ~ label {
+                color: $error-color;
+            }
+        }
+
+        .select-group__control--icon {
+            border: 1px solid $error-color;
+            border-left: 0;
+        }
+    }
+
+    .form-control__error {
+        display: flex;
+        align-items: center;
+        padding-left: 15px;
+
+        .form-control__error__label {
+            margin: auto auto auto 0;
+            font-family: $error-font-family;
+            font-size: 15px;
+            line-height: 15px;
+            color: #ff1212;
+        }
+    }
+}

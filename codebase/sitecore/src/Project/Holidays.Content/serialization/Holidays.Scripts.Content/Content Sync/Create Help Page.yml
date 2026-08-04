@@ -1,0 +1,255 @@
+﻿---
+ID: "7f36879c-7b80-4e6b-8680-136589cefb23"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Help Page
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    # Page
+    $pagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Help"
+    $helpPageTemplateId = "{3149AE7B-6C85-49DF-9BA0-5CE46819F2B8}"
+    $page = Get-Or-Create-Item -path $pagePath -templateId $helpPageTemplateId
+    
+    # Add page in designs
+    $designPath = "master:/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Default Design"
+    $design = Get-Item -Path $designPath
+    if($design -ne $null) {
+        [Sitecore.Data.Fields.MultilistField]$field = $design.Fields["PageTemplates"];
+              
+        $design.Editing.BeginEdit();
+        $field.add($helpPageTemplateId);
+        $design.Editing.EndEdit() | Out-Null
+        Write-Host "Help Page Template added to Design PageTemplates"
+    }
+    
+    # Insert component wrapper
+    $helpPage= Get-Item -Path $pagePath
+    $componentWrapperPlaceHolder= 'first-wrapper'
+    $componentWrapperRenderingPath = "/sitecore/layout/Renderings/Project/Holidays/Component Wrapper"
+    $componentWrapperItem = Get-Item -Database "master" -Path $componentWrapperRenderingPath | New-Rendering -Placeholder $componentWrapperPlaceHolder
+    Add-Rendering -Item $helpPage -PlaceHolder $componentWrapperPlaceHolder -Instance $componentWrapperItem  -Parameter @{"IsGreyBackground"="1"; "IsTriangleEnd"="1"}
+    
+    # Add Page components folder
+    Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Help/Page Components" -templateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+          
+    $componentWrapperRenderings = Get-Rendering -Item $helpPage -Placeholder $componentWrapperPlaceHolder
+    if ($componentWrapperRenderings -is [array]) {
+        $componentWrapperRend = $componentWrapperRenderings[0]
+    } else { 
+        $componentWrapperRend = $componentWrapperRenderings
+    }
+    
+    # Add top Text Block
+    $textBlockPlaceholder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0'
+    $textBlocks = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Help/Page Components/Text Blocks" -templateId "{AB8D608B-3B9D-4ECB-9BA3-8C61306D7A41}"
+    $topBlock = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Help/Page Components/Text Blocks/Top Block" -templateId "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}" 
+    $textRenderingPath = '/sitecore/layout/Renderings/Feature/PageContent/Text Block'
+    $textRendering = Get-Item -Database "master" -Path $textRenderingPath | New-Rendering -Placeholder $textBlockPlaceholder -DataSource $topBlock
+              
+    if ($topBlock -ne $null) {
+        $topBlock.Editing.BeginEdit()
+        $topBlock["Title"] = 'Find out more about easyJet holidays';
+        $topBlock["Description"] = '<style>@media(max-width: 768px){.text-block__description{text-align: center;}}</style><div class="text-block__description"><p>With easyJet you can create your ideal holiday including handpicked hotels for everything from city breaks to ski and beach holidays.</p><p>For help with specific questions click on the orange heading links below.</p></div>'
+        $topBlock.Editing.EndEdit() | Out-Null
+    }
+              
+    Add-Rendering -Item $helpPage -PlaceHolder $textBlockPlaceholder -Instance $textRendering -Parameter @{"TitleTag"="h1"; "TitlePosition"="center"; "TitleFontStyle"="rounded"}
+    
+    # Insert component wrapper
+    $helpPage= Get-Item -Path $pagePath
+    $secondWrapperPlaceHolder= 'second-wrapper'
+    $componentWrapperRenderingPath = "/sitecore/layout/Renderings/Project/Holidays/Component Wrapper"
+    $componentWrapperItem = Get-Item -Database "master" -Path $componentWrapperRenderingPath | New-Rendering -Placeholder $secondWrapperPlaceHolder
+    Add-Rendering -Item $helpPage -PlaceHolder $secondWrapperPlaceHolder -Instance $componentWrapperItem 
+    
+    $secondWrapperRenderings = Get-Rendering -Item $helpPage -Placeholder $secondWrapperPlaceHolder
+    if ($secondWrapperRenderings -is [array]) {
+        $componentWrapperRend = $secondWrapperRenderings[0]
+    } else { 
+        $componentWrapperRend = $secondWrapperRenderings
+    }
+    
+    # Add Top Help Links
+    $linksFolder = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Help/Page Components/Top Help Links" -templateId "{D8BCEFBC-7EB0-49EE-8136-466C8C691D67}"
+    
+    $link1 = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Help/Page Components/Top Help Links/View Booking" -templateId "{71FE9E37-1343-4E71-8741-3B26E072F9D3}"
+    if ($link1 -ne $null) {
+        $link = Get-Item -Path "master:/content/EasyJet/Holidays/Home/Login" -ErrorAction SilentlyContinue;
+        $link1.Editing.BeginEdit()
+        $link1["Link"] = '<link linktype="internal" id="' + $link.ID + '" text="View Booking" />';
+        $link1["Title"] = 'View Bbooking';
+        $link1["Description"] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+        $link1["Icon"] = '<image mediaid="{F09FF61C-BAA6-4DF5-B3E0-26312FCE1730}" />';
+        $link1.Editing.EndEdit() | Out-Null
+    }  
+    
+    $link2 = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Help/Page Components/Top Help Links/Check In" -templateId "{71FE9E37-1343-4E71-8741-3B26E072F9D3}"
+    if ($link2 -ne $null) {
+        $link2.Editing.BeginEdit()
+        $link2["Link"] = '<link text="Check in" linktype="external" url="https://www.easyjet.com/en?chkin=2&amp;utm_source=easyjetholidays_en&amp;utm_medium=holidays&amp;utm_campaign=holidaysMegaNav" anchor="" target="" />';
+        $link2["Title"] = 'Check in';
+        $link2["Description"] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+        $link2["Icon"] = '<image mediaid="{51E95B59-D859-4F6B-81F2-51554EDA01C0}" />';
+        $link2.Editing.EndEdit() | Out-Null
+    } 
+    
+    $link3 = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Help/Page Components/Top Help Links/Latest Travel Info" -templateId "{71FE9E37-1343-4E71-8741-3B26E072F9D3}"
+    if ($link3 -ne $null) {
+        $link = Get-Item -Path "master:/content/EasyJet/Holidays/Home/Root/Info/Travel information" -ErrorAction SilentlyContinue;
+        $link3.Editing.BeginEdit()
+        $link3["Link"] = '<link linktype="internal" id="' + $link.ID + '" text="Latest travel info" />';
+        $link3["Title"] = 'Latest travel info';
+        $link3["Description"] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+        $link3["Icon"] = '<image mediaid="{499C6647-DDB1-4F9C-B338-7B7BB9218D81}" />';
+        $link3.Editing.EndEdit() | Out-Null
+    } 
+    
+    $link4 = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Help/Page Components/Top Help Links/Latest Deals" -templateId "{71FE9E37-1343-4E71-8741-3B26E072F9D3}"
+    if ($link4 -ne $null) {
+        $link = Get-Item -Path "master:/content/EasyJet/Holidays/Home/Root/Offers" -ErrorAction SilentlyContinue;
+        $link4.Editing.BeginEdit()
+        $link4["Link"] = '<link linktype="internal" id="' + $link.ID + '" text="Latest deals" />';
+        $link4["Title"] = 'Latest deals';
+        $link4["Description"] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+        $link4["Icon"] = '<image mediaid="{5CAA68F8-5F3D-4E84-BED0-60D961A81B93}" />';
+        $link4.Editing.EndEdit() | Out-Null
+    } 
+    
+    
+    if ($linksFolder -ne $null) {
+        [Sitecore.Data.Fields.MultilistField]$linksField = $linksFolder.Fields["Links"];
+        $linksFolder.Editing.BeginEdit()
+        $linksField.add($link1.ID);
+        $linksField.add($link2.ID);
+        $linksField.add($link3.ID);
+        $linksField.add($link4.ID);
+        $linksFolder.Editing.EndEdit() | Out-Null
+        Write-Host "Top help links content updated"
+    }
+          
+    $helpLinksPath = "/sitecore/layout/Renderings/Feature/PageContent/Help Links"
+    $helpLinksPlaceHolder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0'
+    $helpLinksRend = Get-Item -Database "master" -Path $helpLinksPath | New-Rendering -Placeholder $helpLinksPlaceHolder -DataSource $linksFolder
+          
+    Add-Rendering -Item $helpPage -PlaceHolder $helpLinksPlaceHolder -Instance $helpLinksRend
+    
+    # Insert component wrapper
+    $thirdWrapperPlaceHolder= 'third-wrapper'
+    $componentWrapperRenderingPath = "/sitecore/layout/Renderings/Project/Holidays/Component Wrapper"
+    $componentWrapperItem = Get-Item -Database "master" -Path $componentWrapperRenderingPath | New-Rendering -Placeholder $thirdWrapperPlaceHolder
+    Add-Rendering -Item $helpPage -PlaceHolder $thirdWrapperPlaceHolder -Instance $componentWrapperItem 
+    
+    $thirdWrapperRenderings = Get-Rendering -Item $helpPage -Placeholder $thirdWrapperPlaceHolder
+    if ($secondWrapperRenderings -is [array]) {
+        $componentWrapperRend = $thirdWrapperRenderings[0]
+    } else { 
+        $componentWrapperRend = $thirdWrapperRenderings
+    }
+    
+    #Add FAQ block
+    $faqFolder = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Help/Page Components/FAQ" -templateId "{C15D9271-2185-4ADC-9E17-EC2C8D51A7A0}"
+          
+    $faqPath = "/sitecore/layout/Renderings/Feature/PageContent/FAQ"
+    $faqPlaceHolder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0'
+    $faqRend = Get-Item -Database "master" -Path $faqPath | New-Rendering -Placeholder $faqPlaceHolder -DataSource $faqFolder
+          
+    Add-Rendering -Item $helpPage -PlaceHolder $faqPlaceHolder -Instance $faqRend
+    
+    # Add Bottom Help Links
+    $linksFolder = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Help/Page Components/Bottom Help Links" -templateId "{D8BCEFBC-7EB0-49EE-8136-466C8C691D67}"
+    
+    $link1 = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Help/Page Components/Bottom Help Links/Contact Us" -templateId "{71FE9E37-1343-4E71-8741-3B26E072F9D3}"
+    if ($link1 -ne $null) {
+        $link1.Editing.BeginEdit()
+        $link1["Link"] = '<link text="Contact us" linktype="external" url="https://www.easyjet.com/en/help/contact" anchor="" target="" />';
+        $link1["Title"] = 'Contact us';
+        $link1["Description"] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+        $link1["Icon"] = '<image mediaid="{2DF5AC51-3AB9-4DAC-9AEE-563994DFF6CC}" />';
+        $link1.Editing.EndEdit() | Out-Null
+    }  
+    
+    $link2 = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Help/Page Components/Bottom Help Links/Chat To Us" -templateId "{71FE9E37-1343-4E71-8741-3B26E072F9D3}"
+        if ($link2 -ne $null) {
+            $link2.Editing.BeginEdit()
+            $link2["Link"] = '<link text="Chat to us" linktype="external" url="" anchor="" target=""  />';
+            $link2["Title"] = 'Chat to us';
+            $link2["OpenChatBot"] = '1';
+            $link2["Description"] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+            $link2["Icon"] = '<image mediaid="{595D4E2F-1FF1-4C90-8F0A-CB89C11BADD9}" />';
+            $link2.Editing.EndEdit() | Out-Null
+        } 
+        
+        if ($linksFolder -ne $null) {
+            [Sitecore.Data.Fields.MultilistField]$linksField = $linksFolder.Fields["Links"];
+            $linksFolder.Editing.BeginEdit()
+            $linksFolder["Title"] = "Can't find what you're looking for?";
+            $linksField.add($link1.ID);
+            $linksField.add($link2.ID);
+            $linksFolder.Editing.EndEdit() | Out-Null
+            Write-Host "Top help links content updated"
+        }
+          
+    $helpLinksPath = "/sitecore/layout/Renderings/Feature/PageContent/Help Links"
+    $helpLinksPlaceHolder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0'
+    $helpLinksRend = Get-Item -Database "master" -Path $helpLinksPath | New-Rendering -Placeholder $helpLinksPlaceHolder -DataSource $linksFolder
+          
+    Add-Rendering -Item $helpPage -PlaceHolder $helpLinksPlaceHolder -Instance $helpLinksRend
+    
+    # fix component wrappers placeholders
+    Get-Rendering -Item $helpPage -PlaceHolder 'first-wrapper' | 
+        Foreach-Object { 
+            $_.Placeholder = "body"; 
+            Set-Rendering -Item $helpPage -Instance $_
+        }
+    Get-Rendering -Item $helpPage -PlaceHolder 'second-wrapper' | 
+        Foreach-Object { 
+            $_.Placeholder = "body"; 
+            Set-Rendering -Item $helpPage -Instance $_
+        }
+    
+    Get-Rendering -Item $helpPage -PlaceHolder 'third-wrapper' | 
+        Foreach-Object { 
+            $_.Placeholder = "body"; 
+            Set-Rendering -Item $helpPage -Instance $_
+        }
+        
+    #Add links that redirect to Help page
+    $footerLink = Get-Item -Path "master:/content/EasyJet/Holidays/Data/Navigations/Flight Info/FAQs";
+    if ($footerLink -ne $null) {
+        $link = Get-Item -Path "master:/content/EasyJet/Holidays/Home/Help" -ErrorAction SilentlyContinue;
+        $footerLink.Editing.BeginEdit()
+        $footerLink["Link"] = '<link linktype="internal" id="' + $link.ID + '" text="FAQs" />';
+        $footerLink.Editing.EndEdit() | Out-Null
+        Write-Host "FAQs link in footer updated"
+    }
+    
+    $question = Get-Item -Path "master:/content/EasyJet/Holidays/Data/Navigations/Button/Help";
+    if ($question -ne $null) {
+        $link = Get-Item -Path "master:/content/EasyJet/Holidays/Home/Help" -ErrorAction SilentlyContinue;
+        $question.Editing.BeginEdit()
+        $question["Link"] = '<link linktype="internal" id="' + $link.ID + '" />';
+        $question.Editing.EndEdit() | Out-Null
+        Write-Host "FAQs link in footer updated"
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 300
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

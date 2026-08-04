@@ -1,0 +1,213 @@
+@mixin not-allowed-date {
+    &:global(.date-picker .flatpickr-calendar .dayContainer .flatpickr-day.notAllowed) {
+        &:global(.flatpickr-day.notAllowed) {
+            color: $colorGrayMiddle;
+            text-decoration: line-through;
+
+            &:focus,
+            &:hover {
+                color: $colorGrayMiddle !important;
+                border: none;
+            }
+        }
+
+        &:global(.flatpickr-day.notAllowedMonth) {
+            color: $colorGeyserLight;
+            text-decoration: none;
+        }
+    }
+}
+
+.btn-past-holiday {
+    width: 100%;
+    margin: 15px 0;
+    font-size: 16px !important;
+    font-weight: normal !important;
+    border: 1px solid $clrEjOrange !important;
+    border-radius: 4px;
+    @include media-breakpoint-up(md) {
+        max-width: 320px;
+    }
+}
+
+.date-picker-popup {
+    [class~='flatpickr-current-month'] {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    [class~='popup__body'] {
+        overflow-y: auto;
+
+        &::-webkit-scrollbar-track {
+            background-color: $colorGrayLight;
+            border-radius: 6px;
+        }
+
+        &::-webkit-scrollbar {
+            width: 6px;
+            height: 3px;
+            background-color: $colorGrayLight;
+            border-radius: 6px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: $clrEjOrange;
+            border-radius: 6px;
+        }
+    }
+
+    [class~='popup-search-pod__body'] {
+        height: auto;
+    }
+
+    [class~='date-picker'] {
+        @include media-breakpoint-up(sm) {
+            min-height: 385px;
+        }
+    }
+
+    [class~='btn'] {
+        font-weight: 400;
+    }
+}
+
+.numDates {
+    padding: 15px 0;
+    @include media-breakpoint-up(md) {
+        min-height: 55px;
+    }
+}
+
+.fixedHeader {
+    position: sticky;
+    z-index: $z-index-over-element;
+    top: 0;
+    padding: 1px 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+}
+
+.weekdays {
+    display: flex;
+    justify-content: space-between;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 10px 0;
+}
+
+.fullWidth {
+    width: 100vw;
+    margin-top: 25px;
+    margin-left: -15px;
+    padding: 0;
+}
+
+.dateChangePicker {
+    padding-top: 10px;
+    padding-bottom: 30px;
+
+    @include media-breakpoint-down(lg) {
+        position: relative;
+        width: 294px;
+    }
+
+    :global(.flatpickr-month) {
+        padding-top: 20px;
+    }
+
+    :global(.flatpickr-calendar .flatpickr-months .flatpickr-month) {
+        :global(.flatpickr-current-month) {
+            :global(.cur-month) {
+                font-family: $fontRoundedBook;
+            }
+
+            :global(.cur-year) {
+                font-family: $fontRoundedBook;
+            }
+
+            :global(.numInputWrapper) {
+                margin: 0;
+            }
+        }
+
+        :global(.flatpickr-current-month::after) {
+            border-bottom: 0;
+        }
+    }
+
+    :global(.flatpickr-calendar.flatpickr-calendar.inline) {
+        max-height: 100%;
+    }
+
+    :global(.dayContainer) {
+        border-bottom: 1px solid $colorGeyser;
+
+        // So we include the fixed header when scrolling the calendar to the top of the page
+        scroll-margin-top: 120px;
+    }
+
+    @include not-allowed-date;
+}
+
+.selectionDetails {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 9px;
+    padding-bottom: 2rem;
+    font-weight: bold;
+    border-bottom: 1px solid $colorGeyser;
+
+    button {
+        height: 50px;
+        font-size: 16px;
+    }
+}
+
+.calendarActions {
+    text-align: right;
+
+    button {
+        width: 187px;
+        height: 50px;
+        font-size: 16px;
+    }
+}
+
+.pageDatePickerDesktop {
+    width: 65%;
+    margin: auto;
+
+    @include media-breakpoint-down(xl) {
+        width: 85%;
+    }
+
+    :global(.flatpickr-months .flatpickr-month .flatpickr-current-month) {
+        width: 82%;
+
+        @include media-breakpoint-down(xl) {
+            width: 65%;
+        }
+
+        :global(.cur-month) {
+            font-family: $fontRoundedBook;
+            font-size: 16px;
+        }
+
+        :global(.cur-year) {
+            font-family: $fontRoundedBook;
+            font-size: 16px;
+        }
+
+        :global(.numInputWrapper) {
+            margin: 0;
+        }
+    }
+
+    :global(.dayContainer) {
+        margin-top: 15px;
+    }
+
+    @include not-allowed-date;
+}

@@ -1,0 +1,117 @@
+.destinationMapModal {
+    position: fixed;
+    z-index: 101;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.back {
+    margin-right: 25px;
+    margin-left: 15px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #ff7d00;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+
+    svg {
+        float: left;
+        margin-right: 15px;
+    }
+}
+
+.close {
+    display: flex;
+    left: 50px;
+    float: right;
+    width: 28px;
+    height: 28px;
+    margin-right: 25px;
+    margin-left: auto;
+    font-weight: bold;
+    color: #ff7d00;
+    background-color: transparent;
+    border: none;
+
+    svg {
+        margin: auto;
+    }
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modalHeader {
+    display: flex;
+    align-items: center;
+    height: 60px;
+}
+
+.modalContent {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+}
+
+.modalBody {
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    width: 100%;
+    height: calc(100% - 60px);
+
+    :global(.map-component) {
+        width: 75%;
+        height: 100%;
+
+        :global(.snw-map) {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
+@media only screen and (width <= 1024px) {
+    .destinationMapModal {
+        .modalBody {
+            flex-direction: column-reverse;
+            overflow-y: auto;
+
+            :global(.mobile) {
+                display: none;
+            }
+            :global(.desktop) {
+                display: block;
+            }
+
+            :global(.map-component) {
+                width: 100%;
+                height: 700px;
+                min-height: 700px;
+            }
+
+            @media only screen and (width <= 576px) {
+                :global(.snw-infobox__main) {
+                    width: calc(100% - 70px);
+                }
+
+                :global(.mobile) {
+                    display: block;
+                }
+
+                :global(.desktop) {
+                    display: none;
+                }
+            }
+        }
+    }
+}

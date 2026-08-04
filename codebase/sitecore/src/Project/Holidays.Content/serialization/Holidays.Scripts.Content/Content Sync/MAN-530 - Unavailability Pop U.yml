@@ -1,0 +1,471 @@
+﻿---
+ID: "9ea79bc9-3e0d-47e0-815b-91e9a4945177"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/MAN-530 - Unavailability Pop Ups"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Update-Item-With-Lang ($data,$item) {
+    	function create-lang-version ($item,$lang,$field,$value) {
+    		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue
+    
+    		if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    			Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    		}
+    
+    		if ($null -ne $field) {
+    			$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue
+    			$targetLangItem.Editing.BeginEdit()
+    			$targetLangItem[$field] = $value;
+    			$targetLangItem.Editing.EndEdit() | Out-Null
+    		}
+    	};
+    
+    	if ($item -ne $null) {
+    		$data | ForEach-Object {
+    			$fieldName = $_.fieldName;
+    			$values = $_.Values;
+    
+    			if ($values -ne $null) {
+    				if ($values.en -ne $null) {
+    					$item.Editing.BeginEdit();
+    					$item[$fieldName] = $values.en;
+    					$item.Editing.EndEdit() | Out-Null
+    				}
+    				if ($values.fr -ne $null) {
+    					@( 'fr-CH','fr-FR') | % {
+    						Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.fr;
+    					}
+    				}
+    				if ($values.de -ne $null) {
+    					@( 'de-CH','de-DE') | % {
+    						Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.de;
+    					}
+    				}
+    
+    				Write-Host $fieldName "Updated"
+    			}
+    		}
+    	}
+    };
+        
+    function Add-Or-Update-Page-Rendering ($page,$renderingPath,$renderingPlaceholder,$dataSourcePath,$params) {
+    	$renderingItem = Get-Item -Database "master" -Path $renderingPath -ErrorAction SilentlyContinue;
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -DataSource $dataSourcePath -Parameter $params;
+    		Write-Host $renderingItem "Rendering instance added";
+    	}
+    	else {
+    		Write-Host $pageRenderingInstance "Already exists";
+    	}
+    }
+    
+    function Get-Or-Create-Item ($path,$template) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $template
+    	}
+    	return $item
+    }
+    
+    function Delete-Item($path)
+    {
+    	$pathToItem = "$path"
+    	$item = Get-Item -Path $pathToItem -ErrorAction SilentlyContinue
+    	if ($item -ne $null){
+    		$item | Remove-Item
+    	}
+    }
+    
+    $popupHotelChangeData = @(
+        @{
+        	fieldName = "Title";
+        	Values = @{
+        		en = "We’re sorry, we can’t find alternative hotels for these dates";
+        		fr = "Nous sommes désolés, nous ne pouvons pas trouver d'autres hôtels pour ces dates";
+        		de = "Es tut uns leid, wir können keine alternativen Hotels für diese Daten finden"
+        	}
+        },
+        @{
+        	fieldName = "Description";
+        	Values = @{
+        		en = "You can change your dates or navigate back to the view your booking page.";
+        		fr = "Vous pouvez modifier vos dates ou revenir à la page de visualisation de votre réservation.";
+        		de = "Sie können Ihre Daten ändern oder zurück zur Seite Ihre Buchung anzeigen navigieren."
+        	}
+        },
+        @{
+        	fieldName = "CTA";
+        	Values = @{
+        		en = "Change dates";
+        		fr = "Modifier les dates";
+        		de = "Daten ändern";
+        	}
+        },
+        @{
+        	fieldName = "NoOptionsCTA";
+        	Values = @{
+        		en = "Back to view booking";
+        		fr = "Retour à l'aperçu des réservations";
+        		de = "Zurück zur Ansicht Buchung";
+        	}
+        },
+        @{
+        	fieldName = "Icon";
+        	Values = @{
+        		en = '<image mediaid="{A484212A-377A-4DC9-8754-BABFE7701E3D}" alt="Exclamation mark" />';
+        	}
+        }
+    );
+    
+    $popupDateChangeData = @(
+        @{
+        	fieldName = "Title";
+        	Values = @{
+        		en = "We’re sorry, there’s no dates available for your selected hotel";
+        		fr = "Nous sommes désolés, il n'y a pas de dates disponibles pour l'hôtel sélectionné";
+        		de = "Es tut uns leid, es sind keine Termine für das ausgewählte Hotel verfügbar"
+        	}
+        },
+        @{
+        	fieldName = "Description";
+        	Values = @{
+        		en = "You can change your dates or navigate back to the view your booking page.";
+        		fr = "Vous pouvez modifier vos dates ou revenir à la page de visualisation de votre réservation.";
+        		de = "Sie können Ihre Daten ändern oder zurück zur Seite Ihre Buchung anzeigen navigieren."
+        	}
+        },
+        @{
+        	fieldName = "CTA";
+        	Values = @{
+        		en = "Contact us";
+        		fr = "Contactez nous";
+        		de = "Kontakt";
+        	}
+        },
+        @{
+        	fieldName = "NoOptionsCTA";
+        	Values = @{
+        		en = "Back to view booking";
+        		fr = "Retour à l'aperçu des réservations";
+        		de = "Zurück zur Ansicht Buchung";
+        	}
+        },
+        @{
+        	fieldName = "Icon";
+        	Values = @{
+        		en = '<image mediaid="{A484212A-377A-4DC9-8754-BABFE7701E3D}" alt="Exclamation mark" />';
+        	}
+        }
+    );
+    
+    $popupFlightChangeData = @(
+        @{
+        	fieldName = "Title";
+        	Values = @{
+        		en = "We’re sorry, there’s no other available flights from your current departure airport to [arrivalAirport] on your travel dates";
+        		fr = "Nous sommes désolés, il n'y a pas d'autres vols disponibles entre votre aéroport de départ actuel et [arrivalAirport] à vos dates de voyage";
+        		de = "Es tut uns leid, es gibt keine anderen verfügbaren Flüge von Ihrem aktuellen Abflughafen nach [arrivalAirport] zu Ihren Reisedaten"
+        	}
+        },
+        @{
+        	fieldName = "Description";
+        	Values = @{
+        		en = "There’s no available flights online on {departureDate} from [departureAirport] or nearby airports. If you need to talk to us about your flights please contact us.";
+        		fr = "Il n'y a pas de vols disponibles en ligne le {departureDate} à partir de [departureAirport] ou des aéroports voisins. Si vous souhaitez nous parler de vos vols, veuillez nous contacter.";
+        		de = "Es gibt keine verfügbaren Flüge am {departureDate} von [departureAirport] oder nahe gelegenen Flughäfen. Wenn Sie mit uns über Ihre Flüge sprechen möchten, kontaktieren Sie uns bitte."
+        	}
+        },
+        @{
+        	fieldName = "CTA";
+        	Values = @{
+        		en = "Contact us";
+        		fr = "Contactez nous";
+        		de = "Kontakt";
+        	}
+        },
+        @{
+        	fieldName = "NoOptionsCTA";
+        	Values = @{
+        		en = "Back to view booking";
+        		fr = "Retour à l'aperçu des réservations";
+        		de = "Zurück zur Ansicht Buchung";
+        	}
+        },
+        @{
+        	fieldName = "Icon";
+        	Values = @{
+        		en = '<image mediaid="{A484212A-377A-4DC9-8754-BABFE7701E3D}" alt="Exclamation mark" />';
+        	}
+        }
+    );
+    
+    $popupRoomAndBoardChangeData = @(
+        @{
+        	fieldName = "Title";
+        	Values = @{
+        		en = "We’re sorry, there are no alternative room & board options available for your selected hotel";
+        		fr = "Nous sommes désolés, il n'y a pas d'autres options de chambre et de pension disponibles pour l'hôtel sélectionné.";
+        		de = "Es tut uns leid, es sind keine alternativen Optionen für Ihr ausgewähltes Hotel verfügbar."
+        	}
+        },
+        @{
+        	fieldName = "Description";
+        	Values = @{
+        		en = "There are no alternative room & board options online for your selected hotel. If you need to talk to us about changing your holiday package please contact us.";
+        		fr = "Il n'y a pas d'autres options de chambres et de repas en ligne pour l'hôtel sélectionné. Si vous souhaitez nous parler de la modification de votre forfait de vacances, veuillez nous contacter.";
+        		de = "Für das von Ihnen gewählte Hotel gibt es online keine alternativen Optionen für Unterkunft und Verpflegung. Wenn Sie mit uns über eine Änderung Ihres Urlaubspakets sprechen möchten, kontaktieren Sie uns bitte."
+        	}
+        },
+        @{
+        	fieldName = "CTA";
+        	Values = @{
+        		en = "Contact us";
+        		fr = "Contactez nous";
+        		de = "Kontakt";
+        	}
+        },
+        @{
+        	fieldName = "NoOptionsCTA";
+        	Values = @{
+        		en = "Back to view booking";
+        		fr = "Retour à l'aperçu des réservations";
+        		de = "Zurück zur Ansicht Buchung";
+        	}
+        },
+        @{
+        	fieldName = "Icon";
+        	Values = @{
+        		en = '<image mediaid="{A484212A-377A-4DC9-8754-BABFE7701E3D}" alt="Exclamation mark" />';
+        	}
+        }
+    );
+    
+    $popupTransferChangeData = @(
+        @{
+        	fieldName = "Title";
+        	Values = @{
+        		en = "We’re sorry, there's no available transfers for your destination";
+        		fr = "Nous sommes désolés, il n'y a pas de transferts disponibles pour votre destination";
+        		de = "Es tut uns leid, es gibt keine verfügbaren Transfers für Ihr Ziel"
+        	}
+        },
+        @{
+        	fieldName = "Description";
+        	Values = @{
+        		en = "We are unable to provide you with other transfer options for your destination on {arrivalDate}. If you need to talk to us about your transfer, please contact us.";
+        		fr = "Nous ne sommes pas en mesure de vous proposer d'autres options de transfert pour votre destination le {arrivalDate}. Si vous souhaitez nous parler de votre transfert, veuillez nous contacter.";
+        		de = "Wir sind nicht in der Lage, Ihnen andere Transferoptionen für Ihr Ziel am {arrivalDate} anzubieten. Wenn Sie mit uns über Ihren Transfer sprechen möchten, kontaktieren Sie uns bitte."
+        	}
+        },
+        @{
+        	fieldName = "CTA";
+        	Values = @{
+        		en = "Contact us";
+        		fr = "Contactez nous";
+        		de = "Kontakt";
+        	}
+        },
+        @{
+        	fieldName = "NoOptionsCTA";
+        	Values = @{
+        		en = "Back to view booking";
+        		fr = "Retour à l'aperçu des réservations";
+        		de = "Zurück zur Ansicht Buchung";
+        	}
+        },
+        @{
+        	fieldName = "Icon";
+        	Values = @{
+        		en = '<image mediaid="{A484212A-377A-4DC9-8754-BABFE7701E3D}" alt="Exclamation mark" />';
+        	}
+        }
+    );
+    
+    $popupDateChangeFlightData = @(
+        @{
+        	fieldName = "Title";
+        	Values = @{
+        		en = "We’re sorry, there’s no other available flights from your current departure airport to [arrivalAirport] on your travel dates";
+        		fr = "Nous sommes désolés, il n'y a pas d'autres vols disponibles entre votre aéroport de départ actuel et [arrivalAirport] à vos dates de voyage";
+        		de = "Es tut uns leid, es gibt keine anderen verfügbaren Flüge von Ihrem aktuellen Abflughafen nach [arrivalAirport] zu Ihren Reisedaten"
+        	}
+        },
+        @{
+        	fieldName = "Description";
+        	Values = @{
+        		en = "There’s no available flights online on {departureDate} from [departureAirport] or nearby airports. If you need to talk to us about your flights please contact us.";
+        		fr = "Il n'y a pas de vols disponibles en ligne le {departureDate} à partir de [departureAirport] ou des aéroports voisins. Si vous souhaitez nous parler de vos vols, veuillez nous contacter.";
+        		de = "Es gibt keine verfügbaren Flüge am {departureDate} von [departureAirport] oder nahe gelegenen Flughäfen. Wenn Sie mit uns über Ihre Flüge sprechen möchten, kontaktieren Sie uns bitte."
+        	}
+        },
+        @{
+        	fieldName = "CTA";
+        	Values = @{
+        		en = "Contact us";
+        		fr = "Contactez nous";
+        		de = "Kontakt";
+        	}
+        },
+        @{
+        	fieldName = "NoOptionsCTA";
+        	Values = @{
+        		en = "Back to view booking";
+        		fr = "Retour à l'aperçu des réservations";
+        		de = "Zurück zur Ansicht Buchung";
+        	}
+        },
+        @{
+        	fieldName = "Icon";
+        	Values = @{
+        		en = '<image mediaid="{A484212A-377A-4DC9-8754-BABFE7701E3D}" alt="Exclamation mark" />';
+        	}
+        }
+    );
+    
+    $popupDateChangeTransferData = @(
+        @{
+        	fieldName = "Title";
+        	Values = @{
+        		en = "We’re sorry, there's no available transfers for your destination";
+        		fr = "Nous sommes désolés, il n'y a pas de transferts disponibles pour votre destination.";
+        		de = "Es tut uns leid, es gibt keine verfügbaren Transfers für Ihr Ziel"
+        	}
+        },
+        @{
+        	fieldName = "Description";
+        	Values = @{
+        		en = "We are unable to provide you with other transfer options for your destination on {arrivalDate}. If you need to talk to us about your transfer, please contact us.";
+        		fr = "Nous ne sommes pas en mesure de vous proposer d'autres options de transfert pour votre destination le {arrivalDate}. Si vous souhaitez nous parler de votre transfert, veuillez nous contacter.";
+        		de = "Wir sind nicht in der Lage, Ihnen andere Transferoptionen für Ihr Ziel am {arrivalDate} anzubieten. Wenn Sie mit uns über Ihren Transfer sprechen möchten, kontaktieren Sie uns bitte."
+        	}
+        },
+        @{
+        	fieldName = "CTA";
+        	Values = @{
+        		en = "Contact us";
+        		fr = "Contactez nous";
+        		de = "Kontakt";
+        	}
+        },
+        @{
+        	fieldName = "NoOptionsCTA";
+        	Values = @{
+        		en = "Back to view booking";
+        		fr = "Retour à l'aperçu des réservations";
+        		de = "Zurück zur Ansicht Buchung";
+        	}
+        },
+        @{
+        	fieldName = "Icon";
+        	Values = @{
+        		en = '<image mediaid="{A484212A-377A-4DC9-8754-BABFE7701E3D}" alt="Exclamation mark" />';
+        	}
+        }
+    );
+    
+    $viewBookingPage = Get-Item "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking";
+    $attentionPopupRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Popups/Attention Popup";
+    $changeDatesSummaryPage = Get-Item "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary";
+    
+    # Hotel Change
+    $dataSourcePathHotelChange = "/sitecore/content/EasyJet/Holidays/Data/No Hotels Available Popup";
+    $hotelChangeUnavailablePopup = Get-Or-Create-Item -Path $dataSourcePathHotelChange -Template "{C8C39B93-2202-4B2D-937F-8F644B0D3183}";
+    
+    if ($hotelChangeUnavailablePopup -ne $null) {
+        Update-Item-With-Lang -Data $popupHotelChangeData -Item $hotelChangeUnavailablePopup;
+    }
+    
+    $renderingPlaceholder = "/body/attention-popup-{5500AC44-5DF4-4473-8E8C-EA635A187882}-1";
+    $params = @{ popupType = "NoHotelsAvailable"}
+    
+    Add-Or-Update-Page-Rendering -page $viewBookingPage -renderingPath $attentionPopupRenderingPath -renderingPlaceholder $renderingPlaceholder -dataSourcePath $dataSourcePathHotelChange -params $params;
+    Write-Host $viewBookingPage.Name "Render was updated";
+    
+    # Date Change
+    $dataSourcePathDateChange = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/No Dates Popup";
+    $dateChangeUnavailablePopup = Get-Or-Create-Item -Path $dataSourcePathDateChange -Template "{C8C39B93-2202-4B2D-937F-8F644B0D3183}";
+    
+    if ($dateChangeUnavailablePopup -ne $null) {
+        Update-Item-With-Lang -Data $popupDateChangeData -Item $dateChangeUnavailablePopup;
+    }
+    
+    # Room & Board Change
+    $dataSourcePathRoomAndBoardChange = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Room And Board Unavailable Popup";
+    $roomAndBoardChangeUnavailablePopup = Get-Or-Create-Item -Path $dataSourcePathRoomAndBoardChange -Template "{C8C39B93-2202-4B2D-937F-8F644B0D3183}";
+    
+    if ($roomAndBoardChangeUnavailablePopup -ne $null) {
+        Update-Item-With-Lang -Data $popupRoomAndBoardChangeData -Item $roomAndBoardChangeUnavailablePopup;
+    }
+    
+    # Transfer Change
+    $dataSourcePathTransferChange = "/sitecore/content/EasyJet/Holidays/Data/No Tranfers Available Popup";
+    $transferChangeUnavailablePopup = Get-Or-Create-Item -Path $dataSourcePathTransferChange -Template "{C8C39B93-2202-4B2D-937F-8F644B0D3183}";
+    
+    if ($transferChangeUnavailablePopup -ne $null) {
+        Update-Item-With-Lang -Data $popupDateChangeTransferData -Item $transferChangeUnavailablePopup;
+    }
+    
+    $renderingPlaceholder = "/body/attention-popup-{5500AC44-5DF4-4473-8E8C-EA635A187882}-2";
+    $params = @{ popupType = "NoTranfersAvailable"}
+    
+    Add-Or-Update-Page-Rendering -page $viewBookingPage -renderingPath $attentionPopupRenderingPath -renderingPlaceholder $renderingPlaceholder -dataSourcePath $dataSourcePathTransferChange -params $params;
+    Write-Host $viewBookingPage.Name "Render was updated";
+    
+    $renderingPlaceholder = "/body/attention-popup-{38583CEB-D1E1-46EF-9AEA-A2E284152FA6}-1";
+    $params = @{ popupType = "NoTranfersAvailable"}
+    
+    Add-Or-Update-Page-Rendering -page $changeDatesSummaryPage -renderingPath $attentionPopupRenderingPath -renderingPlaceholder $renderingPlaceholder -dataSourcePath $dataSourcePathTransferChange -params $params;
+    Write-Host $viewBookingPage.Name "Render was updated";
+    
+    $transferPopupRendering = Get-Item -Path "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend No Transfers Popup" -ErrorAction SilentlyContinue;
+    Remove-Rendering -Item $viewBookingPage -Rendering $transferPopupRendering -PlaceHolder "/body/no-transfers-popup-{5500AC44-5DF4-4473-8E8C-EA635A187882}-0";	
+    Write-Host "No tranfers popup rendering has been removed from" $viewBookingPage.Name;
+    Remove-Rendering -Item $changeDatesSummaryPage -Rendering $transferPopupRendering -PlaceHolder "/body/no-transfers-popup-{38583CEB-D1E1-46EF-9AEA-A2E284152FA6}-0";	
+    Write-Host "No tranfers popup rendering has been removed from" $viewBookingPage.Name;
+    
+    # Flight Change
+    $dataSourcePathFlightChange = "/sitecore/content/EasyJet/Holidays/Data/No Flights Available Popup";
+    $flightChangeUnavailablePopup = Get-Or-Create-Item -Path $dataSourcePathFlightChange -Template "{C8C39B93-2202-4B2D-937F-8F644B0D3183}";
+    
+    if ($flightChangeUnavailablePopup -ne $null) {
+        Update-Item-With-Lang -Data $popupFlightChangeData -Item $flightChangeUnavailablePopup;
+    }
+    
+    $renderingPlaceholder = "/body/attention-popup-{5500AC44-5DF4-4473-8E8C-EA635A187882}-3";
+    $params = @{ popupType = "NoFlightsAvailable"}
+    
+    Add-Or-Update-Page-Rendering -page $viewBookingPage -renderingPath $attentionPopupRenderingPath -renderingPlaceholder $renderingPlaceholder -dataSourcePath $dataSourcePathFlightChange -params $params;
+    Write-Host $viewBookingPage.Name "Render was updated";
+    
+    $renderingPlaceholder = "/body/attention-popup-{38583CEB-D1E1-46EF-9AEA-A2E284152FA6}-2";
+    $params = @{ popupType = "NoFlightsAvailable"}
+    
+    Add-Or-Update-Page-Rendering -page $changeDatesSummaryPage -renderingPath $attentionPopupRenderingPath -renderingPlaceholder $renderingPlaceholder -dataSourcePath $dataSourcePathFlightChange -params $params;
+    Write-Host $viewBookingPage.Name "Render was updated";
+    
+    Delete-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Amend Flights/No Available Flights Popup/Labels/Description HTML"
+    Delete-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Amend Flights/No Available Flights Popup/Labels/Title"
+    Delete-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Amend Flights/No Available Flights Popup/Labels"
+
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250115T105515Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

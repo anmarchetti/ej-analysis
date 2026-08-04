@@ -1,0 +1,48 @@
+.rooms__section-delimiter {
+  height: 1px;
+  background: $clrBorderGray;
+
+  &.top {
+    margin-top: 24px;
+  }
+}
+
+.room-unavailable-popup.popup {
+  z-index: 2000;
+
+  .popup__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+
+    .additional-text {
+      padding: 0 0 30px;
+    }
+  }
+
+  .popup__content {
+    align-items: center;
+    padding: 50px 15px 42px;
+  }
+
+  .popup__header {
+    margin: 0;
+    padding: 0 0 30px;
+    border-bottom: none;
+  }
+
+  .btn {
+    width: 240px;
+    height: 50px;
+
+    @include media-breakpoint-down(sm) {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+}
+
+.room-unavailable-popup.popup + .popup-overlay {
+  z-index: 1999;
+}

@@ -1,0 +1,74 @@
+﻿---
+ID: "4305fb49-927d-4eaf-995c-f311e3bb34cc"
+Parent: "2146bf54-1377-4e15-aeca-92d496259cc8"
+Template: "f62b4cd7-754c-4461-810f-2b6bd2c92a0d"
+Path: /sitecore/client/Applications/ExperienceProfile/Contact/PageSettings/Tabs/Emails/EmailsPanel
+DB: core
+SharedFields:
+- ID: "deab3795-056f-4421-adf0-758844461b72"
+  Hint: Placeholder Name
+  Value: EmailsPanel
+- ID: "f1a1fe9e-a60c-4ddb-a3a0-bb5b29fe732e"
+  Hint: __Renderings
+  Type: layout
+  Value: |
+    <r>
+      <d
+        id="{FE5D7FDF-89C0-4D99-9AA3-B5FBD009C9F3}"
+        l="{759BEFD1-3323-404D-A243-E0ED81163C03}">
+        <r
+          id="{CB83D434-31ED-4AC3-A280-CCE2B63F9743}"
+          par="PageCodeScriptFileName=%2fsitecore%2fshell%2fclient%2fApplications%2fExperienceProfile%2fContact%2fEmailsList%2fEmailsTab.js"
+          ph="Page.Body"
+          uid="{FE7CF09A-CEE1-4761-A833-31EE9BDB2925}" />
+        <r
+          id="{F6C9F461-FCAF-47DC-AA01-C8C64C2EFFB8}"
+          par="Id=EmailsBorder"
+          ph="Page.Body"
+          uid="{B17A7F02-4E66-4D00-A839-9F83955C8105}" />
+        <r
+          id="{910155C7-3881-4A56-90FB-D126490EDE55}"
+          par="Id=EmailsMessageBar"
+          ph="EmailsBorder.Content"
+          uid="{FE7258C8-42CD-49F9-A5F4-A1D94BB6B727}" />
+        <r
+          ds="{74BE38F1-CBA3-4078-9470-3769219CC7C7}"
+          id="{442BD093-FBAD-4E36-BC08-489E16C82D08}"
+          par="Id=EmailsAccordion"
+          ph="EmailsBorder.Content"
+          uid="{BD31CCBF-BF33-40BD-A75C-43FEB0A55942}" />
+        <r
+          ds="{23B6084F-7205-4B58-AC52-BCDAFB442633}"
+          id="{ACE0AFD6-3DE0-42CF-8E62-4E68CD810A8D}"
+          par="TileHtmlFileName=%2fsitecore%2fshell%2fclient%2fBusiness+Component+Library%2fLayouts%2fRenderings%2fListsAndGrids%2fListControls%2fDefaultTile.cshtml&amp;Items=%7bBinding+EmailsDataProvider.cidata%7d&amp;Id=EmailsList"
+          ph="EmailsAccordion.Body"
+          uid="{9F467A35-03A7-4B2F-8828-BB5269C347CC}" />
+        <r
+          ds="{6CD06869-4264-420C-A161-3220DD3AB7BA}"
+          id="{A91523CD-6E56-4F08-8B21-C39018E0134A}"
+          par="PageSize=5&amp;Id=EmailsDataProvider"
+          ph="EmailsAccordion.Body"
+          uid="{BC57B451-FC1F-4DC0-B07C-4AE55C530B7A}" />
+        <r
+          id="{F6C9F461-FCAF-47DC-AA01-C8C64C2EFFB8}"
+          par="IsVisible=%7bBinding+EmailsDataProvider.HasMoreData%7d&amp;Id=MoreEmailsBorder"
+          ph="EmailsAccordion.Body"
+          uid="{F548A350-CC4B-447D-9196-768F78C60A8E}" />
+        <r
+          id="{913AB005-2527-4C2D-9827-FB3A8DFB135C}"
+          par="Text=Load+More&amp;Click=javascript%3aapp.EmailsDataProvider.nextListData()&amp;Id=ButtonMoreEmails"
+          ph="MoreEmailsBorder.Content"
+          uid="{1C9E6DFB-798C-4B14-9C34-E1A5BD9B91BC}" />
+      </d>
+    </r>
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220314T111706Z
+    - ID: "aea872fb-aa91-4d1a-b877-3ca6fbbb4fd4"
+      Hint: Header
+      Value: EmailsPanel

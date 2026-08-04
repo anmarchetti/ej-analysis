@@ -1,0 +1,53 @@
+﻿---
+ID: "454ab263-80b4-428c-ae37-8be22bf3d7d2"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Set Default Sort Ordering To Search Result And Promo Pages
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $dataFolderPath = "/sitecore/content/EasyJet/Holidays/Data"
+    
+    $sortOrderSettingsFolderName = "Sort Orders"
+    $sortOrderSettingsFolderPath = "$($dataFolderPath)/$($sortOrderSettingsFolderName)" 
+    
+    #Default sort order item for search result page
+    $sortOrderSettingNameForSearchResultPage = "Default Ordering For Search Results"
+    
+    #Default sort order item for promo pages
+    $sortOrderSettingNameForPromoPage = "Default Ordering For Promo Page"
+    
+    #Default sort order settings
+    $defaultSortOrderSettings = @(
+        "{544AF9B2-74EF-4A2C-8DE8-DC71C30246CB}", #Recommended
+        "{1E986E7D-4F81-42EE-AD2B-73F00FD32126}", #Price: Low To High
+        "{001E9720-3F29-450F-B4E7-96E762C94D60}", #Price: High To Low 
+        "{99B15DEB-26D5-4553-A5B3-67D244774F85}", #Discount Amount (£) 
+        "{0D9D7378-05E2-4BC5-AAF4-1A098086A2FB}") #Discount Amount (%)
+    
+    function update-sort-order-item($item, $value)
+    {
+        New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+            $item.Editing.BeginEdit()
+            $item["SortOrders"] = $value -join "|"
+            $item.Editing.EndEdit()
+        }
+    }
+    
+    #Creating new sort orders settings
+    $defaultForSR = Get-Item -Path "$($sortOrderSettingsFolderPath)/$($sortOrderSettingNameForSearchResultPage)"
+    $defaultForPromo = Get-Item -Path "$($sortOrderSettingsFolderPath)/$($sortOrderSettingNameForPromoPage)"
+    
+    #Setting default values into order setting items
+    update-sort-order-item -Item $defaultForSR -Value $defaultSortOrderSettings
+    update-sort-order-item -Item $defaultForPromo -Value $defaultSortOrderSettings
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200902T113619Z

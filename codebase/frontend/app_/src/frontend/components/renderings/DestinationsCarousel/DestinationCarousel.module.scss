@@ -1,0 +1,41 @@
+.carouselWrapper {
+    position: relative;
+}
+
+.carouselTitle {
+    margin: 24px 0 8px;
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    text-transform: uppercase;
+
+    @include media-breakpoint-up(md) {
+        margin: 32px 0 16px;
+        font-size: 20px;
+        line-height: 25px;
+    }
+}
+
+.carouselContainer {
+    &::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        width: 96px;
+        height: 100%;
+        background: linear-gradient(90deg, rgba($white, 0) 0%, $white 100%);
+    }
+}
+
+.sliderNav {
+    width: 32px;
+    height: 32px;
+    box-shadow: 0 0 12px rgba($black, 0.13);
+
+    &:global(.slider-nav--prev) {
+        left: -10px;
+    }
+
+    &:global(.slider-nav--next) {
+        right: -10px;
+    }
+}

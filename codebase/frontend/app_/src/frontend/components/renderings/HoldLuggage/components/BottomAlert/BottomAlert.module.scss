@@ -1,0 +1,19 @@
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 16px;
+    line-height: 1.375;
+    background-color: $colorPorcelain;
+
+    svg {
+        @include sizeSquare(22px);
+
+        align-self: flex-start;
+        padding: 2px;
+    }
+
+    @include media-breakpoint-up(lg) {
+        padding: 16px 24px;
+    }
+}

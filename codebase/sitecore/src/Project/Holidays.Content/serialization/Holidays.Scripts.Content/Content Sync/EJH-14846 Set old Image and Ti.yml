@@ -1,0 +1,156 @@
+﻿---
+ID: "7832b666-4c73-462d-946d-abfc26406672"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14846 Set old Image and Title values to Homepage HeroCarousel"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $bannersInfo = @(
+    	@{
+    		Name = "Promo countdown";
+    		Image = '<image mediaid="{BD3EFF84-9C2D-437C-BB53-789194BB958A}" dfx="97" dfy="7" mfx="96" mfy="8" />';
+    		Title = @"
+    		Black Friday sale ends tonight!
+    
+    				<style>
+    				div.example {
+    					padding: 10px;
+    				}
+    				@media screen and (max-width: 3000px) {
+    					div.example {
+    						font-size: 40px;
+    					}
+    					@media screen and (max-width: 601px) {
+    						div.example {
+    							font-size: 30px;
+    						}
+    					}
+    					@media screen and (max-width: 420px) {
+    						div.example {
+    							font-size: 20px;
+    						}
+    					}
+    					</style>
+    					<div class="example">Save up to & pound; 200 on holidays</div>
+    "@;
+    		Subtitle = "";
+    		CreditLink = '<link text="Minimum spend and T&amp;C`s apply" linktype="anchor" url="offer-conditions" anchor="offer-conditions" title="" class="" />';
+    		CreditText = "";
+    	},
+    	@{
+    		Name = "1";
+    		Image = '<image mediaid="{E5F8D054-D793-4F6F-87FA-2934CE8164D2}" mfx="52" mfy="84" dfx="45" dfy="73" />';
+    		Title = "Go all out,go all inclusive";
+    		Subtitle = "With the freedom to change your holiday";
+    		CreditLink = '<link text="T&amp;Cs apply" linktype="anchor" url="offer-conditions" anchor="offer-conditions" title="" class="" />';
+    		CreditText = "T&Cs apply";
+    	},
+    	@{
+    		Name = "2";
+    		Image = '<image mediaid="{866840AF-6B98-4840-BBE6-F1CE6BC6BC27}" dfx="58" dfy="60" mfx="50" mfy="61" />';
+    		Title = "ESCAPE THE ROUTINE THIS WINTER";
+    		Subtitle = "Discover over 40 city and beach destinations";
+    		CreditLink = '<link text="T&amp;Cs apply" linktype="anchor" url="offer-conditions" anchor="offer-conditions" title="" class="" />';
+    		CreditText = "";
+    	},
+    	@{
+    		Name = "3 - Protection Promise";
+    		Image = '<image mediaid="{E823E05D-13D9-4133-8B26-9BE812AAD7AA}" />';
+    		Title = " Best price guarantee";
+    		Subtitle = "If you find the same holiday cheaper elsewhere,we’ll beat the price";
+    		CreditLink = '<link text="T&amp;Cs apply" linktype="anchor" url="offer-conditions" anchor="offer-conditions" title="" class="" />';
+    		CreditText = "";
+    	},
+    	@{
+    		Name = "4 - Partnerships";
+    		Image = '<image mediaid="{F3D42BEA-9C4C-4F53-9AF2-E6BF6C66E9A4}" dfx="26" dfy="41" mfx="47" mfy="88" />';
+    		Title = "Discover Fuerteventura";
+    		Subtitle = "Holidays on sale up to March 2023";
+    		CreditLink = '';
+    		CreditText = "";
+    	},
+    	@{
+    		Name = "Sustainability";
+    		Image = '<image mediaid="{30156E9A-BFAE-47D2-B8B5-F1DD6160D1D3}" />';
+    		Title = "Holidays that don’t cost the earth";
+    		Subtitle = "We're on a mission to make a positive impact through travel";
+    		CreditLink = '';
+    		CreditText = "";
+    	},
+    	@{
+    		Name = "Promotion";
+    		Image = '<image mediaid="{19B4C027-7A12-4050-9B75-38003C8D3E2A}" dfx="74" dfy="0" mfx="70" mfy="41" />';
+    		Title = @"
+    		SALE CONTINUES!
+    		SAVE UP TO £300 ON HOLIDAYS
+    "@;
+    		Subtitle = " PLUS EXTRA SAVINGS ON LAST MINUTE GETAWAYS ";
+    		CreditLink = '<link text="Minimum spend and T&amp;Cs apply" linktype="anchor" url="offer-conditions" anchor="offer-conditions" title="" class="" />';
+    		CreditText = "";
+    	},
+    	@{
+    		Name = "Back to Work sale - we can relax";
+    		Image = '<image mediaid="{DC525629-6012-46AD-8C74-C1025F6E6DB7}" dfx="49" dfy="13" mfx="49" mfy="98" />';
+    		Title = "SAVE UP TO £300 OFF YOUR NEXT HOLIDAY";
+    		Subtitle = " Minimum spend applies ";
+    		CreditLink = '<link text="T&amp;Cs apply" linktype="anchor" url="offer-conditions" anchor="offer-conditions" title="" class="" />';
+    		CreditText = "";
+    	},
+    	@{
+    		Name = "Holiday sale";
+    	    Image = '<image mediaid="{D433E1BF-6CE7-4DFC-A3E8-183DBFA0647E}" dfx="49" dfy="14" mfx="49" mfy="99" />';
+    		Title = @"
+    		SAVE £100 ON YOUR WINTER HOLIDAY
+        	ENDS 10PM TODAY
+    "@;
+    		Subtitle = "TRAVELLING FROM NOV 2021 - MAR 2022";
+    		CreditLink = '<link text="Minimum spend and T&amp;Cs apply" linktype="anchor" url="offer-conditions" anchor="offer-conditions" title="" class="" />';
+    		CreditText = "";
+    	},
+    	@{
+    		Name = "back to work sale countdown";
+    		Image = '<image mediaid="{182D043C-A157-4D3A-923D-A3F7FB48E625}" />';
+    		Title = "Up to & pound; 300 off ends 10pm";
+    		Subtitle = "USE CODE : SALE ";
+    		CreditLink = '<link text="Minimum spend &amp; T&amp;Cs apply" linktype="anchor" url="offer-conditions" anchor="offer-conditions" title="" class="" />';
+    		CreditText = "";
+    	}
+    )
+        
+    function Update-HeroBanner {
+    	param($item)
+    
+        $itemName = $item.name;
+        $itemInfo =  $bannersInfo | Where-Object { $_.Name -eq $itemName } | Select -First 1;
+    
+    	if ($item -ne $null -and $itemInfo -ne $null) {
+    		$item.Editing.BeginEdit()
+    		$item["Image"] = $itemInfo.Image;
+    		$item["Title"] = $itemInfo.Title;
+    		$item["Subtitle"] = $itemInfo.Subtitle;
+    		$item["CreditText"] = $itemInfo.CreditText;
+    		$item["CreditLink"] = $itemInfo.CreditLink;
+    		$item.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    $homeItem = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home" #Home Page
+    $pageComponentItem = Get-Item -Path "master:" -Id "{F396666F-E2F1-4904-9391-3BF98BEA3A35}" #ID Home Page component
+    
+    $heroCarousel = Get-ChildItem -Item $pageComponentItem | Where-Object { $_.Name -eq "Hero Carousel" } | Select -First 1
+    foreach($banner in $heroCarousel.Children) {
+         Write-Host $banner.name
+         Update-HeroBanner -item $banner
+     }
+          
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191118T132901Z

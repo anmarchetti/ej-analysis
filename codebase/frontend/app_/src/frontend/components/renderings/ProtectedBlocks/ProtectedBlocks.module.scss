@@ -1,0 +1,63 @@
+.container {
+    display: flex;
+    margin: 80px 0 40px;
+    padding-top: 80px;
+    border-top: 1px solid $colorGrayLight;
+
+    @include media-breakpoint-down(sm) {
+        flex-direction: column;
+        margin: 40px 0 20px;
+        padding-top: 40px;
+    }
+}
+
+.block {
+    display: flex;
+
+    @include media-breakpoint-down(sm) {
+        justify-content: space-between;
+    }
+
+    &:first-child {
+        margin-right: 75px;
+
+        @include media-breakpoint-down(sm) {
+            margin-right: 0;
+            margin-bottom: 20px;
+        }
+    }
+}
+
+.icon {
+    position: relative;
+    margin-right: 40px;
+
+    @include media-breakpoint-down(sm) {
+        width: 20%;
+    }
+
+    img {
+        position: unset !important;
+        width: unset !important;
+        height: 75px !important;
+
+        @include media-breakpoint-down(sm) {
+            width: 100% !important;
+            height: auto !important;
+        }
+    }
+}
+
+.content {
+    @include media-breakpoint-down(sm) {
+        width: 80%;
+    }
+}
+
+.title {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 20px;
+    line-height: 25px;
+    color: $clrTextMain;
+}

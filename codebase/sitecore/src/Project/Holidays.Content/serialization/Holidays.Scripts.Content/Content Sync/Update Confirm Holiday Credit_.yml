@@ -1,0 +1,90 @@
+﻿---
+ID: "b7355979-895c-49dd-85f8-4e8f1128837f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Update Confirm Holiday Credit Pages
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $itemName, $templateId, $itemId){
+        $item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $itemId
+            Write-Host "Item" $item.Name "successfully created";
+        }
+        return $item
+    } 
+    
+    function Update-Rendering-DataSource($item, $placeholder, $renderingId, $newDataSource){
+        $renderingItem = Get-Item -Path "master:" -Id $renderingId
+        $rendering = Get-Rendering -Item $item -PlaceHolder $placeholder -Rendering $renderingItem
+    
+        if($rendering -ne $null){
+            Set-Rendering -Item $item -Instance $rendering -DataSource $newDataSource
+            Write-Host $item.Name  "Rendering successfully updated"
+        }
+    }
+    
+    ### Confirm Holiday Credit Page ###
+    # Update Disruption Instructions on Confirm Holiday Credit Page
+    $creditBookingDisruption = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirm Holiday Credit/Page Components/Disruption Instructions" -ErrorAction SilentlyContinue
+    if($creditBookingDisruption -ne $null) {
+        $creditBookingDisruption.Editing.BeginEdit()
+        $creditBookingDisruption["Title"] = "Credit your holiday"
+        $creditBookingDisruption["Description"] = "<p>We understand that the holiday you booked may no longer be the right one for you. We understand that the holiday you booked may no longer be the right one for you. Therefore we can cancel your holiday and credit your account with no additional changes. <a rel=""noopener noreferrer"" target=""_blank"" href=""https://www.easyjet.com/en/holidays/Info/credit-terms"">T&amp;C’s</a> apply.</p>" +
+        "<h3 class=`"text-left`">How it works:</h3>" +
+        "<ul class=`"circle-list`">"+
+          "<li>Check the details below and click `“confirm`”. We will cancel your old holiday and you’ll receive an email confirming you have credit on your account.</li>" +
+          "<li>You can view your credit by logging in to your account and use it any time by logging in and selecting the credit option on the payment page. Your credit will have an expiry date but you can use it towards any easyJet holiday.</li>" +
+        "</ul>"
+        $creditBookingDisruption.Editing.EndEdit() | Out-Null 
+        Write-Host "Disruption Instructions successfully updated on Confirm Holiday Credit";
+    }
+    
+    ### Confirm Holiday Credit To Amend Page ###
+    # Create Page
+    $pageTemplateId = "{4CF74561-4E5C-4AFF-8753-A8F15CB35870}"
+    $page = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking" -ItemName "Confirm Holiday Credit To Amend" -TemplateId $pageTemplateId
+    
+    # Create Page Components
+    $pageComponents = Get-Or-Create-Item -Path $page.FullPath -ItemName "Page Components" -TemplateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    
+    # Create Credit Booking Disruption Component
+    $bookingDisruption = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Disruption Instructions" -TemplateId "{DBE716C9-891B-4229-8D09-0147285F0A79}"
+    
+    $bookingDisruption.Editing.BeginEdit()
+    $bookingDisruption["Title"] = "Amend your holiday"
+    $bookingDisruption["Description"] = "<p>We understand that the holiday you booked may no longer be the right one for you. Therefore you can amend your holiday with no additional changes. You’ll need to pay any increase in price you’re your new holiday. And if you decide to get a cheaper holiday you can keep the difference as credit on your account for the next time you want to book. Unfortunately we will not be able to give you a refund. <a rel=""noopener noreferrer"" target=""_blank"" href=""https://www.easyjet.com/en/holidays/Info/credit-terms"">T&amp;C’s</a> apply.</p>" +
+    "<h3 class=`"text-left`">How it works:</h3>" +
+    "<ul class=`"circle-list`">"+
+      "<li>Check the details below carefully and click `“confirm`”. This will cancel your old holiday and you’ll receive an email confirming you have credit on your account.</li>" +
+      "<li>You can use this credit to rebook your holiday with the amends you want. Just make sure you’re logged in and select the `“credit`” option when you get to the payment page.</li>" +
+    "</ul>"
+    $bookingDisruption["IsButtonHidden"] = 1
+    $bookingDisruption.Editing.EndEdit() | Out-Null
+    
+    # Create Confirm Credit to Amend Component
+    $creditConfirm = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Confirm Credit to Amend" -TemplateId "{DC1B4679-93BC-4824-8FC7-0419E6BDE966}"
+    $creditConfirm.Editing.BeginEdit()
+    $creditConfirm["ConfirmTitle"] = "Cancel my old holiday"
+    $creditConfirm["ConfirmDescription"] = "When you click `“Confirm`”, you will receive an email to confirm we have cancelled your holiday and credited you for the full amount to your easyJet holidays account."
+    $creditConfirm.Editing.EndEdit() | Out-Null
+    
+    # Update Rendering
+    $creditConfirmPlaceholder = "/body/component-wrapper-inner-{C40836EB-D2E0-4DD8-9B27-19369EF6EEA7}-0"
+    $creditConfirmRenderingId = "{56C44D33-3156-49AD-85A5-DF71E6B700B2}"
+    Update-Rendering-DataSource -Item $page -PlaceHolder $creditConfirmPlaceholder -RenderingId $creditConfirmRenderingId -NewDataSource $creditConfirm.ID 
+    $bookingDisruptionPlaceholder = "$($creditConfirmPlaceholder)/credit-booking-disruption-{017e742d-09d0-4d9f-8e16-04c065483c4d}-0"
+    $bookingDisruptionRenderingId = "{91012E04-01DC-46B7-BAE2-F5DBC12A842F}"
+    Update-Rendering-DataSource -Item $page -PlaceHolder $bookingDisruptionPlaceholder -RenderingId $bookingDisruptionRenderingId -NewDataSource $bookingDisruption.ID 
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200513T123704Z

@@ -1,0 +1,74 @@
+{
+  "Name": "ChatBotCollection",
+  "Version": "1.0",
+  "References": [
+    {
+      "Name": "XConnect",
+      "Version": "1.0"
+    },
+    {
+      "Name": "Sitecore.XConnect.Collection.Model",
+      "Version": "10.4"
+    }
+  ],
+  "Types": {
+    "easyJet.Foundation.XConnect.Common.Facets.ChatBot.ChatBotMessagesFacet": {
+      "Type": "Facet",
+      "BaseType": "Sitecore.XConnect.Facet",
+      "ClrType": "easyJet.Foundation.XConnect.Common.Facets.ChatBot.ChatBotMessagesFacet, easyJet.Foundation.XConnect.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "Messages": {
+          "Type": [
+            "easyJet.Foundation.XConnect.Common.Facets.ChatBot.ChatBotMessage"
+          ]
+        }
+      }
+    },
+    "easyJet.Foundation.XConnect.Common.Facets.ChatBot.ChatBotMessage": {
+      "Type": "Complex",
+      "ClrType": "easyJet.Foundation.XConnect.Common.Facets.ChatBot.ChatBotMessage, easyJet.Foundation.XConnect.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "SessionId": {
+          "Type": "String"
+        },
+        "Query": {
+          "Type": "String",
+          "Annotations": [
+            {
+              "Type": "PIISensitiveAttribute"
+            }
+          ]
+        },
+        "ConversationSource": {
+          "Type": "easyJet.Foundation.XConnect.Common.Facets.ChatBot.ConversationSource"
+        },
+        "Intent": {
+          "Type": "String"
+        },
+        "ReferrerIntent": {
+          "Type": "String"
+        },
+        "Timestamp": {
+          "Type": "DateTime"
+        }
+      }
+    },
+    "easyJet.Foundation.XConnect.Common.Facets.ChatBot.ConversationSource": {
+      "Type": "Enum",
+      "IsFlags": true,
+      "UnderlyingType": "Int32",
+      "ClrType": "easyJet.Foundation.XConnect.Common.Facets.ChatBot.ConversationSource, easyJet.Foundation.XConnect.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Values": {
+        "Sales": 0,
+        "General": 1
+      }
+    }
+  },
+  "Facets": [
+    {
+      "Target": "Contact",
+      "Name": "ChatBotMessage",
+      "Type": "easyJet.Foundation.XConnect.Common.Facets.ChatBot.ChatBotMessagesFacet"
+    }
+  ]
+}

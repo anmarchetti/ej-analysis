@@ -1,0 +1,26 @@
+﻿{
+    "Title": "DisplayRequest successfull response for booking with ref=AMEND_BOOKING_ATCOM_VRP_ERROR",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/EZYDMO/VRPWebservice/AniteGateway/AniteGateway.aspx",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "XPathMatcher",
+                "Pattern": "/*:DisplayRequest/*:BkgNum/*:BkgId/text()='AMEND_BOOKING_ATCOM_VRP_ERROR'"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "text/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/DisplayResponse_AMEND_BOOKING_ATCOM_VRP_ERROR.xml"
+    }
+}

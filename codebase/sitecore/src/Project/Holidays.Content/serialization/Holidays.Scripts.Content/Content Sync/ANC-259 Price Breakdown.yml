@@ -1,0 +1,144 @@
+﻿---
+ID: "10a65d2a-fca9-45cb-8863-f94fdf87276a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-259 Price Breakdown"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    
+    $translations = @{
+        "fr-CH" = @{
+           "ExtrasText" = "Suppléments"
+           "SeatsPriceText" = "Sièges"
+           "HoldLuggagePriceText" = "Bagages en Soute"
+           "LargeCabinBagsPriceText" = "Bagages à Main"
+           "LateCheckoutPriceText" = "Départ Tardif"
+           "Text" = "Frais de transfert d'équipement sportif"
+        }
+        "fr-FR" = @{
+           "ExtrasText" = "Suppléments"
+           "SeatsPriceText" = "Sièges"
+           "HoldLuggagePriceText" = "Bagages en Soute"
+           "LargeCabinBagsPriceText" = "Bagages à Main"
+           "LateCheckoutPriceText" = "Départ Tardif"
+           "Text" = "Frais de transfert d'équipement sportif"
+        }
+        "de-CH" = @{
+           "ExtrasText" = "Extras"
+           "SeatsPriceText" = "Sitze"
+           "HoldLuggagePriceText" = "Aufgegebenes Gepäck"
+           "LargeCabinBagsPriceText" = "Handgepäck"
+           "LateCheckoutPriceText" = "Später Checkout"
+           "Text" = "Gebühr für den Transport von Sportausrüstung"
+        }
+        "de-DE" = @{
+           "ExtrasText" = "Extras"
+           "SeatsPriceText" = "Sitze"
+           "HoldLuggagePriceText" = "Aufgegebenes Gepäck"
+           "LargeCabinBagsPriceText" = "Handgepäck"
+           "LateCheckoutPriceText" = "Später Checkout"
+           "Text" = "Gebühr für den Transport von Sportausrüstung"
+        }
+    }
+    
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Write-Host "Adding language version for item: $($item.Paths.FullPath) in language: $lang"
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        }
+        
+        if ($null -ne $field -and $null -ne $targetLangItem) {
+            Write-Host "Editing item: $($item.Paths.FullPath) in language: $lang"
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            if($item.Paths.FullPath -eq "/sitecore/content/EasyJet/Holidays/Settings/Price Breakdown Settings") {
+                $targetLangItem["SeatsPriceEnabled"] = "1"
+                $targetLangItem["HoldLuggagePriceEnabled"] = "1"
+                $targetLangItem["LargeCabinBagsPriceEnabled"] = "1"
+                $targetLangItem["LateCheckoutPriceEnabled"] = "1"
+            }
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    function Prices-Breakdown-Update($website){
+        $dataSourcePath = "/sitecore/content/EasyJet/$website/Settings/Price Breakdown Settings"
+        $dataSourceItem = Get-Item -Path $dataSourcePath
+        
+        if($dataSourceItem -ne $null) {
+            $dataSourceItem.Editing.BeginEdit()
+            $dataSourceItem["ExtrasCode"] = "EXTR"
+            $dataSourceItem["ExtrasText"] = "Extras"
+            $dataSourceItem["SeatsPriceCode"] = "SEAT"
+            $dataSourceItem["SeatsPriceText"] = "Seats"
+            $dataSourceItem["SeatsPriceEnabled"] = "1"
+            $dataSourceItem["HoldLuggagePriceCode"] = "ADDB"
+            $dataSourceItem["HoldLuggagePriceText"] = "Hold Luggage"
+            $dataSourceItem["HoldLuggagePriceEnabled"] = "1"
+            $dataSourceItem["LargeCabinBagsPriceCode"] = "CABI"
+            $dataSourceItem["LargeCabinBagsPriceText"] = "Cabin Bags"
+            $dataSourceItem["LargeCabinBagsPriceEnabled"] = "1"
+            $dataSourceItem["LateCheckoutPriceCode"] = "SPEQ"
+            $dataSourceItem["LateCheckoutPriceText"] = "Late Checkout"
+            $dataSourceItem["LateCheckoutPriceEnabled"] = "1"
+            $dataSourceItem.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Price Breakdown Settings Datasource updated"
+            
+            # Create a new instance of the component
+            $newItem = New-Item -Path "$dataSourcePath" -Name "SurCharge Price" -ItemType "/sitecore/templates/Foundation/Destinations/Settings/Price Breakdown Setting" -ErrorAction SilentlyContinue
+            if ($newItem -ne $null) {
+                $newItem.Editing.BeginEdit()
+                $newItem["Code"] = "SurCharge Price"
+                $newItem["AtcomCodes"] = "SurCharge Price"
+                $newItem["Text"] = "Sport Equipment Transfer Charge"
+                $newItem.Editing.EndEdit() | Out-Null
+                
+                # Add translations for the new component
+                foreach ($lang in $translations.Keys) {
+                    create-lang-version -item $newItem -lang $lang -field "Text" -value $translations[$lang]["Text"]
+                }
+                
+                Write-Host "New component instance created and updated with translations"
+            } else {
+                Write-Host "Failed to create new component instance"
+            }
+        } else {
+            Write-Host "Failed to get data source item at path: $dataSourcePath"
+        }
+        
+        # Add translations on Holidays
+        if($website -eq "Holidays" -and $dataSourceItem -ne $null){
+            foreach ($lang in $translations.Keys) {
+                create-lang-version -item $dataSourceItem -lang $lang -field "ExtrasText" -value $translations[$lang]["ExtrasText"]
+                create-lang-version -item $dataSourceItem -lang $lang -field "SeatsPriceText" -value $translations[$lang]["SeatsPriceText"]
+                create-lang-version -item $dataSourceItem -lang $lang -field "HoldLuggagePriceText" -value $translations[$lang]["HoldLuggagePriceText"]
+                create-lang-version -item $dataSourceItem -lang $lang -field "LargeCabinBagsPriceText" -value $translations[$lang]["LargeCabinBagsPriceText"]
+                create-lang-version -item $dataSourceItem -lang $lang -field "LateCheckoutPriceText" -value $translations[$lang]["LateCheckoutPriceText"]
+                
+                Write-Host "Translations added"
+            }
+        }
+        
+        Write-Host "Price Breakdown Settings updated on" $website
+    }
+    
+    Prices-Breakdown-Update -website "Holidays"
+    Prices-Breakdown-Update -website "TradePortal"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1060
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240710T120708Z

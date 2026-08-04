@@ -1,0 +1,128 @@
+﻿---
+ID: "903a15f2-4cda-49d0-8832-b1468788591d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-112 - Create Change Dates Page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    function Add-Or-Update-Page-Rendering($page, $renderingPath, $renderingPlaceholder, $dataSourcePath) {
+        $renderingItem = Get-Item -Database "master" -Path $renderingPath;
+        $pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+        
+        if ($pageRenderingInstance -eq $null) {
+            $renderingInstance = $renderingItem | New-Rendering -Placeholder $renderingPlaceholder;
+            Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -Datasource $dataSourcePath;
+            Write-Host $renderingItem "Rendering instance added";
+        } 
+        else {
+            Write-Host $pageRenderingInstance "Already exists";
+        }
+    }
+    
+    function Set-Page-Design ($designPath,$pageTemplateId) {
+        $designItem = Get-Item -Path "$($designPath)" -ErrorAction SilentlyContinue
+        if ($designItem -ne $null) {
+            [Sitecore.Data.Fields.MultilistField]$pageTemplates = $designItem.Fields["PageTemplates"];
+    
+            if (!$pageTemplates.Contains($pageTemplateId)) {
+                $designItem.Editing.BeginEdit();
+                $pageTemplates.add($pageTemplateId);
+                $designItem.Editing.EndEdit() | Out-Null
+                Write-Host $designItem.Name "Page Templates updated"
+            }
+        }
+    }
+    
+    # Page
+    $amendDatesPagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates"
+    
+    # Create Amend Dates Page
+    $amendDatesPage = Get-Or-Create-Item -path $amendDatesPagePath -template "{DF04C451-7D6A-47D2-883A-1EC668A5FDB4}"
+    
+    #Update Amend Dates Page details
+    if ($amendDatesPage -ne $null) {
+        $amendDatesPage.Editing.BeginEdit();
+        $amendDatesPage["Name"]="Change your dates";
+        $amendDatesPage["Title"]="Change your dates";
+        $amendDatesPage["Description"]="Change Dates";
+        $amendDatesPage["Icon"]="/sitecore/shell/themes/Standard/Applications/32x32/Document.png";
+        $amendDatesPage.Editing.EndEdit() | Out-Null;
+    }
+    
+    #Create Page Components Folder
+    $amendDatesPageComponentsPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Page Components";
+    $amendDatesPageComponentsItem =  Get-Or-Create-Item -path $amendDatesPageComponentsPath -template "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"  
+    
+    #Create Amend Dates component
+    $amendDatesComponentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Page Components/Change Dates";
+    $amendDatesComponentItem =  Get-Or-Create-Item -path $amendDatesComponentPath -template "{A48B79E1-FB35-470F-A030-2C8C204DD37E}"
+    
+    #Update Amend Dates component
+    if ($amendDatesComponentItem -ne $null) {
+        $amendDatesComponentItem.Editing.BeginEdit();
+        $amendDatesComponentItem["Title"]="Select new dates";
+        $amendDatesComponentItem["Subtitle"]="Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+        $amendDatesComponentItem["Icon"]="/sitecore/shell/themes/Standard/Applications/32x32/Document.png";
+        $amendDatesComponentItem.Editing.EndEdit() | Out-Null;
+    }
+    
+    #Create Attention Message component
+    $amendDatesAttentionMessagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Page Components/Date Change Attention Message";
+    $amendDatesAttentionMessageItem =  Get-Or-Create-Item -path $amendDatesAttentionMessagePath -template "{4E3890D9-808D-4390-BE32-749397BE8A74}"
+    
+    if ($amendDatesAttentionMessageItem -ne $null) {
+    	$amendDatesAttentionMessageItem.Editing.BeginEdit();
+    	
+    	$amendDatesAttentionMessageItem["Name"]="Date Change Attention Message";
+    	$amendDatesAttentionMessageItem["Title"]="Alert information";
+        $amendDatesAttentionMessageItem["Description"]="The UK goverment has announced...";
+    	$amendDatesAttentionMessageItem["Icon"]='<image mediaid="{51A15C31-80B0-4286-9522-30165F61C780}" />';
+    	
+    	Write-Host $amendDatesAttentionMessageItem.Name "Updated";
+        $amendDatesAttentionMessageItem.Editing.EndEdit() | Out-Null;
+    }
+    
+    #Add layout controls to page
+    $amendDatesRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Dates/Amend Dates Page";
+    $amendDatesRendering = Get-Item -Path $amendDatesRenderingPath;
+    
+    if ($amendDatesRendering -ne $null) {
+        Add-Or-Update-Page-Rendering -page $amendDatesPage -renderingPath "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Dates/Amend Dates Page"  -renderingPlaceholder "/body" -dataSourcePath "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Page Components/Change Dates"
+    }
+    
+    $pageItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates";
+    $renderedAmendDates = Get-Rendering -Item $pageItem -Render $amendDatesRendering;
+    
+    $renderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Attention Message";
+    $renderigPlaceholder = "/body/attention-message-" + $renderedAmendDates.UniqueId + "-0";
+    
+    if ($amendDatesAttentionMessageItem -ne $null) {
+        Add-Or-Update-Page-Rendering -page $amendDatesPage -renderingPath $renderingPath -renderingPlaceholder $renderigPlaceholder -dataSourcePath $amendDatesAttentionMessagePath
+    }
+    
+    $pageTemplateId = "{DF04C451-7D6A-47D2-883A-1EC668A5FDB4}"
+    
+    # Add Page To PageDesigns
+    Set-Page-Design -designPath "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Full Header And Slim Footer" -pageTemplateId $pageTemplateId
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 650
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20221208T142719Z

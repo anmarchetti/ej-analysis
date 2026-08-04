@@ -1,0 +1,1126 @@
+﻿---
+ID: "77b159f6-f15a-4335-bbc6-2ed8198bcbb5"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-466 - Create Bundle Structure"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    function NewId{
+        return [GUID]::NewGuid().ToString("B").ToUpper()
+    }
+    
+    
+    $holidaysdatabundlesbundleelementsnotransfer_Id = NewId
+    $holidaysdatabundlesbundlegroupsbeacheubu_Id = NewId
+    $holidaysdatabundlesbundlegroupsbeacheubf_Id = NewId
+    $holidaysdatabundlesbundleiconstransfer_Id = NewId
+    $holidaysdatabundlesbundlegroupsbeach_Id  = NewId
+    $holidaysdatabundlesbundlegroupscity_Id  = NewId
+    $holidaysdatabundlesbundleelementsprivatetransfer_Id  = NewId
+    $holidaysdatabundlesbundlegroupscitychco_Id  = NewId
+    $holidaysdatabundlesbundleelementssharedtransfer_Id  = NewId
+    $holidaysdatabundlesbundledefinitionscityweekendbreak_Id  = NewId
+    $holidaysdatabundlesbundlegroupsbeacheuba_Id = NewId
+    $holidaysdatabundlesbundleelements_Id  = NewId
+    $holidaysdatabundlesbundleiconsspeedy_Id = NewId
+    $holidaysdatabundlesbundleiconsbag_Id= NewId
+    $holidaysdatabundlesbundleelementsrandomseat_Id = NewId
+    $holidaysdatabundlesbundledefinitionsbeachholidayplus_Id = NewId
+    $holidaysdatabundlesbundledefinitionscitystandard_Id = NewId
+    $holidaysdatabundlesbundleiconsweekendbreakplus_Id = NewId
+    $holidaysdatabundlesbundleiconsweekendbreak_Id = NewId
+    $holidaysdatabundlesbundledefinitions_Id = NewId
+    $holidaysdatabundlesbundledefinitionscityweekendbreakplus_Id = NewId
+    $holidaysdatabundlesbundleelementssmallcabinbag_Id = NewId
+    $holidaysdatabundlesbundlegroupscityfrco_Id = NewId
+    $holidaysdatabundlesbundleelementslargecabinbag_Id = NewId
+    $holidaysdatabundlesbundleelementsextralegroomorupfrontseat_Id = NewId
+    $holidaysdatabundlesbundlegroupscityeucv_Id = NewId
+    $holidaysdatabundlesbundleicons_Id = NewId
+    $holidaysdatabundlesbundleiconsholidaypremium_Id= NewId
+    $holidaysdatabundlesbundlegroupsbeachdebo_Id = NewId
+    $holidaysdatabundlesbundledefinitionsbeachholidaypremium_Id = NewId
+    $holidaysdatabundlesbundlegroupsbeachchbo_Id = NewId
+    $holidaysdatabundlesbundledefinitionsbeach_Id = NewId
+    $holidaysdatabundlesbundlegroupsbeachfrbo_Id = NewId
+    $holidaysdatabundlesbundlegroupscityeuco_Id = NewId
+    $holidaysdatabundlesbundleiconsseat_Id = NewId
+    $holidaysdatabundlesbundleiconslongerstay_Id = NewId
+    $holidaysdatabundlesbundleiconsstandard_Id = NewId
+    $holidaysdatabundlesbundlegroupsbeacheubo_Id = NewId
+    $holidaysdatabundlesbundleiconsholidayplus_Id = NewId
+    $holidaysdatabundlesbundleelements23kgholdbag_Id = NewId
+    $holidaysdatabundlesbundlegroupscitydeco_Id = NewId
+    $holidaysdatabundlesbundleiconslegroom_Id = NewId
+    $holidaysdatabundlesbundleelementsstandardseat_Id = NewId
+    $holidaysdatabundles_Id = NewId
+    $holidaysdatabundlesbundledefinitionsbeachstandard_Id = NewId
+    $holidaysdatabundlesbundleelementsspeedyboarding_Id = NewId
+    $holidaysdatabundlesbundlegroupscityeucb_Id = NewId
+    $holidaysdatabundlesbundledefinitionscity_Id = NewId
+    $holidaysdatabundlesbundledefinitionscitylongerstay_Id= NewId
+    $holidaysdatabundlesbundlegroups_Id = NewId
+    $holidaypremium_bundleelements_e96b858e897c440f837161042d700798_frfr_v1 = @"
+    $holidaysdatabundlesbundleelementsprivatetransfer_Id|$holidaysdatabundlesbundleelementsextralegroomorupfrontseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $chco_bundles_085f2980095f473b90946d24e4cd17f9_dech_v1 = @"
+    $holidaysdatabundlesbundledefinitionscitystandard_Id|$holidaysdatabundlesbundledefinitionscityweekendbreak_Id|$holidaysdatabundlesbundledefinitionscityweekendbreakplus_Id|$holidaysdatabundlesbundledefinitionscitylongerstay_Id
+    "@
+    $longerstay_icon_2a664f8b4c604ca28fe00213a2e170f5_en_v1 = @"
+    $holidaysdatabundlesbundleiconslongerstay_Id
+    "@
+    $holidaypremium_icon_e96b858e897c440f837161042d700798_en_v1 = @"
+    $holidaysdatabundlesbundleiconsholidaypremium_Id
+    "@
+    $eubo_bundles_a84c7edef99e433c9661ca3f07e9a27c_en_v1 = @"
+    $holidaysdatabundlesbundledefinitionsbeachstandard_Id|$holidaysdatabundlesbundledefinitionsbeachholidayplus_Id|$holidaysdatabundlesbundledefinitionsbeachholidaypremium_Id
+    "@
+    $standard_icon_420c1db347e84db3a6e06925d9483add_en_v1 = @"
+    $holidaysdatabundlesbundleiconsstandard_Id
+    "@
+    $holidaypremium_bundleelements_e96b858e897c440f837161042d700798_dech_v1 = @"
+    $holidaysdatabundlesbundleelementsprivatetransfer_Id|$holidaysdatabundlesbundleelementsextralegroomorupfrontseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $standard_bundleelements_b6d596837a184f0fb881a8150b80d7b3_dech_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsrandomseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id
+    "@
+    $holidaypremium_bundleelements_e96b858e897c440f837161042d700798_frch_v1 = @"
+    $holidaysdatabundlesbundleelementsprivatetransfer_Id|$holidaysdatabundlesbundleelementsextralegroomorupfrontseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $smallcabinbag_icon_a0d9e8671830452aa5abefd54b25bb8c_en_v1 = @"
+    $holidaysdatabundlesbundleiconsbag_Id
+    "@
+    $holidayplus_bundleelements_521dd9a7171444ecaee24a382d3685cc_dede_v1 = @"
+    $holidaysdatabundlesbundleelementssharedtransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $euba_bundles_5ba6a5543175414c9fe0e8d7911a8046_en_v1 = @"
+    $holidaysdatabundlesbundledefinitionsbeachstandard_Id|$holidaysdatabundlesbundledefinitionsbeachholidayplus_Id|$holidaysdatabundlesbundledefinitionsbeachholidaypremium_Id
+    "@
+    $holidayplus_bundleelements_521dd9a7171444ecaee24a382d3685cc_en_v1 = @"
+    $holidaysdatabundlesbundleelementssharedtransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $standard_bundleelements_420c1db347e84db3a6e06925d9483add_dech_v1 = @"
+    $holidaysdatabundlesbundleelementssharedtransfer_Id|$holidaysdatabundlesbundleelementsrandomseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id
+    "@
+    $eubu_bundles_23916153d7d84fd4ae795d975256a698_en_v1 = @"
+    $holidaysdatabundlesbundledefinitionsbeachstandard_Id|$holidaysdatabundlesbundledefinitionsbeachholidayplus_Id|$holidaysdatabundlesbundledefinitionsbeachholidaypremium_Id
+    "@
+    $standard_bundleelements_b6d596837a184f0fb881a8150b80d7b3_dede_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsrandomseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id
+    "@
+    $standard_bundleelements_b6d596837a184f0fb881a8150b80d7b3_frfr_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsrandomseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id
+    "@
+    $holidayplus_bundleelements_521dd9a7171444ecaee24a382d3685cc_frfr_v1 = @"
+    $holidaysdatabundlesbundleelementssharedtransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $weekendbreak_bundleelements_f27647007db84b0081cfdc690b452239_frfr_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $eucb_bundles_d21e15e9ae4f4e6d8abe75cb7343e7a3_en_v1 = @"
+    $holidaysdatabundlesbundledefinitionscitystandard_Id|$holidaysdatabundlesbundledefinitionscityweekendbreak_Id|$holidaysdatabundlesbundledefinitionscityweekendbreakplus_Id|$holidaysdatabundlesbundledefinitionscitylongerstay_Id
+    "@
+    $deco_bundles_773bd50d677a4632a8c1eb25603744c1_dede_v1 = @"
+    $holidaysdatabundlesbundledefinitionscitystandard_Id|$holidaysdatabundlesbundledefinitionscityweekendbreak_Id|$holidaysdatabundlesbundledefinitionscityweekendbreakplus_Id|$holidaysdatabundlesbundledefinitionscitylongerstay_Id
+    "@
+    $weekendbreakplus_bundleelements_683862902cae4fcab2a56015ace2aec3_frch_v1 = @"
+    $holidaysdatabundlesbundleelementsprivatetransfer_Id|$holidaysdatabundlesbundleelementsextralegroomorupfrontseat_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $randomseat_icon_1fdc22042f7f433589415ab5736d9e0e_en_v1 = @"
+    $holidaysdatabundlesbundleiconsseat_Id
+    "@
+    $frco_bundles_a2c045e1a3684b539b66cfb39e6ab2f5_frfr_v1 = @"
+    $holidaysdatabundlesbundledefinitionscitystandard_Id|$holidaysdatabundlesbundledefinitionscityweekendbreak_Id|$holidaysdatabundlesbundledefinitionscityweekendbreakplus_Id|$holidaysdatabundlesbundledefinitionscitylongerstay_Id
+    "@
+    $holidayplus_bundleelements_521dd9a7171444ecaee24a382d3685cc_frch_v1 = @"
+    $holidaysdatabundlesbundleelementssharedtransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $weekendbreak_bundleelements_f27647007db84b0081cfdc690b452239_en_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $holidayplus_bundleelements_521dd9a7171444ecaee24a382d3685cc_dech_v1 = @"
+    $holidaysdatabundlesbundleelementssharedtransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $extralegroomorupfrontseat_icon_d79e34eec81c43838adc3132861422f0_en_v1 = @"
+    $holidaysdatabundlesbundleiconslegroom_Id
+    "@
+    $longerstay_bundleelements_2a664f8b4c604ca28fe00213a2e170f5_frfr_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id
+    "@
+    $weekendbreak_bundleelements_f27647007db84b0081cfdc690b452239_dede_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $standard_bundleelements_420c1db347e84db3a6e06925d9483add_frch_v1 = @"
+    $holidaysdatabundlesbundleelementssharedtransfer_Id|$holidaysdatabundlesbundleelementsrandomseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id
+    "@
+    $eubf_bundles_5360c6ae6cda49ce823d8674a5cd2064_en_v1 = @"
+    $holidaysdatabundlesbundledefinitionsbeachstandard_Id|$holidaysdatabundlesbundledefinitionsbeachholidayplus_Id|$holidaysdatabundlesbundledefinitionsbeachholidaypremium_Id
+    "@
+    $standardseat_icon_8cf59e4e9e154c898fcee9c7d8493c98_en_v1 = @"
+    $holidaysdatabundlesbundleiconsstandard_Id
+    "@
+    $longerstay_bundleelements_2a664f8b4c604ca28fe00213a2e170f5_en_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id
+    "@
+    $standard_bundleelements_420c1db347e84db3a6e06925d9483add_dede_v1 = @"
+    $holidaysdatabundlesbundleelementssharedtransfer_Id|$holidaysdatabundlesbundleelementsrandomseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id
+    "@
+    $eucv_bundles_4b275d662512453ca07a307399637572_en_v1 = @"
+    $holidaysdatabundlesbundledefinitionscitystandard_Id|$holidaysdatabundlesbundledefinitionscityweekendbreak_Id|$holidaysdatabundlesbundledefinitionscityweekendbreakplus_Id|$holidaysdatabundlesbundledefinitionscitylongerstay_Id
+    "@
+    $weekendbreak_bundleelements_f27647007db84b0081cfdc690b452239_frch_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $standard_bundleelements_420c1db347e84db3a6e06925d9483add_en_v1 = @"
+    $holidaysdatabundlesbundleelementssharedtransfer_Id|$holidaysdatabundlesbundleelementsrandomseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id
+    "@
+    $chbo_bundles_78cad687ad6f42a8ae28ce66e0a00afb_dech_v1 = @"
+    $holidaysdatabundlesbundledefinitionsbeachstandard_Id|$holidaysdatabundlesbundledefinitionsbeachholidayplus_Id|$holidaysdatabundlesbundledefinitionsbeachholidaypremium_Id
+    "@
+    $weekendbreakplus_icon_683862902cae4fcab2a56015ace2aec3_en_v1 = @"
+    $holidaysdatabundlesbundleiconsweekendbreakplus_Id
+    "@
+    $notransfer_icon_688f3d4e91ad4b31a218c817d0d7456c_en_v1 = @"
+    $holidaysdatabundlesbundleiconstransfer_Id
+    "@
+    $longerstay_bundleelements_2a664f8b4c604ca28fe00213a2e170f5_dede_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id
+    "@
+    $v23kgholdbag_icon_caf88cd45d30458ab2eac67e0462dbbc_en_v1 = @"
+    $holidaysdatabundlesbundleiconsbag_Id
+    "@
+    $speedyboarding_icon_905f1da01df941ed9e523ef33ff61d71_en_v1 = @"
+    $holidaysdatabundlesbundleiconsspeedy_Id
+    "@
+    $longerstay_bundleelements_2a664f8b4c604ca28fe00213a2e170f5_frch_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id
+    "@
+    $standard_bundleelements_420c1db347e84db3a6e06925d9483add_frfr_v1 = @"
+    $holidaysdatabundlesbundleelementssharedtransfer_Id|$holidaysdatabundlesbundleelementsrandomseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id
+    "@
+    $weekendbreakplus_bundleelements_683862902cae4fcab2a56015ace2aec3_dech_v1 = @"
+    $holidaysdatabundlesbundleelementsprivatetransfer_Id|$holidaysdatabundlesbundleelementsextralegroomorupfrontseat_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $weekendbreak_icon_f27647007db84b0081cfdc690b452239_en_v1 = @"
+    $holidaysdatabundlesbundleiconsweekendbreak_Id
+    "@
+    $standard_bundleelements_b6d596837a184f0fb881a8150b80d7b3_frch_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsrandomseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id
+    "@
+    $holidaypremium_bundleelements_e96b858e897c440f837161042d700798_dede_v1 = @"
+    $holidaysdatabundlesbundleelementsprivatetransfer_Id|$holidaysdatabundlesbundleelementsextralegroomorupfrontseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $frbo_bundles_04f19efd4bce4f7d822f196b84d31136_frfr_v1 = @"
+    $holidaysdatabundlesbundledefinitionsbeachstandard_Id|$holidaysdatabundlesbundledefinitionsbeachholidayplus_Id|$holidaysdatabundlesbundledefinitionsbeachholidaypremium_Id
+    "@
+    $longerstay_bundleelements_2a664f8b4c604ca28fe00213a2e170f5_dech_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id
+    "@
+    $weekendbreakplus_bundleelements_683862902cae4fcab2a56015ace2aec3_dede_v1 = @"
+    $holidaysdatabundlesbundleelementsprivatetransfer_Id|$holidaysdatabundlesbundleelementsextralegroomorupfrontseat_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $weekendbreak_bundleelements_f27647007db84b0081cfdc690b452239_dech_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsstandardseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $weekendbreakplus_bundleelements_683862902cae4fcab2a56015ace2aec3_en_v1 = @"
+    $holidaysdatabundlesbundleelementsprivatetransfer_Id|$holidaysdatabundlesbundleelementsextralegroomorupfrontseat_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $weekendbreakplus_bundleelements_683862902cae4fcab2a56015ace2aec3_frfr_v1 = @"
+    $holidaysdatabundlesbundleelementsprivatetransfer_Id|$holidaysdatabundlesbundleelementsextralegroomorupfrontseat_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $largecabinbag_icon_85651b9a415049c4b05596ee41b55a0e_en_v1 = @"
+    $holidaysdatabundlesbundleiconsbag_Id
+    "@
+    $sharedtransfer_icon_ab6ace1a11094147b951e8d80bfec375_en_v1 = @"
+    $holidaysdatabundlesbundleiconstransfer_Id
+    "@
+    $standard_bundleelements_b6d596837a184f0fb881a8150b80d7b3_en_v1 = @"
+    $holidaysdatabundlesbundleelementsnotransfer_Id|$holidaysdatabundlesbundleelementsrandomseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id
+    "@
+    $holidayplus_icon_521dd9a7171444ecaee24a382d3685cc_en_v1 = @"
+    $holidaysdatabundlesbundleiconsholidayplus_Id
+    "@
+    $euco_bundles_2fcfe13f055a41fb8b1e799df33a1538_en_v1 = @"
+    $holidaysdatabundlesbundledefinitionscitystandard_Id|$holidaysdatabundlesbundledefinitionscityweekendbreak_Id|$holidaysdatabundlesbundledefinitionscityweekendbreakplus_Id|$holidaysdatabundlesbundledefinitionscitylongerstay_Id
+    "@
+    $privatetransfer_icon_83ce83739b4f4e599c7c24c5465b29ad_en_v1 = @"
+    $holidaysdatabundlesbundleiconstransfer_Id
+    "@
+    $standard_icon_b6d596837a184f0fb881a8150b80d7b3_en_v1 = @"
+    $holidaysdatabundlesbundleiconsstandard_Id
+    "@
+    $debo_bundles_3d594a2af44849108243875dc7ea3a9a_dede_v1 = @"
+    $holidaysdatabundlesbundledefinitionsbeachstandard_Id|$holidaysdatabundlesbundledefinitionsbeachholidayplus_Id|$holidaysdatabundlesbundledefinitionsbeachholidaypremium_Id
+    "@
+    $holidaypremium_bundleelements_e96b858e897c440f837161042d700798_en_v1 = @"
+    $holidaysdatabundlesbundleelementsprivatetransfer_Id|$holidaysdatabundlesbundleelementsextralegroomorupfrontseat_Id|$holidaysdatabundlesbundleelementssmallcabinbag_Id|$holidaysdatabundlesbundleelementslargecabinbag_Id|$holidaysdatabundlesbundleelements23kgholdbag_Id|$holidaysdatabundlesbundleelementsspeedyboarding_Id
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles"
+            TemplatePath = "Common/Folder"
+            Id          = $holidaysdatabundles_Id
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Definitions"
+            TemplatePath = "Feature/Bundles/Bundle Definition Folder"
+            Id          = $holidaysdatabundlesbundledefinitions_Id
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Definitions/Beach"
+            TemplatePath = "Common/Folder"
+            Id          = $holidaysdatabundlesbundledefinitionsbeach_Id
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Definitions/Beach/Standard"
+            TemplatePath = "Feature/Bundles/Bundle Definition"
+            Id          = $holidaysdatabundlesbundledefinitionsbeachstandard_Id
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $standard_icon_420c1db347e84db3a6e06925d9483add_en_v1
+                }
+                "Description" = @{
+                    "de-CH" = "Dies ist ein Standard-Bundle"
+                    "en" = "This is a Standard Bundle"
+                    "fr-FR" = "C'est un pack standard"
+                    "de-DE" = "Dies ist ein Standard-Bundle"
+                    "fr-CH" = "C'est un pack standard"
+                }
+                "Name" = @{
+                    "de-CH" = "Standard"
+                    "en" = "Standard"
+                    "fr-FR" = "Standard"
+                    "de-DE" = "Standard"
+                    "fr-CH" = "Standard"
+                }
+                "BundleElements" = @{
+                    "de-CH" = $standard_bundleelements_420c1db347e84db3a6e06925d9483add_dech_v1
+                    "en" = $standard_bundleelements_420c1db347e84db3a6e06925d9483add_en_v1
+                    "fr-FR" = $standard_bundleelements_420c1db347e84db3a6e06925d9483add_frfr_v1
+                    "de-DE" = $standard_bundleelements_420c1db347e84db3a6e06925d9483add_dede_v1
+                    "fr-CH" = $standard_bundleelements_420c1db347e84db3a6e06925d9483add_frch_v1
+                }
+                "__Sortorder" = @{
+                    "en" = "0"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Definitions/Beach/Holiday Plus"
+            TemplatePath = "Feature/Bundles/Bundle Definition"
+            Id          = $holidaysdatabundlesbundledefinitionsbeachholidayplus_Id
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $holidayplus_icon_521dd9a7171444ecaee24a382d3685cc_en_v1
+                }
+                "Description" = @{
+                    "de-CH" = "Dies ist ein Holiday Plus Bundle"
+                    "en" = "This is a Holiday Plus Bundle"
+                    "fr-FR" = "C'est un pack Holiday Plus"
+                    "de-DE" = "Dies ist ein Holiday Plus Bundle"
+                    "fr-CH" = "C'est un pack Holiday Plus"
+                }
+                "Name" = @{
+                    "de-CH" = "Holiday Plus"
+                    "en" = "Holiday Plus"
+                    "fr-FR" = "Holiday Plus"
+                    "de-DE" = "Holiday Plus"
+                    "fr-CH" = "Holiday Plus"
+                }
+                "BundleElements" = @{
+                    "de-CH" = $holidayplus_bundleelements_521dd9a7171444ecaee24a382d3685cc_dech_v1
+                    "en" = $holidayplus_bundleelements_521dd9a7171444ecaee24a382d3685cc_en_v1
+                    "fr-FR" = $holidayplus_bundleelements_521dd9a7171444ecaee24a382d3685cc_frfr_v1
+                    "de-DE" = $holidayplus_bundleelements_521dd9a7171444ecaee24a382d3685cc_dede_v1
+                    "fr-CH" = $holidayplus_bundleelements_521dd9a7171444ecaee24a382d3685cc_frch_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Definitions/Beach/Holiday Premium"
+            TemplatePath = "Feature/Bundles/Bundle Definition"
+            Id          = $holidaysdatabundlesbundledefinitionsbeachholidaypremium_Id
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $holidaypremium_icon_e96b858e897c440f837161042d700798_en_v1
+                }
+                "Description" = @{
+                    "de-CH" = "Dies ist ein Premium Bundle"
+                    "en" = "This is a Premium Bundle"
+                    "fr-FR" = "C'est un pack Premium"
+                    "de-DE" = "Dies ist ein Premium Bundle"
+                    "fr-CH" = "C'est un pack Premium"
+                }
+                "Name" = @{
+                    "de-CH" = "Holiday Premium"
+                    "en" = "Holiday Premium"
+                    "fr-FR" = "Holiday Premium"
+                    "de-DE" = "Holiday Premium"
+                    "fr-CH" = "Holiday Premium"
+                }
+                "BundleElements" = @{
+                    "de-CH" = $holidaypremium_bundleelements_e96b858e897c440f837161042d700798_dech_v1
+                    "en" = $holidaypremium_bundleelements_e96b858e897c440f837161042d700798_en_v1
+                    "fr-FR" = $holidaypremium_bundleelements_e96b858e897c440f837161042d700798_frfr_v1
+                    "de-DE" = $holidaypremium_bundleelements_e96b858e897c440f837161042d700798_dede_v1
+                    "fr-CH" = $holidaypremium_bundleelements_e96b858e897c440f837161042d700798_frch_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Definitions/City"
+            TemplatePath = "Common/Folder"
+            Id          = $holidaysdatabundlesbundledefinitionscity_Id
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Definitions/City/Standard"
+            TemplatePath = "Feature/Bundles/Bundle Definition"
+            Id          = $holidaysdatabundlesbundledefinitionscitystandard_Id
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $standard_icon_b6d596837a184f0fb881a8150b80d7b3_en_v1
+                }
+                "Description" = @{
+                    "de-CH" = "Dies ist ein Standard-Bundle"
+                    "en" = "This is a Standard Bundle"
+                    "fr-FR" = "C'est un pack standard"
+                    "de-DE" = "Dies ist ein Standard-Bundle"
+                    "fr-CH" = "C'est un pack standard"
+                }
+                "Name" = @{
+                    "de-CH" = "Standard"
+                    "en" = "Standard"
+                    "fr-FR" = "Standard"
+                    "de-DE" = "Standard"
+                    "fr-CH" = "Standard"
+                }
+                "BundleElements" = @{
+                    "de-CH" = $standard_bundleelements_b6d596837a184f0fb881a8150b80d7b3_dech_v1
+                    "en" = $standard_bundleelements_b6d596837a184f0fb881a8150b80d7b3_en_v1
+                    "fr-FR" = $standard_bundleelements_b6d596837a184f0fb881a8150b80d7b3_frfr_v1
+                    "de-DE" = $standard_bundleelements_b6d596837a184f0fb881a8150b80d7b3_dede_v1
+                    "fr-CH" = $standard_bundleelements_b6d596837a184f0fb881a8150b80d7b3_frch_v1
+                }
+                "__Sortorder" = @{
+                    "en" = "0"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Definitions/City/Weekend Break"
+            TemplatePath = "Feature/Bundles/Bundle Definition"
+            Id          = $holidaysdatabundlesbundledefinitionscityweekendbreak_Id
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $weekendbreak_icon_f27647007db84b0081cfdc690b452239_en_v1
+                }
+                "Description" = @{
+                    "de-CH" = "Dies ist ein Weekend Break Plus Bundle"
+                    "en" = "This is a Weekend Break Plus Bundle"
+                    "fr-FR" = "C'est un pack Weekend Break Plus"
+                    "de-DE" = "Dies ist ein Weekend Break Plus Bundle"
+                    "fr-CH" = "C'est un pack Weekend Break Plus"
+                }
+                "Name" = @{
+                    "de-CH" = "Weekend Break"
+                    "en" = "Weekend Break"
+                    "fr-FR" = "Weekend Break"
+                    "de-DE" = "Weekend Break"
+                    "fr-CH" = "Weekend Break"
+                }
+                "BundleElements" = @{
+                    "de-CH" = $weekendbreak_bundleelements_f27647007db84b0081cfdc690b452239_dech_v1
+                    "en" = $weekendbreak_bundleelements_f27647007db84b0081cfdc690b452239_en_v1
+                    "fr-FR" = $weekendbreak_bundleelements_f27647007db84b0081cfdc690b452239_frfr_v1
+                    "de-DE" = $weekendbreak_bundleelements_f27647007db84b0081cfdc690b452239_dede_v1
+                    "fr-CH" = $weekendbreak_bundleelements_f27647007db84b0081cfdc690b452239_frch_v1
+                }
+                "__Sortorder" = @{
+                    "en" = "50"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Definitions/City/Weekend Break Plus"
+            TemplatePath = "Feature/Bundles/Bundle Definition"
+            Id          = $holidaysdatabundlesbundledefinitionscityweekendbreakplus_Id
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $weekendbreakplus_icon_683862902cae4fcab2a56015ace2aec3_en_v1
+                }
+                "Description" = @{
+                    "de-CH" = "Dies ist ein Weekend Break Plus Bundle"
+                    "en" = "This is a Weekend Break Plus Bundle"
+                    "fr-FR" = "C'est un pack Weekend Break Plus"
+                    "de-DE" = "Dies ist ein Weekend Break Plus Bundle"
+                    "fr-CH" = "C'est un pack Weekend Break Plus"
+                }
+                "Name" = @{
+                    "de-CH" = "Weekend Break Plus"
+                    "en" = "Weekend Break Plus"
+                    "fr-FR" = "Weekend Break Plus"
+                    "de-DE" = "Weekend Break Plus"
+                    "fr-CH" = "Weekend Break Plus"
+                }
+                "BundleElements" = @{
+                    "de-CH" = $weekendbreakplus_bundleelements_683862902cae4fcab2a56015ace2aec3_dech_v1
+                    "en" = $weekendbreakplus_bundleelements_683862902cae4fcab2a56015ace2aec3_en_v1
+                    "fr-FR" = $weekendbreakplus_bundleelements_683862902cae4fcab2a56015ace2aec3_frfr_v1
+                    "de-DE" = $weekendbreakplus_bundleelements_683862902cae4fcab2a56015ace2aec3_dede_v1
+                    "fr-CH" = $weekendbreakplus_bundleelements_683862902cae4fcab2a56015ace2aec3_frch_v1
+                }
+                "__Sortorder" = @{
+                    "en" = "50"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Definitions/City/Longer Stay"
+            TemplatePath = "Feature/Bundles/Bundle Definition"
+            Id          = $holidaysdatabundlesbundledefinitionscitylongerstay_Id
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $longerstay_icon_2a664f8b4c604ca28fe00213a2e170f5_en_v1
+                }
+                "Description" = @{
+                    "de-CH" = "Dies ist ein Weekend Break Plus Bundle"
+                    "en" = "This is a Weekend Break Plus Bundle"
+                    "fr-FR" = "C'est un pack Weekend Break Plus"
+                    "de-DE" = "Dies ist ein Weekend Break Plus Bundle"
+                    "fr-CH" = "C'est un pack Weekend Break Plus"
+                }
+                "Name" = @{
+                    "de-CH" = "Longer Stay"
+                    "en" = "Longer Stay"
+                    "fr-FR" = "Longer Stay"
+                    "de-DE" = "Longer Stay"
+                    "fr-CH" = "Longer Stay"
+                }
+                "BundleElements" = @{
+                    "de-CH" = $longerstay_bundleelements_2a664f8b4c604ca28fe00213a2e170f5_dech_v1
+                    "en" = $longerstay_bundleelements_2a664f8b4c604ca28fe00213a2e170f5_en_v1
+                    "fr-FR" = $longerstay_bundleelements_2a664f8b4c604ca28fe00213a2e170f5_frfr_v1
+                    "de-DE" = $longerstay_bundleelements_2a664f8b4c604ca28fe00213a2e170f5_dede_v1
+                    "fr-CH" = $longerstay_bundleelements_2a664f8b4c604ca28fe00213a2e170f5_frch_v1
+                }
+                "__Sortorder" = @{
+                    "en" = "75"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Elements"
+            TemplatePath = "Feature/Bundles/Bundle Element Folder"
+            Id          = $holidaysdatabundlesbundleelements_Id
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Elements/23kg Hold Bag"
+            TemplatePath = "Feature/Bundles/Bundle Element"
+            Id          = $holidaysdatabundlesbundleelements23kgholdbag_Id
+            Fields      = @{
+                "Identifier" = @{
+                    "en" = "23kg-hold-bag"
+                }
+                "Icon" = @{
+                    "en" = $v23kgholdbag_icon_caf88cd45d30458ab2eac67e0462dbbc_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Elements/Extra Legroom Or Upfront Seat"
+            TemplatePath = "Feature/Bundles/Bundle Element"
+            Id          = $holidaysdatabundlesbundleelementsextralegroomorupfrontseat_Id
+            Fields      = @{
+                "Identifier" = @{
+                    "en" = "extra-legroom-or-upfront-seat"
+                }
+                "Icon" = @{
+                    "en" = $extralegroomorupfrontseat_icon_d79e34eec81c43838adc3132861422f0_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Elements/Large Cabin Bag"
+            TemplatePath = "Feature/Bundles/Bundle Element"
+            Id          = $holidaysdatabundlesbundleelementslargecabinbag_Id
+            Fields      = @{
+                "Identifier" = @{
+                    "en" = "large-cabin-bag"
+                }
+                "Icon" = @{
+                    "en" = $largecabinbag_icon_85651b9a415049c4b05596ee41b55a0e_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Elements/No Transfer"
+            TemplatePath = "Feature/Bundles/Bundle Element"
+            Id          = $holidaysdatabundlesbundleelementsnotransfer_Id
+            Fields      = @{
+                "Identifier" = @{
+                    "en" = "no-transfer"
+                }
+                "Icon" = @{
+                    "en" = $notransfer_icon_688f3d4e91ad4b31a218c817d0d7456c_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Elements/Private Transfer"
+            TemplatePath = "Feature/Bundles/Bundle Element"
+            Id          = $holidaysdatabundlesbundleelementsprivatetransfer_Id
+            Fields      = @{
+                "Identifier" = @{
+                    "en" = "private-transfer"
+                }
+                "Icon" = @{
+                    "en" = $privatetransfer_icon_83ce83739b4f4e599c7c24c5465b29ad_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Elements/Random Seat"
+            TemplatePath = "Feature/Bundles/Bundle Element"
+            Id          = $holidaysdatabundlesbundleelementsrandomseat_Id
+            Fields      = @{
+                "Identifier" = @{
+                    "en" = "random-seat"
+                }
+                "Icon" = @{
+                    "en" = $randomseat_icon_1fdc22042f7f433589415ab5736d9e0e_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Elements/Shared Transfer"
+            TemplatePath = "Feature/Bundles/Bundle Element"
+            Id          = $holidaysdatabundlesbundleelementssharedtransfer_Id
+            Fields      = @{
+                "Identifier" = @{
+                    "en" = "shared-transfer"
+                }
+                "Icon" = @{
+                    "en" = $sharedtransfer_icon_ab6ace1a11094147b951e8d80bfec375_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Elements/Small Cabin Bag"
+            TemplatePath = "Feature/Bundles/Bundle Element"
+            Id          = $holidaysdatabundlesbundleelementssmallcabinbag_Id
+            Fields      = @{
+                "Identifier" = @{
+                    "en" = "small-cabin-bag"
+                }
+                "Icon" = @{
+                    "en" = $smallcabinbag_icon_a0d9e8671830452aa5abefd54b25bb8c_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Elements/Speedy Boarding"
+            TemplatePath = "Feature/Bundles/Bundle Element"
+            Id          = $holidaysdatabundlesbundleelementsspeedyboarding_Id
+            Fields      = @{
+                "Identifier" = @{
+                    "en" = "speedy-boarding"
+                }
+                "Icon" = @{
+                    "en" = $speedyboarding_icon_905f1da01df941ed9e523ef33ff61d71_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Elements/Standard Seat"
+            TemplatePath = "Feature/Bundles/Bundle Element"
+            Id          = $holidaysdatabundlesbundleelementsstandardseat_Id
+            Fields      = @{
+                "Identifier" = @{
+                    "en" = "standard-seat"
+                }
+                "Icon" = @{
+                    "en" = $standardseat_icon_8cf59e4e9e154c898fcee9c7d8493c98_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups"
+            TemplatePath = "Feature/Bundles/Bundle Group Folder"
+            Id          = $holidaysdatabundlesbundlegroups_Id
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/Beach"
+            TemplatePath = "Common/Folder"
+            Id          = $holidaysdatabundlesbundlegroupsbeach_Id
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/Beach/CHBO"
+            TemplatePath = "Feature/Bundles/Bundle Group"
+            Id          = $holidaysdatabundlesbundlegroupsbeachchbo_Id
+            CreateEnglishVersionByDefault = 0
+            Fields      = @{
+                "Bundles" = @{
+                    "de-CH" = $chbo_bundles_78cad687ad6f42a8ae28ce66e0a00afb_dech_v1
+                    "en" = ""
+                                    
+                                    
+                                    
+                }
+                "Promocode" = @{
+                    "de-CH" = "CHBO"
+                    "en" = ""
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/Beach/DEBO"
+            TemplatePath = "Feature/Bundles/Bundle Group"
+            Id          = $holidaysdatabundlesbundlegroupsbeachdebo_Id
+            CreateEnglishVersionByDefault = 0
+            Fields      = @{
+                "Bundles" = @{
+                                    
+                    "en" = ""
+                                    
+                    "de-DE" = $debo_bundles_3d594a2af44849108243875dc7ea3a9a_dede_v1
+                                    
+                }
+                "Promocode" = @{
+                                    
+                    "en" = ""
+                                    
+                    "de-DE" = "DEBO"
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/Beach/EUBA"
+            TemplatePath = "Feature/Bundles/Bundle Group"
+            Id          = $holidaysdatabundlesbundlegroupsbeacheuba_Id
+            Fields      = @{
+                "Bundles" = @{
+                                    
+                    "en" = $euba_bundles_5ba6a5543175414c9fe0e8d7911a8046_en_v1
+                                    
+                                    
+                                    
+                }
+                "Promocode" = @{
+                                    
+                    "en" = "EUBA"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/Beach/EUBF"
+            TemplatePath = "Feature/Bundles/Bundle Group"
+            Id          = $holidaysdatabundlesbundlegroupsbeacheubf_Id
+            Fields      = @{
+                "Bundles" = @{
+                                    
+                    "en" = $eubf_bundles_5360c6ae6cda49ce823d8674a5cd2064_en_v1
+                                    
+                                    
+                                    
+                }
+                "Promocode" = @{
+                                    
+                    "en" = "EUBF"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/Beach/EUBO"
+            TemplatePath = "Feature/Bundles/Bundle Group"
+            Id          = $holidaysdatabundlesbundlegroupsbeacheubo_Id
+            Fields      = @{
+                "Bundles" = @{
+                                    
+                    "en" = $eubo_bundles_a84c7edef99e433c9661ca3f07e9a27c_en_v1
+                                    
+                                    
+                                    
+                }
+                "Promocode" = @{
+                                    
+                    "en" = "EUBO"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/Beach/EUBU"
+            TemplatePath = "Feature/Bundles/Bundle Group"
+            Id          = $holidaysdatabundlesbundlegroupsbeacheubu_Id
+            Fields      = @{
+                "Bundles" = @{
+                                    
+                    "en" = $eubu_bundles_23916153d7d84fd4ae795d975256a698_en_v1
+                                    
+                                    
+                                    
+                }
+                "Promocode" = @{
+                                    
+                    "en" = "EUBU"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/Beach/FRBO"
+            TemplatePath = "Feature/Bundles/Bundle Group"
+            Id          = $holidaysdatabundlesbundlegroupsbeachfrbo_Id
+            CreateEnglishVersionByDefault = 0
+            Fields      = @{
+                "Bundles" = @{
+                                    
+                    "fr-FR" = $frbo_bundles_04f19efd4bce4f7d822f196b84d31136_frfr_v1
+                                    
+                                    
+                }
+                "Promocode" = @{
+                                    
+                    "fr-FR" = "FRBO"
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/City"
+            TemplatePath = "Common/Folder"
+            Id          = $holidaysdatabundlesbundlegroupscity_Id
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/City/CHCO"
+            TemplatePath = "Feature/Bundles/Bundle Group"
+            Id          = $holidaysdatabundlesbundlegroupscitychco_Id
+            CreateEnglishVersionByDefault = 0
+            Fields      = @{
+                "Bundles" = @{
+                    "de-CH" = $chco_bundles_085f2980095f473b90946d24e4cd17f9_dech_v1
+                                    
+                                    
+                                    
+                }
+                "Promocode" = @{
+                    "de-CH" = "CHCO"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/City/DECO"
+            TemplatePath = "Feature/Bundles/Bundle Group"
+            Id          = $holidaysdatabundlesbundlegroupscitydeco_Id
+            CreateEnglishVersionByDefault = 0
+            Fields      = @{
+                "Bundles" = @{
+                    "de-DE" = $deco_bundles_773bd50d677a4632a8c1eb25603744c1_dede_v1
+                                    
+                }
+                "Promocode" = @{
+                    "de-DE" = "DECO"
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/City/EUCB"
+            TemplatePath = "Feature/Bundles/Bundle Group"
+            Id          = $holidaysdatabundlesbundlegroupscityeucb_Id
+            Fields      = @{
+                "Bundles" = @{
+                                    
+                    "en" = $eucb_bundles_d21e15e9ae4f4e6d8abe75cb7343e7a3_en_v1
+                                    
+                                    
+                                    
+                }
+                "Promocode" = @{
+                                    
+                    "en" = "EUCB"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/City/EUCO"
+            TemplatePath = "Feature/Bundles/Bundle Group"
+            Id          = $holidaysdatabundlesbundlegroupscityeuco_Id
+            Fields      = @{
+                "Bundles" = @{
+                                    
+                    "en" = $euco_bundles_2fcfe13f055a41fb8b1e799df33a1538_en_v1
+                                    
+                                    
+                                    
+                }
+                "Promocode" = @{
+                                    
+                    "en" = "EUCO"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/City/EUCV"
+            TemplatePath = "Feature/Bundles/Bundle Group"
+            Id          = $holidaysdatabundlesbundlegroupscityeucv_Id
+            Fields      = @{
+                "Bundles" = @{
+                                    
+                    "en" = $eucv_bundles_4b275d662512453ca07a307399637572_en_v1
+                                    
+                                    
+                                    
+                }
+                "Promocode" = @{
+                                    
+                    "en" = "EUCV"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups/City/FRCO"
+            TemplatePath = "Feature/Bundles/Bundle Group"
+            Id          = $holidaysdatabundlesbundlegroupscityfrco_Id
+            CreateEnglishVersionByDefault = 0
+            Fields      = @{
+                "Bundles" = @{
+                    "fr-FR" = $frco_bundles_a2c045e1a3684b539b66cfb39e6ab2f5_frfr_v1
+                                    
+                                    
+                }
+                "Promocode" = @{
+                    "fr-FR" = "FRCO"
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Icons"
+            TemplatePath = "Feature/Bundles/Bundle Icon Folder"
+            Id          = $holidaysdatabundlesbundleicons_Id
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Icons/Bag"
+            TemplatePath = "Feature/Bundles/Bundle Icon"
+            Id          = $holidaysdatabundlesbundleiconsbag_Id
+            Fields      = @{
+                "Identifier" = @{
+                                    
+                    "en" = "bag"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Icons/Holiday Plus"
+            TemplatePath = "Feature/Bundles/Bundle Icon"
+            Id          = $holidaysdatabundlesbundleiconsholidayplus_Id
+            Fields      = @{
+                "Identifier" = @{
+                                    
+                    "en" = "holiday-plus"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Icons/Holiday Premium"
+            TemplatePath = "Feature/Bundles/Bundle Icon"
+            Id          = $holidaysdatabundlesbundleiconsholidaypremium_Id
+            Fields      = @{
+                "Identifier" = @{
+                                    
+                    "en" = "premium"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Icons/Leg Room"
+            TemplatePath = "Feature/Bundles/Bundle Icon"
+            Id          = $holidaysdatabundlesbundleiconslegroom_Id
+            Fields      = @{
+                "Identifier" = @{
+                                    
+                    "en" = "leg-room"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Icons/Longer Stay"
+            TemplatePath = "Feature/Bundles/Bundle Icon"
+            Id          = $holidaysdatabundlesbundleiconslongerstay_Id
+            Fields      = @{
+                "Identifier" = @{
+                                    
+                    "en" = "longer-stay"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Icons/Seat"
+            TemplatePath = "Feature/Bundles/Bundle Icon"
+            Id          = $holidaysdatabundlesbundleiconsseat_Id
+            Fields      = @{
+                "Identifier" = @{
+                                    
+                    "en" = "seat"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Icons/Speedy"
+            TemplatePath = "Feature/Bundles/Bundle Icon"
+            Id          = $holidaysdatabundlesbundleiconsspeedy_Id
+            Fields      = @{
+                "Identifier" = @{
+                                    
+                    "en" = "speedy"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Icons/Standard"
+            TemplatePath = "Feature/Bundles/Bundle Icon"
+            Id          = $holidaysdatabundlesbundleiconsstandard_Id
+            Fields      = @{
+                "Identifier" = @{
+                                    
+                    "en" = "standard"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Icons/Transfer"
+            TemplatePath = "Feature/Bundles/Bundle Icon"
+            Id          = $holidaysdatabundlesbundleiconstransfer_Id
+            Fields      = @{
+                "Identifier" = @{
+                                    
+                    "en" = "transfer"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Icons/Weekend Break"
+            TemplatePath = "Feature/Bundles/Bundle Icon"
+            Id          = $holidaysdatabundlesbundleiconsweekendbreak_Id
+            Fields      = @{
+                "Identifier" = @{
+                                    
+                    "en" = "weekend-break"
+                                    
+                                    
+                                    
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Icons/Weekend Break Plus"
+            TemplatePath = "Feature/Bundles/Bundle Icon"
+            Id          = $holidaysdatabundlesbundleiconsweekendbreakplus_Id
+            Fields      = @{
+                "Identifier" = @{
+                                    
+                    "en" = "weekend-break-plus"
+                                    
+                                    
+                                    
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    Import-Function "Import Content"
+    $dsItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Bundles/Bundle Groups"
+    $ds = "`"$($dsItem.ID.ToString())`""
+    Write-Host "Datasource Id: $ds"
+    $bundles_renderings_47b15fe52e364d4dba1f275b16e61309_en_v1 = @"
+    <r xmlns:p="p" xmlns:s="s" p:p="1"><d id="{FE5D7FDF-89C0-4D99-9AA3-B5FBD009C9F3}"><r uid="{3DB9D3F3-6284-4B2F-80B1-6A5BA13881BD}"><p:d /></r><r uid="{AB162BAF-FC08-4790-903D-6F1DB094850A}" s:ds=$ds s:id="{B9257FBA-8164-4EF2-BA49-FE942FC54018}" s:par="ForceReloadChildren" s:ph="body" s:ccb="Clear on publish" /></d></r>
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Bundles"
+            TemplatePath = "Project/Holidays/Pages/Bundles Page"
+            Fields      = @{
+                "__Renderings" = @{
+                    "en" = $bundles_renderings_47b15fe52e364d4dba1f275b16e61309_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999999
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250725T075510Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

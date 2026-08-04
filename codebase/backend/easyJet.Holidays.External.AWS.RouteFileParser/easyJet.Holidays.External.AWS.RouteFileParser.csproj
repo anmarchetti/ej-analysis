@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Nullable>warnings</Nullable>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <AWSProjectType>Lambda</AWSProjectType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!--it is a Function, after all.-->
+    <NoWarn>CA1716</NoWarn> 
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.Annotations" />
+    <PackageReference Include="Amazon.Lambda.Core" />
+    <PackageReference Include="Amazon.Lambda.S3Events" />
+    <PackageReference Include="Amazon.Lambda.Serialization.Json" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" />
+    <PackageReference Include="AWSSDK.S3" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\easyJet.Holidays.External.AWS.Domain\appsettings.shared.json" Link="appsettings.shared.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\easyJet.Holidays.Api.Domain\easyJet.Holidays.Api.Domain.csproj" />
+    <ProjectReference Include="..\easyJet.Holidays.External.AWS.Domain\easyJet.Holidays.External.AWS.Domain.csproj" />
+    <ProjectReference Include="..\easyJet.Holidays.External.Cms\easyJet.Holidays.External.Cms.csproj" />
+    <ProjectReference Include="..\easyJet.Holidays.External.Domain\easyJet.Holidays.External.Domain.csproj" />
+  </ItemGroup>
+</Project>

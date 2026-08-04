@@ -1,0 +1,160 @@
+﻿---
+ID: "af4bd26b-c5f7-40b9-b3b6-756722a573eb"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/MAN-307 Room and board model translations"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version ($item,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+    
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value;
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    function Get-Or-Create-Item ($path,$template) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue;
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $template
+    	}
+    	return $item
+    }
+    
+    function translateRoomAndBoardPopup() {
+    	$roomAndBoardPopupPath = "/sitecore/content/EasyJet/Holidays/Data/Amendment Data/Room and board/Room and board popup"
+    	$item  = Get-Item -Path $roomAndBoardPopupPath -ErrorAction SilentlyContinue
+    
+    	if ($item -eq $null) {
+    		Write-Host "Missing $($roomAndBoardPopupPath) EN language."
+    		return;
+    	}
+    	
+    	@('de-CH', 'de-DE') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Ändern Sie Ihre Unterkunft und Verpflegung"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Subtitle" -Value "Bitte sehen Sie sich die alternativen Optionen für Unterkunft und Verpflegung an und wählen Sie diese aus."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "PriceTooltipContent" -Value "Preis vorbehaltlich einer Änderung der Verfügbarkeit aufgrund täglicher Systemaktualisierungen.<br />
+    <br />Der hier angezeigte Preis berücksichtigt keine zusätzlichen Aktionscodes. Jede daraus resultierende Preisänderung wird beim Aufrufen der Zahlungsseite angezeigt."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "FreeChildPlaceTooltip" -Value "Wenn Sie diese Option wählen, erhalten Sie einen kostenlosen Platz für ein Kind. Der hier angezeigte Preis ist inklusive dieser Ermäßigung."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AltRoomsTitle" -Value "{amount} Anderes Zimmer verfügbar"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AltRoomsTitlePlural" -Value "{amount} Andere Räume verfügbar"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AltRoomsExpandLabel" -Value "Weitere Zimmeroptionen anzeigen"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AltRoomsCollapseLabel" -Value "Zimmeroptionen ausblenden"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "CountRoomsToShow" -Value "3"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "OriginalRoomTitle" -Value "Ihr Zimmer"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "RoomsMobileListTitle" -Value "Ändern Sie Ihr Zimmer"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "RoomsMobileListDescription" -Value "Bitte sehen Sie sich die alternativen Zimmeroptionen unten an und wählen Sie sie aus."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AdditionalCostLabel" -Value "Zusätzliche Kosten"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "GoBackLabel" -Value "Zurückgehen"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "GoBackNoChangesLabel" -Value "Zurückgehen ohne Änderungen"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "RefundAmountLabel" -Value "Erstattungsbetrag"
+    	}
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Changez votre chambre et votre pension"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Subtitle" -Value "Veuillez consulter et sélectionner les options de logement et de pension ci-dessous."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "PriceTooltipContent" -Value "Preisänderungen vorbehalten &amp; Verfügbarkeit aufgrund täglicher Systemaktualisierungen.<br />
+    <br />Der hier angezeigte Preis berücksichtigt keine zusätzlichen Aktionscodes. Jede daraus resultierende Preisänderung wird beim Aufrufen der Zahlungsseite angezeigt."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "FreeChildPlaceTooltip" -Value "En choisissant cette option, vous bénéficiez d'une place gratuite pour un enfant. Le prix affiché ici inclut cette réduction."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AltRoomsTitle" -Value "{amount} Autre pièce disponible"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AltRoomsTitlePlural" -Value "{amount} Autres pièces disponibles"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AltRoomsExpandLabel" -Value "Voir d'autres options de chambres"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AltRoomsCollapseLabel" -Value "Cacher les options de la chambre"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "CountRoomsToShow" -Value "3"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "OriginalRoomTitle" -Value "Votre chambre"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "RoomsMobileListTitle" -Value "Changer de chambre"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "RoomsMobileListDescription" -Value "Veuillez consulter et sélectionner d'autres options de chambres ci-dessous."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AdditionalCostLabel" -Value "Coût supplémentaire"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "GoBackLabel" -Value "Retourner"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "GoBackNoChangesLabel" -Value "Revenir en arrière sans changement"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "RefundAmountLabel" -Value "Montant du remboursement"
+    	}
+    }
+    
+    function translateBoardType() {
+    	$boardTypePath = "/sitecore/content/EasyJet/Holidays/Data/Amendment Data/Room and board/Board Types"
+    	$item  = Get-Item -Path $boardTypePath -ErrorAction SilentlyContinue
+    
+    	if ($item -eq $null) {
+    		Write-Host "Missing $($boardTypePath) EN language."
+    		return;
+    	}
+    	
+    	@('de-CH', 'de-DE') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Board-Typen"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "ShowLabel" -Value "Alle Brettoptionen anzeigen"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "HideLabel" -Value "Vorstandsoptionen ausblenden"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "EditLabel" -Value "Bearbeiten Sie Ihr Board"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "DrawerTitle" -Value "Ändern Sie Ihr Board"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "DrawerDescription" -Value "Lust auf ein Upgrade? Hier finden Sie alle unsere verfügbaren Bretter für diesen Urlaub."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "DrawerCancel" -Value "Abbrechen"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlternativeBoardsTitleSingular" -Value "Andere Tafeloption"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlternativeBoardsTitlePlural" -Value "Andere Plattenoptionen"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "FreeChildPlaceInfoTitle" -Value "Über Ihren Free Child Place"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "FreeChildPlaceInfoText" -Value "Ihr kostenloser Platz für ein Kind gilt nicht mehr für dieses Board und ist in der Preisänderung berücksichtigt."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationSubtitle" -Value "Der Wechsel zu diesem Board bedeutet ein paar andere Änderungen am Paket, aber keine Sorge, es gibt keine versteckten Kosten!"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationRoomResultTitle" -Value "Raumabwechslung"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationResultSubtitle" -Value "Die Auswahl des neuen Brettes erfordert eine Änderung Ihrer anderen Zimmer, die in den Kosten enthalten ist."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationResultRoomsSubtitle" -Value "Ihre neue Zimmerwahl erfordert eine Änderung Ihrer anderen Zimmer, die in den Kosten enthalten ist."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationRoomResultTextSingular" -Value "Ihr neues Zimmer"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationRoomResultTextPlural" -Value "Ihre neuen Räume"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationChangingFromTitle" -Value "Wechseln von"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationInfoTitle" -Value "Erfordert einen Umbau der Räume"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationInfoText" -Value "Diese Verpflegung erfordert eine Änderung des von Ihnen gewählten Zimmers und ist in der Preisänderung bereits berücksichtigt"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationExtendedInfoTitle" -Value "Erfordert einen Umbau der Räume"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationExtendedInfoText" -Value "Diese Karte erfordert eine Änderung einiger oder aller von Ihnen ausgewählten Zimmer und ist in der Preisänderung berücksichtigt"
+    										
+    	}
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Types de cartes"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "ShowLabel" -Value "Voir toutes les options du tableau"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "HideLabel" -Value "Masquer les options du tableau"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "EditLabel" -Value "Modifier votre tableau"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "DrawerTitle" -Value "Modifier le conseil d'administration"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "DrawerDescription" -Value "Envie d'un surclassement ? Voici tous nos choix de planches disponibles pour ces vacances."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "DrawerCancel" -Value "Annuler"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlternativeBoardsTitleSingular" -Value "Autre option de conseil"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlternativeBoardsTitlePlural" -Value "Autres options du conseil d'administration"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "FreeChildPlaceInfoTitle" -Value "A propos de votre place d'enfant gratuite"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "FreeChildPlaceInfoText" -Value "La place gratuite pour votre enfant ne sera pas valable sur cette base et a été prise en compte dans le changement de prix."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationSubtitle" -Value "Le passage à cette carte implique quelques autres changements dans le paquet, mais ne vous inquiétez pas, il n'y a pas de coûts cachés !"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationRoomResultTitle" -Value "Alternance de salles"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationResultSubtitle" -Value "Le choix de votre nouvelle planche nécessite une modification de vos autres pièces, ce qui est inclus dans le coût."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationResultRoomsSubtitle" -Value "Votre nouveau choix de chambre nécessite une modification de vos autres chambres qui est incluse dans le coût."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationRoomResultTextSingular" -Value "Votre nouvelle chambre"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationRoomResultTextPlural" -Value "Vos nouvelles pièces"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationChangingFromTitle" -Value "Passer de"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationInfoTitle" -Value "Nécessite un aménagement de la pièce"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationInfoText" -Value "Cette pension nécessite une modification de la chambre choisie et a été prise en compte dans le changement de prix."
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationExtendedInfoTitle" -Value "Nécessite un aménagement de la pièce"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "AlterationExtendedInfoText" -Value "Ce tableau nécessite une modification de certaines ou de toutes les chambres sélectionnées et a été pris en compte dans le changement de prix."
+    	}
+    }
+    
+    translateRoomAndBoardPopup
+    translateBoardType
+    
+    Write-Host "Script executed sucessfully";
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1010
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240905T163335Z

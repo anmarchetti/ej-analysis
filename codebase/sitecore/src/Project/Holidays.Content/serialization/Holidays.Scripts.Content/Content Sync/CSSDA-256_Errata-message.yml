@@ -1,0 +1,84 @@
+﻿---
+ID: "7a875553-b1c8-4044-bd00-8b8bb3ba16fc"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-256_Errata-message"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+      function create-lang-version($item,$lang,$field,$value) {
+          $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+      
+          if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+              Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+          }
+      
+          if ($null -ne $field) {
+              $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+              $targetLangItem.Editing.BeginEdit()
+              $targetLangItem[$field] = $value;
+              $targetLangItem.Editing.EndEdit() | Out-Null
+          }
+      }
+      
+      $amedDatesSummaryServiceMessageItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary/Page Components/Attention Message" -ErrorAction SilentlyContinue;
+      $amedDatesServiceMessageItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Page Components/Date Change Attention Message" -ErrorAction SilentlyContinue;
+      
+      $enTitle = "Please read carefully";
+      $frTitle = "Lisez attentivement s'il vous plaît";
+      $deTitle = "Bitte aufmerksam lesen";
+      
+      
+      if ($amedDatesSummaryServiceMessageItem -ne $null) {
+          $amedDatesSummaryServiceMessageItem.Editing.BeginEdit();
+      
+      	$amedDatesSummaryServiceMessageItem["Title"]= $enTitle;
+      	$amedDatesSummaryServiceMessageItem["Type"]= "errata";
+          $amedDatesSummaryServiceMessageItem["Description"]= "";
+      
+      	# Creating languages versions
+      	@('fr-CH', 'fr-FR') | % {
+             Create-Lang-Version -Item $amedDatesSummaryServiceMessageItem -Lang $_ -Field "Title" -Value $frTitle;
+             Create-Lang-Version -Item $amedDatesSummaryServiceMessageItem -Lang $_ -Field "Description" -Value "";
+          }
+        @('de-CH', 'de-DE') | % {
+             Create-Lang-Version -Item $amedDatesSummaryServiceMessageItem -Lang $_ -Field "Title" -Value $deTitle;
+             Create-Lang-Version -Item $amedDatesSummaryServiceMessageItem -Lang $_ -Field "Description" -Value "";
+        }
+      
+      	Write-Host $amedDatesSummaryServiceMessageItem.Name "Updated";
+          $amedDatesSummaryServiceMessageItem.Editing.EndEdit() | Out-Null;
+      }
+      if ($amedDatesServiceMessageItem -ne $null) {
+          $amedDatesServiceMessageItem.Editing.BeginEdit();
+      
+      	$amedDatesServiceMessageItem["Title"]= $enTitle;
+          $amedDatesServiceMessageItem["Type"]= "errata";
+          $amedDatesServiceMessageItem["Description"]= "";
+      
+      	# Creating languages versions
+      	@('fr-CH', 'fr-FR') | % {
+             Create-Lang-Version -Item $amedDatesServiceMessageItem -Lang $_ -Field "Title" -Value $frTitle;
+             Create-Lang-Version -Item $amedDatesServiceMessageItem -Lang $_ -Field "Description" -Value "";
+          }
+          @('de-CH', 'de-DE') | % {
+             Create-Lang-Version -Item $amedDatesServiceMessageItem -Lang $_ -Field "Title" -Value $deTitle;
+             Create-Lang-Version -Item $amedDatesServiceMessageItem -Lang $_ -Field "Description" -Value "";
+          }
+      
+      	Write-Host $amedDatesServiceMessageItem.Name "Updated";
+          $amedDatesServiceMessageItem.Editing.EndEdit() | Out-Null;
+      }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2300
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230907T104831Z

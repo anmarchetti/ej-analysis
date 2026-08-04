@@ -1,0 +1,86 @@
+﻿---
+ID: "c5b888bb-26f5-49f7-815f-cb7f5f16ed10"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/3 - SER-872 Trade cancelled full width banner"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+            $cancelledBookingPagePath = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking"
+            $bannerDatasourcePath = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components/Search Holiday Banner"
+    
+            $templatePath = "/sitecore/templates/Feature/PageContent/Full Width Banner"
+            $renderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Full Width Banner"
+    
+            $bookingContextRenderingId = "{C30624AB-A71F-492A-ADFF-73A1952FF024}"
+            $masonryWrapperId = "{6615BDBE-E40B-4166-972A-5754B34A1F0E}"
+            $masonryItemRenderingId = "{630D2676-483E-420D-8F04-4C15212F3EFF}"
+            $masonryItemPath = "/sitecore/layout/Renderings/Feature/Page Structure/Masonry/Masonry Wrapper Item"
+    
+           $image = @"
+    <image mediaid="{D07D52BC-6E88-48C0-A91C-4C1F914BF1DB}" height="" width="" hspace="" vspace="" />
+    "@
+                
+            $link = Get-Item -Path "master:/content/EasyJet/TradePortal/Home" -ErrorAction SilentlyContinue
+    
+        function Search-Holiday-Content($datasoursePath) {
+                $updates = @(
+                    @{
+                        Path         = $datasoursePath
+                        TemplatePath = $templatePath
+                        Fields      = @{
+                            "Title" = @{
+                                "en" = "Search for new holiday"
+                            }
+                            "Description"= @{
+                                "en" = "Find your customer’s next adventure with ease. Use our quick search to explore the latest destinations and deals"
+                            }
+                            "Image"= $image
+                            "CTA" = @{
+                                "en" = '<link linktype="internal" id="' + $link.ID + '" text="Start a new search" />'
+                            }
+                        }
+                    }
+                )
+                ImportContent -itemsToCreate $updates
+            }
+    
+            function Add-Travel-Info-Renderings($pagePath, $datasoursePath) {
+                $page = Get-Item -Path $pagePath
+                $bookingContextRendering = Get-Rendering -Item $page | Where-Object {$_.ItemId -eq $bookingContextRenderingId}
+                $masonryWrapperRendering = Get-Rendering -Item $page | Where-Object {$_.ItemId -eq $masonryWrapperId}
+    
+                $masonryItemRendering = Get-Item -Path $masonryItemPath
+                $masonryItemInstance = New-Rendering -Item $masonryItemRendering 
+                Add-Rendering -Item $page -Instance $masonryItemInstance -Placeholder "/body/booking-context-$($bookingContextRendering.UniqueId)-0/masonry-section-$($masonryWrapperRendering[0].UniqueId)-0"
+    
+                $masonryItems = Get-Rendering -Item $page | Where-Object {$_.ItemId -eq $masonryItemRenderingId}
+                $neededMasonry = $masonryItems[2] 
+    
+                $bannerRendering = Get-Item -Path $renderingPath
+                $bannerInstance = New-Rendering -Item $bannerRendering
+                Set-Rendering -Item $page -Instance $masonryItems[0] -Parameter @{ItemOrderOnMobile = 2}
+                Set-Rendering -Item $page -Instance $masonryItems[1] -Parameter @{ItemOrderOnMobile = 1}
+                Set-Rendering -Item $page -Instance $neededMasonry -Parameter @{ItemOrderOnMobile = 3}
+                Add-Rendering -Item $page -Instance $bannerInstance -Placeholder "/body/booking-context-$($bookingContextRendering.UniqueId)-0/masonry-section-$($masonryWrapperRendering[0].UniqueId)-0/masonry-item-$($neededMasonry.UniqueId)-0" -DataSource $datasoursePath -Parameter @{
+                    TextAlignment = "left"; Version = "SlimWithShardMirrored"; TitleFontStyle = "rounded demi"; TitleFontSize = ""; CTATheme = "filled"
+                }
+    
+    
+                Search-Holiday-Content -DatasoursePath $datasoursePath;
+    
+            }
+    
+            Add-Travel-Info-Renderings -PagePath $cancelledBookingPagePath -DatasoursePath $bannerDatasourcePath
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20251204T101854Z

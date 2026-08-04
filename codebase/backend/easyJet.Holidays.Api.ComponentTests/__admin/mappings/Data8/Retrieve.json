@@ -1,0 +1,77 @@
+{
+  "Title": "Response for Data8 Retrieve request",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "RegexMatcher",
+          "Pattern": "^/?PredictiveAddress/Retrieve\\.json$",
+          "IgnoreCase": true
+        }
+      ]
+    },
+    "Methods": [ "Post" ]
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsJson": {
+      "Status": {
+        "Success": true,
+        "ErrorMessage": null,
+        "CreditsRemaining": 942
+      },
+      "Result": {
+        "Address": {
+          "Lines": [
+            "1 Marlborough Street",
+            "",
+            "Ashton-Under-Lyne",
+            "Lancashire",
+            "OL7 0ET"
+          ]
+        },
+        "RawAddress": {
+          "Organisation": "",
+          "Department": "",
+          "AddressKey": 38635224,
+          "OrganisationKey": 0,
+          "PostcodeType": "S",
+          "BuildingNumber": 1,
+          "SubBuildingName": "",
+          "BuildingName": "",
+          "DependentThoroughfareName": "",
+          "DependentThoroughfareDesc": "",
+          "ThoroughfareName": "MARLBOROUGH",
+          "ThoroughfareDesc": "STREET",
+          "DoubleDependentLocality": "",
+          "DependentLocality": "",
+          "Locality": "ASHTON-UNDER-LYNE",
+          "Postcode": "OL7 0ET",
+          "Dps": "4D",
+          "PoBox": "",
+          "PostalCounty": "LANCASHIRE",
+          "TraditionalCounty": "LANCASHIRE",
+          "AdministrativeCounty": "TAMESIDE",
+          "CountryISO2": null,
+          "UniqueReference": null,
+          "Location": {
+            "Easting": 392973,
+            "Northing": 398384,
+            "GridReference": "SJ929983",
+            "Longitude": -2.1073562834941573,
+            "Latitude": 53.48214448899003,
+            "CountyCode": null,
+            "County": null,
+            "DistrictCode": null,
+            "District": null,
+            "WardCode": null,
+            "Ward": null,
+            "Country": null,
+            "Constituency": null
+          },
+          "AdditionalData": null
+        }
+      }
+    }
+  }
+}

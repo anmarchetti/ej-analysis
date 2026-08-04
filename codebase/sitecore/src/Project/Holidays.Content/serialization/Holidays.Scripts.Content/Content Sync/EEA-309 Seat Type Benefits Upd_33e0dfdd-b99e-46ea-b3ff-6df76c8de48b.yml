@@ -1,0 +1,178 @@
+﻿---
+ID: "33e0dfdd-b99e-46ea-b3ff-6df76c8de48b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-309 Seat Type Benefits Update - Trade Portal"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $icon_d10b646ad46143caa33f65438b03c2c6_frch_v1 = @"
+    {B1A2E561-D409-4D65-A1FF-B53BE6B75B2C}
+    "@
+    $icon_b4e632586e9948a6be3835235151d053_frfr_v1 = @"
+    {BD0FE680-03D5-477E-9B85-F24438A0378D}
+    "@
+    $icon_b4e632586e9948a6be3835235151d053_dede_v1 = @"
+    {BD0FE680-03D5-477E-9B85-F24438A0378D}
+    "@
+    $icon_a432bf8132d24f4ea924c5e65bb8d0c0_dech_v1 = @"
+    {7C2BE2C0-B427-452D-B1C3-E48DD913E52D}
+    "@
+    $icon_b4e632586e9948a6be3835235151d053_en_v1 = @"
+    {BD0FE680-03D5-477E-9B85-F24438A0378D}
+    "@
+    $icon_b4e632586e9948a6be3835235151d053_frch_v1 = @"
+    {BD0FE680-03D5-477E-9B85-F24438A0378D}
+    "@
+    $icon_a432bf8132d24f4ea924c5e65bb8d0c0_frch_v1 = @"
+    {7C2BE2C0-B427-452D-B1C3-E48DD913E52D}
+    "@
+    $icon_a432bf8132d24f4ea924c5e65bb8d0c0_en_v1 = @"
+    {7C2BE2C0-B427-452D-B1C3-E48DD913E52D}
+    "@
+    $icon_a432bf8132d24f4ea924c5e65bb8d0c0_frfr_v1 = @"
+    {7C2BE2C0-B427-452D-B1C3-E48DD913E52D}
+    "@
+    $icon_48aae25494a24929be86a1b1af960c08_frch_v1 = @"
+    {1A19ADF3-ADA0-4CB2-93F7-C0745B5D4009}
+    "@
+    $icon_48aae25494a24929be86a1b1af960c08_en_v1 = @"
+    {1A19ADF3-ADA0-4CB2-93F7-C0745B5D4009}
+    "@
+    $icon_b4e632586e9948a6be3835235151d053_dech_v1 = @"
+    {BD0FE680-03D5-477E-9B85-F24438A0378D}
+    "@
+    $icon_48aae25494a24929be86a1b1af960c08_dede_v1 = @"
+    {1A19ADF3-ADA0-4CB2-93F7-C0745B5D4009}
+    "@
+    $icon_d10b646ad46143caa33f65438b03c2c6_dede_v1 = @"
+    {B1A2E561-D409-4D65-A1FF-B53BE6B75B2C}
+    "@
+    $icon_d10b646ad46143caa33f65438b03c2c6_en_v1 = @"
+    {B1A2E561-D409-4D65-A1FF-B53BE6B75B2C}
+    "@
+    $icon_a432bf8132d24f4ea924c5e65bb8d0c0_dede_v1 = @"
+    {7C2BE2C0-B427-452D-B1C3-E48DD913E52D}
+    "@
+    $icon_d10b646ad46143caa33f65438b03c2c6_dech_v1 = @"
+    {B1A2E561-D409-4D65-A1FF-B53BE6B75B2C}
+    "@
+    $icon_48aae25494a24929be86a1b1af960c08_dech_v1 = @"
+    {1A19ADF3-ADA0-4CB2-93F7-C0745B5D4009}
+    "@
+    $icon_48aae25494a24929be86a1b1af960c08_frfr_v1 = @"
+    {1A19ADF3-ADA0-4CB2-93F7-C0745B5D4009}
+    "@
+    $icon_d10b646ad46143caa33f65438b03c2c6_frfr_v1 = @"
+    {B1A2E561-D409-4D65-A1FF-B53BE6B75B2C}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seat Type Benefits"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Type Benefits Folder"
+            Id          = [GUID]"{CAE7D5D9-CBA7-4C1F-B323-6C3464295AC7}"
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seat Type Benefits/Be first off the aircraft when you land"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Type Benefit"
+            Id          = [GUID]"{B4E63258-6E99-48A6-BE38-35235151D053}"
+            Fields      = @{
+                "Icon" = @{
+                    "de-CH" = $icon_b4e632586e9948a6be3835235151d053_dech_v1
+                    "en" = $icon_b4e632586e9948a6be3835235151d053_en_v1
+                    "fr-FR" = $icon_b4e632586e9948a6be3835235151d053_frfr_v1
+                    "de-DE" = $icon_b4e632586e9948a6be3835235151d053_dede_v1
+                    "fr-CH" = $icon_b4e632586e9948a6be3835235151d053_frch_v1
+                }
+                "Name" = @{
+                    "de-CH" = "Gehöre zu den Ersten, die das Flugzeug verlassen"
+                    "en" = "Be first off the plane"
+                    "fr-FR" = "Sortez en premier de l'avion"
+                    "de-DE" = "Gehöre zu den Ersten, die das Flugzeug verlassen"
+                    "fr-CH" = "Sortez en premier de l'avion"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seat Type Benefits/Bring a small under seat cabin bag"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Type Benefit"
+            Id          = [GUID]"{A432BF81-32D2-4F4E-A924-C5E65BB8D0C0}"
+            Fields      = @{
+                "Icon" = @{
+                    "de-CH" = $icon_a432bf8132d24f4ea924c5e65bb8d0c0_dech_v1
+                    "en" = $icon_a432bf8132d24f4ea924c5e65bb8d0c0_en_v1
+                    "fr-FR" = $icon_a432bf8132d24f4ea924c5e65bb8d0c0_frfr_v1
+                    "de-DE" = $icon_a432bf8132d24f4ea924c5e65bb8d0c0_dede_v1
+                    "fr-CH" = $icon_a432bf8132d24f4ea924c5e65bb8d0c0_frch_v1
+                }
+                "Name" = @{
+                    "de-CH" = "Ein kleines Handgepäckstück"
+                    "en" = "Take a small cabin bag"
+                    "fr-FR" = "Voyagez avec un petit bagage à main"
+                    "de-DE" = "Ein kleines Handgepäckstück"
+                    "fr-CH" = "Voyagez avec un petit bagage à main"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seat Type Benefits/Extra legroom"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Type Benefit"
+            Id          = [GUID]"{D10B646A-D461-43CA-A33F-65438B03C2C6}"
+            Fields      = @{
+                "Icon" = @{
+                    "de-CH" = $icon_d10b646ad46143caa33f65438b03c2c6_dech_v1
+                    "en" = $icon_d10b646ad46143caa33f65438b03c2c6_en_v1
+                    "fr-FR" = $icon_d10b646ad46143caa33f65438b03c2c6_frfr_v1
+                    "de-DE" = $icon_d10b646ad46143caa33f65438b03c2c6_dede_v1
+                    "fr-CH" = $icon_d10b646ad46143caa33f65438b03c2c6_frch_v1
+                }
+                "Name" = @{
+                    "de-CH" = "Mehr Platz an Bord"
+                    "en" = "More legroom"
+                    "fr-FR" = "Plus de place pour vos jambes"
+                    "de-DE" = "Mehr Platz an Bord"
+                    "fr-CH" = "Plus de place pour vos jambes"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seat Type Benefits/Select your seat"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Type Benefit"
+            Id          = [GUID]"{48AAE254-94A2-4929-BE86-A1B1AF960C08}"
+            Fields      = @{
+                "Icon" = @{
+                    "de-CH" = $icon_48aae25494a24929be86a1b1af960c08_dech_v1
+                    "en" = $icon_48aae25494a24929be86a1b1af960c08_en_v1
+                    "fr-FR" = $icon_48aae25494a24929be86a1b1af960c08_frfr_v1
+                    "de-DE" = $icon_48aae25494a24929be86a1b1af960c08_dede_v1
+                    "fr-CH" = $icon_48aae25494a24929be86a1b1af960c08_frch_v1
+                }
+                "Name" = @{
+                    "de-CH" = "Wähle zwischen Fensterplatz, Mitte oder Gang"
+                    "en" = "Choose window, middle or aisle"
+                    "fr-FR" = "Choisissez la fenêtre, le milieu ou le couloir"
+                    "de-DE" = "Wähle zwischen Fensterplatz, Mitte oder Gang"
+                    "fr-CH" = "Choisissez la fenêtre, le milieu ou le couloir"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999942
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250710T111213Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

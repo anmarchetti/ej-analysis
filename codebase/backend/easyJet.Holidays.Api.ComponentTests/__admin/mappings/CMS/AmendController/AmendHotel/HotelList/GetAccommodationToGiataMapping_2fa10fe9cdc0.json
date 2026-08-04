@@ -1,0 +1,41 @@
+﻿{
+  "Title": "CMS Accommodation to Giata mapping data",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/ReferenceData/GetAccommodationToGiataMapping",
+          "IgnoreCase": true
+        }
+      ]
+    },
+    "Body": {
+      "Matcher": {
+        "Name": "ExactMatcher",
+        "Pattern": "AtcomIds%5B0%5D=48a3e1ccdf40&AtcomIds%5B1%5D=79165fbb8755&AtcomIds%5B2%5D=b9fd99daccfa&AtcomIds%5B3%5D=54a670c45326&AtcomIds%5B4%5D=f5dbf211&AtcomIds%5B5%5D=90e8e5ba&AtcomIds%5B6%5D=be4dae2c&AtcomIds%5B7%5D=e3bb71fc&AtcomIds%5B8%5D=dfafb8ea&AtcomIds%5B9%5D=60f9b863"
+      }
+    },
+    "Methods": [
+      "POST"
+    ]
+  },
+  "Response": {
+    "Headers": {
+      "Content-Type": "application/json; charset=utf-8"
+    },
+    "StatusCode": 200,
+    "BodyAsJson": {
+      "48a3e1ccdf40": "28925",
+      "79165fbb8755": "28926",
+      "b9fd99daccfa": "28927",
+      "54a670c45326": "28928",
+      "f5dbf211": "28929",
+      "90e8e5ba": "28930",
+      "be4dae2c": "28931",
+      "e3bb71fc": "28932",
+      "dfafb8ea": "28933",
+      "60f9b863": "28934"
+    }
+  }
+}

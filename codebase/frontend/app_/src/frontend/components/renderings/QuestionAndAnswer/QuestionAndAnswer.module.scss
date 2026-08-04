@@ -1,0 +1,58 @@
+.wrapper {
+    margin: -12px 0 32px;
+
+    &.withoutMargin {
+        margin: 0;
+    }
+}
+
+.contentContainer {
+    display: none;
+    flex-direction: row;
+    gap: 0;
+    width: 100%;
+    padding: 15px 25px;
+    font-size: 14px;
+    color: $clrTextHeading;
+    background-color: $clrSiteBgWhite;
+    border-top: 2px solid $colorGrayLighter;
+    box-shadow: none;
+
+    @include media-breakpoint-up(lg) {
+        padding: 26px 30px;
+        font-size: 16px;
+        line-height: 1.5;
+        border: 2px solid $colorGrayLighter;
+        border-radius: 0 3px 3px 0;
+    }
+}
+
+.open {
+    display: block;
+}
+
+.content {
+    p {
+        margin: 0 0 10px;
+    }
+
+    img {
+        width: 100% !important;
+    }
+}
+
+.toggleBtn {
+    @include media-breakpoint-up(lg) {
+        border-top: 2px solid $colorGrayLighter;
+    }
+}
+
+.toggleBtnSelected {
+    &:focus-visible {
+        &::after {
+            top: 0;
+            left: 0;
+            height: 100%;
+        }
+    }
+}

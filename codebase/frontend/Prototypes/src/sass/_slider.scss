@@ -1,0 +1,517 @@
+$ig-screen-sm-min: 768px !default;
+$ig-screen-xsm-min: 480px !default;
+$ig-white: #fff !default;
+$ig-black: #000 !default;
+$ig-blue: #337ab7 !default;
+$ig-background-black: rgba(0, 0, 0, 0.4) !default;
+$ig-transparent: rgba(0, 0, 0, 0) !default;
+$image-slider-min-height: 228px;
+
+.img-slider-box {
+    position: relative;
+    min-height: $image-slider-min-height;
+}
+
+.image-gallery {
+    user-select: text;
+    -webkit-tap-highlight-color: $ig-transparent;
+
+    &.hotel-main-image {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        @include media-breakpoint-down(lg) {
+            position: relative;
+        }
+
+        .image-gallery-index {
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            height: 28px;
+            padding: 6px 8px;
+            background-color: $blackShadowColor;
+            border-radius: 0 0 0 4px;
+
+            span {
+                font-family: $fontRoundedBook;
+                font-size: 13px;
+                line-height: 0.9;
+                color: $colorWhite;
+                white-space: nowrap;
+                opacity: 0.7;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+
+            // TODO: Gallery icon is removed. Because it should open the full screen gallery, which we wont have for launch.
+
+            // &::after {
+            //   content: "";
+            //   height: 12px;
+            //   width: 16px;
+            //   text-align: center;
+            //   display: block;
+            //   border: 2px solid #fff;
+            //   background-color: #fff;
+            //   margin-bottom: -4px;
+            //   border-radius: 3px;
+            //   z-index: 0;
+            //   flex: 0 0 auto;
+            //   position: absolute;
+            //   right: 7px;
+            //   top: 14px;
+            //   box-sizing: border-box;
+            // }
+            // &::before {
+            //   content: "";
+            //   height: 12px;
+            //   width: 16px;
+            //   border: 2px solid #fff;
+            //   border-radius: 3px;
+            //   display: block;
+            //   position: absolute;
+            //   top: 7px;
+            //   right: 14px;
+            //   z-index: -1;
+            //   box-sizing: border-box;
+            // }
+        }
+
+        &.fullscreen-enabled {
+            .image-gallery-index {
+                padding-right: 34px;
+            }
+        }
+    }
+
+    &.fullscreen-modal {
+        position: fixed;
+        z-index: 5;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: $ig-black;
+
+        .image-gallery-content {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+}
+
+.image-gallery-content {
+    position: relative;
+    top: 0;
+    line-height: 0;
+
+    &.fullscreen {
+        background: $ig-black;
+
+        .image-gallery-slide {
+            background: $ig-black;
+        }
+    }
+}
+
+.image-gallery-slide-wrapper {
+    position: relative;
+
+    &.left,
+    &.right {
+        display: inline-block;
+        width: calc(100% - 113px); // 100px + 8px for border + 5px for padding
+
+        @media (max-width: $ig-screen-sm-min) {
+            width: calc(100% - 84px); // 75px + 6px for border + 3px for padding
+        }
+    }
+
+    &.image-gallery-rtl {
+        direction: rtl;
+    }
+}
+
+.image-gallery-fullscreen-button,
+.image-gallery-play-button,
+.image-gallery-left-nav,
+.image-gallery-right-nav {
+    position: absolute;
+    z-index: 4;
+    background-color: $colorTransparent;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+}
+
+.image-gallery-fullscreen-button,
+.image-gallery-play-button {
+    bottom: 0;
+}
+
+.image-gallery-fullscreen-button {
+    right: 0;
+}
+
+.image-gallery-play-button {
+    left: 0;
+}
+
+.image-gallery-left-nav,
+.image-gallery-right-nav {
+    top: 50%;
+    padding: 50px 15px;
+    font-size: 5em;
+    color: $ig-white;
+    transform: translateY(-50%);
+
+    &[disabled] {
+        opacity: 0.6;
+        cursor: disabled;
+        pointer-events: none;
+    }
+
+    @media (max-width: $ig-screen-sm-min) {
+        padding: 20px 15px;
+        font-size: 3.4em;
+    }
+
+    @media (max-width: $ig-screen-xsm-min) {
+        padding: 0 15px;
+        font-size: 2.4em;
+    }
+}
+
+.image-gallery-left-nav {
+    left: 0;
+}
+
+.image-gallery-right-nav {
+    right: 0;
+}
+
+.image-gallery-slides {
+    position: relative;
+    overflow: hidden;
+    line-height: 0;
+    white-space: nowrap;
+}
+
+.image-gallery-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: $image-slider-min-height;
+    background: $ig-white;
+
+    &.center {
+        position: relative;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .image-gallery-description {
+        position: absolute;
+        bottom: 70px;
+        left: 0;
+        padding: 10px 20px;
+        line-height: 1;
+        color: $ig-white;
+        white-space: normal;
+        background: $ig-background-black;
+
+        @media (max-width: $ig-screen-sm-min) {
+            bottom: 45px;
+            padding: 8px 15px;
+            font-size: 0.8em;
+        }
+    }
+}
+
+.image-gallery-bullets {
+    position: absolute;
+    z-index: 4;
+    right: 0;
+    bottom: 20px;
+    left: 0;
+    width: 80%;
+    margin: 0 auto;
+
+    .image-gallery-bullets-container {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    .image-gallery-bullet {
+        display: inline-block;
+        margin: 0 5px;
+        padding: 5px;
+        background-color: $colorTransparent;
+        border: 1px solid $ig-white;
+        border-radius: 50%;
+        outline: none;
+        box-shadow: 0 1px 0 lighten($ig-black, 10%); // TODO change to tint-color
+        cursor: pointer;
+        appearance: none;
+
+        @media (max-width: $ig-screen-sm-min) {
+            margin: 0 3px;
+            padding: 3px;
+        }
+
+        @media (max-width: $ig-screen-xsm-min) {
+            padding: 2.7px;
+        }
+
+        &.active {
+            background: $ig-white;
+        }
+    }
+}
+
+.image-gallery-thumbnails-wrapper {
+    position: relative;
+
+    &.thumbnails-wrapper-rtl {
+        direction: rtl;
+    }
+
+    &.left,
+    &.right {
+        display: inline-block;
+        width: 108px; // 100px + 8px for border
+        vertical-align: top;
+
+        @media (max-width: $ig-screen-sm-min) {
+            width: 81px; // 75px + 6px for border
+        }
+
+        .image-gallery-thumbnails {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+
+            .image-gallery-thumbnail {
+                display: block;
+                margin-right: 0;
+                padding: 0;
+
+                + .image-gallery-thumbnail {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+
+    &.left {
+        margin-right: 5px;
+
+        @media (max-width: $ig-screen-sm-min) {
+            margin-right: 3px;
+        }
+    }
+
+    &.right {
+        margin-left: 5px;
+
+        @media (max-width: $ig-screen-sm-min) {
+            margin-left: 3px;
+        }
+    }
+}
+
+.image-gallery-thumbnails {
+    padding: 5px 0;
+    overflow: hidden;
+
+    @media (max-width: $ig-screen-sm-min) {
+        padding: 3px 0;
+    }
+
+    .image-gallery-thumbnails-container {
+        text-align: left;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: transform 0.45s ease-out;
+    }
+}
+
+.img-carousel-thumbnails__image.sortable {
+    position: relative;
+    z-index: 10000;
+    float: left;
+    margin: 8px;
+
+    .no-events {
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        pointer-events: none;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.image-gallery-thumbnail {
+    display: inline-block;
+    width: 100px;
+    border: 4px solid $colorTransparent;
+    transition: border 0.3s ease-out;
+
+    @media (max-width: $ig-screen-sm-min) {
+        width: 75px;
+        border: 3px solid $colorTransparent;
+    }
+
+    + .image-gallery-thumbnail {
+        margin-left: 2px;
+    }
+
+    .image-gallery-thumbnail-inner {
+        position: relative;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        vertical-align: middle;
+    }
+
+    &.active {
+        border: 4px solid $ig-blue;
+
+        @media (max-width: $ig-screen-sm-min) {
+            border: 3px solid $ig-blue;
+        }
+    }
+}
+
+.image-gallery-thumbnail-label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 5%;
+    font-size: 1em;
+    line-height: 1em;
+    color: #fff;
+    text-shadow: 1px 1px 0 #000;
+    white-space: normal;
+    transform: translateY(-50%);
+
+    @media (max-width: $ig-screen-sm-min) {
+        font-size: 0.8em;
+        line-height: 0.8em;
+    }
+}
+
+.image-gallery-index {
+    position: absolute;
+    z-index: 4;
+    top: 0;
+    right: 0;
+    padding: 10px 20px;
+    line-height: 1;
+    color: $ig-white;
+    background: $ig-background-black;
+
+    @media (max-width: $ig-screen-sm-min) {
+        padding: 5px 10px;
+        font-size: 0.8em;
+    }
+}
+
+.image-gallery,
+.image-gallery-content,
+.image-gallery-slide-wrapper,
+.image-gallery-swipe,
+.image-gallery-slides,
+.image-gallery-slide {
+    height: 100%;
+
+    @include media-breakpoint-down(sm) {
+        height: unset;
+    }
+}
+
+// Custom nav buttons
+.slider-nav {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+    transform: translateY(-50%);
+
+    @include media-breakpoint-down(md) {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+    }
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 16px;
+        height: 16px;
+        color: $colorOrange;
+        transform: translate(-50%, -50%);
+
+        @include media-breakpoint-down(md) {
+            width: 12px;
+            height: 12px;
+        }
+    }
+}
+
+.slider-nav--prev {
+    left: 10px;
+
+    svg {
+        margin-left: -2px;
+
+        @include media-breakpoint-down(md) {
+            margin-left: -1px;
+        }
+    }
+}
+
+.slider-nav--next {
+    right: 10px;
+
+    svg {
+        margin-left: 2px;
+
+        @include media-breakpoint-down(md) {
+            margin-left: 1px;
+        }
+    }
+}

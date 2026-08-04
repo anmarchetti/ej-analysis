@@ -1,0 +1,107 @@
+$header-height: 65px;
+$header-items-gap: 56px;
+
+@mixin gradientBlock {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    display: inline-block;
+    height: $header-height;
+    transform: skew(-31deg, 0deg);
+}
+
+@mixin headerImageWrapper {
+    position: relative;
+    display: flex;    
+    align-items: center;
+    height: $header-height;
+}
+
+@mixin headerImage {
+    position: relative;
+    z-index: 2;
+    display: block;
+    height: auto;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.innerWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: calc($container-max-width + $container-padding-x_mobile * 2);
+    height: 100%;
+    margin: auto;
+    padding: 0 $container-padding-x_mobile;
+    font-weight: bold;
+}
+
+.logoWrapper {
+    $ejh-logo-width: 166px;
+
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    margin-right: $container-padding-x_mobile;
+
+    .logoLink {
+        display: flex;
+        align-items: center;
+        min-width: $ejh-logo-width;
+        font-size: 1rem;
+        color: $colorWhite;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    .ejhLogo {
+        @include headerImageWrapper;
+
+        .ejhLogoImg {
+            @include headerImage;
+
+            min-width: $ejh-logo-width;
+            max-width: $ejh-logo-width;
+        }
+
+        &::before {
+            @include gradientBlock;
+
+            right: calc($header-items-gap / (-2));
+            width: 392px;
+            min-width: 320px;
+            background: $ejhGradient;
+        }
+    }
+
+    .ejhTradeLogo {
+        @include headerImageWrapper;
+
+        margin-right: 20px;
+        margin-left: 60px;
+
+        .ejhTradeLogoImg {
+            @include headerImage;
+
+            margin-top: -2px;
+        }
+
+        &::before {
+            @include gradientBlock;
+
+            left:  -31px;
+            width: 180.95px; // to meet the skewed correct size
+            background: $tradeGradient;
+        }
+    }
+}
+
+.navContainer {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}

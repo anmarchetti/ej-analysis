@@ -1,0 +1,215 @@
+﻿---
+ID: "743ce2cf-bdeb-4270-bf20-c8015134ce79"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-352 Setup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content" 
+    
+    Import-Function "Import Renderings"
+    Import-Function "Move Rendering Child Placeholders"
+    Import-Function "Update Rendering Placeholder"
+    Import-Function "Update Rendering Parameters"
+    Import-Function "Wrap Rendering With New Rendering" 
+    
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Summary Bar Settings"
+            TemplatePath = "Feature/Destinations/Settings/Summary Bar Settings"
+            Id          = [GUID]"{2A0C937C-3905-40C5-969B-9A75F15C45BE}"
+            Fields      = @{
+                "IsSummaryBarEnabled" = @{
+                    "de-CH" = "0"
+                    "en" = "0"
+                    "fr-FR" = "0"
+                    "de-DE" = "0"
+                    "fr-CH" = "0"
+                }
+                "IsPublic" = @{
+                    "en" = "1"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Settings/Summary Bar Settings"
+            TemplatePath = "Feature/Destinations/Settings/Summary Bar Settings"
+            Id          = [GUID]"{1A0C937C-3905-40C5-969B-9A75F15C45BA}"
+            Fields      = @{
+                "IsSummaryBarEnabled" = @{
+                    "de-CH" = "0"
+                    "en" = "0"
+                    "fr-FR" = "0"
+                    "de-DE" = "0"
+                    "fr-CH" = "0"
+                }
+                "IsPublic" = @{
+                    "en" = "1"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    Import-Function "Import Content"
+    
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Destinations"
+            TemplatePath = "Feature/Destinations/Destination Folder"
+            Id          = [GUID]"{2C73FFE9-41A1-4ACD-88CF-48B0F6E70327}"
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Destinations/Summary Bar"
+            TemplatePath = "Feature/Destinations/Summary Bar"
+            Id          = [GUID]"{4F768162-C990-49C8-BE63-D793164CB62A}"
+            Fields      = @{
+                "SummaryBarTitle" = @{
+                    "de-CH" = "Ihre Urlaubsübersicht"
+                    "en" = "Your Holiday Summary"
+                    "fr-FR" = "Résumé de vos vacances"
+                    "de-DE" = "Ihre Urlaubsübersicht"
+                    "fr-CH" = "Résumé de vos vacances"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Destinations"
+            TemplatePath = "Feature/Destinations/Destination Folder"
+            Id          = [GUID]"{3C73FFE9-41A1-4ACD-88CF-48B0F6E70328}"
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Destinations/Summary Bar"
+            TemplatePath = "Feature/Destinations/Summary Bar"
+            Id          = [GUID]"{5F768162-C990-49C8-BE63-D793164CB62B}"
+            Fields      = @{
+                "SummaryBarTitle" = @{
+                    "de-CH" = "Ihre Urlaubsübersicht"
+                    "en" = "Your Holiday Summary"
+                    "fr-FR" = "Résumé de vos vacances"
+                    "de-DE" = "Ihre Urlaubsübersicht"
+                    "fr-CH" = "Résumé de vos vacances"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    $myRenderings = @(
+        @{ 
+                WrapperTitle                = "Horizontal Component Wrapper"
+                PagePath                    = "/sitecore/content/EasyJet/Holidays/Home/Booking"
+                RenderingId                 = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+                RenderingIndex              = 1
+                WrapperRenderingId          = "{1B6F8CC5-F07C-40E8-AAE4-2E70409FB3B6}"
+                PlaceBeforeRenderingId      =    "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+                PlaceBeforeRenderingIndex   = 1
+                Placeholder                 = "component-wrapper-inner"
+                WrapIntoPlaceholder         = "component-wrapper-left"
+                WrapperPlaceholder          = "body"
+            	Parameters                  = @{
+                    IsGreyBackground = 1
+                    IsTriangleStart = 1
+                    IsTriangleEnd = 1
+                }
+            	WrapperParameters           = @{
+                    IsGreyBackground = 0
+                    IsTriangleStart = 0
+                    IsTriangleEnd = 0
+                }
+                UpdateFinalLayoutAsWell= 1
+    
+        }
+    )
+    
+    WrapRenderingWithNewRendering -renderingInfo $myRenderings
+    
+    
+    
+    $myRenderings = @(
+        @{ 
+                WrapperTitle                = "Horizontal Component Wrapper"
+                PagePath                    = "/sitecore/content/EasyJet/TradePortal/Home/Booking"
+                RenderingId                 = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+                RenderingIndex              = 1
+                WrapperRenderingId          = "{1B6F8CC5-F07C-40E8-AAE4-2E70409FB3B6}"
+                PlaceBeforeRenderingId      = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+                PlaceBeforeRenderingIndex   = 1
+                Placeholder                 = "component-wrapper-inner"
+                WrapIntoPlaceholder         = "component-wrapper-left"
+                WrapperPlaceholder          = "body"
+            	Parameters                  = @{
+                    IsGreyBackground = 1
+                    IsTriangleStart = 1
+                    IsTriangleEnd = 1
+                }
+            	WrapperParameters           = @{
+                    IsGreyBackground = 0
+                    IsTriangleStart = 0
+                    IsTriangleEnd = 0
+                }
+                UpdateFinalLayoutAsWell= 1
+    
+        }
+    )
+    
+    WrapRenderingWithNewRendering -renderingInfo $myRenderings
+    
+    $myRenderings = @(
+        @{ 
+            Title          = "Summary Bar"
+            PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Booking"
+            RenderingId  = "{E4FE4D55-9934-4792-8420-FC277F35E30F}"
+            Placeholder    = "/body/component-wrapper-right"
+            PlaceholderTargetRenderingId = "{1B6F8CC5-F07C-40E8-AAE4-2E70409FB3B6}"
+            DataSourcePath = "/sitecore/content/EasyJet/Holidays/Data/Destinations/Summary Bar"
+            PlaceBeforeRenderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+            PlaceBeforeRenderingSkip = 1
+            UpdateFinalLayoutAsWell = 1
+        }
+    )
+    
+    ImportRenderings -renderingsToAttach $myRenderings
+    
+    $myRenderings = @(
+        @{ 
+            Title          = "Summary Bar"
+            PagePath       = "/sitecore/content/EasyJet/TradePortal/Home/Booking"
+            RenderingId  = "{E4FE4D55-9934-4792-8420-FC277F35E30F}"
+            Placeholder    = "/body/component-wrapper-right"
+            PlaceholderTargetRenderingId = "{1B6F8CC5-F07C-40E8-AAE4-2E70409FB3B6}"
+            DataSourcePath = "/sitecore/content/EasyJet/TradePortal/Data/Destinations/Summary Bar"
+            PlaceBeforeRenderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+            PlaceBeforeRenderingSkip = 1
+            UpdateFinalLayoutAsWell = 1
+        }
+    )
+    
+    ImportRenderings -renderingsToAttach $myRenderings
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 100000040
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250709T103304Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

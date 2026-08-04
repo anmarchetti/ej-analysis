@@ -1,0 +1,44 @@
+﻿---
+ID: "b5961762-b7b9-4314-adc3-823f9d1622c4"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-17011-create-generic-regions-cta"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    $ctaFolderPath = "/sitecore/content/EasyJet/Holidays/Data/Cta Folder"
+    $ctaFolderId = "{B0B9CD9F-FF4E-48EA-87A6-0808083BC226}"
+    
+    $genericButton = Get-Or-Create-Item -path $ctaFolderPath -template $ctaFolderId
+    
+    $genericRegionsButtonPath = "/sitecore/content/EasyJet/Holidays/Data/Cta Folder/Regions Cta"
+    $templateId = "{CF50929C-515F-456A-8482-889DA27A029B}"
+    
+    $genericButton = Get-Or-Create-Item -path $genericRegionsButtonPath -template $templateId
+    $genericButton.Editing.BeginEdit()
+    $genericButton["Link"]='<link text="See all regions of {region}" linktype="anchor" url="regions" anchor="regions" title="" class="" />'
+    $genericButton.Editing.EndEdit()
+    
+    $mapComponent = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Maps/Maps Info" -ErrorAction SilentlyContinue
+    $mapComponent.Editing.BeginEdit()
+    $mapComponent["CTA"] = $genericButton.ID
+    $mapComponent.Editing.EndEdit()
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230515T125335Z

@@ -1,0 +1,164 @@
+﻿---
+ID: "ae30f625-d94c-4194-81f6-33673a0affda"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-10575 create facility headers filters content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $facilityHeadersFolderPath = "/sitecore/content/EasyJet/Holidays/Data/Facilities Headers"
+    $facilityTypesFolderPath = "/sitecore/content/EasyJet/Holidays/Data/Facility Types"
+    
+    $facilityHeadersFolderTempalteId = "{327E2D6C-4F48-45AA-A944-97B7483EF8BE}"
+    $facilityHeaderTempalteId = "{A5E834E6-986E-4668-8711-B83F507A7871}"
+    
+    $facilityTypeTemplateId = "{0AE072FB-5BCF-4E09-95B5-239CBE370B2B}"
+    
+    $facilityHeaders = @(
+        @{
+            ItemName = "Pool And Beach"
+            HeaderName = "Pool & Beach"
+            FacilityTypes = @(
+                @{
+                    Name = "Aqua park"
+                    Code = "AQP"
+                },
+                @{
+                    Name = "Indoor pool"
+                    Code = "360"
+                },
+                @{
+                    Name = "Indoor heated pool"
+                    Code = "362"
+                },
+                @{
+                    Name = "Outdoor pool"
+                    Code = "363"
+                },
+                @{
+                    Name = "Outdoor heated pool"
+                    Code = "365"
+                },
+                @{
+                    Name = "Outdoor Rooftop Swimming Pool"
+                    Code = "615"
+                },
+                @{
+                    Name = "Water park"
+                    Code = "620"
+                },
+                @{
+                    Name = "Water slides"
+                    Code = "610"
+                }
+            )
+        },
+        @{
+            ItemName = "Entertainment"
+            HeaderName = "Entertainment"
+            FacilityTypes = @(
+                @{
+                    Name = "Entertainment programme"
+                    Code = "401"
+                }
+            )
+        },
+        @{
+            ItemName = "Family"
+            HeaderName = "Family"
+            FacilityTypes = @(
+                @{
+                    Name = "Kids Club"
+                    Code = "340"
+                },
+                @{
+                    Name = "Playground"
+                    Code = "350"
+                },
+                @{
+                    Name = "Children's pool"
+                    Code = "385"
+                }
+            )
+        },
+        @{
+            ItemName = "General"
+            HeaderName = "General"
+            FacilityTypes = @(
+                @{
+                    Name = "Air conditioning"
+                    Code = "10"
+                },
+                @{
+                    Name = "Wi-fi"
+                    Code = "550"
+                }
+            )
+        },
+        @{
+            ItemName = "Sports And Health"
+            HeaderName = "Sports & Health"
+            FacilityTypes = @(
+                @{
+                    Name = "Spa centre"
+                    Code = "620"
+                },
+                @{
+                    Name = "Gym"
+                    Code = "470"
+                },
+                @{
+                    Name = "Gym"
+                    Code = "167"
+                }
+            )
+        }
+        @{
+            ItemName = "Food And Drink"
+            HeaderName = "Food & Drink"
+            FacilityTypes = @()
+        }
+    )
+    
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null){
+            $item = New-Item -Path $path -ItemType $templateId
+        }
+        
+        return $item
+    }
+    
+    function Update-Facility-Headers(){
+        $index = 1
+        $facilityHeadersFolderItem = Get-Or-Create-Item -Path $facilityHeadersFolderPath -TemplateId $facilityHeadersFolderTempalteId
+        $facilityTypesItems = Get-ChildItem -Path $facilityTypesFolderPath -Recurse | Where-Object { $_.TemplateId -eq $facilityTypeTemplateId} 
+        foreach($facilityHeader in $facilityHeaders){
+            $facilityHeaderItem = Get-Or-Create-Item -Path "$($facilityHeadersFolderItem.Paths.FullPath)/$($facilityHeader.ItemName)" -TemplateId $facilityHeaderTempalteId
+            $facilityTypes = @()
+            foreach($facilityType in $facilityHeader.FacilityTypes){
+                $facilityTypes += $facilityTypesItems | Where-Object { $_.Fields["Name"].Value -eq $facilityType.Name -And   $_.Fields["Code"].Value -eq $facilityType.Code } | Select-Object -First 1
+            }
+            
+            $facilityHeaderItem.Editing.BeginEdit()
+            $facilityHeaderItem.Fields["Name"].Value = $facilityHeader.HeaderName
+            $facilityHeaderItem.Fields["__Sortorder"].Value = $index
+            $index++
+            if($facilityTypes.Count -gt 0){
+                $facilityHeaderItem.Fields["Facilities"].Value = [string]::Join("|", ($facilityTypes | Select-Object -ExpandProperty Id))
+            }
+    
+            $facilityHeaderItem.Editing.EndEdit() > $null
+        }
+    }
+    Update-Facility-Headers
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210824T170425Z

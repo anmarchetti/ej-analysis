@@ -1,0 +1,84 @@
+﻿---
+ID: "6e62ecc7-02d5-4891-814c-8fe514f5e0a9"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/7 - SER-1327 - AT form F and H"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Assisted travel/Page Components/Assisted Travel Form F and H" -Permanently -Recurse 
+    
+    Copy-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Assisted travel/Page Components/Assisted Travel Form" -Destination "/sitecore/content/EasyJet/Holidays/Home/Booking/Assisted travel/Page Components/Assisted Travel Form F and H"
+    $updates = @(
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Assisted travel/Page Components/Assisted Travel Form F and H"
+            TemplatePath = "/sitecore/templates/Feature/Booking/Assisted Travel Form/Assisted Travel Form"
+            Fields      = @{
+                 "TransferSectionIsEnabled" = @{
+                    "en" = "0"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+            }
+         }
+    )
+    ImportContent -itemsToCreate $updates
+    
+    $mainId = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Assisted travel/Page Components/Assisted Travel Form F and H"
+    
+    $updates = @(
+         @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Assisted Travel"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = "{7A0C50BD-B018-44AD-A9CF-AD61E017C6BD}"
+                    "fr-CH" = "{7A0C50BD-B018-44AD-A9CF-AD61E017C6BD}"
+                    "de-CH" = "{7A0C50BD-B018-44AD-A9CF-AD61E017C6BD}"
+                    "fr-FR" = "{7A0C50BD-B018-44AD-A9CF-AD61E017C6BD}"
+                    "de-DE" = "{7A0C50BD-B018-44AD-A9CF-AD61E017C6BD}"
+                }
+                "AllowedRenderings" = @{
+                    "en" = "{25CA1738-22F5-49EF-B60A-72C5461AA940}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{CD5896B7-610B-42AC-8AB5-25DB60A8A357}"
+                    "fr-CH" = "{25CA1738-22F5-49EF-B60A-72C5461AA940}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{CD5896B7-610B-42AC-8AB5-25DB60A8A357}"
+                    "de-CH" = "{25CA1738-22F5-49EF-B60A-72C5461AA940}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{CD5896B7-610B-42AC-8AB5-25DB60A8A357}"
+                    "fr-FR" = "{25CA1738-22F5-49EF-B60A-72C5461AA940}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{CD5896B7-610B-42AC-8AB5-25DB60A8A357}"
+                    "de-DE" = "{25CA1738-22F5-49EF-B60A-72C5461AA940}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{CD5896B7-610B-42AC-8AB5-25DB60A8A357}"
+                }
+                "RenderingReplacements" = @{
+                    "en" = @"
+    {25CA1738-22F5-49EF-B60A-72C5461AA940}:{25CA1738-22F5-49EF-B60A-72C5461AA940}:Placeholder=%2fbody&Data+Source=$($mainId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                    "fr-CH" = @"
+    {25CA1738-22F5-49EF-B60A-72C5461AA940}:{25CA1738-22F5-49EF-B60A-72C5461AA940}:Placeholder=%2fbody&Data+Source=$($mainId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                    "de-CH" = @"
+    {25CA1738-22F5-49EF-B60A-72C5461AA940}:{25CA1738-22F5-49EF-B60A-72C5461AA940}:Placeholder=%2fbody&Data+Source=$($mainId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                    "fr-FR" = @"
+    {25CA1738-22F5-49EF-B60A-72C5461AA940}:{25CA1738-22F5-49EF-B60A-72C5461AA940}:Placeholder=%2fbody&Data+Source=$($mainId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                    "de-DE" = @"
+    {25CA1738-22F5-49EF-B60A-72C5461AA940}:{25CA1738-22F5-49EF-B60A-72C5461AA940}:Placeholder=%2fbody&Data+Source=$($mainId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                }
+            }
+         }
+    )
+    
+    ImportContent -itemsToCreate $updates
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

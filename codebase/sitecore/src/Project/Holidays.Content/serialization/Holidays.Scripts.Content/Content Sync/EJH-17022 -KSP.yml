@@ -1,0 +1,61 @@
+﻿---
+ID: "1791aefa-8df5-4e5f-b2b8-ac0d32fd7a10"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-17022 -KSP"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $dataFolderPath = "master:/sitecore/content/EasyJet/Holidays/Data";
+    $folderPath = "master:/sitecore/content/EasyJet/Holidays/Data/Destination KSPs";
+    $folderTemplateId = '{82EDFA64-C4C1-4932-AE33-E1C558EF4C97}';
+    
+    $folder = Get-Item -Path $folderPath -ErrorAction SilentlyContinue
+    if ($folder -eq $null) {
+        $folder = New-Item -Path $dataFolderPath -ItemType $folderTemplateId -Name "Destination KSPs"
+        Write-Host "Item" $folder.Name "successfully created"
+    } else {
+        Write-Host "Folder Destination KSP already exists"
+    }
+    
+    $items = @(
+        [pscustomobject]@{path="master:/sitecore/content/EasyJet/Holidays/Data/Destination KSPs/Good public transport";ksp="Good public transport";icon='<image mediaid="{C8C79276-B869-4D31-ADB6-3A1B14B60C11}" />'},
+        [pscustomobject]@{path="master:/sitecore/content/EasyJet/Holidays/Data/Destination KSPs/Bustling nightlife";ksp="Bustling nightlife";icon='<image mediaid="{BFDA0761-EBA2-4F1B-B42C-A7C980668570}" />'},
+        [pscustomobject]@{path="master:/sitecore/content/EasyJet/Holidays/Data/Destination KSPs/Great for foodies";ksp="Great for foodies";icon='<image mediaid="{CC1B25F2-7261-41B7-B155-5D763E857B89}" />'},
+        [pscustomobject]@{path="master:/sitecore/content/EasyJet/Holidays/Data/Destination KSPs/Great at any time of year";ksp="Great at any time of year";icon='<image mediaid="{0E94C53D-CD74-45A3-9B2B-703F7E4D1D48}" />'},
+        [pscustomobject]@{path="master:/sitecore/content/EasyJet/Holidays/Data/Destination KSPs/Great in spring & summer";ksp="Great in spring & summer";icon='<image mediaid="{0E94C53D-CD74-45A3-9B2B-703F7E4D1D48}" />'},
+        [pscustomobject]@{path="master:/sitecore/content/EasyJet/Holidays/Data/Destination KSPs/Great in winter";ksp="Great in winter";icon='<image mediaid="{0E94C53D-CD74-45A3-9B2B-703F7E4D1D48}" />'},
+        [pscustomobject]@{path="master:/sitecore/content/EasyJet/Holidays/Data/Destination KSPs/Region";ksp="{region}";icon='<image mediaid="{E89FC804-46D5-4F35-8FE7-2BA15E8EE493}" />'}
+    )
+    $itemTemplateId = "{E0D579B6-E40A-44F2-9541-A84969C4CDB3}"
+    
+    $items | ForEach-Object {
+        $item = Get-Item -path $_.path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+            
+            # create item
+            $item = New-Item -Path $_.path -ItemType $itemTemplateId
+            Write-Host "Item" $item.Name "successfully created"
+            
+            $item.Editing.BeginEdit()
+            $item["KSP"] = $_.ksp
+            $item["Icon"] = $_.icon
+            $item.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Item" $item.Name "successfully updated"
+        }
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230208T140219Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

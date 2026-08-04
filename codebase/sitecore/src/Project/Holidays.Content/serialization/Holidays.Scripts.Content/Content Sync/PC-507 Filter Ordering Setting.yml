@@ -1,0 +1,94 @@
+﻿---
+ID: "39d8bed7-8ea4-409d-bc09-4252bff4973c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/PC-507 Filter Ordering Setting Update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $holidaysdatafilterorderingsettingcityfilterorder_Id = [GUID]"{BD916C1F-97DC-441A-81F1-4894AC09AE39}"
+    $holidaysdatafilterorderingsettingbeachfilterorder_Id = [GUID]"{9B249783-33DE-42CA-BD4D-81202BAEADEE}"
+    $holidaysdatafilterorderingsetting_Id = [GUID]"{D3BF39B1-8707-4BF6-A274-5F97F4268030}"
+    $filterorderingsetting_selectedfilters_d3bf39b187074bf6a2745f97f4268030_en_v1 = @"
+    $holidaysdatafilterorderingsettingbeachfilterorder_Id|$holidaysdatafilterorderingsettingcityfilterorder_Id
+    "@
+    $cityfilterorder_filtersorder_bd916c1f97dc441a81f14894ac09ae39_en_v1 = @"
+    {CDD097AB-E689-4A2F-BC58-3063AFE15C81}|{52F20800-B6D0-4427-A393-4DD37200C031}|{0DC64E2F-0508-468C-9D2B-8C13CB6F4A62}|{1D345141-7534-4C81-A329-43E6CAA14D8D}|{7D837733-3568-4302-8CC5-2E219914D177}|{1B59F944-1A5A-424B-BE50-C3B9A35FC7FE}|{C9730A9D-94F9-4D61-8C76-A8626E92C870}|{DE3CFE4D-364A-4393-8885-538F4F27FA2E}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Filter Ordering Setting"
+            TemplatePath = "Foundation/Destinations/Filters/Filter Ordering Setting"
+            Id          = $holidaysdatafilterorderingsetting_Id
+            Fields      = @{
+                "SelectedFilters" = @{
+                    "de-CH" = ""
+                    "en" = $filterorderingsetting_selectedfilters_d3bf39b187074bf6a2745f97f4268030_en_v1
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                    "fr-CH" = ""
+                }
+                "ExperienceId" = @{
+                    "de-CH" = ""
+                    "en" = "filter_ordering"
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                    "fr-CH" = ""
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Filter Ordering Setting/Beach Filter Order"
+            TemplatePath = "Foundation/Destinations/Filters/Personalized Filter Order"
+            Id          = $holidaysdatafilterorderingsettingbeachfilterorder_Id
+            Fields      = @{
+                "Code" = @{
+                    "de-CH" = ""
+                    "en" = "Beach"
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                    "fr-CH" = ""
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Filter Ordering Setting/City Filter Order"
+            TemplatePath = "Foundation/Destinations/Filters/Personalized Filter Order"
+            Id          = $holidaysdatafilterorderingsettingcityfilterorder_Id
+            Fields      = @{
+                "Code" = @{
+                    "de-CH" = ""
+                    "en" = "City"
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                    "fr-CH" = ""
+                }
+                "FiltersOrder" = @{
+                    "de-CH" = ""
+                    "en" = $cityfilterorder_filtersorder_bd916c1f97dc441a81f14894ac09ae39_en_v1
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                    "fr-CH" = ""
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 100000057
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260226T124827Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

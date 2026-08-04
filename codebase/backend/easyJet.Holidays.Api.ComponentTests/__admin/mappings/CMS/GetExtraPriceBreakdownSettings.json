@@ -1,0 +1,48 @@
+{
+    "Title": "CMS Luggage Price Breakdown Settings",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/Content/ByPath",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "path",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "{site}/Settings/Price Breakdown Settings"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "LateCheckoutPriceEnabled": "1",
+            "LateCheckoutPriceCode": "Late Checkout Room",
+            "HoldLuggagePriceText": "Hold Luggage",
+            "HoldLuggagePriceCode": "Hold",
+            "HoldLuggagePriceEnabled": "1",
+            "SeatsPriceEnabled": "1",
+            "SeatsPriceCode": "Seats",
+            "SeatsPriceText": "Seats",
+            "ExtrasText": "Extras",
+            "ExtrasCode": "Extras",
+            "LargeCabinBagsPriceCode": "LCB",
+            "LargeCabinBagsPriceEnabled": "1",
+            "LargeCabinBagsPriceText": "Large Cabin Bags",
+            "IsPublic": "1",
+            "SkipTranslate": "",
+            "LanguagesWithDisabledFallback": ""
+        }
+    }
+}

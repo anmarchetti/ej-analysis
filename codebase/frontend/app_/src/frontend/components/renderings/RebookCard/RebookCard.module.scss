@@ -1,0 +1,205 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    margin: 0 auto;
+    padding: 16px;
+    border-radius: 4px;
+    box-shadow: 0px 2px 6px 2px rgba($colorBlackLight, 0.15);
+}
+
+.contentContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+    gap: 16px;
+}
+
+.rebookContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    margin: 0 auto;
+    padding: 16px;
+    border-radius: 4px;
+    box-shadow: 0px 2px 6px 2px rgba($colorBlackLight, 0.15);
+
+    :global(.btn) {
+        padding: 8px 24px;
+        font-size: 14px;
+        font-family: $fontRoundedBook;
+        font-weight: 400;
+        border: 2px #FF6600 solid
+    }
+}
+
+@include media-breakpoint-down(lg) {
+  .rebookContainer {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+
+  .textContent {
+    flex-basis: auto;
+    align-items: center;
+  }
+}
+
+.textContent {
+  flex: 1 1 65%;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-family: $fontRoundedBook;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.333;
+    text-align: left;
+}
+
+.text {
+    margin: 0;
+}
+
+.rebookBtn {
+    margin-top: 16px;
+}
+
+.imageContent {
+  position: relative;
+  width: 100%;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photoStyle {
+  width: 123px;
+  aspect-ratio: 6 / 5;
+  object-fit: cover;
+
+  border: 2px solid $colorWhite;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.imageContent .photoStyle {
+  position: absolute;
+}
+
+.photo1 {
+  transform: rotate(-7.3deg);
+  top: 10%;
+  left: 5%;
+  z-index: 1;
+}
+
+.photo2 {
+  transform: rotate(9.3deg);
+  top: 28%;
+  left: 25%;
+  z-index: 2;
+}
+
+.photo3 {
+  transform: rotate(5deg);
+  top: 10%;
+  left: 45%;
+  z-index: 3;
+}
+
+.photo4 {
+  transform: rotate(-8.6deg);
+  top: 26%;
+  left: 59%;
+  z-index: 1;
+}
+
+@include media-breakpoint-down(lg) {
+    .photo1 {
+        left: 3%;
+    }
+    .photo2 {
+        left: 23%;
+    }
+    .photo3 {
+        left: 42%;
+    }
+    .photo4 {
+        left: 60%;
+    }
+}
+
+.borderedBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    padding: 10px 24px;
+    margin-top: 16px;
+    font-size: 16px;
+    font-weight: 400;
+    border: 2px solid $colorOrange;
+    border-radius: 4px;
+
+    @include media-breakpoint-down(md) {
+        flex: 1;
+        padding: 10px 24px;
+    }
+
+    &:not(:first-child) {
+        @include media-breakpoint-down(sm) {
+            margin-top: 8px;
+            margin-left: 0;
+        }
+    }
+
+    &:hover,
+    &:visited {
+        color: $colorWhite;
+        background-color: $colorOrange;
+        opacity: 1;
+    }
+
+    svg {
+        width: 20px;
+        height: 20px;
+        margin-right: 6px;
+    }
+}
+
+.orangeBtn {
+    color: $colorWhite;
+    background-color: $colorOrange;
+
+    &:hover,
+    &:focus {
+        color: $colorWhite;
+        background-color: $clrEjOrangeShadow;
+        border-color: $clrEjOrangeShadow;
+    }
+}
+
+.description {
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    line-height: 1.375;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    br {
+        display: none;
+    }
+}

@@ -1,0 +1,192 @@
+﻿---
+ID: "a58422b3-2704-43b9-b216-15fcfdb4437a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Customer Safety and Wellbeing Page
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId) {
+            $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+            if (-Not $item) {
+                $item = New-Item -Path $path -ItemType $templateId
+                Write-Host "Item" $item.Name "successfully created"
+            }
+            return $item
+        }
+        
+        # Page
+        $pagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing"
+        $pageTemplateId = "{D6E273D0-4C78-4ABD-B412-5C98E7C9DB94}"
+        $page = Get-Or-Create-Item -path $pagePath -templateId $pageTemplateId
+        
+        #Remove default renderings
+        Remove-Rendering -Item $page -ErrorAction SilentlyContinue;
+        Remove-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Page Components" -Recurse -ErrorAction SilentlyContinue
+        
+        #Set up page fields
+        if($page -ne $null) {
+            $page.Editing.BeginEdit();
+            $page['Name'] = 'Safety and wellbeing centre';
+            $page['Image'] = '<image mediaid="{C04CFA39-B219-4386-82E8-B778D4EBE93F}" />';
+            $page.Editing.EndEdit() | Out-Null
+            Write-Host "Page Fields was seted up"
+        }
+        
+        #Add destination hero banner
+        $bannerPlaceHolder= 'banner-placeholder';
+        $bannerRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Hero Banner";
+        $heroBannerItem = Get-Item -Database "master" -Path $bannerRenderingPath | New-Rendering -Placeholder $wrapperPlaceHolder;
+        Add-Rendering -Item $page -PlaceHolder $bannerPlaceHolder -Instance $heroBannerItem  -Parameter @{"IsTriangleStart"="1"; "Height"="400"; "FontSize"="90"};
+        
+        #Create PageComponents folder
+        $pageComponentsPath = "master:/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Page Components"
+        $pageComponentsTemplateId = "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+        $pageComponents = Get-Or-Create-Item -path $pageComponentsPath -templateId $pageComponentsTemplateId
+        
+        #Add Destination Breadcrumbs
+        $bannerRend = Get-Rendering -Item $page -Placeholder $bannerPlaceHolder;
+        
+        $breadcrumbsPlaceHolder= '/body/hero-banner-top-section-'+ $bannerRend.UniqueId +'-0';
+        $breadcrumbsPath = "/sitecore/layout/Renderings/Feature/Destinations/Destination Breadcrumbs";
+        $breadcrumbsItem = Get-Item -Database "master" -Path $breadcrumbsPath | New-Rendering -Placeholder $breadcrumbsPlaceHolder;
+        Add-Rendering -Item $page -PlaceHolder $breadcrumbsPlaceHolder -Instance $breadcrumbsItem;
+        
+        Get-Rendering -Item $page -PlaceHolder $bannerPlaceHolder | 
+        Foreach-Object { 
+            $_.Placeholder = "body"; 
+            Set-Rendering -Item $page -Instance $_
+        }
+        
+        # Insert component wrapper
+        $componentWrapperPlaceHolder= 'first-wrapper'
+        $componentWrapperRenderingPath = "/sitecore/layout/Renderings/Project/Holidays/Component Wrapper"
+        $componentWrapperItem = Get-Item -Database "master" -Path $componentWrapperRenderingPath | New-Rendering -Placeholder $componentWrapperPlaceHolder
+        Add-Rendering -Item $page -PlaceHolder $componentWrapperPlaceHolder -Instance $componentWrapperItem 
+        
+        #Add Text Blocks
+        $componentWrapperRend = Get-Rendering -Item $page -Placeholder $componentWrapperPlaceHolder;
+        
+        $textBlockPlaceholder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0'
+        $textBlocks = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Page Components/Text Blocks" -templateId "{AB8D608B-3B9D-4ECB-9BA3-8C61306D7A41}"
+        $topText = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Page Components/Text Blocks/Top Text" -templateId "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}" 
+        $textRenderingPath = '/sitecore/layout/Renderings/Feature/PageContent/Text Block'
+        $textRendering = Get-Item -Database "master" -Path $textRenderingPath | New-Rendering -Placeholder $textBlockPlaceholder -DataSource $topText
+        
+        if ($topText -ne $null) {
+            $topText.Editing.BeginEdit()
+            $topText["Description"] = "<style>.health-text{font-size: 18px;}</style><p class='health-text'>At easyJet holidays, we know that your holiday is the most important time of the year and that it’s your opportunity to relax and switch off.<br />However, we’ve built our health and safety centre to prepare you for the risks that you can still face on your holiday and to give you a few pointers on what you can do to maximise your safety.</p>"
+            $topText.Editing.EndEdit() | Out-Null
+        }
+                  
+        Add-Rendering -Item $page -PlaceHolder $textBlockPlaceholder -Instance $textRendering 
+        
+        #Add Title Behind Promo Blocks
+        $titleText = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Page Components/Text Blocks/Title Behind Promo Blocks" -templateId "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}" 
+        $textRendering = Get-Item -Database "master" -Path $textRenderingPath | New-Rendering -Placeholder $textBlockPlaceholder -DataSource $titleText
+        
+        if ($titleText -ne $null) {
+            $titleText.Editing.BeginEdit()
+            $titleText["Description"] = "<style>.title{font-size: 28px;text-transform: uppercase;font-family: 'easyjet_rounded_headline',Arial,Helvetica,sans-serif;font-weight:  700;}</style><p class='title'>A few things you need to know before you go on holiday</p>";
+            $titleText.Editing.EndEdit() | Out-Null
+        }
+                  
+        Add-Rendering -Item $page -PlaceHolder $textBlockPlaceholder -Instance $textRendering 
+        
+        #Add Promo Blocks
+        $promoBlocks = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Page Components/Promo Blocks" -templateId "{EB30259D-FF9A-46CB-8E0C-4616B148F3A8}" # Template ID of PromoBlockFolder
+        $beforeYouTravel = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Page Components/Promo Blocks/1  Before You Travel" -templateId "{84ACB697-5638-4525-9801-B31CAC2E0394}" # Template ID of PromoBlock
+        $inDestination = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Page Components/Promo Blocks/2 In Destination" -templateId "{84ACB697-5638-4525-9801-B31CAC2E0394}" 
+        $outAbout = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Page Components/Promo Blocks/3 Out And About" -templateId "{84ACB697-5638-4525-9801-B31CAC2E0394}" 
+        $accomodation = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Page Components/Promo Blocks/4 Accomodation" -templateId "{84ACB697-5638-4525-9801-B31CAC2E0394}" 
+        $foodAndDrink = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Page Components/Promo Blocks/5 Food And Drink" -templateId "{84ACB697-5638-4525-9801-B31CAC2E0394}" 
+        $swimming = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Page Components/Promo Blocks/6 Swimming" -templateId "{84ACB697-5638-4525-9801-B31CAC2E0394}" 
+        
+        function Update-Promo-Block {
+        	param([item]$item,[string]$description,[string]$image,[string]$link)
+        
+            if ($item -ne $null) {
+                $item.Editing.BeginEdit()
+                $item["Description"] = $description;
+                $item["Image"] = $image;
+                $item["Link"] = $link;
+                $item.Editing.EndEdit() | Out-Null
+            }
+        }
+        
+        function Get-Page-Id($path) {
+            $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+            if (-Not $item) {
+                
+                return '';
+            }
+            return $item.ID
+        }
+        
+        $id1 = Get-Page-Id -Path '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Before You Travel';
+        $id2 = Get-Page-Id -Path '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/In Destination';
+        $id3 = Get-Page-Id -Path '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Out and About';
+        $id4 = Get-Page-Id -Path '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Accomodation';
+        $id5 = Get-Page-Id -Path '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Food and Drink';
+        $id6 = Get-Page-Id -Path '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Swimming and At The Beach';
+        
+        
+        
+        $link1 = '<link text="Before you travel" anchor="" linktype="internal" class="" title=""  querystring="" id="' + $id1 +'" />'
+        $link2 = '<link text="In destination" anchor="" linktype="internal" class="" title=""  querystring="" id="' + $id2 +'" />'
+        $link3 = '<link text="Out &amp; about" anchor="" linktype="internal" class="" title=""  querystring="" id="' + $id3 +'" />'
+        $link4 = '<link text="Accomodation" anchor="" linktype="internal" class="" title=""  querystring="" id="' + $id4 +'" />'
+        $link5 = '<link text="Food &amp; drink" anchor="" linktype="internal" class="" title=""  querystring="" id="' + $id5 +'" />'
+        $link6 = '<link text="Swimming &amp; At the beach" anchor="" linktype="internal" class="" title=""  querystring="" id="' + $id16 +'" />'
+        
+        Update-Promo-Block -item $beforeYouTravel -description "Tips for finding the best way to prepare for your holiday?" -image '<image mediaid="{2954BB66-361D-466E-891D-4EF3EB9CC2BC}" />' -link $link1;
+        Update-Promo-Block -item $inDestination -description "Find out more about health and safety when you’re at your destination" -image '<image mediaid="{71672C66-AA4A-4A76-891F-BACBF7106557}" />' -link $link2;
+        Update-Promo-Block -item $outAbout -description "Staying safe while you're travelling and seeing the sights" -image '<image mediaid="{1B56B7D5-FD97-4043-B017-78202FEB3E2A}" />' -link $link3;
+        Update-Promo-Block -item $accomodation -description "Making sure your hotel is putting your wellbeing first" -image '<image mediaid="{8D6B83D1-9E06-4358-AB29-5EE9C8C98628}" />' -link $link4;
+        Update-Promo-Block -item $foodAndDrink -description "Advice to keep you healthy when sampling the local cuisine " -image '<image mediaid="{85738E60-B95D-4F6E-AE5F-9548E5B9C62A}" />' -link $link5;
+        Update-Promo-Block -item $swimming -description "Keeping you and your family safe when at the pool or the seaside" -image '<image mediaid="{AF6CF0AA-F93F-4639-A222-EFA4161A80A3}" />' -link $link6;
+        
+        $promoBlocksPlaceholder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0';
+        $bromoBlocksRendPath = '/sitecore/layout/Renderings/Feature/PageContent/Promo Blocks'
+        $promoBlocksRendering = Get-Item -Database "master" -Path $bromoBlocksRendPath | New-Rendering -Placeholder $promoBlocksPlaceholder -DataSource $promoBlocks
+        
+        Add-Rendering -Item $page -PlaceHolder $promoBlocksPlaceholder -Instance $promoBlocksRendering -Parameter @{"Theme"="Icon Text Variant - Alternative";};
+        
+        #Add Protected Block
+        $protectedBlock = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Page Components/Protected Block" -templateId "{547D5BB4-2422-48CD-BD1C-95F2BDB6CA82}" 
+        $protectedBlockRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Protected Blocks";
+        $protectedBlockPlaceholder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0';
+        $protectedBlockRendering = Get-Item -Database "master" -Path $protectedBlockRenderingPath | New-Rendering -Placeholder $protectedBlockPlaceholder -DataSource $protectedBlock
+        
+        if ($protectedBlock -ne $null) {
+            $protectedBlock.Editing.BeginEdit()
+            $protectedBlock["AbtaImage"] = '<image mediaid="{5C825CDD-8163-425E-95DC-B8BDD6D4FA1C}" />';
+            $protectedBlock["AtolImage"] = '<image mediaid="{9BB3E5CA-A863-4E41-B0FE-731656B2B036}" />';
+            $protectedBlock["AtolTitle"] = '100% ATOL Protected';
+            $protectedBlock["AbtaTitle"] = 'Members of ABTA';
+            $protectedBlock["AbtaText"] = '<p>We work closely with ABTA on hotel standards, safety & advice for travellers. Find more advice on their <a rel="noopener noreferrer" rel="noopener noreferrer" href="https://www.abta.com/tips-and-advice" target="_blank">website</a></p>';
+            $protectedBlock["AtolText"] = '<p>All our holidays are financially protected under the <a rel="noopener noreferrer" href="https://www.easyjet.com/en/policy/atol?utm_source=easyjetholidays_en&amp;utm_medium=holidays&amp;utm_campaign=holidays_footer" target="_blank">ATOL scheme</a>, giving you total peace of mind when you book with us.</p>';
+            $protectedBlock.Editing.EndEdit() | Out-Null
+        }
+        
+        Add-Rendering -Item $page -PlaceHolder $protectedBlockPlaceholder -Instance $protectedBlockRendering ;
+        
+        
+        Get-Rendering -Item $page -PlaceHolder $componentWrapperPlaceHolder | 
+        Foreach-Object { 
+            $_.Placeholder = "body"; 
+            Set-Rendering -Item $page -Instance $_
+        }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4690
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200326T105750Z

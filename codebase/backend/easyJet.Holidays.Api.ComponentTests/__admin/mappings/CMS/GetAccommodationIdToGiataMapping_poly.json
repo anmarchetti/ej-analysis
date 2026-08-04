@@ -1,0 +1,39 @@
+{
+    "Title": "CMS giata mappings reference data: /api/ReferenceData/GetAccommodationToGiataMapping",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/ReferenceData/GetAccommodationToGiataMapping",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "ExactMatcher",
+                "Pattern": "AtcomIds%5B0%5D=ESFU0052&AtcomIds%5B1%5D=ESFU0018&AtcomIds%5B2%5D=ESFU0004&AtcomIds%5B3%5D=ESFU0040&AtcomIds%5B4%5D=ESFU0054&AtcomIds%5B5%5D=ESFU0050"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "ESFU0004": "76114",
+            "X9008130": "50392",
+            "ESFU0018": "32924",
+            "X9000764": "76114",
+            "ESFU0052": "26658",
+            "X9001782": "26658",
+            "X9003751": "32924",
+            "X9157134": "71394",
+            "ESFU0040": "71394",
+            "ESFU0050": "85166",
+            "ESFU0054": "50392",
+            "X9079530": "85166"
+        }
+    }
+}

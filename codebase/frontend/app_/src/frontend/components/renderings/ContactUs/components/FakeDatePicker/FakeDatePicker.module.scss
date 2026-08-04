@@ -1,0 +1,67 @@
+.fakeDatePicker {
+    position: relative;
+    height: 44px;
+    cursor: pointer;
+
+    .fakeInput {
+        position: relative;
+        width: 100%;
+        height: auto;
+        min-height: 44px;
+        padding-left: 42px;
+        font-family: $fontRoundedBook;
+        font-size: 15px;
+        line-height: 1.25;
+        text-align: left;
+        background-color: transparent;
+        border: 1px solid $borderColorGrayMiddle;
+        border-radius: 6px;
+        cursor: pointer;
+
+        &:focus {
+            color: inherit;
+            border: 1px solid $clrEjOrangeLight;
+            outline: none;
+
+            ~.label {
+                color: $clrEjOrangeLight;
+            }
+        }
+    }
+
+
+    .label {
+        position: absolute;
+        z-index: -1;
+        top: 50%;
+        left: 45px;
+        font-family: $fontRoundedBook;
+        font-size: 15px;
+        line-height: 1;
+        color: $clrTxtLight;
+        background: $colorWhite;
+        transform: translateY(-50%);
+        transition: all 0.1s;
+
+        &.floatingLabel {
+            z-index: 1;
+            top: 0;
+            left: 20px;
+            padding: 0 5px;
+            font-size: 15px;
+        }
+    }
+
+    .icon {
+        position: absolute;
+        z-index: -1;
+        top: 50%;
+        left: 16px;
+        display: block;
+        max-width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        color: $colorOrange;
+        transform: translateY(-50%);
+    }
+}

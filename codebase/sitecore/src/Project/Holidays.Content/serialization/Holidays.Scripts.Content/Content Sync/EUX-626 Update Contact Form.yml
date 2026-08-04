@@ -1,0 +1,160 @@
+﻿---
+ID: "96f591bf-9226-4ac2-968a-20b0a4b17c04"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUX-626 Update Contact Form"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId,$forceId) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if (-not $item) {
+    		$item = New-Item -Path $path -ItemType $templateId -ForceId $forceId
+    		Write-Host "Item" $item.Name "successfully created"
+    	}
+    	return $item
+    }
+    
+    function Get-Or-Create-Lang-Version ($path,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $path -Language $lang -ErrorAction SilentlyContinue
+    
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Get-Item -Path $path | Add-ItemLanguage -TargetLanguage $lang -IfExist Skip
+    	}
+    
+    	$targetLangItem = Get-Item -Path $path -Language $lang
+    
+    	if ($field -ne $null) {
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value;
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    
+    	return $targetLangItem;
+    }
+    
+    
+    $contactQuestionsPath = 'master:/sitecore/content/EasyJet/Holidays/Home/Help/Contact Form/Page Components/Contact Us Questions Folder'
+    
+    $questions = @(
+    	@{
+    		Name = "Amend booking"
+    		Title = "Amend booking"
+    		Title_fr = "Modifier une réservation"
+    		Title_de = "Buchung ändern"
+    		State = "Future"
+    	},
+    	@{
+    		Name = "Cancel booking"
+    		Title = "Cancel booking"
+    		Title_fr = "Annuler une réservation"
+    		Title_de = "Buchung stornieren"
+    		State = "Future"
+    	}
+    	@{
+    		Name = "Make a claim"
+    		Title = "Make a claim"
+    		Title_fr = "Faire une réclamation"
+    		Title_de = "Eine Forderung stellen"
+    		State = "Past"
+    	}
+    	@{
+    		Name = "Make a complaint"
+    		Title = "Make a complaint"
+    		Title_fr = "Déposer une plainte"
+    		Title_de = "Eine Beschwerde einreichen"
+    		State = "Past"
+    	}
+    	@{
+    		Name = "Other Question About Future Holiday"
+    		Title = "Other"
+    		Title_fr = "Autre"
+    		Title_de = "Sonstiges"
+    		State = "Future"
+    	},
+    	@{
+    		Name = "Other Question About Past Holiday"
+    		Title = "Other"
+    		Title_fr = "Autre"
+    		Title_de = "Sonstiges"
+    		State = "Past"
+    	}
+    )
+    
+    $swissQuestionsIds = @();
+    
+    foreach ($question in $questions) {
+    	$path = "$($contactQuestionsPath)/$($question.Name)"
+    	$item = Get-Or-Create-Item -Path $path -templateId "{5E2EB6D4-B7BA-45A1-A5FE-9FE583874200}"
+    
+    	$item.Editing.BeginEdit()
+    	$item["Title"] = $question.Title
+    	$item["State"] = $question.State
+    	$item.Editing.EndEdit() | Out-Null
+    
+    	$swissQuestionsIds += $item.ID
+    
+    	Get-Or-Create-Lang-Version -Path $path -lang 'fr-CH' -field "Title" -Value $question.Title_fr
+    	Get-Or-Create-Lang-Version -Path $path -lang 'de-CH' -field "Title" -Value $question.Title_de
+    }
+    
+    $contactFormPath = 'master:/sitecore/content/EasyJet/Holidays/Home/Help/Contact Form/Page Components/Form'
+    $numericTitles = @( "DepartureAndReturnDatesTitle","BookingReferenceTitle","QuestionTitle","DetailsTitle","ScreenshotTitle")
+    
+    function Update-Contact-Form ($lang) {
+    	$form = Get-Or-Create-Lang-Version -Path $contactFormPath -lang $lang
+    
+    	if ($form -ne $null) {
+    		$form.Editing.BeginEdit()
+    
+    		$form.Fields["HaveBookingTitle"].Value = 'Have you already booked a holiday?'
+    		$form.Fields["PreBookingDetailsFirstNamePlaceholder"].Value = "First name"
+    		$form.Fields["PreBookingDetailsLastNamePlaceholder"].Value = "Last name"
+    		$form.Fields["PreBookingDetailsEmailPlaceholder"].Value = "Email address"
+    
+    		# Remove number in titles, as correct numeric titles will be set on frontend
+    		foreach ($title in $numericTitles) {
+    			if ($form.Fields[$title].Value) {
+    				$form.Fields[$title].Value = $form.Fields[$title].Value -replace "^\d. ",""
+    			}
+    		}
+    
+    		# Extend form for Swiss Market
+    		if ($lang -eq 'fr-CH' -or $lang -eq 'de-CH') {
+    			$form.Fields["IsPreBookingQueryEnabled"].Value = "1"
+    			$form.Fields["QuestionList"].Value = $swissQuestionsIds -join "|"
+    		}
+    
+    		$form.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    
+    Update-Contact-Form
+    Update-Contact-Form -lang 'fr-CH'
+    Update-Contact-Form -lang 'de-CH' 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230531T111956Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\admin
+- Language: "fr-CH"
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230531T104808Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\admin

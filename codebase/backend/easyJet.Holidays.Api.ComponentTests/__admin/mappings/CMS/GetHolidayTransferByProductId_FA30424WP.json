@@ -1,0 +1,60 @@
+{
+  "Guid": "fe7fc1aa-cb3e-491a-9215-eb29b98f657e",
+  "UpdatedAt": "2023-11-10T14:04:59.523249Z",
+  "Title": "GetHolidayTransferByProductId FA30424WP",
+  "Priority": 0,
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/Transfers/GetHolidayTransferByProductId",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "GET"
+    ],
+    "Params": [
+      {
+        "Name": "productId",
+        "Matchers": [
+          {
+            "Name": "ExactMatcher",
+            "Pattern": "FA30424WP",
+            "IgnoreCase": false
+          }
+        ]
+      },
+      {
+        "Name": "sc_lang",
+        "Matchers": [
+          {
+            "Name": "ExactMatcher",
+            "Pattern": "en",
+            "IgnoreCase": false
+          }
+        ]
+      }
+    ]
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsJson": {
+      "ArrivalInstr": "On arrival once you’ve collected your luggage, exit the baggage area into the main arrivals hall.  Before you approach the terminal exit, make a U-turn around the guard rail to your left and continue towards the interior of the building.  As you come level with the Delta Café (on your right), please look straight ahead where the local easyJet holidays team will be waiting to direct you to your transfer vehicle.  If you have any difficulty in locating your transfer please call our local partner on +351 282 410110",
+      "DepInstr": "When you’re going home please ensure you are ready to go at the designated pick-up point, with all of your party and their luggage, 15 mins before the published time.  The day before you are going home, your pick-up information will be available at https://ejh.ecoviagens.com (you'll need your 7 digit holiday booking reference).  We’ll also send you an SMS with the details.  If you have any problems with your transfer on the day of your departure, please contact our local partner on +351 282 410110",
+      "Lang": "en",
+      "Duration": 40
+    },
+    "Headers": {
+      "Content-Type": "application/json; charset=utf-8",
+      "Expires": "-1",
+      "Content-Length": "1090",
+      "Cache-Control": "no-store, no-cache",
+      "Pragma": "no-cache",
+      "Server": "Microsoft-IIS/10.0",
+      "Date": "Fri, 10 Nov 2023 14:04:58 GMT"
+    }
+  }
+}

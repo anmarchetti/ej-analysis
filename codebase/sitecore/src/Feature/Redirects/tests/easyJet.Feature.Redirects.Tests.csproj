@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Schema.NET" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)TestProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Multisite\code\easyJet.Foundation.Multisite.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Feature\Redirects\code\easyJet.Feature.Redirects.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Sitecore.LayoutService">
+            <HintPath>..\..\..\..\lib\Sitecore.LayoutService.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.LayoutService.Mvc">
+            <HintPath>..\..\..\..\lib\Sitecore.LayoutService.Mvc.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+</Project>

@@ -1,0 +1,114 @@
+﻿---
+ID: "20dd0b78-30e9-488f-ad83-a45df6aa955f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-13411 Pandemic Level States"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$itemName,$templateId,$forceId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $forceId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    $pandemicLevelsStates = @(
+    	@{
+    		Name = "Green";
+    		Level = "{907AB48D-F8A5-48FE-9A94-952BD98BB5AB}";
+    		BannerTitle = "{destinationName} is a green level {destinationType}";
+    		DestinationLevelTitle = "{destinationName} is a green level {destinationType}";
+    		Icon = '<image mediaid="{70582406-C93C-471E-85EE-D2D038D32E2A}" />';
+    		SortOrder = 100
+    	},
+    	@{
+    		Name = "Amber";
+    		Level = "{9958B5F2-E06D-4B15-86FE-0D72F2BED359}";
+    		BannerTitle = "{destinationName} is an amber level {destinationType}";
+    		DestinationLevelTitle = "{destinationName} is an amber level {destinationType}";
+    		Icon = '<image mediaid="{A793C845-605A-4DC7-B157-B62A625995EB}" />';
+    		SortOrder = 200
+    	},
+    	@{
+    		Name = "Red";
+    		Level = "{2F62BB3B-66AB-45EA-A552-CF2DDAB9E3AB}";
+    		BannerTitle = "{destinationName} is a red level {destinationType}";
+    		DestinationLevelTitle = "{destinationName} is a red level {destinationType}";
+    		Icon = '<image mediaid="{D5C0FE9B-FAF6-4CCF-A107-FAA9663DE98A}" />';
+    		SortOrder = 300
+    	},
+    	@{
+    		Name = "Mixed";
+    		Level = $null;
+    		IsMixedLevel = "1";
+    		BannerTitle = "The new traffic light system";
+    		DestinationLevelTitle = "{destinationName} has different pandemic levels";
+    		Icon = '<image mediaid="{A3CC8F49-259B-40F7-BC89-0CA1173A5FB0}" />';
+    		SortOrder = 400
+    	},
+    	@{
+    		Name = "Not Specified";
+    		Level = $null;
+    		BannerTitle = $null;
+    		DestinationLevelTitle = "{destinationName} doesn't have a pandemic level";
+    		Icon = '<image mediaid="{CCE298DB-6F79-49E2-A966-8638296AAD02}" />';
+    		SortOrder = 500
+    	}
+    )
+    
+    function Remove-Default-Level () {
+    	$defaultLevel = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Settings/Pandemic Levels/Default" -ErrorAction SilentlyContinue
+    	if ($defaultLevel -ne $null) {
+    		$defaultLevel | Remove-Item
+    	}
+    
+    	$defaultBanner = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Pandemic Levels Banners/Default" -ErrorAction SilentlyContinue
+    	if ($defaultBanner -ne $null) {
+    		$defaultBanner | Remove-Item
+    	}
+    }
+    
+    function Create-Pandemic-Levels-States () {
+    	$folder = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Pandemic Levels Banners" -ErrorAction SilentlyContinue
+    
+    	if ($folder -ne $null) {
+    		$folder.Editing.BeginEdit()
+    		$folder.Name = "Pandemic Levels States"
+    		$folder.Editing.EndEdit()
+    
+    		foreach ($level in $pandemicLevelsStates) {
+    			$levelItem = Get-Or-Create-Item -Path $folder.FullPath -ItemName $level.Name -TemplateId "{9E12F886-E62F-4E86-8295-A2091E3D2F1E}"
+    			$levelItem.Editing.BeginEdit()
+    			$levelItem["Level"] = $level.Level
+    			$levelItem["IsMixedLevel"] = $level.IsMixedLevel
+    			$levelItem["Icon"] = $level.Icon
+    			$levelItem["BannerTitle"] = $level.BannerTitle
+    			$levelItem["DestinationLevelTitle"] = $level.DestinationLevelTitle
+    			$levelItem.__SortOrder = $level.SortOrder
+    			$levelItem.Editing.EndEdit() | Out-Null
+    		}
+    	}
+    }
+    
+    Remove-Default-Level
+    Create-Pandemic-Levels-States
+    
+    
+    
+    
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210429T092248Z

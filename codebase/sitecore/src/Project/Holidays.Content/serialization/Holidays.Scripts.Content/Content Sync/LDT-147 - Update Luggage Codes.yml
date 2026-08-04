@@ -1,0 +1,139 @@
+﻿---
+ID: "a64be3ab-2bd8-414c-ba5b-7e14a567e22c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-147 - Update Luggage Codes"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Dictionary with item names as keys and code values as values
+    $itemCodeMapping = @{
+        "Large Cabin Bag" = "SCB1"
+        "Extra Hold Baggage 15kg" = "LUSE"
+        "Extra Hold Baggage 23kg" = "LUGE"
+        "Hold Baggage 15kg" = "LUS"
+        "Hold Baggage 23kg" = "LUG"
+        "Bicycle" = "BIKE"
+        "CanoeKayak" = "CANO"
+        "Hand glider" = "HGLD"
+        "Windsurfer" = "WDSF"
+        "Pre Paid Excess Weight 3kg" = "WGT"
+        "Golf Bag" = "GOLF"
+        "Other small sports equipment" = "OSSE"
+        "Skis and boots" = "SKBT"
+        "Snowboard" = "SNBD"
+    }
+    
+    # Template ID for "Luggage Item"
+    $luggageItemTemplate = '{41775FBB-D551-4813-B3D7-1BDC7C6DB534}'
+    
+    function Update-Luggage-Items($rootPath) {
+        Write-Host "Processing items under: $rootPath"
+        
+        # Get all descendants of the root path
+        $allItems = Get-ChildItem -Path $rootPath -Recurse
+        
+        Write-Host "Found $($allItems.Count) items to process"
+        
+        foreach ($item in $allItems) {
+            # Check if the item uses the "Luggage Item" template
+            if ($item.TemplateID -eq $luggageItemTemplate) {
+                $itemName = $item.Name
+                
+                # Check if a mapping exists for this item name
+                if ($itemCodeMapping.ContainsKey($itemName)) {
+                    $newCodeValue = $itemCodeMapping[$itemName]
+                    
+                    Write-Host "Updating Item: $itemName -> Code: $newCodeValue"
+                    
+                    # Open item for editing
+                    $item.Editing.BeginEdit()
+                    
+                    try {
+                        # Set the Code field
+                        $item["Code"] = $newCodeValue
+                        
+                        # Save changes
+                        $item.Editing.EndEdit() | Out-Null
+                        
+                        Write-Host "Successfully updated: $($item.Paths.Path)"
+                    }
+                    catch {
+                        # Cancel editing on error
+                        $item.Editing.CancelEdit()
+                        Write-Host "Error updating item $($item.Paths.Path): $($_.Exception.Message)" -ForegroundColor Red
+                    }
+                }
+                else {
+                    Write-Host "No mapping found for item: $itemName" -ForegroundColor Yellow
+                }
+            }
+        }
+    }
+    
+    # Define root path
+    $rootPath = '/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Luggage'
+    
+    # Check if root path exists (try different path formats)
+    $rootItem = Get-Item -Path $rootPath -ErrorAction SilentlyContinue
+    if ($rootItem -eq $null) {
+        # Try with master database prefix
+        $rootPathWithDb = "master:$rootPath"
+        $rootItem = Get-Item -Path $rootPathWithDb -ErrorAction SilentlyContinue
+        if ($rootItem -eq $null) {
+            Write-Host "Root path does not exist in either format:" -ForegroundColor Red
+            Write-Host "  - $rootPath" -ForegroundColor Red
+            Write-Host "  - $rootPathWithDb" -ForegroundColor Red
+            Write-Host "Please verify the path exists and try running:" -ForegroundColor Yellow
+            Write-Host "  Get-Item -Path '$rootPath'" -ForegroundColor Yellow
+            exit
+        }
+        else {
+            Write-Host "Using database-prefixed path: $rootPathWithDb" -ForegroundColor Green
+            $rootPath = $rootPathWithDb
+        }
+    }
+    else {
+        Write-Host "Using direct path: $rootPath" -ForegroundColor Green
+    }
+    
+    # Update items
+    Update-Luggage-Items -RootPath $rootPath
+    
+    
+    $rootPath = '/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Luggage'
+    $rootItem = Get-Item -Path $rootPath -ErrorAction SilentlyContinue
+    if ($rootItem -eq $null) {
+        # Try with master database prefix
+        $rootPathWithDb = "master:$rootPath"
+        $rootItem = Get-Item -Path $rootPathWithDb -ErrorAction SilentlyContinue
+        if ($rootItem -eq $null) {
+            Write-Host "Root path does not exist in either format:" -ForegroundColor Red
+            Write-Host "  - $rootPath" -ForegroundColor Red
+            Write-Host "  - $rootPathWithDb" -ForegroundColor Red
+            Write-Host "Please verify the path exists and try running:" -ForegroundColor Yellow
+            Write-Host "  Get-Item -Path '$rootPath'" -ForegroundColor Yellow
+            exit
+        }
+        else {
+            Write-Host "Using database-prefixed path: $rootPathWithDb" -ForegroundColor Green
+            $rootPath = $rootPathWithDb
+        }
+    }
+    else {
+        Write-Host "Using direct path: $rootPath" -ForegroundColor Green
+    }
+    # Update items
+    Update-Luggage-Items -RootPath $rootPath
+    
+    Write-Host "Script completed successfully!" -ForegroundColor Green
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

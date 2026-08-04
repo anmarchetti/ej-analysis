@@ -1,0 +1,49 @@
+﻿---
+ID: "7b779ae6-2a5e-43a7-a74d-46a425cfbf4a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-11676 Redesign View Booking Fix 2"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Rendering-Index ($item,$id) {
+    	$i = 0
+    	Get-Rendering -Item $item | ForEach-Object {
+    		if ($_.ItemId -eq $id) {
+    			return $i
+    		}
+    		$i++
+    	}
+    }
+    
+    
+    $viewBookingPage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    $helpLinksRenderingId = "{9133F3CA-553F-42F5-8529-54734B53A378}"
+    $helpLinksRendering = Get-Rendering -Item $viewBookingPage | Where-Object { $_.ItemId -eq $helpLinksRenderingId } | Select -First 1
+    
+    if ($helpLinksRendering -ne $null) {
+    	# Create Wrapper
+    	$index = Get-Rendering-Index -Item $viewBookingPage -Id $helpLinksRenderingId
+    	$wrapperRendering = Get-Item -Path "master:" -Id "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}" | New-Rendering
+    	Add-Rendering -Item $viewBookingPage -PlaceHolder '/body' -Instance $wrapperRendering -Index $index
+    	$wrapperRenderingItem =  Get-Rendering -Item $viewBookingPage -Index $index
+    	Write-Host "Wrapper Rendering created";
+    
+    
+    	# Move Help Links to this Wrapper
+    	$placeholder = "/body/component-wrapper-inner-$($wrapperRenderingItem.UniqueId)-0"
+    	$helpLinksRendering.Parameters = "Variant=Card With Border"
+    	Set-Rendering -Item $viewBookingPage -Instance $helpLinksRendering -PlaceHolder $placeholder
+    	Write-Host "Help Links Rendering updated"
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210127T072037Z

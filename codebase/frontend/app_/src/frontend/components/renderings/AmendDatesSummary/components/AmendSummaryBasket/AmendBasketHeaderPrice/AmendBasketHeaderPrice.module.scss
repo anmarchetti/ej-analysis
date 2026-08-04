@@ -1,0 +1,49 @@
+.price {
+    display: flex;
+    flex-grow: 1;
+    max-width: initial;
+    min-height: 100%;
+    margin: 0 16px;
+}
+
+.price::before {
+    content: '';
+    width: 35px;
+    background-color: $colorPorcelain;
+    background-image: linear-gradient(-75deg, $colorPorcelain 50%, $colorWhite 50%);
+}
+
+.price::after {
+    content: '';
+    width: 35px;
+    background-color: $colorPorcelain;
+    background-image: linear-gradient(-77deg, $colorWhite 50%, $colorPorcelain 50%);
+}
+
+.prices {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+    padding: 16px;
+    background-color: $colorPorcelain;
+
+    :global(.summary-fee) {
+        margin-top: 4px;
+    }
+}
+
+.additional {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin: auto 0;
+
+    .additionalLabel {
+        font-size: 14px;
+    }
+
+    .additionalPrice {
+        font-size: 24px;
+    }
+}

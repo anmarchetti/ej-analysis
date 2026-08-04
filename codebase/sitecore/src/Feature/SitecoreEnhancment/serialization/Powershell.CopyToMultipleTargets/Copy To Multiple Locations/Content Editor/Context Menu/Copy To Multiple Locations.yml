@@ -1,0 +1,126 @@
+﻿---
+ID: "55f1fd06-642e-4fc3-a251-b0696b3ea10e"
+Parent: "a1d5fdc1-31a8-49f5-8528-3f1002a611cb"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/SPE/Copy To Multiple Locations/Content Editor/Context Menu/Copy To Multiple Locations
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Ensure a context item is selected
+    if (-not $SitecoreContextItem) {
+        Show-Alert "Please right-click an item in the Content Editor."
+        return
+    }
+    
+    # Step 1: Ask how many target items to select
+    $result = Read-Variable `
+        -Title       "Target Count" `
+        -Description "Specify the number of destination items to select." `
+        -Parameters  @(
+            @{
+                Name         = "TargetCount"
+                Title        = "How many targets?"
+                Editor       = "integer"
+                DefaultValue = 1
+                Tooltip      = "Number of target locations"
+            }
+        ) `
+        -OkButtonName "Next" `
+        -CancelButtonName "Cancel"
+    
+    if ($result -ne "ok" -or $TargetCount -lt 1) {
+        return
+    }
+    
+    # Step 2: Build one-single-tab dialog with Path + droptree for each target
+    $paramList = @()
+    for ($i = 1; $i -le $TargetCount; $i++) {
+        $paramList += @{
+            Name    = "Path$i"
+            Title   = "Path #$i"
+            Editor  = "multitext"
+            Lines   = 1
+            Tooltip = "Full Sitecore path for target #$i (leave blank to use picker)"
+        }
+        $paramList += @{
+            Name    = "TargetItem$i"
+            Title   = "Select Target Location #$i"
+            Tooltip = "Choose a parent item for copy #$i"
+            Source = "DataSource=/sitecore/content&IncludeTemplatesForSelection=Folder,Page"
+            Editor = "item picker"
+        }
+    }
+    
+    $result2 = Read-Variable `
+        -Title       "Select Target Locations" `
+        -Description "For each row, enter a Path or use the picker." `
+        -Parameters  $paramList `
+        -OkButtonName "Copy" `
+        -CancelButtonName "Cancel"
+    
+    if ($result2 -ne "ok") {
+        return
+    }
+    
+    # Step 3: Resolve, normalize, and copy
+    $source  = $SitecoreContextItem
+    $targets = @()
+    
+    for ($i = 1; $i -le $TargetCount; $i++) {
+        # read & trim raw input
+        $raw = (Get-Variable -Name "Path$i" -ValueOnly).Trim()
+    
+        if ($raw) {
+            # normalize: ensure it starts with '/sitecore'
+            if ($raw -notmatch '^/sitecore(/|$)') {
+                # strip any leading slash to avoid '//'
+                $core = $raw.TrimStart('/')
+                $raw  = "/sitecore/$core"
+            }
+            # now try to resolve
+            $item = Get-Item -Path $raw -ErrorAction SilentlyContinue
+            if (!$item) {
+                Write-Warning "Path #$i '$raw' not found; skipping."
+                continue
+            }
+        }
+        else {
+            # fallback to picker
+            $picker = Get-Variable -Name "TargetItem$i" -ValueOnly
+            $item   = Get-Item -Path $picker.ItemPath -ErrorAction SilentlyContinue
+            if (!$item) {
+                Write-Warning "Picker #$i at '$($picker.ItemPath)' invalid; skipping."
+                continue
+            }
+        }
+    
+        $targets += $item
+    }
+    
+    # perform the copies
+    foreach ($t in $targets) {
+        $dest = "$($t.ItemPath)/$($source.Name)"
+        if (Get-Item -Path $dest -ErrorAction SilentlyContinue) {
+            Write-Host "Destination exists: $dest; skipping."
+        }
+        else {
+            # use SPE Copy-Item to preserve all Sitecore metadata
+            $source | Copy-Item -Destination $t.ID -Recurse
+            Write-Host "Copied '$($source.Name)' to '$($t.ItemPath)'."
+        }
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250331T231850Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

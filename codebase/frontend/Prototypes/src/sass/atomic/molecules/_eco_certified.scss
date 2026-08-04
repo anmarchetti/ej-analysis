@@ -1,0 +1,170 @@
+.eco-certified {
+    display: flex;
+    align-items: center;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 10px;
+    }
+
+    .icon-svg {
+        flex-shrink: 0;
+        width: 19px;
+        height: 19px;
+    }
+
+    .info-circle svg {
+        width: 16px;
+        height: 16px;
+        color: $colorOrange;
+    }
+
+    .callout__container .callout__content.right {
+        @include media-breakpoint-down(md) {
+            min-width: 135px;
+        }
+    }
+}
+
+.eco-certified__title {
+    margin: 0;
+    padding: 0 9px 0 8px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 14px;
+}
+
+.card__box {
+    .eco-certified {
+        margin-top: 10px;
+    }
+
+    .eco-certified__title {
+        font-family: $fontRoundedDemy;
+    }
+}
+
+.hotel-card-head {
+    .view-booking-hotel__rating {
+        .eco-certified {
+            position: relative;
+            margin-left: 20px;
+
+            @include media-breakpoint-down(md) {
+                margin-left: 0;
+            }
+
+            &::before {
+                content: '';
+                position: absolute;
+                left: -10px;
+                height: 20px;
+                border-left: 1px solid $colorAlto;
+
+                @include media-breakpoint-down(md) {
+                    content: none;
+                }
+            }
+
+            .icon-svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        .eco-certified__title {
+            font-size: 12px;
+            line-height: 13px;
+        }
+
+        .eco-certified__callout_container {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+.facilities-tabs,
+    .hotel-facilities {
+        .eco-certified {
+            align-items: flex-start;
+            padding: 10px 13px;
+            background-color: $colorGreenLight;
+            border-radius: 8px;
+
+            @include media-breakpoint-down(md) {
+                display: inherit;
+            }
+        }
+
+        .eco-certified__link,
+        .eco-certified__description a {
+            font-size: 14px;
+            line-height: 20px;
+            text-decoration: underline;
+        }
+
+        .eco-certified__link {
+            min-width: 90px;
+            margin-left: 10px;
+
+            @include media-breakpoint-down(md) {
+                display: block;
+                margin-top: 5px;
+                margin-left: 0;
+            }
+        }
+
+        .eco-certified__title {
+            display: inline-block;
+            padding: 0;
+            font-family: $fontRoundedDemy;
+            font-size: 16px;
+            line-height: 16px;
+
+            @include media-breakpoint-down(md) {
+                position: relative;
+                top: -12px;
+            }
+        }
+
+        .eco-certified__description {
+            display: flex;
+            align-items: center;
+
+            @include media-breakpoint-down(md) {
+                display: inherit;
+            }
+        }
+
+        .eco-certified__text {
+            @include media-breakpoint-down(md) {
+                padding-top: 10px;
+            }
+        }
+
+        .eco-certified__text,
+        .eco-certified__text p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 14px;
+
+            @include media-breakpoint-down(md) {
+                position: relative;
+                width: 100%;
+                line-height: 18px;
+            }
+        }
+
+        .eco-certified__img {
+            width: 30px;
+            height: 36px;
+        }
+
+        .eco-certified__wrapper {
+            padding-left: 24px;
+
+            @include media-breakpoint-down(md) {
+                display: inline;
+            }
+        }
+    }

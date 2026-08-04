@@ -1,0 +1,55 @@
+﻿---
+ID: "5c37e03f-6731-468f-9d84-0048ae1dce86"
+Parent: "e5157d49-3e23-4c15-b997-e2d3d4e82eda"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Examples/Upload Image
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $itemPath = "/sitecore/media library/Project/Holidays/Default/Map/cluster";
+    $imageTemplateId = 'f1828a2c-7e5d-4bbd-98ca-320474871548';
+    $clusterImageID = 'a69fdc4f-448e-4e00-b8a3-e5891bcc499d';
+    
+    $item = Get-Item -path $itemPath -ErrorAction SilentlyContinue;
+    
+    if ($item -eq $null) {
+        #create item
+        $item = New-Item -Path $itemPath -ItemType $imageTemplateId -ForceId $clusterImageID;
+        Write-Host "Image was created"; 
+        
+        # media options 
+        $mco = New-Object Sitecore.Resources.Media.MediaCreatorOptions
+        $mco.Database = [Sitecore.Configuration.Factory]::GetDatabase("master");
+        $mco.Versioned = [Sitecore.Configuration.Settings+Media]::UploadAsVersionableByDefault;
+        $mco.Destination = $itemPath;
+        
+        # upload image to sitecore
+        $stream = [System.Convert]::FromBase64String("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");
+        $MemoryStream = [System.IO.MemoryStream]::new($stream)
+        $mc = New-Object Sitecore.Resources.Media.MediaCreator
+        $file = $mc.CreateFromStream($MemoryStream, "cluster.png", $mco);
+        
+        # update image fields
+        $item.Editing.BeginEdit();
+        $item["Alt"] = "cluster";
+        $item.Editing.EndEdit() | Out-Null
+        Write-Host "Image fields was updated"; 
+        
+        
+    } else {
+        Write-Host "Item exists";
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 200
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

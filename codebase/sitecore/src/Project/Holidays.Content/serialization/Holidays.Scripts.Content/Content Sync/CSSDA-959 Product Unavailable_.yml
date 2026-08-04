@@ -1,0 +1,272 @@
+﻿---
+ID: "4379c4ed-c5b7-482a-a793-a2ba0293bf0b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-959 Product Unavailable Popup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$template) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $template
+    	}
+    	return $item
+    }
+    
+    function Add-Or-Update-Page-Rendering ($page,$renderingPath,$renderingPlaceholder,$dataSourcePath,$parameters = @{}) {
+    	$renderingItem = Get-Item -Database "master" -Path $renderingPath;
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+    
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -DataSource $dataSourcePath
+    		Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath | Set-RenderingParameter -Parameter $parameters | Set-Rendering -Item $page;
+    		Write-Host $renderingItem "Rendering instance added";
+    	}
+    	else {
+    		Write-Host $pageRenderingInstance "Already exists";
+    	}
+    }
+    
+    function create-lang-version ($item,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+    
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value;
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    function Update-Flights-Popup ($popupItem) {
+    	if ($popupItem -ne $null) {
+    		$popupItem.Editing.BeginEdit();
+    
+    		$popupItem["Title"] = "Flight is no longer available";
+    		$popupItem["Description"] = "<p>We&rsquo;re unable to offer this flight to this holiday.</p>";
+    		$popupItem["CTA"] = "Back to change your flights";
+    		$popupItem["Icon"] = '<image mediaid="{9AD6CCA7-4EC3-4FDB-AE89-7CEB74C92569}" />'
+    
+    		@( 'fr-CH','fr-FR') | % {
+    			Create-Lang-Version -Item $popupItem -Lang $_ -Field "Title" -Value "Le vol n'est plus disponible"
+    			Create-Lang-Version -Item $popupItem -Lang $_ -Field "Description" -Value "<p>Nous ne sommes pas en mesure de proposer ce vol pour ce séjour.</p>"
+    			Create-Lang-Version -Item $popupItem -Lang $_ -Field "CTA" -Value "Retour pour modifier vos vols"
+    		}
+    		@( 'de-CH','de-DE') | % {
+    			Create-Lang-Version -Item $popupItem -Lang $_ -Field "Title" -Value "Flug ist nicht mehr verfügbar"
+    			Create-Lang-Version -Item $popupItem -Lang $_ -Field "Description" -Value "<p>Wir können diesen Flug für diesen Urlaub nicht anbieten</p>"
+    			Create-Lang-Version -Item $popupItem -Lang $_ -Field "CTA" -Value "Zurück zum Ändern Ihrer Flüge"
+    		}
+    
+    		Write-Host $popupItem.Name "Updated";
+    		$popupItem.Editing.EndEdit() | Out-Null;
+    
+    	}
+    }
+    
+    # Remove existing Product Unavailable Popups from amend payment page and amend flights
+    $amendPaymentPagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment"
+    $amendPaymentPage = Get-Or-Create-Item -Path $amendPaymentPagePath
+    $amendPaymentRenderingInstance = Get-Rendering -Item $amendPaymentPage -PlaceHolder "body" -DataSource "{8B09703F-E23F-4A3B-A818-F59AEA6741D0}";
+    if ($amendPaymentRenderingInstance -ne $null) {
+    	Remove-Rendering -Path $amendPaymentPagePath -Instance $amendPaymentRenderingInstance;
+    	Write-Host "Amend payment page Product Unavailable Popup rendering removed";
+    }
+    
+    $amendFlightsPagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Change Flight"
+    $amendFlightsPage = Get-Or-Create-Item -Path $amendFlightsPagePath
+    $flightsRenderingInstance = Get-Rendering -Item $amendFlightsPage -PlaceHolder "body" -DataSource "{8B09703F-E23F-4A3B-A818-F59AEA6741D0}";
+    if ($flightsRenderingInstance -ne $null) {
+    	Remove-Rendering -Path $amendFlightsPagePath -Instance $flightsRenderingInstance;
+    	Write-Host "Amend flights page Product Unavailable Popup rendering removed";
+    }
+    
+    
+    
+    
+    # Amend Payment Page
+    # Room and Board Product Unavailable Popup
+    $amendPaymentRoomAndBoardPopup = "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Room and Board Product Unavailable Popup";
+    $amendPaymentRoomAndBoardPopupItem = Get-Or-Create-Item -Path $amendPaymentRoomAndBoardPopup -Template "{C8C39B93-2202-4B2D-937F-8F644B0D3183}"
+    Write-Host "Amend payment room and board popup created"
+    
+    # Flights Product Unavailable Popup
+    $amendPaymentFlightsPopup = "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Flights Product Unavailable Popup";
+    $amendPaymentFlightsPopupItem = Get-Or-Create-Item -Path $amendPaymentFlightsPopup -Template "{C8C39B93-2202-4B2D-937F-8F644B0D3183}"
+    Write-Host "Amend payment flights popup created"
+    
+    # Transfer Product Unavailable Popup
+    $amendPaymentTransferPopup = "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Transfers Product Unavailable Popup";
+    $amendPaymentTransferPopupItem = Get-Or-Create-Item -Path $amendPaymentTransferPopup -Template "{C8C39B93-2202-4B2D-937F-8F644B0D3183}"
+    Write-Host "Amend payment tranfer popup created"
+    
+    # Add text to instances of Product Unavailable Popup
+    if ($amendPaymentRoomAndBoardPopupItem -ne $null) {
+    	$amendPaymentRoomAndBoardPopupItem.Editing.BeginEdit();
+    
+    	$amendPaymentRoomAndBoardPopupItem["Title"] = "Room and Board options no longer available";
+    	$amendPaymentRoomAndBoardPopupItem["Description"] = "<p>Unfortunately, the room and board options you have selected are no longer available. Please go back to the amendment page to select new options.</p>";
+    	$amendPaymentRoomAndBoardPopupItem["CTA"] = "Back to room & board selection";
+    	$amendPaymentRoomAndBoardPopupItem["Icon"] = '<image mediaid="{9AD6CCA7-4EC3-4FDB-AE89-7CEB74C92569}" />'
+    
+    	@( 'fr-CH','fr-FR') | % {
+    		Create-Lang-Version -Item $amendPaymentRoomAndBoardPopupItem -Lang $_ -Field "Title" -Value "Les options de chambre et de pension ne sont plus disponibles"
+    		Create-Lang-Version -Item $amendPaymentRoomAndBoardPopupItem -Lang $_ -Field "Description" -Value "<p>Malheureusement, les options de logement et de pension que vous avez sélectionnées ne sont plus disponibles. Veuillez retourner à la page de modification pour sélectionner de nouvelles options.</p>"
+    		Create-Lang-Version -Item $amendPaymentRoomAndBoardPopupItem -Lang $_ -Field "CTA" -Value "Retour à la sélection des chambres et pensions"
+    	}
+    	@( 'de-CH','de-DE') | % {
+    		Create-Lang-Version -Item $amendPaymentRoomAndBoardPopupItem -Lang $_ -Field "Title" -Value "Optionen für Unterkunft und Verpflegung nicht mehr verfügbar"
+    		Create-Lang-Version -Item $amendPaymentRoomAndBoardPopupItem -Lang $_ -Field "Description" -Value "<p>Leider sind die von Ihnen gewählten Optionen für Unterkunft und Verpflegung nicht mehr verfügbar. Bitte gehen Sie zurück zur Änderungsseite, um neue Optionen auszuwählen.</p>"
+    		Create-Lang-Version -Item $amendPaymentRoomAndBoardPopupItem -Lang $_ -Field "CTA" -Value "Zurück zur Auswahl von Unterkunft und Verpflegung"
+    	}
+    
+    	Write-Host $amendPaymentRoomAndBoardPopupItem.Name "Updated";
+    	$amendPaymentRoomAndBoardPopupItem.Editing.EndEdit() | Out-Null;
+    }
+    
+    Update-Flights-Popup -popupItem $amendPaymentFlightsPopupItem
+    
+    if ($amendPaymentTransferPopupItem -ne $null) {
+    	$amendPaymentTransferPopupItem.Editing.BeginEdit();
+    
+    	$amendPaymentTransferPopupItem["Title"] = "Transfer is no longer available";
+    	$amendPaymentTransferPopupItem["Description"] = "<p>We&rsquo;re unable to offer this transfer to this holiday.</p>";
+    	$amendPaymentTransferPopupItem["CTA"] = "Back to change your transfer";
+    	$amendPaymentTransferPopupItem["Icon"] = '<image mediaid="{9AD6CCA7-4EC3-4FDB-AE89-7CEB74C92569}" />'
+    
+    	@( 'fr-CH','fr-FR') | % {
+    		Create-Lang-Version -Item $amendPaymentTransferPopupItem -Lang $_ -Field "Title" -Value "Le transfert n'est plus disponible"
+    		Create-Lang-Version -Item $amendPaymentTransferPopupItem -Lang $_ -Field "Description" -Value "<p>Nous ne sommes pas en mesure de proposer ce transfert pour ce séjour.</p>"
+    		Create-Lang-Version -Item $amendPaymentTransferPopupItem -Lang $_ -Field "CTA" -Value "Retour pour modifier vos transferts"
+    	}
+    	@( 'de-CH','de-DE') | % {
+    		Create-Lang-Version -Item $amendPaymentTransferPopupItem -Lang $_ -Field "Title" -Value "Transfer ist nicht mehr verfügbar"
+    		Create-Lang-Version -Item $amendPaymentTransferPopupItem -Lang $_ -Field "Description" -Value "<p>Wir können diesen Transfer für diesen Urlaub nicht anbieten</p>"
+    		Create-Lang-Version -Item $amendPaymentTransferPopupItem -Lang $_ -Field "CTA" -Value "Zurück zum Ändern Ihrer Transfers"
+    	}
+    
+    	Write-Host $amendPaymentTransferPopupItem.Name "Updated";
+    	$amendPaymentTransferPopupItem.Editing.EndEdit() | Out-Null;
+    
+    }
+    
+    # Add renderings for Product Unavailable Popups to Amend Payment page with params
+    $amendPaymentRendering = Get-Item -Path "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Payment";
+    $renderedAmendPayment = Get-Rendering -Item $amendPaymentPage -Render $amendPaymentRendering;
+    $renderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Popups/Product Unavailable Popup";
+    $renderingPlaceholder = "/body/product-unavailable-popup-" + $renderedAmendPayment.UniqueId + "-0";
+    
+    # Add room and board popup rendering
+    Add-Or-Update-Page-Rendering -page $amendPaymentPage -renderingPath $renderingPath -renderingPlaceholder $renderingPlaceholder -dataSourcePath $amendPaymentRoomAndBoardPopup -Parameters @{ "product" = "RoomAndBoard" }
+    Write-Host "Room and board Product Unavailable Popup rendering added to amend payment page with params"
+    
+    # Add flights popup rendering
+    Add-Or-Update-Page-Rendering -page $amendPaymentPage -renderingPath $renderingPath -renderingPlaceholder $renderingPlaceholder -dataSourcePath $amendPaymentFlightsPopup -Parameters @{ "product" = "Flight" }
+    Write-Host "Flights Product Unavailable Popup rendering added to amend payment page with params"
+    
+    # Add transfer popup rendering
+    Add-Or-Update-Page-Rendering -page $amendPaymentPage -renderingPath $renderingPath -renderingPlaceholder $renderingPlaceholder -dataSourcePath $amendPaymentTransferPopup -Parameters @{ "product" = "Transfer" }
+    
+    
+    
+    
+    # Change Room and Board Page
+    # Room and Board Product Unavailable Popup
+    $roomAndBoardProductUnavailablePopup = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Room And Board/Page Components/Product Unavailable Popup";
+    $roomAndBoardProductUnavailablePopupItem = Get-Or-Create-Item -Path $roomAndBoardProductUnavailablePopup -Template "{C8C39B93-2202-4B2D-937F-8F644B0D3183}"
+    Write-Host "Change room and board page product unavailable popup created"
+    
+    # Add text to instance of Product Unavailable Popup
+    if ($roomAndBoardProductUnavailablePopupItem -ne $null) {
+    	$roomAndBoardProductUnavailablePopupItem.Editing.BeginEdit();
+    
+    	$roomAndBoardProductUnavailablePopupItem["Title"] = "Room and Board options no longer available";
+    	$roomAndBoardProductUnavailablePopupItem["NoOptionsTitle"] = "Alternative room and board options not available";
+    	$roomAndBoardProductUnavailablePopupItem["Description"] = "<p>Unfortunately, the room and board options you have selected are no longer available. Please go back to the amendment page to select new options.</p>";
+    	$roomAndBoardProductUnavailablePopupItem["NoOptionsDescription"] = "<p>Unfortunately, there are currently no alternative room and board options available for your selected hotel. Hotel rooms are subject to availability, please try again later.</p>";
+    	$roomAndBoardProductUnavailablePopupItem["CTA"] = "Back to room & board selection";
+    	$roomAndBoardProductUnavailablePopupItem["NoOptionsCTA"] = "Back to view booking";
+    	$roomAndBoardProductUnavailablePopupItem["Icon"] = '<image mediaid="{9AD6CCA7-4EC3-4FDB-AE89-7CEB74C92569}" />'
+    
+    	@( 'fr-CH','fr-FR') | % {
+    		Create-Lang-Version -Item $roomAndBoardProductUnavailablePopupItem -Lang $_ -Field "Title" -Value "Les options de chambre et de pension ne sont plus disponibles"
+    		Create-Lang-Version -Item $roomAndBoardProductUnavailablePopupItem -Lang $_ -Field "NoOptionsTitle" -Value "Les autres options de logement et de pension ne sont pas disponibles"
+    		Create-Lang-Version -Item $roomAndBoardProductUnavailablePopupItem -Lang $_ -Field "Description" -Value "<p>Malheureusement, les options de logement et de pension que vous avez sélectionnées ne sont plus disponibles. Veuillez retourner à la page de modification pour sélectionner de nouvelles options.</p>"
+    		Create-Lang-Version -Item $roomAndBoardProductUnavailablePopupItem -Lang $_ -Field "NoOptionsDescription" -Value "<p>Malheureusement, il n'y a pas d'autres options de chambres et de repas disponibles pour l'hôtel sélectionné. Les chambres d'hôtel sont soumises à disponibilité, veuillez réessayer plus tard.</p>"
+    		Create-Lang-Version -Item $roomAndBoardProductUnavailablePopupItem -Lang $_ -Field "CTA" -Value "Retour à la sélection des chambres et pensions"
+    		Create-Lang-Version -Item $roomAndBoardProductUnavailablePopupItem -Lang $_ -Field "NoOptionsCTA" -Value "Retour à l'aperçu des réservations"
+    	}
+    	@( 'de-CH','de-DE') | % {
+    		Create-Lang-Version -Item $roomAndBoardProductUnavailablePopupItem -Lang $_ -Field "Title" -Value "Optionen für Unterkunft und Verpflegung nicht mehr verfügbar"
+    		Create-Lang-Version -Item $roomAndBoardProductUnavailablePopupItem -Lang $_ -Field "NoOptionsTitle" -Value "Alternative Unterkunfts- und Verpflegungsmöglichkeiten nicht verfügbar"
+    		Create-Lang-Version -Item $roomAndBoardProductUnavailablePopupItem -Lang $_ -Field "Description" -Value "<p>Leider sind die von Ihnen gewählten Optionen für Unterkunft und Verpflegung nicht mehr verfügbar. Bitte gehen Sie zurück zur Änderungsseite, um neue Optionen auszuwählen.</p>"
+    		Create-Lang-Version -Item $roomAndBoardProductUnavailablePopupItem -Lang $_ -Field "NoOptionsDescription" -Value "<p>Leider sind derzeit keine alternativen Zimmer- und Verpflegungsoptionen für das von Ihnen gewählte Hotel verfügbar. Hotelzimmer sind abhängig von der Verfügbarkeit, bitte versuchen Sie es später noch einmal.</p>"
+    		Create-Lang-Version -Item $roomAndBoardProductUnavailablePopupItem -Lang $_ -Field "CTA" -Value "Zurück zur Auswahl von Unterkunft und Verpflegung"
+    		Create-Lang-Version -Item $roomAndBoardProductUnavailablePopupItem -Lang $_ -Field "NoOptionsCTA" -Value "Zurück zur Ansicht Buchung"
+    	}
+    
+    	Write-Host $roomAndBoardProductUnavailablePopupItem.Name "Updated";
+    	$roomAndBoardProductUnavailablePopupItem.Editing.EndEdit() | Out-Null;
+    }
+    
+    # Add rendering for Product Unavailable Popup to Amend Room and Board page
+    $amendRoomAndBoardPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Room And Board"
+    $amendRoomAndBoardPage = Get-Or-Create-Item -Path $amendRoomAndBoardPagePath
+    $amendRoomAndBoardRendering = Get-Item -Path "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Room And Board/Amend Room And Board Page";
+    $renderedAmendRoomAndBoard = Get-Rendering -Item $amendRoomAndBoardPage -Render $amendRoomAndBoardRendering;
+    $roomAndBoardRenderingPlaceholder = "/body/product-unavailable-popup-" + $renderedAmendRoomAndBoard.UniqueId + "-0";
+    
+    # Add room and board popup rendering to amend room and board page
+    Add-Or-Update-Page-Rendering -page $amendRoomAndBoardPage -renderingPath $renderingPath -renderingPlaceholder $roomAndBoardRenderingPlaceholder -dataSourcePath $roomAndBoardProductUnavailablePopup
+    Write-Host "Room and board Product Unavailable Popup rendering added to room and board page"
+    
+    
+    
+    
+    
+    # Change Flights Page
+    # Flights Product Unavailable Popup
+    $changeFlightsProductUnavailablePopup = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Flight/Page Components/Product Unavailable Popup";
+    $changeFlightsProductUnavailablePopupItem = Get-Or-Create-Item -Path $changeFlightsProductUnavailablePopup -Template "{C8C39B93-2202-4B2D-937F-8F644B0D3183}"
+    Write-Host "Change flights page product unavailable popup created"
+    
+    # Add text to instance of Product Unavailable Popup
+    Update-Flights-Popup -popupItem $changeFlightsProductUnavailablePopupItem
+    
+    # Add rendering for Product Unavailable Popup to change flights page
+    $changeFlightPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Flight"
+    $changeFlightPage = Get-Or-Create-Item -Path $changeFlightPagePath
+    $changeFlightRendering = Get-Item -Path "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Flights";
+    $componentWrapperRendering = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper"
+    $renderedChangeFlight = Get-Rendering -Item $changeFlightPage -Render $changeFlightRendering;
+    $renderedComponentWrapper = Get-Rendering -Item $changeFlightPage -Render $componentWrapperRendering;
+    $changeFlightRenderingPlaceholder = "/body/component-wrapper-inner-" + $renderedComponentWrapper.UniqueId + "-0/product-unavailable-popup-" + $renderedChangeFlight.UniqueId + "-0";
+    
+    # Add Product Unavailable Popup rendering to change flight page
+    Add-Or-Update-Page-Rendering -page $changeFlightPage -renderingPath $renderingPath -renderingPlaceholder $changeFlightRenderingPlaceholder -dataSourcePath $changeFlightsProductUnavailablePopup
+    Write-Host "Product Unavailable Popup rendering added to change flight page"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230628T103556Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

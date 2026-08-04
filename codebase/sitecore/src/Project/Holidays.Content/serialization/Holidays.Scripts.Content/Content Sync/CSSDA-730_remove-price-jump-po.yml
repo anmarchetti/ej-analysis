@@ -1,0 +1,33 @@
+﻿---
+ID: "3039bc4a-0d6a-4f87-8e7e-5739ba9d6b35"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-730_remove-price-jump-popup-setting"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $priceJumpPopupSetting = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Price Jump Popup Settings" -ErrorAction SilentlyContinue;
+    $priceJumpPopupSettingTemplate = Get-Item -Path "/sitecore/templates/Project/Holidays/Site Settings/Price Jump Popup Settings" -ErrorAction SilentlyContinue;
+    
+    if ($priceJumpPopupSetting -ne $null) {
+        Remove-Item $priceJumpPopupSetting;
+        
+        Write-Host "Deleted Setting";
+    }
+     
+    if ($priceJumpPopupSettingTemplate -ne $null) {
+        Remove-Item $priceJumpPopupSettingTemplate -Recurse;
+        
+          Write-Host "Deleted Setting template";
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240212T135109Z

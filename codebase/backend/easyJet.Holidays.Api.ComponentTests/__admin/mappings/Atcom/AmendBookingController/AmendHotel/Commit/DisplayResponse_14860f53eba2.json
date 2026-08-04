@@ -1,0 +1,26 @@
+﻿{
+    "Title": "DisplayRequest successfully response",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/EZYDMO/VRPWebservice/AniteGateway/AniteGateway.aspx",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "XPathMatcher",
+                "Pattern": "/*:DisplayRequest/*:BkgNum/*:BkgId/text()='14860f53eba2'"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "text/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/AmendController/AmendHotel/Commit/DisplayResponse_14860f53eba2.xml"
+    }
+}

@@ -1,0 +1,436 @@
+$bannerShadowColor: rgba(178, 178, 175, 0.5);
+$slimBannerShadowColor: rgba(166, 165, 165, 0.37);
+$sharpMirroredBannerShadowColor: rgba(51, 51, 51, 0.15);
+$infoContainerPaddingMobile: 24px 16px 16px;
+
+@mixin flex-proportion($proportion: 50%) {
+    flex: 0 0 $proportion;
+    max-width: $proportion;
+}
+
+@mixin pill-static() {
+    position: static;
+    align-self: auto;
+    margin-bottom: 16px;
+}
+
+.info {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 16px;
+
+    @include media-breakpoint-up(lg) {
+        @include flex-proportion(35%);
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: $infoContainerPaddingMobile;
+    }
+
+    :global(.btn) {
+        display: block;
+        width: auto;
+        height: 48px;
+        padding: 12px 24px;
+        font-size: 16px;
+        line-height: 1.2;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+        }
+    }
+}
+
+.link {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.333;
+
+    @include media-breakpoint-down(md) {
+        font-size: 16px;
+        line-height: 1.375;
+    }
+}
+
+.title {
+    margin-top: 0;
+    margin-bottom: 4px;
+    font-family: $fontRoundedBook;
+    font-size: 36px;
+    line-height: 1.055;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(md) {
+        font-size: 24px;
+        line-height: 1.083;
+    }
+}
+
+.description {
+    margin-bottom: 16px;
+    font-size: 18px;
+    line-height: 1.333;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+        line-height: 1.285;
+    }
+
+    p {
+        margin-top: 0;
+    }
+}
+
+.pill {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.45;
+    border-radius: 50px;
+
+    @include media-breakpoint-down(md) {
+        @include pill-static;
+    }
+}
+
+.leftText {
+    .pill {
+        right: 16px;
+        left: auto;
+    }
+
+    @include media-breakpoint-up(lg) {
+        flex-direction: row-reverse;
+    }
+}
+
+.banner {
+    position: relative;
+    z-index: 0;
+    margin: 30px 0;
+    overflow: hidden;
+    background-color: $colorWhite;
+    border-radius: 4px;
+    box-shadow: 0 0 13px 0 $bannerShadowColor;
+
+    @include media-breakpoint-up(lg) {
+        display: flex;
+        min-height: 450px;
+    }
+}
+
+.withShard {
+    &::before {
+        content: '';
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        width: 35%;
+        height: 200%;
+        background-color: $colorWhite;
+        transform: rotate(12deg);
+        transform-origin: top left;
+
+        @include media-breakpoint-down(lg) {
+            content: unset;
+        }
+    }
+
+    &.leftText {
+        &::before {
+            right: auto;
+            left: 0;
+            transform: rotate(-12deg);
+            transform-origin: top right;
+        }
+    }
+
+    .info {
+        @include media-breakpoint-down(lg) {
+            position: relative;
+
+            &::before {
+                content: '';
+                position: absolute;
+                z-index: $z-index-negative;
+                top: 0;
+                left: 0;
+                width: 200%;
+                height: 100%;
+                background-color: $colorWhite;
+                transform: rotate(-3deg);
+                transform-origin: top left;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            &::before {
+                transform: rotate(-6deg);
+            }
+        }
+    }
+}
+
+.shardMirrored {
+    display: flex;
+    min-height: auto;
+    margin: 0;
+    box-shadow: 0 2px 6px 2px $sharpMirroredBannerShadowColor;
+
+    @include media-breakpoint-down(lg) {
+        flex-direction: column;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        width: 55%;
+        height: 200%;
+        background-color: $colorWhite;
+        transform: rotate(-12deg);
+        transform-origin: top left;
+
+        @include media-breakpoint-down(lg) {
+            content: unset;
+        }
+    }
+
+    &.leftText {
+        &::before {
+            top: -50%;
+            right: auto;
+            left: 0;
+            transform: rotate(12deg);
+            transform-origin: bottom right;
+        }
+
+        :global(.btn) {
+            display: inline-block;
+            width: fit-content;
+            min-width: unset;
+            padding: 12px 20px;
+            height: 45px;
+            font-size: 14px;
+            line-height: 1.5;
+
+            @include media-breakpoint-down(md) {
+                width: 100%;
+                padding: 12px 16px;
+            }
+        }
+    }
+
+    .info {
+        padding: 16px;
+
+        .title {
+            margin-bottom: 16px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .description {
+            font-size: 16px;
+            @include media-breakpoint-down(md) {
+                margin-bottom: 24px;
+                font-size: 14px;
+            }
+        }
+
+        @include media-breakpoint-up(lg) {
+            @include flex-proportion(55%);
+        }
+
+        @include media-breakpoint-down(lg) {
+            position: relative;
+
+            &::before {
+                content: '';
+                position: absolute;
+                z-index: $z-index-negative;
+                top: 0;
+                left: -50%;
+                width: 200%;
+                height: 100%;
+                background-color: $colorWhite;
+                transform: rotate(3deg);
+                transform-origin: bottom right;
+            }
+        }
+    }
+
+    .media {
+        @include media-breakpoint-up(lg) {
+            @include flex-proportion(45%);
+        }
+    }
+}
+
+.media {
+    position: relative;
+
+    @include media-breakpoint-up(lg) {
+        @include flex-proportion(65%);
+    }
+
+    @include media-breakpoint-down(lg) {
+        height: 150px;
+    }
+}
+
+.bannerSlim {
+    box-shadow: 0 0 9px 0 $slimBannerShadowColor;
+
+    @include media-breakpoint-up(md) {
+        display: flex;
+        min-height: auto;
+
+        .info {
+            @include flex-proportion;
+
+            &::before {
+                content: unset;
+            }
+        }
+
+        .media {
+            @include flex-proportion;
+        }
+    }
+
+    .pill {
+        position: absolute;
+
+        @include media-breakpoint-down(md) {
+            @include pill-static;
+        }
+    }
+
+    .info {
+        padding: 32px 16px;
+
+        @include media-breakpoint-down(md) {
+            padding: $infoContainerPaddingMobile;
+        }
+    }
+
+    .media {
+        height: auto;
+
+        @include media-breakpoint-down(md) {
+            height: 110px;
+        }
+    }
+
+    &.leftText {
+        @include media-breakpoint-up(md) {
+            flex-direction: row-reverse;
+        }
+    }
+
+    &.withShard {
+        .info {
+            @include media-breakpoint-up(sm) {
+                position: static;
+            }
+
+            @include media-breakpoint-down(md) {
+                position: relative;
+            }
+        }
+
+        &::before {
+            width: 50%;
+
+            @include media-breakpoint-up(md) {
+                content: '';
+            }
+        }
+    }
+
+    :global(.btn) {
+        display: inline-block;
+        min-width: 300px;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+        }
+    }
+}
+
+.genericContentBanner {
+    margin: 24px 0;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+
+    @include media-breakpoint-up(md) {
+        display: flex;
+        min-height: 450px;
+    }
+
+    @include media-breakpoint-down(md) {
+        min-height: auto;
+        margin: 20px 0;
+    }
+
+    .title {
+        margin-bottom: 16px;
+    }
+
+    .info {
+        display: block;
+        flex: 1 1 100%;
+        max-width: 100%;
+        padding: 40px 32px;
+        background: $colorPorcelain;
+
+        @include media-breakpoint-down(md) {
+            padding: $infoContainerPaddingMobile;
+        }
+    }
+
+    .description,
+    .description p {
+        font-size: 16px;
+        line-height: 1.375;
+
+        @include media-breakpoint-down(md) {
+            font-size: 14px;
+            line-height: 1.285;
+        }
+    }
+
+    &.leftText {
+        @include media-breakpoint-up(md) {
+            flex-direction: row-reverse;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        .pill {
+            @include pill-static;
+        }
+
+        .info {
+            @include flex-proportion;
+
+            display: flex;
+        }
+
+        .media {
+            @include flex-proportion;
+
+            height: auto;
+        }
+    }
+}

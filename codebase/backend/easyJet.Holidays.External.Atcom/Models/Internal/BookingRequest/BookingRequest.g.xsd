@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 sp1 (http://www.altova.com) by Kim Howells (Anite Business Systems) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="AtComRes/BookingRequest" xmlns:p2="AtComRes/Common" targetNamespace="AtComRes/BookingRequest" elementFormDefault="qualified">
+	<xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+	<xs:element name="BookingRequest">
+		<xs:annotation>
+			<xs:documentation>Request to book one ore more packagetour offers. All needed informations has to be sent to @ComRes.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="p2:AtcomresBookingBaseRequest">
+					<xs:sequence>
+						<xs:element ref="p2:ReturnServiceBreakDown" minOccurs="0"/>
+						<xs:element ref="p2:PNR_Contact_Num" minOccurs="0"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

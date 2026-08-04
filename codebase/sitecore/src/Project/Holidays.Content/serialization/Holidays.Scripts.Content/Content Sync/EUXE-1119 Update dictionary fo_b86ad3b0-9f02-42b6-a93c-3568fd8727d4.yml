@@ -1,0 +1,44 @@
+﻿---
+ID: "b86ad3b0-9f02-42b6-a93c-3568fd8727d4"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUXE-1119 Update dictionary for search pod labels"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item,$lang,$field,$value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value;
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    $SearchPodAllCountriesTitle = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/All Countries Title"
+    $SearchPodCustomMenuTitle = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/Custom Menu Title"
+    
+    @('de-CH', 'de-DE') | % {
+        Create-Lang-Version -Item $SearchPodAllCountriesTitle -Lang $_ -Field "Phrase" -Value "VOLLSTÄNDIGE LISTE DER REISEZIELE"
+        Create-Lang-Version -Item $SearchPodCustomMenuTitle -Lang $_ -Field "Phrase" -Value "UNSERE TOP PICKS"
+    }
+    @('fr-CH', 'fr-FR') | % {
+        Create-Lang-Version -Item $SearchPodAllCountriesTitle -Lang $_ -Field "Phrase" -Value "LISTE COMPLÈTE DES DESTINATIONS"
+        Create-Lang-Version -Item $SearchPodCustomMenuTitle -Lang $_ -Field "Phrase" -Value "NOS TOP PICKS"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20191118T132901:637096805412053434Z"

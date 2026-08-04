@@ -1,0 +1,93 @@
+﻿---
+ID: "7ea2a952-b329-4941-b949-9baed70fb593"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-784 fix translation"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $holdLuggagePath = "master:/sitecore/content/EasyJet/Holidays/Data/Hold Luggage"
+    $luggagePath15kg = "master:/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage/Hold Baggage 15kg"
+    $boatPath = "master:/sitecore/content/EasyJet/Holidays/Data/Luggage/Large Sports Equipment/CanoeKayak"
+    $prepaidPath = "master:/sitecore/content/EasyJet/Holidays/Data/Luggage/Pre Paid Excess Weight/Pre Paid Excess Weight 3kg"
+    $gbagPath = "master:/sitecore/content/EasyJet/Holidays/Data/Luggage/Small Sports Equipment/Golf Bag"
+    
+    function updateLuggageText($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+        }
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+        }
+       
+    }
+    
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'HoldLuggageAndSportsSubtitle' -Translation "Chaque passager dispose d'un sac de 23 kg, mais peut ajouter jusqu'à 2 bagages supplémentaires ou un équipement sportif par passager."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'HoldLuggageSubtitle' -Translation "Chaque passager dispose d'un sac de 23 kg, mais peut ajouter jusqu'à 2 bagages supplémentaires par passager."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'SportTitle' -Translation "Matériel de sport"
+    
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'HoldLuggageAndSportsSubtitle' -Translation "Chaque passager dispose d'un sac de 23 kg, mais peut ajouter jusqu'à 2 bagages supplémentaires ou un équipement sportif par passager."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'HoldLuggageSubtitle' -Translation "Chaque passager dispose d'un sac de 23 kg, mais peut ajouter jusqu'à 2 bagages supplémentaires par passager."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'SportTitle' -Translation "Matériel de sport"
+    
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'HoldLuggageAndSportsEquipmentSubtitle' -Translation "Jeder Passagier hat ein Gepäckstück von 23 kg dabei, kann aber bis zu 2 weitere Gepäckstücke oder ein Sportgerät pro Passagier hinzufügen."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'HoldLuggageSubtitle' -Translation "Jeder Passagier hat ein Gepäckstück von 23 kg dabei, kann aber bis zu 2 weitere Gepäckstücke pro Passagier hinzufügen."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'BagExtraDescription' -Translation "<p>Fügen Sie dem aufgegebenen Gepäck ein {number}kg Stück für nur <strong>{price}</strong> pro Stück, pro Flug hinzu</p><p>Alle aufgegebenen Gepäckstücke sind sowohl für Hin- als auch für Rückflüge gültig.</p>"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'SportTitle' -Translation "Sportmaterial"
+    
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'HoldLuggageAndSportsEquipmentSubtitle' -Translation "Jeder Passagier hat ein Gepäckstück von 23 kg dabei, kann aber bis zu 2 weitere Gepäckstücke oder ein Sportgerät pro Passagier hinzufügen."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'HoldLuggageSubtitle' -Translation "Jeder Passagier hat ein Gepäckstück von 23 kg dabei, kann aber bis zu 2 weitere Gepäckstücke pro Passagier hinzufügen."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'BagExtraDescription' -Translation "<p>Fügen Sie dem aufgegebenen Gepäck ein {number}kg Stück für nur <strong>{price}</strong> pro Stück, pro Flug hinzu</p><p>Alle aufgegebenen Gepäckstücke sind sowohl für Hin- als auch für Rückflüge gültig.</p>"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'SportTitle' -Translation "Sportmaterial"
+    
+    updateLuggageText -ItemPath $luggagePath15kg -Language 'fr-CH' -Key 'Description' -Translation "Maximum 15kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+    
+    updateLuggageText -ItemPath $boatPath -Language 'fr-FR' -Key 'Name' -Translation "Canoë/Kayak"
+    updateLuggageText -ItemPath $boatPath -Language 'fr-CH' -Key 'Name' -Translation "Canoë/Kayak"
+    updateLuggageText -ItemPath $boatPath -Language 'de-DE' -Key 'Name' -Translation "Kanu/Kajak"
+    updateLuggageText -ItemPath $boatPath -Language 'de-CH' -Key 'Name' -Translation "Kanu/Kajak"
+    
+    updateLuggageText -ItemPath $prepaidPath -Language 'fr-FR' -Key 'Name' -Translation "Poids excédentaire prépayé 3kg"
+    updateLuggageText -ItemPath $prepaidPath -Language 'fr-CH' -Key 'Name' -Translation "Poids excédentaire prépayé 3kg"
+    updateLuggageText -ItemPath $prepaidPath -Language 'de-DE' -Key 'Name' -Translation "Vorausbezahltes Übergewicht 3kg"
+    updateLuggageText -ItemPath $prepaidPath -Language 'de-CH' -Key 'Name' -Translation "Vorausbezahltes Übergewicht 3kg"
+    
+    
+    updateLuggageText -ItemPath $gbagPath -Language 'fr-FR' -Key 'Name' -Translation "Sac de golf"
+    updateLuggageText -ItemPath $gbagPath -Language 'fr-CH' -Key 'Name' -Translation "Sac de golf"
+    updateLuggageText -ItemPath $gbagPath -Language 'de-DE' -Key 'Name' -Translation "Golftasche"
+    updateLuggageText -ItemPath $gbagPath -Language 'de-CH' -Key 'Name' -Translation "Golftasche"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 420
+Languages:
+- Language: "de-DE"
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231229T151225Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\admin
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231229T151257Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\admin

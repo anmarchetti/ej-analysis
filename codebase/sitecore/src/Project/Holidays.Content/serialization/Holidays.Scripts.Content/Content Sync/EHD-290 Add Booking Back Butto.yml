@@ -1,0 +1,74 @@
+﻿---
+ID: "e70bf29a-67da-445f-b55b-6912cbe7c7fd"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EHD-290 Add Booking Back Button"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Write-Host  "START SCRIPT: EHD-290 Booking Back Button"
+    
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item $($item.Name) successfully created"
+        }
+        
+        return $item
+    }
+    
+    $BookingPagePath = '/sitecore/content/EasyJet/Holidays/Home/Booking'
+    $BookingGuestDetailsPagePath = '/sitecore/content/EasyJet/Holidays/Home/Booking/Guest Details'
+    
+    function Add-Booking-Back-Button-Item($path){
+        # Button on Booking Page
+        $itemPath = "$($path)/Page Components/Booking Back Button"
+        
+        $Item = Get-Or-Create-Item -Path $itemPath -TemplateId "{D807436B-496A-4DFC-A919-B3F4806E2E83}"
+        $parentItem = Get-Item -Path $path -ErrorAction SilentlyContinue
+        
+        if ($Item -ne $null) {
+            $Item.Editing.BeginEdit()
+            $Item["Text"] = 'Back'
+            $Item.Editing.EndEdit() | Out-Null
+        	
+        	Write-Host "Booking Back Button datasource successfully updated"
+        }
+        
+        $dataSourcePath = $itemPath 
+        $placeholderPath = 'body'
+        $renderingPath = "/sitecore/layout/Renderings/Feature/Booking/Booking Back Button"
+        
+        $renderingId = "{DDFF4851-3B59-472E-A7C5-BD3BB2D44023}"
+        $existsRendering = Get-Rendering -Item $parentItem -PlaceHolder $placeholderPath | Where-Object {$_.ItemId -eq $renderingId}
+        $rendering = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $placeholderPath
+        
+        if($existsRendering -eq $null){
+            Add-Rendering -Item $parentItem -Instance $rendering -DataSource $dataSourcePath -Placeholder $placeholderPath -Index 0
+            Write-Host "Added rendering: Booking Back Button component"
+        } else {
+        	Write-Host "Skip adding rendering: Booking Back Button component already exists"
+        }
+    }
+    
+    Add-Booking-Back-Button-Item -Path $BookingPagePath
+    Add-Booking-Back-Button-Item -Path $BookingGuestDetailsPagePath
+    
+    
+    Write-Host  "END SCRIPT: EHD-290 Booking Back Button"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231130T091142Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\VitaliS

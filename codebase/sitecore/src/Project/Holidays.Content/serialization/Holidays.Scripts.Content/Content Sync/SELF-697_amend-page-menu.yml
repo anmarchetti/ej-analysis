@@ -1,0 +1,56 @@
+﻿---
+ID: "1c3419cc-5407-47d3-80a7-b69d8ad7e778"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-697_amend-page-menu"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    # Create and/or update "Full Header And Slim Footer" design
+    $fullHeadPath = "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Full Header And Slim Footer";
+    $fullHeadTemplate = "{4B960AA8-24C3-4A4E-A27F-F4718D189EF6}";
+    $fullHeadAndSlimFooterItem = Get-Or-Create-Item -path $fullHeadPath -template $fullHeadTemplate;
+    if ($fullHeadAndSlimFooterItem -ne $null) {
+        $fullHeadAndSlimFooterItem.editing.BeginEdit();
+        
+        $fullHeadAndSlimFooterItem['Name'] = "Full Header And Slim Footer";
+        $fullHeadAndSlimFooterItem['PartialDesigns'] = "{B628B4D0-99B4-4E94-ABA6-F5596D6E4E57}|{8735A907-3443-4361-8EBA-020D02392368}";
+        $fullHeadAndSlimFooterItem['PageTemplates'] = "{D8427EBB-A1C9-42C1-B155-BAD302620B9E}|{56A636F9-775C-4BA1-BABE-03EE4B65FED7}|{0F2BB3A3-BA6B-4CF3-9455-2FA30495C558}";
+        
+        $fullHeadAndSlimFooterItem.editing.EndEdit() | Out-Null;
+        Write-Host $fullHeadAndSlimFooterItem.Name "updated";
+    }
+    
+    # Update "Slim design" removing "Amend Flight/Transfers/Passengers" pages from it
+    $slimDesignItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Slim Design" -ErrorAction SilentlyContinue;
+    if ($slimDesignItem -ne $null) {
+        $slimDesignItem.editing.BeginEdit();
+        
+        $slimDesignItem['PageTemplates'] = "{09BEF082-3309-4083-9F0B-71FB8D60D7F5}|{CBCF50A8-017C-4FBE-A642-55979E8B1877}|{4EDEE9C4-1042-453A-B567-958BE3D89DA5}|{89B3FA91-A1DC-4DCC-B581-51103E374969}|{4CF74561-4E5C-4AFF-8753-A8F15CB35870}|{370185FE-F7FB-4E3C-8C9F-12986570F74F}";
+        
+        $slimDesignItem.editing.EndEdit() | Out-Null;
+        Write-Host $slimDesignItem.Name "updated";
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230419T095439Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

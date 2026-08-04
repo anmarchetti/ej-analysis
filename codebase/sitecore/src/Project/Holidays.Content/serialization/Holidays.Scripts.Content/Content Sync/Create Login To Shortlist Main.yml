@@ -1,0 +1,63 @@
+﻿---
+ID: "0cb749ac-fe5e-4aa2-9391-ac0b52466baf"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Login To Shortlist Maintenance Popup
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    
+    $loginMaintenance = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Data/Login To Shortlist Maintenance Popup" -templateId "{5C4A2D07-6BE0-409B-97A9-0829970283B1}";
+    
+    if ($loginMaintenance -ne $null) {
+        $loginMaintenance.Editing.BeginEdit()
+        $loginMaintenance["Icon"] = '<image mediaid="{90267470-172A-4102-B274-CCD136CD9651}" />';
+        $loginMaintenance["Title"] = "Unfortunately, you can't log in to view your shortlists. Please, bear with us.";
+        $loginMaintenance["Description"] = "We&rsquo;re working on making a better experience for you.<br /> We apologise for any inconveniences caused and thank you for your patience.";
+        $loginMaintenance.Editing.EndEdit() | Out-Null
+    }
+    
+    #Add login popup to header
+    function Add-Login($page){
+        if ($page -ne $null) {
+            $headerRenderings = Get-Rendering -Item $page -Placeholder "header";
+            
+            if ($headerRenderings -is [array]) {
+                $pageHeaderRendering = $headerRenderings[0];
+            } else { 
+                $pageHeaderRendering = $headerRenderings;
+            }
+            
+            $loginPlaceHolder=  '/header/login-popup-'+ $pageHeaderRendering.UniqueId +'-0'
+            $loginRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Popups/Login To Shortlist Popup"
+            $loginItem = Get-Item -Database "master" -Path $loginRenderingPath | New-Rendering -Placeholder $loginPlaceHolder
+            Add-Rendering -Item $page -PlaceHolder $loginPlaceHolder -Instance $loginItem  
+        }
+    }
+    
+    $header = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Full Header" -ErrorAction SilentlyContinue
+    $slim = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Slim Header" -ErrorAction SilentlyContinue
+    
+    Add-Login -page $header;
+    Add-Login -page $slim;
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4890
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200714T084139Z

@@ -1,0 +1,31 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 16px;
+    
+    .title {
+        margin: 0;
+        font-family: $fontRoundedDemy;
+        font-size: 18px;
+        line-height: 1.333;
+        color: $clrTextHeading;
+    }
+
+    .description {
+        font-size: 16px;
+        line-height: 1.375;
+
+        :first-child {
+            margin-top: 0;
+        }
+
+        :last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.content.hidden {
+    display: none;
+}

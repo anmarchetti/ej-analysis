@@ -1,0 +1,54 @@
+﻿---
+ID: "80639fe6-c7dc-4ff6-816c-cb110cf14e73"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-852 fix translations for url popup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $backToHomePageLabel = '/sitecore/content/EasyJet/Holidays/Dictionary/Luggage Url Popup/Buttons/Back To Homepage'
+    $contentLabel = '/sitecore/content/EasyJet/Holidays/Dictionary/Luggage Url Popup/Labels/Content'
+    $headerLabel = '/sitecore/content/EasyJet/Holidays/Dictionary/Luggage Url Popup/Labels/Header'
+    
+    function create-lang-version ($item,$lang,$value) {
+    	$targetLangItem = Get-Item -Path $item -Language $lang
+        $targetLangItem
+    
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemVersion -Path $item -TargetLanguage $lang -IfExist Append -DoNotCopyFields
+    		$targetLangItem = Get-Item -Path $item -Language $lang
+    	}
+    
+    	if ($null -ne $targetLangItem) {
+    		$targetLangItem = Get-Item -Path $item -Language $lang
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem['Phrase'] = $value;
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    create-lang-version -Item $backToHomePageLabel -Lang 'de-DE' -Value 'Zurück zur Hauptseite'
+    create-lang-version -Item $backToHomePageLabel -Lang 'de-CH' -Value 'Zurück zur Hauptseite'
+    create-lang-version -Item $backToHomePageLabel -Lang 'fr-FR' -Value "Retour à la page d'accueil"
+    create-lang-version -Item $backToHomePageLabel -Lang 'fr-CH' -Value "Retour à la page d'accueil"
+    create-lang-version -Item $contentLabel -Lang 'de-DE' -Value 'Es gibt ein Problem mit der URL, auf die Sie zuzugreifen versuchen'
+    create-lang-version -Item $contentLabel -Lang 'de-CH' -Value 'Es gibt ein Problem mit der URL, auf die Sie zuzugreifen versuchen'
+    create-lang-version -Item $contentLabel -Lang 'fr-FR' -Value "Il y a un problème avec l'URL que vous essayez d'accéder"
+    create-lang-version -Item $contentLabel -Lang 'fr-CH' -Value "Il y a un problème avec l'URL que vous essayez d'accéder"
+    create-lang-version -Item $headerLabel -Lang 'de-DE' -Value 'Ups, da ist etwas schief gelaufen...'
+    create-lang-version -Item $headerLabel -Lang 'de-CH' -Value 'Ups, da ist etwas schief gelaufen...'
+    create-lang-version -Item $headerLabel -Lang 'fr-FR' -Value "oops, quelque chose s'est mal passé..."
+    create-lang-version -Item $headerLabel -Lang 'fr-CH' -Value "oops, quelque chose s'est mal passé..."
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2040
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240311T124504Z

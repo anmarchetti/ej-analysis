@@ -1,0 +1,56 @@
+﻿---
+ID: "de48e428-f02b-4238-81c9-9daf1469539c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create New Cancel And Credit Rules Folder And Move Move Old Items to This Folder
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $cancelAndCreditRuleTemplateId = "{B473AF98-632C-4A9E-98B8-D6A14FDDDBD7}"
+    
+    $cancelAndCreditSettingsFolderPath = "/sitecore/content/EasyJet/Holidays/Settings/Cancel And Credit Settings"
+    
+    $cancelAndCreditRulesFolderTemplateId = "{2E0DA95C-0C8E-4EEB-B579-F38C25930EAA}"
+    $cancelAndCreditRulesFolderName = "Cancel And Credit Rules"
+    
+    $exemptionListsFolderTemplateId = "{88F08BC0-1E5C-49B4-8D8A-FF8045926209}"
+    $exemptionListsFolderName = "Exemption Lists"
+    
+    $exemptionListTemplateId = "{FDAC2CA0-892F-49F7-B83E-95B621ACA146}"
+    $exemtionListName = "Exemption List"
+    
+    function Create-Item($path,$name, $templateId){
+        $item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $name -ItemType $templateId
+        }
+        return $item;
+    }
+    
+    function Get-Item-By-TemplateId($item, $templateId){
+        $item.Children | Where-Object { $_.TemplateId -eq $templateId}
+    }
+    
+    function Move-Items($newPath, $items){
+        foreach($item in $items){
+            Move-Item -Path $item.Paths.FullPath -Destination $newPath
+        }
+    }
+    
+    $cancelAndCreditRulesFolder = Create-Item -Path $cancelAndCreditSettingsFolderPath -Name $cancelAndCreditRulesFolderName -TemplateId $cancelAndCreditRulesFolderTemplateId
+    $cancelAndCreditSettingsFolder = Get-Item -Path $cancelAndCreditSettingsFolderPath
+    $cancelAndCreditRules = Get-Item-By-TemplateId -Item $cancelAndCreditSettingsFolder -TemplateId $cancelAndCreditRuleTemplateId
+    Move-Items -NewPath $cancelAndCreditRulesFolder.Paths.FullPath -Items $cancelAndCreditRules
+    
+    $exemptionListsFolder = Create-Item -Path $cancelAndCreditSettingsFolderPath -Name $exemptionListsFolderName -TemplateId $exemptionListsFolderTemplateId
+    $exemptionListFolder = Create-Item -Path $exemptionListsFolder.Paths.FullPath -Name $exemtionListName -TemplateId $exemptionListTemplateId
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200907T120252Z

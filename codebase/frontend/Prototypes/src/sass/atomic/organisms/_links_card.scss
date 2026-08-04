@@ -1,0 +1,45 @@
+.links_card {
+    min-height: auto;
+    padding: 35px;
+
+    &--description {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .list li {
+        margin-bottom: 12px;
+
+        a {
+            font-size: 13px;
+
+            svg {
+                width: 10px;
+                height: 10px;
+                margin-bottom: -1px;
+                margin-left: 9px;
+            }
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    @include media-breakpoint-up(md) {
+        min-height: 220px;
+
+        &--description {
+            font-size: 16px;
+        }
+
+        .list li a {
+            font-size: 18px;
+
+            svg {
+                width: 12px;
+                height: 12px;
+                margin-bottom: -1px;
+            }
+        }
+    }
+}

@@ -1,0 +1,49 @@
+﻿---
+ID: "71baff74-d167-4ffb-a204-51e01c565a07"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Fix Promo Pages Search Pods
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Set-AB-Test-Fields($item, $testId, $testVariant) {
+        $item.Editing.BeginEdit();
+        $item["TestId"] = $testId
+        $item["TestVariant"] = $testVariant
+        $item.Editing.EndEdit() | Out-Null
+    }
+    
+    $dataPath = "master:/sitecore/content/EasyJet/Holidays/Data"
+    $searchPodFolderTemplateId = "{CA9B20EB-F054-41A0-873A-F63776B9FE68}"
+    $currentSearchPodTemplateId = "{05D15AAB-CFF6-4FF9-B048-F9E48DA7153E}"
+    $newSearchPodTemplateId = "{E24DE0D7-390F-424F-B937-761CE71C5E21}"
+    $searchPodTestId = '101'
+    
+    $searchPodFolder = Get-ChildItem -Path $dataPath | Where-Object { $_.TemplateID -eq  $searchPodFolderTemplateId} | Select -First 1
+    
+    # Recreate Search Pods with ForceId
+    if($searchPodFolder -ne $null) {
+        $searchPodFolder | Remove-Item -Recurse
+       
+        $searchPodFolder = New-Item -Path $dataPath -Name "Promo Page Search Pods" -ItemType $searchPodFolderTemplateId -ForceId "{553A2F91-8F78-468E-8576-4CADA6590A9B}"
+        $currentSearchPod = New-Item -Path  $searchPodFolder.FullPath -Name "Simple Search Pod" -ItemType $currentSearchPodTemplateId -ForceId "{22DE405B-29A5-40A1-8C7E-8C1249793F59}"
+        $newSearchPod = New-Item -Path  $searchPodFolder.FullPath -Name "Search Pod With Hero Image" -ItemType $newSearchPodTemplateId -ForceId "{5925E2C8-02C1-4998-A9CE-5437074519C9}"
+        
+        Set-AB-Test-Fields -item $currentSearchPod -TestId $searchPodTestId -TestVariant 'A'
+        Set-AB-Test-Fields -item $newSearchPod -TestId $searchPodTestId -TestVariant 'B'
+        
+        Write-Host "Search Pods recreated"
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 350
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201009T075934Z

@@ -1,0 +1,67 @@
+{
+  "Name": "ContactCollection",
+  "Version": "1.0",
+  "References": [
+    {
+      "Name": "XConnect",
+      "Version": "1.0"
+    }
+  ],
+  "Types": {
+    "easyJet.Foundation.XConnect.Common.Facets.MarketingPreferences.MarketingPreferencesFacet": {
+      "Type": "Facet",
+      "BaseType": "Sitecore.XConnect.Facet",
+      "ClrType": "easyJet.Foundation.XConnect.Common.Facets.MarketingPreferences.MarketingPreferencesFacet, easyJet.Foundation.XConnect.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "FirstPartyMarketing": {
+          "Type": "Boolean"
+        },
+        "ThirdPartyMarketing": {
+          "Type": "Boolean"
+        },
+        "MarketResearchOptOut": {
+          "Type": "Boolean"
+        },
+        "DoNotContact": {
+          "Type": "Boolean"
+        }
+      }
+    },
+    "easyJet.Foundation.XConnect.Common.Facets.CommunicationPreferences.CommunicationPreferencesFacet": {
+      "Type": "Facet",
+      "BaseType": "Sitecore.XConnect.Facet",
+      "Annotations": [
+        {
+          "Type": "PIISensitiveAttribute"
+        }
+      ],
+      "ClrType": "easyJet.Foundation.XConnect.Common.Facets.CommunicationPreferences.CommunicationPreferencesFacet, easyJet.Foundation.XConnect.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "Preferred": {
+          "Type": "Int32"
+        },
+        "WhatsAppNumber": {
+          "Type": "String"
+        },
+        "TwitterAccount": {
+          "Type": "String"
+        },
+        "FacebookAccount": {
+          "Type": "String"
+        }
+      }
+    }
+  },
+  "Facets": [
+    {
+      "Target": "Contact",
+      "Name": "MarketingPreferences",
+      "Type": "easyJet.Foundation.XConnect.Common.Facets.MarketingPreferences.MarketingPreferencesFacet"
+    },
+    {
+      "Target": "Contact",
+      "Name": "CommunicationPreferences",
+      "Type": "easyJet.Foundation.XConnect.Common.Facets.CommunicationPreferences.CommunicationPreferencesFacet"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+﻿---
+ID: "856b2157-2631-4357-a07f-8dc0d1235a8c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14994 Help Pages - BD4 - Add BD4 Carousel to Help Pages"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    
+    function Create-Recommender-Data($recommenderPath, $placementId) {
+        $recomData = Get-Or-Create-Item -Path $recommenderPath -Template "{439330F2-BA2B-4D2D-9198-188D525F5877}";
+        if ($recomData -ne $null) {
+            $recomData.Editing.BeginEdit()
+            $recomData["Title"] = "Glad we could help you, now we can recommend you some holidays";
+            $recomData["BD4PlacementId"] = $placementId;
+            $recomData.Editing.EndEdit()
+        }
+        
+        return $recomData;
+    }
+    
+    $data1 = Create-Recommender-Data -RecommenderPath '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Page Components/Recommender Carousel' -PlacementId "ejh-generic-safety-bottom"
+    $data2 = Create-Recommender-Data -RecommenderPath '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Choosing Your Holiday/Page Components/Recommender Carousel' -PlacementId "ejh-generic-choosingholiday-bottom"
+    $data3 = Create-Recommender-Data -RecommenderPath '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Before You Travel/Page Components/Recommender Carousel' -PlacementId "ejh-generic-beforetravel-bottom"
+    $data4 = Create-Recommender-Data -RecommenderPath '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/On holiday/Page Components/Recommender Carousel' -PlacementId "ejh-generic-onholiday-bottom"
+    $data5 = Create-Recommender-Data -RecommenderPath '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Out and About/Page Components/Recommender Carousel' -PlacementId "ejh-generic-outandabout-bottom"
+    $data6 = Create-Recommender-Data -RecommenderPath '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Your hotel/Page Components/Recommender Carousel' -PlacementId "ejh-generic-yourhotel-bottom"
+    $data7 = Create-Recommender-Data -RecommenderPath '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Food and Drink/Page Components/Recommender Carousel' -PlacementId "ejh-generic-food-bottom"
+    $data8 = Create-Recommender-Data -RecommenderPath '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Swimming and At The Beach/Page Components/Recommender Carousel' -PlacementId "ejh-generic-swimmingbeach-bottom"
+    $data9 = Create-Recommender-Data -RecommenderPath '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Coming Home/Page Components/Recommender Carousel' -PlacementId "ejh-generic-cominghome-bottom"
+    $data10 = Create-Recommender-Data -RecommenderPath '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/At the airport/Page Components/Recommender Carousel' -PlacementId "ejh-generic-airport-bottom"
+    $data11 = Create-Recommender-Data -RecommenderPath '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Protection-promise/Page Components/Recommender Carousel' -PlacementId "ejh-generic-protectionpromise-bottom"
+    $data12 = Create-Recommender-Data -RecommenderPath '/sitecore/content/EasyJet/Holidays/Home/Help/Page Components/Recommender Carousel' -PlacementId "ejh-generic-help-bottom "
+    
+    #Add renderings to pages
+    function Add-New-Rendering($item, $placeholder, $renderingId, $datasource, $index, $parameters){
+        $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $placeholder
+        Add-Rendering -Item $item -Instance $renderingItem -PlaceHolder $placeholder -DataSource $datasource -Index $index
+        Get-Rendering -Item $item -Index $index | Set-RenderingParameter -Parameter @{"IsWhiteBackground"= "1"; "FallbackImage" = "<image mediaid='{B8BDEFA6-5D0E-4F27-B6C3-53BDD9A3A32C}'/>";} | Set-Rendering -Item $item
+    }
+    function Add-Rendering-To($item, $renderingId, $datasource, $datasourceFilter){
+        $index = 0
+        Get-Rendering -Item $item |
+        Foreach-Object { 
+            $index++
+            if($_.ItemId -eq $renderingId)
+            {
+                if(($datasourceFilter -ne $null -and $_.Datasource -eq $datasourceFilter) -or $datasourceFilter -eq $null){
+                    if($index -gt 0)
+                    {
+                        $incrementIndex = $index
+                        if ($sing -ne 0){
+                            $incrementIndex = $index + $sign
+                        }
+                        
+                        Add-New-Rendering -Item $item -Placeholder "body" -RenderingId "{E78B6A7E-0EC5-4324-A290-971EE74C1FC8}" -Datasource $datasource -Index $incrementIndex 
+                        
+                    }
+                    return
+                }
+                
+            }
+        }
+    }
+    function Add-Carousel($pagePath, $rendId,  $datasource, $datasourceFilter ){
+        $page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue;
+        if ($page -ne $null) {
+             Add-Rendering-To -Item $page -RenderingId $rendId -datasource $datasource.ID  -DatasourceFilter $datasourceFilter;
+        }
+    }
+    
+    Add-Carousel -PagePath "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing" -RendId "{75678BAB-C9C6-4EFB-A590-5B36E580EF0D}" -Datasource $data1
+    Add-Carousel -PagePath "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Choosing Your Holiday" -RendId "{6C234F53-080F-4C8E-AC01-CE83E3C28998}" -Datasource $data2
+    Add-Carousel -PagePath "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Before You Travel" -RendId "{6C234F53-080F-4C8E-AC01-CE83E3C28998}" -Datasource $data3
+    Add-Carousel -PagePath "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/On holiday" -RendId "{6C234F53-080F-4C8E-AC01-CE83E3C28998}" -Datasource $data4
+    Add-Carousel -PagePath "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Out and About" -RendId "{6C234F53-080F-4C8E-AC01-CE83E3C28998}" -Datasource $data5
+    Add-Carousel -PagePath "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Your hotel" -RendId "{6C234F53-080F-4C8E-AC01-CE83E3C28998}" -Datasource $data6
+    Add-Carousel -PagePath "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Food and Drink" -RendId "{6C234F53-080F-4C8E-AC01-CE83E3C28998}" -Datasource $data7
+    Add-Carousel -PagePath "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Swimming and At The Beach" -RendId "{6C234F53-080F-4C8E-AC01-CE83E3C28998}" -Datasource $data8
+    Add-Carousel -PagePath "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/Coming Home" -RendId "{6C234F53-080F-4C8E-AC01-CE83E3C28998}" -Datasource $data9
+    Add-Carousel -PagePath "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Customer Safety and Wellbeing/At the airport" -RendId "{6C234F53-080F-4C8E-AC01-CE83E3C28998}" -Datasource $data10
+    Add-Carousel -PagePath "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Protection-promise" -RendId "{6C234F53-080F-4C8E-AC01-CE83E3C28998}" -Datasource $data11
+    
+    $datasourceFilter = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Help/Page Components/Bottom Help Links"
+    
+    Add-Carousel -PagePath "/sitecore/content/EasyJet/Holidays/Home/Help" -RendId "{9133F3CA-553F-42F5-8529-54734B53A378}" -Datasource $data12 -DatasourceFilter $datasourceFilter.ID
+    
+    #update placement ids for other carousels
+    function Add-Carousel($path, $placementId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue;
+        if ($item -ne $null) {
+              $item.Editing.BeginEdit()
+              $item["BD4PlacementId"] = $placementId;
+              $item.Editing.EndEdit()
+        }
+    }
+    
+    Add-Carousel -path "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Family Holidays/Page Components/Recommender Carousel" -placementId "ejh-reco-family-bottom"
+    Add-Carousel -path "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Adults Holidays/Page Components/Recommender Carousel"  -placementId "ejh-reco-adult-center"
+    Add-Carousel -path "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Beach Holidays/Page Components/Recommender Carousel"  -placementId "ejh-reco-beach-bottom"
+    Add-Carousel -path "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Lakes Holidays/Page Components/Recommender Carousel"  -placementId "ejh-reco-lakes-center"
+    Add-Carousel -path "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Luxury Holidays/Page Components/Recommender Carousel"  -placementId "ejh-reco-luxury-bottom"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210112T150701Z

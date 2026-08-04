@@ -1,0 +1,136 @@
+@mixin image-shadow-overlay($background: linear-gradient(135deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) 100%)) {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: $background;
+}
+
+@mixin separator-line($color, $top: 0, $left: $container-padding-x_mobile) {
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: $top;
+        right: $left;
+        left: $left;
+        height: 1px;
+        background-color: $color;
+    }
+}
+
+@mixin text-truncate() {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@mixin sizeSquare($value) {
+    width: $value;
+    min-width: $value;
+    height: $value;
+}
+
+@mixin custom-scroll() {
+    &::-webkit-scrollbar-track {
+        background-color: $colorGrayLight;
+        border-radius: 6px;
+    }
+
+    &::-webkit-scrollbar {
+        width: 10px;
+        height: 3px;
+        background-color: $colorGrayLight;
+        border-radius: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $clrEjOrange;
+        border-radius: 6px;
+    }
+}
+
+@mixin tiny-scroll() {
+    &::-webkit-scrollbar-track {
+        background-color: white;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+        background-color: white;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $colorBlackLighter;
+        border-radius: 3px;
+    }
+}
+
+@mixin flat-track-scroll() {
+    &::-webkit-scrollbar-track {
+        background-color: $colorGrayLight;
+    }
+
+    &::-webkit-scrollbar {
+        width: 11px;
+        height: 3px;
+        background-color: $colorGrayLight;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $clrEjOrange;
+        border-radius: 3px;
+    }
+}
+
+@mixin custom-scrollbar($track-color, $thumb-color, $width: 8px, $border-radius: 4px) {
+    &::-webkit-scrollbar-track {
+        border-radius: $border-radius;
+        background-color: $track-color;
+    }
+
+    &::-webkit-scrollbar {
+        width: $width;
+        border-radius: $border-radius;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $thumb-color;
+        border-radius: $border-radius;
+    }
+}
+
+@mixin check-icon() {
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 11px;
+        height: 5px;
+        border: 2px solid $colorBlack;
+        border-top-color: transparent;
+        border-right-color: transparent;
+        position: absolute;
+        left: 0;
+        top: 2px;
+        transform: rotate(-48deg);
+        border-radius: 2px;
+    }
+}
+
+@mixin checkbox-list() {
+    list-style: none;
+    padding: 0;
+
+    li {
+        position: relative;
+        padding-left: 24px;
+
+        @include check-icon;
+    }
+}

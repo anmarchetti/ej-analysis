@@ -1,0 +1,27 @@
+{
+    "Title": "InfoBookingRequest response for X9143823",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/EZYDMO/VRPWebservice/AniteGateway/AniteGateway.aspx",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            
+            "Matcher": {
+                "Name": "XPathMatcher",
+                "Pattern": "//*:Acc_Cd/text()='X9143823'"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/validate-package/seats/InfoBooking_X9143823_with_cache.xml"
+    }
+}

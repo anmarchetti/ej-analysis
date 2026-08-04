@@ -1,0 +1,168 @@
+﻿---
+ID: "1bd8528e-f77a-46ed-a3c2-bbee8f1994da"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/BOOK-975 Promotional Messages To Trade"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $icon_4724d95050b1493e8c2bf156ccc6c4c6_en_v1 = @"
+    <image mediaid="{88C52B7B-390C-4F62-9974-439975C78AF7}" />
+    "@
+    $description_3227481747f24955bd874bf2a5e19406_en_v2 = @"
+    Find the same holiday cheaper elsewhere, we’ll beat the price
+    "@
+    $icon_3227481747f24955bd874bf2a5e19406_en_v2 = @"
+    <image mediaid="{7257CDFC-E496-491C-83BA-4B0EF8119E3F}" />
+    "@
+    $tooltip_3227481747f24955bd874bf2a5e19406_en_v2 = @"
+    If you find the same holiday cheaper within 24 hours of booking, we’ll apply a discount to the price of your easyJet holidays booking of the difference (plus an extra £5pp). See our Best Price Guarantee page for qualifying criteria.
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Promotional Messages"
+            TemplatePath = "Feature/PageContent/Promotional Messages Folder"
+            Id          = [GUID]"{5E23681C-971C-4543-B3C2-F03955C7C0AE}"
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Promotional Messages/Deposit"
+            TemplatePath = "Feature/PageContent/Promotional Message"
+            Id          = [GUID]"{4724D950-50B1-493E-8C2B-F156CCC6C4C6}"
+            Fields      = @{
+                "Description" = @{
+                    "en" = ""
+                }
+                "Type" = @{
+                    "en" = "Deposit"
+                }
+                "Color" = @{
+                    "en" = "Green"
+                }
+                "Icon" = @{
+                    "en" = $icon_4724d95050b1493e8c2bf156ccc6c4c6_en_v1
+                }
+                "Title" = @{
+                    "en" = "Book today for £60pp deposit"
+                }
+                "Tooltip" = @{
+                    "en" = ""
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Promotional Messages/Holiday With Confidence less than 28"
+            TemplatePath = "Feature/PageContent/Promotional Message"
+            Id          = [GUID]"{32274817-47F2-4955-BD87-4BF2A5E19406}"
+            Fields      = @{
+                "Description" = @{
+                    "en" = $description_3227481747f24955bd874bf2a5e19406_en_v2
+                }
+                "Type" = @{
+                    "en" = "With Confidence Less Than 28"
+                }
+                "Color" = @{
+                    "en" = "Grey"
+                }
+                "Icon" = @{
+                    "en" = $icon_3227481747f24955bd874bf2a5e19406_en_v2
+                }
+                "Title" = @{
+                    "en" = "Best Price Guarantee"
+                }
+                "Tooltip" = @{
+                    "en" = $tooltip_3227481747f24955bd874bf2a5e19406_en_v2
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    
+    $freenightsicon_7d911e52b7c94b47a856d4c560000fe5_en_v1 = @"
+    <image mediaid="{CAE7372B-1B62-4A92-9F23-CFC4D9E536AE}" />
+    "@
+    $itemsToCreateSettings = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Settings/Free Upgrades Settings"
+            TemplatePath = "Project/Holidays/Site Settings/Free Upgrades Settings"
+            Id          = [GUID]"{7D911E52-B7C9-4B47-A856-D4C560000FE5}"
+            Fields      = @{
+                "IsFreeNightsEnabled" = @{
+                    "en" = "1"
+                }
+                "FreeNightsIcon" = @{
+                    "en" = $freenightsicon_7d911e52b7c94b47a856d4c560000fe5_en_v1
+                }
+                "IsPublic" = @{
+                    "en" = "1"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreateSettings
+    
+    function Get-Rendering-Index ($item, $renderingItemId) {
+        	$i = 0
+        	Get-Rendering -Item $item | ForEach-Object {
+        		if ($_.ItemID -eq $renderingItemId) {
+        			return $i
+        		}
+        		$i++
+        	}
+        }
+    
+    function Add-Pills-To-Page($pageItem) {
+        $ph = '/body/component-wrapper-inner-{3ec4afc7-9857-4894-9552-b00c1f45c41a}-0/promotional-messages-{9ed3c2b4-6fbb-4cf6-9464-9d14a0984c93}-0'
+        
+        if($pageItem -ne $null) {
+            $searchResultsRenderingId = "{76C32F3D-E1E3-4213-BD40-207B954EFF42}"
+            $searchResultsRendering = Get-Rendering -Item $pageItem -FinalLayout -Language "en" | Where-Object {$_.ItemId -eq $searchResultsRenderingId}
+            $searchResultsRenderingIndex = Get-Rendering-Index -Item $pageItem -RenderingItemId $searchResultsRenderingId -FinalLayout -Language "en"
+        
+            $promoMessagesRenderingId = "{417834B3-FCF9-434D-BD14-DA73AEBB48D7}"
+            $promoMessagesPlaceholder = $searchResultsRendering.Placeholder + '/promotional-messages-' + $searchResultsRendering.UniqueId + '-0'
+            $promoMessagesRenderingIndex = $searchResultsRenderingIndex + 1
+            $rendering = Get-Rendering -Item $pageItem -PlaceHolder $promoMessagesPlaceholder -FinalLayout -Language "en" | Where-Object {$_.ItemId -eq $promoMessagesRenderingId}
+            
+            if ($rendering -eq $null) {
+                $promoMessagesRendering = Get-Item -Path "master:" -ID $promoMessagesRenderingId | New-Rendering
+                Add-Rendering -Item $pageItem -Instance $promoMessagesRendering -DataSource "{5E23681C-971C-4543-B3C2-F03955C7C0AE}" -Placeholder $promoMessagesPlaceholder -Index $promoMessagesRenderingIndex -FinalLayout -Language "en"
+                Write-Host "Promotional Messages Rendering added to $($pageItem.Paths.FullPath)"
+            } else {
+                Set-Rendering -Item $pageItem -Instance $rendering -DataSource "{5E23681C-971C-4543-B3C2-F03955C7C0AE}" -PlaceHolder $promoMessagesPlaceholder -Index $promoMessagesRenderingIndex -FinalLayout -Language "en"
+                        Write-Host "Update rendering "($pageItem.Name)
+            }
+         }
+    }
+    
+    $searchPagePath = '/sitecore/content/EasyJet/TradePortal/Home/MixedResultList'
+    $item = gi -path $searchPagePath
+    
+    Add-Pills-To-Page($item)
+    
+    $allItems = Get-ChildItem -Path "/sitecore/content/EasyJet/TradePortal/Home/Root" -Recurse
+            
+            ForEach ($item in $allItems) {
+        	    if (($item.TemplateName -eq 'Promo Page') -or ($item.TemplateName -eq 'Recurring Promo Page')) {
+        	        Add-Pills-To-Page($item)
+        	    }
+            }
+        
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1000000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250313T133430Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

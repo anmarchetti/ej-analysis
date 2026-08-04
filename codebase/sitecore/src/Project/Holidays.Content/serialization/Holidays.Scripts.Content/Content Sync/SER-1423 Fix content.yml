@@ -1,0 +1,566 @@
+﻿---
+ID: "e9ff3b52-cf71-445f-9c4f-3c8c10b16fb6"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-1423 Fix content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    function Get-RenderingFromPage {
+    	param(
+    		[string]$PagePath,
+    		[string]$RenderingId,
+    		[int]$Index = 0
+    	)
+    	$item = Get-Item -Path $PagePath
+    	$layoutField = New-Object -TypeName "Sitecore.Data.Fields.LayoutField" -ArgumentList $item
+    	if ([string]::IsNullOrEmpty($layoutField.Value)) { return $null }
+    
+    	$layoutXml = [Sitecore.Layouts.LayoutDefinition]::Parse($layoutField.Value)
+    	$device = $layoutXml.Devices[0]
+    
+    	$matchingRenderings = @( $device.Renderings | Where-Object { $_.ItemID -eq $RenderingId })
+    
+    	if ($Index -lt $matchingRenderings.Count) {
+    		$rendering = $matchingRenderings[$Index]
+    		return @{
+    			Placeholder = $rendering.Placeholder
+    			UniqueId = $rendering.UniqueId
+    			Parameters = $rendering.Parameters
+    			DataSource = $rendering.DataSource
+    		}
+    	}
+    	return $null
+    }
+    
+    function Get-PageConfiguration {
+    	param(
+    		[Parameter(Mandatory = $true)] [array]$Renderings,
+    		[Parameter(Mandatory = $true)] [string]$ExpProviderPagePath,
+    		[Parameter(Mandatory = $true)] [string]$PagePath
+    	)
+    
+    	filter ConvertTo-Params {
+    		param($ds,$ph,$extraParams)
+    		$p = [ordered]@{
+    			"Placeholder" = $ph
+    			"Data Source" = $ds
+    		}
+    		$params = ($p.Keys | ForEach-Object {
+    				$k = [System.Web.HttpUtility]::UrlEncode($_).Replace("%20","+")
+    				$v = [System.Web.HttpUtility]::UrlEncode($p[$_]).Replace("%20","+")
+    				"$k=$v"
+    			}) -join "&"
+    		if (-not [string]::IsNullOrEmpty($extraParams)) {
+    			$params += "&$extraParams"
+    		}
+    		return $params
+    	}
+    
+    	$simpleList = @()
+    	$complexMapping = @()
+    
+    	$dsRenderingIdCounts = @{}
+    	foreach ($r in $Renderings) {
+    		if (($null -ne $r.ds -and $r.ds -ne "") -or $r.readFromPage -eq $true) {
+    			if ($dsRenderingIdCounts.ContainsKey($r.id)) { $dsRenderingIdCounts[$r.id]++ } else { $dsRenderingIdCounts[$r.id] = 1 }
+    		}
+    	}
+    
+    	foreach ($r in $Renderings) {
+    		if ($simpleList -notcontains $r.id) {
+    			$simpleList += $r.id
+    		}
+    		$finalDs = ""
+    
+    		if ($null -ne $r.ds -and $r.ds -ne "") {
+    			$renderingIndex = if ($null -ne $r.index) { [int]$r.index } else { 0 }
+    			$renderingInfo = Get-RenderingFromPage -PagePath $PagePath -RenderingId $r.id -Index $renderingIndex
+    
+    			$currentPh = if ($null -ne $renderingInfo) { $renderingInfo.Placeholder } else { "" }
+    			$uniqueId = if ($null -ne $renderingInfo) { $renderingInfo.UniqueId } else { "" }
+    			$extraParams = if ($null -ne $renderingInfo -and -not [string]::IsNullOrEmpty($renderingInfo.Parameters)) { $renderingInfo.Parameters } else { "" }
+    
+    			if ($extraParams.StartsWith("?")) { $extraParams = $extraParams.Substring(1) }
+    
+    
+    			if ($r.keepDs -eq $true) {
+    				$sourceItem = Get-Item -Path $r.ds
+    				$finalDs = $sourceItem.id.ToString()
+    
+    				$pString = ConvertTo-Params -ds $finalDs -ph $currentPh -extraParams $extraParams
+    				$mappingEntry = "$($r.id):$($r.id):$pString"
+    				if (($dsRenderingIdCounts[$r.id] -gt 1 -or $renderingIndex -gt 0) -and -not [string]::IsNullOrEmpty($uniqueId)) {
+    					$mappingEntry += ":$uniqueId"
+    					$r["TargetUniqueId"] = $uniqueId
+    				}
+    				$complexMapping += $mappingEntry
+    				continue
+    			}
+    
+    			$sourceItem = Get-Item -Path $r.ds
+    			$newName = "$($sourceItem.Name) F and H"
+    			$parentPath = $sourceItem.Parent.Paths.FullPath
+    			$targetPath = "$parentPath/$newName"
+    
+    			$existingItem = Get-Item -Path $targetPath -ErrorAction SilentlyContinue
+    
+    			if ($null -eq $existingItem) {
+    				$duplicateItem = $sourceItem.Duplicate()
+    				$duplicateItem.Editing.BeginEdit()
+    				try {
+    					$duplicateItem.Name = $newName
+    					$duplicateItem["__Display name"] = "$($sourceItem.Name) F&H"
+    				} finally {
+    					$duplicateItem.Editing.EndEdit() | Out-Null
+    				}
+    
+    				$duplicateItem = Get-Item -Path "$parentPath/$newName"
+    
+    				$childMapping = @{}
+    				function Build-ChildMapping {
+    					param($SourceParent,$DuplicateParent,[hashtable]$Mapping)
+    					foreach ($oldChild in $SourceParent.Children) {
+    						$newChild = $DuplicateParent.Children | Where-Object { $_.Name -eq $oldChild.Name }
+    						if ($null -ne $newChild) {
+    							$Mapping[$oldChild.id.ToString()] = $newChild.id.ToString()
+    							Build-ChildMapping -SourceParent $oldChild -DuplicateParent $newChild -Mapping $Mapping
+    						} else {
+    							Write-Host "WARNING: No match for '$($oldChild.Name)' in duplicate!" -ForegroundColor Red
+    						}
+    					}
+    				}
+    				Build-ChildMapping -SourceParent $sourceItem -DuplicateParent $duplicateItem -Mapping $childMapping
+    
+    				$duplicateItem.Fields.ReadAll()
+    				$duplicateItem.Editing.BeginEdit()
+    				try {
+    					foreach ($field in $duplicateItem.Fields) {
+    						if ($field.Name.StartsWith("__") -or [string]::IsNullOrEmpty($field.Value)) { continue }
+    						$fieldValue = $field.Value
+    						$isFieldUpdated = $false
+    						foreach ($oldId in $childMapping.Keys) {
+    							if ($fieldValue.ToLower().Contains($oldId.ToLower())) {
+    								$newId = $childMapping[$oldId]
+    								$fieldValue = $fieldValue -ireplace [regex]::Escape($oldId),$newId
+    								$isFieldUpdated = $true
+    							}
+    						}
+    						if ($isFieldUpdated) {
+    							$duplicateItem[$field.Name] = $fieldValue
+    						}
+    					}
+    				} finally {
+    					$duplicateItem.Editing.EndEdit() | Out-Null
+    				}
+    
+    				function Update-DescendantFields {
+    					param($ParentItem,[hashtable]$Mapping)
+    					foreach ($child in $ParentItem.Children) {
+    						$child.Fields.ReadAll()
+    						$child.Editing.BeginEdit()
+    						$childUpdated = $false
+    						try {
+    							foreach ($field in $child.Fields) {
+    								if ($field.Name.StartsWith("__") -or [string]::IsNullOrEmpty($field.Value)) { continue }
+    								$fieldValue = $field.Value
+    								$isFieldUpdated = $false
+    								foreach ($oldId in $Mapping.Keys) {
+    									if ($fieldValue.ToLower().Contains($oldId.ToLower())) {
+    										$newId = $Mapping[$oldId]
+    										$fieldValue = $fieldValue -ireplace [regex]::Escape($oldId),$newId
+    										$isFieldUpdated = $true
+    									}
+    								}
+    								if ($isFieldUpdated) {
+    									$child[$field.Name] = $fieldValue
+    									$childUpdated = $true
+    								}
+    							}
+    						} finally {
+    							if ($childUpdated) { $child.Editing.EndEdit() | Out-Null } else { $child.Editing.CancelEdit() }
+    						}
+    						Update-DescendantFields -ParentItem $child -Mapping $Mapping
+    					}
+    				}
+    				Update-DescendantFields -ParentItem $duplicateItem -Mapping $childMapping
+    				$finalDs = $duplicateItem.id.ToString()
+    			} else {
+    				$finalDs = $existingItem.id.ToString()
+    			}
+    
+    			$pString = ConvertTo-Params -ds $finalDs -ph $currentPh -extraParams $extraParams
+    			$mappingEntry = "$($r.id):$($r.id):$pString"
+    
+    			if (($dsRenderingIdCounts[$r.id] -gt 1 -or $renderingIndex -gt 0) -and -not [string]::IsNullOrEmpty($uniqueId)) {
+    				$mappingEntry += ":$uniqueId"
+    				$r["TargetUniqueId"] = $uniqueId
+    			}
+    			$complexMapping += $mappingEntry
+    		}
+    	}
+    
+    	$targetConfigItem = Get-Item -Path $ExpProviderPagePath -ErrorAction SilentlyContinue
+    
+    	$finalReplacementsList = @()
+    	$existingAllowed = @()
+    
+    	if ($null -ne $targetConfigItem) {
+    		if (-not [string]::IsNullOrEmpty($targetConfigItem["RenderingReplacements"])) {
+    			$existingReplacements = $targetConfigItem["RenderingReplacements"].Split('|',[System.StringSplitOptions]::RemoveEmptyEntries)
+    
+    			foreach ($oldMapping in $existingReplacements) {
+    				$parts = $oldMapping.Split(':')
+    				$oldRenderingId = $parts[0]
+    				$oldUniqueId = if ($parts.Count -eq 4) { $parts[3] } else { $null }
+    
+    				$matchedNewMapping = $complexMapping | Where-Object {
+    					$newParts = $_.Split(':')
+    					$newRenderingId = $newParts[0]
+    					$newUniqueId = if ($newParts.Count -eq 4) { $newParts[3] } else { $null }
+    
+    					if ($null -ne $oldUniqueId -and $null -ne $newUniqueId) {
+    						return $oldUniqueId -eq $newUniqueId
+    					} elseif ($null -eq $oldUniqueId -and $null -eq $newUniqueId) {
+    						return $oldRenderingId -eq $newRenderingId
+    					}
+    					return $false
+    				}
+    
+    				if ($null -ne $matchedNewMapping) {
+    					$finalReplacementsList += $matchedNewMapping
+    					$complexMapping = $complexMapping | Where-Object { $_ -ne $matchedNewMapping }
+    				} else {
+    					$finalReplacementsList += $oldMapping
+    				}
+    			}
+    		}
+    
+    		if (-not [string]::IsNullOrEmpty($targetConfigItem["AllowedRenderings"])) {
+    			$existingAllowed = $targetConfigItem["AllowedRenderings"].Split('|',[System.StringSplitOptions]::RemoveEmptyEntries)
+    		}
+    	}
+    
+    	$finalReplacementsList = ($finalReplacementsList + $complexMapping) | Select-Object -Unique
+    	$finalAllowedList = ($existingAllowed + $simpleList) | Select-Object -Unique
+    
+    	return @(
+    		@{
+    			Path = $ExpProviderPagePath
+    			TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+    			Fields = @{
+    				"RenderingReplacements" = @{ "en" = ($finalReplacementsList -join "|") }
+    				"AllowedRenderings" = @{ "en" = ($finalAllowedList -join "|") }
+    			}
+    		}
+    	)
+    }
+    
+    $renderingsConfirmation = @(
+    	@{ id = "{0A32EA7D-D537-4845-A5B2-8D2FF7513D91}"; ds = "/sitecore/content/EasyJet/Holidays/Data/Assisted Travel Common Data/Special Assistance F and H"; keepDs = $true },
+    	@{ id = "{752847FB-9A5B-47E4-A1F3-42843C1A7C83}"; ds = "/sitecore/content/EasyJet/Holidays/Data/Health Entry Requirements F and H"; keepDs = $true },
+    	@{ id = "{EDCABB4F-676C-4418-BBEE-4E0009F946E5}"; ds = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Cabin Bags" }
+    )
+    
+    $updatesConfirmation = Get-PageConfiguration -Renderings $renderingsConfirmation -ExpProviderPagePath "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Confirmation" -PagePath "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation"
+    ImportContent -itemsToCreate $updatesConfirmation
+    
+    
+    $renderingsViewBooking = @(
+    	@{ id = "{752847FB-9A5B-47E4-A1F3-42843C1A7C83}"; ds = "/sitecore/content/EasyJet/Holidays/Data/Health Entry Requirements F and H"; keepDs = $true },
+    	@{ id = "{EDCABB4F-676C-4418-BBEE-4E0009F946E5}"; ds = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Cabin Bags" }
+    )
+    
+    $updatesViewBooking = Get-PageConfiguration -Renderings $renderingsViewBooking -ExpProviderPagePath "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/View Booking" -PagePath "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    ImportContent -itemsToCreate $updatesViewBooking
+    
+    
+    $renderingsPreTravel = @(
+    	@{ id = "{0F60E703-E976-4BE3-9E1A-3F0A7FF80718}"; ds = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H"; keepDs = $true }
+    )
+    
+    $updatesPreTravel = Get-PageConfiguration -Renderings $renderingsPreTravel -ExpProviderPagePath "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Pre Travel" -PagePath "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel"
+    ImportContent -itemsToCreate $updatesPreTravel
+    
+    
+    $renderingsInDestination = @(
+    	@{ id = "{0F60E703-E976-4BE3-9E1A-3F0A7FF80718}"; ds = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H"; keepDs = $true }
+    )
+    
+    $updatesInDestination = Get-PageConfiguration -Renderings $renderingsInDestination -ExpProviderPagePath "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/In Destination" -PagePath "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination"
+    ImportContent -itemsToCreate $updatesInDestination
+    
+    
+    $updates1 = @(
+    
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Cabin Bags F and H/Out Of Sync Banner"
+    		TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage/Info Banner"
+    		Fields = @{
+    			"Subtitle" = @{
+    				"en" = "We can’t get the bags information for the flights on this booking package, but don’t worry, any bags you have previously booked will still be valid. In the mean time, you can check on easyJet.com or the easyJet app to see your allowance."
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    		}
+    	}
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Cabin Bags F and H/Request Failure Banner"
+    		TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage/Info Banner"
+    		Fields = @{
+    			"Subtitle" = @{
+    				"en" = "We're sorry, the ability to add large cabin bags is currently unavailable for these flights. You can still make your booking and add large cabin bags at a later stage."
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    		}
+    	}
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Cabin Bags F and H/Unavailable Post Book Content"
+    		TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage/Info Banner"
+    		Fields = @{
+    			"Subtitle" = @{
+    				"en" = "We can’t manage your cabin bags for the flights on this booking package, but don’t worry, any bags you have previously booked will still be valid. If you have a flight reference number, you can manage your bags on the easyJet website."
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    		}
+    	}
+    
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/View Booking F and H"
+    		TemplatePath = "/sitecore/templates/Feature/Destinations/View Booking"
+    		Fields = @{
+    			"LuggageInternalDescription" = @{
+    				"en" = "If you want to add a large overhead cabin bag, or extra hold luggage to your booking package – you can add this via easyJet.com once you have your flight reference number. Just so you know, any extras you add via easyJet.com will not reflect on easyJet holidays."
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    			"LuggageInternalHeader" = @{
+    				"en" = "Want to take more bags with you?"
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    		}
+    	}
+    	@{
+    
+    		Path = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Bottom Help Links F and H/Help Centre"
+    		TemplatePath = "/sitecore/templates/Feature/PageContent/Help Link"
+    		Fields = @{
+    			"Link" = @{
+    				"en" = "<link text='Get help' linktype='external' url='/en/holidays/flight-plus-hotel/help' anchor='' target='_blank' />"
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    		}
+    	}
+    
+    
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Contact Us Button F and H/Chat to us"
+    		TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Popup Channel"
+    		Fields = @{
+    			"Title" = @{
+    				"en" = ""
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    			"Description" = @{
+    				"en" = "If you have any questions about your booking, check our <strong><a href='/en/holidays/flight-plus-hotel/help' target='_blank' style='text-decoration: underline'>help centre</a></strong>&nbsp;to see if we have the answer for you. If you can't find the answer you're looking for, you can start a live chat with one of our advisors for free using Wi-Fi. Our team are available from Monday to Sunday, 8am - 8pm.<p style='padding-top: 4px'><strong><a id='live-chat-btn' href='#' style='text-decoration: underline;'>Click here to open the chat</a></strong></p>"
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    			"OpenChatBot" = @{
+    				"en" = ""
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    		}
+    	}
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Contact Us Banner F and H/Contact Us"
+    		TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Popup Channel"
+    		Fields = @{
+    			"Title" = @{
+    				"en" = ""
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    			"Description" = @{
+    				"en" = "If you have any questions about your booking, check our <strong><a href='/en/holidays/flight-plus-hotel/help' target='_blank' style='text-decoration: underline'>help centre</a></strong>&nbsp;to see if we have the answer for you. If you can't find the answer you're looking for, you can start a live chat with one of our advisors for free using Wi-Fi. Our team are available from Monday to Sunday, 8am - 8pm.<p style='padding-top: 4px'><strong><a id='live-chat-btn' href='#' style='text-decoration: underline;'>Click here to open the chat</a></strong></p>"
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    			"OpenChatBot" = @{
+    				"en" = ""
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    		}
+    	}
+    
+    
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel/Page Components/Contact Us Banner F and H/Pre travel"
+    		TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Popup Channel"
+    		Fields = @{
+    			"Title" = @{
+    				"en" = ""
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    			"Description" = @{
+    				"en" = "If you have any questions about your booking, check our <strong><a href='/en/holidays/flight-plus-hotel/help' target='_blank' style='text-decoration: underline'>help centre</a></strong>&nbsp;to see if we have the answer for you. If you can't find the answer you're looking for, you can start a live chat with one of our advisors for free using Wi-Fi. Our team are available from Monday to Sunday, 8am - 8pm.<p style='padding-top: 4px'><strong><a id='live-chat-btn' href='#' style='text-decoration: underline;'>Click here to open the chat</a></strong></p>"
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    			"OpenChatBot" = @{
+    				"en" = ""
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    		}
+    	}
+    
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel/Page Components/Contact Us Cancellation Banner F and H/Contact us"
+    		TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Popup Channel"
+    		Fields = @{
+    			"Title" = @{
+    				"en" = ""
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    			"Description" = @{
+    				"en" = "If you have any questions about your booking, check our <strong><a href='/en/holidays/flight-plus-hotel/help' target='_blank' style='text-decoration: underline'>help centre</a></strong>&nbsp;to see if we have the answer for you. If you can't find the answer you're looking for, you can start a live chat with one of our advisors for free using Wi-Fi. Our team are available from Monday to Sunday, 8am - 8pm.<p style='padding-top: 4px'><strong><a id='live-chat-btn' href='#' style='text-decoration: underline;'>Click here to open the chat</a></strong></p>"
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    			"OpenChatBot" = @{
+    				"en" = ""
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    		}
+    	}
+    
+    
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination/Page Components/Contact Us Banner F and H/Chat to us"
+    		TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Popup Channel"
+    		Fields = @{
+    			"Title" = @{
+    				"en" = ""
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    			"Description" = @{
+    				"en" = "If you have any questions about your booking, check our <strong><a href='/en/holidays/flight-plus-hotel/help' target='_blank' style='text-decoration: underline'>help centre</a></strong>&nbsp;to see if we have the answer for you. If you can't find the answer you're looking for, you can start a live chat with one of our advisors for free using Wi-Fi. Our team are available from Monday to Sunday, 8am - 8pm.<p style='padding-top: 4px'><strong><a id='live-chat-btn' href='#' style='text-decoration: underline;'>Click here to open the chat</a></strong></p>"
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    			"OpenChatBot" = @{
+    				"en" = ""
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    		}
+    	}
+    
+    
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Contact Us Banner F and H/Post travel"
+    		TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Popup Channel"
+    		Fields = @{
+    			"Title" = @{
+    				"en" = ""
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    			"Description" = @{
+    				"en" = "If you have any questions about your booking, check our <strong><a href='/en/holidays/flight-plus-hotel/help' target='_blank' style='text-decoration: underline'>help centre</a></strong>&nbsp;to see if we have the answer for you. If you can't find the answer you're looking for, you can start a live chat with one of our advisors for free using Wi-Fi. Our team are available from Monday to Sunday, 8am - 8pm.<p style='padding-top: 4px'><strong><a id='live-chat-btn' href='#' style='text-decoration: underline;'>Click here to open the chat</a></strong></p>"
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    			"OpenChatBot" = @{
+    				"en" = ""
+    				"fr-CH" = ""
+    				"de-CH" = ""
+    				"fr-FR" = ""
+    				"de-DE" = ""
+    			}
+    		}
+    	}
+    
+    
+    )
+    ImportContent -itemsToCreate $updates1
+    
+    
+    
+    
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Bottom Help Links F and H/Chat To Us" -Recurse -Permanent -ErrorAction SilentlyContinue
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260626T071801Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Voucherify" />
+        <PackageReference Include="FluentValidation" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)TestProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Destinations\code\easyJet.Foundation.Destinations.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Voucherify\code\easyJet.Foundation.Voucherify.csproj" />
+    </ItemGroup>
+</Project>

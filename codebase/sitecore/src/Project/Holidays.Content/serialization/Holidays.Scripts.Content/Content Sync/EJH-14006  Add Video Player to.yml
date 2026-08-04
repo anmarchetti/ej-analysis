@@ -1,0 +1,68 @@
+﻿---
+ID: "c39a329d-9c2d-4169-9baf-9c543a7b8f96"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14006  Add Video Player to Sustainability Hub page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+    	$item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $templateId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function Update-Booking-Privacy () {
+    	$mediaVideo.Editing.BeginEdit()
+    	$mediaVideo["YouTubeVideoCode"] = '7Nn7NZI_LN4';
+    	$mediaVideo["Preview"] = '<image mediaid="{D13D145E-F439-46F3-A2C3-6121BE88E5F9}" />';
+    	$mediaVideo["PlayIcon"] = '<image mediaid="{A145AD5D-159F-431A-9AD2-CE988AF850D5}" />';
+    	$mediaVideo["IsHoverEffectEnabled"] = '1';
+    	$mediaVideo["IsFullScreenAvailable"] = '1';
+    	$mediaVideo.Editing.EndEdit() | Out-Null
+    }
+    
+    function Update-Sustainability-Renderings () {
+    	$mediaVideoRendering = Get-Rendering -Item $page | Where-Object { $_.ItemID -eq $mediaVideoRenderingId } | Select -First 1
+    
+    	if (($mediaVideoRendering -eq $null) -and ($mediaVideo -ne $null)) {
+    		$renderingInstance = Get-Item -Path "master:" -Id $mediaVideoRenderingId | New-Rendering
+    		$mediaVideoClassName = 'sustainability-video'
+    		
+    		$mediaVideoPlaceholder = 'body'
+    	
+    		Add-Rendering -Item $page -Instance $renderingInstance -PlaceHolder $mediaVideoPlaceholder -DataSource $mediaVideo.ID -Index 1 -Parameter @{ ClassName = $mediaVideoClassName}
+    
+    		$mediaVideoRendering = Get-Rendering -Item $page -PlaceHolder $mediaVideoPlaceholder
+    		
+    
+    		Write-Host "Media Video was added to page"
+    	}
+    }
+    
+    $pagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Sustainability"
+    $page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    
+    $mediaVideoPath = "/sitecore/content/EasyJet/Holidays/Home/Sustainability/Page Components/Video 1"
+    $mediaVideoTemplateId = "{07CB2042-5CF9-4993-B6B9-D4C8039C8C13}"
+    $mediaVideo = Get-Or-Create-Item -Path $mediaVideoPath -TemplateId $mediaVideoTemplateId
+    $mediaVideoRenderingId = "{C26DC3D2-BAAE-4354-8A0E-1BE074262AEC}"
+    
+    Update-Booking-Privacy
+    Update-Sustainability-Renderings 
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210405T123057Z

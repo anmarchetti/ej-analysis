@@ -1,0 +1,129 @@
+﻿---
+ID: "8f302a4c-a9b2-48e9-bb69-691fd42728d2"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-610-banner-cancelled-page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+        Import-Function "Import Content"
+        
+        $notLoggedInBannerContentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Not Logged In Banner"
+        
+        $updates = @(
+            @{
+                Path         = $notLoggedInBannerContentPath
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Call To Action Folder/Call To Action Blocks Folder"
+            },
+            @{
+                Path         = $notLoggedInBannerContentPath + "/Not Logged In"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Call To Action Folder/Call To Action Block With Key"
+                Fields      = @{
+                    "Title" = @{
+                        "en"    = "Lead customer? Log in to view your refund details"
+                        "fr-CH" = "Client principal ? Connectez-vous pour consulter les détails de votre remboursement"
+                        "fr-FR" = "Client principal ? Connectez-vous pour voir les détails de votre remboursement"
+                        "de-CH" = "Hauptkunde? Melden Sie sich an, um Ihre Rückerstattungsdetails einzusehen"
+                        "de-DE" = "Hauptkunde? Melden Sie sich an, um Ihre Rückerstattungsdetails anzusehen"
+                    }
+                    "Description" = @{
+                        "en"    = "Log in using the email address you booked with to access your refund information."
+                        "fr-CH" = "Connectez-vous avec l'adresse e-mail utilisée lors de la réservation pour accéder à vos informations de remboursement."
+                        "fr-FR" = "Connectez-vous avec l'adresse e-mail utilisée pour votre réservation afin d'accéder à vos informations de remboursement."
+                        "de-CH" = "Melden Sie sich mit der E-Mail-Adresse an, die Sie bei der Buchung verwendet haben, um Ihre Rückerstattungsinformationen einzusehen."
+                        "de-DE" = "Melden Sie sich mit der E-Mail-Adresse an, mit der Sie gebucht haben, um Ihre Rückerstattungsinformationen zu sehen."
+                    }
+                    "Icon" = @{
+                        "en"    = "<image mediaid=""{CE053FE2-D517-417C-92CE-0127D59082DA}"" />"
+                    }
+                    "ButtonLabel" = @{
+                        "en"    = "Log In"
+                        "fr-CH" = "Connexion"
+                        "fr-FR" = "Connexion"
+                        "de-CH" = "Anmelden"
+                        "de-DE" = "Anmelden"
+                    }
+                    "Key" = @{
+                        "en"    = "NotLoggedIn"
+                    }
+                }
+            }
+            @{
+                Path         = $notLoggedInBannerContentPath + "/Logged With Different Email"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Call To Action Folder/Call To Action Block With Key"
+                Fields      = @{
+                    "Title" = @{
+                        "en"    = "Looking for refund information?"
+                        "fr-CH" = "Vous recherchez des informations concernant le remboursement ?"
+                        "fr-FR" = "Vous cherchez des informations sur le remboursement ?"
+                        "de-CH" = "Suchen Sie Rückerstattungsinformationen?"
+                        "de-DE" = "Suchen Sie Informationen zur Rückerstattung?"
+                    }
+                    "Description" = @{
+                        "en"    = "It's only available for the lead customer on your booking."
+                        "fr-CH" = "C’est uniquement accessible au client principal de votre réservation."
+                        "fr-FR" = "C'est uniquement disponible pour le client principal de votre réservation."
+                        "de-CH" = "Das ist nur für den Hauptkunden Ihrer Buchung verfügbar."
+                        "de-DE" = "Dies ist nur für den Hauptkunden Ihrer Buchung verfügbar"
+                    }
+                    "Icon" = @{
+                        "en"    = "<image mediaid=""{CE053FE2-D517-417C-92CE-0127D59082DA}"" />"
+                    }
+                    "ButtonLabel" = @{
+                        "en"    = "Log in with a different email"
+                        "fr-CH" = "Se connecter avec un autre e-mail"
+                        "fr-FR" = "Se connecter avec un autre e-mail"
+                        "de-CH" = "Mit einer anderen E-Mail-Adresse anmelden"
+                        "de-DE" = "Mit einer anderen E-Mail-Adresse anmelden"
+                    }
+                    "Key" = @{
+                        "en"    = "LogWithDiffEmail"
+                    }
+                }
+            }
+        )
+        ImportContent -itemsToCreate $updates
+    
+        Add-ItemLanguage -Path $notLoggedInBannerContentPath -TargetLanguage 'fr-CH' -IfExist Skip -DoNotCopyFields;
+        Add-ItemLanguage -Path $notLoggedInBannerContentPath -TargetLanguage 'fr-FR' -IfExist Skip -DoNotCopyFields;
+        Add-ItemLanguage -Path $notLoggedInBannerContentPath -TargetLanguage 'de-CH' -IfExist Skip -DoNotCopyFields;
+        Add-ItemLanguage -Path $notLoggedInBannerContentPath -TargetLanguage 'de-DE' -IfExist Skip -DoNotCopyFields;
+        
+        $page = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled" -ErrorAction SilentlyContinue
+        $bookingContextRenderingId = "{C30624AB-A71F-492A-ADFF-73A1952FF024}"
+        $wrapperRenderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+        $toolbarRenderingId = "{A266310A-FCBC-46A1-80C8-3AECB4F06727}"
+        $renderings = Get-Rendering -Item $page
+        $bookingContextRenderings = $renderings | Where-Object { $_.ItemId -eq $bookingContextRenderingId }
+        $wrapperRenderings = $renderings | Where-Object { $_.ItemId -eq $wrapperRenderingId }
+        $toolbarRenderings = $renderings | Where-Object { $_.ItemId -eq $toolbarRenderingId }
+        
+        $bookingContextUniqueId = $bookingContextRenderings[0].UniqueId
+        $wrapperUniqueId = $wrapperRenderings[0].UniqueId
+        $toolbarUniqueId = $toolbarRenderings[0].UniqueId
+        
+        $placeholder = "/body/booking-context-$($bookingContextUniqueId)-0/component-wrapper-inner-$($wrapperUniqueId)-0/toolbar-top-section-$($toolbarUniqueId)-0"
+        
+        # Add Banner component
+        $breakdownRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/Not Logged In Banner"
+        $breakdownRendering = Get-Item -Database "master" -Path $breakdownRenderingPath | New-Rendering -Placeholder $placeholder 
+        Add-Rendering -Item $page -Instance $breakdownRendering -PlaceHolder $placeholder -Index 5 -Datasource $notLoggedInBannerContentPath
+        
+        # Add Login Popup
+        $loginPopupRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Popups/Login To View Booking Popup"
+        $loginPopupRendering = Get-Item -Database "master" -Path $loginPopupRenderingPath | New-Rendering -Placeholder "/body" 
+        Add-Rendering -Item $page -Instance $loginPopupRendering -PlaceHolder "/body"  -Index 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240423T074856Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="AtComRes/InfoCancellationRequest" xmlns:p2="AtComRes/Common" targetNamespace="AtComRes/InfoCancellationRequest" elementFormDefault="qualified">
+  <xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+  <xs:element name="InfoCancellationRequest">
+    <xs:annotation>
+      <xs:documentation>Request to get cancellation fee for required cancellation of one ore more packagetour bookings.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="p2:AtcomresBaseRequest">
+          <xs:sequence>
+            <xs:element ref="p2:BkgNum" minOccurs="1" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>Booking to be canceled</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="Cnx_Without_Fee" type="xs:boolean" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>
+                  If cancellation without fee is applied, the cancellation test is performed without creating any
+                  fees and without changing the current state of the booking. Nevertheless the result must contain 
+                  the potential fee which would be applied if the cancellation would be performed with fees.
+                  Default is false if the element does not appear.
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element ref="p2:Bkg_Ent" minOccurs="0"/>
+            <xs:choice>
+              <xs:element ref="p2:Disc_Code" minOccurs="0"/>
+              <xs:element ref="p2:Disc" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:choice>
+          </xs:sequence>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

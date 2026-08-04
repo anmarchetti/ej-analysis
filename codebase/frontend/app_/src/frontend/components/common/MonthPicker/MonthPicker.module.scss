@@ -1,0 +1,59 @@
+.wrapper {
+    position: relative;
+    padding: 0 48px;
+
+    @include media-breakpoint-down(lg) {
+        width: 100%;
+    }
+
+    @include media-breakpoint-down(md) {
+        position: relative;
+        padding: 0;
+
+        &::after {
+            content: '';
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            right: 0;
+            display: block;
+            width: 59px;
+            height: 100%;
+            background: linear-gradient(90deg, rgba($colorWhite, 0) 0%, $colorWhite 100%);
+        }
+    }
+
+    :global {
+        .react-multi-carousel-item {
+            min-width: min-content;
+            max-width: calc(100% - 8px);
+            padding-right: 8px;
+        }
+    }
+
+    // need to be inside wrapper due to conflict with CarouselButtonsGroup styles file, does not reproduce locally
+    .nextButton {
+        @include media-breakpoint-down(sm) {
+            z-index: $z-index-over-element;
+            right: 15px;
+            display: block;
+        }
+    }
+}
+
+.carousel {
+    position: static;
+}
+
+.prevButton,
+.nextButton {
+    width: 36px;
+    height: 36px;
+    background-color: $colorWhite;
+    opacity: 1;
+
+    &:hover {
+        background-color: $colorWhite;
+        opacity: 1;
+    }
+}

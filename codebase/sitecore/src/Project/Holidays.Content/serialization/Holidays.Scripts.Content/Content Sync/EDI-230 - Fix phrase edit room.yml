@@ -1,0 +1,28 @@
+﻿---
+ID: "e61b1a6f-7b04-4ac5-8d6a-137f84059043"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EDI-230 - Fix phrase edit room label on trade"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $item = Get-Item -Path "master:/sitecore/content/EasyJet/TradePortal/Dictionary/Room Types/Labels/Edit Room" -ErrorAction SilentlyContinue
+    
+    if ($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item["Phrase"] = "Edit your room"
+            $item.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $item.DisplayName "successfully updated"
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20221208T142719Z

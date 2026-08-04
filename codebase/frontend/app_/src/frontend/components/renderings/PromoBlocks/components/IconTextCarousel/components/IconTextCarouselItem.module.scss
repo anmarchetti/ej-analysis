@@ -1,0 +1,53 @@
+.item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+    padding: 18px 12px 16px 8px;
+    background: $colorWhite;
+    border-radius: 8px;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon {
+    position: relative;
+
+    @include sizeSquare(40px);
+}
+
+.title {
+    margin: 0;
+    font-family: $fontRoundedDemy;
+}
+
+.description {
+    padding-left: 48px;
+}
+
+.shadow {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.iconCenter {
+    gap: 2px;
+    padding: 8px 16px;
+
+    .content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .title {
+        text-align: center;
+    }
+
+    .description {
+        padding-left: 0;
+        text-align: center;
+    }
+}

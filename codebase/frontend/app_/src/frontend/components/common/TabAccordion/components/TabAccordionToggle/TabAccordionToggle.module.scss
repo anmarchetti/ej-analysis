@@ -1,0 +1,66 @@
+.button {
+    position: relative; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    font-family: $fontRoundedBook;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.333;
+    color: $clrTextMain;
+    text-align: left; 
+    background-color: $clrSiteBgWhite;
+    border-bottom: 2px solid $colorGrayLighter;
+    border-left: 2px solid $colorGrayLighter;
+    border-radius: 3px 0 0 3px;
+
+    svg {
+        display: none;
+        width: 14px;
+        height: 14px;
+        color: $clrEjOrangeLight;
+    }
+
+    &:focus-visible {
+        outline-offset: -1px;
+       
+    }
+
+    &:hover {
+        background-color: $clrSiteBgWhite;
+        opacity: 1;
+    }
+}
+
+.buttonSelected {
+    &:focus-visible {
+        &::after {
+            top: 2px;
+            left: 0;
+            height: calc(100% - 2px);                                                                       
+        }
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background-color: $clrEjOrangeLight;
+        border-radius: 2px 0 0 2px;
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: -3px;
+        width: 3px;
+        height: 100%;
+        background-color: $clrSiteBgWhite;
+    }
+}
+

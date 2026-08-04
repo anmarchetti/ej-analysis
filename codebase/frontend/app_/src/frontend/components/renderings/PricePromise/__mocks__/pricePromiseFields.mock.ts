@@ -1,0 +1,32 @@
+import { mockSitecoreField } from 'frontend/utils/tests.utils';
+import { IPricePromiseFields } from 'frontend/components/renderings/PricePromise/interfaces';
+
+export const mockPricePromiseFields: IPricePromiseFields = {
+    BookedWithinLast24hLabel: mockSitecoreField('Booked within last 24h'),
+    BookingDepartureFieldLabel: mockSitecoreField('Departure date'),
+    BookingDetailsSectionTitle: mockSitecoreField('Booking Details'),
+    BookingReferenceFieldLabel: mockSitecoreField('Booking Reference'),
+    BookingReferenceTooltip: mockSitecoreField('Enter your booking reference'),
+    CheckboxSectionDescription: mockSitecoreField('Please confirm the following'),
+    CheckboxSectionTitle: mockSitecoreField('Eligibility Criteria'),
+    Description: mockSitecoreField('Price Promise description'),
+    DifferentCompanyLabel: mockSitecoreField('Booked with a different company'),
+    FileUploadButton: mockSitecoreField('Upload File'),
+    FileUploadDescription: mockSitecoreField('Please upload your documents'),
+    FileUploadTitle: mockSitecoreField('File Upload'),
+    InclusiveOfTransfersLabel: mockSitecoreField('Inclusive of transfers'),
+    InclusiveOn23kgBagLabel: mockSitecoreField('Inclusive on 23kg bag'),
+    LinkFieldLabel: mockSitecoreField('Link to competitor'),
+    LinkSectionTitle: mockSitecoreField('Competitor Link'),
+    LinkTooltip: mockSitecoreField('Paste the competitor link here'),
+    NameFieldLabel: mockSitecoreField('Your Name'),
+    RequestText: mockSitecoreField('Your request has been submitted'),
+    RequestTitle: mockSitecoreField('Request Submitted'),
+    SameDatesOfTravelLabel: mockSitecoreField('Same dates of travel'),
+    SameFlightsLabel: mockSitecoreField('Same flights'),
+    SamePartyCompositionLabel: mockSitecoreField('Same party composition'),
+    SameRoomTypeAndBoardBasisLabel: mockSitecoreField('Same room type and board basis'),
+    ShowABTAMembershipCheckbox: mockSitecoreField(true),
+    Title: mockSitecoreField('Price Promise'),
+    TopDescription: mockSitecoreField('Top description for Price Promise'),
+};

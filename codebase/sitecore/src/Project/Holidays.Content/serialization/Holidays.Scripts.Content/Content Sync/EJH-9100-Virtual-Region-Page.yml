@@ -1,0 +1,92 @@
+﻿---
+ID: "c18d2771-8cd1-466c-86e2-82fee01ddc4b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-9100-Virtual-Region-Page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $removeRedundantVirtualRegionData = @(
+        "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Andalucia Virtual"
+        "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Balearic Islands Virtual",
+        "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Canary Islands Virtual",
+        "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Balearic Islands/Page Components/All Resorts in Balearic Islands",
+        "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Canary Islands/Page Components/All Resorts in Canary Islands A",
+        "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Canary Islands/Page Components/All Resorts in Canary Islands B",
+        "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Andalucia/Page Components/All regions in Andalucia",
+        "/sitecore/content/EasyJet/Holidays/Home/Destinations/Italy/Italian Lakes Virtual",
+        "/sitecore/content/EasyJet/Holidays/Home/Destinations/Italy/Italian Lakes/Page Components/All regions in Italian Lakes"
+    )
+    $regionsPage = @{
+        "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Andalucia" = @("/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Costa Del Sol", "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Costa De Almeria", "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Seville", "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Granada")
+        "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Balearic Islands" = @("/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Ibiza", "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Menorca", "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Majorca" );
+        "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Canary Islands" = @("/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Tenerife", "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Lanzarote","/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Gran Canaria", "/sitecore/content/EasyJet/Holidays/Home/Destinations/Spain/Fuerteventura"); 
+        "/sitecore/content/EasyJet/Holidays/Home/Destinations/Italy/Italian Lakes" = @("/sitecore/content/EasyJet/Holidays/Home/Destinations/Italy/Lake Como", "/sitecore/content/EasyJet/Holidays/Home/Destinations/Italy/Lake Garda", "/sitecore/content/EasyJet/Holidays/Home/Destinations/Italy/Lake Maggiore");
+    }
+    
+    
+    function Get-ItemIdsByPath($itemsPath){
+        $ids = @()
+        foreach ($itemPath in $itemsPath)
+        {
+           $item =  Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+           if($item -ne $null){
+             $ids += $item.ID.ToString()
+           }
+        }
+        return $ids -join "|"
+    }
+    
+    
+    #Make region page virtual page
+    foreach ($key in $regionsPage.Keys)
+    {
+        $regionsIds = Get-ItemIdsByPath -itemsPath $regionsPage[$key] 
+        $virtualRegion = Get-Item -Path $key -ErrorAction SilentlyContinue
+        if($virtualRegion -ne $null){
+            Set-ItemTemplate -Path $key -Template "/sitecore/templates/Project/Holidays/Pages/Destinations/VirtualRegion"
+            $virtualRegion = Get-Item -Path $key
+            $virtualRegion.Editing.BeginEdit()
+            $virtualRegion.Fields["Regions"].Value = $regionsIds
+            $virtualRegion.Fields["ShowInAutocomplete"].Value = "1"
+            $virtualRegion.Fields["ShowOnDropdown"].Value = "1"
+            $virtualRegion.Fields["ShowOnSearchPod"].Value = "1"
+            $virtualRegion.Editing.EndEdit() > $null
+            
+            #Remove redundant promo block
+            $oldRenderingItem = Get-Item -Path "master:" -Id "{FF441699-4D65-45C1-B565-E87714B5A278}"
+            Remove-Rendering -Item $virtualRegion -Rendering $oldRenderingItem -PlaceHolder "/body/component-wrapper-inner-{B1D448E2-6BF6-4646-A1B6-CB4FF0999938}-0" -ErrorAction SilentlyContinue
+        }
+    }
+    
+    #Remove dublicate virtual region
+    foreach ($removeItemPath in $removeRedundantVirtualRegionData)
+    {
+        Remove-Item -Path $removeItemPath -Recurse
+    }
+    
+    
+    
+    #Add default page design to item
+    
+    $pageDesign = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Default Design"
+    if($pageDesign){
+        $pageDesign.Editing.BeginEdit()
+        [Sitecore.Data.Fields.MultilistField]$field = $pageDesign.Fields["PageTemplates"]
+        $field.Add("{799ECB20-C605-4A6C-A32B-27222BDBB91E}")
+        $pageDesign.Editing.EndEdit() > $null
+    }
+    
+    
+    
+        
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210312T162934Z

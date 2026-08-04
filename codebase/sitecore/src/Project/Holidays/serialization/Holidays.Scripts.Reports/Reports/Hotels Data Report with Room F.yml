@@ -1,0 +1,320 @@
+﻿---
+ID: "e7f43ad8-71bc-45ee-b477-8070839db0c1"
+Parent: "948aeef1-0427-4351-a86f-10be447ce6fc"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Reports/Hotels Data Report with Room Facilities
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function -Name ConvertTo-Xlsx
+    
+    $sourceDb = "master"
+    $dateNow = Get-Date -Format "dd/MM/yyyy"
+    
+    # Accessible reports
+    $roomFacilitiesReportName = "Room Facilities"
+    
+    $reportNameRoots = @($roomFacilitiesReportName) # Remove not needed report names to genenerate only needed reports  
+        
+    $reportsFolderPath = "/sitecore/media library/Files/easyJet Hotel Report Export"
+    
+    $roomsFolderTemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+    $roomsFacilitiesFolderTemplateId = "{EA39971C-094D-4BEC-A479-9171279553C0}"
+    $roomsFacilitiesTemplateId = "{1EC134E4-4753-498E-9D1A-6DC67A8975BE}"
+    
+    $roomTypeIdToRoomCodeMapper = @{}
+    $facilityTypeIdToFacilityNameCodeMapper = @{}
+    
+    function Get-Additional-Hotel-Info($hotelItem){
+        $atcomCodes = @()
+    	$hotelItem.Children | Where { $_.TemplateId -eq "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}" } | %{ $atcomCodes += $_["Code"] }
+        $reportRow = [ordered]@{
+            CountryName = $hotelItem.Parent.Parent.Parent["Name"]
+            CountryCode = $hotelItem.Parent.Parent.Parent["Code"]
+            RegionName = $hotelItem.Parent.Parent["Name"]
+            RegionCode = $hotelItem.Parent.Parent["Code"]
+            ResortName = $hotelItem.Parent["Name"]
+            ResortCode = $hotelItem.Parent["Code"]
+            HotelAtcomCodes = $atcomCodes -join "| "
+        }
+    
+        return $reportRow
+    }
+    
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    function Save-Document-ToCsv($reportsFolderPath, $reportFolderName, $reportName, $data){
+            $reportsFolder = Get-Or-Create-Item -Path "$($reportsFolderPath)/$($reportFolderName)" -Template "{FE5DD826-48C6-436D-B87A-7C4210C7413B}"
+            $item = New-Item -Path "$($reportsFolder.Paths.FullPath)/$reportName" -ItemType "{962B53C4-F93B-4DF9-9821-415C867B8903}"
+            $data = $data | ForEach-Object { New-Object PSObject -Property $_ }
+            $csv = $data | ConvertTo-Csv -NoTypeInformation
+            [Sitecore.Data.Items.MediaItem]$mediaItem = $item
+            [Sitecore.Resources.Media.Media] $media = [Sitecore.Resources.Media.MediaManager]::GetMedia($mediaItem);
+            $stream = New-Object System.IO.MemoryStream
+            $txt = New-Object System.IO.StreamWriter($stream)
+            $csv | ForEach-Object { $txt.WriteLine($_)}
+            $txt.Flush()
+            $media.SetStream($stream, "csv");
+            Out-Download -Name "$($reportName).csv" -InputObject $stream
+            $stream.Close();
+    }
+    
+    function Get-ItemBasedOnTemplate {
+        param(
+            [string]$TemplateId
+        )
+    
+        $queue = New-Object System.Collections.Queue
+        $processedLookup = New-Object System.Collections.Generic.HashSet[string]
+        if(-not(Test-Path -Path "master:$($TemplateId)")) { return }
+        $processedLookup.Add($TemplateId) > $null  
+        Get-ItemReferrer -Id $TemplateId -ItemLink | 
+            Where-Object { $_.SourceItemID } | 
+            ForEach-Object { $queue.Enqueue($_.SourceItemID) }
+    
+        $database = Get-Database -Name "master"
+        while($queue.Count -and ($referrerId = $queue.Dequeue())) {
+            if($processedLookup.Contains($referrerId)) { continue }
+            $processedLookup.Add($referrerId) > $null
+            $referrer = $database.GetItem($referrerId)
+            if(!$referrer) { continue }
+            if($referrer.Paths.FullPath.StartsWith("/sitecore/templates")) { 
+                if($referrer.Name -eq "__Standard values") { continue }
+                foreach($referrerItemLink in Get-ItemReferrer -Id $referrerId -ItemLink | Where-Object { $_.SourceItemID }) {
+                    $queue.Enqueue($referrerItemLink.SourceItemID)
+                }
+                $itemTemplate = [Sitecore.Data.Managers.TemplateManager]::GetTemplate($referrerId, $database)
+            } else {
+                $itemTemplate = [Sitecore.Data.Managers.TemplateManager]::GetTemplate($referrer)
+            }
+            
+            if ($itemTemplate -and $itemTemplate.DescendsFromOrEquals($TemplateId)) {
+                $referrer
+            }
+        }
+    }
+    
+    function Prepare-Data {
+    	param($items, $numberOfReports, $neededReportNames)
+    
+        $rows = @()
+        for($i = 0; $i -lt $numberOfReports; $i++){
+            $rows += ,[System.Collections.ArrayList]@()
+        }
+        
+    	foreach ($item in $items) {
+            $reportsRows = Get-Data-From-Item -Item $item -NeededReportNames $neededReportNames
+            
+            $i = 0
+            foreach($reportRows in $reportsRows){
+                $reportRows | ForEach-Object { $rows[$i].AddRange(@(,$_)) }
+                $i++
+            }
+    	}
+    
+    	Write-Host "Hotel's report has been prepared"
+    
+    	return ,$rows
+    }
+    
+    function Get-Children-By-Parent-Template {
+    	param($parent,$templateId)
+        $arr = [System.Collections.ArrayList]@()
+    	$folders = Get-ChildItem -Item $parent | Where-Object { $_.TemplateId -eq $templateId }
+    	foreach($folderItem in $folders){
+    	   $arr.AddRange($folderItem.Children)
+    	}
+    
+    	return $arr
+    }
+    
+    
+    function GetPublishedStatus ($item){
+        $path = $item.ItemPath -replace ('/','\')
+        $itemExists = Test-Path -Path "web:$($path)"
+        
+        if ($itemExists)
+        {
+            return "true"
+        }
+        else
+        {
+            return "false"   
+        }
+    }
+    
+    function Get-Facility-Data {
+        param($facility)
+        
+        
+        $facilityTypeItem = $null
+        
+        $facilityTypeId = $facility.Fields["FacilityType"].Value
+    
+        $facilityName = ""
+        $facilityCode = ""
+        $facilityGroup = ""
+        
+        if($facilityTypeId -ne "" -and $facilityTypeId -ne $null){
+    
+            if ($facilityTypeIdToFacilityNameCodeMapper.ContainsKey($facilityTypeId)){
+                $fd = $facilityTypeIdToFacilityNameCodeMapper[$facilityTypeId]
+                $facilityName = $fd["Name"]
+                $facilityCode = $fd["Code"]
+                $facilityGroup = $fd["FacilityGroup"]
+            }else{
+                $facilityTypeItem = Get-Item -Path $sourceDb":" -ID $facilityTypeId -ErrorAction SilentlyContinue
+    
+                if($facilityTypeItem -ne $null)
+                {
+                    $facilityName = $facilityTypeItem.Fields["Name"].Value
+                    $facilityGroup = $facilityTypeItem.Parent.Fields["Name"].Value
+                    
+                    if($facilityName -eq ""){
+                        $facilityName = $facilityTypeItem.Name
+                    }
+                    
+                    if($facilityGroup -eq ""){
+                        $facilityGroup = $facilityTypeItem.Parent.Name
+                    }
+                    
+                    $facilityCode = $facilityTypeItem.Fields["Code"].Value
+                    
+                    $fd = @{}
+                    $fd.Add("Name", $facilityName)
+                    $fd.Add("Code", $facilityCode)
+                    $fd.Add("FacilityGroup", $facilityGroup)
+                    
+                    $facilityTypeIdToFacilityNameCodeMapper.Add($facilityTypeId, $fd)
+                }
+            }
+        }
+        
+        $result = @{}
+        $result.Add("FacilityName", $facilityName)
+        $result.Add("FacilityCode", $facilityCode)
+        if($facility.Fields["Distance"] -ne $null){
+            $result.Add("Distance", $facility.Fields["Distance"].Value)
+        }
+        $result.Add("ShowOnSite", $facility.Fields["ShowOnSite"].Value)
+        $result.Add("FacilityGroup", $facilityGroup)
+        
+        return $result
+    }
+    
+    function Get-Room-Facilities-Data
+    {
+        param($hotel, $room, $facilities, $hotelInfo)
+    
+        $facilities_data = @()
+    	$facilities_data += $facilities | Where-Object {$_ -ne $null } | ForEach-Object { Get-Facility-Data $_ }
+    	
+        $data = @()
+        
+        $giataCode = $item["GiataCode"]
+        $hotelNameValue = $item['Name']
+    
+        if($facilities_data.Count -eq 0){
+        	$data += ($hotelInfo + [ordered]@{
+        	    Date = $dateNow
+        		GIATA = $giataCode
+        		HotelName = $hotelNameValue
+        		RoomFolder = $room.Parent.Name
+        		RoomName = $room.Name
+        		FacilityName = ""
+        		ShowOnSite = ""
+        		Published = GetPublishedStatus($item)
+        	})
+        }else{
+            foreach($facility_data in $facilities_data){
+                $data += ($hotelInfo + [ordered]@{
+                    Date = $dateNow
+                    GIATA = $giataCode
+            		HotelName = $hotelNameValue
+            		RoomFolder = $room.Parent.Name
+            		RoomName = $room.Name
+            		FacilityName = $facility_data["FacilityName"]
+            		FacilityCode = $facility_data["FacilityCode"]
+            		ShowOnSite = $facility_data["ShowOnSite"]
+            		Published = GetPublishedStatus($facility_data)
+                })
+            }
+        }
+    
+        return $data
+    }
+    
+    function Get-Data-From-Item
+    {
+    	param($item, $neededReportNames)
+    
+        $hotelInfo = Get-Additional-Hotel-Info -HotelItem $item
+    	# hotel' child folders
+    	$rooms = Get-Children-By-Parent-Template -Parent $item -templateId $roomsFolderTemplateId
+        
+        $data = @()
+        
+        if($neededReportNames -contains $roomFacilitiesReportName -and $rooms -ne $null){
+            $roomFacilitiesReport = @()
+            foreach($room in $rooms){
+                $roomFacilities = Get-ChildItem -Item $room -Recurse | Where-Object { $_.TemplateId -eq $roomsFacilitiesTemplateId } 
+                $roomFacilitiesReport += Get-Room-Facilities-Data -hotel $item -room $room -Facilities $roomFacilities -HotelInfo $hotelInfo
+            }
+            $data += ,$roomFacilitiesReport
+        }
+    
+    	return ,$data  |  Where {$_ -ne $null}
+    }
+    
+    function Save-Reports{
+        param($reports, $reportNameRoots)
+    
+        $i = 0
+    
+        $time = Get-Date -UFormat %s -Millisecond 0
+        $date = Get-Date -Format "dd_MM_yyyy"
+        foreach($report in $reports){
+            if($reportNameRoots[$i] -ne $null){
+                $reportName = $reportNameRoots[$i++]
+                $filename = "Hotel$($reportName)Report_$($date)_$time"
+                $resultFolder = "Hotel $($reportName) Reports"
+            
+                Save-Document-ToCsv -ReportsFolderPath $reportsFolderPath -ReportFolderName $resultFolder -ReportName $filename.Replace(" ", "") -Data $report
+            }
+        }
+    }
+    
+    $stopWatch = New-Object -TypeName System.Diagnostics.Stopwatch
+    $stopWatch.Start()
+    
+    #find hotels items
+    $hotelTemplate = "{28E5E169-8F72-4F90-A277-280A8302B607}"
+    $items = Get-ItemBasedOnTemplate -TemplateId $hotelTemplate
+    $items = $items | Where-Object { $_.Paths.FullPath.StartsWith("/sitecore/content/EasyJet/Holidays/Home/Destinations") }
+    $itemCount = $items | Measure-Object | Select-Object -Expand Count
+    Write-Log "Hotels were found $($itemCount)"
+    Write-Host "Hotels were found $($itemCount)"
+    
+    #Prepare items to table format
+    $reports = Prepare-Data -items $items -NumberOfReports $reportNameRoots.Count -NeededReportNames $reportNameRoots | Where-Object { $_.Count -ne 0 }
+    
+    Save-Reports -Reports $reports -ReportNameRoots $reportNameRoots | Where { $_.Name -ne $null }
+    
+    $stopWatch.Stop()
+    Write-Output "Info: Elapsed time - $($StopWatch.Elapsed)"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200408T075058Z

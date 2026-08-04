@@ -1,0 +1,59 @@
+﻿---
+ID: "de455b74-744e-4eb2-86f4-3c637cdd2b3b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/TRADE-338 - Move Our Policies section"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Rendering-Index{
+        param($item, $renderingUniqueId)
+        $i = 0
+        
+        Get-Rendering -Item $item | ForEach-Object{
+            if ($_.UniqueId -eq $renderingUniqueId) {
+                return $i
+            }
+            $i++
+        }
+        
+        return -1
+    }
+    
+    $page = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Sustainability" -ErrorAction SilentlyContinue
+    
+    $carouselRendering = Get-Rendering -Item $page -DataSource '/sitecore/content/EasyJet/Holidays/Home/Sustainability/Page Components/Our Work Carousel'
+    $insertAfterIndex = Get-Rendering-Index -Item $page -RenderingUniqueId $carouselRendering.UniqueID | Select -First 1
+    $wrapperIndex = $insertAfterIndex + 1
+    
+    # Add Wrapper
+    $wrapperItem = Get-Item -Path "master:/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper" | New-Rendering -Placeholder "body"
+    Add-Rendering -Item $page -PlaceHolder "body" -Instance $wrapperItem -Index $wrapperIndex
+    
+    $wrapperRendering = Get-Rendering -Item $page -Index $wrapperIndex
+    
+    # Move Our Policies to the new wrapper
+    if($wrapperRendering -ne $null){
+        $ourPoliciesUid = "{be3b0f3b-8389-44f2-b25a-e1a199502fc7}"
+        $ourPoliciesIndex = Get-Rendering-Index -Item $page -RenderingUniqueId $ourPoliciesUid | Select -First 1
+        $ourPoliciesItem = Get-Rendering -Item $page -Index $ourPoliciesIndex
+        
+        # Set placeholder
+        Set-Rendering -Item $page -Instance $ourPoliciesItem -PlaceHolder "/body/component-wrapper-inner-$($wrapperRendering.UniqueId)-0" -Index $wrapperIndex
+        
+        Write-Host $page.Name "Rendering successfully updated"
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1200
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20221208T142719Z

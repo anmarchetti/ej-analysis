@@ -1,0 +1,55 @@
+﻿---
+ID: "f717ac53-f021-434f-b692-59bdacb12909"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/TRADE-594 - Trade Portal URLs"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path, $template) {
+        	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        	if ($item -eq $null) {
+        		$item = New-Item -Path $path -ItemType $template
+        	}
+        	return $item
+        }
+        
+        $navigationsPath = "/sitecore/content/EasyJet/TradePortal/Data/Navigations/User Management"
+        $navigationLinkTemplate = "{BC011F0A-976C-4825-9E01-8BAA7C8E6CCA}"
+        $navigationLinkFolderTemplate = "{F2AEDD6F-5BE8-4833-84D2-8DE7ABA3D3D1}"
+        $userManagementFolder = Get-Or-Create-Item -Path $navigationsPath -template $navigationLinkFolderTemplate
+        
+        if ($userManagementFolder -ne $null) {
+                $item = Get-Or-Create-Item -Path "$navigationsPath/Trade Support Hub" -Template $navigationLinkTemplate
+                $item.Editing.BeginEdit()
+                $item["Link"] = '<link text="Trade Support Hub" linktype="external" url="/holidays/user-management-app/trade-support-hub" anchor="" target="" rel="" />';
+                $item.Editing.EndEdit() | Out-Null
+      
+                $item = Get-Or-Create-Item -Path "$navigationsPath/Consortium Hub" -Template $navigationLinkTemplate
+                $item.Editing.BeginEdit()
+                $item["Link"] = '<link text="Consortium Hub" linktype="external" url="/holidays/user-management-app/consortium-hub" anchor="" target="" rel="" />';
+                $item.Editing.EndEdit() | Out-Null
+                
+                $item = Get-Or-Create-Item -Path "$navigationsPath/Manager Hub" -Template $navigationLinkTemplate
+                $item.Editing.BeginEdit()
+                $item["Link"] = '<link text="Manager Hub" linktype="external" url="/holidays/user-management-app/manager-hub" anchor="" target="" rel="" />';
+                $item.Editing.EndEdit() | Out-Null
+                
+                $item = Get-Or-Create-Item -Path "$navigationsPath/Manage Account" -Template $navigationLinkTemplate
+                $item.Editing.BeginEdit()
+                $item["Link"] = '<link text="Manage Account" linktype="external" url="/holidays/user-management-app" anchor="" target="" rel="" />';
+                $item.Editing.EndEdit() | Out-Null
+        }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230302T083838Z

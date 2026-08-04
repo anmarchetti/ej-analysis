@@ -1,0 +1,147 @@
+﻿---
+ID: "d0a988d9-5443-4551-a106-43650678d70e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/2 - SER-792 - Header component"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+        
+    $link1 = Get-Item -Path "master:/content/EasyJet/Holidays/Home/Help" -ErrorAction SilentlyContinue
+    $link2 = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Help/Contact Form" -ErrorAction SilentlyContinue
+    
+    
+    $updates = @(
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Breadcrumbs"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Breadcrumbs/Breadcrumbs Folder"
+            __Sortorder = "100"
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Breadcrumbs/Help"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Breadcrumbs/Breadcrumbs Item"
+            Fields      = @{
+                "Text" = @{
+                    "en" = "Help"
+                    "fr-CH" = "Aide"
+                    "de-CH" = "Hilfe"
+                    "fr-FR" = "Aide"
+                    "de-DE" = "Hilfe"
+                }
+                "Link"= @{
+                    "en" = '<link linktype="internal" id="' + $link1.ID + '" text="Help" />'
+                    "fr-CH" = '<link linktype="internal" id="' + $link1.ID + '" text="Aide" />'
+                    "de-CH" = '<link linktype="internal" id="' + $link1.ID + '" text="Hilfe" />'
+                    "fr-FR" = '<link linktype="internal" id="' + $link1.ID + '" text="Aide" />'
+                    "de-DE" = '<link linktype="internal" id="' + $link1.ID + '" text="Hilfe" />'
+                }
+                "__Sortorder" = @{
+                    "en" = "100"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Breadcrumbs/Contact Form"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Breadcrumbs/Breadcrumbs Item"
+            Fields      = @{
+                "Text" = @{
+                    "en" = "Contact Form"
+                    "fr-CH" = "Formulaire de contact"
+                    "de-CH" = "Kontakt Form"
+                    "fr-FR" = "Formulaire de contact"
+                    "de-DE" = "Kontakt Form"
+                }
+                "Link"= @{
+                    "en" = '<link linktype="internal" id="' + $link2.ID + '" text="Contact Form" />'
+                    "fr-CH" = '<link linktype="internal" id="' + $link2.ID + '" text="Formulaire de contact" />'
+                    "de-CH" = '<link linktype="internal" id="' + $link2.ID + '" text="Kontakt Form" />'
+                    "fr-FR" = '<link linktype="internal" id="' + $link2.ID + '" text="Formulaire de contact" />'
+                    "de-DE" = '<link linktype="internal" id="' + $link2.ID + '" text="Kontakt Form" />'
+                }
+                "__Sortorder" = @{
+                    "en" = "200"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Breadcrumbs/Disruption"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Breadcrumbs/Breadcrumbs Item"
+            Fields      = @{
+                "Text" = @{
+                    "en" = "Disruption"
+                    "fr-CH" = "Perturbation"
+                    "de-CH" = "Reiseunterbrechungen"
+                    "fr-FR" = "Perturbation"
+                    "de-DE" = "Reiseunterbrechungen"
+                }
+                "Link"= @{
+                    "en" = ""
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "__Sortorder" = @{
+                    "en" = "300"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Pages/Generic Page"
+            Fields      = @{
+                "Name" = @{
+                    "en" = "Unexpected changes to your holiday"
+                    "fr-CH" = "Modifications inattendues de vos vacances"
+                    "de-CH" = "Unerwartete Änderungen Ihres Urlaubs"
+                    "fr-FR" = "Modifications inattendues de vos vacances"
+                    "de-DE" = "Unerwartete Änderungen Ihres Urlaubs"
+                }
+                "TrackingPageTitle"= @{
+                    "en" = "Holiday disruption - Unexpected changes to your holiday | easyJet holidays"
+                    "fr-CH" = "Holiday disruption - Unexpected changes to your holiday | easyJet holidays"
+                    "de-CH" = "Holiday disruption - Unexpected changes to your holiday | easyJet holidays"
+                    "fr-FR" = "Holiday disruption - Unexpected changes to your holiday | easyJet holidays"
+                    "de-DE" = "Holiday disruption - Unexpected changes to your holiday | easyJet holidays"
+                }
+                "PageTitle"= @{
+                    "en" = "Holiday disruption - Unexpected changes to your holiday | easyJet holidays"
+                    "fr-CH" = "Perturbation des vacances – Modifications inattendues de vos vacances | easyJet holidays"
+                    "de-CH" = "Urlaubsstörung – Unerwartete Änderungen Ihres Urlaubs | easyJet holidays"
+                    "fr-FR" = "Perturbation des vacances – Modifications inattendues de vos vacances | easyJet holidays"
+                    "de-DE" = "Urlaubsstörung – Unerwartete Änderungen Ihres Urlaubs | easyJet holidayss"
+                }
+            }
+        }
+        
+    )
+    
+    ImportContent -itemsToCreate $updates
+        
+            
+    $page = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption"
+    $heroBannerRenderingId = "{8697E1B1-A31B-4641-B6F9-0DBC289C5B59}"
+    $heroBannerRendering = Get-Rendering -Item $page | Where-Object {$_.ItemId -eq $heroBannerRenderingId}
+    
+    $destinationBreadcrumbsRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Breadcrumbs Static"
+    $destinationBreadcrumbsRendering = Get-Item -Path $destinationBreadcrumbsRenderingPath
+    $destinationBreadcrumbsInstance = New-Rendering -Item $destinationBreadcrumbsRendering 
+    
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Breadcrumbs"
+    Add-Rendering -Item $page -Instance $destinationBreadcrumbsInstance -Placeholder "/body/hero-banner-top-section-$($heroBannerRendering.UniqueId)-0" -DataSource $datasourcePath -Index 1 -Parameter @{
+        "IsHomeIconShown" = "1"
+        "IsWrapped" = "1"
+        "IsOpaque" = "1"
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20251031T085202Z

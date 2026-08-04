@@ -1,0 +1,77 @@
+﻿---
+ID: "3f49d9ec-bd46-495f-aea7-9c997c55e6f3"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-1646 Create duration options"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+    };
+    
+    # create new folder
+    
+    $dataItem = Get-Item "/sitecore/content/EasyJet/Holidays/Data"
+    $optionsFolder = New-Item -Path $dataItem.Paths.Path `
+                          -Name "Duration Options" `
+                          -ItemType "/sitecore/templates/Feature/PageContent/Duration Options Folder"
+                          
+    Write-Host "Folder created: " $optionsFolder.Paths.FullPath
+    
+    # create options
+    
+    $durations = @(
+        @{ Duration = 3;  Id = "{0C379232-8CAD-4CB0-AEE7-33C48DA61548}" },
+        @{ Duration = 4;  Id = "{C3889A34-9867-4D2A-A8BB-870DFF6A52DD}" },
+        @{ Duration = 5;  Id = "{74C3EDED-4799-46CE-8E28-9660B59A45B7}" },
+        @{ Duration = 7;  Id = "{D42A0A46-8B29-459F-9864-175588251D80}" },
+        @{ Duration = 10; Id = "{10AC734C-7412-4F0F-9DB3-4AE77A9A9A76}" },
+        @{ Duration = 14; Id = "{03F1254A-A828-4B42-A815-2D6C6A9BA584}" }
+    )
+    
+    foreach ($durationItem in $durations) {
+        $duration = $durationItem.Duration
+        $forceId  = $durationItem.Id
+        $itemName = "$duration Nights"
+        
+        $newItem = New-Item `
+            -ForceId $forceId `
+            -Path $optionsFolder.ID `
+            -Name $itemName `
+            -ItemType "/sitecore/templates/Feature/PageContent/Duration Option"
+            
+        $newItem.Editing.BeginEdit()
+        $newItem["Duration"] = $duration
+        $newItem["Label"] = "$duration nights"
+        $newItem.Editing.EndEdit() | Out-Null
+        
+        @('fr-CH', 'fr-FR') | % {
+            Create-Lang-Version -Item $newItem -Lang $_ -Field "Label" -Value "$duration nuits";
+        }
+        @('de-CH', 'de-DE') | % {
+            Create-Lang-Version -Item $newItem -Lang $_ -Field "Label" -Value "$duration Übernachtungen";
+        }
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241104T131130Z

@@ -1,0 +1,233 @@
+﻿---
+ID: "39f0d43a-0668-4c44-ba4a-a847e267f559"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-16362 Contact Us Form Layout"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+        $item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+         if ($item -eq $null) {
+                $item = New-Item -Path $path -ItemType $templateId
+                Write-Host "Item" $item.Name "successfully created";
+         }
+         return $item
+    }
+    
+    function Get-Rendering-Index ($item, $renderingItemId) {
+        $i = 0
+        Get-Rendering -Item $item | ForEach-Object {
+            if ($_.ItemID -eq $renderingItemId) {
+                return $i
+            }
+            $i++
+        }
+    }
+    
+    function Get-All-Renderings-From-Item($actPage, $renderingId){
+         $result = @()
+         $allRenderings = Get-Rendering -Item $actPage
+         foreach($actRendering in $allRenderings){
+             if($actRendering.ItemId -eq $renderingId){
+                 $result += $actRendering
+             }
+         }
+         return $result
+    }
+    
+    function Remove-Renderings-From-Item($actPage, $renderingId){
+         $allRenderings = Get-Rendering -Item $actPage
+         $index = Get-Rendering-Index $actPage $renderingId
+         if($index -ne $null){
+             Remove-Rendering -Item $actPage -Instance $allRenderings[$index]
+         }
+    }
+    
+    function Add-Rendering-And-Remove-Duplicates($page, $placeholderPath, $renderingPath, $renderingId, $dataSourcePath){
+        $renderings = Get-All-Renderings-From-Item $page $renderingId
+        
+        if($renderings.Count -gt 1){
+            Write-Host "multiple renderings found - rendering variable is array"
+            Write-Host "Updated one existing rendering for $($page.Name) page and removed all other"
+            Set-Rendering -Item $page -Instance $renderings[0] -DataSource $dataSourcePath -Placeholder $placeholderPath
+            for ($i=1; $i -lt $renderings.Count; $i++){
+                Remove-Rendering -Item $page -Instance $renderings[$i]
+            }
+        }else{
+            if($renderings.Count -eq 1)
+            {
+                Set-Rendering -Item $page -Instance $renderings -DataSource $dataSourcePath -Placeholder $placeholderPath
+                Write-Host "Updated existing rendering for $($page.Name) page"
+            }else{
+                $renderingItem = Get-Item -Database "master" -Path $renderingPath | New-Rendering -Placeholder $placeholderPath
+                Add-Rendering -Item $page -Instance $renderingItem -DataSource $dataSourcePath -Placeholder $placeholderPath
+                Write-Host "Created new rendering for $($page.Name) page"
+            }
+        }
+    }
+    
+    #tiles constants
+    $tileName1 = "Have a flight only booking"
+    $tileTitle1 = "Have a flight only booking?"
+    $tileDescription1 = "If your query is about a flight only booking with easyJet rather than a package holiday with us get in touch with our airline team."
+    $tileLink1 = '<link text="Flight only team" linktype="external" url="https://www.easyjet.com/en/help/contact" anchor="" target="_blank" rel="" />'
+    
+    $tileName2 = "Are you on holiday or travelling today"
+    $tileTitle2 = "Are you on holiday or travelling today?"
+    $tileDescription2 = "If you need to speak to us while you're away, find out how to get in touch with our 24/7 On Holiday Support team."
+    $tileLink2 = '<link text="Get in touch" anchor="" linktype="internal" class="" title="" target="" querystring="helpCategory=onholiday&amp;helpQuestion=issue" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />'
+    
+    $tileName3 = "Want to book a holiday"
+    $tileTitle3 = "Want to book a holiday?"
+    $tileDescription3 = "Find out all the ways you can book your perfect trip."
+    $tileLink3 = '<link text="Book a holiday" anchor="" linktype="internal" class="" title="" target="" querystring="helpCategory=booking&amp;&amp;helpQuestion=book" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />'
+    
+    $tileName4 = "Booked through a travel agent"
+    $tileTitle4 = "Booked through a travel agent?"
+    $tileDescription4 = "Find out how you can manage your booking."
+    $tileLink4 = '<link text="Travel agent booking" anchor="" linktype="internal" class="" title="" target="" querystring="helpCategory=changes&amp;helpQuestion=travelagent" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />'
+    
+    $tileName5 = "Cancelled or delayed flight"
+    $tileTitle5 = "Cancelled or delayed flight?"
+    $tileDescription5 = "If your flight is delayed, re-scheduled or cancelled, find out more about your options and flight delay compensation."
+    $tileLink5 = '<link text="Flight disruption" anchor="" linktype="internal" class="" title="" target="" querystring="helpCategory=flying &amp;helpQuestion=flightdelay" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />'
+    
+    $tileName6 = "Have a general question"
+    $tileTitle6 = "Have a general question?"
+    $tileDescription6 = "If you’re looking for a bit more information about your holiday, check our help centre to see if we have the answer."
+    $tileLink6 = '<link text="Help centre" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />'
+    
+    # general Id and path
+    $componentWrapperPlacehodlerPath = "body"
+    $componentWrapperRenderingPath = "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper"
+    $componentWrapperRenderingItemId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+    
+    # get contact us form
+    Write-Host  "Updating contact us form layout"
+    $form = Get-Or-Create-Item "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us" "{D6E273D0-4C78-4ABD-B412-5C98E7C9DB94}"
+    
+    #remove all renderings
+    foreach($itemRendering in Get-Rendering -Item $form -FinalLayout) {
+        if($itemRendering.ItemID -ne $null){
+            Write-Host "Removed Rendering with UniqueId: $($itemRendering.UniqueId)"
+            Remove-Rendering -Item $form -Instance $itemRendering
+        }
+    }
+    
+    # add two component wrapper
+    
+    $componentWrapperRenderings = Get-All-Renderings-From-Item $form $componentWrapperRenderingItemId
+    
+    #Id's
+    $persistantInfoBannerRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Persistent Info Banner"
+    $persistantInfoBannerRenderingId = "{CFDDA56D-9D28-45DE-BED6-FF67AC4C38B5}"
+    $persistantInfoBannerDataSource = "/sitecore/content/EasyJet/Holidays/Data/Information Tiles/Global Information Tiles/Persistent Info Banner"
+    
+    $heroBannerRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Page Hero Banner"
+    $heroBannerRenderingId = "{8697E1B1-A31B-4641-B6F9-0DBC289C5B59}"
+    
+    Add-Rendering-And-Remove-Duplicates $form "/header" $persistantInfoBannerRenderingPath $persistantInfoBannerRenderingId $persistantInfoBannerDataSource
+    Add-Rendering-And-Remove-Duplicates $form "body" $heroBannerRenderingPath $heroBannerRenderingId
+    
+    # add component wrapper for promo and text block
+    $renderingItem1 = Get-Item -Database "master" -Path $componentWrapperRenderingPath | New-Rendering -Placeholder $componentWrapperPlacehodlerPath
+    Add-Rendering -Item $form -Instance $renderingItem1 -Placeholder $componentWrapperPlacehodlerPath
+    $componentWrapperRenderings = Get-All-Renderings-From-Item $form $componentWrapperRenderingItemId
+    
+    $textBeforeForm = Get-Or-Create-Item "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Text Blocks/Text Before Promo Blocks" "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}"
+    $textBeforeForm.Editing.BeginEdit()
+    $textBeforeForm["Title"] = "SEE THE OPTIONS BELOW" 
+    $textBeforeForm.Editing.EndEdit()
+    
+    $testSpeakWithUs = Get-Or-Create-Item "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Text Blocks/Speak to easyjet holidays" "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}"
+    $testSpeakWithUs.Editing.BeginEdit()
+    $testSpeakWithUs["Description"] = '<p><strong>Speak to the easyJet holidays team</strong></p><p>The easyJet holidays team can only help customers who''ve booked a complete package holiday with easyJet holidays (a booking with easyJet holidays that includes flight, hotel, luggage etc.). If you''ve just booked a flight with easyJet, please visit the flight only <a href="https://www.easyjet.com/en/help/contact">contact us page</a>.</p><p>If you need to speak to us about a complete package holiday with easyJet holidays (and not a flight only booking with easyJet), you can get in touch with our team on <a href="tel:03305515160">0330 551 5160</a> (or <a href="tel:+443305515160">+44330 551 5160</a> if you''re currently on holiday). Our team are available from Monday to Sunday, 8am - 8pm. Calls cost a standard rate. Calls from mobile or other networks may vary.</p>'
+    $testSpeakWithUs.Editing.EndEdit()
+    
+    $textBlockRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Text Block"
+    $textBlockRenderingItemId = "{43546A28-D231-4287-96D2-25DEF529F1A5}"
+    $textBlockDataSourceBeforeForm = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Text Blocks/Text Before Promo Blocks"
+    $textBlockDataSourceSpeakWithUs = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Text Blocks/Speak to easyjet holidays"
+    $promoBlocksPlacehodlerPath = "/body/component-wrapper-inner-$($componentWrapperRenderings[0].UniqueID)-0"
+    $promoBlocksRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Promo Blocks"
+    $promoBlocksRenderingItemId = "{FF441699-4D65-45C1-B565-E87714B5A278}"
+    $promoBlocksDataSource = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Promo Blocks Folder"
+    $promoBlockTemplateId = "{84ACB697-5638-4525-9801-B31CAC2E0394}"
+    
+    function Add-Promo-Block($itemName, $title, $description, $linkValue){
+        $promoBlockItem = Get-Or-Create-Item "$promoBlocksDataSource/$itemName" $promoBlockTemplateId
+        $promoBlockItem.Editing.BeginEdit()
+        $promoBlockItem["Title"] = $title
+        $promoBlockItem["Description"] = $description
+        $promoBlockItem["Link"] = $linkValue
+        $promoBlockItem.Editing.EndEdit()
+    }
+    
+    # add tiles folder 
+    Get-Or-Create-Item $promoBlocksDataSource "{EB30259D-FF9A-46CB-8E0C-4616B148F3A8}"
+    
+    # add tiles
+    
+    Add-Promo-Block $tileName1 $tileTitle1 $tileDescription1 $tileLink1
+    Add-Promo-Block $tileName2 $tileTitle2 $tileDescription2 $tileLink2
+    Add-Promo-Block $tileName3 $tileTitle3 $tileDescription3 $tileLink3
+    Add-Promo-Block $tileName4 $tileTitle4 $tileDescription4 $tileLink4
+    Add-Promo-Block $tileName5 $tileTitle5 $tileDescription5 $tileLink5
+    Add-Promo-Block $tileName6 $tileTitle6 $tileDescription6 $tileLink6
+    
+    Add-Rendering-And-Remove-Duplicates $form $promoBlocksPlacehodlerPath $promoBlocksRenderingPath $promoBlocksRenderingItemId $promoBlocksDataSource
+    $promoBlockRendering = Get-All-Renderings-From-Item $form $promoBlocksRenderingItemId
+    $textBlockPlacehodlerPath = "/body/component-wrapper-inner-$($componentWrapperRenderings[0].UniqueID)-0/title-block-$($promoBlockRendering.UniqueId)-0"
+    Add-Rendering-And-Remove-Duplicates $form $textBlockPlacehodlerPath $textBlockRenderingPath $textBlockRenderingItemId $textBlockDataSourceBeforeForm
+    
+    # add component wrapper for new contact us form
+    $renderingItem2 = Get-Item -Database "master" -Path $componentWrapperRenderingPath | New-Rendering -Placeholder $componentWrapperPlacehodlerPath
+    Add-Rendering -Item $form -Instance $renderingItem2 -Placeholder $componentWrapperPlacehodlerPath
+    $componentWrapperRenderings = Get-All-Renderings-From-Item $form $componentWrapperRenderingItemId
+    
+    $contactUsPlacehodlerPath = "/body/component-wrapper-inner-$($componentWrapperRenderings[1].UniqueID)-0"
+    $contactUsRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Contact Us"
+    $contactUsRenderingItemId = "{5C71B391-B96A-4F96-B6A8-CFF10D4FF9DF}"
+    $contactUsDataSource = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Form"
+    
+    Add-Rendering-And-Remove-Duplicates $form $contactUsPlacehodlerPath $contactUsRenderingPath $contactUsRenderingItemId $contactUsDataSource
+    
+    $renderingTextBlockSpeakWithUs = Get-Item -Database "master" -Path $textBlockRenderingPath | New-Rendering
+    Add-Rendering -Item $form -Instance $renderingTextBlockSpeakWithUs -Placeholder $contactUsPlacehodlerPath -Datasource $textBlockDataSourceSpeakWithUs
+    
+    #set
+    
+    $parameters = [ordered]@{
+    "IsTriangleGrey"="1"
+    "IsTriangleStart"="1"
+    "ShowImageGradient"="1"
+    "FontSize"="70"
+    }
+    $wrapperParameters = [ordered]@{
+    "IsGreyBackground"="1"
+    }
+    
+    foreach($itemRendering in Get-Rendering -Item $form -FinalLayout) {
+        Write-Host "Rendering UniqueId: $($itemRendering.UniqueId)"
+        if($itemRendering.ItemId -eq $heroBannerRenderingId){
+            $itemRendering | Set-RenderingParameter -Parameter $parameters | Set-Rendering -Item $form
+        }
+        if($itemRendering.UniqueId -eq $componentWrapperRenderings[0].UniqueId){
+            $itemRendering | Set-RenderingParameter -Parameter $wrapperParameters | Set-Rendering -Item $form
+        }
+        Get-RenderingParameter -Rendering $itemRendering | Format-Table -Auto
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 600
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

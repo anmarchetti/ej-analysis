@@ -1,0 +1,58 @@
+{
+    "Title": "Trasnfers for hotel GRCR0002 (api/DestinationsSearch/GetHotelTransfers)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetHotelTransfers",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "ExactMatcher",
+                "Pattern": "AtcomIds%5B0%5D=GRCR0002"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": [
+            [
+                {
+                    "Code": "SS",
+                    "Name": "Shared",
+                    "Airports": [
+                        {
+                            "Code": "HER"
+                        }
+                    ],
+                    "IconUrl": "/-/media/cacb3397d50d4f128902439355274b26.ashx",
+                    "Content": "Shared transfer for HER airport"
+                },
+                {
+                    "Code": "PP",
+                    "Name": "Private",
+                    "Airports": [],
+                    "IconUrl": "/-/media/cacb3397d50d4f128902439355274b26.ashx",
+                    "Content": "Private for all airports"
+                },
+                {
+                    "Code": "NS",
+                    "Name": "No Shared",
+                    "Airports": [
+                        {
+                            "Code": "HHH"
+                        }
+                    ],
+                    "IconUrl": "/-/media/cacb3397d50d4f128902439355274b26.ashx",
+                    "Content": "No shared for HHH airport"
+                }
+            ]
+        ]
+    }
+}

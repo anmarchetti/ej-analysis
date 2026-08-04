@@ -1,0 +1,74 @@
+﻿---
+ID: "bcaf3938-a5b6-4e27-88a5-942a6a1c15dc"
+Parent: "033557c6-bfa1-463b-8b8e-d6738d113165"
+Template: "f62b4cd7-754c-4461-810f-2b6bd2c92a0d"
+Path: /sitecore/client/Applications/ExperienceProfile/Contact/PageSettings/Tabs/Bookings/BookingsPanel
+DB: core
+SharedFields:
+- ID: "deab3795-056f-4421-adf0-758844461b72"
+  Hint: Placeholder Name
+  Value: BookingsPanel
+- ID: "f1a1fe9e-a60c-4ddb-a3a0-bb5b29fe732e"
+  Hint: __Renderings
+  Type: layout
+  Value: |
+    <r>
+      <d
+        id="{FE5D7FDF-89C0-4D99-9AA3-B5FBD009C9F3}"
+        l="{759BEFD1-3323-404D-A243-E0ED81163C03}">
+        <r
+          id="{CB83D434-31ED-4AC3-A280-CCE2B63F9743}"
+          par="PageCodeScriptFileName=%2fsitecore%2fshell%2fclient%2fApplications%2fExperienceProfile%2fContact%2fBookings%2fBookingsTab.js"
+          ph="Page.Body"
+          uid="{319C31EC-D6E1-487E-BD7B-2520FDB9938B}" />
+        <r
+          id="{F6C9F461-FCAF-47DC-AA01-C8C64C2EFFB8}"
+          par="Id=BookingsTabBorder"
+          ph="Page.Body"
+          uid="{1672272D-E81C-4969-8B79-FE03B293F5E4}" />
+        <r
+          id="{910155C7-3881-4A56-90FB-D126490EDE55}"
+          par="Id=BookingsMessageBar"
+          ph="BookingsTabBorder.Content"
+          uid="{F0C79E4B-6D9F-406C-B1BD-BB8AB504991A}" />
+        <r
+          ds="{0078E0C2-25FB-43CA-B044-7E9C05C0D551}"
+          id="{442BD093-FBAD-4E36-BC08-489E16C82D08}"
+          par="Id=BookingsAccordion"
+          ph="BookingsTabBorder.Content"
+          uid="{454F37A9-29A1-4C1F-9FDB-F33EC33C9EE5}" />
+        <r
+          ds="{A25FEC42-DB24-497A-8CBA-F31498B672B0}"
+          id="{ACE0AFD6-3DE0-42CF-8E62-4E68CD810A8D}"
+          par="TileHtmlFileName=%2fsitecore%2fshell%2fclient%2fBusiness+Component+Library%2fLayouts%2fRenderings%2fListsAndGrids%2fListControls%2fDefaultTile.cshtml&amp;Items=%7bBinding+BookingsDataProvider.cidata%7d&amp;Id=BookingsList"
+          ph="BookingsAccordion.Body"
+          uid="{ABBE9C0A-7506-4BDE-A723-02018D4FC0DE}" />
+        <r
+          ds="{6CD06869-4264-420C-A161-3220DD3AB7BA}"
+          id="{A91523CD-6E56-4F08-8B21-C39018E0134A}"
+          par="PageSize=5&amp;Id=BookingsDataProvider"
+          ph="BookingsAccordion.Body"
+          uid="{FB9C04C8-466C-4A73-A85F-15F7F82514DA}" />
+        <r
+          id="{F6C9F461-FCAF-47DC-AA01-C8C64C2EFFB8}"
+          par="IsVisible=%7bBinding+BookingsDataProvider.HasMoreData%7d&amp;Id=MoreBookingsBorder"
+          ph="BookingsAccordion.Body"
+          uid="{CB9DE977-7BE7-4861-97FE-D5BC66E4655D}" />
+        <r
+          id="{913AB005-2527-4C2D-9827-FB3A8DFB135C}"
+          par="Text=Load+More&amp;Click=+javascript%3aapp.BookingsDataProvider.nextListData()&amp;Id=ButtonMore"
+          ph="MoreBookingsBorder.Content"
+          uid="{BBC248F4-E81C-4309-978C-C15752535F7B}" />
+      </d>
+    </r>
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220224T145042Z
+    - ID: "aea872fb-aa91-4d1a-b877-3ca6fbbb4fd4"
+      Hint: Header
+      Value: BookingsPanel

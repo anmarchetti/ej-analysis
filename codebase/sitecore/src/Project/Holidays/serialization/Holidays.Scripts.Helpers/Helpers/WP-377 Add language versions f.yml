@@ -1,0 +1,113 @@
+﻿---
+ID: "29426dc3-7eb0-4fa8-a8b8-7f9cee49d569"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/WP-377 Add language versions for all rooms"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $sourceDb = "master"
+    $rootItemPath = "$($sourceDb):/sitecore/content/EasyJet/Holidays/Home/Destinations"
+    $accommodationRoomTemplateId = "{BA1EC5C3-14C7-40B3-8B69-D020590DA1F3}"
+    $roomsFolderTemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+    $hotelTemplateId = "{28E5E169-8F72-4F90-A277-280A8302B607}"
+    $languages = @('fr-FR', 'de-DE')
+    $ignoredField = @('Description', 'Image', 'Content')
+    
+    function Has-BaseTemplate ($item,$baseTemplateId)
+    {
+    	if ($item -eq $null)
+    	{
+    		return false;
+    	}
+    	$template = [Sitecore.Data.Managers.TemplateManager]::GetTemplate($item);
+    	return $template -ne $null -and $template.InheritsFrom($baseTemplateId);
+    }
+    
+    function Get-Hotels-Recursive ($root,$list) {
+    	foreach ($child in $root.Children) {
+    		if (Has-BaseTemplate -Item $child -baseTemplateId "{168F65DC-9ECD-4A6E-AD93-A46464E45F79}") {
+    			if ($child.TemplateId -eq "{538939B3-07EC-4C23-BF8C-3A68DE0FDC93}")
+    			{
+    				foreach ($item in $child.Children) {
+    					if ($item.TemplateId -ne $hotelTemplateId) {
+    						continue;
+    					}
+    					$list.Add($item) > $null
+    				}
+    			}
+    			else {
+    				Get-Hotels-Recursive $child $list
+    			}
+    		}
+    	}
+    }
+    
+    function Get-Rooms-Folder($hotels, $list) {
+        foreach($hotel in $hotels) {
+            $roomsFolder = $hotel.Children | Where { $_.TemplateId -eq $roomsFolderTemplateId }
+            foreach($folder in $roomsFolder) {
+                $list.Add($folder) > $null
+            }
+        }
+    }
+    
+    function Get-Rooms($roomsFolder, $list) {
+         foreach($folder in $roomsFolder) {
+            $rooms = $folder.Children | Where { $_.TemplateId -eq $accommodationRoomTemplateId }
+            foreach($room in $rooms) {
+                $list.Add($room) > $null
+            }
+        }   
+    }
+    
+    function AddLanguageVersions {
+    	$hotels = [System.Collections.ArrayList]@()
+    	$roomsFolder = [System.Collections.ArrayList]@()
+    	$rooms = [System.Collections.ArrayList]@()
+    	
+    	$root = Get-Item $rootItemPath
+    	Get-Hotels-Recursive $root $hotels
+    	Write-Host "Found" $hotels.Count "hotels"
+    	
+        Get-Rooms-Folder $hotels $roomsFolder
+        Write-Host "Found" $roomsFolder.Count "rooms folder"
+        
+        Get-Rooms $roomsFolder $rooms
+        Write-Host "Found" $rooms.Count "rooms"
+        Write-Host "Starting to add language version for "$languages
+        
+        $totalTimes = $rooms.Count
+        $i = 0
+    	New-UsingBlock (New-Object Sitecore.Data.Events.EventDisabler) {
+        	New-UsingBlock (New-Object Sitecore.Data.DatabaseCacheDisabler) {
+            	New-UsingBlock (New-Object Sitecore.Data.BulkUpdateContext) {
+            	    foreach($room in $rooms) {
+            	        $i++
+                        Add-ItemLanguage -Item $room -IfExist Skip -TargetLanguage $languages -Language "en" -IgnoredFields $ignoredField | Out-Null
+                        $percentComplete = ($i / $totalTimes) * 100
+                        Write-Progress -Activity 'Processing' -Status "Called Add-ItemLanguage $i  times" -PercentComplete $percentComplete
+                    }
+            	}
+        	}
+    	}
+    }
+    
+    Write-Host "start"
+    $stopWatch = New-Object -TypeName System.Diagnostics.Stopwatch
+    $stopWatch.Start()
+    
+    AddLanguageVersions
+    
+    $stopWatch.Stop()
+    Write-Host "completed. Elapsed time - $($StopWatch.Elapsed)" -ForegroundColor Green 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241113T122650Z

@@ -1,0 +1,105 @@
+﻿---
+ID: "cf6cfaab-d5fe-4870-883c-ae768f167190"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Compare Price Modules AB Test Variants
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$itemName,$templateId,$forceId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $forceId
+    		Write-Host "Item" $item.Name "created";
+    	}
+    	return $item
+    }
+    
+    
+    $dataPath = "master:/sitecore/content/EasyJet/Holidays/Data"
+    $modulesFolderTemplateId = "{68B5D4BE-F830-4FE8-A57E-61E7D61FFD2E}"
+    $moduleTemplateId = "{112403DD-191A-41BD-9582-61C9BFFB7107}"
+    $testId = '102'
+    
+    $modules = @(
+    	@{
+    		ID = "{6D6D5B5C-A2DD-4C62-982A-65EAA4630C16}";
+    		TestVariant = "A";
+    		Variant = "Price Graph Only Variant"
+    		Name = "Price Graph Module";
+    		SortOrder = 100;
+    	},
+    	@{
+    		ID = "{1516278C-2350-4543-9A91-509C9112701B}";
+    		TestVariant = "B";
+    		Variant = "Nothing Variant"
+    		Name = "No Price Compare Module";
+    		SortOrder = 200;
+    	},
+    	@{
+    		ID = "{FDCC6655-0DEC-4490-8943-96B5A18C7745}";
+    		TestVariant = "C";
+    		Variant = "Calendar Only Variant"
+    		Name = "Price Calendar Module";
+    		SortOrder = 300;
+    	},
+    	@{
+    		ID = "{9EBA8F80-7F58-4033-A2C2-294142EC4E01}";
+    		TestVariant = "D";
+    		Variant = "Calendar First Variant"
+    		Name = "Price Calendar and Graph Module";
+    		SortOrder = 400;
+    	},
+    	@{
+    		ID = "{FC9F3AA6-D95B-4122-B408-93358921C062}";
+    		TestVariant = "E";
+    		Variant = "Price Graph First Variant"
+    		Name = "Price Graph and Calendar Module";
+    		SortOrder = 500;
+    	}
+    )
+    
+    
+    function Create-Price-Modules () {
+    	$modulesFolder = Get-Or-Create-Item -Path $dataPath -ItemName "Compare Price Modules" -TemplateId $modulesFolderTemplateId -ForceId "{E5BF6A90-D846-4D5E-BFE6-8C8D37C390E0}"
+    
+    	# Move existing Module to Folder
+    	$currentModuleName = "Compare Price Module"
+    	$currentModuleItem = Get-Item -Path "$($dataPath)/$($currentModuleName)" -ErrorAction SilentlyContinue
+    	if ($currentModuleItem -ne $null) {
+    		Move-Item -Path $currentModuleItem.FullPath -Destination "$($modulesFolder.FullPath)/$($currentModuleName)"
+    		Write-Host "Current module is moved";
+    	}
+    
+    	# Create new price modules variants
+    	foreach ($module in $modules) {
+    		$moduleItem = Get-Or-Create-Item -Path $modulesFolder.FullPath -ItemName $module.Name -TemplateId $moduleTemplateId -ForceId $module.ID
+    
+    		$moduleItem.Editing.BeginEdit()
+    		$moduleItem["TestId"] = $testId
+    		$moduleItem["TestVariant"] = $module.TestVariant
+    		$moduleItem["Variant"] = $module.Variant
+    		$moduleItem["IsBestValueEnabled"] = "1"
+    		$moduleItem.__SortOrder = $module.SortOrder
+    		$moduleItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    Create-Price-Modules
+    
+    
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4900
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201020T085907Z

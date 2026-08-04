@@ -1,0 +1,60 @@
+﻿---
+ID: "13571ee8-0a6b-481d-b14f-23b6f677fc93"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-368"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $fasttracklogo_e89d280d0cd34567bb1b745ac8d84842_en_v1 = @"
+    <image mediaid="{9B9556DA-9DCB-4D63-B6F8-97B074881D9C}" />
+    "@
+    $fasttracklabel_e89d280d0cd34567bb1b745ac8d84842_en_v1 = @"
+    {count} x Fast track
+    "@
+    $fasttracklabel_e89d280d0cd34567bb1b745ac8d84842_dede_v1 = @"
+    {count} x Fast Track Security
+    "@
+    $fasttracklabel_e89d280d0cd34567bb1b745ac8d84842_frch_v1 = @"
+    {count} x Sécurité Fast Track
+    "@
+    $fasttracklabel_e89d280d0cd34567bb1b745ac8d84842_dech_v1 = @"
+    {count} x Fast Track Security
+    "@
+    $fasttracklabel_e89d280d0cd34567bb1b745ac8d84842_frfr_v1 = @"
+    {count} x Sécurité Fast Track
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Hotel Summary"
+            TemplatePath = "Feature/Booking/View Booking/Hotel Summary"
+            Id          = [GUID]"{E89D280D-0CD3-4567-BB1B-745AC8D84842}"
+            Fields      = @{
+                "FastTrackLabel" = @{
+                    "de-CH" = $fasttracklabel_e89d280d0cd34567bb1b745ac8d84842_dech_v1
+                    "en" = $fasttracklabel_e89d280d0cd34567bb1b745ac8d84842_en_v1
+                    "fr-FR" = $fasttracklabel_e89d280d0cd34567bb1b745ac8d84842_frfr_v1
+                    "de-DE" = $fasttracklabel_e89d280d0cd34567bb1b745ac8d84842_dede_v1
+                    "fr-CH" = $fasttracklabel_e89d280d0cd34567bb1b745ac8d84842_frch_v1
+                }
+                "FastTrackLogo" = @{
+                    "en" = $fasttracklogo_e89d280d0cd34567bb1b745ac8d84842_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999992
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250723T084722Z

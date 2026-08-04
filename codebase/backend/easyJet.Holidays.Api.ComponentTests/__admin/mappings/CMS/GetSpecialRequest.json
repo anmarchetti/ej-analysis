@@ -1,0 +1,166 @@
+{
+    "Title": "CMS Special request",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/SpecialRequests/GetSpecialRequest",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "SpecialRequestType": [
+                {
+                    "SpecialRequests": [
+                        {
+                            "DisplayName": "Add a cot to my room",
+                            "PreSelectedForInfant": true,
+                            "PreSelectedForAlert": "As you have an infant travelling with you, we’ve already selected ‘Add a cot to my room’. If a cot won’t be needed, you can unselect it.",
+                            "Code": "COT",
+                            "Name": "Cot",
+                            "Type": null
+                        },
+                        {
+                            "DisplayName": "A ground floor room",
+                            "PreSelectedForInfant": false,
+                            "PreSelectedForAlert": "",
+                            "Code": "GFR",
+                            "Name": "Ground Floor Room",
+                            "Type": null
+                        },
+                        {
+                            "DisplayName": "A non-ground floor room",
+                            "PreSelectedForInfant": false,
+                            "PreSelectedForAlert": "",
+                            "Code": "EGFR",
+                            "Name": "Except Ground Floor",
+                            "Type": null
+                        },
+                        {
+                            "DisplayName": "A high floor room",
+                            "PreSelectedForInfant": false,
+                            "PreSelectedForAlert": "",
+                            "Code": "HFR",
+                            "Name": "High Floor Room",
+                            "Type": null
+                        },
+                        {
+                            "DisplayName": "I’d like rooms close together",
+                            "PreSelectedForInfant": false,
+                            "PreSelectedForAlert": "",
+                            "Code": "RCT",
+                            "Name": "Rooms Close Together",
+                            "Type": null
+                        },
+                        {
+                            "DisplayName": "A quiet room",
+                            "PreSelectedForInfant": false,
+                            "PreSelectedForAlert": "",
+                            "Code": "QR",
+                            "Name": "Quiet Room",
+                            "Type": null
+                        },
+                        {
+                            "DisplayName": "A double bed, not twin beds",
+                            "PreSelectedForInfant": false,
+                            "PreSelectedForAlert": "",
+                            "Code": "DB",
+                            "Name": "Double Bed",
+                            "Type": null
+                        },
+                        {
+                            "DisplayName": "Twin beds, not a double bed",
+                            "PreSelectedForInfant": false,
+                            "PreSelectedForAlert": "",
+                            "Code": "TWB",
+                            "Name": "Twin Beds",
+                            "Type": null
+                        },
+                        {
+                            "DisplayName": "We’re on holiday for a special occasion",
+                            "PreSelectedForInfant": false,
+                            "PreSelectedForAlert": "",
+                            "Code": "BIAN",
+                            "Name": "Birthday/Anniversary",
+                            "Type": null
+                        },
+                        {
+                            "DisplayName": "It’s our honeymoon",
+                            "PreSelectedForInfant": false,
+                            "PreSelectedForAlert": "",
+                            "Code": "HNYM",
+                            "Name": "Honeymoon",
+                            "Type": null
+                        }
+                    ],
+                    "Code": "SRA",
+                    "Name": "Special Requests - Accommodation",
+                    "Type": null
+                }
+            ],
+            "SpecialRequestsContradictoryGroup": [
+                {
+                    "SpecialRequests": [
+                        {
+                            "DisplayName": "A ground floor room",
+                            "PreSelectedForInfant": false,
+                            "PreSelectedForAlert": "",
+                            "Code": "GFR",
+                            "Name": "Ground Floor Room",
+                            "Type": null
+                        },
+                        {
+                            "DisplayName": "A non-ground floor room",
+                            "PreSelectedForInfant": false,
+                            "PreSelectedForAlert": "",
+                            "Code": "EGFR",
+                            "Name": "Except Ground Floor",
+                            "Type": null
+                        },
+                        {
+                            "DisplayName": "A high floor room",
+                            "PreSelectedForInfant": false,
+                            "PreSelectedForAlert": "",
+                            "Code": "HFR",
+                            "Name": "High Floor Room",
+                            "Type": null
+                        }
+                    ],
+                    "Code": null,
+                    "Name": "Floor type",
+                    "Type": null
+                },
+                {
+                    "SpecialRequests": [
+                        {
+                            "DisplayName": "A double bed, not twin beds",
+                            "PreSelectedForInfant": false,
+                            "PreSelectedForAlert": "",
+                            "Code": "DB",
+                            "Name": "Double Bed",
+                            "Type": null
+                        },
+                        {
+                            "DisplayName": "Twin beds, not a double bed",
+                            "PreSelectedForInfant": false,
+                            "PreSelectedForAlert": "",
+                            "Code": "TWB",
+                            "Name": "Twin Beds",
+                            "Type": null
+                        }
+                    ],
+                    "Code": null,
+                    "Name": "Bed type",
+                    "Type": null
+                }
+            ]
+        }
+    }
+}

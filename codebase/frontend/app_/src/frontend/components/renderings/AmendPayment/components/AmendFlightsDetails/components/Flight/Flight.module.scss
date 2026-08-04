@@ -1,0 +1,150 @@
+.flight {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    @include media-breakpoint-down(lg) {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+}
+
+.date {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+    font-family: $fontRoundedBook;
+    font-weight: 700;
+
+    @include media-breakpoint-down(lg) {
+        font-size: 14px;
+    }
+
+    .fltNo {
+        font-size: 14px;
+        color: $colorBlackMedium;
+    }
+}
+
+.content {
+    display: flex;
+    align-items: flex-start;
+
+    @include media-breakpoint-down(lg) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.timeColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.time {
+    display: inline-block;
+    font-weight: 700;
+
+    @include media-breakpoint-down(lg) {
+        margin-bottom: 6px;
+        font-size: 14px;
+    }
+}
+
+.arrTime {
+    @include media-breakpoint-down(lg) {
+        &::before {
+            content: '\00a0-\00a0';
+        }
+    }
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    margin: 0 26px;
+
+    @include media-breakpoint-down(lg) {
+        margin: 0 16px;
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+        margin: 0 20px;
+        transform: rotate(45deg);
+    }
+
+    span {
+        position: relative;
+        display: flex;
+        width: 4px;
+        height: 4px;
+        background-color: $colorBlackLight;
+        border-radius: 2px;
+    }
+
+    span::before,
+    span::after {
+        content: '';
+        position: relative;
+        display: flex;
+        width: 4px;
+        min-width: 4px;
+        height: 4px;
+        background-color: $colorBlackLight;
+        border-radius: 50%;
+    }
+
+    span::after {
+        right: -7px;
+    }
+
+    span::before {
+        left: -10px;
+    }
+}
+
+.inboundIcon {
+    @include media-breakpoint-down(lg) {
+        transform: rotate(-180deg);
+    }
+}
+
+.airport {
+    white-space: nowrap;
+
+    &::after {
+        content: '\a';
+        white-space: pre;
+
+        @include media-breakpoint-down(lg) {
+            content: '\00a0';
+        }
+    }
+}
+
+.depLocation {
+    @include media-breakpoint-down(lg) {
+        &::after {
+            content: '\00a0-\00a0';
+        }
+    }
+}
+
+.mobileOnly {
+    display: none;
+
+    @include media-breakpoint-down(lg) {
+        display: inline-flex;
+    }
+}
+
+.desktopOnly {
+    display: inline-flex;
+
+    @include media-breakpoint-down(lg) {
+        display: none;
+    }
+}

@@ -1,0 +1,106 @@
+$iconSizeLg: 22px;
+$iconSize: 24px;
+$iconMargin: 8px;
+
+.tripDetails {
+    margin: 16px 0;
+
+    @include media-breakpoint-up(md) {
+        display: flex;
+        justify-content: space-between;
+        margin: 0;
+        padding: 16px;
+        padding-bottom: 8px;
+    }
+
+    @include media-breakpoint-up(lg) {
+        flex-wrap: wrap;
+        align-items: stretch;
+        justify-content: space-between;
+        margin: 0;
+        padding: 16px 18px 16px 24px;
+    }
+}
+
+.roomInfo {
+    display: flex;
+}
+
+.detailsItem {
+    display: flex;
+    align-items: flex-start;
+    margin: 0 0 8px;
+    padding-right: 24px;
+
+    @include media-breakpoint-down(sm) {
+        padding-right: 0;
+    }
+
+    @include media-breakpoint-up(md) {
+        width: 33%;
+    }
+
+    @include media-breakpoint-up(lg) {
+        width: 50%;
+        min-height: 36px;
+        margin: 0;
+        font-size: 14px;
+
+        &:last-child {
+            margin-top: 8px;
+        }
+    }
+
+    i {
+        svg {
+            @include sizeSquare(24px);
+        }
+    }
+
+    @include media-breakpoint-only(md) {
+        margin-bottom: 2px;
+    }
+}
+
+.detailsIcon {
+    @include sizeSquare($iconSize);
+
+    margin-right: $iconMargin;
+
+    :global(.icon--bg-image) {
+        @include sizeSquare($iconSize);
+    }
+
+    svg {
+        @include sizeSquare($iconSize);
+    }
+
+    @include media-breakpoint-up(lg) {
+        @include sizeSquare($iconSizeLg);
+
+        svg {
+            @include sizeSquare($iconSizeLg);
+        }
+
+        :global(.icon--bg-image) {
+            @include sizeSquare($iconSizeLg);
+        }
+    }
+}
+
+.urgencyMessage {
+    width: 100%;
+    margin-top: 8px;
+
+    p {
+        font-size: 14px;
+    }
+
+    :global(.callout__content.icon-left) {
+        left: 0;
+    }
+
+    @include media-breakpoint-up(lg) {
+        margin-left: calc($iconSizeLg + $iconMargin);
+    }
+}

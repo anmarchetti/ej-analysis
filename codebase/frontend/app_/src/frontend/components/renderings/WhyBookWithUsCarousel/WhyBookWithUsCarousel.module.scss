@@ -1,0 +1,193 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+
+    @include media-breakpoint-down(md) {
+        display: block;
+    }
+
+    .btn {
+        width: 240px;
+        margin-bottom: 50px;
+        padding: 14px 27px;
+        font-size: 16px;
+        line-height: 18px;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 20px;
+        }
+    }
+
+    .mobileButton {
+        width: 100%;
+        margin-top: 10px;
+        border-width: 2px;
+    }
+}
+
+.mobile {
+    display: flex;
+    align-items: flex-start;
+}
+
+.desktop {
+    display: block;
+    width: 100%;
+
+    & > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0;
+    }
+}
+
+.containerTitle {
+    margin: 0;
+    font-family: $fontRoundedDemy;
+    font-size: 24px;
+    font-weight: 400;
+    text-align: left;
+
+    @include media-breakpoint-down(md) {
+        margin: 15px 0 10px;
+        font-size: 18px;
+        text-align: left;
+    }
+}
+
+.carousel {
+    align-items: normal;
+    width: 100%;
+    padding-left: 35px;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: row;
+        align-items: center;
+        padding-left: 0;
+    }
+
+    :global(.react-multiple-carousel__arrow--left),
+    :global(.react-multiple-carousel__arrow--right) {
+        top: calc(50% - 2px);
+        width: 30px;
+        min-width: 30px;
+        height: 30px;
+        min-height: 30px;
+        padding: 0;
+        background: $clrSiteBgWhite;
+        box-shadow: 0 0 6px 0 rgba(135, 135, 135, 0.39);
+        transform: translateY(-50%);
+
+        &::before {
+            font-size: 16px;
+            color: $clrEjOrange;
+        }
+    }
+
+    :global(.react-multiple-carousel__arrow--left) {
+        left: 5px;
+    }
+
+    :global(.react-multiple-carousel__arrow--right) {
+        right: 5px;
+    }
+
+    :global(.react-multi-carousel-item--active) {
+        max-width: 235px;
+    }
+
+    :global(.react-multi-carousel-dot) {
+        margin-top: 20px;
+
+        button {
+            width: 8px;
+            height: 8px;
+            background-color: $colorGray;
+            border: none;
+        }
+    }
+
+    :global(.react-multi-carousel-dot--active>button) {
+        width: 10px;
+        height: 10px;
+        background-color: $colorOrange;
+    }
+
+    @include media-breakpoint-down(md) {
+        :global(.react-multi-carousel-track ) {
+            margin-bottom: 30px;
+        }
+    }
+}
+
+.carouselItem {
+    display: flex;
+    align-items: flex-start;
+
+    @include media-breakpoint-down(md) {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.content {
+    max-width: 185px;
+
+    &--underlined {
+        border-bottom: 1px dotted orange;
+    }
+}
+
+.icon {
+    img {
+        width: 44px;
+        height: 44px;
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-right: 15px;
+    }
+}
+
+.description {
+    margin-top: 10px;
+    line-height: 18px;
+}
+
+.title {
+    margin: 12px 0 0;
+    font-family: 'easyjet_rounded_demi', Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 0;
+    }
+}
+
+
+.tooltip {
+    z-index: $zIndexCardTooltip;
+    width: max-content;
+    padding: 0;
+    background-color: transparent;
+    border-radius: 4px;
+    box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.10);
+}
+
+.tooltipInner {
+    position: relative;
+    z-index: $zIndexCardTooltip;
+    width: 100%;
+    max-width: 240px;
+    font-family: 'easyjet_rounded_book', Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.4em;
+    text-align: center;
+    background: none;
+    border-radius: 4px;
+}

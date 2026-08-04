@@ -1,0 +1,77 @@
+.wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-grow: 1;
+    place-content: stretch space-between;
+    margin-right: 10px;
+
+    @include media-breakpoint-down(lg) {
+        display: grid;
+        grid-template-areas:
+            "firstCell separator thirdCell"
+            "secondCell separator fourthCell";
+        gap: 0 45px;
+        margin: 8px 10px 8px 0;
+
+        .firstCell, .thirdCell, .secondCell, .fourthCell {
+            max-width: 100% !important;
+
+            ul {
+                margin: 0 !important;
+            }
+        }
+
+        .firstCell {
+            grid-area: firstCell;
+        }
+
+        .tabletSeparator {
+            grid-area: separator;
+        }
+
+        .hiddenSeparator {
+            display: none;
+        }
+
+        .thirdCell {
+            grid-area: thirdCell;
+        }
+
+        .secondCell {
+            grid-area: secondCell;
+        }
+
+        .fourthCell {
+            grid-area: fourthCell;
+        }
+    }
+}
+
+.listItem {
+    margin: 8px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.priceLeftSeparator {
+    @include media-breakpoint-down(lg) {
+        background-image: linear-gradient(-80deg, #e5e5e5 50%, #fff 50%) !important;
+    }
+}
+
+.priceRightSeparator {
+    @include media-breakpoint-down(lg) {
+        background-image: linear-gradient(-80deg, #fff 50%, #e5e5e5 50%) !important;
+    }
+}
+
+.separator {
+    &::before {
+        height: 82%!important;
+    }
+}
+
+.showPopup {
+    display: flex;
+    align-items: center;
+}

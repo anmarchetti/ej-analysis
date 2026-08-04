@@ -1,0 +1,120 @@
+﻿{
+    "Title": "CMS Filter data hotels.",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/DestinationsSearchFilters/GetAllFilters",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "ExactMatcher",
+                "Pattern": "AtcomIds%5B0%5D=77b1e372f332"
+            }
+        },
+        "Methods": [
+            "Post"
+        ]
+    },
+    "Response": {
+        "Headers": {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        "StatusCode": 200,
+        "BodyAsJson": [
+            {
+                "Code": "77b1e372f332",
+                "Name": "Topazio Mar Beach Hotel and Apartments",
+                "StarRating": 3,
+                "TripAdvisorRating": 4,
+                "Boards": null,
+                "FacilityGroups": [
+                    {
+                        "Name": "Pool & Beach",
+                        "Order": 0,
+                        "FacilityFilteredTypes": [
+                            {
+                                "FacilityFilterGroup": null,
+                                "Order": 1,
+                                "Tooltip": "",
+                                "Code": "73-363",
+                                "SourceCodes": [],
+                                "Name": "Outdoor pool",
+                                "ItemName": "Outdoor freshwater pool",
+                                "Type": null,
+                                "Url": null
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "Entertainment",
+                        "Order": 1,
+                        "FacilityFilteredTypes": [
+                            {
+                                "FacilityFilterGroup": null,
+                                "Order": 0,
+                                "Tooltip": "",
+                                "Code": "73-401",
+                                "SourceCodes": [],
+                                "Name": "Entertainment programme",
+                                "ItemName": "Entertainment programme for adults",
+                                "Type": null,
+                                "Url": null
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "General",
+                        "Order": 3,
+                        "FacilityFilteredTypes": [
+                            {
+                                "FacilityFilterGroup": null,
+                                "Order": 0,
+                                "Tooltip": "",
+                                "Code": "70-10",
+                                "SourceCodes": [],
+                                "Name": "Air conditioning",
+                                "ItemName": "Air conditioning in public areas",
+                                "Type": null,
+                                "Url": null
+                            },
+                            {
+                                "FacilityFilterGroup": null,
+                                "Order": 1,
+                                "Tooltip": "",
+                                "Code": "70-550",
+                                "SourceCodes": [],
+                                "Name": "Wi-fi",
+                                "ItemName": "Wi-fi",
+                                "Type": null,
+                                "Url": null
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "Environmental",
+                        "Order": 6,
+                        "FacilityFilteredTypes": [
+                            {
+                                "FacilityFilterGroup": null,
+                                "Order": 0,
+                                "Tooltip": "This hotel has a Global Sustainable Tourism Council recognised certification",
+                                "Code": "70-ECO",
+                                "SourceCodes": [],
+                                "Name": "Certified sustainable",
+                                "ItemName": "Certified sustainable",
+                                "Type": null,
+                                "Url": null
+                            }
+                        ]
+                    }
+                ],
+                "FacilityMatrix": []
+            }
+        ]
+    }
+}

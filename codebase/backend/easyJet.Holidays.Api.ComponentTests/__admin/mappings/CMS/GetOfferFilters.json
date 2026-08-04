@@ -1,0 +1,28 @@
+{
+    "Title": "CMS Offer filters reference data: /api/DestinationsSearchOfferFilters/GetOfferFilters",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/DestinationsSearchOfferFilters/GetOfferFilters",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "Filters": [
+                {
+                    "Code": "freeForKidsOnly",
+                    "Name": "Only \"Free Kids Places\"",
+                    "Enabled": true
+                }
+            ]
+        }
+    }
+}

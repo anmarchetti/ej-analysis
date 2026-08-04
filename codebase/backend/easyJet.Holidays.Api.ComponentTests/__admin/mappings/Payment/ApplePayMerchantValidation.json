@@ -1,0 +1,31 @@
+{
+    "Title": "ApplePay Merchant Validation Proxy",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/payment/v1/applepay/merchantvalidation",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "epochTimestamp": 1234567890,
+            "expiresAt": 1234567890,
+            "merchantSessionIdentifier": "SSH1234567890",
+            "nonce": "abcdef12",
+            "merchantIdentifier": "merchant.com.easyjet.holidays",
+            "domainName": "holidays.easyjet.com",
+            "displayName": "EasyJet Holidays",
+            "signature": "MIGHAg...",
+            "operationalAnalyticsIdentifier": "EasyJet Holidays:1234567890",
+            "retries": 0
+        }
+    }
+}

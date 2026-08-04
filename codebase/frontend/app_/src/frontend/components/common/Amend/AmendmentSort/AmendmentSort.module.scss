@@ -1,0 +1,73 @@
+.sortByApplyButton {
+    border-radius: 3px;
+}
+
+.sortByCancelButton {
+    flex-basis: 60%;
+}
+
+.drawerContent {
+    padding: 25px 15px 90px;
+}
+
+.drawerContentTitle {
+    display: flex;
+    align-items: center;
+    margin: 25px 0 20px;
+
+}
+
+.drawerContentList {
+    margin: 0;
+    padding: 0 10px;
+    list-style: none;
+    width: 100%;
+}
+
+.drawerContentList .drawerContentListItem {
+    padding: 20px 0 20px 16px;
+    border: none;
+    border-bottom: 1px solid $colorAlto;
+    background-color: transparent;
+    position: relative;
+    display: flex;
+    font-size: 16px;
+    line-height: 19px;
+    color: rgba(0, 0, 0, 0.8);
+    width: 100%;
+
+    &.active {
+        color: $colorOrange;
+
+        .activeIcon {
+            margin-left: 8px;
+        }
+    }
+}
+
+.drawerChangeHotel {
+    .drawerContent {
+        padding: 0;
+    }
+
+    .drawerContentList {
+        padding: 0;
+    }
+
+    .drawerContentTitle {
+        margin: 0;
+        padding:  20px 16px 20px 32px;
+        font-weight: 700;
+        border-bottom: 1px solid $colorAlto;
+    }
+
+    .drawerContentListItem {
+        padding:  16px 16px 16px 32px;
+    }
+
+    .sortByCancelButton {
+        flex-basis: auto;
+    }
+}
+
+

@@ -1,0 +1,26 @@
+.item {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    width: 16px;
+    height: 15px;
+    margin-right: 10px;
+
+    :global(.icon--bg-image),
+    svg {
+        width: 16px;
+        height: 15px;
+    }
+}
+
+.name {
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

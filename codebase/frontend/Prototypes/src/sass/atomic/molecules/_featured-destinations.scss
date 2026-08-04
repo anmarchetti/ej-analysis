@@ -1,0 +1,116 @@
+$card-gap: 10px;
+
+.featured-destinations {
+    display: flex;
+    flex-wrap: wrap;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+    }
+}
+
+.featured-destination-card {
+    position: relative;
+    display: flex;
+    flex-basis: 20%;
+    flex-grow: 1;
+    align-items: flex-end;
+    height: 320px;
+    margin: $card-gap;
+    padding-right: 18px;
+    padding-bottom: 15px;
+    border-radius: 6px;
+
+    @include media-breakpoint-down(lg) {
+        flex-basis: 45%;
+        height: 240px;
+    }
+
+    @include media-breakpoint-down(md) {
+        flex-basis: auto;
+        padding-bottom: 0;
+    }
+}
+
+.featured-destination-card__info {
+    z-index: $z-index-element;
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.93);
+    border-radius: 0 6px 6px 0;
+    box-shadow: 0 0 13px 0 rgba(178, 178, 175, 0.5);
+
+    @include media-breakpoint-down(md) {
+        border-radius: 0 6px 0 0;
+    }
+
+    .title {
+        margin: 0 0 5px;
+        font-family: $fontRoundedHeadline;
+        font-size: 20px;
+        line-height: 1;
+        color: $clrTextMain;
+    }
+
+    a:hover {
+        color: $clrEjOrange;
+        opacity: 1;
+    }
+}
+
+.featured-destination-card__details {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    font-size: 11px;
+
+    .book-info {
+        display: flex;
+        align-items: flex-end;
+        margin-left: auto;
+        line-height: 1;
+        text-align: right;
+
+        svg {
+            width: 15px;
+            height: 15px;
+            margin-bottom: 5px;
+            margin-left: 10px;
+            color: $clrEjOrange;
+
+            @include media-breakpoint-down(lg) {
+                width: 10px;
+                height: 10px;
+                margin-left: 5px;
+            }
+        }
+    }
+
+    .star_rating {
+        svg {
+            width: 9px;
+            height: 9px;
+            margin-right: 3px;
+            color: $clrEjOrange;
+        }
+    }
+
+    .live-price__amount {
+        font-size: 24px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 15px;
+            font-weight: 700;
+        }
+    }
+
+    .live-price__suffix {
+        font-size: 11px;
+    }
+
+    .live-price__nights {
+        .live-price__nights-duration-phrase {
+            margin: 0 2px;
+        }
+    }
+}

@@ -1,0 +1,217 @@
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 16px;
+    }
+
+    @media print {
+        display: none;
+    }
+}
+
+.textWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tooltipText {
+    margin: 0;
+}
+
+.tooltipIcon {
+    font-size: 20px;
+    color: $clrEjOrange;
+}
+
+.tooltop {
+    --rt-opacity: 1;
+
+    max-width: 275px;
+    color: $clrTextMain;
+    background: $colorWhite;
+    box-shadow: 0 0 8px 0 rgba($colorBlack, 0.35);
+}
+
+.downloadButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 400;
+    color: $colorOrange;
+    background-color: $colorWhite;
+    border: 2px solid $colorOrange;
+    border-radius: 4px;
+
+    svg {
+        width: 20px;
+        height: 20px;
+        margin-right: 6px;
+    }
+}
+
+.container {
+    padding-top: 32px;
+    background: $colorWhite;
+    background-image: linear-gradient(6deg, $colorPorcelain 70%, $colorTransparent 70%);
+}
+
+.info {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 15px;
+}
+
+.poster {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    background: $colorWhite;
+}
+
+.title {
+    margin: 0 0 10px;
+    font-family: $fontRoundedBook;
+    font-size: 40px;
+    line-height: 50px;
+    color: $clrTextMain;
+    text-transform: uppercase;
+}
+
+.description {
+    margin-bottom: 30px;
+    font-family: $fontRoundedDemy;
+    font-size: 18px;
+    line-height: 24px;
+    color: $clrTextMain;
+}
+
+.logo {
+    max-height: 45px;
+
+    &:first-child {
+        margin-right: 20px;
+    }
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0;
+    padding: 16px;
+    background: $clrSiteBgGrey;
+
+    @include media-breakpoint-down(sm) {
+        margin-bottom: 0;
+    }
+
+    i svg {
+        display: none;
+    }
+}
+
+.globals {
+    .tradePortalViewBookingCost {
+        margin: 20px 0;
+        padding: 0;
+        border: none;
+        break-inside: avoid;
+    }
+
+    .viewBookingCostTitle {
+        margin-bottom: 24px;
+    }
+
+    .viewBookingCostSubtitle {
+        font-size: 16px;
+    }
+
+    :global(.wrapper-container--px) {
+        margin: 24px auto;
+        padding: 0 15px;
+    }
+
+    :global(.view-booking-holiday-details) {
+        margin: 18px 0;
+        break-inside: avoid;
+    }
+
+    :global(.no-print:not(.view-booking-hotel__gallery)),
+    :global(.errata-message),
+    :global(.special-assistance-content) {
+        display: none;
+    }
+
+    :global(.holiday-summary-item) {
+        padding: 20px;
+        background-color: $colorWhite;
+        border: none;
+        border-radius: 6px;
+        box-shadow: -2px 2px 13px 0 rgba($colorBlack, 0.07);
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    :global(.view-booking-hotel__gallery) {
+        height: 350px;
+    }
+
+    &:global(.pdf-format) {
+        :global(.view-booking-hotel__facility-title .icon--bg-image) {
+            background-repeat: no-repeat;
+            background-position-x: 0;
+            background-position-y: 0;
+            background-size: 270% 270%; // svg scaling (from 150px) not working correctly in jsPDF
+        }
+
+        :global(.wrapper-component-container--grey) {
+            background: $colorWhite;
+        }
+
+        :global(.holiday-summary-item) {
+            border: 2px solid $colorMercury;
+            box-shadow: none;
+        }
+
+        :global(.view-booking-hotel__facilities .row) {
+            row-gap: 10px;
+        }
+
+        :global(.view-booking-hotel__facility ul) {
+            padding-left: 12px;
+        }
+
+        :global(.view-booking-hotel__title) {
+            font-size: 18px;
+        }
+
+        :global(.holiday-summary-item__subtitle) {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        :global(.view-booking-hotel__facilities) {
+            padding: 15px 20px;
+        }
+
+        :global(.wrapper-shape__triangle-start),
+        :global(.wrapper-shape__triangle-end) {
+            display: none;
+        }
+
+        :global(.holiday-summary-item__details + .holiday-summary-item__details) {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid $colorMercury;
+        }
+    }
+}

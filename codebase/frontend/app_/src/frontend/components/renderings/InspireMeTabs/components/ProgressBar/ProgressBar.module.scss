@@ -1,0 +1,211 @@
+.wrapper {
+    width: 280px;
+    margin-top: 60px;
+    margin-right: 40px;
+
+    @include media-breakpoint-down(lg) {
+        display: grid;
+        align-items: center;
+        justify-content: center;
+        grid-template-areas: 
+            "title title"
+            "progressBar percentage"
+            "steps steps";
+        width: 100%;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 32px;
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 13px;
+    }
+}
+
+.title {
+    margin-top: 0;
+    margin-bottom: 40px;
+    font-family: $fontRoundedBook;
+    font-size: 24px;
+    font-weight: 400;
+    color: $clrTextHeading;
+    text-transform: uppercase;
+
+    @include media-breakpoint-down(lg) {
+        grid-area: title;
+        margin-bottom: 16px;
+    }
+
+    @include media-breakpoint-down(md) {
+        display: none;
+    }
+}
+
+.percentageTitle {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 32px;
+    font-weight: 400;
+    color: $clrTextHeading;
+    text-transform: uppercase;
+
+    @include media-breakpoint-down(lg) {
+        grid-area: percentage;
+        font-size: 14px;
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.progressBar {
+    width: 240px;
+    height: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background: #D9D9D9;
+    border-radius: 4px;
+
+    @include media-breakpoint-down(lg) {
+        grid-area: progressBar;
+        margin-top: 0;
+        margin-right: 8px;
+        margin-bottom: 0;
+        justify-self: end;
+    }
+}
+
+.fillingBar {
+    height: 100%;
+    background: $colorGreenSuccess;
+    border-radius: 4px;
+    transition-duration: 1s;
+    transition-property: width;
+}
+
+.description {
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    font-weight: 400;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(lg) {
+        display: none;
+    }
+}
+
+.steps {
+    margin-top: 40px;
+
+    @include media-breakpoint-down(lg) {
+        display: flex;
+        flex-direction: row;
+        grid-area: steps;
+        margin-top: 16px;
+        justify-self: center;
+    }
+
+    @include media-breakpoint-down(md) {
+        display: none;
+    }
+}
+
+.step {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    font-weight: 400;
+    color: $colorSilverDark;
+    text-transform: uppercase;
+
+    &:not(:first-child) {
+        margin-top: 16px;
+
+        .number::after {
+            content: '';
+            position: absolute;
+            top: -17px;
+            right: 50%;
+            display: block;
+            width: 1px;
+            height: 16px;
+            background: $colorSilverDark;
+        }
+    }
+
+    @include media-breakpoint-down(lg) {
+        &:not(:first-child) {
+            margin-top: 0;
+            margin-left: 16px;
+
+            .number::after {
+                top: 30%;
+                left: -9px;
+                transform: rotate(90deg);
+            }
+        }
+    }
+}
+
+.number {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+    border: 1px solid $colorSilverDark;
+    border-radius: 50%;
+    animation-name: inactivate;
+    animation-duration: 1s;
+
+    @include media-breakpoint-down(lg) {
+        margin-right: 0;
+    }
+}
+
+.progressBarTitle {
+    @include media-breakpoint-down(lg) {
+        display: none;
+    }
+}
+
+.step.activeStep {
+    color: $colorBlackMedium;
+
+    .number {
+        color: $clrSiteBgWhite;
+        background: $colorBlackMedium;
+        border-color: $colorBlackMedium;
+        animation-name: activate;
+        animation-duration: 1s;
+    }
+}
+
+@keyframes activate {
+    0% {
+        background: transparent;
+        border-color: $colorSilverDark;
+    }
+
+    100% {
+        background: $colorBlackMedium;
+        border-color: $colorBlackMedium;
+    }
+}
+
+@keyframes inactivate {
+    0% {
+        background: $colorBlackMedium;
+        border-color: $colorBlackMedium;
+    }
+
+    100% {
+        background: transparent;
+        border-color: $colorSilverDark;
+    }
+}

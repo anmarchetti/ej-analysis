@@ -1,0 +1,107 @@
+.attentionMessage {
+    display: flex;
+    justify-content: space-between;
+    background-color: $colorWhite;
+    border-radius: 4px;
+
+    .blueWarning {
+        display: flex;
+        padding: 10px;
+        background: $colorBlueGray2;
+        border: 1px solid $colorBlueGray;
+        border-radius: 4px;
+        box-shadow: 0 2px 6px 2px rgba(51, 51, 51, 0.15);
+
+        .icon {
+            @include sizeSquare(24px);
+
+            display: flex;
+            margin: 0;
+            margin-right: 8px;
+            padding: 2px;
+
+            @include media-breakpoint-up(md) {
+                margin-right: 12px;
+            }
+
+            svg {
+                margin: 0;
+                color: $colorBlue;
+                @include sizeSquare(20px);
+            }
+        }
+
+        .description {
+            font-family: $fontRoundedDemy;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.375;
+            color: $colorBlue2;
+        }
+    }
+}
+
+.message {
+    width: 100%;
+
+    @include media-breakpoint-down(md) {
+        padding: 10px;
+    }
+}
+
+.description {
+    padding-right: 16px;
+}
+
+.collapsible {
+    .expander {
+        display: none;
+        transform: rotate(180deg);
+        transition: transform 0.3s;
+    }
+
+    @include media-breakpoint-down(md) {
+        position: relative;
+
+        .expander {
+            position: absolute;
+            z-index: $z-index-element;
+            top: 23px;
+            right: 10px;
+            display: flex;
+            padding: 0;
+            color: $colorOrange;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        &.collapsed {
+            .expander {
+                transform: rotate(0);
+            }
+
+            .message {
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 50px;
+                height: 100%;
+                background: linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 1) 25%,
+                    rgba(255, 255, 255, 1) 100%
+                );
+            }
+        }
+    }
+}

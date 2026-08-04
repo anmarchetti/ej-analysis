@@ -1,0 +1,64 @@
+﻿---
+ID: "12a2f2e6-c474-4398-b78f-1f3ed997948c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SEATS-127 - Add Seat map on view booking"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $seatsMap = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/SeatsMap" -ErrorAction SilentlyContinue;
+    
+    if ($seatsMap -ne $null) {
+    	Move-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/SeatsMap" -Destination "master:/sitecore/content/EasyJet/Holidays/Data";
+    	Write-Host $seatsMap.Name "moved to Data";
+    }
+    
+    $seatMapId = "{F7F45094-B88B-47D0-975F-3854B4AE9A41}";
+    $viewBookingPage = Get-Item "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking";
+    
+    if ($viewBookingPage -ne $null) {
+    	Get-Rendering -Item $viewBookingPage |
+    	ForEach-Object {
+    		if ($_.ItemId -eq $seatMapId)
+    		{
+    			$_.DataSource = "/sitecore/content/EasyJet/Holidays/Data/SeatsMap"
+    			Set-Rendering -Item $viewBookingPage -Instance $_
+    		}
+    	}
+    }
+    
+    $extrasPage = Get-Item "/sitecore/content/EasyJet/Holidays/Home/Booking"
+    
+    if ($extrasPage -ne $null) {
+    	Get-Rendering -Item $extrasPage |
+    	ForEach-Object {
+    		if ($_.ItemId -eq $seatMapId)
+    		{
+    			$_.DataSource = "/sitecore/content/EasyJet/Holidays/Data/SeatsMap"
+    			Set-Rendering -Item $extrasPage -Instance $_
+    		}
+    
+    	}
+    }
+    
+    # Add notification fields values to SeatMap datasource
+    $seatMapDatasourcePath = "/sitecore/content/EasyJet/Holidays/Data/SeatsMap";
+    $seatMapDatasource = Get-Item -Path $seatMapDatasourcePath -ErrorAction SilentlyContinue;
+    
+    if ($seatMapDatasource -ne $null) {
+    	$seatMapDatasource.Editing.BeginEdit();
+    	$seatMapDatasource["AmendSeatsNotificationTitle"] = "Seat refunds will be updated before checkout";
+    	$seatMapDatasource["AmendSeatsNotificationDescription"] = "If you have already booked seats, and are upgrading or changing seats, you will be credited for the amount during checkout";
+    	$seatMapDatasource.Editing.EndEdit() | Out-Null;
+    	Write-Host $seatMapDatasource.Name "updated";
+    } 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20221208T142719Z

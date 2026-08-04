@@ -1,0 +1,175 @@
+.blockSelected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 135px;
+
+  svg {
+    margin-left: 10px;
+  }
+
+  @include media-breakpoint-down(sm) {
+    display: flex;
+    justify-content: center;
+    margin: 8px auto 0;
+    font-size: 14px;
+    }
+}
+
+.transferDuration {
+  display: flex;
+  align-items: center;
+
+  > svg {
+    flex-shrink: 0;
+    margin-right: 8px;
+  }
+
+  > span {
+    margin-right: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px;
+  }
+}
+
+.amendPrice {
+    font-family: $fontRoundedDemy;
+    font-size: 18px;
+}
+
+.amendPriceLabel {
+    font-size: 14px;
+    margin-left: 2px;
+}
+
+.amendView {
+    margin: 0;
+    box-shadow: 0 0 12px 2px $lightShadowColor;
+    border-radius: 4px;
+    border: 2px solid $colorAlto;
+
+    &:global(.amend-transfer-card--selected) {
+        border-color: $colorOrange;
+        box-shadow: none;
+    }
+
+    :global(.card__content) {
+        margin: 0 !important;
+        padding-right: 40px;
+        max-width: calc(100% - 200px); // 200px - width of the button
+
+        @include media-breakpoint-down(sm) {
+            padding-right: 0;
+            max-width: unset;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        :global(.amend-transfer-card__heading) {
+            padding-bottom: 12px;
+        }
+    }
+
+    .header {
+        padding-bottom: 8px !important;
+
+        @include media-breakpoint-down(sm) {
+            padding-bottom: 12px !important;
+            border-bottom: 1px solid $colorAlto;
+        }
+
+        :global(.card__icon) {
+            @include media-breakpoint-down(sm) {
+                margin-right: 8px;
+                @include sizeSquare(24px);
+            }
+        }
+
+        :global(.card__title) {
+            font-size: 24px;
+
+            @include media-breakpoint-down(sm) {
+                font-size: 18px;
+                line-height: 22px;
+            }
+        }
+    }
+
+    .content {
+        padding: 24px;
+
+        @include media-breakpoint-down(sm) {
+            padding: 12px 8px 8px;
+        }
+
+        :global(.amend-transfer-card__action) {
+            padding-bottom: 0 !important;
+            margin-top: -15px !important;
+
+            @include media-breakpoint-down(sm) {
+                margin-top: 8px !important;
+            }
+        }
+
+        .transferDuration {
+            padding-bottom: 0;
+
+        }
+
+        :global(.amend-transfer-card__duration) {
+            margin-top: 8px !important;
+            padding-bottom: 0 !important;
+        }
+
+        :global(.card__content) {
+            @include media-breakpoint-down(sm) {
+                padding-left: 0;
+                margin-right: 0;
+                margin-top: 0;
+            }
+        }
+    }
+
+    .card {
+        margin: 8px 0 0;
+        ul {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            @include checkbox-list;
+
+            li {
+                line-height: 22px;
+
+                @include media-breakpoint-down(sm) {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    .blockSelected {
+        height: 48px;
+        margin-top: 0;
+    }
+
+    :global(.select-transfer) {
+        margin-top: 0;
+        height: 48px;
+    }
+}
+
+.amendView.withDuration {
+    :global(.amend-transfer-card__price-container) {
+        margin-top: 0 !important
+    }
+    :global(.amend-transfer-card__action) {
+        margin-top: -42px !important;
+
+        @include media-breakpoint-down(sm) {
+            margin-top: 8px !important;
+        }
+    }
+}

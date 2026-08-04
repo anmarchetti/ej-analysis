@@ -1,0 +1,117 @@
+.container {
+    z-index: $zIndexSuperPopup;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    :global(.popup__dialog) {
+        width: 420px;
+        max-width: 420px;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            margin: 0;
+        }
+    }
+
+    :global(.popup__body) {
+        padding: 24px;
+
+        @include media-breakpoint-down(md) {
+            padding: 16px 24px 16px 16px;
+        }
+    }
+
+    :global(.popup__close) {
+        width: 24px;
+        height: 24px;
+        margin-top: 12px;
+
+        @include media-breakpoint-down(md) {
+            margin: 12px 10px 0 0;
+        }
+    }
+
+    :global(.popup__footer) {
+        padding: 0 24px 24px;
+
+        @include media-breakpoint-down(md) {
+            padding: 0 16px 16px;
+        }
+
+        :global(.btn) {
+            width: 100%;
+            padding: 12px 24px;
+
+            @include media-breakpoint-down(md) {
+                max-width: 100%;
+                padding: 12px 16px;
+            }
+        }
+    }
+}
+
+.content {
+    border-radius: 4px;
+    animation: fade-in 0.4s ease-out;
+
+    @include media-breakpoint-down(md) {
+        position: absolute;
+        bottom: 0;
+        border-radius: 0;
+        animation: move-in 0.4s ease-out;
+    }
+}
+
+.exit {
+    opacity: 0;
+    animation: fade-out 0.4s ease-in;
+
+    @include media-breakpoint-down(md) {
+        bottom: -100%;
+        opacity: 100;
+        animation: move-out 0.4s ease-in;
+    }
+}
+
+@keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 100;
+    }
+}
+
+@keyframes fade-out {
+    from {
+      opacity: 100;
+    }
+
+    to {
+      opacity: 0;
+    }
+}
+
+@keyframes move-in {
+    from {
+        bottom: -100%;
+    }
+
+    to {
+        bottom: 0;
+    }
+}
+
+@keyframes move-out {
+    from {
+        bottom: 0;
+    }
+
+    to {
+        bottom: -100%;
+    }
+}

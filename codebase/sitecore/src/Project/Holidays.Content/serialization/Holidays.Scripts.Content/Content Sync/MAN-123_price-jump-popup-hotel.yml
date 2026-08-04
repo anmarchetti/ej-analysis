@@ -1,0 +1,130 @@
+﻿---
+ID: "572ed4b2-d66f-4820-b8b2-35455dc8157d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/MAN-123_price-jump-popup-hotel-summary"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    ## UPDATE PAGE RENDERING
+     function Add-Or-Update-Page-Rendering ($pagePath, $renderingPath, $renderingPlaceholder, $dataSourcePath, $parameters = @{}) {
+    	$renderingItem = Get-Item -Path $renderingPath;
+    	$dataSourceItem = Get-Item -Path $dataSourcePath;
+    	$page = Get-Item $pagePath;
+    	
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -DataSource $dataSourcePath -Parameter $parameters
+    
+    		Write-Host $renderingItem.Name "- Rendering instance added";
+    	}
+    	else {
+    		Write-Host $renderingItem.Name "- Already exists";
+    	}
+        }
+    ##
+    
+    ## BUILD RENDERING PLACEHOLDER
+    function Build-Rendering-Placeholder($itemPath, $dataSource, $prefix) {
+        $parent = Get-Item -Path $itemPath -ErrorAction SilentlyContinue;
+        $renderingInstance = Get-Rendering -Item $parent -DataSource $dataSource;
+        
+        return $prefix + $renderingInstance.uniqueId + "-0";
+    }
+    ##
+    
+    ## UPDATE FILEDS WITH LANGS
+    function Update-item-with-lang($data, $item) {
+        function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+    };
+    
+        if ($item -ne $null) {
+            $data | ForEach-Object {
+            $fieldName = $_.fieldName;
+            $values = $_.values;
+        
+            if ($values -ne $null) {
+              
+                if ($values.en -ne $null) {
+                    $item.Editing.BeginEdit();
+                    $item[$fieldName] = $values.en;
+                    $item.Editing.EndEdit() | Out-Null
+                }
+                 if ($values.fr -ne $null) {
+                     @('fr-CH', 'fr-FR') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.fr;
+                    }
+                }
+                 if ($values.de -ne $null) {
+                     @('de-CH', 'de-DE') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.de;
+                    }
+                }
+                
+                Write-Host $fieldName "Updated"
+            }
+        }
+        }
+    };
+    ##
+      
+    ## GET RENDERING INSTANCE
+    function Get-Rendering-Instance($itemPath, $dataSource) {
+        $parent = Get-Item -Path $itemPath -ErrorAction SilentlyContinue;
+        
+        return Get-Rendering -Item $parent -DataSource $dataSource;
+    }
+    ##
+    
+    $hotelSummaryRenderingInstance = Get-Rendering-Instance -ItemPath "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary" -DataSource "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary/Page Components/Amend Hotel Summary";
+    
+    $amendHotelSummaryItemPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary";
+    $priceJumpPopupRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Popups/Price Jump Popup";
+    $renderingPlaceholder = Build-Rendering-Placeholder -ItemPath "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary" -DataSource "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary/Page Components/Amend Hotel Summary" -Prefix "/body/price-jump-popup-";
+    
+    Add-Or-Update-Page-Rendering -PagePath $amendHotelSummaryItemPath -RenderingPath $priceJumpPopupRenderingPath -RenderingPlaceholder $renderingPlaceholder -DataSourcePath "/sitecore/content/EasyJet/Holidays/Data/Price Jump Popup";
+    
+    $priceJumpPopupItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Price Jump Popup";
+    $data = @(
+        @{
+            fieldName = "Icon";
+            values = @{
+                en = '<image mediaid="{A484212A-377A-4DC9-8754-BABFE7701E3D}" />'
+            }
+        }
+    );
+    Update-item-with-lang -Item $priceJumpPopupItem -Data $data;
+    
+    
+    
+    
+
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250110T102032Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

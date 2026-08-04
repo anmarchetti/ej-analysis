@@ -1,0 +1,519 @@
+﻿---
+ID: "f7fd9494-6ab8-426f-abbe-0986d546177d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/4 - SER-787 - What to do now QA"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+            
+    $disruptionPagePath = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption"
+    
+    $qaFolderName = "What to do now"
+    $qaRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Question And Answer"
+    $qaItemTemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+    $qaFolderTemplatePath = "/sitecore/templates/Feature/PageContent/Question and Answer Folder"
+    	
+    
+    $componentWrapperRenderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+    
+    $textBlockRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Text Block"
+    
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components"
+    $qaFolderDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions"
+            
+    $updates = @(
+         @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Section Title"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+            Fields      = @{
+                "Title" = @{
+                    "en" = "WHAT TO DO NOW"
+                    "fr-CH" = "QUE FAIRE MAINTENANT"
+                    "de-CH" = "WAS IST JETZT ZU TUN"
+                    "fr-FR" = "QUE FAIRE MAINTENANT"
+                    "de-DE" = "WAS IST JETZT ZU TUN"
+                }
+                "__Sortorder" = @{
+                    "en" = "400"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question and Answer Folder"
+            Fields      = @{
+                "__Sortorder" = @{
+                    "en" = "500"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions/Q1"
+            TemplatePath = $qaItemTemplatePath
+            Fields      = @{
+                "Question" = @{
+                    "en" = "My flight status and updates"
+                    "fr-CH" = "Statut et mises à jour de mon vol"
+                    "de-CH" = "Mein Flugstatus und aktuelle Informationen"
+                    "fr-FR" = "Statut et mises à jour de mon vol"
+                    "de-DE" = "Mein Flugstatus und aktuelle Informationen"
+                }
+                "Answer"= @{
+                   "en" = @'
+    <p>If your flight is disrupted or delayed, we&rsquo;ll always do our best to get in touch
+    and share updates. You can also check the easyJet <a href="https://www.easyjet.com/en/flight-tracker"><strong><span style="text-decoration: underline;">Flight Tracker</span></strong></a> on our website
+    or app for the most up-to-date flight information. </p>
+    <p>
+    As we look after your entire holiday, we may need to adjust different parts of
+    your trip &mdash; starting with your flight, then your hotel, and finally your transfers
+    (if included). You might receive several updates as we work through each stage
+    with our trusted partners. That&rsquo;s completely normal and helps us keep you
+    informed as quickly as possible. Keep checking your emails for updates and
+    look out for texts from us to the contact details provided when you booked your
+    holiday. </p>
+    <p>
+    If the disruption is widespread or caused by external factors such as weather,
+    air traffic control, or industrial action, you can also visit our latest <a href="~/link.aspx?_id=725A5D37ACDD41BB94E7EB828BEA2CC5&amp;_z=z"><strong><span style="text-decoration: underline;">travel information</span></strong></a>&nbsp;page for broader travel updates and advice.  </p>
+    '@
+                    "fr-CH" = @'
+    <p>Si votre vol est perturbé ou retardé, nous ferons toujours de notre mieux pour vous contacter
+    et vous tenir informé. Vous pouvez également consulter le <a href="https://www.easyjet.com/ch-fr/flight-tracker"><strong><span style="text-decoration: underline;">suivi des vols</span></strong></a> easyJet sur notre site Web
+    ou notre application pour obtenir les informations les plus récentes sur les vols. </p>
+    <p>
+    Comme nous nous occupons de l'ensemble de vos vacances, nous pouvons être amenés à modifier différents aspects de
+    votre voyage, à commencer par votre vol, puis votre hôtel et enfin vos transferts
+    (si inclus). Vous recevrez peut-être plusieurs mises à jour au fur et à mesure que nous traitons chaque étape
+    avec nos partenaires de confiance. Cela est tout à fait normal et nous permet de vous tenir
+    informé(e) le plus rapidement possible. Consultez régulièrement vos e-mails pour connaître les dernières informations et
+    surveillez les SMS que nous vous envoyons aux coordonnées fournies lors de la réservation de vos
+    vacances. </p>
+    <p>
+    Si la perturbation est généralisée ou causée par des facteurs externes tels que les conditions météorologiques, le
+    contrôle du trafic aérien ou une action syndicale, vous pouvez également consulter notre dernière page <a href="~/link.aspx?_id=725A5D37ACDD41BB94E7EB828BEA2CC5&amp;_z=z"><strong><span style="text-decoration: underline;" >informations de voyage</span></strong></a>&nbsp;pour obtenir des mises à jour et des conseils plus généraux sur les voyages.  </p>
+    '@
+                    "de-CH" = @'
+    <p>Wenn Ihr Flug gestört oder verspätet ist, werden wir stets unser Bestes tun, um Sie zu kontaktieren
+    und Sie über den aktuellen Stand zu informieren. Sie können auch den easyJet <a href="https://www.easyjet.com/ch-de/flight-tracker"><strong><span style="text-decoration: underline;">Flight Tracker</span></strong></a> auf unserer Website
+    oder in unserer App aufrufen, um die aktuellsten Fluginformationen zu erhalten. </p>
+    <p>
+    Da wir Ihren gesamten Urlaub organisieren, müssen wir möglicherweise verschiedene Teile Ihrer Reise anpassen
+    – angefangen bei Ihrem Flug über Ihr Hotel bis hin zu Ihren Transfers
+    (falls enthalten). Möglicherweise erhalten Sie mehrere Updates, während wir jede Phase
+    mit unseren vertrauenswürdigen Partnern durcharbeiten. Das ist völlig normal und hilft uns, Sie
+    so schnell wie möglich auf dem Laufenden zu halten. Überprüfen Sie regelmäßig Ihre E-Mails auf Aktualisierungen und
+    achten Sie auf SMS von uns an die Kontaktdaten, die Sie bei der Buchung Ihres
+    Urlaubs angegeben haben. </p>
+    <p>
+    Wenn die Störung weitreichend ist oder durch externe Faktoren wie Wetter,
+    Flugsicherung oder Arbeitskampfmaßnahmen verursacht wird, können Sie auch unsere aktuelle Seite <a href="~/link.aspx?_id=725A5D37ACDD41BB94E7EB828BEA2CC5&amp;_z=z"><strong><span style="text-decoration: underline;" >Reiseinformationen</span></strong></a>&nbsp;Seite besuchen, um umfassendere Reiseinformationen und Ratschläge zu erhalten.  </p>
+    '@
+                    "fr-FR" = @'
+    <p>Si votre vol est perturbé ou retardé, nous ferons toujours de notre mieux pour vous contacter
+    et vous tenir informé. Vous pouvez également consulter le <a href="https://www.easyjet.com/fr/flight-tracker"><strong><span style="text-decoration: underline;">suivi des vols</span></strong></a> easyJet sur notre site Web
+    ou notre application pour obtenir les informations les plus récentes sur les vols. </p>
+    <p>
+    Comme nous nous occupons de l'ensemble de vos vacances, nous pouvons être amenés à modifier différents aspects de
+    votre voyage, à commencer par votre vol, puis votre hôtel et enfin vos transferts
+    (si inclus). Vous recevrez peut-être plusieurs mises à jour au fur et à mesure que nous traitons chaque étape
+    avec nos partenaires de confiance. Cela est tout à fait normal et nous permet de vous tenir
+    informé(e) le plus rapidement possible. Consultez régulièrement vos e-mails pour connaître les dernières informations et
+    surveillez les SMS que nous vous envoyons aux coordonnées fournies lors de la réservation de vos
+    vacances. </p>
+    <p>
+    Si la perturbation est généralisée ou causée par des facteurs externes tels que les conditions météorologiques, le
+    contrôle du trafic aérien ou une action syndicale, vous pouvez également consulter notre dernière page <a href="~/link.aspx?_id=725A5D37ACDD41BB94E7EB828BEA2CC5&amp;_z=z"><strong><span style="text-decoration: underline;" >informations de voyage</span></strong></a>&nbsp;pour obtenir des mises à jour et des conseils plus généraux sur les voyages.  </p>
+    '@
+                    "de-DE" = @'
+    <p>Wenn Ihr Flug gestört oder verspätet ist, werden wir stets unser Bestes tun, um Sie zu kontaktieren
+    und Sie über den aktuellen Stand zu informieren. Sie können auch den easyJet <a href="https://www.easyjet.com/de/flight-tracker"><strong><span style="text-decoration: underline;">Flight Tracker</span></strong></a> auf unserer Website
+    oder in unserer App aufrufen, um die aktuellsten Fluginformationen zu erhalten. </p>
+    <p>
+    Da wir Ihren gesamten Urlaub organisieren, müssen wir möglicherweise verschiedene Teile Ihrer Reise anpassen
+    – angefangen bei Ihrem Flug über Ihr Hotel bis hin zu Ihren Transfers
+    (falls enthalten). Möglicherweise erhalten Sie mehrere Updates, während wir jede Phase
+    mit unseren vertrauenswürdigen Partnern durcharbeiten. Das ist völlig normal und hilft uns, Sie
+    so schnell wie möglich auf dem Laufenden zu halten. Überprüfen Sie regelmäßig Ihre E-Mails auf Aktualisierungen und
+    achten Sie auf SMS von uns an die Kontaktdaten, die Sie bei der Buchung Ihres
+    Urlaubs angegeben haben. </p>
+    <p>
+    Wenn die Störung weitreichend ist oder durch externe Faktoren wie Wetter,
+    Flugsicherung oder Arbeitskampfmaßnahmen verursacht wird, können Sie auch unsere aktuelle Seite <a href="~/link.aspx?_id=725A5D37ACDD41BB94E7EB828BEA2CC5&amp;_z=z"><strong><span style="text-decoration: underline;" >Reiseinformationen</span></strong></a>&nbsp;Seite besuchen, um umfassendere Reiseinformationen und Ratschläge zu erhalten.  </p>
+    '@
+                }
+                "NavigationParameter" = @{
+                    "en" = "flightstatusupdates"
+                }
+                "__Sortorder" = @{
+                    "en" = "100"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions/Q2"
+            TemplatePath = $qaItemTemplatePath
+            Fields      = @{
+                "Question" = @{
+                    "en" = "My flight is delayed"
+                    "fr-CH" = "Mon vol est retardé"
+                    "de-CH" = "Mein Flug ist verspätet"
+                    "fr-FR" = "Mon vol est retardé"
+                    "de-DE" = "Mein Flug ist verspätet"
+                }
+                "Answer"= @{
+                   "en" = @'
+    <p>If your flight is delayed or re-scheduled, you&rsquo;ll be contacted by the easyJet holidays team. You may also receive a message from us sent by the airline team  to the details provided when you booked your holiday.</p>
+    <p>Just so you know what to expect, our average speed in making these  arrangements is within 60 minutes so please bear with us while our team look  at the next best alternative for you.</p>
+    '@
+                    "fr-CH" = @'
+    <p>Si votre vol est retardé ou reprogrammé, l'équipe easyJet holidays vous contactera. Vous pouvez également recevoir un message de notre part envoyé par l'équipe de la compagnie aérienne  aux coordonnées fournies lors de la réservation de votre séjour. </p>
+    <p>Pour que vous sachiez à quoi vous attendre, sachez que nous effectuons généralement ces  modifications dans un délai de 60 minutes. Nous vous remercions donc de votre patience pendant que notre équipe recherche  la meilleure alternative pour vous. </p>
+    '@
+                    "de-CH" = @'
+    <p>Wenn Ihr Flug verspätet ist oder umgebucht wird, werden Sie vom easyJet Holidays-Team kontaktiert. Möglicherweise erhalten Sie auch eine Nachricht von uns, die vom Team der Fluggesellschaft an die bei der Buchung Ihres Urlaubs angegebenen Kontaktdaten gesendet wird. </p>
+    <p>Damit Sie wissen, was Sie erwartet: Im Durchschnitt benötigen wir für diese  Arrangements weniger als 60 Minuten. Wir bitten Sie daher um etwas Geduld, während unser Team  die für Sie beste Alternative sucht. </p>
+    '@
+                    "fr-FR" = @'
+    <p>Si votre vol est retardé ou reprogrammé, l'équipe easyJet holidays vous contactera. Vous pouvez également recevoir un message de notre part envoyé par l'équipe de la compagnie aérienne  aux coordonnées fournies lors de la réservation de votre séjour. </p>
+    <p>Pour que vous sachiez à quoi vous attendre, sachez que nous effectuons généralement ces  modifications dans un délai de 60 minutes. Nous vous remercions donc de votre patience pendant que notre équipe recherche  la meilleure alternative pour vous. </p>
+    '@
+                    "de-DE" = @'
+    <p>Wenn Ihr Flug verspätet ist oder umgebucht wird, werden Sie vom easyJet Holidays-Team kontaktiert. Möglicherweise erhalten Sie auch eine Nachricht von uns, die vom Team der Fluggesellschaft an die bei der Buchung Ihres Urlaubs angegebenen Kontaktdaten gesendet wird. </p>
+    <p>Damit Sie wissen, was Sie erwartet: Im Durchschnitt benötigen wir für diese  Arrangements weniger als 60 Minuten. Wir bitten Sie daher um etwas Geduld, während unser Team  die für Sie beste Alternative sucht. </p>
+    '@
+                }
+                "NavigationParameter" = @{
+                    "en" = "flightdelayed"
+                }
+                "__Sortorder" = @{
+                    "en" = "200"
+                }
+            }
+        },
+         @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions/Q3"
+            TemplatePath = $qaItemTemplatePath
+            Fields      = @{
+                "Question" = @{
+                    "en" = "My flight is cancelled"
+                    "fr-CH" = "Mon vol est annulé"
+                    "de-CH" = "Mein Flug wurde annulliert"
+                    "fr-FR" = "Mon vol est annulé"
+                    "de-DE" = "Mein Flug wurde annulliert"
+                }
+                "Answer"= @{
+                    "en" = @'
+    <p><strong>My outbound flight is cancelled</strong>
+    </p>
+    <p>If your outbound flight is cancelled before you go, we&rsquo;re sorry and we&rsquo;ll do our
+    very best to move you on to a suitable alternative flight. If we can&rsquo;t find one,
+    then unfortunately we&rsquo;ll cancel your holiday and press the button on a refund
+    straight away.
+    </p>
+    <p><strong>My return flight is cancelled</strong>
+    </p>
+    <p>If your return flight is cancelled while you're on holiday, please try not to worry.
+    We&rsquo;ll do everything possible to help with alternative arrangements whilst you&rsquo;re
+    in resort to get you home. And we have a dedicated team that&rsquo;ll proactively
+    reach out to you using the contact details provided when you booked your
+    holiday. For information on your rights, check our <a href="~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z"><strong><span style="text-decoration: underline;">booking conditions</span></strong></a>&nbsp;page or
+    visit our <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">Help Centre</span></strong></a>&nbsp;to find out more.</p>
+    <p>Just so you know what to expect, our average speed in making these
+    arrangements is within 60 minutes so please bear with us while our team look
+    at the next best alternative for you.</p>
+    '@
+                    "fr-CH" = @'
+    <p><strong>Mon vol aller est annulé</strong>
+    </p>
+    <p>Si votre vol aller est annulé avant votre départ, nous vous prions de nous en excuser et ferons tout notre
+    possible pour vous trouver un autre vol adapté. Si nous ne parvenons pas à en trouver un,
+    nous annulerons malheureusement votre séjour et procéderons immédiatement à votre remboursement.
+    </p>
+    <p><strong>Mon vol retour est annulé</strong>
+    </p>
+    <p>Si votre vol retour est annulé pendant vos vacances, ne vous inquiétez pas.
+    Nous ferons tout notre possible pour vous aider à trouver une solution de remplacement pendant votre
+    séjour afin que vous puissiez rentrer chez vous. Nous disposons d'une équipe dédiée qui vous contactera de manière proactive
+    à l'aide des coordonnées fournies lors de la réservation de votre
+    séjour. Pour plus d'informations sur vos droits, consultez notre page <a href="~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z"><strong><span style="text-decoration: underline;">conditions de réservation</span></strong></a>&nbsp;ou
+    visitez notre <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">Centre d'aide</span></strong></a>&nbsp;pour en savoir plus.</p>
+    <p>Pour que vous sachiez à quoi vous attendre, notre délai moyen pour effectuer ces
+    modifications est de 60 minutes. Nous vous remercions donc de votre patience pendant que notre équipe recherche
+    la meilleure alternative pour vous.</p>
+    '@
+                    "de-CH" = @'
+    <p><strong>Mein Hinflug wurde gestrichen</strong>
+    </p>
+    <p>Wenn Ihr Hinflug vor Ihrer Abreise gestrichen wird, entschuldigen wir uns dafür und werden unser
+    Bestes tun, um Ihnen einen geeigneten Alternativflug zu vermitteln. Wenn wir keinen finden können,
+    müssen wir Ihren Urlaub leider stornieren und Ihnen umgehend eine Rückerstattung gewähren.
+    </p>
+    <p><strong>Mein Rückflug wurde gestrichen</strong>
+    </p>
+    <p>Sollte Ihr Rückflug während Ihres Urlaubs gestrichen werden, machen Sie sich bitte keine Sorgen.
+    Wir werden alles in unserer Macht Stehende tun, um Ihnen während Ihres Aufenthalts
+    im Urlaubsort bei der Organisation einer alternativen Rückreise zu helfen. Wir haben ein engagiertes Team, das sich proaktiv
+    mit Ihnen in Verbindung setzen wird, indem es die Kontaktdaten verwendet, die Sie bei der Buchung Ihres
+    Urlaubs angegeben haben. Informationen zu Ihren Rechten finden Sie auf unserer Seite <a href="~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z"><strong><span style="text-decoration: underline;">Buchungsbedingungen</span></strong></a>&nbsp;Seite oder
+    besuchen Sie unser <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">Hilfe-Center</span></strong></a>&nbsp;, um mehr zu erfahren.</p>
+    <p>Damit Sie wissen, was Sie erwartet: Im Durchschnitt benötigen wir für diese
+    Arrangements weniger als 60 Minuten. Wir bitten Sie daher um etwas Geduld, während unser Team
+    die nächstbeste Alternative für Sie sucht.</p>
+    '@
+                    "fr-FR" = @'
+    <p><strong>Mon vol aller est annulé</strong>
+    </p>
+    <p>Si votre vol aller est annulé avant votre départ, nous vous prions de nous en excuser et ferons tout notre
+    possible pour vous trouver un autre vol adapté. Si nous ne parvenons pas à en trouver un,
+    nous annulerons malheureusement votre séjour et procéderons immédiatement à votre remboursement.
+    </p>
+    <p><strong>Mon vol retour est annulé</strong>
+    </p>
+    <p>Si votre vol retour est annulé pendant vos vacances, ne vous inquiétez pas.
+    Nous ferons tout notre possible pour vous aider à trouver une solution de remplacement pendant votre
+    séjour afin que vous puissiez rentrer chez vous. Nous disposons d'une équipe dédiée qui vous contactera de manière proactive
+    à l'aide des coordonnées fournies lors de la réservation de votre
+    séjour. Pour plus d'informations sur vos droits, consultez notre page <a href="~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z"><strong><span style="text-decoration: underline;">conditions de réservation</span></strong></a>&nbsp;ou
+    visitez notre <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">Centre d'aide</span></strong></a>&nbsp;pour en savoir plus.</p>
+    <p>Pour que vous sachiez à quoi vous attendre, notre délai moyen pour effectuer ces
+    modifications est de 60 minutes. Nous vous remercions donc de votre patience pendant que notre équipe recherche
+    la meilleure alternative pour vous.</p>
+    '@
+                    "de-DE" = @'
+    <p><strong>Mein Hinflug wurde gestrichen</strong>
+    </p>
+    <p>Wenn Ihr Hinflug vor Ihrer Abreise gestrichen wird, entschuldigen wir uns dafür und werden unser
+    Bestes tun, um Ihnen einen geeigneten Alternativflug zu vermitteln. Wenn wir keinen finden können,
+    müssen wir Ihren Urlaub leider stornieren und Ihnen umgehend eine Rückerstattung gewähren.
+    </p>
+    <p><strong>Mein Rückflug wurde gestrichen</strong>
+    </p>
+    <p>Sollte Ihr Rückflug während Ihres Urlaubs gestrichen werden, machen Sie sich bitte keine Sorgen.
+    Wir werden alles in unserer Macht Stehende tun, um Ihnen während Ihres Aufenthalts
+    im Urlaubsort bei der Organisation einer alternativen Rückreise zu helfen. Wir haben ein engagiertes Team, das sich proaktiv
+    mit Ihnen in Verbindung setzen wird, indem es die Kontaktdaten verwendet, die Sie bei der Buchung Ihres
+    Urlaubs angegeben haben. Informationen zu Ihren Rechten finden Sie auf unserer Seite <a href="~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z"><strong><span style="text-decoration: underline;">Buchungsbedingungen</span></strong></a>&nbsp;Seite oder
+    besuchen Sie unser <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">Hilfe-Center</span></strong></a>&nbsp;, um mehr zu erfahren.</p>
+    <p>Damit Sie wissen, was Sie erwartet: Im Durchschnitt benötigen wir für diese
+    Arrangements weniger als 60 Minuten. Wir bitten Sie daher um etwas Geduld, während unser Team
+    die nächstbeste Alternative für Sie sucht.</p>
+    '@
+                }
+                "NavigationParameter" = @{
+                    "en" = "flightcancelled"
+                }
+                "__Sortorder" = @{
+                    "en" = "300"
+                }
+            }
+        },
+         @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions/Q4"
+            TemplatePath = $qaItemTemplatePath
+            Fields      = @{
+                "Question" = @{
+                    "en" = "My flight isn't leaving as planned and I need somewhere to stay before returning home"
+                    "fr-CH" = "Mon vol ne part pas comme prévu et j’ai besoin d’un hébergement avant de rentrer chez moi"
+                    "de-CH" = "Mein Flug startet nicht wie geplant, und ich benötige eine Unterkunft, bevor ich nach Hause zurückkehre"
+                    "fr-FR" = "Mon vol ne part pas comme prévu et j’ai besoin d’un hébergement avant de rentrer chez moi"
+                    "de-DE" = "Mein Flug startet nicht wie geplant, und ich benötige eine Unterkunft, bevor ich nach Hause zurückkehre"
+                }
+                "Answer"= @{
+                     "en" = @'
+    <p>We understand how frustrating this can be if you find yourself needing to stay longer than planned, we&rsquo;ll do our best to secure somewhere for you to stay. While we aim to keep you at your current hotel, there may be instances where you need to move to a different one. </p>
+    <p>In extreme cases, such as a natural disaster, local authorities may take control, and it&rsquo;s essential to follow their instructions. We&rsquo;ll try to keep in touch with you on the contact details provided when you made your booking, so please check your emails and phone regularly.&nbsp;</p>
+    <p>If you need somewhere to stay overnight, we&rsquo;ll provide you with the necessary details or let you know if you&rsquo;re able to find and book your own and claim back <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">reasonable expenses</span></strong></a>.</p>
+    <p>Our UK-based 24/7 On Holiday Support team is dedicated to assisting&nbsp;customers in times like these. Because there are other components to your holiday package, such as transfers or hotels, easyJet holidays customers can't use the easyJet airline self-service app to book somewhere to stay overnight.  </p>
+    <br />
+    '@
+                    "fr-CH" = @'
+    <p>Nous comprenons à quel point cela peut être frustrant si vous devez rester plus longtemps que prévu, nous ferons de notre mieux pour vous trouver un autre hébergement. Bien que nous nous efforcions de vous garder dans votre hôtel actuel, il peut arriver que vous deviez en changer. </p>
+    <p>Dans des cas extrêmes, tels qu'une catastrophe naturelle, les autorités locales peuvent prendre le contrôle et il est essentiel de suivre leurs instructions. Nous essaierons de rester en contact avec vous via les coordonnées fournies lors de votre réservation. Veuillez donc vérifier régulièrement vos e-mails et votre téléphone.&nbsp;</p>
+    <p>Si vous avez besoin d'un endroit où passer la nuit, nous vous fournirons les informations nécessaires ou vous indiquerons si vous pouvez trouver et réserver vous-même un hébergement et demander le remboursement de vos <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">frais raisonnables</span></strong></a>.</p>
+    <p>Notre équipe d'assistance 24h/24 et 7j/7 basée au Royaume-Uni se consacre à aider les clients dans des situations comme celle-ci. Étant donné que votre forfait vacances comprend d'autres éléments, tels que les transferts ou les hôtels, les clients d'easyJet holidays ne peuvent pas utiliser l'application en libre-service de la compagnie aérienne easyJet pour réserver un hébergement pour la nuit.  </p>
+    <br />
+    '@
+                    "de-CH" = @'
+    <p>Wir verstehen, wie frustrierend es sein kann, wenn Sie länger als geplant bleiben müssen, und werden unser Bestes tun, um Ihnen eine Unterkunft zu sichern. Wir bemühen uns, Sie in Ihrem derzeitigen Hotel unterzubringen, aber es kann vorkommen, dass Sie in ein anderes Hotel umziehen müssen. </p>
+    <p>In Extremfällen, wie z. B. bei Naturkatastrophen, können die lokalen Behörden die Kontrolle übernehmen, und es ist wichtig, deren Anweisungen zu befolgen. Wir werden versuchen, mit Ihnen über die bei der Buchung angegebenen Kontaktdaten in Verbindung zu bleiben. Bitte überprüfen Sie daher regelmäßig Ihre E-Mails und Ihr Telefon.&nbsp;</p>
+    <p>Wenn Sie eine Übernachtungsmöglichkeit benötigen, stellen wir Ihnen die erforderlichen Informationen zur Verfügung oder teilen Ihnen mit, ob Sie selbst eine Unterkunft suchen und buchen können und die Kosten dafür zurückfordern können <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">angemessene Kosten</span></strong></a> zurückfordern können.
+    <p>Unser rund um die Uhr erreichbares Support-Team in Großbritannien ist bestrebt, Kunden in Zeiten wie diesen zu unterstützen. Da Ihr Urlaubspaket noch weitere Komponenten wie Transfers oder Hotels umfasst, können Kunden von easyJet holidays die Self-Service-App der Fluggesellschaft easyJet nicht nutzen, um eine Übernachtungsmöglichkeit zu buchen.  </p>
+    <br />
+    '@
+                    "fr-FR" = @'
+    <p>Nous comprenons à quel point cela peut être frustrant si vous devez rester plus longtemps que prévu, nous ferons de notre mieux pour vous trouver un autre hébergement. Bien que nous nous efforcions de vous garder dans votre hôtel actuel, il peut arriver que vous deviez en changer. </p>
+    <p>Dans des cas extrêmes, tels qu'une catastrophe naturelle, les autorités locales peuvent prendre le contrôle et il est essentiel de suivre leurs instructions. Nous essaierons de rester en contact avec vous via les coordonnées fournies lors de votre réservation. Veuillez donc vérifier régulièrement vos e-mails et votre téléphone.&nbsp;</p>
+    <p>Si vous avez besoin d'un endroit où passer la nuit, nous vous fournirons les informations nécessaires ou vous indiquerons si vous pouvez trouver et réserver vous-même un hébergement et demander le remboursement de vos <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">frais raisonnables</span></strong></a>.</p>
+    <p>Notre équipe d'assistance 24h/24 et 7j/7 basée au Royaume-Uni se consacre à aider les clients dans des situations comme celle-ci. Étant donné que votre forfait vacances comprend d'autres éléments, tels que les transferts ou les hôtels, les clients d'easyJet holidays ne peuvent pas utiliser l'application en libre-service de la compagnie aérienne easyJet pour réserver un hébergement pour la nuit.  </p>
+    <br />
+    '@
+                    "de-DE" = @'
+    <p>Wir verstehen, wie frustrierend es sein kann, wenn Sie länger als geplant bleiben müssen, und werden unser Bestes tun, um Ihnen eine Unterkunft zu sichern. Wir bemühen uns, Sie in Ihrem derzeitigen Hotel unterzubringen, aber es kann vorkommen, dass Sie in ein anderes Hotel umziehen müssen. </p>
+    <p>In Extremfällen, wie z. B. bei Naturkatastrophen, können die lokalen Behörden die Kontrolle übernehmen, und es ist wichtig, deren Anweisungen zu befolgen. Wir werden versuchen, mit Ihnen über die bei der Buchung angegebenen Kontaktdaten in Verbindung zu bleiben. Bitte überprüfen Sie daher regelmäßig Ihre E-Mails und Ihr Telefon.&nbsp;</p>
+    <p>Wenn Sie eine Übernachtungsmöglichkeit benötigen, stellen wir Ihnen die erforderlichen Informationen zur Verfügung oder teilen Ihnen mit, ob Sie selbst eine Unterkunft suchen und buchen können und die Kosten dafür zurückfordern können <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">angemessene Kosten</span></strong></a> zurückfordern können.
+    <p>Unser rund um die Uhr erreichbares Support-Team in Großbritannien ist bestrebt, Kunden in Zeiten wie diesen zu unterstützen. Da Ihr Urlaubspaket noch weitere Komponenten wie Transfers oder Hotels umfasst, können Kunden von easyJet holidays die Self-Service-App der Fluggesellschaft easyJet nicht nutzen, um eine Übernachtungsmöglichkeit zu buchen.  </p>
+    <br />
+    '@
+                }
+                "NavigationParameter" = @{
+                    "en" = "somewheretostay"
+                }
+                "__Sortorder" = @{
+                    "en" = "400"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions/Q5"
+            TemplatePath = $qaItemTemplatePath
+            Fields      = @{
+                "Question" = @{
+                    "en" = "My holiday was shortened"
+                    "fr-CH" = "Mes vacances ont été écourtées"
+                    "de-CH" = "Mein Urlaub wurde verkürzt"
+                    "fr-FR" = "Mes vacances ont été écourtées"
+                    "de-DE" = "Mein Urlaub wurde verkürzt"
+                }
+                "Answer"= @{
+                    "en" = @'
+    <p>Having to end your holiday and bring you home early is a last resort, and we recognise how disappointing this can be. If a situation occurs where this becomes necessary, we&rsquo;ll contact you and provide details of your new transfer times (if applicable) and flight times, which may not be for a few days depending on our flight schedule. </p>
+    <p>At times of significant travel disruption, we may invite you to make your own return travel arrangements, and possibly to find and book your own overnight hotel. You&rsquo;ll be reimbursed for all&nbsp;<a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">reasonable expenses</span></strong></a> you incur.</p>
+    <p>Please know that we&rsquo;ll get you home, even if it cannot happen immediately. In extreme cases, such as a natural disaster, local authorities may take control over a situation and if so, you should follow their instructions. We&rsquo;ll try and keep in touch with you, and you should check your emails and phone regularly. You&rsquo;ll get updates by email and text message to the contact details provided when you booked your holiday.  </p>
+    '@
+                    "fr-CH" = @'
+    <p>Mettre fin à vos vacances et vous ramener chez vous plus tôt que prévu est une solution de dernier recours, et nous comprenons à quel point cela peut être décevant. Si une situation rend cela nécessaire, nous vous contacterons et vous communiquerons les nouveaux horaires de transfert (le cas échéant) et de vol, qui peuvent être décalés de quelques jours en fonction de notre programme de vols. </p>
+    <p>En cas de perturbation importante des transports, nous pouvons vous inviter à organiser vous-même votre voyage de retour et, éventuellement, à trouver et réserver vous-même votre hébergement pour la nuit. Vous serez remboursé de toutes les <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">dépenses raisonnables</span></strong></a> que vous aurez engagées.
+    <p>Sachez que nous vous ramènerons chez vous, même si cela ne peut se faire immédiatement. Dans des cas extrêmes, tels qu'une catastrophe naturelle, les autorités locales peuvent prendre le contrôle de la situation et, le cas échéant, vous devrez suivre leurs instructions. Nous essaierons de rester en contact avec vous et vous devrez vérifier régulièrement vos e-mails et votre téléphone. Vous recevrez des informations par e-mail et par SMS aux coordonnées fournies lors de la réservation de vos vacances.  </p>
+    '@
+                    "de-CH" = @'
+    <p>Die vorzeitige Beendigung Ihres Urlaubs und Ihre vorzeitige Rückreise sind eine letzte Möglichkeit, und wir sind uns bewusst, wie enttäuschend dies sein kann. Sollte eine Situation eintreten, in der dies notwendig wird, werden wir Sie kontaktieren und Ihnen die neuen Transferzeiten (falls zutreffend) und Flugzeiten mitteilen, die je nach unserem Flugplan möglicherweise erst in einigen Tagen stattfinden. </p>
+    <p>Bei erheblichen Reiseunterbrechungen bitten wir Sie möglicherweise, Ihre Rückreise selbst zu organisieren und gegebenenfalls eine Übernachtungsmöglichkeit in einem Hotel zu suchen und zu buchen. Alle Ihnen entstandenen <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">angemessenen Kosten</span></strong></a> werden Ihnen erstattet.
+    <p>Bitte beachten Sie, dass wir Sie nach Hause bringen werden, auch wenn dies nicht sofort möglich ist. In Extremfällen, wie z. B. bei Naturkatastrophen, können die lokalen Behörden die Kontrolle über eine Situation übernehmen. In diesem Fall sollten Sie deren Anweisungen befolgen. Wir werden versuchen, mit Ihnen in Kontakt zu bleiben, und Sie sollten regelmäßig Ihre E-Mails und Ihr Telefon überprüfen. Sie erhalten aktuelle Informationen per E-Mail und SMS an die Kontaktdaten, die Sie bei der Buchung Ihres Urlaubs angegeben haben.  </p>
+    '@
+                    "fr-FR" = @'
+    <p>Mettre fin à vos vacances et vous ramener chez vous plus tôt que prévu est une solution de dernier recours, et nous comprenons à quel point cela peut être décevant. Si une situation rend cela nécessaire, nous vous contacterons et vous communiquerons les nouveaux horaires de transfert (le cas échéant) et de vol, qui peuvent être décalés de quelques jours en fonction de notre programme de vols. </p>
+    <p>En cas de perturbation importante des transports, nous pouvons vous inviter à organiser vous-même votre voyage de retour et, éventuellement, à trouver et réserver vous-même votre hébergement pour la nuit. Vous serez remboursé de toutes les <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">dépenses raisonnables</span></strong></a> que vous aurez engagées.
+    <p>Sachez que nous vous ramènerons chez vous, même si cela ne peut se faire immédiatement. Dans des cas extrêmes, tels qu'une catastrophe naturelle, les autorités locales peuvent prendre le contrôle de la situation et, le cas échéant, vous devrez suivre leurs instructions. Nous essaierons de rester en contact avec vous et vous devrez vérifier régulièrement vos e-mails et votre téléphone. Vous recevrez des informations par e-mail et par SMS aux coordonnées fournies lors de la réservation de vos vacances.  </p>
+    '@
+                    "de-DE" = @'
+    <p>Die vorzeitige Beendigung Ihres Urlaubs und Ihre vorzeitige Rückreise sind eine letzte Möglichkeit, und wir sind uns bewusst, wie enttäuschend dies sein kann. Sollte eine Situation eintreten, in der dies notwendig wird, werden wir Sie kontaktieren und Ihnen die neuen Transferzeiten (falls zutreffend) und Flugzeiten mitteilen, die je nach unserem Flugplan möglicherweise erst in einigen Tagen stattfinden. </p>
+    <p>Bei erheblichen Reiseunterbrechungen bitten wir Sie möglicherweise, Ihre Rückreise selbst zu organisieren und gegebenenfalls eine Übernachtungsmöglichkeit in einem Hotel zu suchen und zu buchen. Alle Ihnen entstandenen <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">angemessenen Kosten</span></strong></a> werden Ihnen erstattet.
+    <p>Bitte beachten Sie, dass wir Sie nach Hause bringen werden, auch wenn dies nicht sofort möglich ist. In Extremfällen, wie z. B. bei Naturkatastrophen, können die lokalen Behörden die Kontrolle über eine Situation übernehmen. In diesem Fall sollten Sie deren Anweisungen befolgen. Wir werden versuchen, mit Ihnen in Kontakt zu bleiben, und Sie sollten regelmäßig Ihre E-Mails und Ihr Telefon überprüfen. Sie erhalten aktuelle Informationen per E-Mail und SMS an die Kontaktdaten, die Sie bei der Buchung Ihres Urlaubs angegeben haben.  </p>
+    '@
+                }
+                "NavigationParameter" = @{
+                    "en" = "holidayshortened"
+                }
+                "__Sortorder" = @{
+                    "en" = "500"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions/Q6"
+            TemplatePath = $qaItemTemplatePath
+            Fields      = @{
+                "Question" = @{
+                    "en" = "My holiday can’t go ahead due to widespread disruption"
+                    "fr-CH" = "Mes vacances ne peuvent pas avoir lieu en raison de perturbations généralisées."
+                    "de-CH" = "Mein Urlaub kann aufgrund weitreichender Störungen nicht stattfinden."
+                    "fr-FR" = "Mes vacances ne peuvent pas avoir lieu en raison de perturbations généralisées."
+                    "de-DE" = "Mein Urlaub kann aufgrund weitreichender Störungen nicht stattfinden."
+                }
+                "Answer"= @{
+                    "en" = @'
+    If travel disruption or another situation beyond our control means we can&rsquo;t fulfil your holiday, we&rsquo;ll cancel it and you can either have a full refund, choose to receive account credit (subject to our Credit on Account Terms and Conditions), or accept a replacement holiday from us of:
+    <ul>
+        <li>at least equivalent standard and price, if we&rsquo;re able to offer you one or; </li>
+        <li>a lower quality holiday, if we&rsquo;re able to offer you one and then we&rsquo;ll refund you any difference in price between your original holiday purchased and the new one.&nbsp;My Holiday is cancelled</li>
+    </ul>
+    '@
+                    "fr-CH" = @'
+    Si des perturbations dans les transports ou toute autre situation indépendante de notre volonté nous empêchent de vous fournir vos vacances, nous les annulerons et vous pourrez soit obtenir un remboursement complet, soit choisir de recevoir un crédit sur votre compte (sous réserve de nos conditions générales relatives aux crédits sur compte), soit accepter des vacances de remplacement de notre part :
+    <ul>
+        <li>un séjour de qualité et de prix au moins équivalents, si nous sommes en mesure de vous en proposer un ; </li>
+        <li>un séjour de qualité inférieure, si nous sommes en mesure de vous en proposer un, auquel cas nous vous rembourserons la différence de prix entre votre séjour initial et le nouveau séjour.&nbsp;Mon séjour est annulé</li>
+    </ul>
+    '@
+                    "de-CH" = @'
+    Wenn wir aufgrund von Reiseunterbrechungen oder anderen Umständen, die außerhalb unserer Kontrolle liegen, Ihren Urlaub nicht durchführen können, stornieren wir ihn und Sie haben die Wahl zwischen einer vollständigen Rückerstattung, einer Gutschrift auf Ihr Konto (gemäß unseren Bedingungen für Gutschriften auf Konten) oder einem Ersatzurlaub von uns in Form von:
+    <ul>
+        <li>mindestens gleichwertigem Standard und Preis, sofern wir Ihnen einen solchen anbieten können, oder; </li>
+        <li>einer Reise von geringerer Qualität, sofern wir Ihnen eine solche anbieten können, wobei wir Ihnen die Preisdifferenz zwischen Ihrer ursprünglich gebuchten Reise und der neuen Reise erstatten.&nbsp;Meine Reise wurde storniert</li>
+    </ul>
+    '@
+                    "fr-FR" = @'
+    Si des perturbations dans les transports ou toute autre situation indépendante de notre volonté nous empêchent de vous fournir vos vacances, nous les annulerons et vous pourrez soit obtenir un remboursement complet, soit choisir de recevoir un crédit sur votre compte (sous réserve de nos conditions générales relatives aux crédits sur compte), soit accepter des vacances de remplacement de notre part :
+    <ul>
+        <li>un séjour de qualité et de prix au moins équivalents, si nous sommes en mesure de vous en proposer un ; </li>
+        <li>un séjour de qualité inférieure, si nous sommes en mesure de vous en proposer un, auquel cas nous vous rembourserons la différence de prix entre votre séjour initial et le nouveau séjour.&nbsp;Mon séjour est annulé</li>
+    </ul>
+    '@
+                    "de-DE" = @'
+    Wenn wir aufgrund von Reiseunterbrechungen oder anderen Umständen, die außerhalb unserer Kontrolle liegen, Ihren Urlaub nicht durchführen können, stornieren wir ihn und Sie haben die Wahl zwischen einer vollständigen Rückerstattung, einer Gutschrift auf Ihr Konto (gemäß unseren Bedingungen für Gutschriften auf Konten) oder einem Ersatzurlaub von uns in Form von:
+    <ul>
+        <li>mindestens gleichwertigem Standard und Preis, sofern wir Ihnen einen solchen anbieten können, oder; </li>
+        <li>einer Reise von geringerer Qualität, sofern wir Ihnen eine solche anbieten können, wobei wir Ihnen die Preisdifferenz zwischen Ihrer ursprünglich gebuchten Reise und der neuen Reise erstatten.&nbsp;Meine Reise wurde storniert</li>
+    </ul>
+    '@
+                }
+                "NavigationParameter" = @{
+                    "en" = "holidaycancelled"
+                }
+                "__Sortorder" = @{
+                    "en" = "600"
+                }
+            }
+        }
+        
+    )
+    ImportContent -itemsToCreate $updates
+    
+    $page = Get-Item -Path $disruptionPagePath
+    $componentWrapperRendering = Get-Rendering -Item $page | Where-Object {$_.ItemId -eq $componentWrapperRenderingId}
+    $neededWrapper = $componentWrapperRendering[1]
+    
+    $textBlockRendering = Get-Item -Path $textBlockRenderingPath
+    $textBlockInstance = New-Rendering -Item $textBlockRendering 
+    
+    $qaRendering = Get-Item -Path $qaRenderingPath
+    $qaInstance = New-Rendering -Item $qaRendering 
+     
+     
+    $placeholderToClear = "/body/component-wrapper-inner-$($neededWrapper.UniqueId)-0"
+     
+    $renderings = Get-Rendering -Item $page
+    $toRemove = $renderings | Where-Object { $_.Placeholder -eq $placeholderToClear }
+     
+    if ($toRemove.Count -gt 0) {
+        foreach ($r in $toRemove) {
+            Write-Host "Remove rendering $($r.ItemId) from $($r.Placeholder)"
+            Remove-Rendering -Item $page -Instance $r
+        }
+        Write-Host "Removed $($toRemove.Count) renderings from $placeholderToClear."
+    } else {
+        Write-Host "No renderings"
+    }
+    
+    $componentWrapper = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper"
+    $renderingComponentWrapper = Get-Rendering -Item $page -Rendering $componentWrapper
+        
+    Set-Rendering -Item $page -Instance $renderingComponentWrapper[1] -PlaceHolder "/body" -Parameter @{ "PaddingBottom" = "Padding Bottom 64px"; "PaddingTop" = "Padding Top 64px"; "PaddingBottomMobile" = "Padding Bottom Mobile 32px"; "PaddingTopMobile" = "Padding Top Mobile 32px"; "Anchor" = "what-to-do-now-section" }
+    Add-Rendering -Item $page -Instance $textBlockInstance -Placeholder $placeholderToClear -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Section Title" -Index 6 -Parameter @{ "TitleTag" = "h2"; "TitleFontStyle" = "rounded demi"; "TitleFontSize" = "Mobile - 20px Desktop - 32px"; "TitleWeight" = 400; "PaddingSize" = "0px" }
+    Add-Rendering -Item $page -Instance $qaInstance -Placeholder $placeholderToClear -DataSource $qaFolderDatasourcePath -Index 7 -Parameter @{ "ZeroMargin" = "1" }
+            
+            
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/During disruption - Questions" -Permanently -Recurse |
+    ForEach-Object {   
+       $_ | Remove-Item -Recurse -Permanently
+    } 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Value: "20251117T185159:638990023192184180Z"

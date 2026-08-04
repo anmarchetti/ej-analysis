@@ -1,0 +1,130 @@
+﻿---
+ID: "a28be6c2-e6e0-468e-96eb-890fd00e120f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-857 - PaxMixPopup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Pax Mix Popup"
+            TemplatePath = "/sitecore/templates/Feature/Destinations/Pax Mix Popup"
+            Fields      = @{
+                "Title" = @{
+                    "de-CH" = "WER REIST MIT DIR?"
+                    "en" = "TELL US MORE ABOUT WHO'S TRAVELLING"
+                    "fr-FR" = "DITES-NOUS QUI VOYAGE"
+                    "de-DE" = "ERZÄHL UNS MEHR ÜBER DIE REISENDEN"
+                    "fr-CH" = "DITES-NOUS QUI VOYAGE"
+                }
+                "Subtitle" = @{
+                    "de-CH" = "Um sicherzustellen, dass wir dir die relevantesten Pauschalreisen zeigen können, brauchen wir noch ein paar weitere Details."
+                    "en" = "To make sure we can show you the most relevant holidays, we need a few more details."
+                    "fr-FR" = "Pour être sûr d’afficher les vacances les mieux adaptées, veuillez nous indiquer plus de détails."
+                    "de-DE" = "Damit wir dir den geeignetsten Urlaub anzeigen können, brauchen wir noch ein paar Details."
+                    "fr-CH" = "Afin de vous proposer des séjours adaptés, nous avons besoin de quelques informations."
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    
+    # Add Partial Design
+    
+    $datasourceId = (Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Pax Mix Popup").ID.ToString()
+    
+    $renderings_8735a907344343618eba020d02392368_en_v1 = @"
+    <r xmlns:xsd="http://www.w3.org/2001/XMLSchema" ><d id="{FE5D7FDF-89C0-4D99-9AA3-B5FBD009C9F3}" l="{4696E3CC-7DA0-4264-BF00-B6E49C11B857}"><r ds="$($datasourceId)" id="{8020168D-4F2B-405D-B0CE-15CAFF7ED766}" par="ForceReloadChildren" ph="body" uid="{6DD802AC-2968-4007-A1D7-0935E45243BE}" ccb="Clear on publish" /></d></r>
+    "@
+    
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Pax Mix Popup"
+            TemplatePath = "Foundation/Presentation/Partial Design"
+            Fields      = @{
+                "__Renderings" = @{
+                    "en" = $renderings_8735a907344343618eba020d02392368_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    # Add Search Page Design
+    
+    # Hotel, Search Result Page, Hotel Details Page
+    $pagetemplates_value = "{28E5E169-8F72-4F90-A277-280A8302B607}|{757936EF-C946-447F-9E37-90140EE1D938}|{49ACD12D-BE7B-4F0C-8D11-4E3A66F826C7}"
+    
+    $fullHeader = (Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Full Header").ID
+    $fullFooter = (Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Full Footer").ID
+    $paxmixpoup = (Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Pax Mix Popup").ID
+    
+    $partialdesigns_value = "$fullHeader|$paxmixpoup|$fullFooter"
+    
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Hotel Pages - Design"
+            TemplatePath = "Foundation/Presentation/Page Design"
+            Fields      = @{
+                "PartialDesigns" = @{
+                    "en" = $partialdesigns_value
+                }
+                "PageTemplates" = @{
+                    "en" = $pagetemplates_value
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    
+    #Update Design for Home Page
+    $paxMixDesign = (Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Pax Mix Popup").ID
+    $designItem = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Home Page Full Header And Footer With Phone Number And Market Selector" -ErrorAction SilentlyContinue
+    if ($designItem -ne $null) {
+    	[Sitecore.Data.Fields.MultilistField]$partialDesigns = $designItem.Fields["PartialDesigns"];
+    
+    	if (!$partialDesigns.Contains($paxMixDesign)) {
+    		$designItem.Editing.BeginEdit();
+    		$partialDesigns.add($paxMixDesign);
+    		$designItem.Editing.EndEdit() | Out-Null
+    		Write-Host $designItem.Name "Page Templates pax mix added"
+    	}
+    }
+    
+    
+    # Update Default Design
+    $designItem = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Default Design" -ErrorAction SilentlyContinue
+    if ($designItem -ne $null) {
+    	[Sitecore.Data.Fields.MultilistField]$pageTemplates = $designItem.Fields["PageTemplates"];
+        @("{28E5E169-8F72-4F90-A277-280A8302B607}", "{757936EF-C946-447F-9E37-90140EE1D938}") | % {
+            	if ($pageTemplates.Contains($_)) {
+    			    $designItem.Editing.BeginEdit();
+    			    $pageTemplates.remove($_);
+    			    $designItem.Editing.EndEdit() | Out-Null
+    			    Write-Host $designItem.Name "removed $_"
+    		    }
+                
+                
+            }
+    	
+    }
+    
+    Get-Item -Path "master:/sitecore/content/EasyJet/TradePortal/Settings/Pax Mix Settings" -ErrorAction SilentlyContinue | Remove-Item
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250508T151709Z

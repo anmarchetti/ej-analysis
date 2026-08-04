@@ -1,0 +1,187 @@
+﻿---
+ID: "f040c11a-925b-41ae-a763-464a4c3ac0d1"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-10761 - Compare Price"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $testLabPath = "/sitecore/system/Marketing Control Panel/Test Lab"
+    
+    $testDefenitionTemplateId = "{45FB02E9-70B3-4CFE-8050-06EAD4B5DB3E}"
+    $multivariateTestVariableTemplateId = "{72296CFA-6354-47AD-901A-17F1651E9505}"
+    $multivariateTestValueTemplateId = "{6D00D695-0CAB-47D7-8929-A03EA002EB19}"
+    
+    $comparePriceModuleId = "{85A40B2A-26E6-421E-ABB6-371817447E89}" 
+    $ph = "/body/component-wrapper-inner-{ab1be6b9-76f4-453c-b0b4-d43928dabe31}-0/price-graph-{6B9A51A9-2975-475D-B6C1-903B34C22583}-0" #"body"
+    
+    $url = "https://sc.holidays.local/api/CreateTestDialog/StartTest"
+    $deviceId = "{FE5D7FDF-89C0-4D99-9AA3-B5FBD009C9F3}"
+    $goalId = "{00000000-0000-0000-0000-000000000000}"
+    $confidenceLevel = "95"
+    $trafficAllocation = 100
+    $winnerStrategy = "{9551FA9B-2C25-40A1-9C00-038DE67ABDC2}"
+    
+    $postParams = @{
+        ConfidenceLevel= $confidenceLevel
+        DeviceId= $deviceId
+        Expectation= 0
+        GoalId= $goalId
+        Language= "en"
+        MaxDuration= "90"
+        MinDuration= "7"
+        SelectWinnerStrategy= $winnerStrategy
+        TrackWithEngagementValue= $true
+        TrafficAllocation= $trafficAllocation
+        autoShowWinner= $true
+    }
+    
+    #$testLabItem = Get-Item $testLabPath 
+    
+    function Get-RenderingUniqId {
+    	param(
+    		[item]$Item,
+    		[string]$RenderingItemId,
+    		[string]$Placeholder
+    	)
+    
+    	$renderingItem = Get-Item -Path "master:" -Id $RenderingItemId
+    	return (Get-Rendering -Item $Item -PlaceHolder $Placeholder -Rendering $renderingItem).UniqueId
+    }
+    
+    function Add-MultivariateTest{
+    	param(
+    		$item,
+    		$renderingId,
+    		$multivariateTestVariable
+    	)
+    	$renderingId
+    	
+    	<# Get the rules as an XML Element #>
+    	$sourceItemSharedLayoutField = $item.Fields[[Sitecore.FieldIDs]::LayoutField]
+        $sourceSharedLayoutXml = [Sitecore.Data.Fields.LayoutField]::GetFieldValue($sourceItemSharedLayoutField)
+        
+    	[xml]$sourceRenderingsXML = New-Object -TypeName XML
+    	$sourceRenderingsXML.loadxml($sourceSharedLayoutXml)
+    	$sourceXpathQ = "r/d/r[@uid='$($renderingId)']"
+    	$sourceRuleElement = $sourceRenderingsXML.SelectSingleNode($sourceXpathQ)
+    	$sourceRuleElement.SetAttribute("mvt", $multivariateTestVariable.ID)
+    	$sourceRuleElement
+    	
+    	<# Output the Renderings XML to the final renderings field on the target #>
+    	$item.Editing.BeginEdit()
+    	$item."__Renderings" = $sourceRenderingsXML.OuterXML
+    	$item.Editing.EndEdit() > $null
+    }
+    
+    function StartTest {
+    	param($id, $version)
+        try
+        {
+            $postParams.itemUri = "sitecore://$($id)?lang=en&ver=$($version)"
+            Write-Host $postParams.itemUri
+            #$response = Invoke-WebRequest -Uri $url -Method POST -Body $postParams -UseBasicParsing
+            return $response;
+        }
+        catch [Net.WebException]
+        {
+            Write-Error $_
+            return $null
+        }
+    }
+    
+    function CreateTestLabItem{
+        param($name)
+        
+        $parentItem = Get-Item -Path $testLabPath
+        
+        $testDefenition = New-Item -Parent $parentItem -Name $name -ItemType $testDefenitionTemplateId
+        
+        $testDefenition.Editing.BeginEdit()
+        $testDefenition["Device"] = $deviceId;
+        $testDefenition.Editing.EndEdit() | Out-Null;
+        
+        $multivariateTestVariable = New-Item -Parent $testDefenition -Name "Compare Price Module" -ItemType $multivariateTestVariableTemplateId
+    
+        $multivariateTestNothing = New-Item -Parent $multivariateTestVariable -Name "Nothing" -ItemType $multivariateTestValueTemplateId
+        $multivariateTestNothing.Editing.BeginEdit()
+        $multivariateTestNothing["Datasource"] ="{1516278C-2350-4543-9A91-509C9112701B}"
+        $multivariateTestNothing.Editing.EndEdit() | Out-Null;
+        
+        $multivariateTestGraph = New-Item -Parent $multivariateTestVariable -Name "Graph" -ItemType $multivariateTestValueTemplateId
+        $multivariateTestGraph.Editing.BeginEdit()
+        $multivariateTestGraph["Datasource"] = "{6D6D5B5C-A2DD-4C62-982A-65EAA4630C16}"; 
+        $multivariateTestGraph.Editing.EndEdit() | Out-Null;
+        
+        $multivariateTestCalendar = New-Item -Parent $multivariateTestVariable -Name "Calendar" -ItemType $multivariateTestValueTemplateId
+        $multivariateTestCalendar.Editing.BeginEdit()
+        $multivariateTestCalendar["Datasource"] = "{FDCC6655-0DEC-4490-8943-96B5A18C7745}" 
+        $multivariateTestCalendar.Editing.EndEdit() | Out-Null;
+        
+        
+        $multivariateTestVariantGraphCal = New-Item -Parent $multivariateTestVariable -Name "Graph and Calendar" -ItemType $multivariateTestValueTemplateId
+        $multivariateTestVariantGraphCal.Editing.BeginEdit()
+        $multivariateTestVariantGraphCal["Datasource"] = "{FC9F3AA6-D95B-4122-B408-93358921C062}"; 
+        $multivariateTestVariantGraphCal.Editing.EndEdit() | Out-Null;
+        
+        
+        $multivariateTestCalGraph = New-Item -Parent $multivariateTestVariable -Name "Calendar an Graph " -ItemType $multivariateTestValueTemplateId
+        $multivariateTestCalGraph.Editing.BeginEdit()
+        $multivariateTestCalGraph["Datasource"] = "{9EBA8F80-7F58-4033-A2C2-294142EC4E01}"; 
+        $multivariateTestCalGraph.Editing.EndEdit() | Out-Null;
+        
+        $multivariateTestVariable.Editing.BeginEdit()
+        #$testDefenition["Name"] = $multivariateTestOriginal.ID.Guid;
+        $multivariateTestVariable["Original Value"] = $multivariateTestOriginal.ID;
+        $multivariateTestVariable.Editing.EndEdit() | Out-Null;
+        
+        return $multivariateTestVariable
+    }
+    
+    function Get-Or-Create-Item ($path, $itemName, $templateId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    
+    #Run Begin
+    $multivariantFolder = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Presentation/" -itemName "Multivatiant Page Design" -templateId "{747283AC-92A9-4F61-A668-837175CB6982}"
+    
+    $promoDesign = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Presentation/Multivatiant Page Design" -itemName "Compare Price Page Design" -templateId "{E361C02E-7348-4C65-BA6B-FA9086FD8661}"
+    
+    $promoDesign.Editing.BeginEdit()
+    $promoDesign["PageTemplates"] = "{09BEF082-3309-4083-9F0B-71FB8D60D7F5}|{757936EF-C946-447F-9E37-90140EE1D938}"
+    $promoDesign["CheckByPlacheloder"] = 0;
+    $promoDesign.Editing.EndEdit() | Out-Null;
+    
+    $device = Get-LayoutDevice -Default
+    $layout = Get-Item -Path 'master:/sitecore/layout/Layouts/Project/Holidays/Layout'
+    Set-Layout -Item $promoDesign -Device $device -Layout $layout | Out-Null
+    Get-Layout $promoDesign
+    
+    $comparePriceModule = Get-Item -Path "master:/" -ID $comparePriceModuleId | New-Rendering -Placeholder $ph
+    Add-Rendering -Item $promoDesign -PlaceHolder $ph -Instance $comparePriceModule
+    
+    
+    $multivariateTestVariable = CreateTestLabItem -name $promoDesign.Name
+        
+    $sourceRenderingId = Get-RenderingUniqId -Item $promoDesign -RenderingItemId $comparePriceModuleId -PlaceHolder $ph    
+    Add-MultivariateTest -item $promoDesign -renderingId $sourceRenderingId -multivariateTestVariable $multivariateTestVariable
+        
+    StartTest -id $promoDesign.ID -version $promoDesign.Version
+    
+    #End Run
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201103T100222Z

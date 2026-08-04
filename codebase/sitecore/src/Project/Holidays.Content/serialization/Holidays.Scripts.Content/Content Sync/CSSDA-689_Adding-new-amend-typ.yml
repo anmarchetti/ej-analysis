@@ -1,0 +1,120 @@
+﻿---
+ID: "6a9fb210-6c61-4bb3-85aa-8684bcd848bf"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-689_Adding-new-amend-type-item"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    function update-item-with-lang($data, $item) {
+        function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+        };
+    
+        if ($item -ne $null) {
+            $data | ForEach-Object {
+            $fieldName = $_.fieldName;
+            $values = $_.values;
+        
+            if ($values -ne $null) {
+              
+                if ($values.en -ne $null) {
+                    $item.Editing.BeginEdit();
+                    $item[$fieldName] = $values.en;
+                    $item.Editing.EndEdit() | Out-Null
+                }
+                 if ($values.fr -ne $null) {
+                     @('fr-CH', 'fr-FR') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.fr;
+                    }
+                }
+                 if ($values.de -ne $null) {
+                     @('de-CH', 'de-DE') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.de;
+                    }
+                }
+                
+                Write-Host $fieldName "Updated"
+            }
+        }
+        }
+    };
+    
+    function Get-Or-Create-Item-And-Populate($itemPath, $template, $data) {
+        $item = Get-Or-Create-Item -Path $itemPath -Template $template;
+        
+        if ($item -ne $null) {
+            Write-Host $item.Name "Has been created/find";
+                
+            update-item-with-lang -Data $data -Item $item;
+        }
+    }
+    
+    # Create and update RBC amend type
+    $rbcAmendTypeData = @(
+        @{
+            fieldName="Name";
+            values=@{
+                en="Room & Board";
+                de="Unterkunft und Verpflegung";
+                fr="Chambre et pension"
+            }
+        },
+        @{
+            fieldName="Type";
+            values=@{
+                en="{B385184E-6BC9-44D3-92F1-0DDB60423F02}"
+            }
+        },
+        @{
+            fieldName="Icon";
+            values=@{
+                en='<image mediaid="{9BEEF694-1A85-4712-9C7C-BB940C325C71}" />'
+            }
+        }
+    )
+    Get-Or-Create-Item-And-Populate -ItemPath "/sitecore/content/EasyJet/Holidays/Data/Amend Types/Room And Board" -Template "{40821DBF-5A52-46EB-B6D1-2CCBBCE2C835}" -Data $rbcAmendTypeData;
+    $rbcAmendType = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Amend Types/Room And Board" -Language "en";
+    
+    # Update imend item info data source item
+    $rbcAmendTypeDataSourceData = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Amend Item Info";
+    if ($rbcAmendTypeDataSourceData -ne $null) {
+        $rbcAmendTypeDataSourceData.Editing.BeginEdit();
+    
+        
+        $rbcAmendTypeDataSourceData["AmendTypes"] = "{8B053BC6-2616-4249-A732-5F0625E3AF9B}|{FF3ADD8B-5F22-4FBD-820B-AFBB901CA526}|{28EDF994-329E-4930-9838-D0C9D10345D2}|{555D7249-D7B9-4E0E-AEEB-BC66C032E619}|$($rbcAmendType.ID)";
+        
+         $rbcAmendTypeDataSourceData.Editing.EndEdit();
+    }
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240125T092642Z

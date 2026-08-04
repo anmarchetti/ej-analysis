@@ -1,0 +1,98 @@
+﻿---
+ID: "7f5e8c2a-b299-4f0c-bc67-c28e22511bc5"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/WP-206 and 225 - Force republish"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # comma separated list of template ids
+    $templateIds = "{F1A11D93-990A-4932-9DFC-F19C3E98BE3A}", # Sort Order Settings
+    "{C5C485D2-C352-4E12-AC74-7A23DF280E45}", # Country
+    "{A358EFB7-EE1E-442C-82A2-4F2563E83A3C}", # Itinerary
+    "{D333F42F-ADB6-402F-84C7-9015755BC38E}", # Dailing Code
+    "{F5B19227-440F-49A9-A6F0-308C8E17FA10}" # Live Price Settings
+    
+    $language = "en"
+    
+    function Get-ItemFromIndex {
+        param(
+            [string]$TemplateId
+        )
+        
+        [Sitecore.Data.ID]$template = $TemplateId
+        $result = Find-Item -Index sitecore_web_index -Where 'TemplateId = @0 and Language = @1' -WhereValues $template, $language| Initialize-Item
+        
+        return $result;
+    }
+    
+    function Get-ItemBasedOnTemplate {
+        param(
+            [string]$TemplateId
+        )
+    
+        $queue = New-Object System.Collections.Queue
+        $processedLookup = New-Object System.Collections.Generic.HashSet[string]
+        if(-not(Test-Path -Path "web:$($TemplateId)")) { return }
+        $processedLookup.Add($TemplateId) > $null  
+        Get-ItemReferrer -Id $TemplateId -ItemLink | 
+            Where-Object { $_.SourceItemID } | 
+            ForEach-Object { $queue.Enqueue($_.SourceItemID) }
+    
+        $database = Get-Database -Name "web"
+        while($queue.Count -and ($referrerId = $queue.Dequeue())) {
+            if($processedLookup.Contains($referrerId)) { continue }
+            $processedLookup.Add($referrerId) > $null
+            $referrer = $database.GetItem($referrerId)
+            if(!$referrer) { continue }
+            if($referrer.Paths.FullPath.StartsWith("/sitecore/templates")) { 
+                if($referrer.Name -eq "__Standard values") { continue }
+                foreach($referrerItemLink in Get-ItemReferrer -Id $referrerId -ItemLink | Where-Object { $_.SourceItemID }) {
+                    $queue.Enqueue($referrerItemLink.SourceItemID)
+                }
+                $itemTemplate = [Sitecore.Data.Managers.TemplateManager]::GetTemplate($referrerId, $database)
+            } else {
+                $itemTemplate = [Sitecore.Data.Managers.TemplateManager]::GetTemplate($referrer)
+            }
+    
+            if ($itemTemplate -and $itemTemplate.DescendsFromOrEquals($TemplateId)) {
+                $referrer
+            }
+        }
+    }
+    
+    New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+        New-UsingBlock (New-Object Sitecore.Data.DatabaseCacheDisabler) {
+            foreach($templateId in $templateIds)
+            {
+                #Try to get items from link database
+                $items = Get-ItemBasedOnTemplate -TemplateId $templateId | Where-Object -FilterScript {$_.Paths.FullPath.StartsWith("/sitecore/content/EasyJet/Holidays")}
+                if($items.Count -eq 0){
+                    #try to get items from web-index
+                    $items = Get-ItemFromIndex -TemplateId $templateId
+                }
+                
+                if($items.Count -eq 0){
+                    Write-Host "No items for $($templateId) found!" -ForegroundColor Red
+                    continue;
+                }
+    
+                foreach($item in $items){
+                    $item.Editing.BeginEdit()
+                    $item.Fields["__Revision"].Value = [GUID]::NewGuid()
+                    $item.Editing.EndEdit() | Out-Null
+                }
+                Write-Host "Updated revision in web-database for $($items.Count) items of $($templateId)" -ForegroundColor Green
+            }
+        }
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230713T125033Z

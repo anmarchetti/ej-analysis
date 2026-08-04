@@ -1,0 +1,192 @@
+﻿---
+ID: "74470ce8-e3b3-484b-937f-5ff958a71f42"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/TRADE-342 - Sustainability Your Holiday With Us section"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $sustainabilityPagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Sustainability"
+    $pageComponentsPath = "$($sustainabilityPagePath)/Page Components"
+    $gridBannersDataSourcePath = "$($pageComponentsPath)/Grid Banners"
+    $wrapperRenderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+    
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -Language "en" -ErrorAction SilentlyContinue
+        
+        if (-Not $item){
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item $($item.Name) successfully created"
+        }
+        
+        return $item
+    }
+    
+    function Get-Rendering-Index ($item, $renderingItemId) {
+    	$i = 0
+    	Get-Rendering -Item $item -FinalLayout -Language "en" | ForEach-Object {
+    		if ($_.ItemID -eq $renderingItemId) {
+                          $result = $i
+                           $i++
+    			return $result
+    		}
+    		$i++
+    	}
+    }
+    
+    function Replace-Rendering{
+        param([item]$item,$oldRendering,[string]$placeholder,[int]$index,[string]$datasource,[string]$renderingId)
+    
+        #Remove old rendering
+        if($oldRendering -ne $null) {
+            Remove-Rendering -Item $item -UniqueId $oldRendering.UniqueId -FinalLayout -Language "en"
+        }
+    
+        # Find the rendering item and convert to a rendering
+        $renderingItem = Get-Item -Path "master:" -Id $renderingId | New-Rendering -PlaceHolder $placeholder
+    
+        # Add the rendering to the item
+        Add-Rendering -Item $item -PlaceHolder $placeholder -Instance $renderingItem -Index $index -DataSource $datasource -FinalLayout -Language "en"
+    }
+    
+    function Create-Banner-Data-Source($name, $title, $description, $image, $link){
+        $item = Get-Or-Create-Item -Path "$($gridBannersDataSourcePath)/$($name)" -TemplateId "{C5C2275C-B21B-440F-BE24-CD8BF783B3BE}"
+    
+        if ($item -ne $null){
+            $item.Editing.BeginEdit()
+            $item["Title"] = $title
+            $item["Description"] = $description
+            $item["Image"] = $image
+            $item["CTA"] = $link
+            $item.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Created data source for grid banner item: " $name
+        }
+    
+        return $item
+    }
+    
+    function Remove-Rendering-From-Layout{
+        param($item, $renderingPath, $dataSource)
+    
+        $renderingItem = Get-Item -Path $renderingPath
+        $rendering = Get-Rendering -Item $item -Rendering $renderingItem -DataSource $dataSource -FinalLayout -Language "en"
+    
+        foreach ($rendering in $renderings) {
+            if ($rendering -ne $null) {
+                Remove-Rendering -Item $item -UniqueId $rendering.UniqueId -FinalLayout -Language "en"
+    
+                Write-Host "rendering was removed: " $renderingItem
+            }
+        }
+    }
+    
+    function Remove-Wrapper{
+        param($item, $id)
+    
+        $wrapper = Get-Rendering -Item $item -UniqueId $id -FinalLayout -Language "en"
+    
+        if ($wrapper -ne $null) {
+            Remove-Rendering -Item $page -UniqueId $id -FinalLayout -Language "en"
+        }
+    }
+    
+    # Your holiday with us Sliced Banner data source
+    $slicedBanner = Get-Or-Create-Item -Path "$($pageComponentsPath)/Information Banners/Your Holidays With Us" -TemplateId "{C7077196-F8EC-40CA-A23D-2AE06D8EEB61}"
+    
+    if ($slicedBanner -ne $null){
+        $slicedBanner.Editing.BeginEdit()
+        $slicedBanner["Title"] = "Your holiday with us"
+        $slicedBanner["Subtitle"] = "We want to make a positive impact on the environment and local communities that make our holidays so special. To do this, we’re making responsible travel part of our everyday culture and enabling you – and our partners – to make better holiday choices."
+        $slicedBanner["Image"] = '<image mediaid="{A3465A1F-91A1-4CA8-8110-EAB97A28BC89}" dfx="49" dfy="58" mfx="49" mfy="63" />'
+        $slicedBanner.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Created a sliced banner data source for the Your Holiday With Us section"
+    }
+    
+    # Grid Banners data source
+    $gridBanners = Get-Or-Create-Item -Path $gridBannersDataSourcePath -TemplateId "{D8D84D34-9DD9-4BF5-8DB9-7FCBE86D07E8}"
+    
+    $banner1 = Create-Banner-Data-Source -Name "Carbon Offsetting" -Title "Can I take action on CO2?" -Description "You can offset the carbon emissions from your flight with the help of&nbsp;our partner South Pole.<br />By&nbsp;clicking this button you will be&nbsp;redirected to&nbsp;a&nbsp;page managed by&nbsp;our 3rd party partner <a rel='noopener noreferrer' href='https://easyjet.southpole.com/' target='_blank'>South Pole</a>." -Image "<image mediaid='{EF03DAFE-79C6-430D-BFD5-E5064147BB97}' alt='Woman sitting on a pier by the lakeside' />" -Link '<link text="Offset your carbon emissions" linktype="external" url="https://easyjet.southpole.com/" anchor="" target="" rel="" />'
+    $banner2 = Create-Banner-Data-Source -Name "Our Policies" -Title "Our Policies" -Description 'The great thing about all this is&nbsp;that we&rsquo;re in&nbsp;it&nbsp;together.<br />And if&nbsp;you&rsquo;re reading this, then you&rsquo;re as&nbsp;passionate about holidays that don&rsquo;t cost the earth as&nbsp;we&nbsp;are. So&nbsp;go&nbsp;on, tell&nbsp;us what sustainability means to&nbsp;you <a rel="noopener noreferrer" href="https://www.easyjet.com/en/holidays/help/contact-us" target="_self">here</a>. We&rsquo;re all ears.' -Image '<image mediaid="{3BB23483-D5B2-4E05-885B-A2DBF27BDF61}" />' -Link '<link text="Learn more about our policies" linktype="external" url="https://corporate.easyjet.com/corporate-responsibility/sustainability" />'
+    $banner3 = Create-Banner-Data-Source -Name "Eco-certified holidays" -Title "Eco-certified holidays" -Description "Explore our collection of&nbsp;eco-certified hotels which have a&nbsp;Global Sustainable Tourism Council certification, or&nbsp;have achieved GSTC recognised standards for hotels. Book your next getaway today!" -Image '<image mediaid="{18E0D3D1-6FAB-4FA6-8D6B-56C2818EF914}" alt="Cozy terrace with a pool" />' -Link '<link text="View eco-certified holidays" linktype="internal" id="{F0EFD02C-A85C-4AEC-BF0E-7AC03169FA21}" />'
+    
+    # Renderings
+    $page = Get-Item -Path $sustainabilityPagePath -ErrorAction SilentlyContinue
+    
+    $ourWorkCarouselIndex = Get-Rendering-Index -Item $page -RenderingItemId "{4405486D-4110-4DB4-9C85-DCADD2EC1BEA}" | Select -First 1
+    
+    # Add Banner Rendering
+    if($ourWorkCarouselIndex -ne -1){
+        $bannerIndex = $ourWorkCarouselIndex + 1
+        $bannerRendering = Get-Item -Path "master:/sitecore/layout/Renderings/Feature/PageContent/Sliced Banner" | New-Rendering -Placeholder "body"
+    
+        Add-Rendering -Item $page -PlaceHolder "body" -Instance $bannerRendering -DataSource $slicedBanner.FullPath -Index $bannerIndex -FinalLayout -Language "en"
+        Get-Rendering -Item $page -PlaceHolder "body" -FinalLayout -Language "en" | Set-RenderingParameter -Parameter @{ SliceDirection = "left" } | Set-Rendering -Item $page -FinalLayout -Language "en"
+    
+        Write-Host "Added a rendering for the Your holiday with us sliced banner"
+    }
+    
+    $ourPoliciesWrapperRenderingIndex = Get-Rendering-Index -Item $page -RenderingItemId $wrapperRenderingId | Select -Last 1
+    $wrapperRendering = Get-Rendering -Item $page -Index $ourPoliciesWrapperRenderingIndex -FinalLayout -Language "en"
+    
+    # Add Grid Banners rendering
+    if($wrapperRendering -ne $null){
+        $gridBannersRenderingId = "{E2316225-6F18-49AB-A231-93A8036EF7FD}"
+        $placeholder = "/body/component-wrapper-inner-$($wrapperRendering.UniqueId)-0"
+    
+        $oldDatasourceId = "{154A0CD3-5416-4B34-BD98-3AEAB0131742}"
+        $oldRenderingItemPath = "master:/sitecore/layout/Renderings/Feature/PageContent/Our Policies"
+        $oldRenderingItem = Get-Item -Path $oldRenderingItemPath
+        $oldRendering = Get-Rendering -Item $page -PlaceHolder $placeholder -Rendering $oldRenderingItem -DataSource $oldDatasourceId -FinalLayout -Language "en"
+    
+        # replace rendering for our policies with grid banners
+        Replace-Rendering -Item $page -OldRendering $oldRendering -PlaceHolder $placeholder -Index $ourPoliciesWrapperRenderingIndex -DataSource $gridBanners.FullPath -RenderingId $gridBannersRenderingId
+    
+        # add grid banners rendering params
+        $gridBannersParams = @{ClassName="sustainabilityGridBanners"}
+        Get-Rendering -Item $page -PlaceHolder $placeholder -FinalLayout -Language "en" | Set-RenderingParameter -Parameter $gridBannersParams | Set-Rendering -Item $page -FinalLayout -Language "en"
+    
+        Write-Host "Set parameters for the grid banners rendering"
+    }
+    
+    # Update video code for Our Approach 
+    $ourApproachvideo = Get-Or-Create-Item -Path "$($pageComponentsPath)/Video 1" -TemplateId "{70FA1604-EA9A-48C6-8E33-DBD0BE54BA24}"
+    
+    if ($ourApproachvideo -ne $null) {
+        $ourApproachvideo.Editing.BeginEdit()
+        $ourApproachvideo["YouTubeVideoCode"] = "1tk1DyWpxEU"
+        $ourApproachvideo.Editing.EndEdit() | Out-Null
+    
+        Write-Host "Video data source settings updated"
+    }
+    
+    # Remove Partnership banner component and the wrapper
+    Remove-Rendering-From-Layout -Item $page -RenderingPath "master:/sitecore/layout/Renderings/Feature/PageContent/Partnership Component" -DataSource "{91175027-ADEA-44ED-B546-09291D5D3CCC}"
+    Remove-Wrapper -Item $page -Id "{c28f5e69-6651-4fcc-aba6-115d7a9d8af3}"
+    
+    # Remove Carbon Offsetting banner component and the wrapper (there are two identicall banner need to be removed)
+    Remove-Rendering-From-Layout -Item $page -RenderingPath "master:/sitecore/layout/Renderings/Feature/PageContent/Full Width Banner" -DataSource "{5387B349-47A7-4A26-8187-8EAD3E1CA368}"
+    Remove-Wrapper -Item $page -Id "{1A830FF1-1351-4B99-8829-02123F688BCE}"
+    
+    # Remove unused wrappers
+    Remove-Wrapper -Item $page -Id "{083665bb-e0f0-4f71-86f5-b046d28ecb2f}"
+    Remove-Wrapper -Item $page -Id "{56f0cc3c-fbfd-49bd-9ea0-fbbd7b905d93}"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 150
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230804T102242Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

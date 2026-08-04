@@ -1,0 +1,351 @@
+﻿---
+ID: "66a5d98d-0b88-4969-ab4e-97ad7c5b7e4e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CT-1013 Experience Context Providers Basic Config with uuids"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $rootItem = Get-Item "master:/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages" -ErrorAction SilentlyContinue;
+    $sourceTemplate = Get-Item "{800F3F0B-79B3-4AE8-A0EE-981DB968FE4D}";
+    $targetTemplate = Get-Item "{4E7B8C9D-0E1F-4A3B-8C5D-6E7F8A9B0C1D}";
+    if ($rootItem -and $sourceTemplate -and $targetTemplate)
+    {
+        Get-ChildItem $rootItem.FullPath -recurse | Where-Object { $_.TemplateName -eq $sourceTemplate.Name } | ForEach-Object {
+            Set-ItemTemplate -Item $_ -TemplateItem $targetTemplate `
+                -FieldsToCopy @{ Page = "PageTemplate";  }
+        }
+    }
+    
+    Import-Function "Import Content"
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagespretravel_Id = "{529066C9-8159-4F14-89B9-E65A4B9FA8FD}"
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpages_Id = "{A7BFA15E-0B92-42C6-BC66-1BE4D259E078}"
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesguestdetails_Id = "{9C57E9C9-140E-45B5-9781-7DAC09A6473F}"
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesconfirmation_Id = "{1684CC40-EF59-431F-A463-6FD6B51FD43C}"
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesbooking_Id = "{34081D05-2FC9-4C9C-87B1-E233BA404E62}"
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesmybookings_Id = "{1086BA6F-12D0-41A9-8C00-528758D84736}"
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagespayment_Id = "{A7E3CDA5-03FF-4631-B835-F68DF2CB6179}"
+    $holidayssettingsexperiencecontextproviders_Id = "{44A160C2-FDCE-4C39-B815-9815B121F4CB}"
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagescancelledbooking_Id = "{3C9F6A35-CFAF-4BBD-AD59-E7B3FC7F91D1}"
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesassistedtravel_Id = "{E9BB3931-8317-46BE-B87D-15C25E9D2E42}"
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesviewbooking_Id = "{2DD6F9CF-305C-43E3-B437-CBA5606BB4C4}"
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesindestination_Id = "{71FF7484-D991-42C5-A56F-F46DADC3BEFA}"
+    $holidayssettingsexperiencecontextprovidersflightplushotelprovider_Id = "{4CFB61DB-2344-43AA-A823-8EF25D8A9E42}"
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagescancelbooking_Id = "{83887C99-9E8B-43E0-AED3-55975BCB77A9}"
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesposttravel_Id = "{98E6F83A-EF42-4D8B-BC01-1F9D898EBA72}"
+    $confirmation_page_1684cc40ef59431fa4636fd6b51fd43c_en_v1 = @"
+    {155ECD81-AE2B-47D2-8CB7-0794978BFFF1}
+    "@
+    $assistedtravel_page_e9bb3931831746beb87d15c25e9d2e42_en_v1 = @"
+    {7A0C50BD-B018-44AD-A9CF-AD61E017C6BD}
+    "@
+    $posttravel_page_98e6f83aef424d8bbc011f9d898eba72_en_v1 = @"
+    {A29EFE45-F93A-45E1-9587-3D30661E6BE4}
+    "@
+    $viewbooking_page_2dd6f9cf305c43e3b437cba5606bb4c4_en_v1 = @"
+    {089BDF45-B601-48EF-8515-7E5DFC659E5F}
+    "@
+    $mybookings_page_1086ba6f12d041a98c00528758d84736_en_v1 = @"
+    {DE24620D-0E4B-42AA-9206-0F0EEEA76BB6}
+    "@
+    $confirmation_renderingreplacements_1684cc40ef59431fa4636fd6b51fd43c_en_v1 = @"
+    {8D8FD7DE-A929-4931-8AB5-88C289077A49}:{8D8FD7DE-A929-4931-8AB5-88C289077A49}:Placeholder=%2fbody%2fhold-luggage-info-banner-%7b5d228e7e-0347-4e8e-ac47-d911eba730d7%7d-0&Data+Source=%7b5C408D4B-846F-408B-A214-F4F55AE59759%7d|{2A35FBE1-E039-4D16-B301-37FD96B0C10F}:{2A35FBE1-E039-4D16-B301-37FD96B0C10F}:Placeholder=%2fbody%2fspecial-requests-%7b5d228e7e-0347-4e8e-ac47-d911eba730d7%7d-0&Data+Source=%7bF6116E59-94C2-4DA6-9DE2-76E52B25E9A5%7d|{7973D16E-B6AF-4E9B-AF02-6072DD7ECB82}:{7973D16E-B6AF-4E9B-AF02-6072DD7ECB82}:Placeholder=%2fbody%2fatol-protection-%7b5d228e7e-0347-4e8e-ac47-d911eba730d7%7d-0&Data+Source=%7bA2B45AEF-014E-45FF-93B2-9364313D6C99%7d|{752847FB-9A5B-47E4-A1F3-42843C1A7C83}:{752847FB-9A5B-47E4-A1F3-42843C1A7C83}:Placeholder=%2fbody%2fhealth-entry-requirements-%7b5d228e7e-0347-4e8e-ac47-d911eba730d7%7d-0&Data+Source=%7bC83F4C1B-318F-4709-A0CA-081F1AB3CBE3%7d|{9133F3CA-553F-42F5-8529-54734B53A378}:{9133F3CA-553F-42F5-8529-54734B53A378}:Placeholder=%2fbody%2fcomponent-wrapper-inner-%7b56109aba-83d7-49a7-83c4-f69d0b7f7712%7d-0&Data+Source=%7b293B059D-EEC7-4C7D-8559-497606282A1D%7d
+    "@
+    $assistedtravel_renderingreplacements_e9bb3931831746beb87d15c25e9d2e42_en_v1 = @"
+    {25CA1738-22F5-49EF-B60A-72C5461AA940}:{25CA1738-22F5-49EF-B60A-72C5461AA940}:Placeholder=%2fbody&Data+Source=&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{A266310A-FCBC-46A1-80C8-3AECB4F06727}:{A266310A-FCBC-46A1-80C8-3AECB4F06727}:
+    "@
+    $assistedtravel_allowedrenderings_e9bb3931831746beb87d15c25e9d2e42_en_v1 = @"
+    {25CA1738-22F5-49EF-B60A-72C5461AA940}
+    "@
+    $viewbooking_allowedrenderings_2dd6f9cf305c43e3b437cba5606bb4c4_en_v1 = @"
+    {7E2EEFDE-8087-4767-BB9C-398497F6E7C4}|{6C234F53-080F-4C8E-AC01-CE83E3C28998}|{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{025DDD3B-F1EA-42A6-AECF-D2A2698F6137}|{0F60E703-E976-4BE3-9E1A-3F0A7FF80718}|{B932CD1B-05BD-4F1D-947F-1E6F48C4F649}|{4C8A4AAC-A206-43FD-B7C7-D5B4BE5C0A4B}|{8DAB7C3D-3DFC-4974-B3B7-082964A3738F}|{D6CF6F5C-D137-49CB-A3FB-C2D6ADC47F6C}|{2A35FBE1-E039-4D16-B301-37FD96B0C10F}|{9FD91E19-714F-4313-9E52-FF77B4E9F030}|{28B6196C-C176-43D4-A585-CE024F7B8BEA}|{68FFCF4F-8A07-4553-8687-DB9501C09694}|{7973D16E-B6AF-4E9B-AF02-6072DD7ECB82}|{752847FB-9A5B-47E4-A1F3-42843C1A7C83}|{9C3DFA27-58E8-466E-AB02-1158188EE582}|{05F2C26C-4E1D-4CAD-A817-A1B5CBBEF628}|{CFDDA56D-9D28-45DE-BED6-FF67AC4C38B5}|{A38F8E39-55D0-4E54-91D5-95F8D7F19E01}|{CC4D8814-64A1-4FF5-A90A-85C8A91AB66A}|{9133F3CA-553F-42F5-8529-54734B53A378}|{3055C92A-633D-4ABF-A6DD-6BC801487ECE}|{7910DC7C-14B7-48F1-9256-C570F700F085}|{F7F45094-B88B-47D0-975F-3854B4AE9A41}|{8B4B958A-7F3C-4404-9003-DE7F4CC3AABF}|{92561376-9A31-490C-8876-AF753D8CF335}|{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}|{3C4B5E64-BD84-48D9-83BE-01D3017B7843}|{84E4A703-662D-41CE-9A3E-86946DF9E04B}|{39A44877-7E92-48FD-B57D-BB985B47BE9A}|{D80590E8-7A27-422E-95E2-D7A686A9206C}|{72540812-D4CA-4539-A79E-B52F56F06927}|{8AE530B1-7702-48B7-A4B9-442E50845EFA}|{66719E6E-3DEE-4A86-BD1A-75BF2093B2BE}|{9F57C3E4-AB69-4EB2-9BCA-4834D5E92F6C}|{FBD4947D-7A60-47E9-B465-D4E89DEE0A41}|{EDCABB4F-676C-4418-BBEE-4E0009F946E5}|{901B7CDC-B8AA-4196-BFB6-054575D9C283}|{C8B59866-89D9-4E69-9ACB-3A18F7872697}|{903FBFFC-F57B-4DA0-A67B-AE5AE4A17C44}|{9E8FBF42-EDEA-4700-88F0-0CFFF1157121}|{34B4FD1F-0FF8-4056-A13E-8BBE210A1B69}|{881D4BCA-336C-491D-8E8A-74109544519D}|{BCC1C844-A2C7-4808-B061-C06688E90DD4}|{99B65A6C-5D48-411F-A0B2-F9F340727ACD}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{1BE9E86B-46EE-4D90-AA80-9873341F1324}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{98D6518D-053C-4A0B-9CCE-262B51E43F22}|{BF0D518B-282B-4ABC-A499-47AD5B0A0A87}|{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{B6732EB5-D407-4D55-B596-A0816C062804}|{1F56A2E2-6217-4749-A104-010F800B94E1}
+    "@
+    $pretravel_allowedrenderings_529066c981594f1489b9e65a4b9fa8fd_en_v1 = @"
+    {C30624AB-A71F-492A-ADFF-73A1952FF024}|{82D1C7A0-38A9-4FD2-B80F-B40980FFA59A}|{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}|{3C4B5E64-BD84-48D9-83BE-01D3017B7843}|{A266310A-FCBC-46A1-80C8-3AECB4F06727}|{8F67CD81-1EF5-4611-BD64-59D6315694FC}|{6615BDBE-E40B-4166-972A-5754B34A1F0E}|{630D2676-483E-420D-8F04-4C15212F3EFF}|{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}|{D80590E8-7A27-422E-95E2-D7A686A9206C}|{3E7563E2-C2AE-4BEB-86A2-3A1C06CD6EB8}|{B3FB1CF9-B723-42BC-8963-898B80251734}|{2A35FBE1-E039-4D16-B301-37FD96B0C10F}|{0A32EA7D-D537-4845-A5B2-8D2FF7513D91}|{0F60E703-E976-4BE3-9E1A-3F0A7FF80718}|{9C3DFA27-58E8-466E-AB02-1158188EE582}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{1BE9E86B-46EE-4D90-AA80-9873341F1324}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{98D6518D-053C-4A0B-9CCE-262B51E43F22}|{BF0D518B-282B-4ABC-A499-47AD5B0A0A87}|{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{B6732EB5-D407-4D55-B596-A0816C062804}|{1F56A2E2-6217-4749-A104-010F800B94E1}
+    "@
+    $payment_allowedrenderings_a7e3cda503ff4631b835f68df2cb6179_en_v1 = @"
+    {3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{3ADDD538-1DF0-4510-BBAA-934E9A6A2E74}|{9D5C09DD-EFB0-4AF8-AE1E-C84444E69106}|{8AE530B1-7702-48B7-A4B9-442E50845EFA}|{B76EB403-AE2C-4EA6-8BFA-34DD26374A09}|{9C7CAD82-BB33-4563-BCAF-4B362B6278B3}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}
+    "@
+    $confirmation_allowedrenderings_1684cc40ef59431fa4636fd6b51fd43c_en_v1 = @"
+    {E10ECB4E-19CE-4255-982C-04E6E3592A20}|{8B4B958A-7F3C-4404-9003-DE7F4CC3AABF}|{92561376-9A31-490C-8876-AF753D8CF335}|{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}|{84E4A703-662D-41CE-9A3E-86946DF9E04B}|{D6CF6F5C-D137-49CB-A3FB-C2D6ADC47F6C}|{05F2C26C-4E1D-4CAD-A817-A1B5CBBEF628}|{8D8FD7DE-A929-4931-8AB5-88C289077A49}|{2A35FBE1-E039-4D16-B301-37FD96B0C10F}|{7973D16E-B6AF-4E9B-AF02-6072DD7ECB82}|{752847FB-9A5B-47E4-A1F3-42843C1A7C83}|{9C3DFA27-58E8-466E-AB02-1158188EE582}|{0D1D051B-009A-40C3-BADF-F654B8EE7958}|{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{EF923FE5-72B8-41AE-9D17-BD2B8B99A377}|{9133F3CA-553F-42F5-8529-54734B53A378}|{7910DC7C-14B7-48F1-9256-C570F700F085}|{FBD4947D-7A60-47E9-B465-D4E89DEE0A41}|{EDCABB4F-676C-4418-BBEE-4E0009F946E5}|{89F16941-1EA9-4990-88BD-794D3B45292D}|{771959C1-9EA9-43D6-B8F4-A24D90D06974}|{004B0898-B081-4E1B-8B9E-06DC8F5CFAF5}|{0A32EA7D-D537-4845-A5B2-8D2FF7513D91}|{881D4BCA-336C-491D-8E8A-74109544519D}
+    "@
+    $guestdetails_page_9c57e9c9140e45b597817dac09a6473f_en_v1 = @"
+    {CBCF50A8-017C-4FBE-A642-55979E8B1877}
+    "@
+    $experiencecontextproviders_activeproviders_44a160c2fdce4c39b8159815b121f4cb_en_v1 = @"
+    $holidayssettingsexperiencecontextprovidersflightplushotelprovider_Id
+    "@
+    $mybookings_allowedrenderings_1086ba6f12d041a98c00528758d84736_en_v1 = @"
+    {E0130087-EFD0-432B-9DA2-0463D3B8B89D}|{F59F25F2-2CA4-413B-8AF0-B898A70B0BA8}|{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{84E4A703-662D-41CE-9A3E-86946DF9E04B}|{92561376-9A31-490C-8876-AF753D8CF335}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{1BE9E86B-46EE-4D90-AA80-9873341F1324}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{98D6518D-053C-4A0B-9CCE-262B51E43F22}|{BF0D518B-282B-4ABC-A499-47AD5B0A0A87}|{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{B6732EB5-D407-4D55-B596-A0816C062804}|{1F56A2E2-6217-4749-A104-010F800B94E1}
+    "@
+    $cancelbooking_page_83887c999e8b43e0aed355975bcb77a9_en_v1 = @"
+    {E9544BE7-0494-410B-9E66-E0EC96B44ED6}
+    "@
+    $indestination_page_71ff7484d99142c5a56ff46dadc3befa_en_v1 = @"
+    {D8FA231E-8E5A-4AFA-9D31-963B527931AC}
+    "@
+    $pretravel_renderingreplacements_529066c981594f1489b9e65a4b9fa8fd_en_v1 = @"
+    {EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}:{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}:Placeholder=%2fbody%2fbooking-context-%7bCE4DC04F-C51E-4A67-870C-7BCB952557A3%7d-0&Data+Source=%7b3B485A02-79B0-426A-A7CD-61FFD268DF5D%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowCountdown=|{82D1C7A0-38A9-4FD2-B80F-B40980FFA59A}:{82D1C7A0-38A9-4FD2-B80F-B40980FFA59A}:Placeholder=%2fbody%2fbooking-context-%7bCE4DC04F-C51E-4A67-870C-7BCB952557A3%7d-0&Data+Source=%7bF06669C0-0A81-4673-8A66-E82FFA26D5DD%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}:{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}:Placeholder=%2fbody%2fbooking-context-%7bCE4DC04F-C51E-4A67-870C-7BCB952557A3%7d-0%2fmasonry-aside-%7b8445320F-1D61-4721-BD04-0ABC7FA2B0EF%7d-0%2fmasonry-item-%7bA887357A-E61B-4223-AB01-200B95AFEFF2%7d-0&Data+Source=%7bFC3EAE7A-2DB5-4D5B-94B6-5EEF73787C3E%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowButtonOnly=&IsOpeningPopupLinkVisible=1|{B3FB1CF9-B723-42BC-8963-898B80251734}:{B3FB1CF9-B723-42BC-8963-898B80251734}:Placeholder=%2fbody%2fbooking-context-%7bCE4DC04F-C51E-4A67-870C-7BCB952557A3%7d-0%2fmasonry-section-%7b8445320F-1D61-4721-BD04-0ABC7FA2B0EF%7d-0%2fmasonry-item-%7b625EE23C-6942-434B-94DE-095EA401FAD1%7d-0&Data+Source=%7b5FA0F8A8-0A00-4110-8F77-B87198A39651%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{D80590E8-7A27-422E-95E2-D7A686A9206C}:{D80590E8-7A27-422E-95E2-D7A686A9206C}:Placeholder=%2fbody%2fbooking-context-%7bCE4DC04F-C51E-4A67-870C-7BCB952557A3%7d-0%2fmasonry-aside-%7b8445320F-1D61-4721-BD04-0ABC7FA2B0EF%7d-0%2fmasonry-item-%7bD4F43F66-C14F-41BB-8AE3-441EA5E0F316%7d-0&Data+Source=%7b950F432A-17BC-47F4-9697-0FF4954975CE%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowButtonOnly=|{0A32EA7D-D537-4845-A5B2-8D2FF7513D91}:{0A32EA7D-D537-4845-A5B2-8D2FF7513D91}:Placeholder=%2fbody%2fbooking-context-%7bCE4DC04F-C51E-4A67-870C-7BCB952557A3%7d-0%2fmasonry-section-%7b8445320F-1D61-4721-BD04-0ABC7FA2B0EF%7d-0%2fmasonry-item-%7b49814259-A8E1-4943-9822-054C8EB73308%7d-0&Data+Source=%7b3C94F399-47B1-4444-9C0A-1B0D25E4B29C%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+    $indestination_allowedrenderings_71ff7484d99142c5a56ff46dadc3befa_en_v1 = @"
+    {82D1C7A0-38A9-4FD2-B80F-B40980FFA59A}|{A266310A-FCBC-46A1-80C8-3AECB4F06727}|{8F67CD81-1EF5-4611-BD64-59D6315694FC}|{630D2676-483E-420D-8F04-4C15212F3EFF}|{3E7563E2-C2AE-4BEB-86A2-3A1C06CD6EB8}|{B3FB1CF9-B723-42BC-8963-898B80251734}|{2A35FBE1-E039-4D16-B301-37FD96B0C10F}|{0F60E703-E976-4BE3-9E1A-3F0A7FF80718}|{9C3DFA27-58E8-466E-AB02-1158188EE582}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{1BE9E86B-46EE-4D90-AA80-9873341F1324}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{98D6518D-053C-4A0B-9CCE-262B51E43F22}|{BF0D518B-282B-4ABC-A499-47AD5B0A0A87}|{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{B6732EB5-D407-4D55-B596-A0816C062804}|{1F56A2E2-6217-4749-A104-010F800B94E1}
+    "@
+    $flightplushotelprovider_pages_4cfb61db234443aaa8238ef25d8a9e42_en_v1 = @"
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesbooking_Id|$holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesguestdetails_Id|$holidayssettingsexperiencecontextprovidersflightplushotelproviderpagespayment_Id|$holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesassistedtravel_Id|$holidayssettingsexperiencecontextprovidersflightplushotelproviderpagescancelbooking_Id|$holidayssettingsexperiencecontextprovidersflightplushotelproviderpagescancelledbooking_Id|$holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesindestination_Id|$holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesmybookings_Id|$holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesposttravel_Id|$holidayssettingsexperiencecontextprovidersflightplushotelproviderpagespretravel_Id|$holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesviewbooking_Id|$holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesconfirmation_Id
+    "@
+    $cancelledbooking_page_3c9f6a35cfaf4bbdad59e7b3fc7f91d1_en_v1 = @"
+    {A93C4899-6582-49EC-9481-C5FDC7863D18}
+    "@
+    $booking_renderingreplacements_34081d052fc94c9c87b1e233ba404e62_en_v1 = @"
+    {E6D72918-68EB-4437-9725-8EF2EB19B6A7}:{E6D72918-68EB-4437-9725-8EF2EB19B6A7}:
+    "@
+    $cancelledbooking_allowedrenderings_3c9f6a35cfaf4bbdad59e7b3fc7f91d1_en_v1 = @"
+    {C30624AB-A71F-492A-ADFF-73A1952FF024}|{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}|{3C4B5E64-BD84-48D9-83BE-01D3017B7843}|{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{A266310A-FCBC-46A1-80C8-3AECB4F06727}|{6615BDBE-E40B-4166-972A-5754B34A1F0E}|{630D2676-483E-420D-8F04-4C15212F3EFF}|{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}|{5A4E2577-32C2-420F-9F52-494394DA3364}|{E78B6A7E-0EC5-4324-A290-971EE74C1FC8}|{68FFCF4F-8A07-4553-8687-DB9501C09694}|{4C8A4AAC-A206-43FD-B7C7-D5B4BE5C0A4B}|{D780FE57-012E-46C0-B26C-C812B278B5D2}|{D80590E8-7A27-422E-95E2-D7A686A9206C}|{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{1BE9E86B-46EE-4D90-AA80-9873341F1324}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{98D6518D-053C-4A0B-9CCE-262B51E43F22}|{BF0D518B-282B-4ABC-A499-47AD5B0A0A87}|{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{B6732EB5-D407-4D55-B596-A0816C062804}|{1F56A2E2-6217-4749-A104-010F800B94E1}
+    "@
+    $indestination_renderingreplacements_71ff7484d99142c5a56ff46dadc3befa_en_v1 = @"
+    {EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}:{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}:Placeholder=%2fbody%2fbooking-context-%7bCE4DC04F-C51E-4A67-870C-7BCB952557A3%7d-0&Data+Source=%7b3B485A02-79B0-426A-A7CD-61FFD268DF5D%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowCountdown=|{82D1C7A0-38A9-4FD2-B80F-B40980FFA59A}:{82D1C7A0-38A9-4FD2-B80F-B40980FFA59A}:Placeholder=%2fbody%2fbooking-context-%7bCE4DC04F-C51E-4A67-870C-7BCB952557A3%7d-0&Data+Source=%7bF06669C0-0A81-4673-8A66-E82FFA26D5DD%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}:{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}:Placeholder=%2fbody%2fbooking-context-%7bCE4DC04F-C51E-4A67-870C-7BCB952557A3%7d-0%2fmasonry-aside-%7b8445320F-1D61-4721-BD04-0ABC7FA2B0EF%7d-0%2fmasonry-item-%7bA887357A-E61B-4223-AB01-200B95AFEFF2%7d-0&Data+Source=%7bFC3EAE7A-2DB5-4D5B-94B6-5EEF73787C3E%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowButtonOnly=&IsOpeningPopupLinkVisible=1|{B3FB1CF9-B723-42BC-8963-898B80251734}:{B3FB1CF9-B723-42BC-8963-898B80251734}:Placeholder=%2fbody%2fbooking-context-%7bCE4DC04F-C51E-4A67-870C-7BCB952557A3%7d-0%2fmasonry-section-%7b8445320F-1D61-4721-BD04-0ABC7FA2B0EF%7d-0%2fmasonry-item-%7bD716158B-5805-4861-B0D6-2C3801BDBF91%7d-0&Data+Source=%7bB33D9832-382B-45B2-8463-FD51368E91F0%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+    $booking_page_34081d052fc94c9c87b1e233ba404e62_en_v1 = @"
+    {09BEF082-3309-4083-9F0B-71FB8D60D7F5}
+    "@
+    $payment_page_a7e3cda503ff4631b835f68df2cb6179_en_v1 = @"
+    {4EDEE9C4-1042-453A-B567-958BE3D89DA5}
+    "@
+    $cancelbooking_allowedrenderings_83887c999e8b43e0aed355975bcb77a9_en_v1 = @"
+    {3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}|{C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}
+    "@
+    $booking_allowedrenderings_34081d052fc94c9c87b1e233ba404e62_en_v1 = @"
+    {E4FE4D55-9934-4792-8420-FC277F35E30F}|{F3BEFB97-4213-4C6B-9336-9FC2C2A3624B}|{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{B3908F9D-B9A0-42DD-83F1-EE5CF6886D4D}|{3ADDD538-1DF0-4510-BBAA-934E9A6A2E74}|{26EA9242-8711-47CF-A2DB-B5D16F58DDD4}|{B37F9DEA-D7C1-4D09-9344-D2FFE1A590AF}|{85A40B2A-26E6-421E-ABB6-371817447E89}|{1B6F8CC5-F07C-40E8-AAE4-2E70409FB3B6}|{7910DC7C-14B7-48F1-9256-C570F700F085}|{F7F45094-B88B-47D0-975F-3854B4AE9A41}|{FBD4947D-7A60-47E9-B465-D4E89DEE0A41}|{EDCABB4F-676C-4418-BBEE-4E0009F946E5}|{89F16941-1EA9-4990-88BD-794D3B45292D}|{771959C1-9EA9-43D6-B8F4-A24D90D06974}|{F06DA5C1-EE75-4075-92B7-B8171C857EA8}|{8D555AA2-CC21-4673-A9CC-DBECE8AAA600}|{4A3C0532-C5CC-4CBC-BB76-D31310FD1EF3}|{F569ECBF-B19E-4556-9A6B-6D72DDA6E0F5}|{62F93471-0DCA-49AE-95AF-2B346D8098D8}|{5F21DED9-4FB3-4407-8F58-F779D18B142F}|{A07E8AAB-47FD-436E-9BA7-39086751D37B}|{B97059BD-C924-4211-951E-FF95765CB9C8}|{2A35FBE1-E039-4D16-B301-37FD96B0C10F}|{9B0E88A8-59D8-4EE9-8504-CBF9B6F992D3}|{B1C38035-64C4-435A-98BC-33616AD2E83E}|{C922A45E-4410-438A-ACA8-6E9DE5BF9148}|{373CCDB1-97B0-426D-B6BF-2A525AE3621E}|{8AE530B1-7702-48B7-A4B9-442E50845EFA}|{BF500970-A7E3-4BD7-90F2-CD13E0E424A0}|{F299126B-5D77-4D9B-B37F-765FD801378B}|{9C7CAD82-BB33-4563-BCAF-4B362B6278B3}|{DC475304-7A11-4CAE-951F-CCF52920CA67}|{8036286E-59A8-46DF-9A25-1BF361DA1C8D}|{8EE16D28-F907-4EC0-B5D6-E1256E541278}|{9548AF18-BCAB-4DAE-A754-B3A99C14A429}|{1BA26842-96D0-4FF4-B517-FD68C72072F1}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}
+    "@
+    $pretravel_page_529066c981594f1489b9e65a4b9fa8fd_en_v1 = @"
+    {3476CA76-43F9-44F3-BD4D-63BBFE83257F}
+    "@
+    $guestdetails_allowedrenderings_9c57e9c9140e45b597817dac09a6473f_en_v1 = @"
+    {3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{1B6F8CC5-F07C-40E8-AAE4-2E70409FB3B6}|{3EECF1FA-6A62-451B-A351-A47ED455907D}|{E4FE4D55-9934-4792-8420-FC277F35E30F}|{F3BEFB97-4213-4C6B-9336-9FC2C2A3624B}|{B3908F9D-B9A0-42DD-83F1-EE5CF6886D4D}|{3ADDD538-1DF0-4510-BBAA-934E9A6A2E74}|{373CCDB1-97B0-426D-B6BF-2A525AE3621E}|{8AE530B1-7702-48B7-A4B9-442E50845EFA}|{9C7CAD82-BB33-4563-BCAF-4B362B6278B3}|{1BA26842-96D0-4FF4-B517-FD68C72072F1}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers"
+            TemplatePath = "/sitecore/Templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderFolder"
+            Id          = $holidayssettingsexperiencecontextproviders_Id
+            Fields      = @{
+                "Enable Verbose Logging" = @{
+                    "en" = "1"
+                }
+                "ActiveProviders" = @{
+                    "en" = $experiencecontextproviders_activeproviders_44a160c2fdce4c39b8159815b121f4cb_en_v1
+                }
+                "IsPublic" = @{
+                    "en" = "1"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider"
+            TemplatePath = "/sitecore/Templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProvider"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelprovider_Id
+            Fields      = @{
+                "Identifier" = @{
+                    "en" = "FPH"
+                }
+                "Pages" = @{
+                    "en" = $flightplushotelprovider_pages_4cfb61db234443aaa8238ef25d8a9e42_en_v1
+                }
+                "IsPublic" = @{
+                    "en" = "1"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages"
+                            
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageFolder"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpages_Id
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Assisted Travel"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesassistedtravel_Id
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = $assistedtravel_page_e9bb3931831746beb87d15c25e9d2e42_en_v1
+                }
+                "RenderingReplacements" = @{
+                    "en" = $assistedtravel_renderingreplacements_e9bb3931831746beb87d15c25e9d2e42_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $assistedtravel_allowedrenderings_e9bb3931831746beb87d15c25e9d2e42_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Booking"
+            TemplatePath = "/sitecore/Templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesbooking_Id
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = $booking_page_34081d052fc94c9c87b1e233ba404e62_en_v1
+                }
+                "RenderingReplacements" = @{
+                    "en" = $booking_renderingreplacements_34081d052fc94c9c87b1e233ba404e62_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $booking_allowedrenderings_34081d052fc94c9c87b1e233ba404e62_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Cancel Booking"
+            TemplatePath = "/sitecore/Templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagescancelbooking_Id
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = $cancelbooking_page_83887c999e8b43e0aed355975bcb77a9_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $cancelbooking_allowedrenderings_83887c999e8b43e0aed355975bcb77a9_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Cancelled Booking"
+            TemplatePath = "/sitecore/Templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagescancelledbooking_Id
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = $cancelledbooking_page_3c9f6a35cfaf4bbdad59e7b3fc7f91d1_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $cancelledbooking_allowedrenderings_3c9f6a35cfaf4bbdad59e7b3fc7f91d1_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Confirmation"
+            TemplatePath = "/sitecore/Templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesconfirmation_Id
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = $confirmation_page_1684cc40ef59431fa4636fd6b51fd43c_en_v1
+                }
+                "RenderingReplacements" = @{
+                    "en" = $confirmation_renderingreplacements_1684cc40ef59431fa4636fd6b51fd43c_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $confirmation_allowedrenderings_1684cc40ef59431fa4636fd6b51fd43c_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Guest Details"
+            TemplatePath = "/sitecore/Templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesguestdetails_Id
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = $guestdetails_page_9c57e9c9140e45b597817dac09a6473f_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $guestdetails_allowedrenderings_9c57e9c9140e45b597817dac09a6473f_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/In Destination"
+            TemplatePath = "/sitecore/Templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesindestination_Id
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = $indestination_page_71ff7484d99142c5a56ff46dadc3befa_en_v1
+                }
+                "RenderingReplacements" = @{
+                    "en" = $indestination_renderingreplacements_71ff7484d99142c5a56ff46dadc3befa_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $indestination_allowedrenderings_71ff7484d99142c5a56ff46dadc3befa_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/My Bookings"
+            TemplatePath = "/sitecore/Templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesmybookings_Id
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = $mybookings_page_1086ba6f12d041a98c00528758d84736_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $mybookings_allowedrenderings_1086ba6f12d041a98c00528758d84736_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Payment"
+            TemplatePath = "/sitecore/Templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagespayment_Id
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = $payment_page_a7e3cda503ff4631b835f68df2cb6179_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $payment_allowedrenderings_a7e3cda503ff4631b835f68df2cb6179_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Post Travel"
+            TemplatePath = "/sitecore/Templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesposttravel_Id
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = $posttravel_page_98e6f83aef424d8bbc011f9d898eba72_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Pre Travel"
+            TemplatePath = "/sitecore/Templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagespretravel_Id
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = $pretravel_page_529066c981594f1489b9e65a4b9fa8fd_en_v1
+                }
+                "RenderingReplacements" = @{
+                    "en" = $pretravel_renderingreplacements_529066c981594f1489b9e65a4b9fa8fd_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $pretravel_allowedrenderings_529066c981594f1489b9e65a4b9fa8fd_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/View Booking"
+            TemplatePath = "/sitecore/Templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesviewbooking_Id
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = $viewbooking_page_2dd6f9cf305c43e3b437cba5606bb4c4_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $viewbooking_allowedrenderings_2dd6f9cf305c43e3b437cba5606bb4c4_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260504T081228Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

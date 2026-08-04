@@ -1,0 +1,23 @@
+.landmarkLinkBox {
+    position: relative;
+
+    a {
+        position: absolute;
+        z-index: 200;
+        top: 0;
+        left: -999999px;
+        display: block;
+        height: 0;
+        padding: 2px 10px;
+        overflow: hidden;
+        font-size: 14px;
+        background-color: $colorWhite;
+
+        &:focus {
+            position: fixed;
+            left: 0;
+            display: inline-block;
+            height: auto;
+        }
+    }
+}

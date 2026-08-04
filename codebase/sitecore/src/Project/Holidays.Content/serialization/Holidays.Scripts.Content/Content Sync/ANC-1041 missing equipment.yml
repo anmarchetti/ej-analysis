@@ -1,0 +1,149 @@
+﻿---
+ID: "0b61fe78-9881-4c18-8db4-dbcf0704ec6b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-1041 missing equipment"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $luggageSmallPath = 'master:/sitecore/content/EasyJet/Holidays/Data/Luggage/Small Sports Equipment'
+    $luggageLargePathTrade = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Large Sports Equipment'
+    $luggageTemplate = '{41775FBB-D551-4813-B3D7-1BDC7C6DB534}'
+    $luggageLargePath = 'master:/sitecore/content/EasyJet/Holidays/Data/Luggage/Large Sports Equipment'
+    $luggageSmallPathTrade = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Small Sports Equipment'
+    $folderPath ='master:/sitecore/content/EasyJet/Holidays/Data/Luggage/'
+    $folderPathTrade = '/sitecore/content/EasyJet/TradePortal/Data/Luggage'
+    
+    $snowboardPath  = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Small Sports Equipment/Snowboard'
+    $handgliderPath = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Large Sports Equipment/Hand glider'
+    $skiPath = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Small Sports Equipment/Skis and boots'
+    $ossePath = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Small Sports Equipment/Other small sports equipment'
+    $windsurferPath = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Large Sports Equipment/Windsurfer'
+    
+    function create-item($path, $itemPath, $itemName, $itemType, $key, $content){
+        $itemToCreateExist = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($itemToCreateExist -eq $null){
+            $createdItem = New-Item -Path $path -Name $itemName -ItemType $itemType
+        } else {
+            $createdItem = $itemToCreateExist
+        }
+            
+        if($createdItem -ne $null){
+            Write-Host $createdItem
+            $createdItem.Editing.BeginEdit()
+             $createdItem[$key] = $content
+            $createdItem.Editing.EndEdit() | Out-Null
+            return $createdItem
+        }
+        return $itemToCreateExist
+    }
+    
+    function translate-item($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+        }
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+        }
+       
+    }
+    
+    
+    create-item -path $folderPath -itemName 'Small Sports Equipment' -itemType '{928655D3-BFC1-4E24-99A5-096BE1B24D09}' -key 'Code' -content 'SEC'
+    create-item -path $folderPath -itemName 'Small Sports Equipment' -itemType '{928655D3-BFC1-4E24-99A5-096BE1B24D09}' -key 'Name' -content 'Small Sports Equipment'
+    create-item -path $folderPath -itemName 'Small Sports Equipment' -itemType '{928655D3-BFC1-4E24-99A5-096BE1B24D09}' -key 'Type' -content 'Sports Equipment'
+    
+    create-item -path $folderPath -itemName 'Large Sports Equipment' -itemType '{928655D3-BFC1-4E24-99A5-096BE1B24D09}' -key 'Code' -content 'SEO'
+    create-item -path $folderPath -itemName 'Large Sports Equipment' -itemType '{928655D3-BFC1-4E24-99A5-096BE1B24D09}' -key 'Name' -content 'Large Sports Equipment'
+    create-item -path $folderPath -itemName 'Large Sports Equipment' -itemType '{928655D3-BFC1-4E24-99A5-096BE1B24D09}' -key 'Type' -content 'Sports Equipment'
+    
+    create-item -path $folderPathTrade -itemName 'Small Sports Equipment' -itemType '{928655D3-BFC1-4E24-99A5-096BE1B24D09}' -key 'Code' -content 'SEC'
+    create-item -path $folderPathTrade -itemName 'Small Sports Equipment' -itemType '{928655D3-BFC1-4E24-99A5-096BE1B24D09}' -key 'Name' -content 'Small Sports Equipment'
+    create-item -path $folderPathTrade -itemName 'Small Sports Equipment' -itemType '{928655D3-BFC1-4E24-99A5-096BE1B24D09}' -key 'Type' -content 'Sports Equipment'
+    
+    create-item -path $folderPathTrade -itemName 'Large Sports Equipment' -itemType '{928655D3-BFC1-4E24-99A5-096BE1B24D09}' -key 'Code' -content 'SEO'
+    create-item -path $folderPathTrade -itemName 'Large Sports Equipment' -itemType '{928655D3-BFC1-4E24-99A5-096BE1B24D09}' -key 'Name' -content 'Large Sports Equipment'
+    create-item -path $folderPathTrade -itemName 'Large Sports Equipment' -itemType '{928655D3-BFC1-4E24-99A5-096BE1B24D09}' -key 'Type' -content 'Sports Equipment'
+    
+    create-item -path $luggageLargePath -itemName 'Hand glider' -itemType $luggageTemplate -key 'CODE' -content 'HGLD'
+    create-item -path $luggageLargePath -itemName 'Hand glider' -itemType $luggageTemplate -key 'Name' -content 'Hand glider'
+    create-item -path $luggageLargePath -itemName 'Hand glider' -itemType $luggageTemplate -key 'Description' -content ''
+    
+    create-item -path $luggageSmallPath -itemName 'Other small sports equipment' -itemType $luggageTemplate -key 'CODE' -content 'OSSE'
+    create-item -path $luggageSmallPath -itemName 'Other small sports equipment' -itemType $luggageTemplate -key 'Name' -content 'Other small sports equipment'
+    create-item -path $luggageSmallPath -itemName 'Other small sports equipment' -itemType $luggageTemplate -key 'Description' -content ''
+    
+    create-item -path $luggageSmallPath -itemName "Skis and boots" -itemType $luggageTemplate -key 'CODE' -content 'SKBT'
+    create-item -path $luggageSmallPath -itemName "Skis and boots" -itemType $luggageTemplate -key 'Name' -content 'Skis and/or boots'
+    create-item -path $luggageSmallPath -itemName "Skis and boots" -itemType $luggageTemplate -key 'Description' -content ''
+    
+    create-item -path $luggageSmallPath  -itemName 'Snowboard' -itemType $luggageTemplate -key 'CODE' -content 'SNBD'
+    create-item -path $luggageSmallPath -itemName 'Snowboard' -itemType $luggageTemplate -key 'Name' -content 'Snowboard'
+    create-item -path $luggageSmallPath -itemName 'Snowboard' -itemType $luggageTemplate -key 'Description' -content ''
+    
+    create-item -path $luggageLargePath -itemName 'Windsurfer' -itemType $luggageTemplate -key 'CODE' -content 'WDSF'
+    create-item -path $luggageLargePath -itemName 'Windsurfer' -itemType $luggageTemplate -key 'Name' -content 'Windsurfer'
+    create-item -path $luggageLargePath -itemName 'Windsurfer' -itemType $luggageTemplate -key 'Description' -content ''
+    
+    create-item -path $luggageLargePathTrade -itemName 'Hand glider' -itemType $luggageTemplate -key 'CODE' -content 'HGLD'
+    create-item -path $luggageLargePathTrade -itemName 'Hand glider' -itemType $luggageTemplate -key 'Name' -content 'Hand glider'
+    create-item -path $luggageLargePathTrade -itemName 'Hand glider' -itemType $luggageTemplate -key 'Description' -content ''
+    
+    create-item -path $luggageSmallPathTrade -itemName 'Other small sports equipment' -itemType $luggageTemplate -key 'CODE' -content 'OSSE'
+    create-item -path $luggageSmallPathTrade -itemName 'Other small sports equipment' -itemType $luggageTemplate -key 'Name' -content 'Other small sports equipment'
+    create-item -path $luggageSmallPathTrade -itemName 'Other small sports equipment' -itemType $luggageTemplate -key 'Description' -content ''
+    
+    create-item -path $luggageSmallPathTrade -itemName "Skis and boots" -itemType $luggageTemplate -key 'CODE' -content 'SKBT'
+    create-item -path $luggageSmallPathTrade -itemName "Skis and boots" -itemType $luggageTemplate -key 'Name' -content 'Skis and/or boots'
+    create-item -path $luggageSmallPathTrade -itemName "Skis and boots" -itemType $luggageTemplate -key 'Description' -content ''
+    
+    create-item -path $luggageSmallPathTrade  -itemName 'Snowboard' -itemType $luggageTemplate -key 'CODE' -content 'SNBD'
+    create-item -path $luggageSmallPathTrade -itemName 'Snowboard' -itemType $luggageTemplate -key 'Name' -content 'Snowboard'
+    create-item -path $luggageSmallPathTrade -itemName 'Snowboard' -itemType $luggageTemplate -key 'Description' -content ''
+    
+    create-item -path $luggageLargePathTrade -itemName 'Windsurfer' -itemType $luggageTemplate -key 'CODE' -content 'WDSF'
+    create-item -path $luggageLargePathTrade -itemName 'Windsurfer' -itemType $luggageTemplate -key 'Name' -content 'Windsurfer'
+    create-item -path $luggageLargePath -itemName 'Windsurfer' -itemType $luggageTemplate -key 'Description' -content ''
+    
+    translate-item -itemPath $snowboardPath -language 'fr-FR' -key 'Name' -translation 'Snowboard'
+    translate-item -itemPath $snowboardPath -language 'fr-CH' -key 'Name' -translation 'Snowboard'
+    translate-item -itemPath $snowboardPath -language 'de-DE' -key 'Name' -translation 'Snowboard'
+    translate-item -itemPath $snowboardPath -language 'de-CH' -key 'Name' -translation 'Snowboard'
+    
+    translate-item -itemPath $handgliderPath -language 'fr-FR' -key 'Name' -translation 'Planeur à main'
+    translate-item -itemPath $handgliderPath -language 'fr-CH' -key 'Name' -translation 'Planeur à main'
+    translate-item -itemPath $handgliderPath -language 'de-DE' -key 'Name' -translation 'Handsegelflugzeug'
+    translate-item -itemPath $handgliderPath -language 'de-CH' -key 'Name' -translation 'Handsegelflugzeug'
+    
+    translate-item -itemPath $skiPath -language 'fr-FR' -key 'Name' -translation 'Skis et/ou chaussures'
+    translate-item -itemPath $skiPath -language 'fr-CH' -key 'Name' -translation 'Skis et/ou chaussures'
+    translate-item -itemPath $skiPath -language 'de-DE' -key 'Name' -translation 'Skier und/oder Schuhe'
+    translate-item -itemPath $skiPath -language 'de-CH' -key 'Name' -translation 'Skier und/oder Schuhe'
+    
+    translate-item -itemPath $ossePath -language 'fr-FR' -key 'Name' -translation 'Autres petits équipements sportifsAutres petits équipements sportifs'
+    translate-item -itemPath $ossePath -language 'fr-CH' -key 'Name' -translation 'Autres petits équipements sportifs'
+    translate-item -itemPath $ossePath -language 'de-DE' -key 'Name' -translation 'Andere kleine Sportgeräte'
+    translate-item -itemPath $ossePath -language 'de-CH' -key 'Name' -translation 'Andere kleine Sportgeräte'
+    
+    translate-item -itemPath $windsurferPath -language 'fr-FR' -key 'Name' -translation 'Planche à voile'
+    translate-item -itemPath $windsurferPath -language 'fr-CH' -key 'Name' -translation 'Planche à voile'
+    translate-item -itemPath $windsurferPath -language 'de-DE' -key 'Name' -translation 'Windsurfer'
+    translate-item -itemPath $windsurferPath -language 'de-CH' -key 'Name' -translation 'Windsurfer'
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240104T141810Z

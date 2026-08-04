@@ -1,0 +1,26 @@
+{
+    "Title": "DisplayRequest error response for booking with ref=INVALID_REF",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/EZYDMO/VRPWebservice/AniteGateway/AniteGateway.aspx",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "XPathMatcher",
+                "Pattern": "//*:BkgId/text()='INVALID_REF'"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "text/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/DisplayResponse_INVALID_REF.xml"
+    }
+}

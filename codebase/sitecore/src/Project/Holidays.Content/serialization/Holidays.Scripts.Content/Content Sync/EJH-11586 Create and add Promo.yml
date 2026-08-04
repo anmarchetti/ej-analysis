@@ -1,0 +1,123 @@
+﻿---
+ID: "99178933-2ec3-4627-91ab-fcc4ee75238e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-11586 Create and add Promotional Messages"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Create SiteSettings for Holiday Card
+    $settingsPath = "master:/sitecore/content/EasyJet/Holidays/Settings/";
+    $holidayCardSettingTemplateId = '{60A295CA-E82D-4C7A-9925-8ABF90D53E64}';
+    
+    $settings = Get-Item -path $settingsPath
+    $holidayCardSetting = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Settings/Holiday Card Settings" -ErrorAction SilentlyContinue
+    if ($settings -ne $null -and $holidayCardSetting -eq $null) {
+        #create Holiday Card Settings
+        $item = New-Item -Path $settingsPath -ItemType $holidayCardSettingTemplateId -Name "Holiday Card Settings"
+        Write-Host "Setting" $item.Name "successfully created"
+    }
+    
+    # Creatin DataSource for Promotional Messages
+    $dataFolderPath = "/sitecore/content/EasyJet/Holidays/Data"
+    $promotionalMessagesFolderTemplateId = "{30530A09-815B-498C-A97A-E9BD3A397564}"
+    $promotionalMessageTemplateId = "{B06686DB-9903-4DD4-856D-5D27285C6B67}"
+    
+    function Create-Item($path, $name, $templateId){
+        $item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $name -ItemType $templateId
+        }
+        return $item;
+    }
+    
+    function Get-Rendering-Index ($item, $renderingItemId) {
+    	$i = 0
+    	Get-Rendering -Item $item | ForEach-Object {
+    		if ($_.ItemID -eq $renderingItemId) {
+    			return $i
+    		}
+    		$i++
+    	}
+    }
+    
+    # CREATE DATA SOURCE
+    $promotionalMessagesItem = Create-Item -Path $dataFolderPath -Name "Promotional Messages" -TemplateId $promotionalMessagesFolderTemplateId
+    Write-Host "Path: $($promotionalMessagesItem.ItemPath)"
+    
+    Create-Item -Path $promotionalMessagesItem.ItemPath -Name "Deposit" -TemplateId $promotionalMessageTemplateId
+    Create-Item -Path $promotionalMessagesItem.ItemPath -Name "Holiday With Confidence less than 28" -TemplateId $promotionalMessageTemplateId
+    Create-Item -Path $promotionalMessagesItem.ItemPath -Name "Holiday With Confidence more than 28" -TemplateId $promotionalMessageTemplateId
+    
+    # ADD RENDERING with DATA_SOURCE to MixedResultList
+    $pageItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/MixedResultList" -ErrorAction SilentlyContinue
+    
+    if($pageItem -ne $null) {
+        $searchResultsRenderingId = "{76C32F3D-E1E3-4213-BD40-207B954EFF42}"
+        $searchResultsRendering = Get-Rendering -Item $pageItem | Where-Object {$_.ItemId -eq $searchResultsRenderingId}
+        $searchResultsRenderingIndex = Get-Rendering-Index -Item $pageItem -RenderingItemId $searchResultsRenderingId
+    
+        $promoMessagesRenderingId = "{417834B3-FCF9-434D-BD14-DA73AEBB48D7}"
+        $promoMessagesPlaceholder = $searchResultsRendering.Placeholder + '/promotional-messages-' + $searchResultsRendering.UniqueId + '-0'
+        $promoMessagesRenderingIndex = $searchResultsRenderingIndex + 1
+        $rendering = Get-Rendering -Item $pageItem -PlaceHolder $promoMessagesPlaceholder | Where-Object {$_.ItemId -eq $promoMessagesRenderingId}
+        
+        if ($rendering -eq $null) {
+            $promoMessagesRendering = Get-Item -Path "master:" -ID $promoMessagesRenderingId | New-Rendering
+            Add-Rendering -Item $pageItem -Instance $promoMessagesRendering -DataSource $promotionalMessagesItem.ItemPath -Placeholder $promoMessagesPlaceholder -Index $promoMessagesRenderingIndex
+            Write-Host "Promotional Messages Rendering added to MixedResultList"
+        }
+    }
+    
+    # ADD RENDERING with DATA_SOURCE to Shortlists
+    $shortlistsPageItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Shortlists" -ErrorAction SilentlyContinue
+    
+    if($shortlistsPageItem -ne $null) {
+        $shortListsRenderingId = "{35AC69B5-ED99-4141-9653-47876BA4233F}"
+        $shortListsRendering = Get-Rendering -Item $shortlistsPageItem | Where-Object {$_.ItemId -eq $shortListsRenderingId}
+    
+        $promoMessagesRenderingId = "{417834B3-FCF9-434D-BD14-DA73AEBB48D7}"
+        $promoMessagesPlaceholder = '/body/promotional-messages-' + $shortListsRendering.UniqueId + '-0'
+    
+        $rendering = Get-Rendering -Item $shortlistsPageItem -PlaceHolder $promoMessagesPlaceholder | Where-Object {$_.ItemId -eq $promoMessagesRenderingId}
+        
+        if ($rendering -eq $null) {
+            $promoMessagesRendering = Get-Item -Path "master:" -ID $promoMessagesRenderingId | New-Rendering
+            Add-Rendering -Item $shortlistsPageItem -Instance $promoMessagesRendering -DataSource $promotionalMessagesItem.ItemPath -Placeholder $promoMessagesPlaceholder
+            Write-Host "Promotional Messages Rendering added to Shortlists"
+        }
+    }
+    
+    
+    # ADD datasource for Promotional Messages to all Promo Pages
+    function update-promo-messages-datasource($path, $folderName){
+        $allItems = Get-ChildItem -Path "$($path)/$folderName" -Recurse
+        
+        ForEach ($item in $allItems) {
+    	    if ($item.TemplateName -eq 'Promo Page') {
+    	        $renderPromotionalMessages = Get-Item -Path "master:" -Id "{417834B3-FCF9-434D-BD14-DA73AEBB48D7}"
+                $renderingPromotionalMessages = Get-Rendering -Item $item -Rendering $renderPromotionalMessages
+    	        
+    	        if ($renderingPromotionalMessages -ne $null) {
+    	            Set-Rendering -Item $item -Instance $renderingPromotionalMessages -DataSource $promotionalMessagesItem.ItemPath
+                    Write-Host "Update rendering"($item.Name)
+    	        }
+    	    }
+        }
+    }
+    
+    update-promo-messages-datasource -Path "/sitecore/content/EasyJet/Holidays/Home/" -FolderName "Root"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4690
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200326T105750Z

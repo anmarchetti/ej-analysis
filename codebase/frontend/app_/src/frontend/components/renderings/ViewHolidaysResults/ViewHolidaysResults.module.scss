@@ -1,0 +1,46 @@
+.viewHolidaysContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 32px 0 48px;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        margin: 16px 0 24px;
+    }
+}
+
+.description {
+    display: inline;
+    font-size: 24px;
+    line-height: 32px;
+
+    @include media-breakpoint-down(md) {
+        font-size: 16px;
+        line-height: 22px;
+    }
+}
+
+.textWrapper {
+    margin-right: 32px;
+    display: flex;
+
+    @include media-breakpoint-down(md) {
+        margin-right: 0;
+        margin-bottom: 12px;
+    }
+}
+
+.button {
+    &:global(.btn) {
+        padding: 20px 40px;
+        font-size: 18px;
+        line-height: 115%;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+        }
+    }
+}

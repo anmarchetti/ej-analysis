@@ -1,0 +1,125 @@
+.wrapper {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    max-width: 300px;
+    height: 100%;
+
+    @include media-breakpoint-down(md) {
+        align-items: flex-start;
+        width: 100%;
+        max-width: unset;
+    }
+}
+
+.actionWrapper {
+    width: 100%;
+}
+
+.priceInfo {
+    font-size: 18px;
+    line-height: 1.3;
+    color: $colorBlackLight;
+    text-align: right;
+
+    @include media-breakpoint-down(md) {
+        text-align: left;
+    }
+
+    strong {
+        font-size: 24px;
+        line-height: 1.3;
+
+        @include media-breakpoint-down(md) {
+            font-size: 18px;
+        }
+    }
+}
+
+.speedyBoarding {
+    display: block;
+    margin-top: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.4;
+    color: $colorBlackLight;
+    text-align: right;
+
+    @include media-breakpoint-down(md) {
+        justify-content: left;
+        font-size: 14px;
+        line-height: 1.3;
+        text-align: left;
+    }
+}
+
+.speedyIcon {
+    flex-shrink: 0;
+    width: 13px;
+    height: auto;
+    margin-right: 4px;
+}
+
+.buttonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 12px;
+
+    @include media-breakpoint-down(md) {
+        justify-content: center;
+    }
+}
+
+.button {
+    min-width: 260px;
+    padding: 16px 24px;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+    }
+}
+
+.buttonText {
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.selectedLabel {
+    min-width: 260px;
+    font-weight: 700;
+    line-height: 50px;
+    text-align: center;
+
+    @include media-breakpoint-down(md) {
+        font-size: 16px;
+    }
+
+    svg {
+        margin-left: 10px;
+    }
+}
+
+.urgencyMessageWrapper {
+    display: flex;
+    align-self: flex-end;
+    margin-bottom: 16px;
+
+    @include media-breakpoint-down(md) {
+        margin-right: auto;
+        margin-left: 0;
+    }
+}
+
+.urgencyMessage {
+    margin-top: 8px;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+}
+
+.flexColumn {
+    flex-direction: column;
+}

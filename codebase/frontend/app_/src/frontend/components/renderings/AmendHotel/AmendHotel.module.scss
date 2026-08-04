@@ -1,0 +1,51 @@
+.content {
+    h2 {
+        margin: 16px 0;
+        font-family: $body_font-family;
+        font-size: 24px;
+        line-height: 28px;
+        color: $clrTextMain;
+        text-transform: uppercase;
+
+        @include media-breakpoint-up(md) {
+            margin: 0 0 24px;
+            font-size: 32px;
+        }
+    }
+
+    h3 {
+        margin-top: 0;
+        font-family: $body_font-family;
+        font-size: 16px;
+        color: $clrTextMain;
+
+        @include media-breakpoint-up(md) {
+            font-size: 24px;
+        }
+    }
+}
+
+.yourHotelSection {
+    @include media-breakpoint-up(md) {
+        margin: 40px 0;
+        border-bottom: 1px solid $colorGeyser;
+    }
+}
+
+.alternativeHotelsSection {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    
+    @include media-breakpoint-up(md) {
+        gap: 24px;
+    }
+}
+
+.changeFeeMargin {
+    margin-bottom: 24px;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 16px;
+    }
+}

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 sp1 (http://www.altova.com) by Kim Howells (Anite Business Systems) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="AtComRes/BookingSearchResponse" xmlns:p2="AtComRes/Common" targetNamespace="AtComRes/BookingSearchResponse" elementFormDefault="qualified">
+	<xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+	<xs:element name="BookingSearchResponse">
+		<xs:annotation>
+			<xs:documentation>response with all bookings matching the search criteria in the BookingSearchRequest.
+            Each booking is returned only once, even if an OR relation matches more than once (e.g. participant lastname)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="p2:AtcomresBaseResponse">
+					<xs:sequence>
+						<xs:element ref="ns1:BookingSearchResponseEntry" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!--BookingSearchResponseEntry definition-->
+	<xs:element name="BookingSearchResponseEntry">
+		<xs:annotation>
+			<xs:documentation>BookingSearchResponseEntry</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="p2:Bkg_Dt_Tm">
+					<xs:annotation>
+						<xs:documentation>date/time of the booking</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="p2:Amd_Dt_Tm" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>date/time of the latest amendment.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="p2:BkgNum">
+					<xs:annotation>
+						<xs:documentation>booking number</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="p2:BkgSts">
+					<xs:annotation>
+						<xs:documentation>booking status</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="p2:ResSts" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>reservation status</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="p2:Bkg_Exp_No" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>number of the travel agent that performed the booking.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Pax_Lastname" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>lastname of first active participant in the booking, if no lastname was specified in the BookingSearchRequest, otherwise the search lastname.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Earliest_Startdate" type="xs:date">
+					<xs:annotation>
+						<xs:documentation>The earliest startdate of all services in the booking</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Latest_Enddate" type="xs:date">
+					<xs:annotation>
+						<xs:documentation>the latest enddate of all service in the booking.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="p2:Prd_Cd">
+					<xs:annotation>
+						<xs:documentation>
+If a product code was specified in the BookingSearchRequest: the search product code.
+Else: Product code of the earliest service of type (packagetour-)accomodation or 
+(packagetour-)roundtrip of the participant from element Pax_Lastname in the booking. 
+If none is found, the earliest extra service.
+                        </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="p2:Prom">
+					<xs:annotation>
+						<xs:documentation>Promotion of the booking.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Pay_Type" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>some information about the payment type.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:string">
+								<xs:attribute name="CCType" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>credit card type, for example VISA</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="Card_Cd" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>credit card code, for example TCG</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="AccPay" type="xs:boolean" default="false">
+									<xs:annotation>
+										<xs:documentation>if true, indicates bank account payment</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="Agt_Pay" type="xs:boolean" default="false">
+									<xs:annotation>
+										<xs:documentation>if true, indicates agency payment</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="Payment_Form_Pay" type="xs:boolean" default="false">
+									<xs:annotation>
+										<xs:documentation>if true, indicates payment_form payment</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="p2:Agt_No" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Agency number for this booking, needed for booking overview for customer</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Spnr_Cd" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Musyk travel plan code. The travel plan is the parent of an @ComRes booking made through this interface.
+				   It's only necessary to send the SPNR code once when making the booking. The SPNR code is not an identifying part of the booking primary key.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="[A-Z][0-9]{7}">
+								<xs:annotation>
+									<xs:documentation>The code consists of a character (without 'O') and a seven digit number. Codes starting with a 'T' are expected to be
+								 special test bookings. The code is not unique throughout all bookings, since multiple @ComRes bookings can belong to the same SPNR
+								 (Super Passenger Name Record).</xs:documentation>
+								</xs:annotation>
+							</xs:pattern>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element ref="p2:Reservation_Locked" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

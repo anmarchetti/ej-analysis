@@ -1,0 +1,33 @@
+﻿---
+ID: "3cb5a568-5d20-49f7-8f37-f03a8b18970e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14591 Update Filters Dictionary"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Update-Dictionary ($path,$phrase) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    
+    	if ($item -ne $null) {
+    		$item.Editing.BeginEdit()
+    		$item["Phrase"] = $phrase
+    		$item.Editing.EndEdit() | Out-Null
+    
+    		Write-Host $item['Phrase'] "updated"
+    	}
+    }
+    
+    Update-Dictionary -Path "master:/sitecore/content/EasyJet/Holidays/Dictionary/Filter Types/Labels/Outbound Departure Time" -Phrase "Outbound Departure Time"
+    Update-Dictionary -Path "master:/sitecore/content/EasyJet/Holidays/Dictionary/Filter Types/Labels/Inbound Departure Time" -Phrase "Inbound Departure Time" 
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210901T114202Z

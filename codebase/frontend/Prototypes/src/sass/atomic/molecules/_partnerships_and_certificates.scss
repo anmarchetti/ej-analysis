@@ -1,0 +1,79 @@
+.partnerships-block {
+    margin: 30px 0;
+
+    @include media-breakpoint-down(md) {
+        margin: 10px 0;
+        padding-bottom: 0;
+    }
+
+    &__title {
+        margin: 0;
+        font-size: 36px;
+        line-height: 70px;
+        text-transform: uppercase;
+
+        @include media-breakpoint-down(md) {
+            font-size: 24px;
+            line-height: 33px;
+        }
+    }
+
+    &__container {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 35px;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            margin-top: 25px;
+        }
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        width: 47%;
+        margin-bottom: 50px;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            margin-bottom: 45px;
+        }
+
+        &:nth-child(2n+1) {
+            margin-right: 6%;
+
+            @include media-breakpoint-down(md) {
+                margin-right: 0;
+            }
+        }
+
+        &__icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 70px;
+        }
+
+        &__icon  img{
+            display: block;
+            min-height: 50px;
+            max-height: 95px;
+            max-width: 185px;
+            width: auto;
+            height: auto;
+        }
+
+        &__description {
+            margin-top: 30px;
+            font-size: 18px;
+            line-height: 30px;
+
+            @include media-breakpoint-down(md) {
+                margin-top: 20px;
+                font-size: 15px;
+                line-height: 23px;
+            }
+        }
+    }
+}

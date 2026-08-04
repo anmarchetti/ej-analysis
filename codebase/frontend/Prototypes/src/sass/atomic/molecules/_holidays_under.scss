@@ -1,0 +1,93 @@
+.holidays-under {
+    padding: 90px 0;
+
+    @include media-breakpoint-down(md) {
+        padding: 50px 0;
+    }
+
+    .holidays-under__title {
+        margin: 0 0 30px;
+        font-family: $fontRoundedHeadline;
+        font-size: 36px;
+        font-weight: 700;
+        text-align: center;
+        text-transform: uppercase;
+
+        @include media-breakpoint-down(md) {
+            margin: 0;
+            font-size: 20px;
+            line-height: 25px;
+        }
+    }
+
+    .holidays-under__description {
+        margin-bottom: 50px;
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        line-height: 24px;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            margin: 20px 0 30px;
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
+
+    .holidays-under__pills {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        @include media-breakpoint-down(md) {
+            width: 350px;
+            margin: 0 auto;
+        }
+
+        @include media-breakpoint-down(sm) {
+            width: 300px;
+        }
+    }
+
+    .holidays-under__pill {
+        display: flex;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: space-between;
+        min-width: 180px;
+        margin: 0 10px 20px;
+        padding: 11px 25px;
+        font-size: 25px;
+        color: $colorBlack;
+        background-color: $colorWhite;
+        border: 1px solid $colorGeyser;
+        border-radius: 110px;
+
+        @include media-breakpoint-down(md) {
+            min-width: 165px;
+            margin: 0 5px 10px;
+            padding: 10px 20px;
+            font-size: 20px;
+            line-height: 20px;
+        }
+
+        @include media-breakpoint-down(sm) {
+            min-width: 135px;
+        }
+
+        .pp-label {
+            font-size: 20px;
+
+            @include media-breakpoint-down(md) {
+                font-size: 16px;
+            }
+        }
+
+        svg {
+            width: 10px;
+            height: 16px;
+            margin-left: 10px;
+            color: $clrEjOrange;
+        }
+    }
+}

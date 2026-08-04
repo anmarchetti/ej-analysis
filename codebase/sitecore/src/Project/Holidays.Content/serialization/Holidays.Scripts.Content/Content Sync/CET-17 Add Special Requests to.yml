@@ -1,0 +1,162 @@
+﻿---
+ID: "0bc8bd07-4de3-4dd5-85ee-3caf1ed98be2"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CET-17 Add Special Requests to pre and indestination"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    
+    function updateSpecialRequest() {
+    	
+    	$itemPath = "/sitecore/content/EasyJet/Holidays/Data/Special Requests"
+    	$item  = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+    
+    	if ($item -eq $null) {
+    		Write-Host "Missing $($itemPath) EN language."
+    		return;
+    	}
+    	
+    	
+    	@('en') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "ViewBookingContentRequestTitle" -Value "Special Requests"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "ViewBookingContentRequestSubtitle" -Value "Please note, requests are subject to hotel availability and discretion"
+    	}
+    
+    	@('de-CH', 'de-DE') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "ViewBookingContentRequestTitle" -Value "Besondere Anfragen"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "ViewBookingContentRequestSubtitle" -Value "Bitte beachten Sie, dass Anfragen von der Verfügbarkeit und dem Ermessen des Hotels abhängen"
+    	}
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "ViewBookingContentRequestTitle" -Value "Demandes spéciales"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "ViewBookingContentRequestSubtitle" -Value "Veuillez noter que les demandes sont soumises à la disponibilité et à la discrétion de l'hôtel"
+    	}
+    	
+    	Write-Host "Update translation for $($itemPath)"
+    }
+    
+    
+    
+    function createSpecialRequestRendering($pagePath) {
+    	$specialRequestRenderingId = "{2A35FBE1-E039-4D16-B301-37FD96B0C10F}"
+    	$datasourcePath = '/sitecore/content/EasyJet/Holidays/Data/Special Requests'
+        $placeholder = "/body/booking-context-{0b3a1889-94df-4381-aaef-272a10e79e98}-0/masonry-section-{b93f1826-b25c-47d5-8fe3-dffe24e63a17}-0"
+    	
+        $page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    	$specialRequestRendering = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $specialRequestRenderingId }
+    	
+    	if ($specialRequestRendering -ne $null) {
+    	    Write-Host "Special Request Rendering already exists"
+    		return
+    	}
+    	
+    	# Add Masonry Wrapper Item
+    	$masonryRenderingId = "{630D2676-483E-420D-8F04-4C15212F3EFF}" 
+    	$masonryRenderingPath = "/sitecore/layout/Renderings/Feature/Page Structure/Masonry/Masonry Wrapper Item"
+    	$masonryRendering = Get-Item -Database "master" -Path $masonryRenderingPath | New-Rendering -Placeholder $placeholder 
+    	
+    	Add-Rendering -Item $page -Instance $masonryRendering -PlaceHolder $placeholder -Index 14
+    	
+    	# Get newly added rendering
+    	$page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    	$renderings = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $masonryRenderingId }
+    	$lastRendering = $renderings[5]
+    	
+    	$specialRequestRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Special Requests"
+    	$specialRequestRendering = Get-Item -Database "master" -Path $specialRequestRenderingPath | New-Rendering -Placeholder "$($placeholder)/masonry-item-$($lastRendering.UniqueId)-0"
+    	
+    	Add-Rendering -Item $page -Instance $specialRequestRendering -PlaceHolder "$($placeholder)/masonry-item-$($lastRendering.UniqueId)-0" -DataSource $datasourcePath -Parameter @{ "HideSpecialAssistance" = "1"; "IsSleekDesign" = "1" } -Index 15
+    	
+    	Write-Host "Added Special Request Rendering to $($pagePath)"
+    }
+    
+    function updateRenderingOrder($pagePath)
+    {
+    	# Add Masonry Wrapper Item
+    	$masonryRenderingId = "{630D2676-483E-420D-8F04-4C15212F3EFF}" 
+    
+    	# Get newly added rendering
+    	$page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    	$renderings = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $masonryRenderingId }
+    		
+    	# Hotel wrapper
+    	$hotelSummaryWrapperRendering = $renderings[0]
+    	
+    	Set-Rendering -Item $page -Instance $hotelSummaryWrapperRendering -Parameter @{ "ItemOrderOnMobile" = "10" }
+    	
+    	# Contact us
+    	$contactUsWrapperRendering = $renderings[1]
+    	
+    	if ($contactUsWrapperRendering -ne $null) {
+    	    Set-Rendering -Item $page -Instance $contactUsWrapperRendering  -Parameter @{ "ItemOrderOnMobile" = "60" }
+    	}
+    	
+    	# Itinerary
+    	$ItineraryWrapperRendering = $renderings[2]
+    	
+    	if ($ItineraryWrapperRendering -ne $null) {
+    	    Set-Rendering -Item $page -Instance $ItineraryWrapperRendering  -Parameter @{ "ItemOrderOnMobile" = "1" }
+    	}
+    	
+    	# Travel Checklist
+    	$travelChecklistWrapperRendering = $renderings[3]
+    	
+    	if ($travelChecklistWrapperRendering -ne $null) {
+    	    Set-Rendering -Item $page -Instance $travelChecklistWrapperRendering  -Parameter @{ "ItemOrderOnMobile" = "30" }
+    	}
+    	
+    	# Travel Checklist
+    	$specialRequestWrapperRendering  = $renderings[4]
+    	
+    	if ($specialRequestWrapperRendering -ne $null) {
+    	    Set-Rendering -Item $page -Instance $specialRequestWrapperRendering  -Parameter @{ "ItemOrderOnMobile" = "40" }
+    	}
+    	
+    	# Excursions
+    	$excursionsWrapperRendering  = $renderings[5]
+    	
+    	if ($excursionsWrapperRendering -ne $null) {
+    	    Set-Rendering -Item $page -Instance $excursionsWrapperRendering  -Parameter @{ "ItemOrderOnMobile" = "50" }
+    	}
+    	
+    	Write-Host "Update rendering order on $($pagePath)"
+    }
+    
+    updateSpecialRequest
+    createSpecialRequestRendering -pagePath '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel'
+    createSpecialRequestRendering -pagePath '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination'
+    updateRenderingOrder -pagePath '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel'
+    updateRenderingOrder -pagePath '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination'
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240417T102022Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,25 @@
+.failureBanner {
+    margin-top: 16px;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.2;
+
+    h2 {
+        color: $clrTextMain;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: 10px;
+    }
+
+    &.withoutShadow {
+        box-shadow: none;
+        border: 1px solid $colorMercury;
+    }
+}
+
+.infoMessage {
+    @include media-breakpoint-down(md) {
+        margin-top: 16px;
+    }
+}

@@ -1,0 +1,33 @@
+.container {
+    border-radius: 6px;
+    box-shadow: 0 0 13px 0 rgba(178, 175, 175, 0.5);
+}
+
+.tabCollapseBtn {
+    padding: 20px;
+    line-height: 1.15;
+    border-top: none;
+    border-bottom: 2px solid $colorGrayLighter;
+    border-radius: 0;
+
+    @include media-breakpoint-up(lg) {
+        border-bottom: none;
+    }
+
+    svg {
+        transform: rotate(270deg);
+    }
+}
+
+.drawer {
+    display: none;
+    background-color: $colorGrayLighter;
+
+    :global(.drawer__actions) {
+        padding: 0;
+    }
+}
+
+.open {
+    display: block;
+}

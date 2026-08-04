@@ -1,0 +1,57 @@
+/* stylelint-disable string-quotes */
+.modal-dialog {
+    [class~='popup__content'] {
+        border-radius: 4px;
+    }
+
+    [class~='popup__body'] {
+        padding: 16px;
+    }
+
+    [class~='popup__footer'] {
+        padding: 16px;
+        border-top: 1px solid $colorGrayDark;
+
+        [class~='btn'] {
+            min-width: 200px;
+            padding: 12px 16px;
+            border-radius: 4px;
+            @include media-breakpoint-down(lg) {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    }
+
+    .modal-title {
+        max-width: calc(100% - 20px);
+        margin-top: 0;
+        margin-bottom: 16px;
+        font-family: $fontRoundedHeadline;
+        font-size: 32px;
+        font-weight: 400;
+        text-transform: uppercase;
+        @include media-breakpoint-down(lg) {
+            font-size: 24px;
+        }
+    }
+
+    :global a[href^='tel:'] {
+        display: inline-block;
+        margin-bottom: 8px;
+        font-size: 24px;
+        line-height: 32px;
+    }
+
+    :global(p) {
+        margin-top: 0;
+    }
+}
+
+.btn {
+    min-width: 200px;
+    padding: 16px 24px;
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 4px;
+}

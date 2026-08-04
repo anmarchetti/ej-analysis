@@ -1,0 +1,286 @@
+.stripeContent {
+    --roundel-size: 274px;
+    --roundel-offset-right: 67px;
+    --roundel-offset-bottom: 110px;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    align-items: flex-start;
+    width: 769px;
+    min-width: 400px;
+    max-width: 100%;
+    padding: 40px;
+    overflow: hidden;
+    background-color: $colorWhite;
+    border-radius: 4px;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        min-width: auto;
+        padding: 24px;
+    }
+
+    &.secondaryBox {
+        --roundel-size: 220px;
+        --roundel-offset-right: 50px;
+        --roundel-offset-bottom: 75px;
+
+        min-width: auto;
+        padding: 20px;
+
+        @include media-breakpoint-down(md) {
+            padding: 18px 7px 12px;
+        }
+    }
+}
+
+.header {
+    flex-grow: 1;
+    width: 100%;
+
+    :global {
+        .hero-banner__title,
+        .hero-banner__subtitle {
+            color: $clrTextMain;
+            text-shadow: none;
+        }
+
+        .hero-banner__subtitle {
+            margin-top: 18px;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        text-align: center;
+    }
+}
+
+.secondaryBox .header {
+    :global {
+        .hero-banner__subtitle {
+            margin-top: 10px;
+            font-size: 1.125rem;
+
+            @include media-breakpoint-down(md) {
+                font-size: 0.875rem;
+            }
+        }
+    }
+
+    z-index: 1;
+
+    @include media-breakpoint-down(md) {
+        order: 1;
+    }
+}
+
+.slimHeader {
+    :global {
+        .hero-banner__subtitle {
+            max-width: calc(100% - var(--roundel-size) + var(--roundel-offset-right));
+
+            @include media-breakpoint-down(md) {
+                max-width: 100%;
+            }
+        }
+    }
+}
+
+.secondaryBox .slimHeader {
+    :global {
+        .hero-banner__title {
+            max-width: calc(100% - var(--roundel-size) + var(--roundel-offset-right));
+
+            @include media-breakpoint-down(md) {
+                max-width: 100%;
+            }
+        }
+    }
+}
+
+.roundelWrapper {
+    position: relative;
+    align-self: flex-end;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        margin-top: 116px;
+    }
+}
+
+.secondaryBox .roundelWrapper {
+    @include media-breakpoint-down(md) {
+        order: 2;
+        margin-top: 70px;
+    }
+}
+
+.roundel {
+    position: absolute;
+    right: calc(-1 * var(--roundel-offset-right));
+    bottom: calc(-1 * var(--roundel-offset-bottom));
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: var(--roundel-size);
+    height: var(--roundel-size);
+    padding: 20px 25px 70px 10px;
+    overflow: hidden;
+    text-align: center;
+    background: $colorConcrete;
+    border-radius: 50%;
+    transform: rotate(4.49deg);
+
+    span {
+        font-family: $fontRoundedDemy;
+        font-size: 1.75rem;
+        font-weight: 400;
+        line-height: 1.14;
+
+        @include media-breakpoint-down(md) {
+            font-size: 1.25rem;
+        }
+    }
+
+    > span:first-child {
+        width: 80%;
+
+        @include media-breakpoint-down(md) {
+            width: 70%;
+        }
+    }
+
+    .textContainer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: center;
+    }
+
+    .number {
+        margin: 0 2px;
+        font-size: 3rem;
+
+        @include media-breakpoint-down(md) {
+            font-size: 2rem;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        right: 50%;
+        bottom: -130px;
+        width: 254px;
+        height: 254px;
+        padding: 20px 10px 110px;
+        transform: translateX(50%) rotate(4.49deg);
+    }
+}
+
+.mainBox .roundel {
+    span {
+        font-size: 1.375rem;
+
+        @include media-breakpoint-down(md) {
+            font-size: 1rem;
+        }
+    }
+
+    .number {
+        margin: 0 2px;
+        font-size: 3rem;
+
+        @include media-breakpoint-down(md) {
+            font-size: 2rem;
+        }
+    }
+}
+
+.secondaryBox .roundel {
+    --roundel-size: 204px;
+
+    padding: 20px 30px 55px 10px;
+
+    span {
+        font-size: 1rem;
+
+        @include media-breakpoint-down(md) {
+            font-size: 0.75rem;
+        }
+    }
+
+    .number {
+        font-size: 2.25rem;
+
+        @include media-breakpoint-down(md) {
+            font-size: 1.5rem;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        bottom: -190px;
+        padding: 10px 30px 180px;
+        transform: translateX(50%);
+    }
+}
+
+.control {
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    min-width: 240px;
+    margin-top: 16px;
+    padding: 15px;
+    font-family: $fontRoundedDemy;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: $colorWhite;
+    text-align: center;
+    background: $colorOrange;
+    border: 0;
+    border-radius: $box_border-radius_md;
+
+    &:active,
+    &:focus,
+    &:hover,
+    &:visited {
+        color: $colorWhite;
+    }
+
+    &:hover {
+        background-color: $clrEjOrangeShadow;
+    }
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        line-height: 1;
+    }
+}
+
+.secondaryBox .control {
+    min-width: 160px;
+    margin-top: 6px;
+    padding: 6px;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: $colorOrange;
+    background: $colorWhite;
+    border: 2px solid $colorOrange;
+
+    &:hover {
+        color: $colorWhite;
+        background-color: $colorOrange;
+    }
+
+    @include media-breakpoint-down(md) {
+        order: 3;
+        min-width: auto;
+        font-size: 0.875rem;
+    }
+}

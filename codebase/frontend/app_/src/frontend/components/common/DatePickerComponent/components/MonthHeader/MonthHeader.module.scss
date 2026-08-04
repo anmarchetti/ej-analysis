@@ -1,0 +1,92 @@
+@import "frontend/components/common/DatePickerComponent/DatePickerVariables.module";
+
+$arrowPosition: 36px;
+$changeMonthButton: 40px;
+$paddingBetweenChangeMonthButtonAndMonthName: 34px;
+
+.header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: calc($changeMonthButton + $arrowPosition + $paddingBetweenChangeMonthButtonAndMonthName);
+    margin-bottom: 37px;
+
+    :global(.react-datepicker-wrapper) {
+        align-self: flex-start;
+        margin-bottom: auto;
+    }
+
+    @include media-breakpoint-down(md) {
+        height: $arrowPosition;
+    }
+}
+
+.monthName {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $fontRoundedDemy;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.28;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(xs) {
+        margin-top: 0;
+    }
+}
+
+.button {
+    z-index: 1;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: $arrowPosition;
+    height: $arrowPosition;
+    padding: 0;
+    background: $colorWhite;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    box-shadow: 0 0 4px 0 rgba($colorBlack, 0.25);
+    cursor: pointer;
+
+    svg {
+        color: $colorOrange;
+    }
+}
+
+.prevButton {
+    svg {
+        transform: rotate(180deg);
+    }
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.changeMonthButton {
+    min-width: auto;
+    height: $changeMonthButton;
+    padding: 8px 16px;
+    font-family: $fontRoundedDemy;
+    font-size: 14px;
+    color: $colorOrange;
+
+    @include media-breakpoint-down(xs) {
+        border-color: $colorGeyser;
+    }
+}
+
+.wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    align-self: center;
+    justify-content: space-between;
+    width: calc($dayWidth * 7);
+    height: $arrowPosition;
+    margin-top: $paddingBetweenChangeMonthButtonAndMonthName;
+}

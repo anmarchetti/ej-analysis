@@ -1,0 +1,90 @@
+.paxMixPopup {
+    .guests {
+        padding-bottom: 16px;
+    }
+}
+
+.groupBooking {
+    .guests {
+        gap: 25px 0;
+    }
+}
+
+.guests {
+    display: flex;
+    flex-direction: column;
+    gap: 20px 0;
+}
+
+.icon {
+    display: block;
+    width: 28px;
+    height: 28px;
+    padding: 2px;
+    color: $clrEjOrangeLight;
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+.redIcon {
+    color: $colorRed;
+}
+
+.removeRoom {
+    display: none;
+    margin-left: 15px;
+    padding: 0 15px !important;
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    font-weight: inherit !important;
+    line-height: inherit;
+    color: $clrEjOrange;
+    text-transform: none;
+    border: none !important;
+    border-left: 1px solid $colorAlto !important;
+    border-radius: 0;
+    cursor: pointer;
+}
+
+.room + .room {
+    margin-top: 25px;
+    border-top: 1px solid $colorGray;
+
+    .roomNumber {
+        margin-top: 25px;
+
+        .removeRoom {
+            display: inline-block;
+        }
+    }
+}
+
+.roomNumber {
+    margin-bottom: 8px;
+    font-family: $fontRoundedDemy;
+    font-size: 16px;
+    line-height: 1;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 20px;
+    }
+}
+
+.room {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.errorMessage {
+    margin: 16px 0 16px 3px;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.25);
+
+    @include media-breakpoint-down(md) {
+        margin: 0 0 20px;
+    }
+}

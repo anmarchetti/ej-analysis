@@ -1,0 +1,149 @@
+﻿---
+ID: "1588f19f-7a21-4e91-8aad-d743de77a1af"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-74 - Disruption alerts content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $postTravelPageComponentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components"
+    $postTravelPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel"
+    
+    $disruptionBannerRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/Disruption Banner"
+    $disruptionDataSourcePath = $postTravelPageComponentPath + '/Disruptions'
+    
+    $disruptionFolderTemplateId = "{E65356A6-532A-42D5-8FD7-4B56E0B8604C}"
+    $disruptionItemTemplateId = "{CB93BF17-9229-4C69-B138-A9897E0D1EBE}"
+    
+    function Create-Item ($path, $template) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+            $item = New-Item -Path $path -Name $itemName -ItemType $template
+            Write-Host "Item" $item.Name "successfully created"
+        } else {
+            Write-Host "Item" $item.Name "already exist"
+        }
+        return $item
+    }
+    
+    function Set-Translation-Value($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            $item = Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+            Write-Host "Created" $language "version for" $item.Name "item"
+        } else {
+            Write-Host $language "version for Item" $item.Name "already exist"
+        }
+    
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+            Write-Host "Field" $key "for" $item.Name "item updated with value" $translation
+        }
+    }
+    
+    function Create-Disruptions-Folder-Content() {
+        $disruptionFolderContent = Create-Item -Path $disruptionDataSourcePath -Template $disruptionFolderTemplateId
+        $disruptionFolderContent.Editing.BeginEdit()
+        $disruptionFolderContent["ExpandButtonAriaLabel"] = "Expand disruption alert"
+        $disruptionFolderContent["CollapseButtonAriaLabel"] = "Collapse disruption alert"
+        $disruptionFolderContent.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $disruptionDataSourcePath -Language 'fr-FR' -Key 'ExpandButtonAriaLabel' -Translation "Agrandir la bannière de perturbation"
+        Set-Translation-Value -ItemPath $disruptionDataSourcePath -Language 'fr-FR' -Key 'CollapseButtonAriaLabel' -Translation "Réduire l'alerte de perturbation"
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $disruptionDataSourcePath -Language 'de-DE' -Key 'ExpandButtonAriaLabel' -Translation "Störungsbanner erweitern"
+        Set-Translation-Value -ItemPath $disruptionDataSourcePath -Language 'de-DE' -Key 'CollapseButtonAriaLabel' -Translation "Störungsbanner reduzieren"
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $disruptionDataSourcePath -Language 'fr-CH' -Key 'ExpandButtonAriaLabel' -Translation "Agrandir la bannière de perturbation"
+        Set-Translation-Value -ItemPath $disruptionDataSourcePath -Language 'fr-CH' -Key 'CollapseButtonAriaLabel' -Translation "Réduire l'alerte de perturbation"
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $disruptionDataSourcePath -Language 'de-CH' -Key 'ExpandButtonAriaLabel' -Translation "Störungsbanner erweitern"
+        Set-Translation-Value -ItemPath $disruptionDataSourcePath -Language 'de-CH' -Key 'CollapseButtonAriaLabel' -Translation "Störungsbanner reduzieren"
+    }
+    
+    function Create-Disruption-Item($level, $link) {
+        $path = $postTravelPageComponentPath + '/Disruptions/Disruption L' + $level
+        $disruptionL1Content = Create-Item -Path $path -Template $disruptionItemTemplateId
+        $disruptionL1Content.Editing.BeginEdit()
+        $disruptionL1Content["Visible"] = "1"
+        $disruptionL1Content["DisruptionLevel"] = $level
+        $disruptionL1Content["Title"] = "Experienced a lengthy delay or unfortunate disruption?"
+        $disruptionL1Content["Description"] = "We are sorry that you may have been caught up in an unplanned disruption. If you need further support then visit our help centre for more information <a href=`"$($link)`" target=`"_blank`">Get Help</a>."
+        $disruptionL1Content.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Visible' -Translation "1"
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Title' -Translation "Vous avez subi un retard important ou une perturbation malheureuse ?"
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Description' -Translation "Nous sommes désolés que vous ayez été pris dans une perturbation imprévue. Si vous avez besoin d'un soutien supplémentaire, visitez notre centre d'aide pour plus d'informations <a href=`"$($link)`" target=`"_blank`">Obtenir de l'aide</a>."
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Visible' -Translation "1"
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Title' -Translation "Hatten Sie eine längere Verspätung oder eine unglückliche Unterbrechung?"
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Description' -Translation "Es tut uns leid, dass Sie von einer ungeplanten Unterbrechung betroffen sind. Wenn Sie weitere Unterstützung benötigen, besuchen <a href=`"$($link)`" target=`"_blank`">Sie unser Hilfezentrum</a> für weitere Informationen."
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Visible' -Translation "1"
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Title' -Translation "Vous avez subi un retard important ou une perturbation malheureuse ?"
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Description' -Translation "Nous sommes désolés que vous ayez été pris dans une perturbation imprévue. Si vous avez besoin d'un soutien supplémentaire, visitez notre centre d'aide pour plus d'informations <a href=`"$($link)`" target=`"_blank`">Obtenir de l'aide</a>."
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Visible' -Translation "1"
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Title' -Translation "Hatten Sie eine längere Verspätung oder eine unglückliche Unterbrechung?"
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Description' -Translation "Es tut uns leid, dass Sie von einer ungeplanten Unterbrechung betroffen sind. Wenn Sie weitere Unterstützung benötigen, besuchen <a href=`"$($link)`" target=`"_blank`">Sie unser Hilfezentrum</a> für weitere Informationen."
+    }
+    
+    function Update-Rendering() {
+        $postTravelPageItem = Get-Item -Path $postTravelPagePath
+        $disruptionBannerRendering = Get-Item -Path $disruptionBannerRenderingPath
+        $disruptionDataSource = Get-Item -Path $disruptionDataSourcePath
+        $disruptionPageRendering = Get-Rendering -Item $postTravelPageItem -Rendering $disruptionBannerRendering
+        
+        if ($disruptionPageRendering -ne $null) {
+            Set-Rendering -Item $postTravelPageItem -Instance $disruptionPageRendering -Datasource $disruptionDataSource.ID
+            Write-Host "Disruption Banner data source updated on Post Travel page";
+        }
+    }
+    
+    function Remove-Old-Content() {
+        $disruptionOldDataSourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Disruption Banner"
+        $item = Get-Item -Path $disruptionOldDataSourcePath -ErrorAction SilentlyContinue
+    
+        if($item -ne $null) {
+            Remove-Item -Path $disruptionOldDataSourcePath -Permanently
+            Write-Host "Disruption Banner content removed"
+        } else {
+            Write-Host "Disruption Banner is not existed"
+        }
+    }
+    
+    Create-Disruptions-Folder-Content;
+    Create-Disruption-Item -Level '1' -Link 'https://www.easyjet.com/en/holidays/info/disruption';
+    Create-Disruption-Item -Level '2' -Link 'https://www.easyjet.com/en/holidays/info/disruption';
+    Create-Disruption-Item -Level '3' -Link 'https://www.easyjet.com/en/claim/welfare';
+    Update-Rendering; 
+    Remove-Old-Content;
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230628T103556Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

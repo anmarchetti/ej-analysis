@@ -1,0 +1,47 @@
+.container {
+    position: relative;
+
+    :global(.basket-summary-box--details).content {
+        position: absolute !important;
+        left: 0;
+        right: 0;
+        bottom: calc(var(--basket-summary-box-height) - 1px);
+        padding: 30px 10px 5px;
+        display: flex;
+        flex-direction: column;
+        transform: translateY(100%);
+        transition: transform 0.3s;
+        overflow: hidden;
+        // var is created on click;
+        // we add 1 pixel for the case
+        // when the value is slightly below the actual one by a fraction of a pixel
+        max-height: calc(100dvh + 1px - var(--basket-summary-box-height));
+
+        &.expanded {
+            transform: translateY(0);
+
+            .wrapper {
+                flex: 1 1 auto;
+                overflow-y: auto;
+            }
+        }
+
+        .wrapper {
+            padding-bottom: 10px;
+            overflow-y: hidden;
+
+            &.extras {
+                margin: 0 -16px;
+            }
+        }
+    }
+
+    .panelWrapper {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .btn {
+        max-width: 70px;
+    }
+}

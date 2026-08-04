@@ -1,0 +1,123 @@
+.wrapper {
+    padding-bottom: 20px;
+
+    @include media-breakpoint-down(md) {
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    :global {
+        .form-group {
+            margin: 0;
+        }
+
+        .gd-select-field-wrapper {
+            display: flex;
+            align-items: flex-start;
+            column-gap: 16px;
+            row-gap: 8px;
+            margin: 0;
+            padding: 0;
+
+            @include media-breakpoint-up(sm) {
+                .custom-select,
+                .gd-select-field {
+                    width: 363px;
+                }
+
+                .gd-select-field-error {
+                    max-width: 363px;
+                }
+            }
+
+            .gd-select-field,
+            .gd-select-field-error {
+                margin: 0;
+                padding: 0;
+            }
+
+            .gd-select-field-error {
+                display: flex;
+                gap: 10px;
+                color: $colorRed;
+                line-height: 1;
+                flex: unset;
+                width: unset;
+                margin: auto 0;
+
+                i {
+                    margin: 0;
+                }
+            }
+        }
+
+        .form-checkbox-tooltip-wrapper {
+            width: 100%;
+            max-width: 363px;
+        }
+
+        .validation-indicators {
+            margin: 0;
+        }
+
+        .form-field__trade .form-control__error__label {
+            font-size: 15px;
+            line-height: 15px;
+        }
+
+        .errata-message {
+            margin: 30px 0;
+        }
+
+        .continue-button {
+            width: 350px;
+            margin: 40px 0 40px auto;
+
+            .fs-18 {
+                font-size: 18px;
+            }
+        }
+
+        @include media-breakpoint-up(lg) {
+            .page-info {
+                font-size: 12px;
+                line-height: 1.58;
+            }
+
+            .information-text {
+                font-size: 14px;
+
+                &.small {
+                    font-size: 12px;
+                }
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            .continue-button {
+                width: 100%;
+                margin-bottom: 30px;
+
+                .fs-18 {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+}
+
+.wrapper.advanced {
+    @include media-breakpoint-up(lg) {
+        margin-right: 9px;
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.specialOffersWrapper {
+    margin: 32px 0 0 0;
+}

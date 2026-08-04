@@ -1,0 +1,46 @@
+.ratings {
+    margin-top: 10px;
+
+    @include media-breakpoint-up(md) {
+        margin-top: 0;
+    }
+
+    :global(.tripadvisor_rating) {
+        span {
+            border: 2px solid $colorTripadvisorLight;
+            @include sizeSquare(11px);
+        }
+
+        svg {
+            width: 18px;
+            height: 22px;
+            margin-right: 3px;
+        }
+
+        :global(span.active) {
+            background-color: $colorTripadvisorLight;
+        }
+
+        :global(span.active--half) {
+            background: linear-gradient(90deg, $colorTripadvisorLight 51%, $colorTransparent 0);
+        }
+    }
+
+    :global(.hotel-reviews) {
+        margin: 0;
+    }
+
+    :global(.star_rating) {
+        margin-right: 8px;
+
+        svg {
+            width: 14px;
+            height: 14px;
+            margin-right: 2px;
+        }
+    }
+
+    :global(.fa-star) {
+        @include sizeSquare(16px);
+    }
+}

@@ -1,0 +1,38 @@
+﻿---
+ID: "528cdbff-47fc-4fdc-b4fb-65bd4798f4b7"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-180_seat-map-widget-for-amend-dates-summary-page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $summaryPage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary" -ErrorAction SilentlyContinue;
+    $seatMapRenderingItem = Get-Item -Path "/sitecore/layout/Renderings/Feature/SeatMap/Seat Map" -ErrorAction SilentlyContinue;
+    $seatMapRenderingInstance = New-Rendering -Item $seatMapRenderingItem;
+    
+    $existingSeatMapRenderingInstance = Get-Rendering -Item $summaryPage -Rendering $seatMapRenderingItem;
+    
+    if ($existingSeatMapRenderingInstance -eq $null) {
+        Add-Rendering -Item $summaryPage -Instance $seatMapRenderingInstance -PlaceHolder "/body/seat-map-{63f67a32-6cf4-4c6f-883d-50d45473daf7}-0" -DataSource "/sitecore/content/EasyJet/Holidays/Data/SeatsMap";
+        
+        Write-Host "Seat Map rendering has been added to amend dates summary page";
+    } else {
+        Write-Host "Seat Map rendering has already exist in amend dates summary page";
+    }
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240508T071809Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

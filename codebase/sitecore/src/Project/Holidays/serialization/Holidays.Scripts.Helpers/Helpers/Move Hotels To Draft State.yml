@@ -1,0 +1,169 @@
+﻿---
+ID: "833cb136-2bc6-4de3-a1e5-3deb94fff22f"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/Move Hotels To Draft State
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $destinationsWorkflowId = "{E4933E36-0C0B-41AC-9EFB-BD97EF4826AB}"
+    $destinationsWorkflowStateId = "{8048C461-28DC-4299-BB4D-7EBE4C2696DF}"
+    $facilitiesFolderTemplateId = "{5C397782-6810-460A-AB57-84E9AB67514C}"
+    $imagesFolderTemplateId = "{AF7DAAA8-8099-4F22-A607-F0E1FBA6AD0D}"
+    
+    $criteria = @("Airports", "StarRating", "Latitude", "Longitude", "TripAdvisorId") # fields name to check them for emptiness
+    $criteriaFoldersTemplateIds = @{"Facilities" = $facilitiesFolderTemplateId; "Images" = $imagesFolderTemplateId } # folders template ids to check them for emptiness
+    
+    # function get hotels from solr
+    function Find-Hotels-Items {
+        $criteria = @(
+            @{ Filter = "Equals"; Field = "_template"; Value = "28e5e1698f724f90a277280a8302b607"; }
+            @{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+        )
+    
+        $props = @{
+            Index = "sitecore_destinations_master_index"
+            Criteria = $criteria
+        }
+    
+        $items = Find-Item @props
+        Write-Host "Number of Hotels retrived: " $items.Count -ForegroundColor Green
+    
+        return $items
+    }
+    
+    # function checks if item's fields from criteria fields are empty and if item's children folders by criteriaFoldersTemplateIds either exist or contain content
+    # if some fields or children folders empty message about it is added to ReviewMessage field of item
+    function Check-Hotel-For-Criteria {
+        param($item, $criteria, $criteriaFoldersTemplateIds)
+    
+        $reviewMessageContent = $null
+        $reviewMessageContentForFolders = $null
+    
+        # check for fields emptiness
+        foreach($cr in $criteria){
+            if($item[$cr] -eq $null -or $item[$cr] -eq ""){
+                $reviewMessageContent = $reviewMessageContent + $cr + ", "
+            }
+        }
+    
+        $itemChildren = $item.Children
+    
+        # check for item's children folders emptiness
+        foreach($crF in $criteriaFoldersTemplateIds.GetEnumerator()){
+            $itemChild = $itemChildren | Where-Object {$_.TemplateId -eq $crF.Value}
+    
+            if($itemChild -eq $null){
+                $reviewMessageContentForFolders = $reviewMessageContentForFolders + $crF.Name + ", "
+            }elseif ($itemChild.Children.Count -eq 0) {
+                $reviewMessageContentForFolders = $reviewMessageContentForFolders + $crF.Name + ", "
+            }
+        }
+    
+        # adding message to ReviewMessage fiels of item
+        if ($reviewMessageContent -ne $null -or $reviewMessageContentForFolders -ne $null) {
+    
+            $item.Editing.BeginEdit()
+    
+            $item.Fields["ReviewMessage"].Value = ""
+    
+            if ($reviewMessageContent -ne $null){
+                $reviewMessageContent = $reviewMessageContent.TrimEnd(", ") + "."
+                $item.Fields["ReviewMessage"].Value += "Next fields are empty: $reviewMessageContent"
+            }   
+    
+            if ($reviewMessageContentForFolders -ne $null){
+                $reviewMessageContentForFolders = $reviewMessageContentForFolders.TrimEnd(", ") + "."
+                $item.Fields["ReviewMessage"].Value += "Next folders under hotel are empty or not exist: $reviewMessageContentForFolders"
+            }
+    
+            $item.Editing.EndEdit()
+    
+            return $true
+        }
+    
+        return $false
+    }
+    
+    # function returns sitecore item by item's id from solr
+    function Get-SitecoreItem {
+        param($solrItem)
+    
+        $sitecoreItem = Get-Item -Path "master:" -Id $solrItem.ItemId
+    
+        return $sitecoreItem
+    }
+    
+    # function delete from criteria fields which not in 
+    function Filter-Hotels-By-Criteria {
+        param($hotels, $criteria, $criteriaFoldersTemplateIds)
+    
+        $filtered_hotels = $hotels | Where-Object { Check-Hotel-For-Criteria -Item $_ -Criteria $criteria -CriteriaFoldersTemplateIds $criteriaFoldersTemplateIds }
+    
+        return ,$filtered_hotels
+    }
+    
+    # change item's workflow state to new state
+    function Put-Item-To-DesireableState {
+        param($item, $desireableWorkflowId, $desireableWorkflowStateId)
+    
+        if ($item["__workflow state"] -ne $desireableWorkflowStateId){
+    
+            $item.Editing.BeginEdit()
+            $item.Fields["__workflow"].Value = $desireableWorkflowId
+            $item.Fields["__workflow state"].Value = $desireableWorkflowStateId
+            $wasEdited = $item.Editing.EndEdit()
+    
+            if ($wasEdited){
+                Write-Host "Item with id $($item.ID), workflow state is changed"
+            }
+        }
+    }
+    
+    # function delete from criteria fields which not in item's fields
+    function Filter-Criteria-Item-Fields{
+        param($item, $criteria)
+    
+        $itemFields = Get-ItemField -ID $item.ID
+    
+        return $itemFields | ?{$criteria -contains $_}
+    }
+    
+    New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+        New-UsingBlock (New-Object Sitecore.Data.BulkUpdateContext) {
+    
+        $hotels = Find-Hotels-Items
+    
+        # get sitecore hotels by solr's hotel ids
+        $hotelItems = $hotels | ForEach-Object { Get-SitecoreItem -SolrItem $_ } | Where-Object { $_ -ne $null }
+    
+        # get example of hotel for getting it's fields
+        $exampleHotel = $hotelItems | Select -First 1
+    
+        # delete from criteria fields, fields which hotel item not contains
+        $criteria = Filter-Criteria-Item-Fields -Item $exampleHotel -Criteria $criteria
+    
+        # get hotels which states should be changed
+        $filteredHotels = Filter-Hotels-By-Criteria -Hotels $hotelItems -Criteria $criteria -CriteriaFoldersTemplateIds $criteriaFoldersTemplateIds
+    
+        # change hotels workflow state
+        $filteredHotels | ForEach-Object { Put-Item-To-DesireableState -Item $_ -DesireableWorkflowId $destinationsWorkflowId -DesireableWorkflowStateId $destinationsWorkflowStateId }
+    
+        }
+    }
+    
+    
+    
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20200602T081420:637266824605628233Z"

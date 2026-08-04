@@ -1,0 +1,76 @@
+{
+    "Title": "valid code testone",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "ExactMatcher",
+                    "Pattern": "/v1/vouchers/{22345678-1234-1234-1234-1234}",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "id": "v_3UDJplka2rdTsX8l6IZLM1WiQSMfQ8bb",
+            "code": "{8FCC8057-EDE9-457C-A8A7-CB1C77006CD9}",
+            "campaign": null,
+            "campaign_id": null,
+            "category": null,
+            "category_id": null,
+            "categories": [],
+            "type": "DISCOUNT_VOUCHER",
+            "discount": {
+                "type": "AMOUNT",
+                "amount_off": 1
+            },
+            "gift": null,
+            "loyalty_card": null,
+            "start_date": "2022-12-22T09:00:00.000Z",
+            "expiration_date": "2024-12-31T23:00:00.000Z",
+            "validity_timeframe": null,
+            "validity_day_of_week": null,
+            "active": true,
+            "additional_info": "AMD",
+            "metadata": {
+                "booking_ref": "70129737",
+                "ATCOMpromocode": "ORANGESALE150"
+            },
+            "assets": {
+                "qr": {
+                    "id": "U2FsdGVkX1+uX7hLZ2ih2sULT40efm7MpeAJjZ8rGVS3FxPNcI5ZocXP9mF9Lu8MfChjVGCiCPljLxPjYPzebNu7E4EnlyySey5DN13mPlFyl2JrJ4m5i8fgd9+wkdOYsqLzN3YU4ssgesheIY23IoWYumBUhi9Ju6SJ82N+wl6xUjA1OM8HEVngpG/h4XF2",
+                    "url": "https://deu4.dl.voucherify.io/api/v1/assets/qr/U2FsdGVkX1%2BuX7hLZ2ih2sULT40efm7MpeAJjZ8rGVS3FxPNcI5ZocXP9mF9Lu8MfChjVGCiCPljLxPjYPzebNu7E4EnlyySey5DN13mPlFyl2JrJ4m5i8fgd9%2BwkdOYsqLzN3YU4ssgesheIY23IoWYumBUhi9Ju6SJ82N%2Bwl6xUjA1OM8HEVngpG%2Fh4XF2"
+                },
+                "barcode": {
+                    "id": "U2FsdGVkX1/AKiKCytDzrolCVbM0tWumaiDWNfv1Ud8ABE5QpjNlbWNrmha52AwG0oXdPR1TncXfFc3Qt0sUZEHRhS+3KLgyl0ncnS0tmJX/E/Inbzk9lWa9rMZkyM2PRDqfFrKKHwZ0i12xOh+HJK3SmVPcQWW93wT+AhdgY4t5v443IDySDgied5GA2icA",
+                    "url": "https://deu4.dl.voucherify.io/api/v1/assets/barcode/U2FsdGVkX1%2FAKiKCytDzrolCVbM0tWumaiDWNfv1Ud8ABE5QpjNlbWNrmha52AwG0oXdPR1TncXfFc3Qt0sUZEHRhS%2B3KLgyl0ncnS0tmJX%2FE%2FInbzk9lWa9rMZkyM2PRDqfFrKKHwZ0i12xOh%2BHJK3SmVPcQWW93wT%2BAhdgY4t5v443IDySDgied5GA2icA"
+                }
+            },
+            "is_referral_code": false,
+            "created_at": "2023-01-11T17:20:08.781Z",
+            "updated_at": "2023-03-14T13:02:44.801Z",
+            "validation_rules_assignments": {
+                "object": "list",
+                "data_ref": "data",
+                "data": [],
+                "total": 0
+            },
+            "redemption": {
+                "quantity": null,
+                "redeemed_quantity": 17,
+                "object": "list",
+                "url": "/v1/vouchers/{8FCC8057-EDE9-457C-A8A7-CB1C77006CD9}/redemptions?page=1&limit=10"
+            },
+            "publish": {
+                "object": "list",
+                "count": 0,
+                "url": "/v1/vouchers/{8FCC8057-EDE9-457C-A8A7-CB1C77006CD9}/publications?page=1&limit=10"
+            },
+            "object": "voucher"
+        }
+    }
+}

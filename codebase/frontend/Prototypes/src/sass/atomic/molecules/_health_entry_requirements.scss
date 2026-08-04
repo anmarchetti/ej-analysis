@@ -1,0 +1,132 @@
+$tile_border-radius: 4px;
+
+.health-entry-requirements {
+    margin: 40px 0;
+}
+
+.health-entry-requirements__description {
+    margin: 20px 0 0;
+    font-family: $fontRoundedBook;
+    font-size: 18px;
+    line-height: 1.33;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(md) {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+}
+
+.health-entry-requirements__list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 40px -15px 0;
+
+    @include media-breakpoint-down(md) {
+        margin: 20px 0 0;
+    }
+}
+
+.health-entry-requirement {
+    display: flex;
+    flex-basis: 40%;
+    flex-direction: column;
+    flex-grow: 1;
+    max-width: 100%;
+    margin: 0 15px 20px;
+    background: $colorWhite;
+    border: 1px solid $colorGeyser;
+    border-radius: $tile_border-radius;
+
+    @include media-breakpoint-down(md) {
+        flex-basis: 100%;
+        margin: 0 0 20px;
+    }
+}
+
+.health-entry-requirement__background {
+    position: relative;
+    flex-basis: 200px;
+    background-position: left;
+    background-size: cover;
+    border-radius: $tile_border-radius $tile_border-radius 0 0;
+
+    @include media-breakpoint-down(md) {
+        flex-basis: 94px;
+    }
+}
+
+.health-entry-requirement__icon {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 10px 15px;
+    background-color: $colorWhite;
+    border-radius: 3px 0 0;
+
+    img {
+        display: block;
+        max-height: 45px;
+        margin: 0 auto;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: 5px 10px;
+
+        img {
+            max-height: 30px;
+        }
+    }
+}
+
+.health-entry-requirement__info {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    padding: 20px;
+
+    @include media-breakpoint-down(md) {
+        padding: 10px;
+    }
+}
+
+.health-entry-requirement-info__title {
+    margin: 0 0 7px;
+    font-family: $fontRoundedDemy;
+    font-size: 16px;
+    line-height: 1.625;
+    color: $clrTextHeading;
+    letter-spacing: 0;
+
+    @include media-breakpoint-down(md) {
+        font-size: 16px;
+    }
+}
+
+.health-entry-requirement-info__description {
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    line-height: 1.5;
+    color: $clrTextHeading;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+        line-height: 1.28;
+    }
+}
+
+.health-entry-requirement-info__footer {
+    margin-top: auto;
+    padding-top: 15px;
+
+    .btn {
+        &,
+        .view-booking & {
+            min-width: 270px;
+        }
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+        }
+    }
+}

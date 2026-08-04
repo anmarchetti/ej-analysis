@@ -1,0 +1,408 @@
+﻿---
+ID: "63e3eacc-534c-4a80-a83f-acd592f71686"
+Parent: "1934bd09-0ef7-40c7-8713-3223596150e8"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Destinations Sync/Destination Guide Import/Country Import
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    #Country Script
+    #region constants
+    
+    #Infotmation Tiles Tips fields key is name of component  value is field
+    $infotmationTipsFields = [ordered]@{
+    	 "heading 1 - Food" = @{
+                Title = "COU08"
+                Description = "COU09"
+         };
+         "heading 2 - Money" = @{
+                Title = "COU10"
+                Description = "COU11"
+         };
+         "heading 3 - Inside tip and secret" = @{
+                Title = "COU12"
+                Description = "COU13"
+         };
+    }
+    #PromoBlock HOLS DATE x3
+    $promoHolsDateFields = [ordered]@{
+    	"date 1" = @{
+                Title = "COU16"
+                Description = "COU17"
+         };
+         "date 2" = @{
+                Title = "COU18"
+                Description = "COU19"
+         };
+         "date 3" = @{
+                Title = "COU20"
+                Description = "COU21"
+         };
+    }
+    #PromoBlock BEST LIST 
+    $promoBestListFields = [ordered]@{
+         "heading 1" = @{
+                Title = "COU24"
+                Description = "COU25"
+         };
+         "heading 2" = @{
+                Title = "COU26"
+                Description = "COU27"
+         };
+         "heading 3" = @{
+                Title = "COU28"
+                Description = "COU29"
+         };
+    }
+    
+    $textBlockTemplate = "{43546A28-D231-4287-96D2-25DEF529F1A5}"
+    $promoBlockTemplate = "{FF441699-4D65-45C1-B565-E87714B5A278}"
+    $informationTilesTemplate = "{5C8585BB-1BED-46C8-AD5B-93088A0B2E54}"
+    
+    #endregion
+    $filePath = "$($SitecoreDataFolder)\ImportData\FINAL-COPY-easyJet-Holidays-destinations-01 - Country.csv"
+    
+    
+    
+    #region Update Items and their Presentation Details
+    function Update-Country-Items {
+    	param($data,$countryItems)
+    
+    	foreach ($searchResultItem in $countryItems)
+    	{
+    		$countryItem = Get-Item -Path master: -Id $searchResultItem.ItemId
+    
+    		if ($data[$countryItem["Name"]] -ne $null) {
+    			$itemData = $data[$countryItem["Name"]]
+    
+                #helper method
+    			Update-Context-Item -Item $countryItem -Data $itemData.ContextItem
+    
+    			$datasources = Update-Datasources -data $itemData -item $countryItem
+                $allMappedRenderings = Map-Country-Datasource-WithRenderings -item $countryItem -datasources $datasources
+    
+    			foreach ($key in $allMappedRenderings.keys) {
+                    #helper method
+    				Update-Presentation-Details -Item $countryItem -DataSource $allMappedRenderings[$key] -position $key
+    			}
+    
+    			Write-Host "Updated datasource for page - " $countryItem.Paths.FullPath
+    		}
+    	}
+    }
+    
+    function Map-Country-Datasource-WithRenderings {
+    	param([Item]$item, $datasources)
+    	$allRenderings = Get-Rendering -Item $item
+    	$textBlockCounter = 0
+    	$promoBlockCounter = 0
+    	$allMappedRenderings = @{}
+    	for ($i = 0; $i -lt $allRenderings.Count; $i++) {
+    
+    		$renderingId = $allRenderings[$i].ItemId
+    		if ($renderingId -eq $textBlockTemplate) {
+    
+    			$textBlocks = $datasources[$renderingId]
+    		    $allMappedRenderings.Add($i,$textBlocks[$textBlockCounter])
+    			$textBlockCounter++
+    
+    
+    		} elseif ($renderingId -eq $promoBlockTemplate) {
+    			$datasource = $datasources[$renderingId][$promoBlockCounter]
+    			$allMappedRenderings.Add($i, $datasource)
+    			$promoBlockCounter++
+    		} elseif ($renderingId -eq $informationTilesTemplate) {
+    			$datasource = $datasources[$renderingId]
+    			$allMappedRenderings.Add($i,$datasource)
+    		}
+    	}
+    	
+    	return $allMappedRenderings
+    }
+    
+    #endregion
+    
+    
+    #region import data from file
+    function Import-Country-Csv-File {
+    	param($filePath)
+    	$hashTable = @{}
+    
+    	$csvFile = Import-Csv $filePath -Delimiter ','
+    
+    	foreach ($row in $csvFile | Select-Object -Skip 2) {
+            $countryName = $row.'COU01'
+    		$hashValue = @{
+    			Page = $countryName
+    			ContextItem = @{
+    				Name = $countryName
+    				Subtitle = 'Holidays in'
+                    PageTitle = $row.'COU02'
+                    MetaDescription = $row.'COU03'
+    			}
+    			IntroTextBlock = @{
+                    Name = "Intro Heading and Description"
+    				Title = $row.'COU05'
+    				Description = $row.'COU06'
+    			}
+    			AllRegiontTextBlock = @{
+    			    Name = "All regions $countryName"
+    			    Title = "All regions in $countryName"
+    			}
+    			TipsTextBlock = @{
+                    Name = "Insider tips $countryName"
+    				Title = $row.'COU07'
+    			}
+    			TipsInformationBlock = Get-Tiles -row $row -fields $infotmationTipsFields -name  "Insider tips list"
+    			HolsDateTextBlock = @{
+                    Name = "Do not miss dates $countryName"
+    				Title = $row.'COU15'
+    			}
+    			HolsDatePromoBlock = Get-Tiles -row $row -fields $promoHolsDateFields -name  "Dont miss dates list"
+    			BestListTextBlock = @{
+                    Name = "Best things to do $countryName"
+    				Title = $row.'COU23'
+    			}
+    			BestListPromoBlock = Get-Tiles -row $row -fields $promoBestListFields -name  "Best things to do list"
+    		}
+    		$objTemp = @{ $countryName = $hashValue }
+    		$hashTable += $objTemp
+    	}
+    	return $hashTable
+    }
+    
+    function Get-Tiles {
+    	param($row, $fields, $name)
+    
+    	$tiles = @()
+    	foreach ($key in $fields.Keys) {
+    	    $field = $fields[$key]
+            $titleField = $field.Title
+            $descriptionField = $field.Description
+    
+    		$tile = @{
+                Name = $key
+    			Title = $row.$titleField
+    			Description = $row.$descriptionField
+    		}
+    		$tiles += $tile
+    	}
+    
+    	return @{ FolderName = $name
+                  Tiles = $tiles
+                }
+    }
+    #endregion
+    
+    function Update-Datasources {
+    	param($data, $item)
+    
+    	$datasources = @{};
+    
+    	#create or get page component folder
+    	$pageComponenFolderItem = Get-Or-Create-Item -Parent $item -itemName "Page Components" -templateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    
+    	$textBlockData = @($data.IntroTextBlock, $data.AllRegiontTextBlock, $data.TipsTextBlock, $data.HolsDateTextBlock, $data.BestListTextBlock)
+    	$textBlocksDatasources = @()
+    	#Text Block component
+    	for ($i = 0; $i -lt $textBlockData.Count; $i++) {
+    		$textBlockItem = Update-TextBlock-Datasource -Item $pageComponenFolderItem -textBlock $textBlockData[$i]
+    		$textBlocksDatasources += $textBlockItem.ID
+    	}
+    	$datasources.Add($textBlockTemplate,$textBlocksDatasources)
+    
+    	#Information tiles component
+    	$infromationTiles = Update-InformationTiles-Datasource -Item $pageComponenFolderItem -informationTilesData $data.TipsInformationBlock
+    	$datasources.Add($informationTilesTemplate,$infromationTiles.ID)
+    
+    	$promoBlockData = @($data.HolsDatePromoBlock, $data.BestListPromoBlock)
+    	$promoDatasources = @()
+    	#Promo block component
+    	for ($i = 0; $i -lt $promoBlockData.Count; $i++) {
+    		$promoBlockItem = Update-PromoBlock-Datasource -Item $pageComponenFolderItem -promoBlocksData $promoBlockData[$i] 
+    		$promoDatasources += $promoBlockItem.ID
+    	}
+    	$datasources.Add($promoBlockTemplate,$promoDatasources)
+    
+    	return $datasources
+    }
+    
+    
+    #Common script have to move to separate folder
+    
+    function Update-Presentation-Details {
+    	param([item]$item,[string]$datasource,[int]$position)
+    
+    	Get-Rendering -Item $item -Index $position | ForEach-Object {
+    		$_.DataSource = $datasource
+    		Set-Rendering -Item $item -Instance $_
+    	}
+    }
+    
+    function Update-Context-Item {
+    	param($item,$data)
+    
+    	if ($item -ne $null) {
+    		$item.Editing.BeginEdit()
+    		$item["Name"] = $data.Name
+    		$item["Subtitle"] = $data.Subtitle
+    		
+    		$item.Editing.EndEdit()
+    	}
+    
+    	Write-Host "Updated Context Item - " $item.Paths.FullPath
+    
+    }
+    
+    #region Datasource Components
+    
+    function Update-TextBlock-Datasource {
+    	param($item,$textBlockData)
+    
+    	$textBlockFolder = @{
+    		Name = "Text Blocks"
+    		TemplateId = "{AB8D608B-3B9D-4ECB-9BA3-8C61306D7A41}"
+    	}
+    	$textBlockComponent = @{
+    		TemplateId = "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}"
+    	}
+    
+    	$textBlockFolderItem = Get-Or-Create-Item -Parent $item -itemName $textBlockFolder.Name -templateId $textBlockFolder.TemplateId
+    	$textBlockItem = Get-Or-Create-Item -Parent $textBlockFolderItem -itemName $textBlockData.Name -templateId $textBlockComponent.TemplateId
+    
+    	if ($textBlockItem -ne $null) {
+    		$textBlockItem.Editing.BeginEdit()
+    		$textBlockItem["Title"] = $textBlockData.Title
+    		$textBlockItem["Description"] = $textBlockData.Description
+    		$textBlockItem.Editing.EndEdit()
+    	}
+    
+    	Write-Host "Updated component - " $textBlockItem.Paths.FullPath
+    
+    	return $textBlockItem
+    }
+    
+    function Update-InformationTiles-Datasource {
+    	param($item,$informationTilesData)
+    
+    	$infromationTilesFolder = @{
+    		TemplateId = "{A5727395-0B58-464F-B6CC-83E450109E4E}"
+    	}
+    	$infromationTilesComponent = @{
+    		TemplateId = "{424BD58C-E281-4DAD-8F46-7FE4DE602C0F}"
+    	}
+    
+    	$infoTilesFolderItem = Get-Or-Create-Item -Parent $item -itemName $informationTilesData.FolderName -templateId $infromationTilesFolder.TemplateId
+    
+        $infoTiles = $informationTilesData.Tiles
+    	
+    	# Valid only for icons synced by unicorn
+    	$icons = @(
+    		'<image mediaid="{402CB901-B911-4C49-825E-45D5ED9B7897}" />', 
+    		'<image mediaid="{F9F20672-C0B4-44E0-9751-A526D963F65D}" />', 
+    		'<image mediaid="{22C8AE8C-415F-4B97-B428-75F7B08A8570}" />'
+    	)
+    	
+    	for ($i = 0; $i -lt $infoTiles.Count; $i++) {
+    		$infoTileItem = Get-Or-Create-Item -Parent $infoTilesFolderItem -itemName $infoTiles[$i].Name -templateId $infromationTilesComponent.TemplateId
+    		if ($infoTileItem -ne $null) {
+    			$infoTileItem.Editing.BeginEdit()
+    			$infoTileItem["__sortorder"] = $i*100
+    			$infoTileItem["Title"] = $infoTiles[$i].Title
+    			$infoTileItem["Description"] = $infoTiles[$i].Description
+    			$infoTileItem["Icon"] = $icons[$i]
+    			$infoTileItem.Editing.EndEdit()
+    		}
+        	Write-Host "Updated component - " $infoTileItem.Name
+    	}
+    	Write-Host "Updated component - " $infoTilesFolderItem.Paths.FullPath "with -" $infoTilesFolderItem.Children.Count "children"
+    
+    	return $infoTilesFolderItem
+    }
+    
+    function Update-PromoBlock-Datasource {
+    	param($item,$promoBlocksData)
+    
+    	$promoBlockFolder = @{
+    		TemplateId = "{EB30259D-FF9A-46CB-8E0C-4616B148F3A8}"
+    	}
+    	$promoBlockComponent = @{
+    		TemplateId = "{84ACB697-5638-4525-9801-B31CAC2E0394}"
+    	}
+    
+    	$promoBlockFolderItem = Get-Or-Create-Item -Parent $item -itemName $promoBlocksData.FolderName -templateId $promoBlockFolder.TemplateId
+    
+        $promoTiles = $promoBlocksData.Tiles
+    	for ($i = 0; $i -lt $promoTiles.Count; $i++) {
+    		$promoItem = Get-Or-Create-Item -Parent $promoBlockFolderItem -itemName $promoTiles[$i].Name -templateId $promoBlockComponent.TemplateId
+    		if ($promoItem -ne $null) {
+    			$promoItem.Editing.BeginEdit()
+    			$promoItem["__sortorder"] = $i*100
+    			$promoItem["Title"] = $promoTiles[$i].Title
+    			$promoItem["Description"] = $promoTiles[$i].Description
+    			$promoItem.Editing.EndEdit()
+    		}
+    
+    		Write-Host "Updated component - " $promoBlockFolderItem.Paths.FullPath "with -" $promoBlockFolderItem.Children.Count "children"
+    	}
+    
+    
+    	return $promoBlockFolderItem
+    }
+    
+    #endregion
+    
+    #region helper
+    function Get-Or-Create-Item {
+    	param($parent,$itemName,$templateId)
+    
+    	$item = Get-ChildItem -Item $parent | Where-Object { $_.Name -eq $itemName } | Select -First 1
+    
+    	if ($item.Count -eq 0) {
+    		New-Item -Parent $parent -Name $itemName -ItemType $templateId
+    	}
+    
+    	return $item
+    }
+    #endregion   
+    
+    #region Search Destinations 
+    function Find-Destinations-Items {
+        param($tempateName)
+    	$criteria = @(
+    		@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    		@{ Filter = "Equals"; Field = "_templatename"; Value = $tempateName; }
+    	)
+    
+    	$props = @{
+    		Index = "sitecore_destinations_master_index"
+    		Criteria = $criteria
+    	}
+    
+    	$items = Find-Item @props
+    
+    	return $items
+    }
+    #endregion
+    
+    
+    
+    #Import cvs file
+    $hastTable = Import-Country-Csv-File -filePath $filePath
+    
+    #Find Destionations Items Skip Greece
+    $destinationItems = Find-Destinations-Items -tempateName "Country" | ? {$_.Name -ne "Greece"} 
+    
+    
+    #Update Description Items
+    Update-Country-Items -Data $hastTable -countryItems $destinationItems
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T141657Z

@@ -1,0 +1,52 @@
+.passenger-details {
+    .passenger-details__title {
+        margin-bottom: 10px;
+    }
+}
+
+.passenger-details__info {
+    position: relative;
+    margin-top: 20px;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 24px;
+    }
+}
+
+.passenger-details__guests-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 60px;
+    padding-left: $holiday-summary-item_icon-size_sm + 20px;
+
+    @include media-breakpoint-down(md) {
+        padding-left: $holiday-summary-item_icon-size_sm + 12px;
+    }
+
+    + .passenger-details__guests-group {
+        margin-top: 5px;
+        padding-top: 30px;
+        border-top: 1px solid $colorGeyser;
+    }
+}
+
+.passenger-details__icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $holiday-summary-item_icon-size_sm;
+    height: $holiday-summary-item_icon-size_sm;
+    fill: $clrEjOrange;
+}
+
+.passenger-details__check-in {
+    height: 100%;
+    margin-top: auto;
+    margin-bottom: 28px;
+    margin-left: auto;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        margin-bottom: 24px;
+    }
+}

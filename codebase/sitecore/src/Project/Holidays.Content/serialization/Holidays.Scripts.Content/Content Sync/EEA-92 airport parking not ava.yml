@@ -1,0 +1,109 @@
+﻿---
+ID: "dc14b7ac-4654-406a-beb6-bd9cd1599be9"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-92 airport parking not available pop up "
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    
+    # Content for different languages
+    $parkingnotavailablepopupdescription_4e1b324cc4c1457485624c551e85a01e_en_v1 = @"
+    <p>There was an issue reserving your parking spot. This might be due to a server error or because the parking filled up during your booking process.</p>
+    <p>You will be able to add parking later if you wish</p>
+    "@
+    
+    $parkingnotavailablepopupdescription_4e1b324cc4c1457485624c551e85a01e_fr_fr_v1 = @"
+    <p>Un problème est survenu lors de la réservation de votre place de parking. Cela peut être dû à une erreur de serveur ou au fait que le parking s'est rempli pendant votre processus de réservation.</p>
+    <p>Vous pourrez ajouter un parking plus tard si vous le souhaitez.</p>
+    "@
+    
+    $parkingnotavailablepopupdescription_4e1b324cc4c1457485624c551e85a01e_de_de_v1 = @"
+    <p>Es gab ein Problem bei der Reservierung Ihres Parkplatzes. Dies könnte auf einen Serverfehler zurückzuführen sein oder darauf, dass der Parkplatz während Ihres Buchungsvorgangs voll wurde.</p>
+    <p>Sie können später einen Parkplatz hinzufügen, wenn Sie möchten.</p>
+    "@
+    
+    $parkingnotavailablepopupdescription_4e1b324cc4c1457485624c551e85a01e_de_ch_v1 = @"
+    <p>Es gab ein Problem bei der Reservierung Ihres Parkplatzes. Möglicherweise liegt dies an einem Serverfehler oder daran, dass der Parkplatz während Ihres Buchungsvorgangs voll wurde.</p>
+    <p>Sie können später noch einen Parkplatz hinzufügen, wenn Sie möchten.</p>
+    "@
+    
+    $parkingnotavailablepopupdescription_4e1b324cc4c1457485624c551e85a01e_fr_ch_v1 = @"
+    <p>Un problème est survenu lors de la réservation de votre place de parking. Cela peut être dû à une erreur de serveur ou au fait que le parking était complet pendant votre réservation.</p>
+    <p>Vous pourrez ajouter une place de parking plus tard si vous le souhaitez.</p>
+    "@
+    
+    # Button text for different languages
+    $parkingnotavailablepopupclearbtntext_en = "Add parking later"
+    $parkingnotavailablepopupclearbtntext_fr_fr = "Ajouter le parking plus tard"
+    $parkingnotavailablepopupclearbtntext_de_de = "Parkplatz später hinzufügen"
+    $parkingnotavailablepopupclearbtntext_de_ch = "Parkplatz später hinzufügen"
+    $parkingnotavailablepopupclearbtntext_fr_ch = "Ajouter le parking plus tard"
+    
+    # Items to create with translations
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/External Extras/Airport Parking"
+            TemplatePath = "Foundation/ExternalExtras/Page Components/Airport Parking"
+            Id          = [GUID]"{4E1B324C-C4C1-4574-8562-4C551E85A01E}"
+            Fields      = @{
+                "ParkingNotAvailablePopupTitle" = @{
+                    "de-CH" = "Wir konnten Ihren Parkplatz nicht reservieren"
+                    "en" = "We couldn’t reserve your parking"
+                    "fr-FR" = "Nous n'avons pas pu réserver votre parking"
+                    "de-DE" = "Wir konnten Ihren Parkplatz nicht reservieren"
+                    "fr-CH" = "Nous n'avons pas pu réserver votre parking"
+                }
+                "ParkingNotAvailablePopupDescription" = @{
+                    "de-CH" = $parkingnotavailablepopupdescription_4e1b324cc4c1457485624c551e85a01e_de_ch_v1
+                    "en" = $parkingnotavailablepopupdescription_4e1b324cc4c1457485624c551e85a01e_en_v1
+                    "fr-FR" = $parkingnotavailablepopupdescription_4e1b324cc4c1457485624c551e85a01e_fr_fr_v1
+                    "de-DE" = $parkingnotavailablepopupdescription_4e1b324cc4c1457485624c551e85a01e_de_de_v1
+                    "fr-CH" = $parkingnotavailablepopupdescription_4e1b324cc4c1457485624c551e85a01e_fr_ch_v1
+                }
+                "ParkingNotAvailablePopupClearBtnText" = @{
+                    "de-CH" = $parkingnotavailablepopupclearbtntext_de_ch
+                    "en" = $parkingnotavailablepopupclearbtntext_en
+                    "fr-FR" = $parkingnotavailablepopupclearbtntext_fr_fr
+                    "de-DE" = $parkingnotavailablepopupclearbtntext_de_de
+                    "fr-CH" = $parkingnotavailablepopupclearbtntext_fr_ch
+                }
+            }
+        }
+    )
+    
+    # Call the ImportContent function to create the items
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    Import-Function "Import Renderings"
+    $myRenderings = @(
+        @{ 
+            Title          = "Airport Parking Not Available Popup"
+            PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Booking/Payment"
+            RenderingPath  = "/sitecore/layout/Renderings/Foundation/ExternalExtras/Airport Parking Not Available Popup"
+            Placeholder    = "body"
+            DataSourcePath = "/sitecore/content/EasyJet/Holidays/Data/External Extras/Airport Parking"
+            PlaceBeforeRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Booking Transition Screen"
+        }
+    )
+     
+    ImportRenderings -renderingsToAttach $myRenderings
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999930
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250228T155847Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

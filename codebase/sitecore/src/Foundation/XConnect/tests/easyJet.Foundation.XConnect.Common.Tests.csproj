@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Sitecore.Framework.Rules" />
+        <PackageReference Include="System.Interactive.Async.Providers" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)TestProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\XConnect\code\easyJet.Foundation.XConnect.Common.csproj" />
+    </ItemGroup>
+</Project>

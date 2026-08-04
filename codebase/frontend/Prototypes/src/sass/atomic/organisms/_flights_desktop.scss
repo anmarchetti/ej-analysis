@@ -1,0 +1,125 @@
+.flights-desktop {
+    padding: 20px 33px;
+    background-color: $clrSiteBgWhite;
+    border: 1px solid $borderColorGray;
+    border-radius: 4px;
+
+    .amend-seats-payment & {
+        box-shadow: 0 0 12px 2px $colorAlto;
+    }
+
+    .amend-flights-payment & {
+        padding: 20px;
+        border: none;
+    }
+}
+
+.amend-seats-payment .flights-desktop {
+    box-shadow: 0 0 12px 2px $colorAlto;
+}
+
+.holiday-summary-item__title {
+    padding: 10px 0;
+    line-height: 25px;
+    color: $colorBlack;
+    text-transform: uppercase;
+    @include media-breakpoint-down(md) {
+        padding-bottom: 0;
+    }
+}
+
+.flights-desktop__directions-wrapper {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    padding-bottom: 18px;
+    border-bottom: 1px solid $borderColorGray;
+
+    @include media-breakpoint-down(lg) {
+        grid-template-columns: 152px 1fr 1fr;
+    }
+
+    &::before {
+        content: "";
+        display: block;
+    }
+
+    &--slim {
+        padding-bottom: 0;
+        font-family: $fontRoundedDemy;
+
+        .flights-desktop__directions {
+            margin-bottom: -15px;
+
+            img,
+            .flights-desktop__span {
+                background: $colorWhite;
+            }
+        }
+    }
+}
+
+.flights-desktop__directions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 21px;
+    }
+
+    &:last-child {
+        padding-left: 12px;
+    }
+}
+
+.flights-desktop__img {
+    padding-left: 8px;
+}
+
+.flights-desktop__span {
+    padding: 0 8px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 26px;
+
+    @include media-breakpoint-down(md) {
+        margin: 0;
+        line-height: 24px;
+        text-transform: capitalize;
+    }
+}
+
+.seats-and-bags {
+    margin-top: 24px;
+    margin-bottom: 24px;
+
+    .amend-seats-payment & {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .error-message {
+        margin-top: 20px;
+    }
+}
+
+.seats-and-bags .flights-desktop {
+    .flights-summary {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin: 20px 0 10px;
+    }
+
+    .flights-summary__info {
+        margin-right: 24px;
+    }
+
+    .flights-summary__paragraph {
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+        line-height: 26px;
+        text-align: right;
+    }
+}

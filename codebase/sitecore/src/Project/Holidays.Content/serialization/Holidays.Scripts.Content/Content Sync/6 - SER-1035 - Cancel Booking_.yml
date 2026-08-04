@@ -1,0 +1,305 @@
+﻿---
+ID: "7363e0ac-bdc3-4b6f-92bf-9a10e3b6476e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/6 - SER-1035 - Cancel Booking Flow F and H"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking F and H" -Permanently -Recurse -ErrorAction SilentlyContinue
+    
+    Copy-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking" -Destination "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking F and H"
+    Copy-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking/Credit Refund OTUC" -Destination "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking F and H/Credit Refund"
+    Copy-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking/Original Payment OTUC" -Destination "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking F and H/Original Payment"
+    Copy-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking/CreditRefund" -Destination "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking F and H/CreditRefund"
+    
+    $updates = @(
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Explanation Popup Folder/Flight Plus Hotel Partially Refundable"
+            ID           = "{BA62E629-709D-44B8-A5EB-7AE6830E317F}"
+            TemplatePath = "/sitecore/templates/Feature/Booking/Cancel Booking/Explanation Popup"
+            Fields      = @{
+                 "IsLinkVisible" = @{
+                    "en" = "1"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "LinkText" = @{
+                    "en" = "Why am I not being refunded in full?"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "TitlePopup" = @{
+                    "en" = "Why am I not being refunded in full?"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "TextPopup" = @{
+                    "en" = @'
+    <p>As part of our <strong>Ultimate Flexibility</strong>, we&rsquo;re returning part of your deposit this time, but as easyJet holidays credit so you can use it to book a holiday that&rsquo;s right for you</p>
+    <p>Please note, that any change fees are non-refundable.</p>
+    <p>For more information about deposits and refunds, please see our <strong><a href='/en/holidays/flight-plus-hotel/booking-conditions' style='text-decoration: underline;' target='_blank'>booking conditions</a></strong>.</p>                
+    '@
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "PopupUniqueId" = @{
+                    "en" = "FlightPlusHotelPartiallyRefundable"
+                }
+            }
+         },
+         @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Explanation Popup Folder/Flight Plus Hotel Destination rules"
+            ID           = "{C7261161-FC0D-4412-8F88-9A034AC2215B}"
+            TemplatePath = "/sitecore/templates/Feature/Booking/Cancel Booking/Explanation Popup"
+            Fields      = @{
+                 "IsLinkVisible" = @{
+                    "en" = "1"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "LinkText" = @{
+                    "en" = "Why am I being refunded in credit?"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "TitlePopup" = @{
+                    "en" = "Why am I being refunded in credit?"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "TextPopup" = @{
+                    "en" = @'
+    <p>Due to the uncertainty around your plans, we're offering a refund in easyJet holidays credit, so that you can book something else that&rsquo;s right for you.</p>
+    <p>For more information about deposits, refunds, cancellation charges and credit terms please see our <strong><a href='/en/holidays/flight-plus-hotel/booking-conditions' style='text-decoration: underline;' target='_blank'>booking conditions</a></strong>.</p>            
+    '@
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "PopupUniqueId" = @{
+                    "en" = "DestinationRulesApplied"
+                }
+            }
+         },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking Header F and H"
+            TemplatePath = "/sitecore/templates/Feature/Booking/Cancel Booking/Cancel Booking Header"
+            Fields      = @{
+                 "Title" = @{
+                    "en" = "Cancel your booking"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "Subtitle" = @{
+                    "en" = "We are sorry to hear you have changed your mind, but you can cancel your booking in 3 simple steps below."
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+            }
+         },
+         @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking F and H"
+            TemplatePath = "/sitecore/templates/Feature/Booking/Cancel Booking/Cancel Booking"
+            Fields      = @{
+                 "StepOneTitle" = @{
+                    "en" = "REVIEW YOUR BOOKING"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "StepTwoTitle" = @{
+                    "en" = "REVIEW REFUND"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "StepThreeTitle" = @{
+                    "en" = "CANCEL YOUR BOOKING"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "StepTwoNoRefundTitle" = @{
+                    "en" = "CANCELLATION SUMMARY"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "ImportantInfo" = @{
+                    "en" = "Once you click 'Cancel booking', your booking will be cancelled straight away and you won't be able to change it again. We'll email you with a cancellation confirmation and will process any refund due to original payment method or as easyJet holidays credit in line with the payment breakdown shown."
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "ConfirmationCheckboxDescription" = @{
+                    "en" = @'
+    Tick this box to confirm you agree to proceed with cancelling your booking in accordance with the cancellation policy shown in our <strong><a style='text-decoration: underline;' rel='noopener noreferrer' href='/en/holidays/flight-plus-hotel/booking-conditions' target='_blank'>booking conditions</a></strong>.
+    '@
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "ConfirmButtonLabel" = @{
+                    "en" = "Cancel booking"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "FailedToLoadPopupDescription" = @{
+                    "en" = "Sorry, but an error has occurred, and we can’t continue with your booking cancellation right now. Please try again later."
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "AmountPaidExcludeDeposit" = @{
+                    "en" = "Balance paid"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "LuggageInfoTitle" = @{
+                    "en" = "Your bags"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "ErrorPopupTitle" = @{
+                    "en" = "We’re having trouble cancelling your booking online"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "ErrorPopupDescription" = @{
+                    "en" = @'
+    It looks like your cancellation hasn’t gone through yet, but don’t worry our team can sort this for you. Please contact our team on: <p><a href='tel:443309126593'>+44 330 912 6593</a></p> <p>Thanks, your easyJet holidays team</p>
+    '@
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "NoRefundDescription" = @{
+                    "en" = @'
+    <p>Because you chose our non-refundable option when you made your booking there'll be 100% cancellation charges if you cancel your booking. This means you won't get a refund. </p>
+    <p>If you choose not to cancel, your booking will stay active.</p>
+    <p>For more information on cancellation charges please see our <strong><a style='text-decoration: underline;' href='/en/holidays/flight-plus-hotel/booking-conditions' target='_blank'>booking conditions</a></strong>.</p>
+    '@
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+                "DepositOnlyCloseToDepartureDescription" = @{
+                    "en" = "<p>We&rsquo;re sorry this holiday isn&rsquo;t right for you. We took a&nbsp;<strong>{depositPricePP}&nbsp;</strong>deposit to secure your holiday.</p><p data-renderer-start-pos='5758' style='color: #292a2e; margin: 0.75rem 0px 0px; padding: 0px; line-height: 1.714;'>As there's less than 60 days before you're due to go on holiday, we&rsquo;ll refund any amount you&rsquo;ve paid above your deposit and after we&rsquo;ve taken off any cancellation fees to your selected payment method.</p><p data-renderer-start-pos='5961' style='color: #292a2e; margin-top: 0.75rem; margin-right: 0px; margin-left: 0px; padding: 0px; line-height: 1.714;'>For more information about deposits, refunds, cancellation charges and credit terms please see our&nbsp;<a href='/en/holidays/flight-plus-hotel/booking-conditions' target='_blank'>booking conditions</a>.&nbsp;</p>"
+                 }
+            }
+         },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking F and H/Credit Refund"
+            TemplatePath = "/sitecore/templates/Feature/Booking/Cancel Booking/Refund Option"
+            Fields      = @{
+                 "Popups" = @{
+                    "en" = "{C7261161-FC0D-4412-8F88-9A034AC2215B}|{BA62E629-709D-44B8-A5EB-7AE6830E317F}"
+                }
+            }
+         },
+         @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking F and H/Original Payment"
+            TemplatePath = "/sitecore/templates/Feature/Booking/Cancel Booking/Refund Option"
+            Fields      = @{
+                 "Popups" = @{
+                    "en" = "{C7261161-FC0D-4412-8F88-9A034AC2215B}|{BA62E629-709D-44B8-A5EB-7AE6830E317F}"
+                }
+            }
+         }
+    )
+    ImportContent -itemsToCreate $updates
+    
+    $headerId = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking Header F and H"
+    $mainId = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking F and H"
+    
+    $updates = @(
+         @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Cancel Booking"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = "{E9544BE7-0494-410B-9E66-E0EC96B44ED6}"
+                    "fr-CH" = "{E9544BE7-0494-410B-9E66-E0EC96B44ED6}"
+                    "de-CH" = "{E9544BE7-0494-410B-9E66-E0EC96B44ED6}"
+                    "fr-FR" = "{E9544BE7-0494-410B-9E66-E0EC96B44ED6}"
+                    "de-DE" = "{E9544BE7-0494-410B-9E66-E0EC96B44ED6}"
+                }
+                "AllowedRenderings" = @{
+                    "en" = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}|{C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}"
+                    "fr-CH" = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}|{C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}"
+                    "de-CH" = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}|{C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}"
+                    "fr-FR" = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}|{C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}"
+                    "de-DE" = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}|{C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}"
+                }
+                "RenderingReplacements" = @{
+                    "en" = @"
+    {C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}:{C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}:Placeholder=%2fbody&Data+Source=$($mainId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}:{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}:Placeholder=%2fbody&Data+Source=$($headerId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                    "fr-CH" = @"
+    {C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}:{C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}:Placeholder=%2fbody&Data+Source=$($mainId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}:{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}:Placeholder=%2fbody&Data+Source=$($headerId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                    "de-CH" = @"
+    {C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}:{C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}:Placeholder=%2fbody&Data+Source=$($mainId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}:{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}:Placeholder=%2fbody&Data+Source=$($headerId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                    "fr-FR" = @"
+    {C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}:{C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}:Placeholder=%2fbody&Data+Source=$($mainId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}:{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}:Placeholder=%2fbody&Data+Source=$($headerId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                    "de-DE" = @"
+    {C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}:{C61E4114-DE76-43F8-AFAD-E9E5F9B18BDA}:Placeholder=%2fbody&Data+Source=$($mainId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}:{53B1CE29-A6F1-4F1B-9F38-303E17C5B0A0}:Placeholder=%2fbody&Data+Source=$($headerId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                }
+            }
+         }
+    )
+    
+    ImportContent -itemsToCreate $updates
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

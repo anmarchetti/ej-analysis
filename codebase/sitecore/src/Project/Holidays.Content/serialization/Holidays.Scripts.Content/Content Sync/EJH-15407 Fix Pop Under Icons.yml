@@ -1,0 +1,77 @@
+﻿---
+ID: "27ef8863-353c-44eb-894a-8bb28fae7926"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-15407 Fix Pop Under Icons"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+    	$item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $templateId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    $icons = @(
+        @{
+    		Name = "Bags"
+    		Title = "23kg bags"
+    		Icon = "{4C737C4F-6119-42A2-BAFF-9D55154C54C4}"
+    	},
+    	@{
+    		Name = "Flights"
+    		Title = "Flights"
+    		Icon = "{74B949B3-D10A-4D8F-AFF8-1ECBB8720ADD}"
+    	},
+    	@{
+    		Name = "Hotel"
+    		Title = "Hotel"
+    		Icon = "{E911CEA6-41BE-4E52-B9DB-31B7E22A9847}"
+    	},
+    	@{
+    		Name = "Transfer"
+    		Title = "Transfer*"
+    		Icon = "{9A651704-AEEE-4A33-ABD8-A9C5E51E6276}"
+    	}
+    )
+    
+    
+    $popUnderPath = "/sitecore/content/EasyJet/Holidays/Home/MixedResultList/Page Components/Pop Under";
+    $popUnder = Get-Item -Database "master" -Path $popUnderPath -ErrorAction SilentlyContinue
+    
+    if ($popUnder -ne $null) {
+    	# Remove old Icons
+    	Get-ChildItem -Path $popUnderPath | Remove-Item
+    
+    
+    	# Create new Icons
+    	$iconsIds = @()
+    	foreach ($icon in $icons) {
+    		$iconItem = Get-Or-Create-Item -Path "$($popUnderPath)/$($icon.Name)" -TemplateId "{DA4503C0-8D8E-4BFB-AC90-EE9707CE5EF7}"
+    		if ($iconItem -ne $null) {
+    			$iconsIds += $iconItem.ID
+    			$iconItem.Editing.BeginEdit()
+    			$iconItem.Name = $icon.Name
+    			$iconItem.Fields["Name"].value = $icon.Title
+    			$iconItem.Fields["Icon"].value = "<image mediaid='$($icon.Icon)' />"
+    			$iconItem.Editing.EndEdit() | Out-Null
+    		}
+    	}
+    
+    	$popUnder.Editing.BeginEdit()
+    	$popUnder["OfferOptions"] = [string]::Join("|",$iconsIds)
+    	$popUnder.Editing.EndEdit() | Out-Null
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220425T083612Z

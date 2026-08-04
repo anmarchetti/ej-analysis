@@ -1,0 +1,178 @@
+﻿---
+ID: "6a680277-0d7a-4ba5-ba29-e7c93a3ccfb8"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-362 - Hold luggage setting content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $updates = @(
+            @{
+                Path         = '/sitecore/content/EasyJet/Holidays/Settings/Ancillaries/Complimentary Settings/Luxury'
+                TemplatePath = '/sitecore/templates/Feature/Ancillaries/Complimentary/Complimentary Setting'
+                Fields      = @{
+                    "PromotionCodes" = @{
+                        "en" = "EUBX"
+                        "fr-CH" = "NONE16"
+                        "de-CH" = "NONE16"
+                        "fr-FR" = "NONE16"
+                        "de-DE" = "NONE16"
+                    }
+                    "Comment" = @{
+                        "en" = "Luxury complimentary settings, 26kg(23kg + 3kg) for each adult or child"
+                    }
+                    "InternalFallbackCode" = @{
+                        "en" = "EUBO"
+                        "fr-CH" = "CHBO"
+                        "de-CH" = "CHBO"
+                        "fr-FR" = "FRBO"
+                        "de-DE" = "DEBO"
+                    }
+                }
+            }
+            @{
+                Path         = '/sitecore/content/EasyJet/Holidays/Settings/Ancillaries/Complimentary Settings/Luxury/Hold baggage 26kg'
+                TemplatePath = '/sitecore/templates/Feature/Ancillaries/Complimentary/Complimentary Baggage'
+                Fields      = @{
+                    "Code" = @{
+                        "en" = "LUG_WGT"
+                    }
+                    "Adult" = @{
+                        "en" = "1"
+                        "fr-CH" = "0"
+                        "de-CH" = "0"
+                        "fr-FR" = "0"
+                        "de-DE" = "0"
+                    }
+                    "Child" = @{
+                        "en" = "1"
+                        "fr-CH" = "0"
+                        "de-CH" = "0"
+                        "fr-FR" = "0"
+                        "de-DE" = "0"
+                    }
+                    "Infant" = @{
+                        "en" = "0"
+                        "fr-CH" = "0"
+                        "de-CH" = "0"
+                        "fr-FR" = "0"
+                        "de-DE" = "0"
+                    }
+                }
+            }
+            @{
+                Path         = '/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Luggage/Pre Paid Excess Weight/Pre Paid Excess Weight 3kg'
+                TemplatePath = '/sitecore/templates/Feature/Ancillaries/Luggage/Luggage Item'
+                Fields      = @{
+                    "IsLuggageItemEnabled" = @{
+                        "en" = "1"
+                    }
+                }
+            }
+            @{
+                Path         = '/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Luggage/Hold Baggage/Hold Baggage 26kg'
+                TemplatePath = '/sitecore/templates/Feature/Ancillaries/Luggage/Combined Luggage Item'
+                Fields      = @{
+                    "Name" = @{
+                        "en" = "26kg hold bag"
+                        "fr-CH" = "Bagage en soute de 26 kg"
+                        "de-CH" = "26-kg-Aufgabegepäck"
+                        "fr-FR" = "Bagage en soute de 26 kg"
+                        "de-DE" = "26-kg-Aufgabegepäck"
+                    }
+                    "Description" = @{
+                        "en" = "Maximum 26kg per bag, stored in the plane hold. Outbound and return."
+                        "fr-CH" = "Maximum 26 kg par bagage, transporté en soute. Aller et retour inclus."
+                        "de-CH" = "Max. 26 kg pro Gepäckstück, im Flugzeugrumpf transportiert. Hin- und Rückflug."
+                        "fr-FR" = "26 kg maximum par bagage, placé en soute. Aller et retour."
+                        "de-DE" = "Maximal 26 kg pro Gepäckstück, im Frachtraum des Flugzeugs. Hin- und Rückflug."
+                    }
+                    "Icon" = @{
+                        "en" = "<image mediaid='{088A78A2-285F-4E09-9030-C71F07B6CAB7}'/>"
+                    }
+                    "CombinedLuggage" = @{
+                        "en" = "1=%7B1C52E02C-3504-4368-BF31-992B276470BB%7D&2=%7BE9729970-607E-4D99-9A20-30D890697B2A%7D"
+                    }
+                    "IsLuggageItemEnabled" = @{
+                        "en" = "1"
+                    }
+                }
+            }
+            @{
+                Path         = '/sitecore/content/EasyJet/TradePortal/Settings/Ancillaries/Complimentary Settings/Luxury'
+                TemplatePath = '/sitecore/templates/Feature/Ancillaries/Complimentary/Complimentary Setting'
+                Fields      = @{
+                    "PromotionCodes" = @{
+                        "en" = "EUBX"
+                    }
+                    "Comment" = @{
+                        "en" = "Luxury complimentary settings, 26kg(23kg + 3kg) for each adult or child"
+                    }
+                    "InternalFallbackCode" = @{
+                        "en" = "EUBO"
+                    }
+                }
+            }
+            @{
+                Path         = '/sitecore/content/EasyJet/TradePortal/Settings/Ancillaries/Complimentary Settings/Luxury/Hold luggage 26kg'
+                TemplatePath = '/sitecore/templates/Feature/Ancillaries/Complimentary/Complimentary Baggage'
+                Fields      = @{
+                    "Code" = @{
+                        "en" = "LUG_WGT"
+                    }
+                    "Adult" = @{
+                        "en" = "1"
+                    }
+                    "Child" = @{
+                        "en" = "1"
+                    }
+                    "Infant" = @{
+                        "en" = "0"
+                    }
+                }
+            }
+            @{
+                Path         = '/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Luggage/Pre Paid Excess Weight/Pre Paid Excess Weight 3kg'
+                TemplatePath = '/sitecore/templates/Feature/Ancillaries/Luggage/Luggage Item'
+                Fields      = @{
+                    "IsLuggageItemEnabled" = @{
+                        "en" = "1"
+                    }
+                }
+            }
+            @{
+                Path         = '/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Luggage/Hold Baggage/Hold Baggage 26kg'
+                TemplatePath = '/sitecore/templates/Feature/Ancillaries/Luggage/Combined Luggage Item'
+                Fields      = @{
+                    "Name" = @{
+                        "en" = "26kg hold bag"
+                    }
+                    "Description" = @{
+                        "en" = "Maximum 26kg per bag, stored in the plane hold. Outbound and return."
+                    }
+                    "CombinedLuggage" = @{
+                        "en" = "1=%7B7C591124-5670-402A-9357-149F0D6F9923%7D&2=%7B339C0E59-D3BC-4F86-891E-AC34EFE37359%7D"
+                    }
+                    "Icon" = @{
+                        "en" = "<image mediaid='{088A78A2-285F-4E09-9030-C71F07B6CAB7}'/>"
+                    }
+                    "IsLuggageItemEnabled" = @{
+                        "en" = "1"
+                    }
+                }
+            }
+        )
+    
+    ImportContent -itemsToCreate $updates
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

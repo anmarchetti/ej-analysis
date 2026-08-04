@@ -1,0 +1,111 @@
+﻿---
+ID: "ed3c1853-dc19-4f3d-90e5-b378e2d69147"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-367 - Stepper Titles Updates"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $cancelBookingContentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking"
+    $ammendPaymentContentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Amend Payment"
+    
+    function Set-Translation-Value($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            $item = Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+            Write-Host "Created" $language "version for" $item.Name "item"
+        } else {
+            Write-Host $language "version for Item" $item.Name "already exist"
+        }
+    
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+            Write-Host "Field" $key "for" $item.Name "item updated with value" $translation
+        }
+    }
+    
+    function Update-Content() {
+        ### en
+    
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'en' -Key 'StepOneTitle' -Translation 'REVIEW YOUR HOLIDAY'
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'en' -Key 'StepTwoTitle' -Translation 'PICK HOW YOU`D WANT TO BE REFUNDED'
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'en' -Key 'StepThreeTitle' -Translation 'CANCEL YOUR HOLIDAY'
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'fr-FR' -Key 'StepOneTitle' -Translation 'RÉVISEZ VOS VACANCES'
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'fr-FR' -Key 'StepTwoTitle' -Translation 'CHOISISSEZ COMMENT VOUS SOUHAITEZ ÊTRE REMBOURSÉ'
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'fr-FR' -Key 'StepThreeTitle' -Translation 'ANNULEZ VOS VACANCES'
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'de-DE' -Key 'StepOneTitle' -Translation 'ÜBERPRÜFEN SIE IHREN URLAUB'
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'de-DE' -Key 'StepTwoTitle' -Translation 'WÄHLEN SIE, WIE SIE ERSTATTET WERDEN MÖCHTEN'
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'de-DE' -Key 'StepThreeTitle' -Translation 'STORNIEREN SIE IHREN URLAUB'
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'fr-CH' -Key 'StepOneTitle' -Translation 'RÉVISEZ VOS VACANCES'
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'fr-CH' -Key 'StepTwoTitle' -Translation 'CHOISISSEZ COMMENT VOUS SOUHAITEZ ÊTRE REMBOURSÉ'
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'fr-CH' -Key 'StepThreeTitle' -Translation 'ANNULEZ VOS VACANCES'
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'de-CH' -Key 'StepOneTitle' -Translation 'ÜBERPRÜFEN SIE IHREN URLAUB'
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'de-CH' -Key 'StepTwoTitle' -Translation 'WÄHLEN SIE, WIE SIE ZURÜCKERSTATTET WERDEN MÖCHTEN'
+        Set-Translation-Value -ItemPath $cancelBookingContentPath -Language 'de-CH' -Key 'StepThreeTitle' -Translation 'ANNULIEREN SIE IHRE FERIEN'
+    
+    
+        ### en
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'en' -Key 'StepOneTitle' -Translation 'REVIEW YOUR CHANGES'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'en' -Key 'StepTwoTitle' -Translation 'PICK HOW YOU WANT TO PAY'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'en' -Key 'StepThreeTitle' -Translation 'CONFIRM AND PAY'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'en' -Key 'StepTwoRefundTitle' -Translation 'PICK HOW YOU`D WANT TO BE REFUNDED'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'en' -Key 'StepTwoConfirmTitle' -Translation 'CONFIRM'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'en' -Key 'StepThreeRefundTitle' -Translation 'CONFIRM'
+        
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'fr-FR' -Key 'StepOneTitle' -Translation 'EXAMINER LES CHANGEMENTS'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'fr-FR' -Key 'StepTwoTitle' -Translation 'CHOISISSEZ VOTRE MODE DE PAIEMENT'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'fr-FR' -Key 'StepThreeTitle' -Translation 'CONFIRMER ET PAYER'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'fr-FR' -Key 'StepTwoRefundTitle' -Translation 'CHOISIR LE MODE DE REMBOURSEMENT'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'fr-FR' -Key 'StepTwoConfirmTitle' -Translation 'CONFIRMER'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'fr-FR' -Key 'StepThreeRefundTitle' -Translation 'CONFIRMER'
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'de-DE' -Key 'StepOneTitle' -Translation 'ÜBERPRÜFUNG IHRER ÄNDERUNGEN'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'de-DE' -Key 'StepTwoTitle' -Translation 'WÄHLEN SIE, WIE SIE BEZAHLEN MÖCHTEN'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'de-DE' -Key 'StepThreeTitle' -Translation 'BESTÄTIGEN UND BEZAHLEN'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'de-DE' -Key 'StepTwoRefundTitle' -Translation 'WÄHLEN SIE, WIE SIE DIE ERSTATTUNG ERHALTEN MÖCHTEN'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'de-DE' -Key 'StepTwoConfirmTitle' -Translation 'BESTÄTIGEN'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'de-DE' -Key 'StepThreeRefundTitle' -Translation 'BESTÄTIGEN'
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'fr-CH' -Key 'StepOneTitle' -Translation 'EXAMINER LES CHANGEMENTS'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'fr-CH' -Key 'StepTwoTitle' -Translation 'CHOISISSEZ VOTRE MODE DE PAIEMENT'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'fr-CH' -Key 'StepThreeTitle' -Translation 'CONFIRMER ET PAYER'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'fr-CH' -Key 'StepTwoRefundTitle' -Translation 'CHOISIR LE MODE DE REMBOURSEMENT'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'fr-CH' -Key 'StepTwoConfirmTitle' -Translation 'CONFIRMER'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'fr-CH' -Key 'StepThreeRefundTitle' -Translation 'CONFIRMER'
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'de-CH' -Key 'StepOneTitle' -Translation 'ÜBERPRÜFUNG IHRER ÄNDERUNGEN'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'de-CH' -Key 'StepTwoTitle' -Translation 'WÄHLEN SIE, WIE SIE BEZAHLEN MÖCHTEN'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'de-CH' -Key 'StepThreeTitle' -Translation 'BESTÄTIGEN UND BEZAHLEN'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'de-CH' -Key 'StepTwoRefundTitle' -Translation 'WÄHLEN SIE, WIE SIE DIE ERSTATTUNG ERHALTEN MÖCHTEN'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'de-CH' -Key 'StepTwoConfirmTitle' -Translation 'BESTÄTIGEN'
+        Set-Translation-Value -ItemPath $ammendPaymentContentPath -Language 'de-CH' -Key 'StepThreeRefundTitle' -Translation 'BESTÄTIGEN'
+    
+    }
+    
+    
+    Update-Content;
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Value: "20241212T121118:638696022788925366Z"

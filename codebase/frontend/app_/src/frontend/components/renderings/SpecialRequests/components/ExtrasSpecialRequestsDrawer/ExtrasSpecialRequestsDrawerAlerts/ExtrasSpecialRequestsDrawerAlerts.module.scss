@@ -1,0 +1,86 @@
+.content {
+    position: relative;
+    height: 60px;
+    margin: 8px 0;
+    padding: 10px 35px 15px 10px;
+    overflow: hidden;
+    background: $clrSiteBgWhite;
+    border: 1px solid #d7e2e5;
+    border-radius: 4px;
+    box-shadow: $generalBoxShadow;
+
+    &:not(.opened) {
+        .text {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+    }
+}
+
+.alert {
+    position: relative;
+    padding-left: 30px;
+}
+
+.opened {
+    height: initial;
+}
+
+.title {
+    margin: 0 0 3px;
+    font-family: $fontRoundedDemy;
+    line-height: 18px;
+
+    @include media-breakpoint-up(sm) {
+        font-size: 14px;
+    }
+}
+
+.text {
+    margin: 0;
+    overflow: hidden;
+    font-family: $fontRoundedBook;
+    line-height: 18px;
+    text-overflow: initial;
+
+    @include media-breakpoint-up(sm) {
+        font-size: 14px;
+        line-height: 18px;
+    }
+}
+
+.opened {
+    .chevron {
+        transform: rotate(180deg);
+    }
+}
+
+.chevron {
+    position: absolute;
+    top: 25px;
+    right: 11px;
+    color: $clrEjOrange;
+    transition: transform 0.3s;
+}
+
+.attention {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    color: $colorBlue;
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.sideFog {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 100%;
+    box-shadow: -30px 0 20px #fff;
+}

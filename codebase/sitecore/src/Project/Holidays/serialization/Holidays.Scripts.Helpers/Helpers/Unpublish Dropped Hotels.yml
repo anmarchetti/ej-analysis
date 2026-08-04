@@ -1,0 +1,98 @@
+﻿---
+ID: "0083a089-d720-4f13-b1e0-32a3e3a3477d"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/Unpublish Dropped Hotels
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function UnpublishItems
+    {
+        param([Array]$items)
+        
+         New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+                 New-UsingBlock (New-Object Sitecore.Data.BulkUpdateContext) {
+                    
+                foreach($item in $items)
+                {
+                    if($item.Fields["__Never publish"].Value -ne "1")
+                    {
+                        $item.Editing.BeginEdit();
+                        $item["__Never publish"] = "1";
+                        if($item.Editing.EndEdit())
+                        {
+                           Publish-Item $item -Target "web" -PublishMode SingleItem 
+                           Write-Host "Item with ID: $($item.ID) and Code: $($item["Code"]) is unpublished" 
+                        }
+                    }
+                }
+             }
+        }
+    }
+    
+    function GetHotelItems
+    {
+        param([String]$indexName, [Array]$hotelCodes)
+        
+        $hotelItems = @()
+        
+        foreach($hotelCode in $hotelCodes)
+        {
+            $criteria = @(
+                @{Filter = "Equals"; Field ="_templatename"; Value = "Hotel"}
+                @{Filter = "Equals"; Field="code"; Value = $hotelCode }
+                @{Filter = "Equals"; Field = "_latestversion"; Value = "1"}
+            )
+            
+            $props = @{
+                Index = $indexName
+                Criteria = $criteria
+            }
+            
+            $hotel = Find-Item @props
+            
+            if ($hotel -ne $null)
+            {
+                $hotelItems += $hotel.GetItem()
+            } else 
+            {
+                Write-Host "Hotel $hotelCode is null" -ForegroundColor "red"
+            }
+            
+        }
+        
+        return $hotelItems
+    }
+    
+    $indexName = "sitecore_destinations_master_index"
+    $hotelCodesToUnpublish = @('BGVR0001', 'BGVR0012', 'BGVR0014', 'BGVR0015', 'BGVR0017', 'BGVR0018', 'BGVR0019', 
+    'BGVR0020', 'BGVR0021', 'BGVR0022', 'CYLN0001', 'CYLN0002', 'CYLN0006', 'CYLN0007', 'CYLN0010', 'CYLN0011', 
+    'CYLN0013', 'CYLN0016', 'CYLN0021', 'CYLN0025', 'CYLN0028', 'CYLN0036', 'CYLN0039', 'CYLN0040', 'CYLN0044', 
+    'CYLN0047', 'CYLN0050', 'CYPF0006', 'CYPF0010', 'CYPF0021', 'CYPF0026', 'CYPF0027', 'CYPF0028', 'CYPF0033', 
+    'CYPF0034', 'CYPF0036', 'CYPF0037', 'CYPF0040', 'CYPF0044', 'EGSS0009', 'EGSS0020', 'ESAL0001', 'ESAL0002', 
+    'ESAL0003', 'ESAL0006', 'ESAL0007', 'ESAL0008', 'ESBV0007', 'ESBV0014', 'ESBV0016', 'ESBV0019', 'ESBV0022', 'ESBV0023', 'ESBV0024', 'ESBV0025', 'ESBV0026', 'ESBV0027', 'ESBV0028', 'ESBV0029', 'ESBV0031', 'ESBV0032', 'ESCB0016', 'ESCB0023', 'ESCB0040', 'ESCB0041', 'ESCB0042', 'ESCB0043', 'ESCB0049', 'ESCB0050', 'ESCB0052', 'ESCD0001', 'ESCD0013', 'ESCD0029', 'ESCD0034', 'ESDO0014', 'ESDO0015', 'ESDO0017', 'ESDO0022', 'ESFU0006', 'ESFU0012', 'ESFU0023', 'ESFU0034', 'ESFU0037', 'ESFU0039', 'ESFU0040', 'ESFU0042', 'ESGC0012', 'ESGC0023', 'ESGC0024', 'ESGC0026', 'ESGC0029', 'ESGC0033', 'ESGC0036', 'ESGC0038', 'ESGC0040', 'ESGC0043', 'ESGC0044', 'ESGC0048', 'ESGC0049', 'ESGC0050', 'ESGC0051', 'ESGC0052', 'ESIB0009', 'ESIB0013', 'ESIB0021', 'ESIB0022', 'ESIB0032', 'ESIB0035', 'ESIB0036', 'ESIB0038', 'ESIB0039', 'ESIB0040', 'ESIB0041', 'ESIB0043', 'ESIB0045', 'ESIB0048', 'ESIB0052', 'ESLZ0005', 'ESLZ0032', 'ESLZ0034', 'ESLZ0038', 'ESLZ0043', 'ESLZ0045', 'ESLZ0047', 'ESLZ0048', 'ESMJ0004', 'ESMJ0007', 'ESMJ0018', 'ESMJ0025', 'ESMJ0028', 'ESMJ0032', 
+    'ESMJ0040', 'ESMJ0041', 'ESMJ0042', 'ESMJ0043', 'ESMJ0044', 'ESMJ0046', 'ESMJ0048', 'ESMJ0050', 'ESMJ0053', 
+    'ESMJ0054', 'ESMJ0057', 'ESMJ0059', 'ESMJ0061', 'ESMJ0069', 'ESMJ0070', 'ESMJ0072', 'ESMJ0073', 'ESMJ0074', 
+    'ESMJ0075', 'ESMJ0078', 'ESMJ0090', 'ESMJ0091', 'ESMJ0092', 'ESMJ0093', 'ESMJ0098', 'ESMJ0099', 'ESMJ0104', 'ESMJ0105', 'ESMJ0107', 'ESMJ0108', 'ESMJ0109', 'ESMJ0110', 'ESMN0001', 'ESMN0003', 'ESMN0006', 'ESMN0007', 'ESMN0009', 'ESMN0011', 'ESMN0012', 'ESMN0013', 'ESMN0016', 'ESMN0022', 'ESMN0023', 'ESMN0029', 'ESMN0030', 'ESMN0031', 'ESMN0033', 'ESMN0035', 'ESMN0037', 'ESMN0038', 'ESMN0039', 'ESTF0004', 'ESTF0019', 'ESTF0027', 'ESTF0028', 'ESTF0032', 'ESTF0040', 'ESTF0044', 'ESTF0045', 'ESTF0052', 'ESTF0053', 'ESTF0055', 'ESTF0060', 'ESTF0061', 'ESTF0067', 'ESTF0070', 'ESTF0071', 'ESTF0073', 'ESTF0074', 'ESTF0078', 'ESTF0079', 'GRCF0002', 'GRCF0008', 'GRCF0017', 'GRCF0020', 'GRCF0029', 'GRCF0030', 'GRCF0035', 'GRCF0038', 'GRCF0041', 'GRCF0043', 'GRCF0047', 'GRCF0050', 'GRCF0057', 'GRCF0059', 'GRCF0060', 'GRCF0062', 'GRCF0063', 'GRCG0001', 'GRCG0004', 'GRCG0005', 'GRCG0006', 'GRCG0008', 'GRCG0009', 'GRCR0002', 'GRCR0004', 'GRCR0010', 'GRCR0011', 'GRCR0023', 'GRCR0031', 'GRCR0032', 'GRCR0034', 'GRCR0036', 'GRCR0037', 'GRCR0038', 'GRCR0044', 
+    'GRCR0045', 'GRCR0047', 'GRCR0048', 'GRCR0049', 'GRCR0050', 'GRCR0051', 'GRCR0052', 'GRCR0053', 'GRCR0055', 'GRHA0001', 'GRHA0004', 'GRHA0005', 'GRHA0008', 'GRHA0016', 'GRHA0017', 'GRHA0018', 'GRHA0019', 'GRHA0020', 'GRHA0021', 'GRHA0022', 'GRHA0023', 'GRHA0025', 'GRHA0026', 'GRHA0029', 'GRHA0032', 'GRKF0004', 'GRKF0006', 
+    'GRKF0013', 'GRKG0004', 'GRKG0014', 'GRKG0017', 'GRKG0018', 'GRKG0023', 'GRKG0024', 'GRLE0002', 'GRLE0004',
+    'GRLE0005', 'GRLE0007', 'GRMK0001', 'GRMK0004', 'GRMK0005', 'GRMK0007', 'GRMK0008', 'GRMK0012', 'GRMK0014', 'GRMK0015', 'GRMK0016', 'GRMK0017', 'GRMK0019', 'GRMK0020', 'GRMK0021', 'GRMK0023', 'GRPE0001', 'GRPE0002', 'GRPE0004', 'GRPE0005', 'GRRH0002', 'GRRH0004', 'GRRH0009', 'GRRH0012', 'GRRH0013', 'GRRH0015', 'GRRH0025', 'GRRH0030', 'GRRH0037', 'GRRH0038', 'GRRH0040', 'GRRH0041', 'GRRH0042', 'GRRH0043', 'GRRH0046', 'GRRH0048', 'GRRH0049', 'GRRH0051', 'GRRH0052', 'GRRH0053', 'GRRH0055', 'GRSN0002', 'GRSN0006', 'GRSN0008', 'GRSN0013', 'GRSN0014', 'GRSN0015', 'GRSN0019', 'GRSN0020', 'GRSN0022', 'GRZA0002', 'GRZA0005', 'GRZA0017', 'GRZA0019', 'GRZA0022', 'GRZA0028', 'GRZA0029', 'GRZA0039', 'GRZA0043', 'GRZA0044', 'GRZA0045', 'HRDB0015', 'HRDB0025', 'HRDB0026', 'HRDB0027', 'HRIR0001', 'HRIR0002', 'HRIR0003', 'HRIR0021', 'HRIR0022', 'HRIR0023', 'HRIR0024', 'HRSP0004', 'HRSP0005', 'HRSP0007', 'HRSP0008', 'HRSP0011', 'HRSP0015', 'HRSP0017', 'HRSP0018', 'HRSP0019', 'HRSP0020', 'HRSP0021', 'HRSP0022', 'HRSP0023', 'HRSP0024', 'HRSP0025', 'HRSP0029', 
+    'HRSP0031', 'HRSP0032', 'HRSP0034', 'HRSP0035', 'HRSP0036', 'HRSP0039', 'ISIC0001', 'ITSA0004', 'ITSA0006', 'ITSA0008', 'ITSA0011', 'ITSA0013', 'ITSA0015', 'ITSA0016', 'ITSA0017', 'ITSA0023', 'ITSA0024', 'ITSA0025', 'ITSA0026', 'ITSI0002', 'ITSI0022', 'ITSI0027', 'ITSI0028', 'ITSI0029', 'ITSO0021', 'ITSO0023', 'ITSO0024', 'ITSO0025', 'ITSO0026', 'ITSO0029', 'ITSO0032', 'ITSO0034', 'ITSO0035', 'ITSO0036', 'METI0003', 'METI0015', 
+    'METI0017', 'METI0019', 'MTMT0002', 'MTMT0006', 'MTMT0007', 'MTMT0011', 'MTMT0016', 'MTMT0018', 'MTMT0019', 'MTMT0020', 'MTMT0024', 'PTAL0002', 'PTAL0014', 'PTAL0019', 'PTAL0022', 'PTAL0027', 'PTAL0036', 'PTAL0038', 
+    'PTAL0040', 'PTAL0042', 'PTAL0046', 'PTAL0047', 'PTAL0049', 'PTAL0053', 'PTAL0054', 'PTAL0056', 'PTAL0057', 'PTAL0058', 'PTAL0059', 'PTAL0060', 'PTAL0061', 'PTAL0062', 'PTAL0063', 'PTLI0001', 'PTMD0002', 'PTMD0003', 'PTMD0026', 'PTMD0038', 'PTMD0039', 'TNNB0012', 'TNNB0014', 'TNNB0015', 'TRAN0004', 'TRAN0008', 'TRAN0017', 'TRAN0033', 'TRAN0034', 'TRAN0042', 'TRAN0043', 'TRAN0044', 'TRAN0068', 'TRAN0069', 'TRAN0071', 'TRAN0075', 'TRAN0076', 'TRAN0079', 'TRBD0006', 'TRBD0007', 'TRBD0017', 'TRBD0018', 'TRBD0020', 'TRBD0022', 'TRBD0023', 'TRBD0024', 'TRBD0026', 'TRBD0027', 'TRBD0028', 'TRBD0029', 'TRBD0030', 'TRBD0031', 'TRBD0032', 'TRBD0033', 'TRBD0034', 'TRBD0035', 'TRBD0037', 'TRDL0013', 'TRDL0019', 'TRDL0025', 'TRDL0026', 'TRDL0031', 'TRDL0041', 'TRDL0075', 'TRDL0076', 'TRIZ0001', 'TRIZ0014', 'TRIZ0015', 'TRIZ0018', 'TRIZ0021', 'TRIZ0023', 'TRIZ0025', 'TRIZ0026', 'TRIZ0027', 'TRIZ0030', 'TRIZ0031')
+    
+    
+    $hotelItems = GetHotelItems -IndexName $indexName -HotelCodes $hotelCodesToUnpublish
+    UnpublishItems -Items $hotelItems
+    
+    Write-Host "Script is completed"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200716T125950Z

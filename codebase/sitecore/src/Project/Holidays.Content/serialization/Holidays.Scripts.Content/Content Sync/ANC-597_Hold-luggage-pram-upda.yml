@@ -1,0 +1,42 @@
+﻿---
+ID: "3f1d1240-1fd6-4000-8546-269aa5cc91f9"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-597_Hold-luggage-pram-update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Create-Component-For-Site($holdLuggageComponentPath){
+        $item = Get-Item -Path $holdLuggageComponentPath -ErrorAction SilentlyContinue
+        
+        $item.Editing.BeginEdit()
+        
+        $item["PramHeading"] = "Pram"
+        $item["PramDescription"] = "1 pram or pushchair per infant. Outbound and return."
+        $item["PramIcon"] = '<image mediaid="{B7DFB1A3-F9E4-48D0-868F-53AE33B3B347}" />'
+                
+        $item.Editing.EndEdit() | Out-Null
+    }
+        
+    $holdLuggageComponentPath = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Hold Luggage";
+    Create-Component-For-Site -holdLuggageComponentPath $holdLuggageComponentPath
+        
+    $holdLuggageComponentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Hold Luggage";
+    Create-Component-For-Site -holdLuggageComponentPath $holdLuggageComponentPath
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 140
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230807T121141Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

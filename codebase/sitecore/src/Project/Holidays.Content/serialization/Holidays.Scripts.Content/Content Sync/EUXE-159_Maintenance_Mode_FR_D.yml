@@ -1,0 +1,82 @@
+﻿---
+ID: "afa5c004-f9e1-4301-ae20-17e7f117278e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUXE-159_Maintenance_Mode_FR_DE"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-item($path, $itemName, $itemType){
+        $itemToCreateExist = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($itemToCreateExist -eq $null){
+            $createdItem = New-Item -Path $path -Name $itemName -ItemType $itemType
+    
+            if($createdItem -ne $null){
+                Write-Host "$($itemName) item is created"
+                return $createdItem
+            }
+        }
+        return $itemToCreateExist
+    }
+    
+     function create-lang-version($item,$lang,$field,$value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($field -ne $null) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+        }
+    
+    
+    $globalItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/" -ErrorAction SilentlyContinue
+    
+    if ($globalItem -ne $null) {
+    
+    	Create-Lang-Version -Item $globalItem -Lang "de-DE"
+    	Create-Lang-Version -Item $globalItem -Lang "fr-FR"
+    	
+    	$germanMarket = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Market Settings/Germany" -ErrorAction SilentlyContinue
+        $germanMarketMode = create-item -Path "/sitecore/content/EasyJet/Holidays/Settings/Global - Maintenance Mode" -ItemName "Germany - Maintenance Mode" -ItemType "{3B1C3399-8610-40EE-A397-F2A639EFF262}"
+        if($germanMarket -ne $null){
+            $germanMarketMode.Editing.BeginEdit()
+            $germanMarketMode["Market"] = $germanMarket.ID
+            $germanMarketMode.Editing.EndEdit()
+            Create-Lang-Version -Item $germanMarketMode -Lang "en" -Field "Market" -Value $germanMarket.ID
+            Create-Lang-Version -Item $germanMarketMode -Lang "de-DE" -Field "Market" -Value $germanMarket.ID
+        }
+    
+    
+        $franceMarket = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Market Settings/France" -ErrorAction SilentlyContinue
+        $franceMarketMode = create-item -Path "/sitecore/content/EasyJet/Holidays/Settings/Global - Maintenance Mode" -ItemName "France - Maintenance Mode" -ItemType "{3B1C3399-8610-40EE-A397-F2A639EFF262}"
+        if($franceMarket -ne $null){
+            $franceMarketMode.Editing.BeginEdit()
+            $franceMarketMode["Market"] = $franceMarket.ID
+            $franceMarketMode.Editing.EndEdit()
+            Create-Lang-Version -Item $franceMarketMode -Lang "en" -Field "Market" -Value $franceMarket.ID
+            Create-Lang-Version -Item $franceMarketMode -Lang "fr-FR" -Field "Market" -Value $franceMarket.ID
+        }
+     
+    }
+    
+    Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Maintenance Mode" -ErrorAction SilentlyContinue | Remove-Item -Force -Permanently
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231008T211625Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

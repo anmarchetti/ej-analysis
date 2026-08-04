@@ -1,0 +1,60 @@
+@media print {
+    .view-booking {
+        .no-print {
+            display: none !important;
+        }
+
+        .wrapper-container--px {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .wrapper-component-container--grey {
+            background: none;
+
+            .wrapper-shape__triangle-start,
+            .wrapper-shape__triangle-end {
+                display: none;
+            }
+        }
+
+        .view-booking-toolbar {
+            background: none;
+
+            > * {
+                padding: 0;
+            }
+        }
+
+        .view-booking-hotel {
+            margin-top: 15px;
+
+            .view-booking__title,
+            .view-booking-card {
+                margin: 0;
+            }
+
+            .view-booking-hotel__head {
+                padding: 10px 0;
+            }
+        }
+
+        .view-booking-holiday-details {
+            margin: 0;
+
+            .holiday-summary-item {
+                break-inside: avoid;
+            }
+        }
+
+        .passenger-details {
+            .passenger-details__guests-group {
+                gap: 10px;
+            }
+        }
+
+        .special-assistance-content {
+            break-inside: avoid;
+        }
+    }
+}

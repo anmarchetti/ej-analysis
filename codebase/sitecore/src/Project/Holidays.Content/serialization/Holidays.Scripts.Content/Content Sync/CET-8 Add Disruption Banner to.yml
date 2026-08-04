@@ -1,0 +1,114 @@
+﻿---
+ID: "64d38b68-f7e6-498a-9bcf-1a4c9a9889d4"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CET-8 Add Disruption Banner to Post Travel Page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    function createDisruptionBanner() {
+    	$templateId = "{9A54F816-5F3B-4820-A7E6-51988B38DA95}"
+    	$disruptionItemPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Disruption Banner"
+    	
+    	$disruptionBanner = Get-Item -Path $disruptionItemPath  -ErrorAction SilentlyContinue
+    	
+    	if ($disruptionBanner -eq $null){
+    	   Write-Host "Creating Disruption Banner"
+    	   
+    	   New-Item -Path $disruptionItemPath -ItemType $templateId
+    	   
+    	} else{
+    		Write-Host "Disruption Banner already created"
+    	}
+    }
+    
+    function createDisruptionLanguageVersions() {
+    	$disruptionItemPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Disruption Banner"
+    	$disruptionBanner  = Get-Item -Path $disruptionItemPath -ErrorAction SilentlyContinue
+    
+    	if ($disruptionBanner -eq $null) {
+    		Write-Host "Missing disruptionBanner in EN language. Missing item: $($disruptionBanner)"
+    		return;
+    	}
+    	
+    	@('en') | % {
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "Title" -Value "Experienced a lengthy delay or unfortunate disruption?"
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "DisruptionLevel1" -Value 'We are sorry that you may have been caught up in an unplanned disruption. If you need further support then visit our help centre for more information <a href="https://www.easyjet.com/en/holidays/info/disruption" target="_blank">Get Help</a>.'
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "DisruptionLevel2" -Value 'We are sorry that you may have been caught up in an unplanned disruption. If you need further support then visit our help centre for more information <a href="https://www.easyjet.com/en/holidays/info/disruption" target="_blank">Get Help</a>.'
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "DisruptionLevel3" -Value 'We are sorry that you may have been caught up in an unplanned disruption. If you need further support then visit our help centre for more information <a href="https://www.easyjet.com/en/claim/welfare" target="_blank">Get Help</a>.'
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "ExpandDisruptionBanner" -Value "Expand disruption banner"
+    	}
+    
+    	@('de-CH', 'de-DE') | % {
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "Title" -Value "Hatten Sie eine längere Verspätung oder eine unglückliche Unterbrechung?"
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "DisruptionLevel1" -Value 'Es tut uns leid, dass Sie von einer ungeplanten Unterbrechung betroffen sind. Wenn Sie weitere Unterstützung benötigen, besuchen <a href="https://www.easyjet.com/en/holidays/info/disruption" target="_blank">Sie unser Hilfezentrum</a> für weitere Informationen.'
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "DisruptionLevel2" -Value 'Es tut uns leid, dass Sie von einer ungeplanten Unterbrechung betroffen sind. Wenn Sie weitere Unterstützung benötigen, besuchen <a href="https://www.easyjet.com/en/holidays/info/disruption" target="_blank">Sie unser Hilfezentrum</a> für weitere Informationen.'
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "DisruptionLevel3" -Value 'Es tut uns leid, dass Sie von einer ungeplanten Unterbrechung betroffen sind. Wenn Sie weitere Unterstützung benötigen, besuchen <a href="https://www.easyjet.com/en/claim/welfare" target="_blank">Sie unser Hilfezentrum</a> für weitere Informationen.'
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "ExpandDisruptionBanner" -Value "Störungsbanner erweitern"
+    	}
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "Title" -Value "Vous avez subi un retard important ou une perturbation malheureuse ?"
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "DisruptionLevel1" -Value 'Nous sommes désolés que vous ayez été pris dans une perturbation imprévue. Si vous avez besoin d''un soutien supplémentaire, visitez notre centre d''aide pour plus d''informations <a href="https://www.easyjet.com/en/holidays/info/disruption" target="_blank">Obtenir de l''aide</a>.'
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "DisruptionLevel2" -Value 'Nous sommes désolés que vous ayez été pris dans une perturbation imprévue. Si vous avez besoin d''un soutien supplémentaire, visitez notre centre d''aide pour plus d''informations <a href="https://www.easyjet.com/en/holidays/info/disruption" target="_blank">Obtenir de l''aide</a>.'
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "DisruptionLevel3" -Value 'Nous sommes désolés que vous ayez été pris dans une perturbation imprévue. Si vous avez besoin d''un soutien supplémentaire, visitez notre centre d''aide pour plus d''informations <a href="https://www.easyjet.com/en/claim/welfare" target="_blank">Obtenir de l''aide</a>.'
+    		Create-Lang-Version -Item $disruptionBanner -Lang $_ -Field "ExpandDisruptionBanner" -Value "Agrandir la bannière de perturbation"
+    	}
+    	
+    	Write-Host "Created language version for item Disruption Banner"
+    }
+    
+    function createRenderingInPostTravelPage() {
+    	$disruptionRenderingId = "{9AA0CE7E-FB69-49BC-B39E-E92EE4A6631D}"
+        $pagePath = '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel';
+    	$datasourcePath = '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Disruption Banner'
+        $placeholder = "/body/booking-context-{0b3a1889-94df-4381-aaef-272a10e79e98}-0"
+    	
+        $page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    	$disruptionRendering = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $disruptionRenderingId  }
+    	
+    	if ($disruptionRendering -ne $null) {
+    	    Write-Host "Ddisruption Rendering already exists"
+    		return
+    	}
+    	
+    	$disruptionRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/Disruption Banner"
+    	$disruptionBannerRendering = Get-Item -Database "master" -Path $disruptionRenderingPath |  New-Rendering -Placeholder $placeholder
+    	
+    	Add-Rendering -Item $page -Instance $disruptionBannerRendering -PlaceHolder "$($placeholder)" -DataSource $datasourcePath -Index 3
+    }
+    
+    createDisruptionBanner
+    createDisruptionLanguageVersions
+    createRenderingInPostTravelPage
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 910
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240417T102022Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

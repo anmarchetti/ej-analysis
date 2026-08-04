@@ -1,0 +1,163 @@
+.wrapper {
+    width: 100%;
+    overflow-y: auto;
+
+    h2 {
+        @include media-breakpoint-down(lg) {
+            width: 100%;
+            border-bottom: 1px solid $colorGeyser;
+        }
+    }
+}
+
+.content {
+    margin-bottom: 24px;
+
+    @include media-breakpoint-down(lg) {
+        margin-bottom: 60px;
+    }
+}
+
+.itemTitle {
+    margin: 0 0 16px;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: $clrTextMain !important;
+
+    @include media-breakpoint-down(lg) {
+        margin: 16px 0;
+    }
+}
+
+.itemExpandIcon {
+    display: none;
+
+    @include media-breakpoint-down(lg) {
+        display: block;
+    }
+}
+
+.questionWrapper {
+    padding: 0 40px;
+    border-bottom: none;
+
+    @include media-breakpoint-down(lg) {
+        border-bottom: 1px solid $colorGeyser;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: 0 15px;
+    }
+}
+
+.form {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+
+    @include media-breakpoint-down(md) {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+}
+
+.itemLabel {
+    flex-basis: 31.3%;
+    flex-grow: 1;
+    min-height: 112px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 20px 0 #0000;
+
+    input:focus-visible ~ .itemContentWrapper {
+        outline: 2px solid $colorBlack !important;
+    }
+
+    &:hover {
+        cursor: pointer;
+
+        .itemContent {
+            align-items: center;
+            justify-content: center;
+            background: $clrEjOrangeDarkShadow;
+        }
+
+        .itemName {
+            position: static;
+            transform: none;
+        }
+
+        .itemDescription {
+            color: $clrSiteBgWhite;
+        }
+    }
+
+    input:checked ~ .itemContentWrapper .itemContent {
+        border: 3px solid $clrEjOrangeDarkShadow;
+
+        svg {
+            display: block;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        flex-basis: auto;
+        flex-grow: 0;
+        min-height: 104px;
+    }
+}
+
+.itemContentWrapper {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    border-radius: 8px;
+}
+
+.itemContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 3px solid transparent;
+    border-radius: 8px;
+    transition: 0.5s background;
+
+    svg {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        display: none;
+        fill: $clrSiteBgWhite;
+    }
+}
+
+.itemName {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    font-family: $fontGenerationHeadline;
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 32px;
+    color: $clrSiteBgWhite;
+    text-align: center;
+    text-transform: uppercase;
+    transform: translate(-50%, -50%);
+}
+
+.itemDescription {
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    color: transparent;
+    text-align: center;
+}

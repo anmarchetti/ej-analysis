@@ -1,0 +1,35 @@
+.content {
+    border-radius: 4px;
+    max-width: unset;
+    background: linear-gradient(90deg, $colorLuxuryOrange 49.93%, $colorLuxuryYellow 74.96%) border-box;
+
+    @include media-breakpoint-up(md) {
+        border: 2px solid transparent;
+        max-width: unset !important;
+    }
+
+    .body {
+        padding: 0 !important;
+
+        img {
+            @include sizeSquare(35px);
+        }
+    }
+
+    .footer {
+        @include media-breakpoint-down(md) {
+            z-index: $zIndexSuperPopup;
+            padding: 16px;
+            box-shadow: 0px -3px 6px 0px $lightShadowColor;
+        }
+    }
+    .cta {
+        border-width: 2px;
+        margin-top: 0;
+
+        @include media-breakpoint-up(md) {
+            margin-left: auto;
+            width: unset;
+        }
+    }
+}

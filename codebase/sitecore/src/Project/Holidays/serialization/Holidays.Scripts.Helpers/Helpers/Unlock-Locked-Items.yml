@@ -1,0 +1,69 @@
+﻿---
+ID: "07a0d53d-c496-42d4-a0b7-0f789ac96c6f"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/Unlock-Locked-Items"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $turnOffEvents = $true
+    $onlyShowLockedItems = $false
+    $toUnlockPaths = @(
+    "/sitecore/Content",
+    "/sitecore/media library")
+    
+    function Show-Or-Unlock-Locked-Item{
+    		param($item)
+    
+    		if($onlyShowLockedItems)
+            {
+                Write-Host "Item with ID: $($($item.ID)) is locked."    
+            }
+            else
+            {
+                Unlock-Item $item
+                Write-Host "Item with ID: $($($item.ID)) is unlocked."  
+            }
+    	}
+    
+    function Unlock-Items-By-Path($itemPath){
+        $items = Get-ChildItem -Path $itemPath
+        ForEach($childItem in $items)
+        {
+            $lock = $childItem.Fields["__lock"].value
+            if($lock -ne "" -AND $lock -ne "<r />"){
+                Show-Or-Unlock-Locked-Item -Item $childItem
+            }
+            Unlock-Items-By-Path -ItemPath $childItem.FullPath
+        }
+    }
+    
+    function Unlcok-Items($paths){
+        ForEach($path in $paths)
+        {
+            Unlock-Items-By-Path -ItemPath $path
+        }
+    }
+    
+    if ($turnOffEvents) {
+                New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+                    New-UsingBlock (New-Object Sitecore.Data.Events.EventDisabler) {
+                        New-UsingBlock (New-Object Sitecore.Data.BulkUpdateContext) {
+                    Unlcok-Items -Paths $toUnlockPaths
+                }
+            }
+        }
+    } else {
+        Unlcok-Items -Paths $toUnlockPaths
+    }
+    
+    Write-Host "Script is completed"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Value: "20210503T070457:637556222979029515Z"

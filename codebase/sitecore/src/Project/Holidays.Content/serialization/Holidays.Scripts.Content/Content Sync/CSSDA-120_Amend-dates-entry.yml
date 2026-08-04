@@ -1,0 +1,31 @@
+﻿---
+ID: "e6383d04-9309-4512-b362-24b10482c586"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-120_Amend-dates-entry"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $amendSettings = Get-Item "/sitecore/content/EasyJet/Holidays/Settings/Amend Booking Settings";
+    if ($amendSettings -ne $null) {
+        $amendSettings.Editing.BeginEdit();
+        
+        $amendSettings["isEligibleAmendDateChange"] = "1"
+        
+        Write-Host $amendSettings.Name "Updated"
+        $amendSettings.Editing.EndEdit() | Out-Null;
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230619T104331Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    overflow: hidden;
+    background-color: $colorWhite;
+    border: 1px solid $borderColorGray;
+    border-radius: 4px;
+    box-shadow: $generalBoxShadow;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+    }
+
+    .carousel {
+        position: relative;
+        min-width: 25%;
+        height: initial;
+    }
+}
+
+.isSelected {
+    border: 2px solid $colorOrange;
+    box-shadow: none;
+}
+
+.isLoading {
+    border: none;
+    box-shadow: none;
+}

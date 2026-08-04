@@ -1,0 +1,25 @@
+# X-POS-ID: This is a custom http header from EJH sent to the EI Gateway defining the Point Of Sale
+@X-POS-ID_EJH_WEB = DigitalHolidaysWeb
+
+###
+# EI Gateway - Make Payment Request
+# @name makePaymentRequestWithCard
+# @description Make a payment to PG via EI GW request with Card
+# @expected status=200
+POST {{ei-gateway-host}}/corp/payments/v1/make-payment-request
+Content-Type: application/json
+X-Client-Transaction-Id: {{$uuid}}
+X-POS-ID: {{X-POS-ID_EJH_WEB}}
+
+< ./json-requests-data/make-payment-with-card-request-body.json
+
+###
+# @name makePaymentRequestWithApplePay
+# @description Make a payment to PG via EI GW request with Apple Pay
+# @expected status=200
+POST {{ei-gateway-host}}/corp/payments/v1/make-payment-request
+Content-Type: application/json
+X-Client-Transaction-Id: {{$uuid}}
+X-POS-ID: {{X-POS-ID_EJH_WEB}}
+
+< ./json-requests-data/make-payment-with-apple-pay-request-body.json

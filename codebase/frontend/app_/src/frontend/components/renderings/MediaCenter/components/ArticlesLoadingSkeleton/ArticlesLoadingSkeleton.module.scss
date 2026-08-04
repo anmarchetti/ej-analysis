@@ -1,0 +1,37 @@
+.placeholderArticle {
+    position: relative;
+    width: 100%;
+    min-height: 200px;
+    margin: 10px;
+    overflow: hidden;
+    background-color: $colorWhite;
+    border-radius: 6px;
+    box-shadow: 0 0 13px 0 rgba(178, 178, 175, 0.5);
+    
+
+    @include media-breakpoint-up(lg) {
+        width: calc(33.3% - 20px);
+        min-height: 355px;
+        margin: 10px;
+    }
+
+    &.fullWidth {
+        display: flex;
+        flex-direction: row-reverse;
+        width: 100%;
+        max-width: none;
+        margin: 10px;
+    }
+}
+
+.articlesWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 0 30px;
+
+    @include media-breakpoint-up(lg) {
+        margin-top: 50px;
+        margin-bottom: 50px;
+        padding-bottom: 0;
+    }
+}

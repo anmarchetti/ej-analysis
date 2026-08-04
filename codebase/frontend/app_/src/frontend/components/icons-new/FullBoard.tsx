@@ -1,0 +1,20 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgFullBoard = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        className={classNames('icon-svg', props.className)}
+        role='graphics-symbol'
+        aria-label='board-icon'
+        data-tid={props['data-tid'] ?? 'full-board-icon'}
+    >
+        <path d='M21.21 2h-.05A3.19 3.19 0 0018 5.19v5.87a.76.76 0 00.76.76H20V21a1 1 0 001 1 1 1 0 001-1V2.76a.76.76 0 00-.79-.76zm-6.46 0a.49.49 0 00-.5.49v4a.5.5 0 01-1 0v-4a.5.5 0 00-1 0v4a.5.5 0 01-1 0v-4a.5.5 0 00-1 0v3.83a2.43 2.43 0 00.6 1.59 2.5 2.5 0 00.9.67V21a1 1 0 001 1 1 1 0 001-1V8.58a2.5 2.5 0 00.9-.67 2.43 2.43 0 00.6-1.59V2.49a.49.49 0 00-.5-.49zM4.53 2C3.15 2 2 3.79 2 6a4.52 4.52 0 001.5 3.66V21a1 1 0 001 1 1 1 0 001-1V9.66A4.52 4.52 0 007 6c0-2.21-1.09-4-2.47-4z' />
+    </svg>
+);
+
+export default SvgFullBoard;

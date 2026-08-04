@@ -1,0 +1,142 @@
+﻿---
+ID: "f98692cf-e2fd-4ef2-a355-3dd0a1d814dd"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-74 Change view of Hold Luggage component on Extras page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Edit-Data-Source ($dataSourcePath, $bagsPath){
+        # Get data source
+        $dataSource = Get-Item -path $dataSourcePath -ErrorAction SilentlyContinue
+        
+        $holdBagsPath = $bagsPath + 'Hold Baggage';
+        $bags = Get-ChildItem -Path $holdBagsPath;
+        $holdLuggageItems = ($bags | select -ExpandProperty Id) -join "|"
+        
+        
+        # update data source
+        if ($dataSource -ne $null) {
+            $dataSource.Editing.BeginEdit()
+    	    $dataSource["DefaultBags"] = $holdLuggageItems;
+            $dataSource.Editing.EndEdit() | Out-Null
+            Write-Host $dataSource.Name "is updated";
+        }
+    
+    }
+    
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+            if($item -eq $null){
+                $item = New-Item -Path $path -ItemType $template
+            }
+        return $item
+    }
+    
+    function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+        }
+    
+    #Setup defaults bag
+    
+    # Holidays
+    Edit-Data-Source -dataSourcePath '/sitecore/content/EasyJet/Holidays/Data/Extra Luggage Lists' -bagsPath '/sitecore/content/EasyJet/Holidays/Data/Luggage/' 
+    
+    # Trade
+    Edit-Data-Source -dataSourcePath '/sitecore/content/EasyJet/TradePortal/Data/Extra Luggage Lists' -bagsPath '/sitecore/content/EasyJet/TradePortal/Data/Luggage/'
+    
+    #Set up new subtitles
+    $translations = @{
+        "fr-CH" = @{
+            "HoldLuggageAndSportsSubtitle" = "Chaque passager dispose d'un sac de {number} kg, mais peut ajouter jusqu'à deux bagages supplémentaires ou un équipement sportif par passager."
+            "HoldLuggageSubtitle" = "Chaque passager dispose d'un sac de {number} kg, mais peut ajouter jusqu'à deux bagages supplémentaires par passager."
+            "SportsSubtitle" = "Chaque passager dispose d'un sac de {number} kg, mais peut ajouter un équipement sportif par passager."
+            "RequestFailureAltSubtitle" = "Chaque passager dispose d'un sac de {number} kg. Des bagages de soute supplémentaires peuvent être ajoutés ultérieurement."
+            "NoDefaultBagsSubtitle" = "Chaque passager peut ajouter jusqu'à 3 bagages supplémentaires par passager."
+        }
+        "fr-FR" = @{
+            "HoldLuggageAndSportsSubtitle" = "Chaque passager dispose d'un sac de {number} kg, mais peut ajouter jusqu'à deux bagages supplémentaires ou un équipement sportif par passager."
+            "HoldLuggageSubtitle" = "Chaque passager dispose d'un sac de {number} kg, mais peut ajouter jusqu'à deux bagages supplémentaires par passager."
+            "SportsSubtitle" = "Chaque passager dispose d'un sac de {number} kg, mais peut ajouter un équipement sportif par passager."
+            "RequestFailureAltSubtitle" = "Chaque passager dispose d'un sac de {number} kg. Des bagages de soute supplémentaires peuvent être ajoutés ultérieurement."
+            "NoDefaultBagsSubtitle" = "Chaque passager peut ajouter jusqu'à 3 bagages supplémentaires par passager."
+        }
+        "de-CH" = @{
+            "HoldLuggageAndSportsSubtitle" = "Jeder Passagier hat ein Gepäckstück von {number} kg dabei, kann aber bis zu 2 weitere Gepäckstücke oder ein Sportgerät pro Passagier hinzufügen."
+            "HoldLuggageSubtitle" = "Jeder Passagier hat ein Gepäckstück von {number} kg dabei, kann aber bis zu 2 weitere Gepäckstücke pro Passagier hinzufügen."
+            "SportsSubtitle" = "Für jeden Passagier ist eine {number} kg schwere Tasche inbegriffen, aber jeder Passagier kann eine Sportausrüstung hinzufügen."
+             "RequestFailureAltSubtitle" = "Jeder Passagier hat ein Gepäckstück von {number} kg dabei. Zusätzliches Gepäck kann zu einem späteren Zeitpunkt hinzugefügt werden"
+             "NoDefaultBagsSubtitle" = "Jeder Passagier kann bis zu 3 weitere Gepäckstücke pro Passagier mitnehmen."
+        }
+        "de-DE" = @{
+            "HoldLuggageAndSportsSubtitle" = "Jeder Passagier hat ein Gepäckstück von {number} kg dabei, kann aber bis zu 2 weitere Gepäckstücke oder ein Sportgerät pro Passagier hinzufügen."
+            "HoldLuggageSubtitle" = "Jeder Passagier hat ein Gepäckstück von {number} kg dabei, kann aber bis zu 2 weitere Gepäckstücke pro Passagier hinzufügen."
+            "SportsSubtitle" = "Für jeden Passagier ist eine {number} kg schwere Tasche inbegriffen, aber jeder Passagier kann eine Sportausrüstung hinzufügen."
+            "RequestFailureAltSubtitle" = "Jeder Passagier hat ein Gepäckstück von {number} kg dabei. Zusätzliches Gepäck kann zu einem späteren Zeitpunkt hinzugefügt werden"
+            "NoDefaultBagsSubtitle" = "Jeder Passagier kann bis zu 3 weitere Gepäckstücke pro Passagier mitnehmen."
+        }
+    }
+    
+    # Holidays
+    $dataPath = '/sitecore/content/EasyJet/Holidays/Data/Hold Luggage'
+    $data = Get-Or-Create-Item -Path $dataPath -Template '{D0D47EC4-D20D-45B7-8486-58DD5311557A}'
+    if($data -ne $null) {
+        $data.Editing.BeginEdit()
+        $data['HoldLuggageAndSportsSubtitle'] = 'Each passenger has a {number}kg bag included, but can add up to 2 more pieces of luggage, or one piece of sports equipment per passenger.'
+        $data['HoldLuggageSubtitle'] = 'Each passenger has a {number}kg bag included, but can add up to 2 more pieces of luggage equipment per passenger.'
+        $data['SportsSubtitle'] = "Each passenger has a {number}kg bag included, but can add one piece of sports equipment per passenger."
+        $data['RequestFailureAltSubtitle'] = "Each passenger has a {number}kg bag included. Additional hold luggage can be added at a later stage"
+        $data['NoDefaultBagsSubtitle'] = "Each passenger can add up to 3 more pieces of luggage per passenger."
+        $data.Editing.EndEdit() | Out-Null
+    }
+    
+    foreach ($lang in $translations.Keys) {
+        create-lang-version -item $data -lang $lang -field "HoldLuggageAndSportsSubtitle" -value $translations[$lang]["HoldLuggageAndSportsSubtitle"]
+        create-lang-version -item $data -lang $lang -field "HoldLuggageSubtitle" -value $translations[$lang]["HoldLuggageSubtitle"]
+        create-lang-version -item $data -lang $lang -field "SportsSubtitle" -value $translations[$lang]["SportsSubtitle"]
+        create-lang-version -item $data -lang $lang -field "RequestFailureAltSubtitle" -value $translations[$lang]["RequestFailureAltSubtitle"]
+        create-lang-version -item $data -lang $lang -field "NoDefaultBagsSubtitle" -value $translations[$lang]["NoDefaultBagsSubtitle"]
+    }
+    
+    # Trade
+    $dataPath = '/sitecore/content/EasyJet/TradePortal/Data/Hold Luggage'
+    $data = Get-Or-Create-Item -Path $dataPath -Template '{D0D47EC4-D20D-45B7-8486-58DD5311557A}'
+    if($data -ne $null) {
+        $data.Editing.BeginEdit()
+        $data['HoldLuggageAndSportsSubtitle'] = 'Each passenger has a {number}kg bag included, but can add up to 2 more pieces of luggage, or one piece of sports equipment per passenger.'
+        $data['HoldLuggageSubtitle'] = 'Each passenger has a {number}kg bag included, but can add up to 2 more pieces of luggage equipment per passenger.'
+        $data['SportsSubtitle'] = "Each passenger has a {number}kg bag included, but can add one piece of sports equipment per passenger."
+        $data['RequestFailureAltSubtitle'] = "Each passenger has a {number}kg bag included. Additional hold luggage can be added at a later stage"
+        $data['NoDefaultBagsSubtitle'] = "Each passenger can add up to 3 more pieces of luggage per passenger."
+        $data.Editing.EndEdit() | Out-Null
+    }
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1040
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240513T090444Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

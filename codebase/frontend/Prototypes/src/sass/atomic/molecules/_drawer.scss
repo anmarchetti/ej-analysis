@@ -1,0 +1,184 @@
+.drawer {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: -100vw;
+    bottom: 0;
+    left: 100vw;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #fff;
+    transition: $animationDuration;
+    opacity: 0;
+
+    &__content {
+        padding: 25px $container-padding-x_mobile 90px;
+
+        &__title {
+            display: flex;
+            align-items: center;
+            margin: 25px 0 20px;
+
+            h4 {
+                margin: 0 15px;
+                font-size: 16px;
+                line-height: 21px;
+            }
+
+            .more-info {
+                width: 18px;
+                height: 18px;
+                color: #f60;
+            }
+
+            .popup--centered {
+                .popup__dialog {
+                    justify-content: flex-start;
+                    width: auto;
+                    margin: 20px 30px;
+
+                    .close {
+                        position: absolute;
+                        top: 7px;
+                        right: 7px;
+                        color: #f60;
+                        transform: rotateZ(45deg);
+                    }
+
+                    .popup__content {
+                        border-radius: 6px;
+                        box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.15);
+                    }
+
+                    .popup__body {
+                        padding: 20px 35px 20px 25px;
+                        font-size: 14px;
+                        line-height: 17px;
+                        color: #535353;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+
+        &__list {
+            margin: 0;
+            padding: 0 10px;
+            list-style: none;
+
+            &__item {
+                position: relative;
+                display: flex;
+                padding: 20px 0 20px 16px;
+                font-size: 16px;
+                line-height: 19px;
+                color: rgba(0, 0, 0, 0.8);
+                border-bottom: 1px solid #dadfe0;
+                cursor: pointer;
+
+                &.active {
+                    color: $colorOrange;
+
+                    .active-icon {
+                        margin-left: 12px;
+                    }
+                }
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+}
+
+.drawer--grey {
+    background-color: $clrSiteBgGrey;
+}
+
+.drawer--open {
+    right: 0;
+    left: 0;
+    opacity: 0.999;
+
+    .drawer__actions {
+        right: 0;
+        left: 0;
+    }
+}
+
+.drawer--animation-bottom {
+    top: 100vh;
+    right: 0;
+    bottom: -100vh;
+    left: 0;
+    opacity: 0;
+
+    &.drawer {
+        transition: top .5s, bottom .5s, opacity .5s step-end;
+    }
+
+    &.drawer--open {
+        top: 0;
+        bottom: 0;
+        opacity: 0.999;
+        transition: top .5s, bottom .5s, opacity .5s step-start;
+    }
+
+    .popup {
+        position: sticky;
+    }
+}
+
+.drawer__actions {
+    position: fixed;
+    z-index: 110;
+    right: -100vw;
+    bottom: 0;
+    left: 100vw;
+    display: flex;
+    align-items: center;
+    padding: 15px $container-padding-x_mobile;
+    background: #fff;
+    box-shadow: 0 0 2px 2px #d3d3d3;
+    transition: $animationDuration;
+
+    .btn {
+        flex-grow: 1;
+        max-width: 100%;
+        padding: 12px 15px;
+        font-size: 14px;
+        line-height: 1.15;
+
+        + .btn {
+            margin-left: 7px;
+        }
+    }
+}
+
+.drawer--scrollable {
+    display: flex;
+    flex-direction: column;
+
+    .drawer__content {
+        flex: 1 1 auto;
+        padding: 25px $container-padding-x_mobile;
+        overflow-y: auto;
+    }
+
+    .drawer__actions {
+        position: static;
+        flex-shrink: 0;
+        padding: 10px $container-padding-x_mobile;
+    }
+}
+
+.drawer__additional-text {
+    position: absolute;
+    bottom: 0;
+    font-family: $fontRoundedBook;
+    font-size: 15px;
+}

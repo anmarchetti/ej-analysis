@@ -1,0 +1,22 @@
+.opened {
+    @include media-breakpoint-down(lg) {
+        position: fixed;
+        display: block;
+    }
+}
+
+.actions {
+    z-index: 102;
+    display: flex;
+    flex-basis: 172px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-left: 63px;
+
+    @include media-breakpoint-down(lg) {
+        position: absolute;
+        right: 16px;
+    }
+}

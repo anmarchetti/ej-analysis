@@ -1,0 +1,20 @@
+.icon {
+    width: auto;
+    height: 10px;
+    padding-left: 10px;
+}
+
+.button {
+    &:global(.btn--outlined) {
+        @include media-breakpoint-down(lg) {
+            padding: 0;
+            background-color: inherit;
+            border: none;
+
+            &:hover {
+                color: $clrEjOrange;
+                background: none;
+            }
+        }
+    }
+}

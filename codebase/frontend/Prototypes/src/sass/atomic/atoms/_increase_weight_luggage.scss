@@ -1,0 +1,63 @@
+.increase-weight-luggage {
+    padding: 0 160px 43px 100px;
+
+    &__title {
+        margin-bottom: 20px;
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        line-height: 30px;
+        color: $clrTextMain;
+    }
+
+    &__content {
+        display: flex;
+        justify-content: space-between;
+
+        .radio-list {
+            &__title {
+                margin-bottom: 20px;
+                font-family: $fontRoundedBook;
+                font-size: 18px;
+                line-height: 24px;
+                color: $clrTextMain;
+            }
+
+            &__items {
+                padding-left: 30px;
+
+                .radio {
+                    margin-bottom: 15px;
+
+                    .radio__label {
+                        padding-left: 35px;
+                        font-family: $fontRoundedBook;
+                        line-height: 20px;
+                        color: $clrTextMainLight;
+
+                        span {
+                            margin-right: 15px;
+                            font-weight: bold;
+                        }
+
+                        &::before {
+                            top: 0;
+                            box-sizing: border-box;
+                            width: 20px;
+                            height: 20px;
+                        }
+
+                        &::after {
+                            left: 4px;
+                            width: 12px;
+                            height: 12px;
+                        }
+                    }
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+}

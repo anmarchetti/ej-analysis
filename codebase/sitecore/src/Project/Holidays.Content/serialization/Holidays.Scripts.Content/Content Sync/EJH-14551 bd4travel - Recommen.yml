@@ -1,0 +1,150 @@
+﻿---
+ID: "98084523-600c-45d8-a116-24d019909333"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14551 bd4travel - Recommender for Holiday Types Pages"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    
+    function Edit-Theme-Type-Item($path, $code) {
+         $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item["Bd4ThemeTypeCode"] = $code;
+            $item.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    #Create bd4 theme types data
+    Edit-Theme-Type-Item -path "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Beach/Adults" -code "EUBA"
+    Edit-Theme-Type-Item -path "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Beach/Family" -code "EUBF"
+    Edit-Theme-Type-Item -path "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Beach/Luxury"  -code "EUBL"
+    Edit-Theme-Type-Item -path "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Beach/Handpicked" -code "EUBO"
+    Edit-Theme-Type-Item -path "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Beach/Undiscovered" -code "EUBU"
+    
+    Edit-Theme-Type-Item -path "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/City/Boutique" -code "EUCB"
+    Edit-Theme-Type-Item -path "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/City/Luxury" -code "EUCL"
+    Edit-Theme-Type-Item -path "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/City/Handpicked"  -code "EUCO"
+    
+    Edit-Theme-Type-Item -path "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Lakes/Boutique"  -code "EULB"
+    Edit-Theme-Type-Item -path "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Lakes/Luxury" -code "EULL"
+    Edit-Theme-Type-Item -path "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Lakes/Handpicked" -code "EULO"
+    Edit-Theme-Type-Item -path "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Lakes/Undiscovered"  -code "EULU"
+    
+    #Create Recommender Data Source
+    function Create-Recommender-Data($recommenderPath, $themeTypeCodePaths) {
+        $recomData = Get-Or-Create-Item -Path $recommenderPath -Template "{439330F2-BA2B-4D2D-9198-188D525F5877}";
+        if ($recomData -ne $null) {
+            $recomData.Editing.BeginEdit()
+            $recomData["Title"] = "HOLIDAYS WE THINK YOU’D MIGHT LIKE";
+            $codes = @();
+            for($i = 0; $i -lt $themeTypeCodePaths.length; $i++){
+                $themeTypeCode = Get-Item -Path $themeTypeCodePaths[$i] -ErrorAction SilentlyContinue;
+                $codes += $themeTypeCode.ID
+            }
+            $codesStr = $codes -join "|"
+            if ($codesStr -ne $null) {
+                $recomData["HolidayThemeTypes"] = $codesStr;
+            }
+            $recomData.Editing.EndEdit() | Out-Null
+        }
+        
+        return $recomData;
+    }
+    
+    $familyCodes = @(
+        "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Beach/Family"
+    );
+    $adultsCodes = @(
+        "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Beach/Adults"
+    );
+    $beachCodes = @(
+        "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Beach/Family",
+        "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Beach/Adults",
+        "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Beach/Luxury",
+        "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Beach/Handpicked",
+        "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Beach/Undiscovered"
+    );
+    $lakesCodes = @(
+        "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Lakes/Boutique",
+        "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Lakes/Luxury",
+        "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Lakes/Handpicked",
+        "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Lakes/Undiscovered"
+    );
+    $luxuryCodes = @(
+        "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Beach/Luxury",
+        "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/City/Luxury",
+        "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Lakes/Luxury"
+    );
+    
+    $familyData = Create-Recommender-Data -recommenderPath "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Family Holidays/Page Components/Recommender Carousel" -themeTypeCodePaths $familyCodes
+    $adultsData = Create-Recommender-Data -recommenderPath "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Adults Holidays/Page Components/Recommender Carousel" -themeTypeCodePaths $adultsCodes
+    $beachData = Create-Recommender-Data -recommenderPath "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Beach Holidays/Page Components/Recommender Carousel" -themeTypeCodePaths $beachCodes
+    $lakesData = Create-Recommender-Data -recommenderPath "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Lakes Holidays/Page Components/Recommender Carousel" -themeTypeCodePaths $lakesCodes
+    $luxuryData = Create-Recommender-Data -recommenderPath "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Luxury Holidays/Page Components/Recommender Carousel" -themeTypeCodePaths $luxuryCodes
+    
+    #Add renderings to pages
+    function Add-New-Rendering($item, $placeholder, $renderingId, $datasource, $index){
+        $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $placeholder
+        Add-Rendering -Item $item -Instance $renderingItem -PlaceHolder $placeholder -DataSource $datasource -Index $index
+    }
+    function Add-Rendering-To($item, $renderingId, $datasource){
+        $index = 0
+        Get-Rendering -Item $item |
+        Foreach-Object { 
+            $index++
+            if($_.ItemId -eq $renderingId)
+            {
+                if($index -gt 0)
+                {
+                    $incrementIndex = $index
+                    if ($sing -ne 0){
+                        $incrementIndex = $index + $sign
+                    }
+                    
+                    Add-New-Rendering -Item $item -Placeholder "body" -RenderingId "{E78B6A7E-0EC5-4324-A290-971EE74C1FC8}" -Datasource $datasource -Index $incrementIndex 
+                    Get-Rendering -Item $item -Index $incrementIndex | Set-RenderingParameter -Parameter @{"IsWhiteBackground"= "1"; "FallbackImage" = "<image mediaid='{B8BDEFA6-5D0E-4F27-B6C3-53BDD9A3A32C}'/>";} | 
+        Set-Rendering -Item $item
+                    
+                }
+                return
+            }
+        }
+    }
+    function Add-Carousel($pagePath, $rendId,  $datasource, $pageType ){
+        $page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue;
+        if ($page -ne $null) {
+              $page.Editing.BeginEdit()
+              $page["PageType"] = $pageType;
+              $page.Editing.EndEdit() 
+             Add-Rendering-To -Item $page -RenderingId $rendId -datasource $datasource.ID;
+        }
+    }
+    
+    Add-Carousel -pagePath "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Family Holidays" -rendId "{F439DE66-8B5C-4235-BE17-8675B58AA50A}" -datasource $familyData -pageType 'Family'
+    Add-Carousel -pagePath "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Adults Holidays" -rendId "{6D28E6C9-7135-47B9-8778-F086E33FDDF6}" -datasource $adultsData -pageType 'Adults'
+    Add-Carousel -pagePath "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Beach Holidays" -rendId "{F439DE66-8B5C-4235-BE17-8675B58AA50A}" -datasource $beachData -pageType 'Beach'
+    Add-Carousel -pagePath "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Lakes Holidays" -rendId "{6D28E6C9-7135-47B9-8778-F086E33FDDF6}" -datasource $lakesData -pageType 'Lakes'
+    Add-Carousel -pagePath "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/Luxury Holidays" -rendId "{F439DE66-8B5C-4235-BE17-8675B58AA50A}" -datasource $luxuryData -pageType 'Luxury'
+    
+    $settings = Get-Or-Create-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Holiday Type Recommender Carousel" -Template "{B30592DE-8B14-4628-870F-B0B11F5F4887}";
+       
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210112T150701Z

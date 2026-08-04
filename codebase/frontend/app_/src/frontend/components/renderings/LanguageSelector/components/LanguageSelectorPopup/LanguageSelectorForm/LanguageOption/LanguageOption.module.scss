@@ -1,0 +1,46 @@
+.option {
+    display: flex;
+    padding: 16px 15px;
+    border-bottom: 1px solid $colorIron;
+
+    &:last-child {
+        border-bottom: 0;
+    }
+
+    @include media-breakpoint-up(lg) {
+        padding: 11px 30px;
+        border-right: 1px solid $colorIron;
+    }
+
+    :global {
+        .radio {
+            display: inline-flex;
+        }
+
+        .radio--checked {
+            color: $colorOrange;
+        }
+
+        .radio__label {
+            --radio-size: 18px;
+            --radio-inner-dot-size: 10px;
+
+            font-family: $fontRoundedBook;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 18px;
+        }
+    }
+}
+
+.label {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    width: 31px;
+    height: 23px;
+    margin-right: 12px;
+    border-radius: 4px;
+}

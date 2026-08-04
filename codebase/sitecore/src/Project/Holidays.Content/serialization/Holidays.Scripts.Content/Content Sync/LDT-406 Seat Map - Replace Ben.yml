@@ -1,0 +1,80 @@
+﻿---
+ID: "ccb31f26-e756-47f5-a1a9-7003c01d0f36"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-406 Seat Map - Replace Benefits table with Text component"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+        
+        $updates = @(
+                @{
+                    Path         = '/sitecore/content/EasyJet/Holidays/Data/Ancillaries/SeatsMap'
+                    TemplatePath = '/sitecore/templates/Feature/Ancillaries/SeatMap/Seat Map'
+                    Fields      = @{
+                        "IncludedLabel" = @{
+                            "en" = "Included"
+                            "fr-CH" = "Inclus"
+                            "de-CH" = "Inklusive"
+                            "fr-FR" = "Inclus"
+                            "de-DE" = "Inklusive"
+                        }
+                        "LuxuryBenefitsIncluded" = @{
+                            "en" = "Your luxury holiday includes complimentary standard seats as well as speedy boarding, small and large cabin bags, 26kg hold bags and fast track UK security."
+                            "fr-CH" = "Vos vacances de luxe comprennent des sièges standards offerts, ainsi qu’un embarquement prioritaire, des petits et grands bagages en cabine, des bagages en soute de 26 kg et un accès rapide à la sécurité au Royaume-Uni."
+                            "de-CH" = "Ihr Luxusurlaub beinhaltet kostenlose Standardsitze sowie Priority Boarding, kleine und große Handgepäckstücke, 26 kg Aufgabegepäck und Fast-Track-Sicherheitskontrolle im Vereinigten Königreich."
+                            "fr-FR" = "Vos vacances de luxe comprennent des sièges standards offerts, ainsi qu’un embarquement prioritaire, des petits et grands bagages en cabine, des bagages en soute de 26 kg et un accès rapide à la sécurité au Royaume-Uni."
+                            "de-DE" = "Ihr Luxusurlaub beinhaltet kostenlose Standardsitze sowie Priority Boarding, kleine und große Handgepäckstücke, 26 kg Aufgabegepäck und Fast-Track-Sicherheitskontrolle im Vereinigten Königreich."
+                        }
+                        "LuxuryBenefitsNote" = @{
+                            "en" = "You can also upgrade your seats to Up Front so you’re in the first few rows or Extra Legroom for more comfort"
+                            "fr-CH" = "Vous pouvez également surclasser vos sièges en optant pour les places À l’avant afin d’être dans les premières rangées, ou pour des sièges avec plus d’espace pour les jambes pour un confort accru."
+                            "de-CH" = "Sie können Ihre Sitze auch auf Vorne sitzen upgraden, um in den ersten Reihen zu sitzen, oder auf mehr Beinfreiheit für zusätzlichen Komfort."
+                            "fr-FR" = "Vous pouvez également surclasser vos sièges en optant pour les places À l’avant afin d’être dans les premières rangées, ou pour des sièges avec plus d’espace pour les jambes pour un confort accru."
+                            "de-DE" = "Sie können Ihre Sitze auch auf Vorne sitzen upgraden, um in den ersten Reihen zu sitzen, oder auf mehr Beinfreiheit für zusätzlichen Komfort."
+                        }
+                        "LuxuryBenefitsIcon" = @{
+                            "en" = '<image mediaid="{1A925155-F9DC-464A-B915-A07A9B27C3D4}" />'
+                            "fr-CH" = '<image mediaid="{1A925155-F9DC-464A-B915-A07A9B27C3D4}" />'
+                            "de-CH" = '<image mediaid="{1A925155-F9DC-464A-B915-A07A9B27C3D4}" />'
+                            "fr-FR" = '<image mediaid="{1A925155-F9DC-464A-B915-A07A9B27C3D4}" />'
+                            "de-DE" = '<image mediaid="{1A925155-F9DC-464A-B915-A07A9B27C3D4}" />'
+                        }
+                    }
+                }
+                @{
+                    Path         = '/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seats Map Trade'
+                    TemplatePath = '/sitecore/templates/Project/Trade Portal/Datasource/Seats Map Trade'
+                    Fields      = @{
+                        "IncludedLabel" = @{
+                            "en" = "Included"
+                        }
+                        "LuxuryBenefitsIncluded" = @{
+                            "en" = "Your luxury holiday includes complimentary standard seats as well as speedy boarding, small and large cabin bags, 26kg hold bags and fast track UK security."
+                        }
+                        "LuxuryBenefitsNote" = @{
+                            "en" = "You can also upgrade your seats to Up Front so you’re in the first few rows or Extra Legroom for more comfort"
+                        }
+                        "LuxuryBenefitsIcon" = @{
+                            "en" = '<image mediaid="{1A925155-F9DC-464A-B915-A07A9B27C3D4}" />'
+                        }
+                    }
+                }
+            )
+        
+        ImportContent -itemsToCreate $updates
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250730T132014Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

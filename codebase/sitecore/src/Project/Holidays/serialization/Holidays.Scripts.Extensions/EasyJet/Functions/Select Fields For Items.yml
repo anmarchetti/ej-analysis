@@ -1,0 +1,145 @@
+﻿---
+ID: "5b00d639-5699-4b64-b41b-eff4448c7bb4"
+Parent: "b1e3c34e-a209-4730-a266-ecc77072d88c"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/SPE/Extensions/EasyJet/Functions/Select Fields For Items
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Get Field Value For Any Language"
+    function Select-FieldsForItems {
+        param (
+            [Sitecore.Data.Items.Item[]]$Items,
+            [string[]]$Languages
+        )
+    
+        $selections = @()
+    
+        foreach ($item in $Items) {
+            $selectedFields=@()
+            $DirectFieldsForItem =@()
+            $InheritedFieldsForItem=@()
+            $directFieldNames =@()
+            $inheritedFieldNames=@()
+            $fieldNames = Get-ItemField -Item $item -IncludeStandardFields -ReturnType Name | 
+                          Where-Object { $_ -notmatch "^__" -or $_ -eq "__Renderings" -or $_ -eq "__Sortorder" } | 
+                          Select-Object -ExpandProperty $_
+    
+            if (-not $fieldNames -or $fieldNames.Count -eq 0) {
+                Write-Host "No fields found in item '$($item.DisplayName)', skipping..."
+                continue
+            }
+    
+            $directFields = Get-ItemField -Item $item -IncludeStandardFields -ReturnType "Field" | 
+                            Where-Object { $_.InnerItem.Parent.Parent.Paths.Path -eq $item.Template.InnerItem.Paths.Path } | 
+                            Select-Object -ExpandProperty Name
+    
+            $directFieldNames = $fieldNames | Where-Object { $directFields -contains $_ }
+            $inheritedFieldNames = $fieldNames | Where-Object { -not ($directFieldNames -contains $_) }
+    
+            $defaultSelectedDirectFields = $directFieldNames | Where-Object {
+                $val = GetFieldValueInAnyLanguage -item $item -field $_ -languages $Languages
+                -not [string]::IsNullOrEmpty($val)
+            }
+    
+            $defaultSelectedInheritedFields = $inheritedFieldNames | Where-Object {
+                $val = GetFieldValueInAnyLanguage -item $item -field $_ -languages $Languages
+                -not [string]::IsNullOrEmpty($val)
+            }
+    
+            $directFieldOptions = @{}
+            foreach ($fname in $directFieldNames) {
+                $directFieldOptions[$fname] = $fname
+            }
+    
+            $inheritedFieldOptions = @{}
+            foreach ($fname in $inheritedFieldNames) {
+                $inheritedFieldOptions[$fname] = $fname
+            }
+            $parameters = @()
+            if($directFieldNames -or $inheritedFieldNames)
+            {
+                $parameters+=@{
+                    Name   = "FieldsInfo"
+                    Editor = "info"
+                    Value  = "Select the fields that should be included for the item: <br><b style=`"font-size:1.4em !important`">$($item.Paths.Path)</b><br><br>" +
+                            "<b style=`"font-size:1em`">Fields that already have values will be checked automatically.</b><br><br>"+
+                             "<b style=`"font-size:1em;color:red;`">Note: Only select '__Renderings' Field if you introduce a new item, otherwise you probably would overwrite existing renderings.</b><br>" 
+                             
+                }
+                
+            }
+            else{
+                $parameters+=@{
+                    Name   = "FieldsInfo"
+                    Editor = "info"
+                    Value  = "Do you want to include this item: <br><b style=`"font-size:1.4em`">$($item.Paths.Path)</b>"
+                }
+            }
+            if($directFieldNames)
+            {
+                $parameters+=@{
+                    Name    = "DirectFieldsForItem"
+                    Title   = "Direct Fields"
+                    Editor  = "checklist"
+                    Options = $directFieldOptions
+                    Value   = $defaultSelectedDirectFields
+                }
+            }
+            
+            if($inheritedFieldNames)
+            {
+                $parameters+=@{
+                    Name    = "InheritedFieldsForItem"
+                    Title   = "Inherited Fields"
+                    Editor  = "checklist"
+                    Options = $inheritedFieldOptions
+                    Value   = $defaultSelectedInheritedFields
+                }
+            }
+            $fieldSelection="no";
+    
+            if($directFieldNames -or $inheritedFieldNames)
+            {
+                $fieldSelection = Read-Variable -Parameters $parameters `
+                  -Title "Field Selection for Item: $($item.DisplayName)" `
+                  -Description "Please select the fields you want to include." `
+                  -Width 800 -Height 800 -CancelButtonName  "Skip" -OkButtonName "Add"
+                if ($fieldSelection -eq "ok"){
+    
+                    $selectedFields = @($DirectFieldsForItem + $InheritedFieldsForItem)
+                    $selections += @{
+                        Item     = $item
+                        Fields = $selectedFields
+                    }
+                }
+                
+            }
+            else{
+                $fieldSelection = Read-Variable -Parameters $parameters `
+                  -Title "Item: $($item.DisplayName)" `
+                  -Description "Do you want to include this item?" `
+                  -Width 800 -Height 800 -CancelButtonName  "Skip" -OkButtonName "Add"
+    
+                    if ($fieldSelection -eq "ok")
+                    {
+                         $selections += @{
+                        Item     = $item
+                        Fields = @()
+                    }
+                }
+            }
+        }
+    
+        return $selections
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241221T070553Z

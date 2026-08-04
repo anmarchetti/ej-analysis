@@ -1,0 +1,46 @@
+.destination-info-block {
+    margin-bottom: 60px;
+
+    .text-block {
+        margin-bottom: 32px;
+    }
+
+    .promopage-search-pod-description {
+        border-bottom: none;
+    }
+}
+
+.destination-info-block__link {
+    display: inline-block;
+}
+
+.destination-info-block__link .btn--txt svg {
+    position: relative;
+    top: 2px;
+    max-width: 17px;
+    height: 13px;
+    margin-left: 10px;
+    vertical-align: baseline;
+}
+
+.destination-info-block__link .btn--txt {
+    margin-right: 30px;
+}
+
+.destination-info-block__link .btn--txt svg.destination-info-block__map-icon {
+    top: inherit;
+    width: 24px;
+    height: 24px;
+    margin: 0 10px 0 0;
+    vertical-align: text-bottom;
+
+    @include media-breakpoint-down(md) {
+        margin-left: 0;
+    }
+}
+
+.destination-info-block__link.empty-info {
+    @include media-breakpoint-down(md) {
+        margin-top: 32px;
+    }
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 sp1 (http://www.altova.com) by Kim Howells (Anite Business Systems) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="AtComRes/AgentValidationRequest" xmlns:p2="AtComRes/Common" targetNamespace="AtComRes/AgentValidationRequest" elementFormDefault="qualified">
+	<xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+	<xs:element name="AgentValidationRequest">
+		<xs:annotation>
+			<xs:documentation>Request to close a specific session at the @comRes system. Administration.SessionId is mandatory</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="p2:AtcomresBaseRequest">
+					<xs:sequence>
+						<xs:element name="AgentPassword">
+							<xs:annotation>
+								<xs:documentation>agent password</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="100"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

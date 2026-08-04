@@ -1,0 +1,83 @@
+.form {
+    margin-top: 28px;
+}
+
+.controls {
+    @include media-breakpoint-down(sm) {
+        flex-direction: column;
+    }
+
+    :global(.form-group) {
+        flex-grow: 1;
+        max-width: 420px;
+        margin: 0;
+
+        @include media-breakpoint-down(sm) {
+            max-width: 100%;
+        }
+    }
+}
+
+.fieldWrap {
+    display: flex;
+    flex: 1 0 60%;
+    max-width: 480px;
+
+    @include media-breakpoint-down(sm) {
+        max-width: 100%;
+    }
+}
+
+.applyButton {
+    max-width: 242px;
+    height:  44px;
+    margin-top: 20px;
+    padding: 0 15px;
+    font-size: 16px;
+    border-radius: 2px;
+
+    @include media-breakpoint-down(sm) {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 15px;
+    }
+}
+
+.error {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    color: $colorRed;
+
+    span {
+        font-size: 16px;
+    }
+
+    svg {
+        width: 25px;
+        margin-right: 10px;
+    }
+}
+
+.tooltipWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.icon {
+    @include sizeSquare(16px);
+
+    margin: 0 20px;
+    color: $colorOrange;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    @include media-breakpoint-down(sm) {
+        margin-right: 0;
+        margin-left: 12px;
+    }
+}

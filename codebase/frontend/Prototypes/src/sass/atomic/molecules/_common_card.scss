@@ -1,0 +1,124 @@
+.promo-block-card {
+    position: relative;
+    width: 100%;
+    margin: $promo-blocks-gutter / 2;
+    overflow: hidden;
+    background-color: $colorWhite;
+    border-radius: 6px;
+    box-shadow: 0 0 13px 0 rgba(178, 178, 175, 0.5);
+
+    .background {
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        overflow: hidden;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        border-radius: 6px 6px 0 0;
+
+        &::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            display: block;
+            width: 100%;
+            margin-top: -11%;
+            padding-top: 11%;
+            background-image: linear-gradient(-6.1deg, $colorWhite 49%, $colorTransparent 51%);
+        }
+    }
+
+    .title {
+        z-index: 2;
+        margin: auto 0 0;
+        padding-left: 25px;
+        font-family: $fontGenerationHeadline;
+        font-size: 36px;
+        line-height: 0.94;
+        color: $colorWhite;
+    }
+
+    .description {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 5px 25px 15px;
+        font-size: 16px;
+        text-align: left;
+
+        @include media-breakpoint-down(md) {
+            font-size: 14px;
+        }
+
+        .icon-arrow {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            margin-left: 15px;
+            color: $clrEjOrange;
+        }
+
+        p {
+            margin: 0;
+            font-size: inherit;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        &.small-card,
+        &.title-under-image-block {
+            &.promo-block--featured-facilities {
+                .title {
+                    padding-top: 10px;
+                    border: none;
+                }
+            }
+        }
+    }
+}
+
+.promo-block--dark-overlay {
+    .background {
+        &::before {
+            @include image-shadow-overlay(linear-gradient(25deg, rgba(0, 0, 0, 0.73), rgba(0, 0, 0, 0) 100%));
+
+            z-index: 1;
+        }
+    }
+}
+
+.promo-block-card.promo-block--featured-facilities {
+    .description {
+        justify-content: space-between;
+    }
+
+    .title {
+        margin: auto 0 0;
+        padding-right: 25px;
+    }
+
+    .background {
+        &::after {
+            padding-top: 50px;
+            background-image: linear-gradient(2.1deg, #fff 49%, rgba(255, 255, 255, 0) 51%);
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        .title {
+            margin: auto 0 20px;
+        }
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .promo-blocks-slider {
+        .promo-block-card.promo-block--featured-facilities,
+        .promo-block-card.title-under-image-block {
+            flex: 1 1 auto;
+            margin: -5px 0;
+        }
+    }
+}

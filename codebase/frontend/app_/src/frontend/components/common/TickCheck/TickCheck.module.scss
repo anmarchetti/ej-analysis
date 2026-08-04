@@ -1,0 +1,34 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid $colorBlackLight;
+    border-radius: 50%;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1;
+    color: $clrTextMain;
+
+    svg {
+        color: $colorWhite;
+    }
+
+    @include media-breakpoint-down(lg) {
+        width: 20px;
+        height: 20px;
+        border-width: 1px;
+        font-size: 13px;
+    }
+}
+
+.checked {
+    background-color: $colorGreenDark;
+    border-color: $colorGreenDark;
+}
+
+.disabled {
+    border-color: $colorMidnightGray;
+    color: $colorMidnightGray;
+}

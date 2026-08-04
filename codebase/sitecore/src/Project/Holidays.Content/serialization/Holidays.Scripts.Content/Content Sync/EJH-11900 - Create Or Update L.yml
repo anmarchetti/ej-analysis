@@ -1,0 +1,158 @@
+﻿---
+ID: "d8179d73-e194-4704-a1cd-a71790ddd284"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-11900 - Create Or Update Lakes Themes And Theme Types And Lakes Design"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $hoetlThemeTempalteId = "{FA899838-0CFF-4E8C-92D3-1B5E039004D0}"
+    $themeTypeTemplateId = "{D1DCCF10-9C09-456C-B383-7E010735A292}"
+    $themesItemPath = "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes"
+    $lakesItemName = "Lakes"
+    $lakesThemeData = @{
+        Code = "L"
+        Name = "Lakes"
+        Icon = "<image mediaid='{83804DDC-BF30-4773-96D4-76230D10F738}' />"
+        PackageIcons = @(
+            "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Package Icons/Bags/Bags",
+            "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Package Icons/Flights/Flight",
+            "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Package Icons/Hotels/Hotel",
+            "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Package Icons/Transfers/Private Transfer",
+            "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Package Icons/Transfers/Shared Transfer")
+        DestinationGuideTitle = "Lakes"
+        DestinationGuideUrl = "Lakes"
+    }
+    $lakesThemeTypes = @(
+        @{
+            Name = "Handpicked"
+            Code = "LO"
+            Description = "Scenic escapes to idyllic lakeside towns"
+            FilledIcon = ""
+            Icon = ""
+            DestinationGuideTitle = "Handpicked"
+            DestinationGuideUrl = "Handpicked"
+        },
+        @{
+            Name = "Luxury"
+            Code = "LL"
+            Description = "Ideal for those looking for the finer things in life"
+            FilledIcon = "<image mediaid='{20270F0F-6871-45FC-A551-9A95E28D2E9F}'/>"
+            Icon = "<image mediaid='{B7C1F927-AE7B-486F-9871-4256A837C7F1}'/>"
+            DestinationGuideTitle = "Luxury"
+            DestinationGuideUrl = "Luxury"
+        },
+        @{
+            Name = "Undiscovered"
+            Code = "LU"
+            Description = "Hidden gems that will give you a real flavor of local life"
+            FilledIcon = "<image mediaid='{1A5A0D9B-C8A0-4E07-8102-F2F5336BA5A0}'/>"
+            Icon = "<image mediaid='{8857ADCE-3E54-4CA7-890D-F9ACB3E9148B}'/>"
+            DestinationGuideTitle = "Undiscovered"
+            DestinationGuideUrl = "Undiscovered"
+        },
+        @{
+            Name = "Boutique"
+            Code = "LB"
+            Description = "Cute, quirky and full of charm"
+            FilledIcon = "<image mediaid='{E22A9E7F-C1B7-4DD6-AA65-14A5117C4967}'/>"
+            Icon = "<image mediaid='{049F5318-04EC-40BE-8CCC-F7FA2E4C1F12}'/>"
+            DestinationGuideTitle = "Boutique"
+            DestinationGuideUrl = "Boutique"
+        }
+    )
+    
+    
+    $hoetlThemeDesignTempalteId = "{DC4CDB71-135F-42FB-8FE3-FB4890A17491}"
+    $designsItemPath = "/sitecore/content/EasyJet/Holidays/Presentation/Hotel Design"
+    $lakesDesignItemName = "Lakes"
+    
+    $mapRenderingId = "{40F87A5B-8104-4E37-9EF1-6710BDF90C36}"
+    
+    function Get-Or-Create-Item($name, $path, $template){
+        $item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $name -ItemType $template
+        }
+        
+        return $item
+    }
+    
+    function Create-Or-Update-Lakes-Theme-Types($lakeTheme){
+        if($lakeTheme -ne $null){
+            $lakeTheme.Editing.BeginEdit()
+            $lakeTheme.Fields["Code"].Value = $lakesThemeData.Code
+            $lakeTheme.Fields["Icon"].Value = $lakesThemeData.Icon
+            $packageIcons = ''
+            $lakesThemeData.PackageIcons | Foreach-Object { 
+                $packageIcon = Get-Item -Path $_ -ErrorAction SilentlyContinue
+                if($packageIcon -ne $null){
+                    $packageIcons += "$($packageIcon.ID)|"
+                }
+            }
+            $lakeTheme.Fields["PackageIcons"].Value = $packageIcons.Trim("|")
+            $lakeTheme.Fields["DestinationGuideTitle"].Value = $lakesThemeData.DestinationGuideTitle
+            $lakeTheme.Fields["DestinationGuideUrl"].Value = $lakesThemeData.DestinationGuideUrl
+            $lakeTheme.Editing.EndEdit()
+            foreach($themeType in $lakesThemeTypes){
+                $themeTypeItem = Get-Or-Create-Item -Name $themeType.Name -Path $lakeTheme.Paths.FullPath -Template $themeTypeTemplateId
+                $themeTypeItem.Editing.BeginEdit()
+                $themeTypeItem.Fields["Code"].Value = $themeType.Code
+                $themeTypeItem.Fields["Description"].Value = $themeType.Description
+                $themeTypeItem.Fields["FilledIcon"].Value = $themeType.FilledIcon
+                $themeTypeItem.Fields["Icon"].Value = $themeType.Icon
+                $themeTypeItem.Fields["DestinationGuideTitle"].Value = $themeType.DestinationGuideTitle
+                $themeTypeItem.Fields["DestinationGuideUrl"].Value = $themeType.DestinationGuideUrl
+                $themeTypeItem.Editing.EndEdit() > $null
+            }
+        }
+    }
+    
+    function Update-Lakes-Design($item, $theme){
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item.Fields["Theme"].Value = $theme.Name
+            $item.Editing.EndEdit() > $null
+            
+            $mapRendering = Get-Rendering -Item $item | Where-Object { $_.ItemID -eq "{40F87A5B-8104-4E37-9EF1-6710BDF90C36}" } | Select -First 1
+    
+            $updatedParams = New-Object System.Collections.Specialized.OrderedDictionary
+            foreach($param in $mapRendering.Parameters.Split("&")){
+                $keyValueParam = $param.Split("=")
+                $paramValue = ''
+                If($keyValueParam.length -gt 1) {
+                    $paramValue = $keyValueParam[1]
+                    
+                }
+                if($keyValueParam[0] -eq "zoom") {
+                    $paramValue = 24
+                }
+                
+                $updatedParams.Add($keyValueParam[0], $paramValue);
+            } 
+        
+            Set-Rendering -Item $item -Instance $mapRendering -Parameter $updatedParams
+        }
+    }
+    
+    $lakesTheme = Get-Or-Create-Item -Name $lakesItemName -Path $themesItemPath -Template  $hoetlThemeTempalteId
+    Create-Or-Update-Lakes-Theme-Types -LakeTheme $lakesTheme
+    
+    $designItem = Get-Or-Create-Item -Name $lakesDesignItemName -Path $designsItemPath -Template  $hoetlThemeDesignTempalteId
+    
+    Update-Lakes-Design -Item $designItem -Theme $lakesTheme
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 27749
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210215T124621Z

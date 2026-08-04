@@ -1,0 +1,35 @@
+{
+    "Title": "CMS Price Limit Settings",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/Content/ByPath",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "path",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "{site}/Settings/Price Limit Settings"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "MinPrice": "100",
+            "MaxPrice": "5000",
+            "IsPricePerPerson": "1"
+        }
+    }
+}

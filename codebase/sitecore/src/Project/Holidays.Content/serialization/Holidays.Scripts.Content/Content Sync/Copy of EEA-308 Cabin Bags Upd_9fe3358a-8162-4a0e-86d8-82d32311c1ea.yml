@@ -1,0 +1,57 @@
+﻿---
+ID: "9fe3358a-8162-4a0e-86d8-82d32311c1e1"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/Copy of EEA-308 Cabin Bags Update - Trade Portal"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Cabin Bags"
+            TemplatePath = "Feature/Ancillaries/Luggage/Cabin Bags"
+            Id          = [GUID]"{64EE4068-6640-4035-AFEB-4DD463143B66}"
+            Fields      = @{
+                "UrgencyMessageTooltipText" = @{
+                    "de-CH" = "Dies ist die Anzahl der zum jetzigen Zeitpunkt verfügbaren Handgepäckstücke für den Flug nach {flightDirection}. Zu einem späteren Zeitpunkt kann es eventuell mehr Verfügbarkeit geben."
+                    "en" = "This is the number of bags remaining on the {flightDirection} flight only right now."
+                    "fr-FR" = "Il s'agit du nombre de grands bagages à main restants sur le vol à destination de {flightDirection} à l'heure actuelle. D'autres peuvent devenir disponibles ultérieurement."
+                    "de-DE" = "Dies ist die Anzahl der zum jetzigen Zeitpunkt verfügbaren Handgepäckstücke für den Flug nach {flightDirection}. Zu einem späteren Zeitpunkt kann es eventuell mehr Verfügbarkeit geben."
+                    "fr-CH" = "Il s'agit du nombre de grands bagages à main restants sur le vol à destination de {flightDirection} à l'heure actuelle. D'autres peuvent devenir disponibles ultérieurement."
+                }
+                "UrgencyMessageCabinBagsThreshold" = @{
+                    "de-CH" = "50"
+                    "en" = "50"
+                    "fr-FR" = "50"
+                    "de-DE" = "50"
+                    "fr-CH" = "50"
+                }
+                "UrgencyMessageText" = @{
+                    "de-CH" = "{avail} Handgepäckstücke verfügbar!"
+                    "en" = "Only {avail} large cabin bags left."
+                    "fr-FR" = "{avail} bagages restants !"
+                    "de-DE" = "{avail} Handgepäckstücke verfügbar!"
+                    "fr-CH" = "{avail} bagages restants !"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999934
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250613T154009Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

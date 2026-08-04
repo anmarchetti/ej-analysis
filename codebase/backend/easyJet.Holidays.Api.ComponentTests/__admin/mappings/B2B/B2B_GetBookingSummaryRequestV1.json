@@ -1,0 +1,26 @@
+{
+    "Title": "GetBookingSummaryRequestV1 ",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/BasicService.asmx",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "XPathMatcher",
+                "Pattern": "//GetBookingSummaryRequestV1[@B2BAPIUserEmailAddress='disrupted@email.com']"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "Content-Type: text/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/B2B/GetBookingSummaryRequestV1_response.xml"
+    }
+}

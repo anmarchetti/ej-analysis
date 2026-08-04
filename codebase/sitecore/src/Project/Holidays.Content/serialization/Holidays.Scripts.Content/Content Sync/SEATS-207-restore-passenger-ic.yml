@@ -1,0 +1,75 @@
+﻿---
+ID: "a2d03a04-70c9-41c9-abc8-6fb875c2677b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SEATS-207-restore-passenger-icons-and-new-seat-icons"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    $seatMap = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Data/SeatsMap" -template "{54E8234A-234C-4BDC-9EA6-778F7CC75D76}"
+    if ($seatMap -ne $null){
+        $seatMap.Editing.BeginEdit()
+        $seatMap["SeatIconPassengerTypeAdult"] = "<image mediaid='{06F8D2AE-DE03-423D-AF5C-D9FBB2CA2555}' />"
+        $seatMap["SeatIconPassengerTypeAdultWithInfant"] = "<image mediaid='{DBC393C1-3FBB-4C74-B29F-2B53695ADA06}' />"
+        $seatMap["SeatIconPassengerTypeChild"] = "<image mediaid='{284C41F9-AF81-49AF-A3CE-D22B64C454B7}' />"
+        $seatMap.Editing.EndEdit()
+    
+        Write-Host "updated seatMap - Seat Icon Passengers Type values"
+    }
+    
+    $passengerBox = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Data/SeatsMap" -template "{54E8234A-234C-4BDC-9EA6-778F7CC75D76}"
+    if ($passengerBox -ne $null){
+        $passengerBox.Editing.BeginEdit()
+        $passengerBox["PassengerIconTypeAdult"] = "<image mediaid='{A6FE7575-8ACA-4EDB-8BBA-C9B861EB1262}' />"
+        $passengerBox["PassengerIconTypeAdultWithInfant"] = "<image mediaid='{B8474117-27D3-4103-884C-80AC6BCED485}' />"
+        $passengerBox["PassengerIconTypeChild"] = "<image mediaid='{70DDDF74-3195-4B6D-8872-491F10A550E9}' />"
+        $passengerBox.Editing.EndEdit()
+    
+        Write-Host "updated seatMap - Passengers Box Type Icon values"
+    }
+    
+    $adult = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Data/Seat And Bags/Adult" -template "{3CC028F4-4555-4A87-83EE-15F5AF0C67EB}"
+    if ($adult -ne $null){
+        $adult.Editing.BeginEdit()
+        $adult["Icon"] = "<image mediaid='{A6FE7575-8ACA-4EDB-8BBA-C9B861EB1262}' />"
+        $adult.Editing.EndEdit()
+    
+        Write-Host "updated Seat And Bag - Passenger Adult - Icon"
+    }
+    
+    $adultAndInfant = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Data/Seat And Bags/Adult And Infant" -template "{3CC028F4-4555-4A87-83EE-15F5AF0C67EB}"
+    if ($adultAndInfant -ne $null){
+        $adultAndInfant.Editing.BeginEdit()
+        $adultAndInfant["Icon"] = "<image mediaid='{B8474117-27D3-4103-884C-80AC6BCED485}' />"
+        $adultAndInfant.Editing.EndEdit()
+    
+        Write-Host "updated Seat And Bag - Passenger Adult with infant - Icon"
+    }
+    
+    $children = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Data/Seat And Bags/Child" -template "{3CC028F4-4555-4A87-83EE-15F5AF0C67EB}"
+    if ($children -ne $null){
+        $children.Editing.BeginEdit()
+        $children["Icon"] = "<image mediaid='{70DDDF74-3195-4B6D-8872-491F10A550E9}' />"
+        $children.Editing.EndEdit()
+    
+        Write-Host "updated Seat And Bag - Passenger Child- Icon"
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230320T175621Z

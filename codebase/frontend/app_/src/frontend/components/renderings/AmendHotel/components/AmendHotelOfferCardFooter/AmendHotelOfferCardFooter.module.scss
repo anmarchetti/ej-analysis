@@ -1,0 +1,146 @@
+.footer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 16px 16px;
+
+    @include media-breakpoint-up(lg) {
+        position: relative;
+        flex-direction: row;
+        align-items: stretch;
+        justify-content: space-between;
+        width: 100%;
+        min-height: 75px;
+        padding: 0;
+        padding-left: 24px;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            box-shadow: inset 0 8px 6px -6px rgba(178, 175, 175, 0.5);
+            pointer-events: none;
+        }
+    }
+
+    button,
+    a {
+        width: 100%;
+        height: 40px;
+        padding: 8px 24px;
+        font-size: 14px;
+        line-height: 17px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        @include media-breakpoint-up(lg) {
+            width: auto;
+            min-width: 164px;
+            max-width: 175px;
+            height: 48px;
+            font-size: 16px;
+            text-wrap: nowrap;
+        }
+    }
+}
+
+.pillContainer {
+    font-weight: 700;
+
+    :global(.free-for-kids-pill) {
+        padding: 4px 11px;
+        font-size: 12px;
+        color: $clrTextMain;
+    }
+
+    @include media-breakpoint-up(md) {
+        padding-top: 8px;
+        border-top: 1px solid $colorGeyser;
+    }
+
+    @include media-breakpoint-up(lg) {
+        align-self: center;
+        margin-bottom: 0;
+        padding-top: 0;
+        text-wrap: nowrap;
+        border-top: none;
+    }
+}
+
+.greyBackground {
+    width: 100%;
+
+    @include media-breakpoint-up(lg) {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: auto;
+        padding-right: 18px;
+        padding-left: 80px;
+        background-color: $colorPorcelain;
+
+        :global(.callout__container) {
+            margin-top: 2px;
+        }
+
+        :global(.more-info) {
+            width: 11px;
+            height: 11px;
+        }
+
+        .priceToolTip {
+            margin-left: 12px;
+        }
+
+        &::before {
+            content: ' ';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 48px;
+            background-image: linear-gradient(
+                -65deg,
+                $colorPorcelain 0%,
+                $colorPorcelain 50%,
+                $clrSiteBgWhite 50%,
+                $clrSiteBgWhite 100%
+            );
+        }
+    }
+}
+
+.price {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+
+    p {
+        margin: 0;
+        font-size: 24px;
+    }
+}
+
+.pricePostFix {
+    margin-right: 8px;
+    font-size: 14px;
+
+    @include media-breakpoint-up(lg) {
+        margin-right: 5px;
+    }
+}
+
+.viewHotelButton {
+    margin-bottom: 8px;
+    border: solid 2px $clrEjOrange;
+
+    @include media-breakpoint-up(lg) {
+        margin: 0 6px 0 10px;
+    }
+}

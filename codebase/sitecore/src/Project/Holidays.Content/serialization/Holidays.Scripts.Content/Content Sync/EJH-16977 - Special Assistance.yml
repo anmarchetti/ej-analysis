@@ -1,0 +1,37 @@
+﻿---
+ID: "7f2e724a-b83a-4a9a-8aad-644b442178e7"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-16977 - Special Assistance Setting"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $settingsFolderPath = "/sitecore/content/EasyJet/Holidays/Settings"
+    
+    $templateId = "{A52B09F5-564D-4B15-88E8-EF639CD40B65}"
+    $itemName = "Special Assistance Setting"
+    
+    $item = Get-Item -Path "$($settingsFolderPath)/$($itemName)" -ErrorAction SilentlyContinue
+    
+    if ($item -eq $null) {
+    	$item = New-Item -Path $settingsFolderPath -Name $itemName -ItemType $templateId
+    
+    	$item.Editing.BeginEdit()
+    	$item["IsSpecialAssistanceActive"] = "1"
+    	$item.Editing.EndEdit() | Out-Null;
+    }
+    
+    Write-Host $item.Name "creation finished"; 
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230302T083838Z

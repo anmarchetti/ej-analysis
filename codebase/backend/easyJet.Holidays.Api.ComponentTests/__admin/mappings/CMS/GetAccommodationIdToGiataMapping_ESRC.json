@@ -1,0 +1,86 @@
+{
+  "Title": "CMS giata mappings for the dedicated ESRC recommended set. Permissive matcher (any body containing ESRC) because the production id order is hash-seed dependent - an ExactMatcher would be flaky.",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/ReferenceData/GetAccommodationToGiataMapping",
+          "IgnoreCase": true
+        }
+      ]
+    },
+    "Body": {
+      "Matcher": {
+        "Name": "WildcardMatcher",
+        "Pattern": "*ESRC0051*"
+      }
+    },
+    "Methods": [
+      "Post"
+    ]
+  },
+  "Response": {
+    "Headers": {
+      "Content-Type": "application/json; charset=utf-8"
+    },
+    "StatusCode": 200,
+    "BodyAsJson": {
+      "ESRC0056": "9425",
+      "ESRC0016": "32290",
+      "ESRC0054": "50392",
+      "ESRC0024": "75412",
+      "ESRC0034": "13022",
+      "ESRC0004": "76114",
+      "Z0019159": "19159",
+      "X9004627": "7607",
+      "X9416759": "2585",
+      "X9000015": "6166",
+      "ESRC0053": "998177",
+      "ESRC0003": "2606",
+      "ESRC0013": "2600",
+      "Z0013022": "13022",
+      "ESRC0028": "53372",
+      "X9003867": "38247",
+      "ESRC0018": "32924",
+      "X9657402": "998177",
+      "ESRC0051": "406423",
+      "ESRC0001": "48319",
+      "X9017494": "75412",
+      "X9001782": "26658",
+      "X9003751": "32924",
+      "X9025685": "2605",
+      "X9013793": "2600",
+      "X9000764": "76114",
+      "ESRC0007": "2605",
+      "X9002810": "26630",
+      "ESRC0055": "2611",
+      "ESRC0025": "7607",
+      "X9059919": "48319",
+      "ESRC0005": "2579",
+      "Z0002605": "2605",
+      "X9003228": "2606",
+      "X9023842": "53372",
+      "ESRC0049": "26630",
+      "ESRC0029": "19159",
+      "ESRC0039": "6166",
+      "Z0007607": "7607",
+      "ESRC0019": "7511",
+      "ESRC0052": "26658",
+      "X9008130": "50392",
+      "ESRC0002": "2585",
+      "ESRC0040": "71394",
+      "ESRC0012": "38247",
+      "ESRC0050": "85166",
+      "X9181370": "2579",
+      "X9014394": "32290",
+      "Z0002600": "2600",
+      "X9002093": "13022",
+      "Z0002606": "2606",
+      "X9002911": "19159",
+      "Z0009425": "9425",
+      "X9079530": "85166",
+      "X9157134": "71394"
+    }
+  }
+}

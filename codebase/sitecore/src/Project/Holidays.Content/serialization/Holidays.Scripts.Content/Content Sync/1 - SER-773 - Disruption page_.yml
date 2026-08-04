@@ -1,0 +1,101 @@
+﻿---
+ID: "2560e1e4-675a-4244-8b53-f528b2cf1f12"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/1 - SER-773 - Disruption page content clean up"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $item = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption"
+    Remove-Rendering -Item $item
+    Remove-Rendering -Item $item -FinalLayout -Language 'en'
+    Remove-Rendering -Item $item -FinalLayout -Language 'fr-FR'
+    Remove-Rendering -Item $item -FinalLayout -Language 'de-DE'
+    Remove-Rendering -Item $item -FinalLayout -Language 'fr-CH'
+    Remove-Rendering -Item $item -FinalLayout -Language 'de-CH'
+    
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/New Help Links/Covid testing" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/New Help Links/Covid travel tips" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/New Help Links/Customer safety" -Permanently
+    
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Your rights - details/Section 1" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Your rights - details/Section 2" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Your rights - details/Section 3" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Your rights - details/Section 4" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Your rights - details/My new flight is on a different day where do I stay" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Your rights - details/My new flight returns to a different airport how do I get home" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Your rights - details/Youve booked my new flight on a different airline why have you done this" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Your rights - details/Return flight cancelled Should I get on the transfer" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Your rights - details" -Permanently
+    
+    Get-ChildItem -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Old modules" -Recurse |
+        ForEach-Object {   
+            $_ | Remove-Item -Recurse -Permanently
+        } 
+        
+        
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Old modules" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Text Blocks/Your rights - intro" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Text Blocks/Making a claim" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Text Blocks/Refund compensation and refunds - accordion heading" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Text Blocks/Rebooking outbound flights in the event of cancellation - accordion heading" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Text Blocks/If your flight has been cancelled or changed - accordion heading" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Text Blocks/If you havent yet travelled - accordion heading" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Text Blocks/Getting in touch - accordion heading" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Text Blocks/During disruption - main copy" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Text Blocks/During disruption - intro" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Text Blocks/Page intro" -Permanently
+    
+    Get-ChildItem -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Promo Blocks 1" -Recurse |
+        ForEach-Object {   
+            $_ | Remove-Item -Recurse -Permanently
+        } 
+        
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Promo Blocks 1" -Permanently
+    
+    $page= Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption"
+    $componentWrapper = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper"
+    
+    #Move Page Hero banner to shared layout
+    $rendering = New-Rendering -Path "/sitecore/layout/Renderings/Feature/Destinations/Page Hero Banner"
+    Add-Rendering -Item $page -Instance $rendering -PlaceHolder "/body" -Parameter @{ "TitleTag" = "h1"; "FontSize" = "Mobile - 44px Desktop - 74px"; "IsTriangleStart" = "1"; "ShowImageGradient" = "" }
+    
+    #Move Promo blocks to shared layout
+    $renderingComponentWrapper = New-Rendering -Item $componentWrapper
+    Add-Rendering -Item $page -PlaceHolder "/body" -Instance $renderingComponentWrapper
+    $renderingComponentWrapper = Get-Rendering -Item $page -Rendering $componentWrapper
+    $rendering = New-Rendering -Path "/sitecore/layout/Renderings/Feature/PageContent/Promo Blocks"
+    Add-Rendering -Item $page -Instance $rendering -PlaceHolder "/body/component-wrapper-inner-$($renderingComponentWrapper.UniqueId)-0" -Parameter @{ "Theme" = "Icon Text Variant - Alternative"; "ShowShard" = "0" } -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Promo blocks 2"
+    
+    #Move FAQ1 to shared layout
+    $renderingComponentWrapper = New-Rendering -Item $componentWrapper
+    Add-Rendering -Item $page -PlaceHolder "/body" -Instance $renderingComponentWrapper -Parameter @{ "IsGreyBackground" = "1" }
+    $renderingComponentWrapper = Get-Rendering -Item $page -Rendering $componentWrapper
+    $rendering = New-Rendering -Path "/sitecore/layout/Renderings/Feature/PageContent/Question And Answer"
+    Add-Rendering -Item $page -Instance $rendering -PlaceHolder "/body/component-wrapper-inner-$($renderingComponentWrapper[1].UniqueId)-0" -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/During disruption - Questions"
+    
+    #Move FAQ2 to shared layout
+    $renderingComponentWrapper = New-Rendering -Item $componentWrapper
+    Add-Rendering -Item $page -PlaceHolder "/body" -Instance $renderingComponentWrapper
+    $renderingComponentWrapper = Get-Rendering -Item $page -Rendering $componentWrapper
+    $rendering = New-Rendering -Path "/sitecore/layout/Renderings/Feature/PageContent/Question And Answer"
+    Add-Rendering -Item $page -Instance $rendering -PlaceHolder "/body/component-wrapper-inner-$($renderingComponentWrapper[2].UniqueId)-0" -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim - Questions"
+    
+    #Move Contact us to shared layout
+    $renderingComponentWrapper = New-Rendering -Item $componentWrapper
+    Add-Rendering -Item $page -PlaceHolder "/body" -Instance $renderingComponentWrapper -Parameter @{ "IsGreyBackground" = "1" }
+    $renderingComponentWrapper = Get-Rendering -Item $page -Rendering $componentWrapper
+    $rendering = New-Rendering -Path "/sitecore/layout/Renderings/Feature/PageContent/Text Block"
+    Add-Rendering -Item $page -Instance $rendering -PlaceHolder "/body/component-wrapper-inner-$($renderingComponentWrapper[3].UniqueId)-0" -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Text Blocks/Contact us"
+    $rendering = New-Rendering -Path "/sitecore/layout/Renderings/Feature/PageContent/Help Links"
+    Add-Rendering -Item $page -Instance $rendering -PlaceHolder "/body/component-wrapper-inner-$($renderingComponentWrapper[3].UniqueId)-0" -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/New Help Links"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

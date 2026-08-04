@@ -1,0 +1,187 @@
+.confidence-transformer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;
+    min-height: 240px;
+
+    @include media-breakpoint-down(md) {
+        padding-top: 24px;
+    }
+
+    .confidence-transformer__empty--container {
+        width: 200px;
+    }
+
+    &__icon {
+        width: 50px;
+
+        @include media-breakpoint-down(md) {
+            width: 40px;
+        }
+    }
+
+    &__title {
+        margin: 0;
+        font-family: $fontRoundedHeadline;
+        font-size: 36px;
+        font-weight: 700;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            margin: 15px 0 10px;
+            font-size: 25px;
+        }
+    }
+
+    &__text {
+        text-align: center;
+
+        p {
+            margin: 0;
+        }
+    }
+
+    &--mobile-carousel {
+        @include media-breakpoint-down(md) {
+            .confidence-transformer__icon {
+                width: 40px;
+                margin-right: 10px;
+            }
+
+            .confidence-transformer__text {
+                line-height: 18px;
+                text-align: left;
+            }
+
+            .confidence-transformer__title {
+                margin: 0 0 5px;
+                font-size: 20px;
+                text-align: left;
+            }
+        }
+    }
+
+    .btn {
+        width: 240px;
+        margin-bottom: 50px;
+        font-size: 16px;
+        line-height: 18px;
+        padding: 14px 27px;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 20px;
+        }
+    }
+
+    .mobile-container-view {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .desktop-container-view {
+        & > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .confidence-transformer__icon {
+            margin-right: 20px;
+        }
+
+        .confidence-transformer__title {
+            margin: 0;
+        }
+    }
+}
+
+.confidence-transformer--separated-view {
+    .desktop-container-view {
+        position: relative;
+        align-self: flex-start;
+        padding-left: 95px;
+
+        > div {
+            justify-content: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .confidence-transformer__icon {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 65px;
+            transform: translateY(-50%);
+        }
+    }
+
+    .confidence-transformer__title,
+    .confidence-transformer__text {
+        margin: 0;
+        text-align: left;
+    }
+
+    .information-tiles {
+        margin-top: 30px;
+        margin-bottom: 40px;
+        padding-top: 30px;
+        border-top: 1px solid #d3d3d3;
+    }
+
+    .mobile-container-view {
+        align-items: center;
+
+        .confidence-transformer__icon {
+            margin-right: 10px;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        .confidence-transformer__title {
+            font-size: 20px;
+        }
+
+        .information-tiles {
+            margin-top: 20px;
+            margin-bottom: 30px;
+            padding-top: 20px;
+
+            .item-title {
+                font-size: 16px;
+            }
+
+            &:not(.information-tiles--carousel) {
+                margin-bottom: 0;
+
+                .information-tiles-item {
+                    position: relative;
+                    margin-bottom: 25px;
+                    padding-right: 0;
+                    padding-left: 45px;
+                }
+
+                .item-header {
+                    align-items: flex-start;
+                }
+
+                .item-icon {
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    transform: translateY(-50%);
+
+                    img {
+                        width: 30px;
+                        height: 30px;
+                    }
+                }
+
+                .item-description {
+                    text-align: left;
+                }
+            }
+        }
+    }
+}

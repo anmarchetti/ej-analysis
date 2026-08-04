@@ -1,0 +1,40 @@
+.footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 16px;
+    padding: 16px;
+    background-color: $clrSiteBgWhite;
+    box-shadow: 0 3px 9px 3px rgba(51, 51, 51, 0.15);
+    box-sizing: border-box;
+
+    :global(.btn) {
+        white-space: nowrap;
+        font-weight: 400;
+    }
+
+    .cancel {
+        padding: 10px 24px;
+    }
+
+    .buttonWrapper {
+        display: flex;
+    }
+
+    @include media-breakpoint-down(md) {
+        justify-content: space-between;
+        padding: 8px 12px;
+        gap: 8px;
+
+        .buttonWrapper {
+            flex: 1;
+            justify-content: center;
+        }
+    }
+
+    @media only screen and (width <= 400px) {
+        .confirm {
+            width: 100%;
+        }
+    }
+}

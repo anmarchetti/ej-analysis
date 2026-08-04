@@ -1,0 +1,69 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 16px;
+}
+
+.titleContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        padding-bottom: 12px;
+        border-bottom: 1px solid $clrBorderGray;
+    }
+
+    :global(.callout__container) {
+        @include media-breakpoint-down(md) {
+            align-self: flex-start;
+        }
+    }
+}
+
+.title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+
+    @include media-breakpoint-down(md) {
+        font-size: 18px;
+    }
+}
+
+.subtitle {
+    margin: 8px 0 0;
+    font-weight: 700;
+    line-height: 1.37;
+}
+
+.urgency {
+    @include media-breakpoint-down(md) {
+        margin-top: 8px;
+    }
+}
+
+.pills {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    :global(.callout__container) {
+        align-self: initial;
+    }
+
+    :global(.free-for-kids-pill) {
+        align-self: unset;
+    }
+
+    @include media-breakpoint-down(md) {
+        align-items: flex-start;
+    }
+}
+
+.pills > *:not(:last-child) {
+    margin-bottom: 8px;
+}

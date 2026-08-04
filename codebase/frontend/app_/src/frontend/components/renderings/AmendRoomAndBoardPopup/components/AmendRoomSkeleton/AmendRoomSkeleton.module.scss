@@ -1,0 +1,43 @@
+:global(.room-skeleton-container) {
+    .shimmerTop {
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    .container {
+        margin-top: 0 !important;
+
+        .content {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+        
+            :global(.content-line) {
+                    margin-top: 16px;
+                    margin-bottom: 0;
+        
+                    @include media-breakpoint-down(md) {
+                        width: 176px;
+                        height: 14px;
+                        margin-top: 8px;
+        
+                        &:nth-child(2) {
+                            width: 222px;
+                        }
+        
+                        &:last-of-type {
+                            margin-bottom: 40px;
+                        }
+                    }
+                }
+            }
+    }
+}
+
+.roomsDivider {
+    width: 240px;
+    height: 24px;
+    margin: 16px 0;
+    border-radius: 200px;
+}

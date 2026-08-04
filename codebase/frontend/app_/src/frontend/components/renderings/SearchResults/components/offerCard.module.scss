@@ -1,0 +1,51 @@
+.card {
+    :global {
+        .hotel-card-price-box-v2 .hotel-price__pills {
+            justify-content: unset;
+            gap: 8px;
+
+            @include media-breakpoint-up(lg) {
+                margin: 8px 0;
+            }
+        }
+    }
+}
+
+.urgencyMessage {
+    width: 100%;
+    margin-top: 4px;
+
+    :global(.callout__content.icon-left) {
+        left: 0;
+    }
+}
+
+.urgencyMessageWrapper {
+    @include media-breakpoint-down(md) {
+        padding: 4px 20px;
+    }
+}
+
+.packageIcons {
+    border-top: 1px solid $colorAlto;
+    padding: 20px 0 0 0;
+    margin: 0 16px 15px 20px;
+
+    @media (width < 992px)  {
+        border: none;
+        padding:  16px 16px 0 16px;
+        margin: 0;
+    }
+}
+
+.luxuryWrapper.priority {
+    border: none;
+
+    &.selected {
+        border: 2px solid $clrEjOrange;
+    }
+
+    .luxuryContentWrapper {
+        border: none;
+    }
+}

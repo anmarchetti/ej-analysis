@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Nullable>warnings</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Models_\**" />
+    <EmbeddedResource Remove="Models_\**" />
+    <None Remove="Models_\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\easyJet.Holidays.External.Domain\easyJet.Holidays.External.Domain.csproj" />
+  </ItemGroup>
+</Project>

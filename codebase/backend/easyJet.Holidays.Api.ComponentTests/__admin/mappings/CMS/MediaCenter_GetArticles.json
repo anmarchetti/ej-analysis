@@ -1,0 +1,44 @@
+{
+    "Title": "CMS MediaCenter reference data: /api/Article/Search",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/Article/Search",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+
+        "Methods": [ "Post" ],
+
+        "Body": {
+            "Matcher": {
+                "Name": "ExactMatcher",
+                "Pattern": "Take=1&Page=2&Offset=0&StartDate=0001-01-01T00%3A00%3A00.0000000&EndDate=9999-12-31T23%3A59%3A59.9999999&Query=fakeQuery&Topics%5B0%5D=Environment&Topics%5B1%5D=Nature"
+            }
+        }
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "total": 1,
+            "articles": [
+                {
+                    "title": "null",
+                    "url": "/media-center/content-hub/electric-aircraft",
+                    "image": "/-/media/3c779e7b0a154999acfb57dd314c6788.ashx",
+                    "publicationDate": "2020-03-03t03:00:00"
+                }
+            ],
+            "topicsFilter": [
+                {
+                    "name": "environment",
+                    "count": 1
+                }
+            ]
+        }
+    }
+}

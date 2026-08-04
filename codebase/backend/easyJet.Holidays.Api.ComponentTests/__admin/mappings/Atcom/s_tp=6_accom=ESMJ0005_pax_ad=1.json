@@ -1,0 +1,49 @@
+{
+    "Title": "Accommodation offers for /fcgi-bin/ezydmouk/avcache3_g?s_tp=6&h_tp=P&tpf=Y&direct=N&brnd=F&names=1&accom_no=1&p_tp=TP&cty=1&names=1&sdate=2020-07-10&edate=2020-07-10&stay=7&dep=LGW,LTN,SEN,STN&pax_ad=1&pax_ch=0&pax_in=1&rooms=1&accom=ESMJ0005&tra_o=171396/3117&tra_i=173043/3342&pkg=229154/2/920/7&bb=BB&rm_1=1,2",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/fcgi-bin/ezydmouk/avcache3_g",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "s_tp",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "6"
+                    }
+                ]
+            },
+            {
+                "Name": "accom",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "ESMJ0005"
+                    }
+                ]
+            },
+            {
+                "Name": "pax_ad",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "1"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/s_tp=6_accom=ESMJ0005_pax_ad=1.xml"
+    }
+}

@@ -1,0 +1,113 @@
+﻿---
+ID: "431fe336-3f20-4309-9bd8-fa4693ca58bd"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/MAN-296_hotel-unavailable-popup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    ## GET RENDERING INSTANCE
+    function Get-Rendering-Instance($itemPath, $renderingPath, $dataSourcePath) {
+        $pageItem = Get-Item -Path $itemPath;
+        $renderingItem = Get-Item -Path $renderingPath;
+        $dataSourceItem = Get-Item -Path $dataSourcePath;
+        $rendering = Get-Rendering -Item $pageItem -Rendering $renderingItem -DataSource $dataSourcePath;
+        
+        if ($rendering -ne $null) {
+            return $rendering;
+        }
+    
+     
+        return Get-Rendering -Item $pageItem -Rendering $renderingItem -DataSource $dataSourceItem.ID;
+    }
+    ##
+    
+    ## UPDATE PAGE RENDERING
+     function Add-Or-Update-Page-Rendering ($pagePath, $renderingPath, $renderingPlaceholder, $dataSourcePath, $parameters = @{}) {
+    	$renderingItem = Get-Item -Path $renderingPath;
+    	$dataSourceItem = Get-Item -Path $dataSourcePath;
+    	$page = Get-Item $pagePath;
+    	
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -DataSource $dataSourcePath -Parameter $parameters
+    
+    		Write-Host $renderingItem.Name "- Rendering instance added";
+    	}
+    	else {
+    		Write-Host $renderingItem.Name "- Already exists";
+    	}
+        }
+    ##
+    
+    ## BUILD RENDERING PLACEHOLDER
+    function Build-Rendering-Placeholder($pagePath, $renderingPath, $dataSource, $prefix) {
+        $parent = Get-Item -Path $pagePath -ErrorAction SilentlyContinue;
+        $renderingInstance = Get-Rendering-Instance -ItemPath $pagePath -RenderingPath $renderingPath -DataSource $dataSource;
+    
+        return $prefix + $renderingInstance.uniqueId + "-0";
+    }
+    ##
+    
+    ## REMOVE RENDERING INSTANCE
+    function Remove-Rendering-Instance($itemPath, $renderingPath, $dataSourcePath) {
+        $pageItem = Get-Item -Path $itemPath;
+           $renderingItem = Get-Item -Path $renderingPath;
+        $renderingInstance = Get-Rendering-Instance -ItemPath $itemPath -RenderingPath $renderingPath -DataSourcePath $dataSourcePath;
+     
+        if ($renderingInstance -ne $null) {
+            Remove-Rendering -Item $pageItem -Instance $renderingInstance;
+            
+            Write-Host $renderingItem.Name "Deleted";
+        } else {
+            Write-Host $renderingItem.Name " - Not found";
+        }
+    }
+    ##
+    
+    $hotelChangeSummaryPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary";
+    $hotelPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel";
+    $amendPaymentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment";
+    $oldHotelUnavailablePopupPath = "/sitecore/content/EasyJet/Holidays/Data/Hotel Unavailable Popup";
+    
+    $hotelUnavailablePopupRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Hotels Unavailable Popup";
+    $hotelSummaryRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Hotel Summary";
+    $amendPaymentRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Payment";
+    $amendHotelRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Hotel";
+    
+    ### Delete rendering instance
+    $attentionPopupPath = "/sitecore/layout/Renderings/Feature/Destinations/Popups/Attention Popup";
+    
+    Remove-Rendering-Instance -ItemPath $hotelPath -RenderingPath $attentionPopupPath -DataSourcePath $oldHotelUnavailablePopupPath;
+    ###
+    
+    $renderingPlaceholderForHotelSummary = Build-Rendering-Placeholder -PagePath $hotelChangeSummaryPath -RenderingPath $hotelSummaryRenderingPath -DataSource "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary/Page Components/Amend Hotel Summary" -Prefix "/body/unavailable-flow-popup-";
+    $renderingPlaceholderForAmendPayment = Build-Rendering-Placeholder -PagePath $amendPaymentPath -RenderingPath $amendPaymentRenderingPath -DataSource "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Amend Payment" -Prefix "/body/unavailable-flow-popup-";
+    $renderingPlaceholderForHotel = Build-Rendering-Placeholder -PagePath $hotelPath -RenderingPath $amendHotelRenderingPath -DataSource "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Page Components/Amend Hotel" -Prefix "/body/unavailable-flow-popup-";
+    
+    
+    ### Adding renderings
+    Add-Or-Update-Page-Rendering -PagePath $hotelChangeSummaryPath -RenderingPath $hotelUnavailablePopupRenderingPath -RenderingPlaceholder $renderingPlaceholderForHotelSummary -DataSourcePath $oldHotelUnavailablePopupPath;
+    Add-Or-Update-Page-Rendering -PagePath $amendPaymentPath -RenderingPath $hotelUnavailablePopupRenderingPath -RenderingPlaceholder $renderingPlaceholderForAmendPayment -DataSourcePath $oldHotelUnavailablePopupPath;
+    Add-Or-Update-Page-Rendering -PagePath $hotelPath -RenderingPath $hotelUnavailablePopupRenderingPath -RenderingPlaceholder $renderingPlaceholderForHotel -DataSourcePath $oldHotelUnavailablePopupPath;
+    
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250210T094741Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

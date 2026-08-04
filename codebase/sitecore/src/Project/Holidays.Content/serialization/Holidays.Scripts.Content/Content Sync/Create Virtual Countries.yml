@@ -1,0 +1,75 @@
+﻿---
+ID: "645c4d56-9ecd-4964-923b-8132ed14702a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Virtual Countries
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # $countryPath = "/sitecore/content/EasyJet/Holidays/Home/Destinations/United Kingdom"
+    # $virtualCountryTemplateId = "{3BB7CB0A-8F57-48D6-9602-30A6198720D0}"
+    # $virtualCountriesRegionsMapping = @{"England" = @("/sitecore/content/EasyJet/Holidays/Home/Destinations/United Kingdom/England");
+    # "Scotland" = @("/sitecore/content/EasyJet/Holidays/Home/Destinations/United Kingdom/Scotland"); 
+    # "Northern Ireland" = @("/sitecore/content/EasyJet/Holidays/Home/Destinations/United Kingdom/Northern Ireland");
+    # "Channel Islands" = @("/sitecore/content/EasyJet/Holidays/Home/Destinations/United Kingdom/Channel Islands")}
+    
+    # $pathToParent = "/sitecore/content/EasyJet/Holidays/Home/Destinations/"
+    
+    # function Set-Checkbox{
+    #     param($item, $fieldName, $value)
+    
+    #     if ($item -ne $null){
+    #         $item.Editing.BeginEdit()
+    #         $item.Fields[$fieldName].Value = $value
+    #         $item.Editing.EndEdit()
+    #     }
+    # }
+    
+    # New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+    #     # set countryItem ShowOnDropdown to false
+    #     $countryItem = Get-Item -Path $countryPath
+    
+    #     if ($countryItem -ne $null){
+    #         Set-Checkbox -Item $countryItem -FieldName "ShowOnDropdown" -Value "0"
+    #     }
+    
+    #     # Create virtual country items and set resorts to supplied items
+    #     foreach($vc in $virtualCountriesRegionsMapping.GetEnumerator()){
+    #         $pathToItem = Join-Path $pathToParent $vc.Name
+    
+    #         $item = Get-Item -Path $pathToItem
+    
+    #         if ($item -eq $null){
+    #             $item = New-Item -Path $pathToItem -ItemType $virtualCountryTemplateId
+    #         }
+    
+    #         $regionIds = @()
+    #         foreach($regionPath in $vc.Value){
+    #             $regionItem = Get-Item -Path $regionPath
+    
+    #             if ($regionItem -ne $null){
+    #                 $regionIds += $regionItem.ID
+    #             }
+    #         }
+    
+    #         $item.Editing.BeginEdit()
+    #         $item.Fields["Name"].Value = $vc.Name
+    #         $item.Fields["Regions"].Value = [system.String]::Join("|", $regionIds)
+    #         $item.Editing.EndEdit()
+    
+    #         Set-Checkbox -Item $item -FieldName "ShowInAutocomplete" -Value "0"
+    #     }
+    # }
+    
+    # Write-Host "Script is completed"
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200611T095641Z

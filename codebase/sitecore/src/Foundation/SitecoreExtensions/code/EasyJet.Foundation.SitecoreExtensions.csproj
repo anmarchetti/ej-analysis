@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <PackageReference Include="Sitecore.ContentSearch" />
+    <PackageReference Include="Sitecore.ContentSearch.Data" />
+    <PackageReference Include="Sitecore.ContentSearch.Linq" />
+    <PackageReference Include="Sitecore.Marketing" />
+    <PackageReference Include="Sitecore.Services.Infrastructure" />
+    <PackageReference Include="SSH.NET" />
+    <PackageReference Include="CsvHelper" />
+    <PackageReference Include="AWSSDK.Core" />
+    <PackageReference Include="AWSSDK.SecretsManager" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)SitecoreProject.props" />
+  <PropertyGroup>
+    <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratedAssemblyInfoFile>Properties\Assemblyinfo.cs</GeneratedAssemblyInfoFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="App_Config\Include\Foundation\easyJet.Foundation.SitecoreExtensions.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.SitecoreExtensions.Debug.config">
+      <DependentUpon>easyJet.Foundation.SitecoreExtensions.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.SitecoreExtensions.CI.config">
+      <DependentUpon>easyJet.Foundation.SitecoreExtensions.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.SitecoreExtensions.Release.config">
+      <DependentUpon>easyJet.Foundation.SitecoreExtensions.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <SonarQubeSetting Include="sonar.coverage.exclusions">
+      <Value>
+**/Constants.cs, 
+**/Attributes/LogExecutionTimeAttribute.cs, 
+**/Cache/DictionaryCacheClearer.cs, 
+**/Commands/BaseProgressReportingContextMenuCommand.cs, 
+**/Commands/BaseSubMenuContainerCommand.cs, 
+**/Configuration/ExportingCommandParam.cs, 
+**/Controllers/BaseApiController.cs, 
+**/Disablers/WebEditDisabler.cs, 
+**/Disablers/WorkflowDisabler.cs, 
+**/Logging/SitecoreExtensionsLogger.cs, 
+**/Models/CsvFile.cs, 
+**/Models/FileParameters.cs, 
+**/Models/Link.cs, 
+**/Models/SftpConfig.cs, 
+**/Models/SortItems.cs, 
+**/Pipelines/renderField/DisableWebEditingProcessor.cs, 
+**/Services/DatabaseNotFoundException.cs, 
+**/Services/HttpContextAccessor.cs, 
+**/Services/IDatabaseProvider.cs, 
+**/Services/IPageScriptManagerProvider.cs, 
+**/Services/ISitecoreContextProvider.cs, 
+**/Services/PageScriptManagerProvider.cs, 
+**/Services/SitecoreContextProvider.cs, 
+**/Services/SitecoreDatabaseProvider.cs, 
+**/Services/SitecoreUIService.cs, 
+**/Services/UserService.cs, 
+**/SystemNet/ExtendedWebClient.cs, 
+**/Utils/SecretsManager.cs, 
+**/Utils/SecretsManagerDisabler.cs, 
+**/Utils/SecretsManagerSwitcher.cs
+</Value>
+    </SonarQubeSetting>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,66 @@
+﻿---
+ID: "8df598b0-8cc9-47dc-b77f-cbe184ff9772"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EDI-204 Update Alternative Boards Popup Datasource"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Create new Datasource in Data folders
+    $placeholder = "/body"
+    
+    $datasourceName = "Alternative Boards Popup"
+    $datasourceTemplateId = "{FEEBD005-3DDA-4A48-A216-DAB9041ED7AF}"
+    $datasourcePath ="/sitecore/content/EasyJet/Holidays/Data"
+    $datasourcePathTrade ="/sitecore/content/EasyJet/TradePortal/Data"
+                  
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    $datasource = Get-Or-Create-Item -Path "$($datasourcePath)/$($datasourceName)" -Template $datasourceTemplateId;
+    $datasourceTrade = Get-Or-Create-Item -Path "$($datasourcePathTrade)/$($datasourceName)" -Template $datasourceTemplateId;
+    
+    # Remove existing Datasource from Page Components folder
+    $searchResultsItemPath = "/sitecore/content/EasyJet/Holidays/Home/MixedResultList"
+    $searchResultsItemPathTrade = "/sitecore/content/EasyJet/TradePortal/Home/MixedResultList"
+    Get-Item -Path "$($searchResultsItemPath)/Page Components/$($datasourceName)" -ErrorAction SilentlyContinue | Remove-Item -Force -Permanently
+    Get-Item -Path "$($searchResultsItemPathTrade)/Page Components/$($datasourceName)" -ErrorAction SilentlyContinue | Remove-Item -Force -Permanently
+    
+    # Update Datasource on Search results pages
+    $searchResultsPageItem = Get-Item -Path $searchResultsItemPath -ErrorAction SilentlyContinue
+    $searchResultsPageItemTrade = Get-Item -Path $searchResultsItemPathTrade -ErrorAction SilentlyContinue
+    
+    $searchResultsRenderingId = "{5A3F1735-4675-4157-80E8-9ABB84EEFF79}"
+    $renderingInstance = Get-Rendering -Item $searchResultsPageItem -PlaceHolder "/body" | Where-Object {$_.ItemId -eq $searchResultsRenderingId}
+    $renderingInstanceTrade = Get-Rendering -Item $searchResultsPageItemTrade -PlaceHolder "/body" | Where-Object {$_.ItemId -eq $searchResultsRenderingId}
+    
+    Set-Rendering -Item $searchResultsPageItem -Instance $renderingInstance -DataSource "$($datasourcePath)/$($datasourceName)"
+    Set-Rendering -Item $searchResultsPageItemTrade -Instance $renderingInstanceTrade -DataSource "$($datasourcePathTrade)/$($datasourceName)"
+    Write-Host  "Rendering datasources were updated"
+    
+    Add-ItemVersion -Item $datasource -Language "en" -TargetLanguage "de-CH" -IfExist Skip
+    Add-ItemVersion -Item $datasource -Language "en" -TargetLanguage "fr-CH" -IfExist Skip
+    Add-ItemVersion -Item $datasourceTrade -Language "en" -TargetLanguage "de-CH" -IfExist Skip
+    Add-ItemVersion -Item $datasourceTrade -Language "en" -TargetLanguage "fr-CH" -IfExist Skip
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 350
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230816T134618Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

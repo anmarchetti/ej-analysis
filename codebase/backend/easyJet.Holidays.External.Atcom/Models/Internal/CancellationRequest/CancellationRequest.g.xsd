@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 sp1 (http://www.altova.com) by Kim Howells (Anite Business Systems) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="AtComRes/CancellationRequest" xmlns:p2="AtComRes/Common" targetNamespace="AtComRes/CancellationRequest" elementFormDefault="qualified">
+	<xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+	<xs:element name="CancellationRequest">
+		<xs:annotation>
+			<xs:documentation>Request to cancel one ore more packagetour bookings.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="p2:AtcomresBaseRequest">
+					<xs:sequence>
+						<xs:element ref="p2:BkgNum" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Booking to be canceled</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Cnx_Without_Fee" type="xs:boolean" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>
+							      If cancellation without fee is applied, the cancellation is performed without creating any
+								  fees. The result contains therefore a fee-less cancel of the booking. Default is false.
+								  Default is false, if the element does not appear.
+							   </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="p2:Memo" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Memo information to be updated.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="p2:Amd_MktCd" minOccurs="0"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

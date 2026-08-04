@@ -1,0 +1,82 @@
+﻿---
+ID: "d2c205b7-464b-49b2-82d1-7c08b39e9090"
+Parent: "8c89ea42-136e-4016-a640-e70c44903998"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/Language/Toolbox/Mark Hotels as Do not translate
+DB: master
+SharedFields:
+- ID: "06d5295c-ed2f-4a54-9bf2-26228d113318"
+  Hint: __Icon
+  Value: office/32x32/remove_version.png
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-ItemBasedOnTemplate {
+    	param(
+    		[string]$TemplateId
+    	)
+    	$itemsByCodes = @{}
+    	Get-ItemReferrer -Path 'master:/sitecore/templates/Project/Holidays/Pages/Destinations/Hotel' |
+    	Where-Object -FilterScript { $_.Paths.FullPath.StartsWith("/sitecore/content/EasyJet/Holidays/Home/Destinations") } |
+    	ForEach-Object {
+    		if ($itemsByCodes.ContainsKey($_["Code"]))
+    		{
+    			Write-Log "Hotels that has same code $($code) $($_.Paths.FullPath)"  
+    		} else
+    		{
+    			$itemsByCodes.Add($_["Code"], $_)
+    		}
+    	}
+    	return $itemsByCodes
+    
+    }
+    
+    function Do-NotTranslateItem
+    {
+    	param($item)
+    
+    	if ($item.Fields["SkipTranslate"].Value -ne "1")
+    	{
+    		$item.Editing.BeginEdit();
+    		$item["SkipTranslate"] = "1";
+    		$item.Editing.EndEdit() > $null
+    		Write-Log "Item with ID: $($item.ID) and Code: $($item["Code"]) is marked as Do not Translate"
+    	}
+    	$item | Remove-ItemVersion -ExcludeLanguage "en*"
+    	Write-Log "Remove non english item version: Item with ID: $($item.ID) and Code: $($item["Code"])"
+    }
+    
+    $result = Read-Variable -Parameters `
+     	@{ Name = "hotelCodesText"; Value = ""; Title = "List of hotel codes"; lines = 3; Tooltip = "Enter a list of hotel codes that needs to be updated. Codes should be separated by comma ',' delimeter."; Placeholder = "Ex. BGVR0014, BGVR0016" } `
+     	-Description "Update hotels items that needs to be marked as as 'Do not translate'" `
+     	-Title "Mark Hotels as 'Do Not Translate'" -Width 600 -Height 640 -OkButtonName "Proceed" -CancelButtonName "Abort" -ShowHints
+    if ($result -ne "ok")
+    {
+    	exit
+    }
+    
+    $hotelTemplateId = "{28E5E169-8F72-4F90-A277-280A8302B607}"
+    $hotelItems = Get-ItemBasedOnTemplate -TemplateId $hotelTemplateId
+    $itemCount = $hotelItems.Count
+    Write-Log "Discovered and returned $($itemCount) items"
+    
+    $hotelCodes = $hotelCodesText -split ',\s*'
+    
+    foreach ($code in $hotelCodes) {
+    	if ($hotelItems.ContainsKey($code)) {
+    		Do-NotTranslateItem -item $hotelItems[$code]
+    	}
+    }
+    
+Languages:
+- Language: en
+  Fields:
+  - ID: "b5e02ad9-d56f-4c41-a065-a133db87bdeb"
+    Hint: __Display name
+    Value: Mark hotels as 'Do Not Translate'
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20221117T131714Z

@@ -1,0 +1,55 @@
+﻿---
+ID: "cfda04d0-ee19-459b-ba0e-69f94d9d3c3d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUXE-624 - Add merchandising workflow"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $paths = @("/sitecore/content/EasyJet/Holidays/Home/Page Components/EUX/CH - Merchandising Alert Banner",
+    "/sitecore/content/EasyJet/Holidays/Home/Page Components/EUX/Hero Carousel - default EU",
+    "/sitecore/content/EasyJet/Holidays/Home/Page Components/EUX/Hero Carousel - default France",
+    "/sitecore/content/EasyJet/Holidays/Home/Page Components/EUX/Hero Carousel - default Germany",
+    "/sitecore/content/EasyJet/Holidays/Home/Page Components/EUX/Partnership Component EU",
+    "/sitecore/content/EasyJet/Holidays/Home/Page Components/EUX/EUX Hotels",
+    "/sitecore/content/EasyJet/Holidays/Data/Homepage promo blocks",
+    "/sitecore/content/EasyJet/Holidays/Data/Mosaic Promo Blocks EU",
+    "/sitecore/content/EasyJet/Holidays/Data/Footer Copyright Folder/Footer Copyright EU",
+    "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/EUX",
+    "/sitecore/content/EasyJet/Holidays/Home/Holiday Types/CH")
+    
+    
+    function Update-Workflow($rootItem){
+        $rootItem.Editing.BeginEdit()
+        $rootItem["__Workflow"] = "{45313D33-461E-4E35-943D-DF738067BAEF}"
+        $rootItem["__Workflow state"] = "{CBB9EC41-7806-4652-AECE-05CF5EEBA3F2}"
+        $rootItem["__Default workflow"] = "{45313D33-461E-4E35-943D-DF738067BAEF}"
+        $rootItem.Editing.EndEdit() | Out-Null
+        Write-Host $rootItem.Paths.FullPath
+        
+        foreach($item in $rootItem.Children){
+            Update-Workflow -rootItem $item
+        }
+    }
+    
+    foreach($path in $paths){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -ne $null){
+           Update-Workflow -rootItem $item
+        }
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240109T125133Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

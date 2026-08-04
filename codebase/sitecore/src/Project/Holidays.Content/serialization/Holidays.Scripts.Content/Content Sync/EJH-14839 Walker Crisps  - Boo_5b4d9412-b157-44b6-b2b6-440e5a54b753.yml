@@ -1,0 +1,43 @@
+﻿---
+ID: "5b4d9412-b157-44b6-b2b6-440e5a54b753"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14839 Walker Crisps  - Booking flow 2"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $page = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking"
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    $promocodeData = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Promocode Input" -templateId "{BAB6B707-4D06-4932-A852-5131328360DB}" 
+    if ($promocodeData -ne $null) {
+        $promocodeData.Editing.BeginEdit()
+        $promocodeData["TitleGreatNewsBanner"] = "GREAT NEWS!";
+    $promocodeData["TextGreatNewsBanner"] = 'Your new credit has been added to the account {email}. If you want to use your credit, select the <b>"Pay with credit"</b> option on the payment page.';
+    $promocodeData["IconGreatNewsBanner"] = '<image mediaid="{09D6307F-1905-4B59-A2FB-0FD0B8DBC3F5}" />';
+        
+        $promocodeData.Editing.EndEdit() | Out-Null
+    }
+    
+     Get-Rendering -Item $page | ForEach-Object {
+            if($_.ItemId -eq "{B1C38035-64C4-435A-98BC-33616AD2E83E}") {
+                Set-Rendering -Item $page -Instance $_ -Datasource $promocodeData.Id
+            }
+        }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210112T150701Z

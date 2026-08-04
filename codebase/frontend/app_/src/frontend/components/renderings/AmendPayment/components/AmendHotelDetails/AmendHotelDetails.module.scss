@@ -1,0 +1,72 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 16px;
+    border: 1px solid $colorGeyser;
+
+    @include media-breakpoint-up(sm) {
+        padding: 24px;
+    }
+
+    svg {
+        margin-right: 16px;
+        color: $colorBlack;
+        @include sizeSquare(24px);
+
+        @include media-breakpoint-up(sm) {
+            margin-right: 12px;
+        }
+    }
+
+    .row:first-child {
+        padding-top: 0;
+    }
+
+    .row:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid $colorGeyser;
+
+    @include media-breakpoint-up(md) {
+        flex-direction: row;
+        gap: 24px;
+        padding: 24px 0;
+    }
+}
+
+.datesDetails {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+    @include media-breakpoint-up(md) {
+        margin: 16px 0 0;
+    }
+}
+
+.extrasRow > * {
+    width: 100%;
+
+    @include media-breakpoint-up(md) {
+        width: 50%;
+    }
+}
+
+.luggageDetails {
+    align-items: flex-start;
+    margin-bottom: 0;
+
+    @include media-breakpoint-up(md) {
+        font-size: 16px;
+    }
+}

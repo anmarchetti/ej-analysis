@@ -1,0 +1,94 @@
+﻿---
+ID: "cbc82651-0d7a-46a9-8113-f194dd82d13d"
+Parent: "dc38a306-518a-4eda-ba99-27ed0a19d929"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/SPE/Content Reordering/Export Content Ordering/Content Editor/Context Menu/Order/Export Hotel Details Content Order
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $prompt = "Make sure to make item PUBLISHABLE and PUBLISHED before exporting layout!`nMake sure item is UNPUBLISHABLE and PUBLISHED(to remove) after exporting!`nClick OK to proceed."
+    $response = Show-Confirm -Title $prompt
+    
+    if ($response -ne 'yes') {
+        Write-Host "⏹ Operation cancelled by user."
+        return
+    }
+    
+    # 1. Set these for your environment
+    $siteHost   = "https://sc.holidays.local"
+    $apiKey     = "534C40A0-E28C-490A-B9C9-5F3264722A17"
+    $lang       = "en"
+    $deviceKey  = "default"
+    
+    $source  = $SitecoreContextItem
+    $itemPath = $source.Paths.FullPath
+    
+    # 2. Build the URL—and include sc_device if you need a non-default device:
+    $url = "$($siteHost)/sitecore/api/layout/render/jss?" +
+           "item=$($itemPath -replace ' ','%20')" +
+           "&sc_lang=$lang" +
+           "&sc_apikey=$apiKey" +
+           "&sc_site=holidays" +
+           "&sc_device=$deviceKey"
+           
+    $headers = @{ Accept = "application/json" }
+    
+    # 3. Call it
+    $response = Invoke-WebRequest -Uri $url -Headers $headers -Method Get -UseBasicParsing
+    $jsonString = $response.Content
+    $jsonObj = $jsonString | ConvertFrom-Json
+    
+    # 4. Build Reordered Layout
+    $orderedLayout = @()
+    
+    foreach ($rendering in $jsonObj.sitecore.route.placeholders.body) {
+        $uid = $rendering.uid
+        $cmp  = $rendering.componentName
+        $placeholders = $rendering.placeholders
+        
+        if($cmp -eq "Component Wrapper"){
+            foreach ($innerRendering in $placeholders.'component-wrapper-inner'){
+                $innerUid = $innerRendering.uid
+                $innerCmp  = $innerRendering.componentName
+                
+                if($innerCmp -eq "Sorter Wrapper"){
+                    $innerRenderings=@()
+                    foreach ($sorterRendering in $innerRendering.placeholders.'sorter-wrapper-inner'){
+                        $innerRenderings += [PSCustomObject]@{
+                            uid = $sorterRendering.uid
+                            componentName = $sorterRendering.componentName
+                        }
+                    }
+                    
+                    $sorterWrapperInner = [PSCustomObject]@{
+                        'sorter-wrapper-inner' = $innerRenderings
+                    }
+                    
+                    $orderedLayout += [PSCustomObject]@{
+                        groupName = ""
+                        uid = $innerUid
+                        componentName = $innerCmp
+                        placeholders = $sorterWrapperInner
+                    }
+                }
+            }
+        }
+    }
+    
+    $json = $orderedLayout | ConvertTo-Json -Depth 3
+    $escapedJson = $json -replace '(["])','\$1'
+    $escapedJson | Out-Download -Name "OrderedLayout.json"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250825T093154Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,54 @@
+.star-rating {
+    position: relative;
+
+    &__stars {
+        display: inline-flex;
+        flex-wrap: nowrap;
+        color: transparent;
+        fill: none;
+
+        &--filled {
+            color: $colorYellowLight;
+        }
+    }
+
+    &__svg-box {
+        position: relative;
+        display: inline-flex;
+        margin-right: 15px;
+
+        @include media-breakpoint-down(md) {
+            margin-right: 13px;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &--filled {
+            color: $colorYellowLight;
+        }
+    }
+
+    &__svg-box-fill {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        overflow: hidden;
+        color: $colorYellowLight;
+    }
+
+    svg {
+        width: 35px;
+        height: 35px;
+        stroke: $colorYellowLight;
+        stroke-width: 2px;
+        stroke-linejoin: round;
+
+        @include media-breakpoint-down(md) {
+            width: 30px;
+            height: 30px;
+        }
+    }
+}

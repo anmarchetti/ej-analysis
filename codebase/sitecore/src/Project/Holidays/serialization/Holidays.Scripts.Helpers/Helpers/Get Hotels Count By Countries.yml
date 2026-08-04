@@ -1,0 +1,76 @@
+﻿---
+ID: "62b78953-8636-48f2-962e-4b1726be4bba"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/Get Hotels Count By Countries
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function -Name ConvertTo-Xlsx
+    Import-Function -Name Export-Xlsx
+    
+    $sourceDb = "master"
+    
+    function Save-Document($data){
+            $data = $data | ForEach-Object { New-Object PSObject -Property $_ }
+            [byte[]]$data = $data | ConvertTo-Xlsx
+            Out-Download -Name "hotels-count-by-countries.xlsx" -InputObject $data
+    }
+    
+    function Find-Hotels-Items {
+    	$criteria = @(
+    		@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    		@{ Filter = "Equals"; Field = "_template"; Value = "28e5e1698f724f90a277280a8302b607"; }
+    		@{ Filter = "StartsWith"; Field = "_fullpath"; Value = "/sitecore/content/EasyJet/Holidays/Home/Destinations"; }
+    		@{ Filter = "Equals"; Field = "_name"; Value = "__Standard Values"; "Invert" = $true}
+    	)
+    
+    	$props = @{
+    		Index = "sitecore_destinations_$($sourceDb)_index"
+    		Criteria = $criteria
+    	}
+    
+    	$items = Find-Item @props
+    
+    	Write-Host "$($items.Count) Hotels were found"
+    
+    	return $items
+    }
+    
+    function Get-Country-Data(){
+        $hotels = Find-Hotels-Items
+        $countries = [ordered]@{}
+        $countryData = @()
+        foreach($hotel in $hotels){
+            $countryItem = $hotel.GetItem().Parent.Parent.Parent
+            if ($countries[$countryItem.Name] -eq $null){
+                $countries.Add($countryItem.Name, 1)
+            } 
+            else
+            {
+                $countries[$countryItem.Name]++
+            }
+        }
+    
+        $countries.Keys | ForEach-Object {
+            $countryData += [ordered]@{
+                CountryName = $_
+                HotelsCount = $countries[$_]
+            }
+        }
+        
+        return $countryData
+    }
+    
+    $data = Get-Country-Data
+    Save-Document -Data $data
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20211117T160739Z

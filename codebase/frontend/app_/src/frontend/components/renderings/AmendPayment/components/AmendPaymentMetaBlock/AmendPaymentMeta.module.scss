@@ -1,0 +1,55 @@
+.container {
+    :global(.payment-protection) {
+        justify-content: flex-start;
+        margin: 28px 0 32px;
+
+        @include media-breakpoint-down(md) {
+            margin: 25px 0;
+        }
+    }
+
+    :global(.wrapper-container) {
+        padding-top: 0;
+    }
+
+    :global(.wrapper-container--px) {
+        padding: 0;
+    }
+
+    :global(.info) {
+        padding-top: 28px;
+
+        @include media-breakpoint-up(md) {
+            padding-top: 0;
+        }
+    }
+
+    :global(.payment-form .payment-subtitle) {
+        margin-top: 0;
+
+        @include media-breakpoint-down(md) {
+            font-size: 1.125rem;
+            line-height: 1.406rem;
+        }
+    }
+
+    :global(.payment-form .form-control__error) {
+        flex: none;
+        margin-top: 12px;
+    }
+
+    :global(.payment-form) {
+        margin-top: 32px;
+    }
+
+    :global(.error-message .d-flex) {
+        padding: 0
+    }
+
+    :global(.error-message__icon) {
+        svg {
+            margin-right: 10px;
+            margin-left: 0;
+        }
+    }
+}

@@ -1,0 +1,832 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <IsTestProject>true</IsTestProject>
+        <Nullable>warnings</Nullable>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="TradePortalAgentFeedback\**" />
+        <EmbeddedResource Remove="TradePortalAgentFeedback\**" />
+        <None Remove="TradePortalAgentFeedback\**" />
+        <None Update="appsettings.componentTests.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </None>
+        <None Update="__admin\**\*.*">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\dynamodb_requested_price.tf">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\dynamodb_routes_version_entry_68.tf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\dynamodb_seat_plan_entry_8741LGWSSH20240108EUBF.tf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\dynamodb_seat_plan_entry_8742SSHLGW20240112EUBF.tf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\dynamodb_users_entry_4E7355B1575245FE76C96CD8DAC41571.tf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\dynamodb_hotel_errata_entry_X9111416.tf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\main.tf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\poi\dynamodb.tf">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\poi\poi_CYPFLA.tf">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\dynamodb_seat_plan_entry_6506LGWFCO20240209EUCO.tf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\dynamodb_seat_plan_entry_8324FCOLGW20240213EUCO.tf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\dynamodb_weather_ESMJ.tf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\tourist-tax\Exchange Rates.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\tourist-tax\s3.tf">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Terraform\tourist-tax\Tourist Tax Rules.csv">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\DatesEndpoints\SummaryPageEndpoint\AvCache_CheapestOffer_CHEAP.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\DatesEndpoints\SummaryPageEndpoint\AvCache_FullyMatchedOffer_CHEAP.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\DatesEndpoints\SummaryPageEndpoint\InfoBookingModifyResponse_cheapestOffer_CHEAP.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\InfoModifyBookingResponse_AMEND_BOOKING_ATCOM_VRP_ERROR.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\multiroom.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\search\eux\s_tp=3_ESFU_ch.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\search\eux\s_tp=3_ESFU_de.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\search\eux\s_tp=3_ESFU_fr.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\search\s_tp=3_GRSK.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\search\s_tp=3_poly.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\search\s_tp=3_ESFU.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Cms\cmsAmendSettingsResponse.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+     </None>
+        <None Update="__admin\files\Atcom\s_tp=5_search_no_results.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\DataHub\DataHubResponse_Bad_res.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\DataHub\DataHubResponse_77881122.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\alternative_flights\alternative_flights_bookingReference_70143315.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\AmendController\Seats\amend_seats_request.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\AmendController\Seats\amend_seats_response.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\booking_VALID_REF_RB_response.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\search\packages-map\packages-map_ESFU.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\search\packages-summary\packages-summary_ESFU_no_filters.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\search\packages-summary\packages-summary_ESFU_with_filters.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\search\packages-merge\packages_GRSK_merge_offers_from_DC_n_TGX.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\search\packages-merge\packages_GRSK_merge_offers_from_DC_n_TGX.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\validate-package\luggage\validate-package-with-sport-equipment-request.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\validate-package\luggage\validate-package-with-sport-equipment-response.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\validate-package\luggage\validate-package-with-sport-equipment-request.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\validate-package\luggage\validate-package-with-sport-equipment-response.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\valid_booking_with_seats_response.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\DatesEndpoints\SummaryPageEndpoint\AvCache_CheapestOffer_ESTF0007_CHEAP.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\DatesEndpoints\SummaryPageEndpoint\AvCache_CheapestOffer_ESTF0007.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\DatesEndpoints\SummaryPageEndpoint\AvCache_FullyMatchedOffer_CHEAP.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\DatesEndpoints\SummaryPageEndpoint\InfoBookingModifyResponse_cheapestOffer_CHEAP.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\RoomAndBoard\InfoEndpoint\AvCache_82551ecc_ST4.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\RoomAndBoard\InfoEndpoint\AvCache_82551ecc_ST6.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\RoomAndBoard\InfoEndpoint\DisplayResponse_70285718.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\RoomAndBoard\InfoEndpoint\InfoBookingModifyResponse_70285718_TWN_BB.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\RoomAndBoard\InfoEndpoint\InfoBookingModifyResponse_70285718_TWN_HB.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\RoomAndBoard\InfoEndpoint\InfoBookingModifyResponse_70285718_TWSV_BB.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\RoomAndBoard\InfoEndpoint\InfoBookingModifyResponse_70285718_TWSV_HB.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\Seats\InfoModify_VALID-BOOKING-WITH-SEATS.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\booking\DisplayMemoResponse_VALID-BOOKING-WITH-SEATS.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\booking\DisplayRequest_VALID_REF_RB.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\booking\DisplayMemoResponse_VALID_DEFAULT_LUGGAGE.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\booking\DisplayResponse_AMEND_BOOKING_ATCOM_VRP_ERROR.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\booking\DisplayResponse_VALID-BOOKING-WITH-SEATS.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\booking\DisplayResponse_VALID_DEFAULT_LUGGAGE.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\booking\InfoModifyBookingRequest_AMEND_BOOKING_ATCOM_VRP_ERROR.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\price-graph\valid-request.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\price-graph\multi-room.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\recommended\s_tp=3_accomESFU.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\search-packages\eux\s_tp=3_ESFU_ch.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\search-packages\eux\s_tp=3_ESFU_de.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\search-packages\eux\s_tp=3_ESFU_fr.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\search-packages\s_tp=3_GRSK.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\search-packages\s_tp=3_poly.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\search-packages\s_tp=3_ESFU.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\search\flight-extras-LGWPFO6TPFOLGW.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\validate-package\InfoBooking_sport_equipment_CYPF0035_transfer_surcharge.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\B2B\amend\seats\OFTFlightSeatPlanRequest_2314.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\B2B\amend\seats\OFTFlightSeatPlanRequest_2315.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\FacilityMatrixConfiguration.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\DestinationsSearch_GetHotels_GRSK.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\DestinationsSearch_GetHotels_ESFU.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetAccommodationIdToGiataMapping_ESFU_EUX.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetAccommodationIdToGiataMapping_GRSK.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetAccommodationIdToGiataMapping_poly.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetAccommodationIdToGiataMapping_ESFU.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetAllFilters_GRSK.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetAllFilters_ESFU.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetAllFilters_EUX.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\Packages_GetHotels_EUX.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetPromotionCollections.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetDestinationsByCodes_GRSK.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetDestinationsByCodes_ESFU.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetDestinationsByCodes_ES.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetExtraPriceBreakdownSettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetHotels_ESCB0051.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetLuggage.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\flight-extra\FlightExtraRequest_CFULGW5TLGWCFU_flights.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\FlightExtraResponse_CFULGW5TLGWCFU_flights.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\hotel-offers\hotel_offers_for_YGRCF0044_with_adult_luggage_response.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\validate-package\seats\FlightExtra_HRGLGW3TLGWHRG_no_cache.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\validate-package\seats\InfoBooking_EGHR0028_TRAV008228SS_no_cache.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\validate-package\seats\FlightExtra_HRGLGW3TLGWHRG_no_cache.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\validate-package\seats\InfoBooking_EGHR0028_TRAV008228SS_no_cache.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\B2B\validate-package\seats\B2B_SeatsPlan_LGW_HRG_no_cache.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\B2B\validate-package\seats\seats_plan_HRG_LGW_response_no_cache.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\B2B\validate-package\seats\seats_plan_LGW_HRG_response_no_cache.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\B2B\validate-package\seats\B2B_SeatsPlan_HRG_LGW_no_cache.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetPromocodeSettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\validate-package\seats\GetHotelTransfers-EGHR0028_no_cache.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\validate-package\seats\validate-package-with-seats-request_with_cache.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\validate-package\seats\validate-package-with-seats-response_with_cache.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\validate-package\seats\InfoBooking_X9143823_with_cache.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\validate-package\seats\InfoBooking_X9143823_with_cache.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\commit\commit-booking-with-seats-request.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\commit\commit-booking-with-seats-response.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\commit\InfoBooking_with_seats_EGSS0012_TRAV000810SS.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\commit\InfoBooking_with_seats_EGSS0012_TRAV000810SS.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Data8\DrillDown.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Data8\Retrieve.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Data8\Search.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\DataHub\SynchronizePnr_Bad_res.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\DataHub\SynchronizePnr_77881122.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Payment\Payment_booking_commit_50028683.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\commit\BookingRequest_with_seats_43c146d0-719a.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\commit\BookingRequest_with_seats_43c146d0-719a.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\commit\ModifyCustPayment_with_seats_43c146d0-719a.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\commit\ModifyCustPayment_with_seats_43c146d0-719a.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\AmendController\Commit\amend_commit_with_seats_request.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\AmendController\Commit\amend_commit_with_seats_response.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\Commit\DisplayResponse_booking=50029796.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\Commit\DisplayMemoResponse_booking=50029796.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\Commit\DisplayRequest_50029796.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\Commit\DisplayMemoRequest_50029796.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\B2B\amend\commit\B2B_SeatsPlan_LTNAYT_2555.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\B2B\amend\commit\B2B_SeatsPlan_LTNAYT_2555.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\B2B\amend\commit\B2B_SeatsPlan_AYTLTN_2556.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\B2B\amend\commit\B2B_SeatsPlan_AYTLTN_2556.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\Commit\InfoModifyBookingRequest_50029796.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\Commit\InfoModifyBookingResponse_booking=50029796.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\Commit\ModifyBookingResponse_booking=50029796.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\Commit\ModifyBookingRequest_50029796.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\hotel-offers\hotel_offers_for_YGRCF0044_with_LCB_response.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\AmendController\RoomAndBoard\room_and_board_success_commit_request_50039038.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\AmendController\RoomAndBoard\room_and_board_success_commit_request_50039039.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\RoomAndBoard\DisplayResponse_50039038.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\RoomAndBoard\DisplayResponse_50039039.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\RoomAndBoard\InfoBookingModifyResponse_50039038.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\RoomAndBoard\ModifyBookingResponse_50039038.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\RoomAndBoard\DisplayRequest_50039038.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\RoomAndBoard\DisplayRequest_50039039.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\RoomAndBoard\InfoModifyBookingRequest_50039038.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\RoomAndBoard\ModifyBookingRequest_50039038.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\RoomAndBoard\DisplayMemoRequest_50039038.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\seats\flight-extras\flight-extras-search-request.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\seats\flight-extras\flight-extras-search-response.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\seats\get-seats-map\get-seats-map-response.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\ItemSearchResponse_CYPF0035.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\validate-package\ItemSearchRequest_CYPF0035.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\ItemSearchResponse_EGHR0028.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\validate-package\ItemSearchRequest_EGHR0028.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\GetComplimentarySettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\DI_s_tp=6_accom=YGRCF0055.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\DI_s_tp=6_accom=YGRCF0055.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\hotel-offers\hotel_offers_for_YGRCF0055_di_response.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\HotelList\DisplayResponse_cf7d6549cb4a.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\HotelList\DisplayResponse_cf7d6549cb4a.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\HotelList\AvCache_Search23_77fd356a.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\HotelList\AvCache_Search23_77fd356a.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\HotelList\GetHotels_77b1e372f332.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\HotelList\GetHotelTransfers_77b1e372f332.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\HotelList\DisplayResponse_b9fb005e9445.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\HotelList\DisplayResponse_b9fb005e9445.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\HotelList\DisplayResponse_d2607de6ceb7.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\HotelList\AvCache_Search23_1a6cbb18.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\HotelList\AvCache_Search23_1a6cbb18.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\HotelList\DisplayResponse_d2607de6ceb7.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\HotelList\GetAllFilters_77b1e372f332.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\HotelList\DisplayResponse_2fa10fe9cdc0.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\HotelList\AvCache_Search23_019136ec.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\HotelList\DisplayResponse_2fa10fe9cdc0.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\HotelList\AvCache_Search23_019136ec.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\HotelList\GetAllFilters_2fa10fe9cdc0.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\HotelList\GetHotels_2fa10fe9cdc0.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\HotelList\GetHotelTransfers_2fa10fe9cdc0.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\RoomAndBoard\AvCache_Search_26.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\RoomAndBoard\DisplayMemoResponse_90bf7bd8.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\RoomAndBoard\DisplayResponse_90bf7bd8.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\RoomAndBoard\InfoModifyBookingResponse_55d0732d4b3c_STU01_SC.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\RoomAndBoard\InfoModifyBookingResponse_55d0732d4b3c_1BA01_SC.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\RoomAndBoard\InfoModifyBookingResponse_55d0732d4b3c_STU01_BB.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\RoomAndBoard\InfoModifyBookingResponse_55d0732d4b3c_1BA01_BB.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\RoomAndBoard\InfoModifyBookingResponse_55d0732d4b3c_1BA01_HB.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\RoomAndBoard\InfoModifyBookingResponse_55d0732d4b3c_STU01_HB.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\RoomAndBoard\DisplayMemoResponse_90bf7bd8.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\RoomAndBoard\InfoModifyBookingResponse.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\AmendController\AmendHotel\RoomAndBoard\room-and-board-success-55d0732d4b3c.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\RoomAndBoard\AvCache_Search_26.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\RoomAndBoard\DisplayResponse_4b9f444a32fb.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\AlternativeRooms\AvCache_Search_26.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\AlternativeRooms\DisplayMemoResponse_4b9f444a32fb.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\AlternativeRooms\DisplayResponse_4b9f444a32fb.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\AlternativeRooms\InfoModifyBookingResponse_55d0732d4b3c_1BA01_BB.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\AlternativeRooms\InfoModifyBookingResponse_55d0732d4b3c_1BA01_HB.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\AlternativeRooms\InfoModifyBookingResponse_55d0732d4b3c_1BA01_SC.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\AlternativeRooms\InfoModifyBookingResponse_55d0732d4b3c_STU01_BB.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\AlternativeRooms\InfoModifyBookingResponse_55d0732d4b3c_STU01_HB.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\AlternativeRooms\InfoModifyBookingResponse_55d0732d4b3c_STU01_SC.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\AlternativeRooms\AvCache_Search_26.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\AlternativeRooms\DisplayMemoResponse_90bf7bd8.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\AlternativeRooms\DisplayResponse_4b9f444a32fb.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\AlternativeRooms\InfoModifyBookingResponse.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\AmendController\AlternativeHotelList\AmendHotelRequest_7ceb31bd6b96.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\ValidateHotel\DisplayResponse_7ceb31bd6b96.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\Validate\DisplayResponse_7ceb31bd6b96.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\ValidateHotel\DisplayMemo_7ceb31bd6b96.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\Validate\DisplayMemo_7ceb31bd6b96.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\AmendController\AmendHotel\AmendHotelRequest_7ceb31bd6b96.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\AmendController\AmendHotel\Commit\AmendBookingRequest_14860f53eba2.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\Commit\DisplayMemo_14860f53eba2.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\Commit\DisplayResponse_14860f53eba2.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\Commit\DisplayMemo_14860f53eba2.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\Commit\DisplayResponse_14860f53eba2.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\Commit\InfoBookingModifyResponse_d53eb98e_DB01_BB.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\Commit\InfoModifyBookingResponse.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\Commit\ModifyCustPaymentResponse_14860f53eba2.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\Commit\ModifyCustPaymentResponse_14860f53eba2.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\Commit\ModifyBookingResponse_14860f53eba2.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\Commit\ModifyBookingResponse_14860f53eba2.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\Commit\ModifyMemoResponse_14860f53eba2.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\Commit\ModifyMemoResponse_14860f53eba2.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\AmendController\AmendHotel\Transfers\transfers-success-ebb25aaf5171.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\Transfers\DisplayResponse_ebb25aaf5171.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\Transfers\DisplayResponse_ebb25aaf5171.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\Transfers\DisplayMemoResponse_ebb25aaf5171.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\Transfers\DisplayMemoResponse_ebb25aaf5171.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\Transfers\GetTransferByProductId_5814S.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\Transfers\GetTransferByProductId_5814P.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\Transfers\InfoModifyBookingResponse_ebb25aaf5171_W2MS013809PP.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\Transfers\InfoModifyBookingResponse_ebb25aaf5171_W2MS013810NS.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\Transfers\InfoModifyBookingResponse_ebb25aaf5171_W2MS013809PP.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\Transfers\ItemSearchResponse_ea4824e3.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\Transfers\ItemSearchResponse_ea4824e3.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\Transfers\GetHotelTransfers_ea4824e3.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\Transfers\InfoModifyBookingResponse_ebb25aaf5171_W2MS013810NS.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\HotelList\GetAccommodationToGiataMapping_2fa10fe9cdc0.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\HotelList\GetAccommodationToGiataMapping_77b1e372f332.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\AlternativeRooms\GetAccommodationToGiataMapping_55d0732d4b3c.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\HotelList\DisplayResponse_e6405c990657.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\HotelList\AvCache_Search23_04f602dd.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\HotelList\GetHotelTransfers_40c6.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\HotelList\GetAllFilters_40c6.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\HotelList\GetHotels_40c6.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\CMS\AmendController\AmendHotel\HotelList\GetAccommodationToGiataMapping_553c.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\AmendController\AmendHotel\HotelList\DisplayResponse_e6405c990657.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\AmendBookingController\AmendHotel\HotelList\AvCache_Search23_04f602dd.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+        <None Update="__admin\files\WebApi\validate-package\airportParking\validate-package-with-airport-parking-request.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\WebApi\validate-package\airportParking\validate-package-with-airport-parking-response.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\validate-package\airportParking\InfoBookingRequest_CYPF0036.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\validate-package\airportParking\InfoBookingResponse_CYPF0036.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\mappings\Atcom\validate-package\airportParking\ItemSearchRequest_CYPF0036.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="__admin\files\Atcom\validate-package\airportParking\ItemSearchResponse_CYPF0036.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoFixture" />
+        <PackageReference Include="AutoFixture.AutoMoq" />
+        <PackageReference Include="AutoFixture.Xunit3" />
+        <PackageReference Include="FluentAssertions" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+        <PackageReference Include="Asp.Versioning.Mvc" />
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" />
+        <PackageReference Include="WireMock.Net" />
+        <PackageReference Include="xunit.v3" />
+        <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\easyJet.Holidays.Api\easyJet.Holidays.Api.csproj" />
+        <ProjectReference Include="..\easyJet.Holidays.Tests.Domain\easyJet.Holidays.Tests.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="appsettings.trade.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Logging\" />
+        <Folder Include="Resort\" />
+        <Folder Include="RequestedPrice\" />
+    </ItemGroup>
+
+</Project>

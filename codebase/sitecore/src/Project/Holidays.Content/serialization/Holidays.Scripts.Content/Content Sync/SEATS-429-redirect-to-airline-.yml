@@ -1,0 +1,85 @@
+﻿---
+ID: "8ddba952-950d-41b8-824e-2db897cef37f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SEATS-429-redirect-to-airline-for-bag-purchase"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    $HolidaysRedirectBanner = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Redirect To Airline For Bag Purchase" -template "{95FA27A3-A5DA-40CF-99EE-1470E3D6E5C7}";
+    if ($HolidaysRedirectBanner -ne $null){
+        $HolidaysRedirectBanner.Editing.BeginEdit();
+        $HolidaysRedirectBanner["Title"] = "Looking to add more bags?";
+        $HolidaysRedirectBanner["Description"] = "If you want to take a large overhead cabin bag, you can do that via easyjet.com after making your booking";
+        $HolidaysRedirectBanner["Link"] = '<link text="Add bags on easyjet.com" linktype="external" url="https://www.easyjet.com/en/BoardingPass/ViewBoardingPassList/ " anchor="" target="" rel="" />';
+        $HolidaysRedirectBanner["Icon"] = '<image mediaid="{51A15C31-80B0-4286-9522-30165F61C780}" />';
+        $HolidaysRedirectBanner.Editing.EndEdit();
+        
+        Write-Host "updated Holidays Redirect To Airline Banner";
+    }
+    
+    $TradePortalRedirectBanner = Get-Or-Create-Item -path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirmation/Page Components/Redirect To Airline For Bag Purchase" -template "{95FA27A3-A5DA-40CF-99EE-1470E3D6E5C7}";
+    if ($TradePortalRedirectBanner -ne $null){
+        $TradePortalRedirectBanner.Editing.BeginEdit();
+        $TradePortalRedirectBanner["Title"] = "Looking to add more bags?";
+        $TradePortalRedirectBanner["Description"] = "If you want to take a large overhead cabin bag, you can do that via easyjet.com after making your booking";
+        $TradePortalRedirectBanner["Link"] = '<link text="Add bags on easyjet.com" linktype="external" url="https://www.easyjet.com/en/BoardingPass/ViewBoardingPassList/ " anchor="" target="" rel="" />';
+        $TradePortalRedirectBanner["Icon"] = '<image mediaid="{51A15C31-80B0-4286-9522-30165F61C780}" />';
+        $TradePortalRedirectBanner.Editing.EndEdit();
+        
+        Write-Host "updated Tradeportal Redirect To Airline Banner";
+    }
+    
+    
+    $genericInfoBlockBannerId = "{8D8FD7DE-A929-4931-8AB5-88C289077A49}"
+    
+    $bookingConfirmationPageHolidays = Get-Item "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation"
+    if ($bookingConfirmationPageHolidays -ne $null) {
+    	Get-Rendering -Item $bookingConfirmationPageHolidays |
+    	ForEach-Object {
+    		if ($_.ItemId -eq $genericInfoBlockBannerId)
+    		{
+    			$_.DataSource = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Redirect To Airline For Bag Purchase"
+    			Set-Rendering -Item $bookingConfirmationPageHolidays -Instance $_
+    		}
+    	}
+    	
+    	Write-Host "data-source assigned to Holidays Rendering";
+    }
+    
+    $bookingConfirmationPageTradePortal = Get-Item "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirmation"
+    if ($bookingConfirmationPageTradePortal -ne $null) {
+    	Get-Rendering -Item $bookingConfirmationPageTradePortal |
+    	ForEach-Object {
+    		if ($_.ItemId -eq $genericInfoBlockBannerId)
+    		{
+    			$_.DataSource = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirmation/Page Components/Redirect To Airline For Bag Purchase"
+    			Set-Rendering -Item $bookingConfirmationPageTradePortal -Instance $_
+    		}
+    	}
+    	
+    	Write-Host "data-source assigned to TradePortal Rendering";
+    }
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 301
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230414T152437Z

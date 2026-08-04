@@ -1,0 +1,43 @@
+.searchBarDropdownWhenErrorWrapper {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 32px;
+
+    @include media-breakpoint-down(md) {
+        padding: 12px 15px;
+        background-color: $colorWhite;
+        box-shadow: 0 0 12px 2px $colorAlto;
+    }
+}
+
+.searchBarDropdownWhenError {
+    width: calc(100% - 6px); // for shadow
+    margin-top: 20px;
+    margin-bottom: 0;
+    padding: 0;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 0 !important;
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    & > div {
+        align-items: center;
+        padding: 10px;
+
+        @include media-breakpoint-down(md) {
+            align-items: flex-start;
+        }
+    }
+
+    :global {
+        .error-message__container {
+            font-size: 14px;
+        }
+
+        .error-message__icon svg {
+            margin: 0 12px 0 0;
+        }
+    }
+}

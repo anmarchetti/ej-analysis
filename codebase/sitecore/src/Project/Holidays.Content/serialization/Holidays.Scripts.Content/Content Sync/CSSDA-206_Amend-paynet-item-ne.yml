@@ -1,0 +1,76 @@
+﻿---
+ID: "5c7954b5-33bc-481d-aaf5-d1ec9adf7436"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-206_Amend-paynet-item-new-fields"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function GetOrCreateItem($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue;
+        
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        
+        return $item
+    }
+    
+    #Create new type of amendType
+    $amendTypePath = "/sitecore/system/Settings/Foundation/Destinations/Amend Details/Amend Types/Holiday";
+    $amendTypeTemplate = "{97D75760-CF8B-4740-810B-7727B564EF4D}";
+    $amendTypeItem = GetOrCreateItem -path $amendTypePath -template $amendTypeTemplate;
+    if ($amendTypeItem -ne $null) {
+         $amendTypeItem.Editing.BeginEdit();
+         $amendTypeItem["Value"] = "Holiday";
+         
+         $amendTypeItem.Editing.EndEdit() | Out-Null;
+         
+         Write-Host $amendTypeItem.Name "Updated";
+    }
+    
+    #Creating new AmendType - Holiday
+    $amendHolidayTypePath = "/sitecore/content/EasyJet/Holidays/Data/Amend Types/Holiday";
+    $amendHolidayTypeTemplate = "{40821DBF-5A52-46EB-B6D1-2CCBBCE2C835}";
+    $amendHolidayTypeItem = GetOrCreateItem -path $amendHolidayTypePath -template $amendHolidayTypeTemplate;
+    if ($amendHolidayTypeItem -ne $null) {
+         $amendHolidayTypeItem.Editing.BeginEdit();
+         $amendHolidayTypeItem["Name"] = "Your holiday";
+         $amendHolidayTypeItem["Type"] = $amendTypeItem.ID;
+         $amendHolidayTypeItem["Icon"] = '<image mediaid="{8A7CE148-72A5-4576-AF6B-0A3563A4F96C}" />';
+         
+         $amendHolidayTypeItem.Editing.EndEdit() | Out-Null;
+         
+         Write-Host $amendHolidayTypeItem.Name "Updated";
+    }
+    
+    #Update AmendItemInfo
+    $AmendItemInfo = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Amend Item Info" -ErrorAction SilentlyContinue;
+    if ($AmendItemInfo -ne $null) {
+         $AmendItemInfo.Editing.BeginEdit();
+         $AmendItemInfo["AmendTypes"] = $AmendItemInfo["AmendTypes"] + "|" + $amendHolidayTypeItem.ID;
+         $AmendItemInfo["DatesPriceLabel"] = "Holiday";
+         $AmendItemInfo["HoldBagsLabel"] = "Applicable for outbound and return";
+         $AmendItemInfo["AdditionalAmountLabel"] = "Total additional cost";
+         $AmendItemInfo["FreeNightsExtraLabel"] = "Free night included";
+         $AmendItemInfo["FreeNightsExtraIcon"] = '<image mediaid="{9BEEF694-1A85-4712-9C7C-BB940C325C71}" />';
+         $AmendItemInfo["AdultsIcon"] = '<image mediaid="{3A6C0836-39AA-41AF-B77A-58A0757FA51A}" />';
+         $AmendItemInfo["ChildIcon"] = '<image mediaid="{C4438D39-6DF3-4330-8173-7B3928E49B8A}" />';
+         $AmendItemInfo["InfantIcon"] = '<image mediaid="{5BC87EFD-A61A-4D50-8BDE-3D4DCAA9E812}" />';
+         
+         $AmendItemInfo.Editing.EndEdit() | Out-Null;
+         Write-Host $AmendItemInfo.Name "Updated";
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 656
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230829T070034Z

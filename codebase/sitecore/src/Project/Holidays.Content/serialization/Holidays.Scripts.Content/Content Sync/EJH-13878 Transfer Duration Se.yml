@@ -1,0 +1,42 @@
+﻿---
+ID: "916d747f-f7f0-47ae-a481-ffcadd8b9dc0"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-13878 Transfer Duration Settings"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $itemPath = "/sitecore/content/EasyJet/Holidays/Settings/Transfer Settings"
+    $templateId = "{6C73B70F-0179-4304-8BA4-936569078C73}"
+    
+    $item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+    
+    if ($item -eq $null){
+        Write-Host "Creating item"
+        
+        $item = New-Item -Path $itemPath -ItemType $templateId
+        
+        $item.Editing.BeginEdit()
+        $item.Fields["TransferDurationEnabled"].Value = "1"
+        $item.Fields["PrivateTransferPromoEnabled"].Value = "1"
+        $item.Fields["PrivateTransferPromoMinDiffTime"].Value = 30
+        $item.Editing.EndEdit()
+    } else{
+        Write-Host "Item already created"
+    }
+    
+    Write-Host "Script is completed"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 10000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210824T134207Z

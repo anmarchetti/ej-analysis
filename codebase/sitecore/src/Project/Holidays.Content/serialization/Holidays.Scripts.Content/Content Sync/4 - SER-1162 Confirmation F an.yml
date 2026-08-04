@@ -1,0 +1,272 @@
+﻿---
+ID: "f57f2cab-7928-4a08-aa8e-1985036dfd0d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/4 - SER-1162 Confirmation F and H"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+                
+            function Get-PlaceholderFromPage {
+            param (
+                [string]$PagePath,
+                [string]$RenderingId
+            )
+            $item = Get-Item -Path $PagePath
+            $layoutField = New-Object -TypeName "Sitecore.Data.Fields.LayoutField" -ArgumentList $item
+            if ([string]::IsNullOrEmpty($layoutField.Value)) { return "" }
+        
+            $layoutXml = [Sitecore.Layouts.LayoutDefinition]::Parse($layoutField.Value)
+            $device = $layoutXml.Devices[0]
+            
+            $rendering = $device.Renderings | Where-Object { $_.ItemID -eq $RenderingId } | Select-Object -First 1
+            
+            if ($null -ne $rendering) {
+                return $rendering.Placeholder
+            }
+            return ""
+            }
+                    
+            function Get-PageConfiguration {
+            param (
+                [Parameter(Mandatory=$true)] [string]$PagePath
+            )
+        
+        
+            filter ConvertTo-Params {
+                param($ds, $ph)
+                $p = [ordered]@{
+                    "Placeholder"           = $ph
+                    "Data Source"            = $ds
+                }
+            $params = ($p.Keys | ForEach-Object { 
+                    $k = [System.Web.HttpUtility]::UrlEncode($_).Replace("%20", "+")
+                    $v = [System.Web.HttpUtility]::UrlEncode($p[$_]).Replace("%20", "+")
+                    "$k=$v"
+                }) -join "&"
+                return $params
+            }
+        
+            $renderings = @(
+                @{ id = "{E10ECB4E-19CE-4255-982C-04E6E3592A20}"}
+                @{ id = "{8B4B958A-7F3C-4404-9003-DE7F4CC3AABF}"}
+                @{ id = "{92561376-9A31-490C-8876-AF753D8CF335}"}
+                @{ id = "{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}"}
+                @{ id = "{84E4A703-662D-41CE-9A3E-86946DF9E04B}"}
+                @{ id = "{D6CF6F5C-D137-49CB-A3FB-C2D6ADC47F6C}"}
+                @{ id = "{05F2C26C-4E1D-4CAD-A817-A1B5CBBEF628}"}
+                @{ id = "{8D8FD7DE-A929-4931-8AB5-88C289077A49}"; ds = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Redirect To Airline For Bag Purchase" }
+                @{ id = "{2A35FBE1-E039-4D16-B301-37FD96B0C10F}"; ds = "/sitecore/content/EasyJet/Holidays/Data/Special Requests" }
+                @{ id = "{7973D16E-B6AF-4E9B-AF02-6072DD7ECB82}"; ds = "/sitecore/content/EasyJet/Holidays/Data/ATOL Protection" }
+                @{ id = "{752847FB-9A5B-47E4-A1F3-42843C1A7C83}"; ds = "/sitecore/content/EasyJet/Holidays/Data/Health Entry Requirements" }
+                @{ id = "{9C3DFA27-58E8-466E-AB02-1158188EE582}"}
+                @{ id = "{0D1D051B-009A-40C3-BADF-F654B8EE7958}"}
+                @{ id = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"}
+                @{ id = "{EF923FE5-72B8-41AE-9D17-BD2B8B99A377}"}
+                @{ id = "{9133F3CA-553F-42F5-8529-54734B53A378}"; ds = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Bottom Help Links"; toDelete = @("Chat To Us")}
+                @{ id = "{7910DC7C-14B7-48F1-9256-C570F700F085}"}
+                @{ id = "{FBD4947D-7A60-47E9-B465-D4E89DEE0A41}"}
+                @{ id = "{EDCABB4F-676C-4418-BBEE-4E0009F946E5}"}
+                @{ id = "{89F16941-1EA9-4990-88BD-794D3B45292D}"}
+                @{ id = "{771959C1-9EA9-43D6-B8F4-A24D90D06974}"}
+                @{ id = "{004B0898-B081-4E1B-8B9E-06DC8F5CFAF5}"}
+                @{ id = "{0A32EA7D-D537-4845-A5B2-8D2FF7513D91}"}
+                @{ id = "{881D4BCA-336C-491D-8E8A-74109544519D}"}
+            )
+        
+            $simpleList = @()
+            $complexMapping = @()
+        
+            $simpleList = @()
+            $complexMapping = @()
+        
+            foreach ($r in $renderings) {
+                $simpleList += $r.id
+                $finalDs = ""
+        
+                # Copy datasource if provided
+                if ($null -ne $r.ds -and $r.ds -ne "") {
+                        
+                    $currentPh = $r.ph
+                    if ([string]::IsNullOrEmpty($currentPh)) {
+                        $currentPh = Get-PlaceholderFromPage -PagePath "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation" -RenderingId $r.id
+                        }
+                        
+                        $sourceItem = Get-Item -Path $r.ds
+                        $newName = "$($sourceItem.Name) F and H"
+                        $parentPath = $sourceItem.Parent.Paths.FullPath
+                        $targetPath = "$parentPath/$newName"
+                        
+                        $existingItem = Get-Item -Path $targetPath -ErrorAction SilentlyContinue
+                        
+                        if ($null -eq $existingItem) {
+                            $newDsItem = $sourceItem.Duplicate()
+                            $newDsItem.Editing.BeginEdit()
+                            try {
+                                $newDsItem.Name = $newName
+                                $newDsItem["__Display name"] = "$($sourceItem.Name) F&H"
+                            } finally {
+                                $newDsItem.Editing.EndEdit() | Out-Null
+                                
+                            }
+                            
+                           if ($null -ne $r.toDelete -and $r.toDelete.Count -gt 0) {
+                            $childrenToDelete = $newDsItem.Children | Where-Object { $_.Name -in $r.toDelete }
+                            foreach ($child in $childrenToDelete) {
+                                $childName = $child.Name
+                                $child.Delete()
+                                Write-Host "Removed child '$childName' from copy '$newName'" -ForegroundColor Yellow
+                            }
+                        }
+                            
+                            $finalDs = $newDsItem.ID.ToString()
+                        } else {
+                            $finalDs = $existingItem.ID.ToString()
+                        }
+        
+                        $pString = ConvertTo-Params -ds $finalDs -ph $currentPh
+                        $complexMapping += "$($r.id):$($r.id):$pString"
+                        
+                        Write-Host "Mapped with DS: $($r.id)" -ForegroundColor Green
+                    } else {
+                        Write-Host "Skipped in mapping (no DS): $($r.id)" -ForegroundColor Gray
+                    }
+                }
+                
+                $item = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider"
+                $currentValue = $item["Pages"]
+        
+            return @(
+                @{
+                Path         = $PagePath
+                TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+                Id           = "{1684CC40-EF59-431F-A463-6FD6B51FD43C}"
+                Fields       = @{
+                    "RenderingReplacements" = @{ "en" = ($complexMapping -join "|") }
+                    "AllowedRenderings"  = @{ "en" = ($simpleList -join "|") }
+                    "Page" = @{"en" = "{155ECD81-AE2B-47D2-8CB7-0794978BFFF1}"}
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider"
+                TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProvider"
+                Fields       = @{
+                    "Pages"= @{"en" = "$currentValue|{1684CC40-EF59-431F-A463-6FD6B51FD43C}"}
+                }
+            }
+            )
+            }
+        
+    $updates = Get-PageConfiguration -PagePath "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Confirmation"
+    ImportContent -itemsToCreate $updates
+        
+        
+    $dsItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Bottom Help Links F and H"
+    $childIds = $dsItem.Children | ForEach-Object { $_.ID.ToString() }
+    $idsString = $childIds -join "|"
+        
+    $content = @(
+                              @{
+                                Path         = "/sitecore/content/EasyJet/Holidays/Data/ATOL Protection F and H"
+                                TemplatePath = "/sitecore/templates/Feature/Destinations/ATOL Protection"
+                                Fields      = @{
+                                     "Title" = @{
+                                        "en" = "Your trip is secure as all easyJet Flight + Hotel bookings are fully protected."
+                                        "fr-CH" = ""
+                                        "de-CH" = ""
+                                        "fr-FR" =""
+                                        "de-DE" = ""
+                                    }
+                                    "Text"= @{
+                                        "en" = "We know it's important to feel protected when booking your trip. Feel completely secure on your easyJet Flight + Hotel booking with the ATOL protection scheme. All the holidays sold in UK on this website are financially protected by the ATOL scheme. Find out more about fully ATOL protected holidays here."
+                                        "fr-CH" = ""
+                                        "de-CH" = ""
+                                        "fr-FR" = ""
+                                        "de-DE" = ""
+                                    }
+                                }
+                             }    
+                             @{
+                                Path         = "/sitecore/content/EasyJet/Holidays/Data/Special Requests F and H"
+                                TemplatePath = "/sitecore/templates/Foundation/Destinations/Special Requests/Special Requests Folder"
+                                Fields      = @{
+                                     "InfoDescription" = @{
+                                        "en" = "<p>Our dedicated <strong>Assisted Travel Team</strong> are happy to help if you require assistance when it comes to your flights, transfer or hotel. Please contact our team <strong>as soon as you&rsquo;ve booked</strong>. Once we know your requirements, we can work with our service partners to see how we can best meet your needs.</p><p>For last minute transfer and hotel requests you must tell us at least 72 hours before you travel. Due to the short notice, availability may be limited. </p><p>For airport and airline assistance you must tell us a minimum of 48 hours before departure.&nbsp;</p><div>&nbsp;</div>"
+                                        "fr-CH" = ""
+                                        "de-CH" = ""
+                                        "fr-FR" =""
+                                        "de-DE" = ""
+                                    }
+                                }
+                             }   
+                             @{
+                                Path         = "/sitecore/content/EasyJet/Holidays/Data/Health Entry Requirements F and H"
+                                TemplatePath = "/sitecore/templates/Feature/PageContent/Health Entry Requirements/Health Entry Requirement Folder"
+                                Fields      = @{
+                                     "Title" = @{
+                                        "en" = "Health and entry requirements for your booking"
+                                        "fr-CH" = ""
+                                        "de-CH" = ""
+                                        "fr-FR" =""
+                                        "de-DE" = ""
+                                    }
+                                    "Description" = @{
+                                        "en" = "<span>There are some important steps you need to take to ensure your journey is smooth from start to finish. Please use the links below to find out the latest travel advice and the top tips from our team.</span>"
+                                        "fr-CH" = ""
+                                        "de-CH" = ""
+                                        "fr-FR" =""
+                                        "de-DE" = ""
+                                    }
+                                }
+                             }   
+                              @{
+                                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Redirect To Airline For Bag Purchase F and H/Default Hold Luggage Info Banner Item"
+                                TemplatePath = "/sitecore/templates/Feature/PageContent/Hold Luggage Info Banner Item"
+                                Fields      = @{
+                                     "Title" = @{
+                                        "en" = "Want to take more bags with you?"
+                                        "fr-CH" = ""
+                                        "de-CH" = ""
+                                        "fr-FR" =""
+                                        "de-DE" = ""
+                                    }
+                                    "Description" = @{
+                                        "en" = "If you want to add a large overhead cabin bag, or extra hold luggage to your booking &ndash; you can add this via easyJet.com once you have your flight reference number.<br /><br />Just so you know, any extras you add via easyJet.com will not reflect on easyJet holidays."
+                                        "fr-CH" = ""
+                                        "de-CH" = ""
+                                        "fr-FR" =""
+                                        "de-DE" = ""
+                                    }
+                                }
+                             }
+                             @{
+                    Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Bottom Help Links F and H"
+                    TemplatePath = "/sitecore/templates/Feature/PageContent/Help Links"
+                    Fields       = @{
+                        "Links" = @{
+                                        "en" = $idsString
+                                        "fr-CH" = ""
+                                        "de-CH" = ""
+                                        "fr-FR" =""
+                                        "de-DE" = ""
+                                    }
+                    }
+                }
+                )
+        
+            ImportContent -itemsToCreate $content
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260507T101906Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

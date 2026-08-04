@@ -1,0 +1,125 @@
+﻿---
+ID: "a9e5d3a3-e2c5-49f7-9f63-d97967a254dd"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-92 - Check in banner content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $preTravelPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel"
+    $inDestinationPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination"
+    
+    $masonryRenderingPath = "/sitecore/layout/Renderings/Feature/Page Structure/Masonry/Masonry Wrapper Item"
+    $massonaryItemPlaceholder = "/body/booking-context-{0b3a1889-94df-4381-aaef-272a10e79e98}-0/masonry-section-{b93f1826-b25c-47d5-8fe3-dffe24e63a17}-0"
+    
+    $checkInRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/Check In Banner"
+    $masonryItemRenderingPath = "/sitecore/layout/Renderings/Feature/Page Structure/Masonry/Masonry Wrapper Item"
+    
+    $dataSourcePath = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data"
+    $checkInDataSourcePath = $dataSourcePath + '/Check In Banner'
+    
+    $checkInBannerTemplateId = "{6177056A-048B-4BA0-A3E1-AB5E08717420}"
+    
+    function Create-Item ($path, $template) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+            $item = New-Item -Path $path -Name $itemName -ItemType $template
+            Write-Host "Item" $item.Name "successfully created"
+        } else {
+            Write-Host "Item" $item.Name "already exist"
+        }
+        return $item
+    }
+    
+    function Set-Translation-Value($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            $item = Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+            Write-Host "Created" $language "version for" $item.Name "item"
+        } else {
+            Write-Host $language "version for Item" $item.Name "already exist"
+        }
+    
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+            Write-Host "Field" $key "for" $item.Name "item updated with value" $translation
+        }
+    }
+    
+    function Create-CheckIn-Banner-Content() {
+        $checkInBannerContent = Create-Item -Path $checkInDataSourcePath -Template $checkInBannerTemplateId
+        $checkInBannerContent.Editing.BeginEdit()
+        $checkInBannerContent["Title"] = "Check in now!"
+        $checkInBannerContent["Subtext"] = "You can now check in for your flights. You will be redirected to easyJet.com."
+        $checkInBannerContent["CTALabel"] = "Check in"
+        $checkInBannerContent.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $checkInDataSourcePath -Language 'fr-FR' -Key 'Title' -Translation "Enregistrez-vous maintenant!"
+        Set-Translation-Value -ItemPath $checkInDataSourcePath -Language 'fr-FR' -Key 'Subtext' -Translation "Vous pouvez maintenant vous enregistrer pour vos vols. Vous serez redirigé vers easyJet.com."
+        Set-Translation-Value -ItemPath $checkInDataSourcePath -Language 'fr-FR' -Key 'CTALabel' -Translation "Enregistrement"
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $checkInDataSourcePath -Language 'de-DE' -Key 'Title' -Translation "Jetzt einchecken!"
+        Set-Translation-Value -ItemPath $checkInDataSourcePath -Language 'de-DE' -Key 'Subtext' -Translation "Sie können jetzt für Ihre Flüge einchecken. Sie werden zu easyJet.com weitergeleitet."
+        Set-Translation-Value -ItemPath $checkInDataSourcePath -Language 'de-DE' -Key 'CTALabel' -Translation "Einchecken"
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $checkInDataSourcePath -Language 'fr-CH' -Key 'Title' -Translation "Enregistrez-vous maintenant!"
+        Set-Translation-Value -ItemPath $checkInDataSourcePath -Language 'fr-CH' -Key 'Subtext' -Translation "Vous pouvez maintenant vous enregistrer pour vos vols. Vous serez redirigé vers easyJet.com."
+        Set-Translation-Value -ItemPath $checkInDataSourcePath -Language 'fr-CH' -Key 'CTALabel' -Translation "Enregistrement"
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $checkInDataSourcePath -Language 'de-CH' -Key 'Title' -Translation "Jetzt einchecken!"
+        Set-Translation-Value -ItemPath $checkInDataSourcePath -Language 'de-CH' -Key 'Subtext' -Translation "Sie können jetzt für Ihre Flüge einchecken. Sie werden zu easyJet.com weitergeleitet."
+        Set-Translation-Value -ItemPath $checkInDataSourcePath -Language 'de-CH' -Key 'CTALabel' -Translation "Einchecken"
+    }
+    
+    function Update-Rendering($path) {
+        $pageItem = Get-Item -Path $path
+        $checkInItemRendering = Get-Item -Path $checkInRenderingPath
+        
+        $checkInPageRendering = Get-Rendering -Item $pageItem -Rendering $checkInItemRendering
+         
+        #If Check in Banner wasn't added before
+        if ($checkInPageRendering -eq $null) {
+            # Add Masonry Wrapper Item
+           	$masonryRenderingDefinition = New-Rendering -Path $masonryRenderingPath -Placeholder $massonaryItemPlaceholder
+           	Add-Rendering -Item $pageItem -Instance $masonryRenderingDefinition -Index 10 -Placeholder $massonaryItemPlaceholder
+            Write-Host "Added Masonary Item Rendering to" $path
+        	
+        	# Get added Masonary Item rendering 
+        	$masonaryItemPageRendering = Get-Rendering -Item $pageItem -Index 10
+        	
+            # Add Check In Banner
+        	$checkInRenderingDefinition = New-Rendering -Path $checkInRenderingPath -Placeholder "$($massonaryItemPlaceholder)/masonry-item-$($masonaryItemPageRendering.UniqueId)-0"
+        	Add-Rendering -Item $pageItem -Instance $checkInRenderingDefinition -DataSource $checkInDataSourcePath -Index 11 -Placeholder "$($massonaryItemPlaceholder)/masonry-item-$($masonaryItemPageRendering.UniqueId)-0"
+    		Write-Host "Added Check In Banner Rendering to" $path
+        } else {
+            Write-Host "Check In Banner Rendering already exists on" $path
+        }
+    }
+    
+    Create-CheckIn-Banner-Content;
+    Update-Rendering -Path $preTravelPagePath
+    Update-Rendering -Path $inDestinationPagePath
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230628T103556Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

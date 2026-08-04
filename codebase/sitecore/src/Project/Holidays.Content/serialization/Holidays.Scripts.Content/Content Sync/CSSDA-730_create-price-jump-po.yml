@@ -1,0 +1,278 @@
+﻿---
+ID: "27c1024c-a3ff-405c-adde-72491d824d16"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-730_create-price-jump-popup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # GET OR CREATE ITEM
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    #
+    
+    # UPDATE FILEDS WITH LANGS
+    function update-item-with-lang($data, $item) {
+        function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+    };
+    
+        if ($item -ne $null) {
+            $data | ForEach-Object {
+            $fieldName = $_.fieldName;
+            $values = $_.values;
+        
+            if ($values -ne $null) {
+              
+                if ($values.en -ne $null) {
+                    $item.Editing.BeginEdit();
+                    $item[$fieldName] = $values.en;
+                    $item.Editing.EndEdit() | Out-Null
+                }
+                 if ($values.fr -ne $null) {
+                     @('fr-CH', 'fr-FR') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.fr;
+                    }
+                }
+                 if ($values.de -ne $null) {
+                     @('de-CH', 'de-DE') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.de;
+                    }
+                }
+                
+                Write-Host $fieldName "Updated"
+            }
+        }
+        }
+    };
+    #
+    
+    # GET OR CREATE ITEM AND POPULATE IT
+    function Get-Or-Create-Item-And-Populate($itemPath, $template, $data) {
+        $item = Get-Or-Create-Item -Path $itemPath -Template $template;
+        
+        if ($item -ne $null) {
+            Write-Host $item.Name "Has been created/find";
+            
+            update-item-with-lang -Data $data -Item $item;
+        }
+        
+        return $item;
+    }
+    #
+    
+    function add-rendering-with-datasource-to-item($renderingId, $item, $datasource, $placeholderName){
+        $existsRendering = Get-Rendering -Item $item -PlaceHolder $placeholderName  | Where-Object {$_.ItemId -eq $renderingId}
+        $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering  -Placeholder $placeholderName
+        if($existsRendering -eq $null){
+            Add-Rendering -Item $item -PlaceHolder $placeholderName  -DataSource $datasource -Instance $renderingItem
+        }
+    }
+    
+    $data = @(
+        @{
+            fieldName="Title";
+            values=@{
+                en="There's been a change in price";
+                fr="Il y a eu un changement de prix";
+                de="Der Preis hat sich geändert";
+            };
+        },
+         @{
+            fieldName="Icon";
+            values=@{
+                en='<image mediaid="{EA82CDAB-9D20-4D63-83F0-DA42CFDF9DD9}" />';
+            };
+        },
+        @{
+            fieldName="RefundDescription";
+            values=@{
+                en="Due to the change in price, you will now receive a total refund of {refundAmount}.";
+                fr="En raison du changement de prix, vous recevrez désormais un remboursement total de {refundAmount}.";
+                de="Aufgrund der Preisänderung erhalten Sie nun eine Gesamterstattung von {refundAmount}.";
+            };
+        },
+        @{
+            fieldName="FlightDescription";
+            values=@{
+                en="The price of your flight has {changeStatus} by {delta}, making the total price {totalAmount}.";
+                fr="Le prix de votre vol a {changeStatus} de {delta}, ce qui rend le prix total {totalAmount}.";
+                de="Der Preis Ihres Fluges hat sich {changeStatus} um {delta} geändert, so dass der Gesamtpreis {totalAmount} beträgt.";
+            };
+        },
+        @{
+            fieldName="DatesDescription";
+            values=@{
+                en="The price of your package change has {changeStatus} by {delta}, making the new price {totalAmount}.";
+                fr="Le prix de votre changement de forfait a {changeStatus} par {delta}, ce qui rend le nouveau prix {totalAmount}.";
+                de="";
+            };
+        },
+        @{
+            fieldName="TransferDescription";
+            values=@{
+                en="The price of your transfer has {changeStatus} by {delta}, making the total price {totalAmount}.";
+                fr="Le prix de votre transfert a {changeStatus} de {delta}, ce qui rend le prix total {totalAmount}.";
+                de="Der Preis Ihrer Überweisung hat sich {changeStatus} um {delta} geändert, so dass der Gesamtpreis {totalAmount} beträgt.";
+            };
+        },
+        @{
+            fieldName="PromoUpgradeLabel";
+            values=@{
+                en="Your original promo code has been upgraded.";
+                fr="Votre code promo original a été mis à jour.";
+                de="Ihr ursprünglicher Promo-Code wurde aktualisiert.";
+            };
+        },
+        @{
+            fieldName="PromoDowngradeLabel";
+            values=@{
+                en="Your original promo code has been downgraded.";
+                fr="Votre code promo original a été déclassé.";
+                de="Ihr ursprünglicher Promo-Code wurde herabgestuft.";
+            };
+        },
+         @{
+            fieldName="PromoRemoveLabel";
+            values=@{
+                en="The promo code applied to your package has been removed.";
+                fr="Le code promo appliqué à votre colis a été supprimé.";
+                de="Der auf Ihr Paket angewandte Promo-Code wurde entfernt.";
+            };
+        },
+         @{
+            fieldName="CloseButtonLabel";
+            values=@{
+                en="Close";
+                fr="Fermer";
+                de="Schließen Sie";
+            };
+        },
+        @{
+            fieldName="ContinueButtonLabel";
+            values=@{
+                en="Continue";
+                fr="Continuer";
+                de="Weiter";
+            };
+        },
+        @{
+            fieldName="DeclineButtonLabel";
+            values=@{
+                en="No thanks";
+                fr="Non merci";
+                de="Nein danke";
+            };
+        },
+        @{
+            fieldName="QuestionLabel";
+            values=@{
+                en="Do you still want to continue?";
+                fr="Voulez-vous toujours continuer ?";
+                de="Wollen Sie trotzdem weitermachen?";
+            };
+        },
+        @{
+            fieldName="StatusIncreased";
+            values=@{
+                en="increased";
+                fr="accrue";
+                de="erhöht";
+            };
+        },
+        @{
+            fieldName="StatusDecreased";
+            values=@{
+                en="decreased";
+                fr="diminué";
+                de="verringert";
+            };
+        }
+    );
+    
+    $priceJumpPopup = Get-Or-Create-Item-And-Populate -ItemPath "/sitecore/content/EasyJet/Holidays/Data/Price Jump Popup" -Template "C0BB3187-93C8-4FD3-AEC3-2A478CE8F308" -Data $data;
+    
+    $amendPaymentItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment";
+    $changeRBCItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Room And Board";
+    $amendFlightItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Flight";
+    $amendTransferItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Transfer";
+    $amendDatesSummaryItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary";
+    
+    $dataSource = "/sitecore/content/EasyJet/Holidays/Data/Price Jump Popup";
+    $pricePopupRenderingID = "B53565E7-F4C3-48AE-9C47-29FF16D2DD0E";
+    
+    if ($priceJumpPopup -ne $null) {
+        add-rendering-with-datasource-to-item -RenderingId $pricePopupRenderingID -Item $amendPaymentItem -datasource $dataSource -PlaceholderName "/body/price-jump-popup-{8490eeb0-f576-488c-810f-59cbf716c135}-0";
+        add-rendering-with-datasource-to-item -RenderingId $pricePopupRenderingID -Item $amendFlightItem -datasource $dataSource -PlaceholderName "/body/component-wrapper-inner-{23D248E9-6974-4A8B-AD6D-5AED8641A71B}-0/price-jump-popup-{47a6406f-2232-4365-a230-b81153b17e17}-0";
+        add-rendering-with-datasource-to-item -RenderingId $pricePopupRenderingID -Item $amendTransferItem -datasource $dataSource -PlaceholderName "/body/price-jump-popup-{e79dffaa-9254-461b-9da2-6900fb9fc707}-0";
+        add-rendering-with-datasource-to-item -RenderingId $pricePopupRenderingID -Item $changeRBCItem -datasource $dataSource -PlaceholderName "/body/price-jump-popup-{55b669af-39a9-44ba-99e6-e00e81339bfd}-0";
+        add-rendering-with-datasource-to-item -RenderingId $pricePopupRenderingID -Item $amendDatesSummaryItem -datasource $dataSource -PlaceholderName "/body/price-jump-popup-{38583ceb-d1e1-46ef-9aea-a2e284152fa6}-0";
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240207T153754Z

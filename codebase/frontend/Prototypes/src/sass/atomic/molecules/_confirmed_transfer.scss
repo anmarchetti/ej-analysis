@@ -1,0 +1,24 @@
+.confirmed-transfer {
+    .amend-transfer {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+
+        .amend-transfer__btn {
+            width: 211px;
+            color: $clrEjOrange;
+            background: $clrSiteBgWhite;
+            border: 1px solid $clrEjOrange;
+        }
+    }
+}
+
+.confirmed-transfer__item {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+    }
+}

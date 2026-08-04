@@ -1,0 +1,276 @@
+.step {
+    .alternative-flights__sub-title {
+        margin: 40px 0 30px;
+        font-weight: 400;
+        color: $clrTextMain;
+        text-transform: uppercase;
+    }
+}
+
+.alternative-flights {
+    .card__inner {
+        border: none;
+    }
+
+    .card--selected {
+        .card__inner {
+            border: 2px solid $clrEjOrange;
+        }
+    }
+
+    &.step {
+        margin-top: 80px;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 40px;
+        }
+    }
+
+    .step__title {
+        margin-top: 0;
+    }
+}
+
+.alternative-flights-drawer {
+    padding: 20px $container-padding-x_mobile 90px;
+
+    .custom-select__control {
+        background-color: $clrSiteBgWhite;
+    }
+
+    .alternative-flights-drawer__title {
+        margin: 0 0 10px;
+        font-family: $fontRoundedHeadline;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .alternative-flights-drawer__selected-date {
+        font-weight: 700;
+    }
+
+    .seats-reservation-notification {
+        @include media-breakpoint-down(md) {
+            margin: 8px 0 16px;
+            border-radius: 3px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+        }
+    }
+}
+
+.alternative-flights-drawer--hidden {
+    overflow: hidden;
+}
+
+.alternative-flights__filters-bar {
+    position: relative;
+    margin: 30px 0;
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+        align-items: center;
+        min-height: 0;
+        margin: 20px (-$container-padding-x_mobile);
+        padding: 14px $container-padding-x_mobile;
+        background-color: $clrSiteBgGrey;
+
+        .filter-group__title,
+        .drawer__content__title {
+            margin: 0 0 20px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .search-pod-filter__button {
+            font-size: 12px;
+
+            svg {
+                width: 22px;
+                height: 22px;
+                margin-right: 8px;
+            }
+
+            .active-icon svg {
+                width: 14px;
+                height: 14px;
+                margin-left: 5px;
+                vertical-align: -2px;
+            }
+        }
+    }
+}
+
+.alternative-flights__filters,
+.alternative-flights__sort {
+    @include media-breakpoint-down(md) {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+.alternative-flights__filters {
+    .search-filter {
+        min-height: 0;
+        padding: 0;
+
+        > div:last-child:not(.filter-apply) {
+            border-bottom: 1px solid #b2b2b2;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        .filters {
+            margin-bottom: 0;
+            padding-right: 270px;
+            padding-bottom: 30px;
+
+            .filters--button {
+                flex-grow: 0;
+                width: auto;
+                max-width: 100%;
+                padding-right: 35px;
+            }
+        }
+
+        .filter-group {
+            .filter-group__values {
+                .checkbox-group {
+                    justify-content: center;
+                    margin: 0 -20px;
+                }
+
+                .checkbox-item {
+                    flex-basis: auto;
+                    width: auto;
+                    margin: 0 20px 20px;
+                }
+            }
+        }
+
+        .filter-group--open + .filter-apply {
+            padding-top: 0;
+        }
+
+        .filter-apply {
+            padding-bottom: 0;
+
+            .flex-group {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                padding-top: 30px;
+                border-top: 1px solid #b2b2b2;
+            }
+
+            &::after {
+                display: none;
+            }
+        }
+
+        .btn__dropdown-apply {
+            min-width: 170px;
+            margin-left: 25px;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        position: relative;
+
+        .drawer {
+            background-color: #fff;
+        }
+
+        .drawer__content {
+            padding-right: 15px;
+        }
+
+        .filters {
+            margin-right: -15px;
+            margin-left: -15px;
+
+            .filters--button {
+                padding-right: 0;
+            }
+        }
+
+        .filter-apply {
+            position: relative;
+            margin-top: 25px;
+
+            button {
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: auto;
+                margin-right: 0;
+                text-transform: none;
+            }
+        }
+
+        .filter-apply__title {
+            margin: 0 0 10px;
+            font-size: 14px;
+        }
+
+        .filter-apply__group {
+            flex-wrap: wrap;
+            overflow-x: hidden;
+        }
+
+        .filter-apply__group--item {
+            margin-bottom: 12px;
+        }
+    }
+}
+
+.alternative-flights__sort {
+    @include media-breakpoint-up(md) {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 270px;
+        font-size: 14px;
+
+        .custom-select__option {
+            font-size: inherit;
+        }
+    }
+
+    .drawer__content {
+        padding: 25px 0 90px;
+
+        @include media-breakpoint-down(md) {
+            max-height: 80%;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+    }
+
+    .drawer__content__title {
+        justify-content: center;
+    }
+
+    .drawer__content__list {
+        padding: 0;
+    }
+
+    .drawer__actions {
+        position: absolute;
+    }
+}
+
+.alternative-flights__total {
+    margin-top: 40px;
+    font-size: 24px;
+    padding-bottom: 16px;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 20px;
+        font-size: 16px;
+    }
+}
+
+.amend-flights__alt-flights-results{
+    padding-top: 16px;
+}

@@ -1,0 +1,300 @@
+{
+	"info": {
+		"_postman_id": "f9c7f397-7652-4cf6-9f62-0bfd15ff9456",
+		"name": "DI backend API sanity check",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Packages",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{backendApiHost}}/holidays/_api/v1.0/search/packages?startDate=2023-07-01&flexibleDays=0&duration[0]=14&departure=LGW,LTN,SEN,STN&geography=ES,ESTF&automaticAllocation=false&room[0].adults=1&room[0].children=0&room[0].infants=0&=&=&take=10&page=1&searchType=normal&distressedFlightsOnly=false&placementId=hotels_list&destinations[0]=region:ESTF",
+					"protocol": "https",
+					"host": [
+						"{{backendApiHost}}"
+					],
+					"path": [
+						"holidays",
+						"_api",
+						"v1.0",
+						"search",
+						"packages"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2023-07-01"
+						},
+						{
+							"key": "flexibleDays",
+							"value": "0"
+						},
+						{
+							"key": "duration[0]",
+							"value": "14"
+						},
+						{
+							"key": "departure",
+							"value": "LGW,LTN,SEN,STN"
+						},
+						{
+							"key": "geography",
+							"value": "ES,ESTF"
+						},
+						{
+							"key": "automaticAllocation",
+							"value": "false"
+						},
+						{
+							"key": "room[0].adults",
+							"value": "1"
+						},
+						{
+							"key": "room[0].children",
+							"value": "0"
+						},
+						{
+							"key": "room[0].infants",
+							"value": "0"
+						},
+						{
+							"key": "",
+							"value": ""
+						},
+						{
+							"key": "",
+							"value": ""
+						},
+						{
+							"key": "take",
+							"value": "10"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "searchType",
+							"value": "normal"
+						},
+						{
+							"key": "distressedFlightsOnly",
+							"value": "false"
+						},
+						{
+							"key": "placementId",
+							"value": "hotels_list"
+						},
+						{
+							"key": "destinations[0]",
+							"value": "region:ESTF"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Offers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{backendApiHost}}/holidays/_api/v1.0/hotel/offers?startDate=2023-07-01&flexibleDays=0&duration=14&departure=LGW,LTN,SEN,STN&room[0].adults=1&room[0].children=0&room[0].infants=0&room[0].roomCode=DB05&accommodationId=ESTF0051&outboundRouteId=2179945097/762611&inboundRouteId=2180429775/808567&packageId=2151618128/2/2007/14&boardType=AI&transfer=W2MS006782SS&geography=ES,ESTF",
+					"protocol": "https",
+					"host": [
+						"{{backendApiHost}}"
+					],
+					"path": [
+						"holidays",
+						"_api",
+						"v1.0",
+						"hotel",
+						"offers"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2023-07-01"
+						},
+						{
+							"key": "flexibleDays",
+							"value": "0"
+						},
+						{
+							"key": "duration",
+							"value": "14"
+						},
+						{
+							"key": "departure",
+							"value": "LGW,LTN,SEN,STN"
+						},
+						{
+							"key": "room[0].adults",
+							"value": "1"
+						},
+						{
+							"key": "room[0].children",
+							"value": "0"
+						},
+						{
+							"key": "room[0].infants",
+							"value": "0"
+						},
+						{
+							"key": "room[0].roomCode",
+							"value": "DB05"
+						},
+						{
+							"key": "accommodationId",
+							"value": "ESTF0051"
+						},
+						{
+							"key": "outboundRouteId",
+							"value": "2179945097/762611"
+						},
+						{
+							"key": "inboundRouteId",
+							"value": "2180429775/808567"
+						},
+						{
+							"key": "packageId",
+							"value": "2151618128/2/2007/14"
+						},
+						{
+							"key": "boardType",
+							"value": "AI"
+						},
+						{
+							"key": "transfer",
+							"value": "W2MS006782SS"
+						},
+						{
+							"key": "geography",
+							"value": "ES,ESTF"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alternative rooms",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{backendApiHost}}/holidays/_api/v1.0/search/alternative-rooms?startDate=2023-07-01&flexibleDays=0&duration=14&departure=LGW,LTN,SEN,STN&room[0].adults=1&room[0].children=0&room[0].infants=0&room[0].roomCode=DB05&accommodationId=ESTF0051&outboundRouteId=2179945097/762611&inboundRouteId=2180429775/808567&packageId=2151618128/2/2007/14&boardType=AI",
+					"protocol": "https",
+					"host": [
+						"{{backendApiHost}}"
+					],
+					"path": [
+						"holidays",
+						"_api",
+						"v1.0",
+						"search",
+						"alternative-rooms"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2023-07-01"
+						},
+						{
+							"key": "flexibleDays",
+							"value": "0"
+						},
+						{
+							"key": "duration",
+							"value": "14"
+						},
+						{
+							"key": "departure",
+							"value": "LGW,LTN,SEN,STN"
+						},
+						{
+							"key": "room[0].adults",
+							"value": "1"
+						},
+						{
+							"key": "room[0].children",
+							"value": "0"
+						},
+						{
+							"key": "room[0].infants",
+							"value": "0"
+						},
+						{
+							"key": "room[0].roomCode",
+							"value": "DB05"
+						},
+						{
+							"key": "accommodationId",
+							"value": "ESTF0051"
+						},
+						{
+							"key": "outboundRouteId",
+							"value": "2179945097/762611"
+						},
+						{
+							"key": "inboundRouteId",
+							"value": "2180429775/808567"
+						},
+						{
+							"key": "packageId",
+							"value": "2151618128/2/2007/14"
+						},
+						{
+							"key": "boardType",
+							"value": "AI"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

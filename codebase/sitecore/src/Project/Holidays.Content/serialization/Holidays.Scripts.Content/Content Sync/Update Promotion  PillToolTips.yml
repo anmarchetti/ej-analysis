@@ -1,0 +1,84 @@
+﻿---
+ID: "b51d79d5-c6d6-49db-89f9-2084d6076291"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Update Promotion  PillToolTips Dictionary Items
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $branchToolTips = Get-Item -Path "/sitecore/templates/Branches/Project/Holidays/Website/`$name/Dictionary Domain/Holiday Card/Promotion Pill Tooltips" -ErrorAction SilentlyContinue
+    $contentToolTips = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Holiday Card/Promotion Pill Tooltips" -ErrorAction SilentlyContinue
+    
+    $branchBookingPayment = Get-Item -Path "/sitecore/templates/Branches/Project/Holidays/Website/`$name/Dictionary Domain/Booking Payment/Labels" -ErrorAction SilentlyContinue
+    $contentBookingPayment = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Booking Payment/Labels" -ErrorAction SilentlyContinue
+    
+    $branchCancelledBookingMessages = Get-Item -Path "/sitecore/templates/Branches/Project/Holidays/Website/`$name/Dictionary Domain/Cancelled Booking/Messages" -ErrorAction SilentlyContinue
+    $contentCancelledBookingMessages = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Cancelled Booking/Messages" -ErrorAction SilentlyContinue
+    
+    $branchLoginErrorMessages = Get-Item -Path "/sitecore/templates/Branches/Project/Holidays/Website/`$name/Dictionary Domain/Login/Error Messages" -ErrorAction SilentlyContinue
+    $contentLoginErrorMessages = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Login/Error Messages" -ErrorAction SilentlyContinue
+    
+    $branchSearchPodFiltersLabels = Get-Item -Path "/sitecore/templates/Branches/Project/Holidays/Website/`$name/Dictionary Domain/Search Pod Filters/Labels" -ErrorAction SilentlyContinue
+    $contentSearchPodFiltersLabels = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod Filters/Labels" -ErrorAction SilentlyContinue
+    
+    $branchPriceGraphLabels = Get-Item -Path "/sitecore/templates/Branches/Project/Holidays/Website/`$name/Dictionary Domain/PriceGraph/Labels" -ErrorAction SilentlyContinue
+    $contentPriceGraphLabels = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/PriceGraph/Labels" -ErrorAction SilentlyContinue
+    
+    function Get-Dictionary($items)
+    {
+        $dictionary = New-Object "System.Collections.Generic.Dictionary``2[System.String,Item]"
+        foreach ($item in $items)
+        {
+            $dictionary.Add($item.Name, $item)
+        }
+        return $dictionary
+    }
+    
+    function To-New-Key($sourceItems,$targetItems)
+    {
+        if($sourceItems -ne $null -AND $targetItems -ne $null)
+        {
+            $targetItems.GetEnumerator() | ForEach-Object{
+                $newkey = $sourceItems[$_.key].Fields["Key"].value
+                $_.value.Editing.BeginEdit()
+                $_.value.Fields["Key"].value = $newkey
+                $_.value.Editing.EndEdit() > $null
+            }
+        }
+    }
+    
+    $sourceToolTipsItems = Get-Dictionary -Items $branchToolTips.Children
+    $targetToolTipsItems = Get-Dictionary -Items $contentToolTips.Children
+    
+    $sourceBookingPaymentItems = Get-Dictionary -Items $branchBookingPayment.Children
+    $targetBookingPaymentItems = Get-Dictionary -Items $contentBookingPayment.Children
+    
+    $sourceCancelledBookingMessagesItems = Get-Dictionary -Items $branchCancelledBookingMessages.Children
+    $targetCancelledBookingMessagesItems = Get-Dictionary -Items $contentCancelledBookingMessages.Children
+    
+    $sourceLoginErrorMessagesItems = Get-Dictionary -Items $branchLoginErrorMessages.Children
+    $targetLoginErrorMessagesItems = Get-Dictionary -Items $contentLoginErrorMessages.Children
+    
+    $sourceSearchPodFiltersLabelsItems = Get-Dictionary -Items $branchSearchPodFiltersLabels.Children
+    $targetSearchPodFiltersLabelsItems = Get-Dictionary -Items $contentSearchPodFiltersLabels.Children
+    
+    $sourcePriceGraphLabelsItems = Get-Dictionary -Items $branchPriceGraphLabels.Children
+    $targetPriceGraphLabelsItems = Get-Dictionary -Items $contentPriceGraphLabels.Children
+    
+    To-New-Key -SourceItems $sourceToolTipsItems -TargetItems $targetToolTipsItems
+    To-New-Key -SourceItems $sourceBookingPaymentItems -TargetItems $targetBookingPaymentItems
+    To-New-Key -SourceItems $sourceCancelledBookingMessagesItems -TargetItems $targetCancelledBookingMessagesItems
+    
+    To-New-Key -SourceItems $sourceLoginErrorMessagesItems -TargetItems $targetLoginErrorMessagesItems
+    To-New-Key -SourceItems $sourceSearchPodFiltersLabelsItems -TargetItems $targetSearchPodFiltersLabelsItems
+    To-New-Key -SourceItems $sourcePriceGraphLabelsItems -TargetItems $targetPriceGraphLabelsItems
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210419T150258Z

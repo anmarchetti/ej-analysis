@@ -1,0 +1,81 @@
+﻿---
+ID: "938d354f-9c1a-472b-9b55-a46cbdb12d85"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUX-31 - Error Tab Inspire Me"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$itemName,$templateId,$itemId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $itemId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function create-lang-version ($item,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    $tab = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Holiday Inspiration/Page Components" -ItemName "Error Tab" -TemplateId "{CB4BC6A1-3923-4518-9EAA-FB61031F7CDB}"
+    
+    @('en') | % {
+    	Create-Lang-Version -Item $tab -Lang $_ -Field "Title" -Value "Feature Temporary Unavailable"
+    	Create-Lang-Version -Item $tab -Lang $_ -Field "Description" -Value "Oops! This feature is taking a short break while we give it a quick tune-up, but it'll be back soon and better than ever. While you wait, why not take a peek at our huge range of holidays?"
+        $holidyOffers = (Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Holiday Types/UK/Holiday offers").ID
+       	$value = '<link text="View holiday offers" anchor="" linktype="internal" class="" title="View holiday offers"  querystring="" id="{0}" />' -f $holidyOffers
+        Create-Lang-Version -Item $tab -Lang $_ -Field "RedirectCTA" -Value $value
+        Create-Lang-Version -Item $tab -Lang $_ -Field "RefreshCTALabel" -Value "Refresh page"
+        Create-Lang-Version -Item $tab -Lang $_ -Field "BackgroundImage" -Value '<image mediaid="{BC59B2FA-23CC-4434-8C08-79291BE48228}" />'
+        Create-Lang-Version -Item $tab -Lang $_ -Field "WarningIcon" -Value '<image mediaid="{EA82CDAB-9D20-4D63-83F0-DA42CFDF9DD9}" />'
+    }
+    
+    @('de-CH','de-DE') | % {
+    	Create-Lang-Version -Item $tab -Lang $_ -Field "Title" -Value "Funktion vorübergehend nicht verfügbar"
+    	Create-Lang-Version -Item $tab -Lang $_ -Field "Description" -Value "Huch! Dieses Feature macht eine kurze Pause, während wir es kurz überarbeiten, aber es wird bald wieder da sein und besser als je zuvor. Während Sie warten, werfen Sie doch einen Blick auf unser riesiges Angebot an Reisen."
+    	$holidyOffers = (Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Holiday Types/EUX/Deals").ID
+    	$value = '<link text="Urlaubsangebote ansehen" anchor="" linktype="internal" class="" title="View holiday offers"  querystring="" id="{0}" />' -f $holidyOffers
+        Create-Lang-Version -Item $tab -Lang $_ -Field "RedirectCTA" -Value $value
+        Create-Lang-Version -Item $tab -Lang $_ -Field "RefreshCTALabel" -Value "Seite aktualisieren"
+    }
+    
+    @('fr-CH','fr-FR') | % {
+    	Create-Lang-Version -Item $tab -Lang $_ -Field "Title" -Value "Fonctionnalité temporairement indisponible!"
+    	Create-Lang-Version -Item $tab -Lang $_ -Field "Description" -Value "Oups ! Cette fonction fait une petite pause pendant que nous la mettons au point, mais elle sera bientôt de retour et plus belle que jamais. En attendant, pourquoi ne pas jeter un coup d'œil à notre vaste gamme de vacances ?"
+    	$holidyOffers = (Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Holiday Types/EUX/Deals").ID
+    	$value = '<link text="Voir les offres de vacances" anchor="" linktype="internal" class="" title="View holiday offers"  querystring="" id="{0}" />' -f $holidyOffers
+        Create-Lang-Version -Item $tab -Lang $_ -Field "RedirectCTA" -Value $value
+        Create-Lang-Version -Item $tab -Lang $_ -Field "RefreshCTALabel" -Value "Actualiser la page"
+    }
+    
+    
+    # Update Rendering
+    $page = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Holiday Inspiration"
+    $tabRenderingItem = Get-Item -Path "master:" -Id "{673401FD-3C12-488D-A37C-97DD06B326C1}"
+    $tabRendering = Get-Rendering -Item $page -PlaceHolder "*body*" -Rendering $tabRenderingItem
+    if ($tabRendering -ne $null) {
+    	Set-Rendering -Item $page -Instance $tabRendering -DataSource $tab.ID
+    	Write-Host $page.Name "Error Tab Rendering successfully updated"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240715T102933Z

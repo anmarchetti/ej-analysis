@@ -1,0 +1,116 @@
+
+.errata-message.errata-message-list {
+    .list {
+        ul {
+            padding: 0;
+            list-style-type: none;
+
+            li {
+                padding: 0;
+            }
+        }
+    }
+}
+
+.errata-message {
+    position: relative;
+    font-size: $body_font-size;
+    background: #fff;
+    border: 2px solid $clrEjOrangeLight;
+    border-radius: 6px;
+
+    @include media-breakpoint-down(md) {
+        font-size: $body_font-size_mobile;
+    }
+
+    &,
+    &.view-booking-card,
+    &.rounded-container {
+        padding: 30px 35px 30px 90px;
+
+        @include media-breakpoint-down(md) {
+            padding: 20px 15px 20px 45px;
+        }
+    }
+
+    &.rounded-container {
+        border: 0;
+    }
+
+    p,
+    .show-more .btn,
+    .list li {
+        font-size: inherit;
+    }
+
+    .list li {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        padding-left: 18px;
+    }
+
+    a {
+        word-wrap: break-word;
+    }
+}
+
+.errata-message__title {
+    display: flex;
+    align-items: center;
+    margin: 0 0 20px;
+    font-family: $fontRoundedBook;
+    font-size: 20px;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 15px;
+    }
+}
+
+.errata-message__icon {
+    position: absolute;
+    top: 27px;
+    left: 35px;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin-right: 15px;
+
+    @include media-breakpoint-down(md) {
+        top: 20px;
+        left: 12px;
+        width: 24px;
+        height: 24px;
+    }
+}
+
+.errata-popup {
+    .popup__body {
+        padding: 0;
+
+        &:last-child {
+            padding-bottom: 0;
+        }
+    }
+
+    .errata-message {
+        padding-left: 35px;
+        border: 0;
+
+        &,
+        &.view-booking-card,
+        &.rounded-container {
+            &:not(:first-of-type) {
+                padding-top: 0;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            padding-left: 15px;
+        }
+    }
+
+    .errata-message__icon {
+        position: static;
+    }
+}

@@ -1,0 +1,71 @@
+.find-booking {
+    .form-field__trade {
+        width: 370px;
+    }
+
+    .callout__container {
+        margin: 0 30px 0 15px;
+    }
+
+    .find-booking__title {
+        margin: 40px 0 0;
+        font-family: $fontRoundedHeadline;
+        font-size: 30px;
+        font-weight: 400;
+        line-height: 40px;
+        color: $clrTextHeading;
+    }
+
+    .find-booking__wrapper .form-group {
+        margin: 0;
+    }
+
+    .tabs {
+        display: flex;
+        margin-top: 15px;
+        border-bottom: 1px solid $clrBorderGray;
+    }
+
+    .tab {
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0 30px 10px;
+        font-family: $fontRoundedDemy;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 19px;
+        color: $colorOrange;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    .tab.active {
+        position: relative;
+        color: $clrTextMain;
+    }
+
+    .tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        border-bottom: 3px solid $clrEjOrange;
+    }
+
+    .panel {
+        display: none;
+        margin: 30px 0 0;
+    }
+
+    .panel.active {
+        display: block;
+    }
+
+    .simple-search__wrapper {
+        display: flex;
+        align-items: baseline;
+        margin: 15px 0 265px;
+    }
+}

@@ -1,0 +1,68 @@
+﻿---
+ID: "dc2ca8fb-2ecd-458b-9e6f-4627f95b6c6d"
+Parent: "4c10d78f-07b6-469e-929f-cb4b460bb11e"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Destinations Sync/Hotel Sync/WP-141 Find HBG Rooms with incorrect Atcom code"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function GetAccommodationRooms()
+    {
+        $criteria = @(
+            @{Filter = "Equals"; Field ="_templatename"; Value = "Accommodation Rooms Folder"}
+        )
+    
+        $props = @{
+            Index = "sitecore_destinations_master_index"
+            Criteria = $criteria
+        }
+    
+        $result = New-Object Collections.Generic.List[object] 
+    	$rooms = Find-Item @props
+        foreach($room in $rooms) 
+        {
+            $roomItem = $room.GetItem()
+            if($roomItem.Name.Contains("HBG"))
+            {
+                $code = $roomItem["Code"]
+                if($code.StartsWith("X9"))
+                    {
+                        
+                    }
+                    else
+                    {
+                        $result.Add([ordered]@{
+                        "Hotel name" = $roomItem.Parent.Name
+                        "Room Id" = $roomItem.Id
+                        "Room Path" = $roomItem.Paths.FullPath
+                        code = $code
+                        })
+                    }
+            }
+        }
+    	return $result
+    }
+    
+    function Download($data)
+    {
+        Import-Function -Name ConvertTo-Xlsx
+    
+        [byte[]]$outobject = $data | ForEach-Object { New-Object PSObject -Property $_ } | ConvertTo-Xlsx
+        $date = Get-Date -Format "MMddyyyyHHmmss"
+        Out-Download -Name "report-$($date).xlsx" -InputObject $outobject 
+    }
+    
+    $indexName = "sitecore_destinations_master_index"
+    $result = GetAccommodationRooms
+    Download -Data $result
+    Write-Host "Script is completed"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230424T121653Z

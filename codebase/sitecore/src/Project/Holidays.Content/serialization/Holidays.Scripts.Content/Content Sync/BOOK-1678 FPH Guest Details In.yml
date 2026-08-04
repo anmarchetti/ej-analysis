@@ -1,0 +1,216 @@
+﻿---
+ID: "c3bd631b-a575-44da-9ef1-1a399b60ed04"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/BOOK-1678 FPH Guest Details Info Update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $holidayshomebookingguestdetailspagecomponentsfphguestdetailsinfo_Id = "{DB27E9C8-4098-41EF-9CB4-04BE348A316B}"
+    $fphguestdetailsinfo_guestinformationdescription_db27e9c8409841ef9cb404be348a316b_en_v4 = @"
+    Please note that for security reasons, first name and surname for everyone on the booking must match their passport. Changing names after the booking might incur amendment charges. The contact details you provide must be for the lead customer travelling on the booking.
+    "@
+    $fphguestdetailsinfo_offerssectiondescription1_db27e9c8409841ef9cb404be348a316b_en_v4 = @"
+    I want to be first to know about exclusive offers, competitions or the latest updates, and to be inspired by our fabulous holidays and flights destinations and I&rsquo;m happy for easyJet to share my data within its group of companies so we can make our communications with you more personal and relevant.
+    "@
+    $fphguestdetailsinfo_importantinformation_db27e9c8409841ef9cb404be348a316b_en_v4 = @"
+    <p>It&rsquo;s best to take out sufficient travel insurance for you and everyone you&rsquo;re travelling with as soon as you book your trip, in case you need to cancel it as well as covering you while you&rsquo;re away.</p>
+    It's your responsibility to ensure that your passport is valid and that you meet the entry requirements for your <a href="https://www.gov.uk/foreign-travel-advice">booking destination</a>.  You can find out more on our <a rel="noopener noreferrer" href="https://www.easyjet.com/en/holidays/info/travel-information?ecp=FPH" target="_blank">travel&nbsp;information page</a>, including links to check the UK government <a href="https://www.gov.uk/foreign-travel-advice">FCDO travel advice</a> for wherever you're going on trip,&nbsp;and we've also created a <a rel="noopener noreferrer" href="https://www.easyjet.com/en/holidays/info/holiday-checklist" target="_blank">Flight + Hotel checklist</a>&nbsp;which contains important information and steps to remember.
+    Your passport needs to be in good condition and signed, and often valid for a minimum period beyond your trip, usually at least three or six months. It may also be required to be less than 10 years old so you might need to renew it earlier than planned.
+    <p style="margin-bottom: 0cm;">You can find information about&nbsp;<a href="https://www.easyjet.com/en/holidays/help?helpCategory=hotel&amp;helpQuestion=hoteltaxes">tourist taxes</a>&nbsp;and&nbsp;<a rel="noopener noreferrer" href="https://www.easyjet.com/en/holidays/flight-plus-hotel/help?helpCategory=visa" target="_blank">visa requirements</a>&nbsp;which apply to your destination in our&nbsp;<a rel="noopener noreferrer" href="https://www.easyjet.com/en/holidays/flight-plus-hotel/help" target="_blank">help centre</a>. </p>
+    <p>Please&nbsp;<a rel="noopener noreferrer" href="https://www.easyjet.com/en/holidays/flight-plus-hotel/help/contact-form" target="_blank">contact us</a>&nbsp;to let us know before booking if anyone travelling requires any additional assistance (e.g. difficulty walking).</p>
+    <p>If you're travelling as part of a group, please make a single booking. This will mean that if any changes need to be made to your trip, everyone travelling with you is looked after the same way</p>
+    "@
+    $fphguestdetailsinfo_offerssectiondescription2_db27e9c8409841ef9cb404be348a316b_en_v4 = @"
+    Remember you can manage your preferences through your account at any time. View our <a rel="noopener noreferrer" class="text-link" href="https://www.easyjet.com/en/holidays/info/privacy-policy" target="_blank"><strong>privacy policy</strong></a>.
+    "@
+    $fphguestdetailsinfo_pofferssectiondescription1_db27e9c8409841ef9cb404be348a316b_en_v4 = @"
+    Would you also like to receive digital updates about our&nbsp;<a class="text-link" href="https://www.easyjet.com/en/policy/privacy-promise#three" title="Follow link">partners&rsquo; travel related products</a><span>&nbsp;to help you get the most from your trip?</span>
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Booking/Guest Details/Page Components/FPH Guest Details Info"
+            TemplatePath = "/sitecore/templates/Feature/Destinations/Guest Details"
+            Id          = $holidayshomebookingguestdetailspagecomponentsfphguestdetailsinfo_Id
+            Fields      = @{
+                "GuestInformationTitle" = @{
+                    "en" = "CUSTOMER INFORMATION"
+                }
+                "HasSignInPrompt" = @{
+                    "en" = "1"
+                }
+                "HidePageTitle" = @{
+                    "en" = "1"
+                }
+                "ImportantInformation" = @{
+                    "en" = $fphguestdetailsinfo_importantinformation_db27e9c8409841ef9cb404be348a316b_en_v4
+                }
+                "GuestInformationDescription" = @{
+                    "en" = $fphguestdetailsinfo_guestinformationdescription_db27e9c8409841ef9cb404be348a316b_en_v4
+                }
+                "OffersSectionDescription2" = @{
+                    "en" = $fphguestdetailsinfo_offerssectiondescription2_db27e9c8409841ef9cb404be348a316b_en_v4
+                }
+                "POffersSectionDescription1" = @{
+                    "en" = $fphguestdetailsinfo_pofferssectiondescription1_db27e9c8409841ef9cb404be348a316b_en_v4
+                }
+                "PartnerOffersSectionTitle" = @{
+                    "en" = "easyJet partner offers and updates"
+                }
+                "OffersSectionDescription1" = @{
+                    "en" = $fphguestdetailsinfo_offerssectiondescription1_db27e9c8409841ef9cb404be348a316b_en_v4
+                }
+                "OffersSectionTitle" = @{
+                    "en" = "easyJet offers and updates"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    $guestdetails_allowedrenderings_b3d0f968c97f41c1b991c1892afd9c86_en_v1 = @"
+    {F3BEFB97-4213-4C6B-9336-9FC2C2A3624B}|{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{B3908F9D-B9A0-42DD-83F1-EE5CF6886D4D}|{3ADDD538-1DF0-4510-BBAA-934E9A6A2E74}|{3EECF1FA-6A62-451B-A351-A47ED455907D}|{373CCDB1-97B0-426D-B6BF-2A525AE3621E}|{8AE530B1-7702-48B7-A4B9-442E50845EFA}|{1B6F8CC5-F07C-40E8-AAE4-2E70409FB3B6}|{E4FE4D55-9934-4792-8420-FC277F35E30F}|{6C234F53-080F-4C8E-AC01-CE83E3C28998}|{9C7CAD82-BB33-4563-BCAF-4B362B6278B3}|{1BA26842-96D0-4FF4-B517-FD68C72072F1}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}
+    "@
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesguestdetails_Id = "{B3D0F968-C97F-41C1-B991-C1892AFD9C86}"
+    $guestdetails_renderingreplacements_b3d0f968c97f41c1b991c1892afd9c86_en_v1 = @"
+    {E4FE4D55-9934-4792-8420-FC277F35E30F}:{E4FE4D55-9934-4792-8420-FC277F35E30F}:Placeholder=%2fbody%2fcomponent-wrapper-right-%7bDC20BA11-AA26-49DB-AC55-08469E8C6390%7d-0&Data+Source=%7bFB781F38-B9C5-4C1C-94F5-0F9E59CAC191%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{F3BEFB97-4213-4C6B-9336-9FC2C2A3624B}:{F3BEFB97-4213-4C6B-9336-9FC2C2A3624B}:Placeholder=header&Data+Source=%7bFB781F38-B9C5-4C1C-94F5-0F9E59CAC191%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&IsNextButtonHidden=1|{6C234F53-080F-4C8E-AC01-CE83E3C28998}:{6C234F53-080F-4C8E-AC01-CE83E3C28998}:Placeholder=%2fheader%2ftitle-bar-%7bAA8C7F95-04F8-470E-8DD9-208FFAB45DC4%7d-0&Data+Source=%7b12F112C8-45E9-4B50-A944-31C4921E8FB3%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=:{058636E1-28A3-4AEC-A03B-5A1B87EE23C9}|{6C234F53-080F-4C8E-AC01-CE83E3C28998}:{6C234F53-080F-4C8E-AC01-CE83E3C28998}:Placeholder=%2fheader%2fsubheader-%7bAA8C7F95-04F8-470E-8DD9-208FFAB45DC4%7d-0&Data+Source=%7b31E65A8D-CAD7-4645-BAA1-DD61DBD8D562%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=:{F8315F41-F3C7-4DAF-9AE1-5D6507DA911D}|{9C7CAD82-BB33-4563-BCAF-4B362B6278B3}:{9C7CAD82-BB33-4563-BCAF-4B362B6278B3}:Placeholder=%2fbody&Data+Source=%7b3D075B49-B691-4823-A013-6CE43C8B5376%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{3EECF1FA-6A62-451B-A351-A47ED455907D}:{3EECF1FA-6A62-451B-A351-A47ED455907D}:Placeholder=%2fbody%2fcomponent-wrapper-left-%7bDC20BA11-AA26-49DB-AC55-08469E8C6390%7d-0%2fcomponent-wrapper-inner-%7baa5608b2-1713-4b02-8b92-71535a219944%7d-0&Data+Source=%7bDB27E9C8-4098-41EF-9CB4-04BE348A316B%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Guest Details"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesguestdetails_Id
+            Fields      = @{
+                "RenderingReplacements" = @{
+                    "en" = $guestdetails_renderingreplacements_b3d0f968c97f41c1b991c1892afd9c86_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $guestdetails_allowedrenderings_b3d0f968c97f41c1b991c1892afd9c86_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    $specialrequestsfandh_infodescription_b642b2aea1de4720ae7ed0f925020257_en_v3 = @"
+    <p>Our dedicated <strong>Assisted Travel Team</strong> are happy to help if you require assistance when it comes to your flights, transfer or hotel. Please contact our team <strong>as soon as you’ve booked</strong>, you’ll find the contact information in your documents and booking confirmation. Once we know your requirements, we can work with our service partners to see how we can best meet your needs.</p>
+    <p>For hotel requests you must tell us at least 72 hours before you travel. Due to the short notice, availability may be limited.</p>
+    <p>For airport and airline assistance you must tell us a minimum of 48 hours before departure. &nbsp;</p><div>&nbsp;</div>
+    "@
+    $descr = @"
+    <p>If you want to make a request to your hotel, you can select from the options below.
+    Please note that your hotel can&rsquo;t guarantee that your request will be provided. </p>
+    <p>If you need something that&rsquo;s not on our list, you can <a href="https://www.easyjet.com/en/holidays/flight-plus-hotel/help" target="_blank">get in touch</a> with our team after you&rsquo;ve booked.</p>
+    "@
+    
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Special Requests F and H"
+            TemplatePath = "/sitecore/templates/Foundation/Destinations/Special Requests/Special Requests Folder"
+            Fields      = @{
+                "InfoCTA" = @{
+                    "en" = ""
+                }
+                "InfoDescription" = @{
+                    "en" = $specialrequestsfandh_infodescription_b642b2aea1de4720ae7ed0f925020257_en_v3
+                }
+                "InfoTitle" = @{
+                    "en" = "Request assistance"
+                }
+                "__Sortorder" = @{
+                    "en" = "6300"
+                }
+                "Description" = @{
+                    "en" = $descr
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Special Requests F and H/Special Requests - Accommodation"
+            TemplatePath = "/sitecore/templates/Foundation/Destinations/Special Requests/Special Requests Type"
+            Fields      = @{
+                "SpecialRequests" = @{
+                    "en" = "{085EC6AD-EA94-4106-A06D-BE6C24EC6D39}|{490774D1-5511-4A5C-875A-C848C7EA172B}|{31709119-76A0-4162-9B78-69077F9F42B7}|{A33A3C8B-D8EB-431B-9096-EF6E52E1DE74}|{59D7FFDE-AEE8-4975-905F-E6315B025A92}|{9A42E2C8-794A-41DB-B2E0-09CAD18C2C65}|{71804963-F275-41FB-BE8C-A03AE69A9005}|{E612168E-7819-484C-88A2-4BD096486291}|{29EED6D5-48C6-4130-9CA6-30680E2D459B}"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    $holidayshomebookingpagecomponentsfphpricesummary_Id = "{0397E65E-2929-4F14-806D-33CA1D9A87F2}"
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/FPH Price Summary"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+            Id          = $holidayshomebookingpagecomponentsfphpricesummary_Id
+            Fields      = @{
+                "Title" = @{
+                    "en" = "Holiday price summary"
+                }
+                "__Sortorder" = @{
+                    "en" = "200"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    $srItem = gi -path "/sitecore/content/EasyJet/Holidays/Data/Special Requests F and H"
+    $srId = $srItem.ID.ToString()
+    
+    $extras_renderingreplacements_f0489a839c3d4a5cb12afd0f89512b24_en_v1 = @"
+    {F7F45094-B88B-47D0-975F-3854B4AE9A41}:{F7F45094-B88B-47D0-975F-3854B4AE9A41}:Placeholder=%2fbody%2fcomponent-wrapper-left-%7bCD41DEB6-5BB8-466F-B04A-C4D6BD700F19%7d-0%2fcomponent-wrapper-inner-%7b87238C24-9199-4538-97A4-55DB1CE624CF%7d-0%2fsorter-wrapper-inner-%7b13AFC1F0-7379-4829-B80A-BE3536AA555E%7d-0%2fseat-map-%7bD0911D00-9C70-4866-BD8B-FF1C7F1F7B9B%7d-0&Data+Source=%7bAD84C25E-7508-4806-934A-C04D5EC271FE%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{771959C1-9EA9-43D6-B8F4-A24D90D06974}:{771959C1-9EA9-43D6-B8F4-A24D90D06974}:Placeholder=%2fbody%2fcomponent-wrapper-left-%7bCD41DEB6-5BB8-466F-B04A-C4D6BD700F19%7d-0%2fcomponent-wrapper-inner-%7b87238C24-9199-4538-97A4-55DB1CE624CF%7d-0%2fsorter-wrapper-inner-%7b13AFC1F0-7379-4829-B80A-BE3536AA555E%7d-0%2fextra-luggage-%7bEF7E6EB0-E108-42E8-8D36-B4AD99CFD048%7d-0&Data+Source=%7bA1D87BB6-957D-4D8E-AC9D-CC7A11700AC7%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{4A3C0532-C5CC-4CBC-BB76-D31310FD1EF3}:{4A3C0532-C5CC-4CBC-BB76-D31310FD1EF3}:Placeholder=%2fbody%2fcomponent-wrapper-left-%7bCD41DEB6-5BB8-466F-B04A-C4D6BD700F19%7d-0%2fcomponent-wrapper-inner-%7b87238C24-9199-4538-97A4-55DB1CE624CF%7d-0%2fsorter-wrapper-inner-%7b13AFC1F0-7379-4829-B80A-BE3536AA555E%7d-0%2fextra-luggage-%7b43FE3F08-0DAA-4D55-8254-CDB8D1B1BA25%7d-0&Data+Source=%7bA1D87BB6-957D-4D8E-AC9D-CC7A11700AC7%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{2A35FBE1-E039-4D16-B301-37FD96B0C10F}:{2A35FBE1-E039-4D16-B301-37FD96B0C10F}:Placeholder=%2fbody%2fcomponent-wrapper-left-%7bCD41DEB6-5BB8-466F-B04A-C4D6BD700F19%7d-0%2fcomponent-wrapper-inner-%7b87238C24-9199-4538-97A4-55DB1CE624CF%7d-0%2fsorter-wrapper-inner-%7b13AFC1F0-7379-4829-B80A-BE3536AA555E%7d-0&Data+Source=$srId&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&HideSpecialAssistance=&IsSleekDesign=|{E4FE4D55-9934-4792-8420-FC277F35E30F}:{E4FE4D55-9934-4792-8420-FC277F35E30F}:Placeholder=%2fbody%2fcomponent-wrapper-right-%7bCD41DEB6-5BB8-466F-B04A-C4D6BD700F19%7d-0&Data+Source=%7bFB781F38-B9C5-4C1C-94F5-0F9E59CAC191%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{F3BEFB97-4213-4C6B-9336-9FC2C2A3624B}:{F3BEFB97-4213-4C6B-9336-9FC2C2A3624B}:Placeholder=header&Data+Source=%7bFB781F38-B9C5-4C1C-94F5-0F9E59CAC191%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&IsNextButtonHidden=1|{6C234F53-080F-4C8E-AC01-CE83E3C28998}:{6C234F53-080F-4C8E-AC01-CE83E3C28998}:Placeholder=%2fheader%2ftitle-bar-%7bAA8C7F95-04F8-470E-8DD9-208FFAB45DC4%7d-0&Data+Source=%7b99344195-D952-4527-BAD6-86787CD0F38D%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=:{ED571B32-1881-41D9-BD4D-A7AAC3F411DD}|{6C234F53-080F-4C8E-AC01-CE83E3C28998}:{6C234F53-080F-4C8E-AC01-CE83E3C28998}:Placeholder=%2fheader%2fsubheader-%7bAA8C7F95-04F8-470E-8DD9-208FFAB45DC4%7d-0&Data+Source=%7b6A840FD0-85CC-48AB-9D4D-5FFB0E79BF56%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=:{09BCF9EF-FF74-493E-9EC0-8A85F25A09A5}|{9C7CAD82-BB33-4563-BCAF-4B362B6278B3}:{9C7CAD82-BB33-4563-BCAF-4B362B6278B3}:Placeholder=%2fbody&Data+Source=%7b3D075B49-B691-4823-A013-6CE43C8B5376%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{9B0E88A8-59D8-4EE9-8504-CBF9B6F992D3}:{9B0E88A8-59D8-4EE9-8504-CBF9B6F992D3}:Placeholder=%2fbody%2fcomponent-wrapper-inner-%7ba9e1b04c-7882-47ed-80ce-eb001faabbf6%7d-0&Data+Source=$holidayshomebookingpagecomponentsfphpricesummary_Id&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Extras"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+            Fields      = @{
+                "RenderingReplacements" = @{
+                    "en" = $extras_renderingreplacements_f0489a839c3d4a5cb12afd0f89512b24_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    $holidaysdatadestinationsfphsummarybardatasource_Id = "{FB781F38-B9C5-4C1C-94F5-0F9E59CAC191}"
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Destinations/FPH Summary Bar Data Source"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Basket Datasource"
+            Id          = $holidaysdatadestinationsfphsummarybardatasource_Id
+            Fields      = @{
+                "EnableEditButtons" = @{
+                    "en" = ""
+                }
+                "SummaryBarTitle" = @{
+                    "en" = "Your Booking Summary"
+                }
+                "SummaryBarExpanderTitle" = @{
+                    "en" = "Booking Summary"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 100000173
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260618T124221Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

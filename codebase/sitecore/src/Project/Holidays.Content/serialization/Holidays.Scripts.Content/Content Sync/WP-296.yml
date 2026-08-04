@@ -1,0 +1,44 @@
+﻿---
+ID: "0d6fc93c-06c4-42ad-ac3b-47839dec705b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/WP-296"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $formItemPath = 'master:/sitecore/content/EasyJet/Holidays/Home/Help/Contact Form/Page Components/Form'
+    $easyJetDropdownOptionPath = 'master:/sitecore/content/EasyJet/Holidays/Home/Help/Contact Form/Page Components/Contact Us Questions Folder/easyJet'
+    $languages = @('en', 'de-DE', 'de-CH', 'es-ES', 'fr-CH', 'fr-FR', 'it-IT', 'nl-NL')
+    
+    foreach ($language in $languages) {
+        $formItem = Get-Item -path $formItemPath -Language $language -ErrorAction SilentlyContinue
+        $dropDownOptionItem = Get-Item -path $easyJetDropdownOptionPath -Language $language -ErrorAction SilentlyContinue
+        if (($formItem -ne $null) -and ($dropDownOptionItem -ne $null)) {
+            $selectedQuestionsString = $formItem.Fields["QuestionList"].Value
+            if($selectedQuestionsString -ne '') {
+                $selectedQuestions = $selectedQuestionsString.Split('|')
+                $new = $selectedQuestions | Where-Object { $_ –ne  $dropDownOptionItem.ID}
+                $newSelectionString = [system.String]::Join("|", $new)
+                
+                if($newSelectionString -ne $selectedQuestionsString) {
+                    $formItem.Editing.BeginEdit()
+                    $formItem.Fields["QuestionList"].Value = $newSelectionString
+                    Write-Host $formItem.Name "updated in language:" $language
+                    $formItem.Editing.EndEdit() | Out-Null
+                }
+            }
+        }
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: "-100"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20230717T114454:638251910942781958Z"

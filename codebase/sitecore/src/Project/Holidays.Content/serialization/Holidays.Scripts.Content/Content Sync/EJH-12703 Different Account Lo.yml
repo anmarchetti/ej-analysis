@@ -1,0 +1,55 @@
+﻿---
+ID: "c7116aba-10f4-4da3-b5c1-a369712ff04a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-12703 Different Account Login"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $pagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    $page = Get-Item -path $pagePath -ErrorAction SilentlyContinue
+    
+    $componentsPath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components"
+    $pageComponents = Get-Item -path $componentsPath -ErrorAction SilentlyContinue
+    
+    $CTABlockPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/LogIn With Different Email"
+    $CTABlockTemplateId = "{4274027C-AF42-47ED-BAF0-5E8DBC6A8EB8}"
+    
+    $CTABlock = Get-Item -Database "master" -path $CTABlockPath -ErrorAction SilentlyContinue
+    
+    if ($CTABlock -eq $null) {
+        $CTABlock = New-Item -Path $CTABlockPath -ItemType $CTABlockTemplateId
+        Write-Host "Item" $CTABlock.Name "successfully created"
+    }
+        
+    $CTABlock.Editing.BeginEdit()
+    $CTABlock["Title"] = "Looking to make changes?"
+    $CTABlock["Description"] = "Please make sure that you're logged in with the email address you used to make the booking."
+    $CTABlock["Icon"] = '<image mediaid="{23C1B9E5-BC65-4D58-8805-00D066E24EE1}" />';
+    #$CTABlock["Link"] = "/EasyJet/Holidays/Home/Login"
+     
+    $loginPage = Get-Item -path "master:/content/EasyJet/Holidays/Home/Login" -ErrorAction SilentlyContinue
+    if($loginPage -ne $null) {
+        $CTABlock["Link"] = "<link text='Log in with a different email' linktype='internal' id='$($loginPage.ID)' querystring='redirectUrl=/booking/my_bookings' />"
+    }
+    $CTABlock.Editing.EndEdit() | Out-Null
+    
+    $renderingId = "{59660D4A-AEA2-4C41-A118-FF3C1382742A}"
+    $renderingPlaceholder = "/body/lead-login-{5500ac44-5df4-4473-8e8c-ea635a187882}-0";
+    $rendering = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder | Where-Object {$_.ItemId -eq $renderingId}
+    
+    if($rendering -eq $null){
+        $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $renderingPlaceholder
+        Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $CTABlockPath -Instance $renderingItem -index 4 -parameter @{Theme = "One Row"}
+        Write-Host  "LogIn With Different Email Rendering was created"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201103T090542Z

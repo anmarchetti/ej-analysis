@@ -1,0 +1,42 @@
+{
+  "Guid": "f37447dc-64de-4c5e-a4b2-96b220ca42b3",
+  "UpdatedAt": "2023-11-10T14:04:59.4117134Z",
+  "Title": "GetHotelTransfers X9003054",
+  "Priority": 0,
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/DestinationsSearch/GetHotelTransfers",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "POST"
+    ],
+    "Body": {
+      "Matcher": {
+        "Name": "ExactMatcher",
+        "Pattern": "AtcomIds%5B0%5D=X9003054",
+        "IgnoreCase": true
+      }
+    }
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsJson": [
+      []
+    ],
+    "Headers": {
+      "Content-Type": "application/json; charset=utf-8",
+      "Expires": "-1",
+      "Content-Length": "4",
+      "Cache-Control": "no-store, no-cache",
+      "Pragma": "no-cache",
+      "Server": "Microsoft-IIS/10.0",
+      "Date": "Fri, 10 Nov 2023 14:04:58 GMT"
+    }
+  }
+}

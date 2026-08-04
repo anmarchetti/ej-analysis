@@ -1,0 +1,43 @@
+.info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    grid-area: info;
+    padding: 15px;
+    border-left: 0.5px solid rgba($colorBlack, 0.1);
+
+    @include media-breakpoint-down(md) {
+        border-top: 0.5px solid rgba($colorBlack, 0.1);
+        border-left: none
+    }
+}
+
+
+.btn, a.btn {
+    padding: 17px 25px;
+    font-size: 16px;
+    line-height: 1.37;
+    border: 1px $clrEjOrange solid ;
+    border-radius: 2px;
+
+    @include media-breakpoint-down(md) {
+        width: auto;
+        padding: 16px 25px;
+        line-height: 1;
+    }
+}
+
+.buttonsWrapper {
+    display: grid;
+    gap: 10px;
+
+    @include media-breakpoint-down(md) {
+        grid-auto-flow: column;
+    }
+
+    @include media-breakpoint-down(sm) {
+        grid-auto-flow: row;
+    }
+}
+

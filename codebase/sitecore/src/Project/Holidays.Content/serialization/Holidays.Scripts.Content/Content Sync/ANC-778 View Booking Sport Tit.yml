@@ -1,0 +1,110 @@
+﻿---
+ID: "f7b2c450-637a-4fd4-be53-6f469691f832"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-778 View Booking Sport Title"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+     function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            if ($field -eq "ReadMoreLink") {
+                $linkXml = "<link text=`"$value`" linktype='internal' class='' title='' target='' querystring='helpCategory=luggage' id='{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}' />"
+                $targetLangItem[$field] = $linkXml
+            } else {
+                  $targetLangItem[$field] = $value
+            }
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    function create-dictionary-item($path, $value, $itemName, $key) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+            $templateId = "{6D1CD897-1936-4A3A-A511-289A94C2A7B1}" # Template ID for Dictionary Entry
+            $item = New-Item -Path $path -Name $itemName -ItemType $templateId
+            $item.Editing.BeginEdit()
+            $item["Key"] = $key
+            $item["Phrase"] = $value
+            $item.Editing.EndEdit() | Out-Null
+            Write-Host "Base dictionary item created: $path/$itemName"
+        } else {
+            $item.Editing.BeginEdit()
+            $item["Key"] = $key
+            $item["Phrase"] = $value
+            $item.Editing.EndEdit() | Out-Null
+            Write-Host "Base dictionary item changed: $path/$itemName"
+        }
+    }
+    
+    $holidaysBookingViewBookingPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/View Booking"
+    $tradePortalBookingViewBookingPath = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking/Page Components/View Booking"
+    
+    $holidaysBookingViewBooking = Get-Item -Path $holidaysBookingViewBookingPath
+    $tradePortalBookingViewBooking = Get-Item -Path $tradePortalBookingViewBookingPath
+    
+    $translations = @{
+        "en" = @{
+            "SportsEquipmentTitle" = "Sports equipment";
+            "ReadMoreLink" = "Read more about bags"
+        }
+        "fr-CH" = @{
+            "SportsEquipmentTitle" = "Équipement sportif";
+            "ReadMoreLink" = "En savoir plus sur les bagages"
+        }
+        "fr-FR" = @{
+            "SportsEquipmentTitle" = "Équipement sportif";
+            "ReadMoreLink" = "En savoir plus sur les bagages"
+        }
+        "de-CH" = @{
+            "SportsEquipmentTitle" = "Sportausrüstung";
+            "ReadMoreLink" = "Mehr über Gepäck erfahren"
+        }
+        "de-DE" = @{
+            "SportsEquipmentTitle" = "Sportausrüstung";
+            "ReadMoreLink" = "Mehr über Gepäck erfahren"
+        }
+    }
+    
+    foreach ($lang in $translations.Keys) {
+        create-lang-version -item $holidaysBookingViewBooking -lang $lang -field "SportsEquipmentTitle" -value $translations[$lang]["SportsEquipmentTitle"]
+        create-lang-version -item $tradePortalBookingViewBooking -lang $lang -field "SportsEquipmentTitle" -value $translations[$lang]["SportsEquipmentTitle"]
+        
+        create-lang-version -item $holidaysBookingViewBooking -lang $lang -field "ReadMoreLink" -value $translations[$lang]["ReadMoreLink"]
+        create-lang-version -item $tradePortalBookingViewBooking -lang $lang -field "ReadMoreLink" -value $translations[$lang]["ReadMoreLink"]
+    }
+    
+    $path = "/sitecore/content/EasyJet/Holidays/Dictionary/Luggage/Labels"
+    $itemName = "Bags"
+    $key = "Luggage.Labels.Bags"
+    $value = "Your Bags";
+      
+    create-dictionary-item -path $path -value $value -itemName $itemName -key $key
+    
+    $path = "/sitecore/content/EasyJet/TradePortal/Dictionary/Luggage/Labels"
+    
+    create-dictionary-item -path $path -value $value -itemName $itemName -key $key
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 10750
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231117T131733Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,103 @@
+﻿---
+ID: "147b563c-c148-4ede-ba0f-857fb5cfd144"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-13496 Add Pandemic Level Requirement Block to View Booking"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $itemName, $templateId, $itemId){
+        $item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $itemId
+            Write-Host "Item" $item.Name "successfully created";
+        }
+        return $item
+    } 
+    
+    function Get-Rendering-Index ($item,$renderingItemId) {
+    	$i = 0
+    	Get-Rendering -Item $item | ForEach-Object {
+    		if ($_.ItemID -eq $renderingItemId) {
+    			return $i
+    		}
+    		$i++
+    	}
+    }
+    
+    function Get-Pandemic-States ($names) {
+    	$states = Get-ChildItem -Path "master:/sitecore/content/EasyJet/Holidays/Data/Pandemic Levels States" -ErrorAction SilentlyContinue;
+    
+    	if ($states -ne $null -and $names -ne $null) {
+            $selectedStates = $states | Where-Object -FilterScript { $names -match $_.DisplayName }
+    		return ($selectedStates | Select-Object -ExpandProperty "ID") -join "|";
+    	}
+    
+    	return '';
+    }
+    
+    function Update-Pandemic-Levels-States ($names) {
+    	$folder = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Pandemic Levels States" -ErrorAction SilentlyContinue
+    
+    	if ($folder -ne $null) {
+    		foreach ($name in $names) {
+    			$levelItem = Get-Or-Create-Item -Path $folder.FullPath -ItemName $name -TemplateId "{9E12F886-E62F-4E86-8295-A2091E3D2F1E}"
+    			$levelItem.Editing.BeginEdit()
+    			$levelItem["PandemicLevelRequirementDescription"] = $levelStatesDescription
+    			$levelItem.Editing.EndEdit() | Out-Null
+    		}
+    	}
+    }
+    
+    # Page
+    $pagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking";
+    $page = Get-Item -path $pagePath -ErrorAction SilentlyContinue;
+    $componentsPath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components";
+    $pageComponents = Get-Item -path $componentsPath -ErrorAction SilentlyContinue;
+    
+    $levelStatesDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet nisl metus. Etiam mollis tincidunt erat sed molestie. Integer ac sem porta, dictum sem vitae, posuere augue. Nulla facilisi. Vivamus ac viverra orci, in posuere. Integer ac sem porta, dictum sem vitae, posuere augue.";
+    $pandemicLevelNames = @("Green","Amber","Red");
+    
+    # Data source
+    $blockName = "Pandemic Level Requirement";
+    $blockTemplateId = "{716F6AF5-0060-40F7-B423-1FBF5DDD0648}";
+    $block  = Get-Or-Create-Item -Path $componentsPath -ItemName $blockName -TemplateId $blockTemplateId;
+    $blockPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Pandemic Level Requirement";
+    
+    $block.Editing.BeginEdit()
+    $block["Image"] = '<image mediaid="{3E7C006D-B5EC-4212-A443-0B3C36F44669}" />';
+    $block["PandemicStates"] = Get-Pandemic-States -names $pandemicLevelNames;
+    $homePage = Get-Item -path "master:/content/EasyJet/Holidays/Home" -ErrorAction SilentlyContinue;
+    if($homePage -ne $null) {
+        $block["Link"] = "<link text='Find out more' linktype='internal' id='$($homePage.ID)' querystring='/' />";
+    }
+    $block.Editing.EndEdit() | Out-Null
+    
+    $renderingId = "{EB77E008-E0AF-431E-B2A9-055890889410}"
+    $renderigPlaceholder = "/body/pandemic-level-requirement-{5500ac44-5df4-4473-8e8c-ea635a187882}-0";
+    $rendering = Get-Rendering -Item $page -PlaceHolder $renderigPlaceholder | Where-Object {$_.ItemId -eq $renderingId}
+    
+    $healthEntryRequirementsRenderingId = "{752847FB-9A5B-47E4-A1F3-42843C1A7C83}"
+    $healthEntryRequirementsRenderingIndex = Get-Rendering-Index -Item $page -RenderingItemId $healthEntryRequirementsRenderingId
+    $newIndex = $healthEntryRequirementsRenderingIndex + 1
+        	
+    if($rendering -eq $null){
+        $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $renderigPlaceholder
+        Add-Rendering -Item $page -PlaceHolder $renderigPlaceholder -DataSource $blockPath -Instance $renderingItem -index $newIndex 
+        Write-Host  $blockName" Rendering was created"
+    }
+    
+    Update-Pandemic-Levels-States -names $pandemicLevelNames
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210405T123057Z

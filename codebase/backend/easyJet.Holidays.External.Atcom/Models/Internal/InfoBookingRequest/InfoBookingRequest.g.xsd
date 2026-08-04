@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 sp1 (http://www.altova.com) by Kim Howells (Anite Business Systems) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="AtComRes/InfoBookingRequest" xmlns:p2="AtComRes/Common" targetNamespace="AtComRes/InfoBookingRequest" elementFormDefault="qualified">
+	<xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+	<xs:element name="InfoBookingRequest">
+		<xs:annotation>
+			<xs:documentation>Request to get the actual availability and prices and to check if booking of one ore more packagetour offers is valid. All needed informations has to be sent to @ComRes.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="p2:AtcomresBookingBaseRequest">
+					<xs:sequence>
+						<xs:element ref="p2:ReturnServiceBreakDown" minOccurs="0"/>
+						<xs:element name="Inc_AutoSelectedItems" type="xs:boolean" default="false" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Include auto selected items and Flight Extras</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="p2:Fetch_Cost" minOccurs="0"/>
+						<xs:element ref="p2:Chk_Inv" minOccurs="0"/>
+						<xs:element ref="p2:Cost_Dt" minOccurs="0"/>
+						<xs:element ref="p2:Disc_Code" minOccurs="0"/>
+						<xs:element name="Return_SearchResults" type="xs:boolean" default="false" minOccurs="0"/>
+						<xs:element ref="ns1:Chk_Ext_Flt_Inv" minOccurs="0"/>
+						<xs:element ref="p2:Fetch_Rm_Cost_Prices" minOccurs="0"/>
+						<xs:element ref="p2:Fetch_Item_Cost_Prices" minOccurs="0"/>
+						<xs:element ref="ns1:ApplyDuplicateCheck" minOccurs="0"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Chk_Ext_Flt_Inv" type="xs:boolean" default="false">
+		<xs:annotation>
+			<xs:documentation>Check the external Flight inventory</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="ApplyDuplicateCheck" type="xs:boolean" default="false">
+		<xs:annotation>
+			<xs:documentation>Prevent customers from booking multiple parallel trips</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+</xs:schema>

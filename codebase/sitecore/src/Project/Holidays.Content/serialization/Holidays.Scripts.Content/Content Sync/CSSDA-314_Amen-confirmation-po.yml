@@ -1,0 +1,122 @@
+﻿---
+ID: "fdebe1f9-e503-4dce-b5fc-1f5397dacf3a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-314_Amen-confirmation-popup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function GetOrCreateItem ($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue;
+        
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        
+        return $item
+    }
+    function Add-Or-Update-Page-Rendering ($page,$renderingPath,$renderingPlaceholder,$dataSourcePath) {
+    	$renderingItem = Get-Item -Database "master" -Path $renderingPath;
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -DataSource $dataSourcePath;
+    		Write-Host $renderingItem "Rendering instance added";
+    	}
+    	else {
+    		Write-Host $pageRenderingInstance "Already exists";
+    	}
+    }
+    function create-lang-version($item,$lang,$field,$value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+    }
+    function Update-PopupContent ($popup) {
+        if ($popup -ne $null) {
+            $popup.Editing.BeginEdit();
+            $popup["TransferTitle"] = "We've successfully changed your transfer";
+            $popup["FlightTitle"] = "We've successfully changed your flights";
+            $popup["SeatsTitle"] = "We've successfully updated your seats";
+            $popup["DatesTitle"] = "We've successfuly changed your dates";
+            $popup["TransferSubtitle"] = "<p>We&rsquo;ve successfully upgraded your board to {name}.</p><p>You can see the summary of your choice below.</p>";
+            $popup["FlightSubtitle"] = "We've changed your flight times to:";
+            $popup["SeatsSubtitle"] = "We've changed your seat selection to:";
+            $popup["DatesSubtitle"] = "We've changed your dates to:";
+            $popup["Description"] = "Your booking will be updated and we've sent a confirmation email to {email}";
+            
+            @('fr-CH', 'fr-FR') | % {
+                Create-Lang-Version -Item $popup -Lang $_ -Field "TransferTitle" -Value "Nous avons modifié avec succès votre transfert";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "FlightTitle" -Value "Nous avons modifié avec succès vos vols";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "SeatsTitle" -Value "Nous avons mis à jour avec succès vos sièges";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "DatesTitle" -Value "Nous avons modifié avec succès vos dates";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "TransferSubtitle" -Value "<p>Nous avons mis à jour avec succès votre tableau vers {name}.</p><p>Vous pouvez voir le résumé de votre choix ci-dessous.</p>";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "FlightSubtitle" -Value "Nous avons modifié vos horaires de vol comme suit:";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "SeatsSubtitle" -Value "Nous avons modifié votre sélection de siège pour:";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "DatesSubtitle" -Value "Nous avons modifié vos dates pour:";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "Description" -Value "Votre réservation sera mise à jour et nous avons envoyé un e-mail de confirmation à {email}";
+            }
+            @('de-CH', 'de-DE') | % {
+                Create-Lang-Version -Item $popup -Lang $_ -Field "TransferTitle" -Value "Wir haben Ihre Überweisung erfolgreich geändert";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "FlightTitle" -Value "Wir haben Ihre Flüge erfolgreich geändert";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "SeatsTitle" -Value "Wir haben Ihre Plätze erfolgreich aktualisiert";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "DatesTitle" -Value "Wir haben Ihre Daten erfolgreich geändert";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "TransferSubtitle" -Value "<p>Wir haben Ihr Board erfolgreich auf {name} aktualisiert.</p><p>Sie können die Zusammenfassung Ihrer Wahl unten sehen.</p>";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "FlightSubtitle" -Value "Wir haben Ihre Flugzeiten geändert auf:";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "SeatsSubtitle" -Value "Wir haben Ihre Sitzplatzauswahl auf geändert:";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "DatesSubtitle" -Value "Wir haben Ihre Daten wie folgt geändert:";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "Description" -Value "Ihre Buchung wird aktualisiert und wir haben eine Bestätigungs-E-Mail an {email} gesendet.";
+            }
+            
+            $popup.Editing.EndEdit() | Out-Null;
+            
+            Write-Host $popup.Name "Updated";
+        }
+    }
+    
+    # Creating amend confirmation popup
+    $popupPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Confirmation Amend Popup";
+    $tradepopupPath = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking/Page Components/Confirmation Amend Popup";
+    $popupTemplate = "{010458F0-64C2-44B5-8D81-AE4FCFFAF4A4}";
+    
+    $popup = GetOrCreateItem -path $popupPath -template $popupTemplate;
+    $tradePopup = GetOrCreateItem -path $tradepopupPath -template $popupTemplate;
+    
+    Update-PopupContent -popup $popup
+    Update-PopupContent -popup $tradePopup
+    
+    #Add layout controls to page
+    $popupRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Popups/Successful Amendment Popup";
+    
+    $popupRendering = Get-Item -Path $popupRenderingPath;
+    $myBookingPage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking";
+    $tradePortalBookingPage = Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking";
+    
+    if ($popupRendering -ne $null) {
+    	Add-Or-Update-Page-Rendering -page $myBookingPage -renderingPath $popupRenderingPath -renderingPlaceholder "/body/successful-amendment-popup-{5500AC44-5DF4-4473-8E8C-EA635A187882}-0" -dataSourcePath "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Confirmation Amend Popup";
+    	Add-Or-Update-Page-Rendering -page $tradePortalBookingPage -renderingPath $popupRenderingPath -renderingPlaceholder "/body/successful-amendment-popup-{a0c9d3d6-ce99-4d98-b482-df23906098ac}-0" -dataSourcePath "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking/Page Components/Confirmation Amend Popup";
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2500
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230929T090518Z

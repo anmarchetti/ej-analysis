@@ -1,0 +1,464 @@
+.redeem-voucher {
+    .redeem-voucher__title {
+        margin: 15px 0 30px;
+        font-family: $fontRoundedHeadline;
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 50px;
+
+        @include media-breakpoint-down(md) {
+            margin: 15px 0 10px;
+            font-size: 20px;
+            line-height: 25px;
+        }
+    }
+
+    .redeem-voucher__form {
+        margin-bottom: 80px;
+        @include media-breakpoint-down(md) {
+            margin-bottom: 65px;
+        }
+    }
+
+    .redeem-voucher__subtitle {
+        margin: 0;
+    }
+
+    .redeem-voucher__controls {
+        display: flex;
+        align-items: center;
+
+        .form-field {
+            display: flex;
+        }
+
+        .form-group {
+            margin: 30px 0;
+        }
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            align-items: initial;
+
+            .form-group {
+                margin: 30px 0 25px;
+            }
+        }
+    }
+
+    .redeem-voucher__input-container {
+        @include media-breakpoint-down(md) {
+            flex-grow: 1;
+            margin-right: 15px;
+        }
+    }
+
+    .redeem-voucher__input {
+        width: 500px;
+        margin-right: 15px;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            margin: 0;
+        }
+    }
+
+    .redeem-voucher__btn {
+        margin-left: 25px;
+        padding: 13px 55px;
+        @include media-breakpoint-down(md) {
+            margin: 0;
+        }
+    }
+
+    .redeem-voucher__errors {
+        display: flex;
+        align-items: center;
+        width: 70%;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        i {
+            display: flex;
+            width: 20px;
+            margin-right: 10px;
+            color: $colorRed;
+
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 18px;
+            color: $colorRed;
+        }
+
+        &--mobile {
+            @include media-breakpoint-up(md) {
+                display: none;
+            }
+        }
+
+        &--desktop {
+            @include media-breakpoint-down(md) {
+                display: none;
+            }
+        }
+    }
+}
+
+.redeem-popup {
+    @include media-breakpoint-down(md) {
+        padding: 35px 10px 0;
+    }
+
+    .apply-btn, .continue-btn {
+        border-radius: 4px;
+    }
+
+    .title {
+        margin: 0 0 40px;
+        font-family: $fontGenerationHeadline;
+        font-size: 50px;
+        line-height: 45px;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            margin: 0 0 25px;
+            font-size: 40px;
+            line-height: 40px;
+        }
+    }
+
+    .content::before, .content::after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 1px;
+        margin: 15px 0;
+        background-image: linear-gradient(to right, $colorBlack 50%, transparent 50%);
+        background-repeat: repeat-x;
+        background-size: 20px 1px;
+    }
+
+    .popup__body {
+        padding: 40px 40px 0;
+    }
+
+    .popup__footer {
+        padding: 20px 35px;
+        box-shadow: 0 -3px 6px $colorAlto;
+    }
+
+    .content {
+        text-align: center;
+
+        .text {
+            margin: 12px 0;
+        }
+
+        .voucher {
+            font-weight: 700;
+        }
+
+        .voucher-cost {
+            margin: 12px 0;
+            font-family: $fontRoundedDemy;
+            font-size: 24px;
+            line-height: 30px;
+
+            @include media-breakpoint-down(md) {
+                font-size: 20px;
+                line-height: 24px;
+            }
+        }
+    }
+
+    .credit-summary {
+        margin-bottom: 20px;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 25px;
+        }
+    }
+
+    .credit-summary__row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .credit-summary__total {
+        padding: 25px 30px;
+        background: $colorGrayLighter;
+        border-radius: 8px;
+
+        @include media-breakpoint-down(md) {
+            padding: 15px;
+        }
+
+        span:first-child {
+            font-size: 24px;
+            line-height: 30px;
+
+            @include media-breakpoint-down(md) {
+                font-size: 18px;
+                line-height: 30px;
+            }
+        }
+    }
+
+    .credit-summary__amount {
+        font-size: 30px;
+        line-height: 40px;
+
+        @include media-breakpoint-down(md) {
+            margin-left: 10px;
+            font-size: 26px;
+            line-height: 50px;
+        }
+    }
+}
+
+.voucher-validated-popup {
+    .cancel-btn {
+        font-weight: 600;
+    }
+
+    .content {
+        .voucher {
+            color: $clrEjOrangeDarkShadow;
+        }
+    }
+
+    .credit-summary__new-credit {
+        margin: 0 20px;
+        padding: 20px 0;
+        color: $colorGreen;
+        border-bottom: 1px solid $colorGray;
+
+        @include media-breakpoint-down(md) {
+            padding: 15px 0;
+        }
+
+        .new-credit__label {
+            display: flex;
+            flex-direction: column;
+
+            span:first-child {
+                font-size: 16px;
+                line-height: 20px;
+            }
+
+            span:last-child {
+                font-size: 18px;
+                line-height: 30px;
+            }
+        }
+    }
+
+    .credit-summary__previous-balance {
+        margin: 0 20px;
+        padding: 23px 0 16px;
+
+        @include media-breakpoint-down(md) {
+            padding: 15px 0;
+        }
+
+        .label--bold {
+            font-weight: 600;
+        }
+
+        .callout__parent {
+            line-height: 16px;
+
+            svg {
+                margin-left: 10px;
+                vertical-align: bottom;
+            }
+        }
+    }
+}
+
+.voucher-applied-popup {
+    .title {
+        width: 400px;
+        margin: 0 auto 30px;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+        }
+    }
+
+    .content {
+        .voucher {
+            color: $colorGreen;
+        }
+    }
+
+    .instruction {
+        margin: 40px 0;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            margin: 35px 0 20px;
+        }
+
+        h4 {
+            margin: 0 0 20px;
+            font-size: 20px;
+
+            @include media-breakpoint-down(md) {
+                margin-bottom: 10px;
+            }
+        }
+
+        .text {
+            margin: 8px;
+        }
+    }
+}
+
+.login-to-redeem-popup {
+    @include media-breakpoint-down(md) {
+        padding-bottom: 80px;
+    }
+
+    .login-to-redeem-popup__container {
+        display: flex;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+        }
+    }
+
+    .popup__body {
+        padding: 0;
+
+        &:last-child {
+            padding-bottom: 0;
+        }
+    }
+
+    .popup__dialog {
+
+        @include media-breakpoint-up(xl) {
+            width: 1035px;
+            max-width: 1035px;
+        }
+    }
+
+    .login-wrapper {
+        width: 50%;
+        padding: 60px 45px;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            margin-bottom: 40px;
+            padding: 0;
+        }
+
+        .form-group {
+            margin: 15px 0;
+
+            &:first-child {
+                margin: 30px 0;
+            }
+        }
+
+        .btn-link {
+            margin-bottom: 30px;
+            font-size: 14px;
+            line-height: 20px;
+
+            @include media-breakpoint-down(md) {
+                margin-bottom: 25px;
+            }
+        }
+
+        .sign-up__button .btn {
+            width: 100%;
+            padding: 17px 27px;
+            font-size: 16px;
+            line-height: 20px;
+
+            @include media-breakpoint-down(md) {
+                padding: 10px 0;
+            }
+        }
+    }
+
+    .create-account-wrapper {
+        display: flex;
+        align-items: center;
+        width: 50%;
+        margin: 0;
+        margin-top: -20px;
+        text-align: center;
+        background-color: $colorGrayLighter;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            margin: 0;
+            text-align: left;
+        }
+    }
+
+    .title {
+        margin-bottom: 25px;
+        font-family: $fontRoundedBook;
+        font-size: 30px;
+        line-height: 30px;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 15px;
+            font-size: 20px;
+            line-height: 20px;
+            text-align: left;
+        }
+    }
+
+    .subtitle {
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            text-align: left;
+        }
+    }
+}
+
+.account-created-for-redeem-popup {
+    .content {
+        &::after {
+            display: none;
+        }
+
+        p {
+            margin: 40px 0;
+        }
+    }
+}
+
+.redeem-voucher__questions-title {
+    margin-top: 0;
+    @include media-breakpoint-down(md) {
+        h1.text-block__header {
+            align-items: center;
+            font-size: 20px;
+            line-height: 25px;
+        }
+    }
+}
+
+.voucher-validated-popup, .voucher-applied-popup {
+    .drawer__content {
+        padding: 0 0 70px;
+    }
+}

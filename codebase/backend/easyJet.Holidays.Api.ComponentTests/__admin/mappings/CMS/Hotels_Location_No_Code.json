@@ -1,0 +1,34 @@
+{
+    "Title": "Hotels polygon search(api/DestinationsSearch/GetHotelsByEntryInPolygonBorders)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetHotelsCoordinatesByParentCode",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "code",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": ""
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 500,
+        "BodyAsJson": {
+            "Success": false,
+            "Error": "Argument code cannot be null or empty"
+        }
+    }
+}

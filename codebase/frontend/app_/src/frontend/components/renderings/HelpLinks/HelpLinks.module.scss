@@ -1,0 +1,60 @@
+.helpLinks {
+    margin: 32px 0;
+    @media print {
+        display: none;
+    }
+}
+
+.title {
+    margin: 0 0 40px;
+    padding-top: 50px;
+    font-family: $fontRoundedHeadline;
+    font-size: 24px;
+    font-weight: 700;
+    color: $clrTextHeading;
+    border-top: 2px solid $colorGray;
+
+    @include media-breakpoint-down(md) {
+        justify-content: center;
+        margin: 0 0 20px;
+        padding-top: 35px;
+        font-size: 18px;
+        text-align: center;
+    }
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-gap: 32px;
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+    }
+}
+
+.bordered {
+    .container {
+        margin-bottom: 20px;
+        
+        @include media-breakpoint-up(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            margin-bottom: 0;
+            padding: 30px $view-booking-card-padding;
+            border: $view-booking-card-border;
+            border-radius: $view-booking-card-border-radius;
+        }
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            margin-top: 25px;
+        }
+    }
+
+    .title {
+        padding-top: 0;
+        text-align: left;
+        border-top: 0;
+    }
+}

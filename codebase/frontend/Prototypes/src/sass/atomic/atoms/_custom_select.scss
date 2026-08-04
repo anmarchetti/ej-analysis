@@ -1,0 +1,217 @@
+.custom-select {
+    width: 100%;
+
+    .custom-select__control {
+        width: 100%;
+        min-height: 44px;
+        padding-left: 20px;
+        overflow-x: visible;
+        font-family: $fontRoundedBook;
+        background: $colorTransparent;
+        border: 1px solid $clrTxtLighter;
+        border-radius: 6px;
+        box-shadow: none;
+        cursor: pointer;
+    }
+
+    .custom-select__multi-value__remove:hover {
+        background-color: $colorWhite;
+        opacity: 0.5;
+    }
+
+    .custom-select__value-container {
+        position: static;
+        padding-left: 0;
+        overflow-x: visible;
+    }
+
+    .custom-select__single-value {
+        max-width: calc(100% - 60px);
+    }
+
+    .custom-select__control--is-focused,
+    .custom-select__control--menu-is-open,
+    .custom-select__control:hover {
+        border-color: $clrEjOrangeLight;
+        box-shadow: none;
+
+        .custom-select__placeholder,
+        .custom-select__single-value {
+            color: $clrEjOrangeLight;
+        }
+
+        .select-group__control--icon {
+            svg {
+                color: $colorOrange;
+            }
+        }
+    }
+
+    .custom-select__control--menu-is-open {
+        .select-group__control--icon svg {
+            transform: rotate(180deg);
+        }
+    }
+
+    .custom-select__indicator-separator {
+        display: none;
+    }
+
+    .custom-select__placeholder {
+        @include text-truncate;
+
+        position: absolute;
+        top: 50%;
+        left: 12px;
+        max-width: 90%;
+        padding: 0 8px;
+        font-family: $fontRoundedBook;
+        font-size: 15px;
+        color: $clrTxtLight;
+        background: #fff;
+        transition: all 0.1s;
+    }
+
+    .custom-select__value-container--has-value,
+    .custom-select__control--menu-is-open,
+    .custom-select__control--is-focused {
+        .custom-select__placeholder {
+            top: -0.5px;
+        }
+    }
+
+    .custom-select__menu {
+        z-index: 10;
+        margin-top: 0;
+        background-color: $clrSiteBgWhite;
+        border: 1px solid $borderColorGrayMiddle;
+        border-radius: 6px;
+
+        .custom-select__menu-list {
+            padding: 0;
+
+            &:first-child {
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+            }
+
+            &:last-child {
+                border-bottom-right-radius: 6px;
+                border-bottom-left-radius: 6px;
+            }
+        }
+    }
+
+    .custom-select__option {
+        padding: 10px 12px;
+        font-family: $fontRoundedBook;
+        font-size: 15px;
+        line-height: 24px;
+        color: $clrTextMain;
+        cursor: pointer;
+    }
+
+    .custom-select__option--is-focused {
+        color: $clrEjOrangeDarkShadow;
+        background-color: transparent;
+    }
+
+    .custom-select__option--is-selected {
+        color: $clrEjOrangeLight;
+        background-color: $clrSiteBgGrey;
+    }
+
+    .custom-select__option--is-disabled {
+        color: $form-disabled-color;
+        cursor: default;
+    }
+
+    .custom-select__dropdown-indicator {
+        padding-right: 15px;
+        line-height: 1;
+
+        @include media-breakpoint-down(md) {
+            padding: 10px;
+        }
+
+        svg {
+            width: 18px;
+            height: 18px;
+            vertical-align: middle;
+            color: $colorOrange;
+        }
+    }
+
+    &.custom-select--year {
+        .custom-select__placeholder {
+            display: none;
+        }
+    }
+}
+
+.custom-select--error {
+    .custom-select__control {
+        border-color: $colorRed;
+    }
+
+    .custom-select__single-value,
+    .custom-select__placeholder {
+        color: $colorRed;
+    }
+
+    .select-group__control--icon {
+        svg {
+            color: $colorRed;
+        }
+    }
+
+    .custom-select__control--is-focused,
+    .custom-select__control--menu-is-open,
+    .custom-select__control:hover {
+        border-color: $clrEjOrangeLight;
+    }
+}
+
+.select-airports {
+    .select-airports__icon {
+        position: absolute;
+        top: 11px;
+        left: 30px;
+        width: 24px;
+        height: 24px;
+        fill: $colorOrange;
+    }
+
+    .custom-select__control {
+        padding-left: 54px;
+    }
+
+    .custom-select__single-value {
+        max-width: calc(100% - 130px);
+    }
+
+    .custom-select__placeholder {
+        left: 42px;
+    }
+
+    .custom-select__value-container--has-value,
+    .custom-select__control--menu-is-open,
+    .custom-select__control--is-focused {
+        .custom-select__placeholder {
+            left: 12px;
+        }
+    }
+}
+
+//for portal version
+.custom-select__menu-list {
+    &:first-child {
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+
+    &:last-child {
+        border-bottom-right-radius: 6px;
+        border-bottom-left-radius: 6px;
+    }
+}

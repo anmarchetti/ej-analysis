@@ -1,0 +1,170 @@
+.amend-flights {
+    padding-top: 60px;
+    padding-bottom: 60px;
+
+    @include media-breakpoint-down(md) {
+        padding-top: 30px;
+    }
+}
+
+.amend-flights__title {
+    margin: 0 0 20px;
+    font-family: $fontRoundedHeadline;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.amend-flights__alt-flights {
+    margin-top: 80px;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 50px;
+    }
+
+    .show-more .btn {
+        font-size: 16px;
+    }
+
+    .error-message {
+        margin-top: 10px;
+        background-color: transparent;
+        box-shadow: none;
+
+        .error-message__container {
+            color: $colorRed;
+        }
+
+        .error-message__icon svg {
+            margin-left: 0;
+        }
+    }
+
+    .amend-item-unavailable-error {
+        .error-message__container {
+            color: $colorBlack;
+        }
+
+        .col-sm-12 {
+            padding: 0;
+        }
+    }
+}
+
+.filters-tooltip {
+    position: absolute;
+    z-index: $z-index-tooltip;
+    top: 100%;
+    left: 10px;
+    width: 280px;
+    margin-top: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 12px 2px #ddd;
+
+    &::before {
+        $arrow-size: 12px;
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 30px;
+        width: $arrow-size;
+        height: $arrow-size;
+        margin-top: -$arrow-size / 2;
+        margin-left: -$arrow-size / 2;
+        background-color: inherit;
+        box-shadow: inherit;
+        transform: rotate(45deg);
+    }
+
+    .filters-tooltip__content {
+        position: relative;
+        padding: 14px 40px;
+        background-color: inherit;
+        border-radius: inherit;
+    }
+
+    .filters-tooltip__icon {
+        position: absolute;
+        top: 50%;
+        left: 12px;
+        transform: translateY(-50%);
+
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .filters-tooltip__message {
+        font-size: 13px;
+        line-height: 1.3;
+    }
+
+    .filters-tooltip__close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        padding: 5px;
+        line-height: 1;
+        color: #b2b2b2;
+
+        svg {
+            width: 14px;
+            height: 14px;
+        }
+    }
+}
+
+.amend-flights__continue {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 40px;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+    }
+
+    a {
+        align-self: center;
+        margin-right: 20px;
+
+        @include media-breakpoint-down(md) {
+            order: 1;
+            margin-right: 0;
+        }
+    }
+
+    .btn {
+        min-width: 250px;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+        }
+    }
+}
+
+// Error message
+.amend-flights__error {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    @include media-breakpoint-down(md) {
+        justify-content: center;
+    }
+
+    .error-message {
+        padding: 0;
+        box-shadow: none;
+
+        .d-flex {
+            padding: 0;
+        }
+
+        .error-message__container {
+            font-size: 14px;
+            color: $colorRed;
+        }
+    }
+}

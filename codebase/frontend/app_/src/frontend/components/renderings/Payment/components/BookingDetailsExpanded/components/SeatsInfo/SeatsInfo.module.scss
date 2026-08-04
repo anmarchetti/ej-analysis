@@ -1,0 +1,21 @@
+.flightSeats {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 7px;
+
+    @include media-breakpoint-down(lg) {
+        margin-top: 8px;
+    }
+
+    :global(.seat-confirmation__credentials) {
+        margin-right: 24px;
+        margin-bottom: 8px;
+    }
+
+    :global(.seat-confirmation__seat-number) {
+        @include media-breakpoint-down(lg) {
+            margin-right: 8px;
+            margin-left: 0;
+        }
+    }
+}

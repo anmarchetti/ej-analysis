@@ -1,0 +1,84 @@
+.expandAction {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    @include media-breakpoint-up(sm) {
+        display: none;
+    }
+}
+
+.messages {
+    p {
+        font-size: 13px;
+        line-height: 19px;
+    }
+
+    :global(.error-message) {
+        padding: 0;
+        background-color: transparent;
+        box-shadow: none;
+
+        & > *:first-child {
+            padding-right: 0;
+            padding-left: 0;
+        }
+    }
+
+    :global(.error-message__icon svg),
+    :global(.flight-errata__icon) {
+        margin-left: 0;
+    }
+
+    :global(.error-message) {
+        margin: 12px 0;
+    }
+
+    :global(.error-message__container) {
+        font-size: 13px;
+        line-height: 16px;
+        color: $colorRed;
+    }
+
+    a {
+        font-family: $fontRoundedDemy;
+        text-decoration: underline;
+    }
+
+    @include media-breakpoint-down(md) {
+        :global(.flight-errata__item) {
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+
+        :global(.flight-errata__items--dot .flight-errata__item) {
+            &::before {
+                top: 8px !important;
+            }
+        }
+    }
+}
+
+.mobileAction {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    font-size: 13px;
+    color: $colorBlackLight;
+
+    span {
+        font-family: $fontRoundedBook;
+        line-height: 16px;
+    }
+
+    svg.attentionIcon {
+        width: 16px;
+        height: 16px;
+        margin-right: 10px;
+        color: $colorBlackLight;
+    }
+}
+

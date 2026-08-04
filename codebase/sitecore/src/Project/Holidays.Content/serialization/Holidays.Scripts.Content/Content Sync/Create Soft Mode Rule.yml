@@ -1,0 +1,40 @@
+﻿---
+ID: "beda7338-6848-4580-82ca-64131dca2eaf"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Soft Mode Rule
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $holidaysRoot = "/sitecore/content/EasyJet/Holidays"
+    $rulesSettingsFolderTempalteId = "{5595D59A-2165-490A-BFEB-69F278A85FB8}"
+    $rulesSettingsTempalteId = "{F47AD901-0CC5-434D-A8A6-B004DE99D704}"
+    
+    function create-item($path,$name, $templateId){
+        $item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+           $item =  New-Item -Path $path -Name $name -ItemType $templateId
+        }
+        return $item
+    }
+    
+    $rulesSettingsFolder = create-item -Path $holidaysRoot -Name "Rules"  -TemplateId $rulesSettingsFolderTempalteId
+    
+    $rulesSettings = create-item -Path $rulesSettingsFolder.Paths.FullPath -Name "Soft Maintenance Mode"  -TemplateId $rulesSettingsTempalteId
+    
+    $rulesSettings.Editing.BeginEdit()
+    $rulesSettings["Rules"] = '<ruleset><rule uid="{7B622A82-50C5-4332-9D23-9030374DD5C8}"><conditions><and uid="C96024D033A6442C8C36650DD331EFB3"><condition id="{2CCF571A-0938-4454-8680-53EAEA415433}" uid="65AE55FED4D349908221E3528BE022E8" /><or uid="F093102C84354D4FBF5B812ADE326E01"><or uid="EB602ABE6AD5461DAC64889B768928D0"><condition id="{5DE6D53E-EA62-4D17-8BDD-FEBCD80AC07B}" uid="AA9CE62A960147B99DB73B69B3280304" templateid="{757936EF-C946-447F-9E37-90140EE1D938}" /><condition id="{5DE6D53E-EA62-4D17-8BDD-FEBCD80AC07B}" uid="1FB0FB73B9E7499E977AFC7CD4F9606B" templateid="{09BEF082-3309-4083-9F0B-71FB8D60D7F5}" /></or><condition id="{5DE6D53E-EA62-4D17-8BDD-FEBCD80AC07B}" uid="97F6787D859F45608DFD8298D2602BE9" templateid="{49ACD12D-BE7B-4F0C-8D11-4E3A66F826C7}" /></or></and></conditions><actions><action id="{85EBB3FA-F2C8-469F-A774-6C6840786201}" uid="AA6883C913F64646907BF631ACE082DC" Page="{0518D8C6-B7CA-4C73-86C2-A29D971EBEAB}" /></actions></rule></ruleset>'
+    $rulesSettings.Editing.EndEdit() | Out-Null
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4990
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200916T065140Z

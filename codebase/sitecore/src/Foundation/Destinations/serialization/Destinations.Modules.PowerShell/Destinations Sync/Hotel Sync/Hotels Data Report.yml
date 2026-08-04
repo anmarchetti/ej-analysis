@@ -1,0 +1,202 @@
+﻿---
+ID: "51a4459e-aedc-4ee0-ae31-c8d59d234783"
+Parent: "4c10d78f-07b6-469e-929f-cb4b460bb11e"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Destinations Sync/Hotel Sync/Hotels Data Report
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $time = Get-Date -UFormat %s -Millisecond 0
+    $filename = "HotelReport_$time.xlsx"
+    $folderPath = "$($SitecoreDataFolder)\ExportData"
+    $filePath = "$($folderPath)\$filename"
+    $sitePath = "http://sc.holidays.local/en/holidays/"
+    
+    function Create-Data-Folder {
+    	param($path)
+    	if (!(Test-Path $path))
+    	{
+    		New-Item -ItemType Directory -Force -Path $path
+    	}
+    }
+    
+    function Find-Hotels-Items {
+    	$criteria = @(
+    		@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    		@{ Filter = "Equals"; Field = "_template"; Value = "28e5e1698f724f90a277280a8302b607"; }
+    		@{ Filter = "Equals"; Field = "_name"; Value = "__Standard Values"; "Invert" = $true}
+    	)
+    
+    	$props = @{
+    		Index = "sitecore_master_index"
+    		Criteria = $criteria
+    	}
+    
+    	$items = Find-Item @props
+    
+    	Write-Host "$($items.Count) Hotels were found"
+    
+    	return $items
+    }
+    
+    function Prepare-Data {
+    	param($items)
+    
+    	$data = @()
+    	foreach ($searchResultItem in $items) {
+    
+    		$item = Get-Item -Path master: -Id $searchResultItem.ItemId
+    		$rows = Get-Data-From-Item -Item $item
+    		$rows | ForEach-Object { $data += $_}
+    	}
+    
+    	Write-Host "Hotel's report has been prepered"
+    
+    	return $data
+    }
+    
+    
+    function Get-Browse-Url {
+    	param($item)
+    	$path = $item.Paths.ContentPath -replace "/EasyJet/Holidays/Home/Destinations/",$sitePath
+    	$validPath = $path -replace "\s+",'-'
+    	return $validPath.ToLower()
+    }
+    
+    function Get-Children-By-Template {
+    	param($parent,$templateId)
+        
+    	$item = Get-ChildItem -Item $parent | Where-Object { $_.TemplateId -eq $templateId } | Select -First 1
+    
+    	return $item.Children
+    }
+    
+    function Get-Children-Count-By-Template-Deep {
+    	param($parent, $childTemplateId)
+        
+    	$childItems = Get-ChildItem -Item $parent | Where-Object {$_.TemplateId -eq $childTemplateId}
+    	
+    	if ($childItems -eq $null){
+    	    return 0
+    	}
+    	
+    	return $childItems.Children.Count
+    }
+    
+    
+    function GetAirports ($value) {
+    	$ids = $value.Split("|")
+    	$airports = @()
+    	$names = @()
+    	$ids | ForEach-Object {
+    		if (![string]::IsNullOrEmpty($_)) {
+    			$airports += Get-Item master: -Id $_
+    		}
+    	}
+    
+    	$airports | ForEach-Object {
+    		$names += $_.Name
+    	}
+    
+    	$result = [system.String]::Join(", ",$names)
+    	$result
+    }
+    
+    function Get-S3-Images-Count
+    {
+    	param($images)
+    
+    	if ($images -eq $null)
+    	{
+    		return 0
+    	}
+    
+    	$s3Images = $images | Where { $_['Small'].Contains('s3') }
+    
+    	if ($s3Images -eq $null)
+    	{
+    		return 0
+    	}
+    
+    	return $s3Images.Count
+    }
+    
+    function Get-Data-From-Item
+    {
+    	param($item)
+    
+    	# closest facility 
+    	if (![string]::IsNullOrEmpty($item['ClosestFacility'])) {
+    		$facility = Get-Item master: -Id $item['ClosestFacility']
+    	}
+    
+    	# hotel' child folders
+    	$images = Get-Children-By-Template -Parent $item -templateId "{AF7DAAA8-8099-4F22-A607-F0E1FBA6AD0D}"
+    	$facilities = Get-Children-By-Template -Parent $item -templateId "{5C397782-6810-460A-AB57-84E9AB67514C}"
+    	$rooms = Get-Children-By-Template -Parent $item -templateId "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+    	$boards = Get-Children-By-Template -Parent $item -templateId "{AA2B6E6C-AE94-4E48-AE95-D77DA154FE9B}"
+    	
+    	$rooms_images_count = 0
+        
+        if($rooms -ne $null){
+            $sum = 0
+            $rooms | ForEach-Object { Get-Children-Count-By-Template-Deep -Parent $_ -childTemplateId "{AF7DAAA8-8099-4F22-A607-F0E1FBA6AD0D}" } | ForEach-Object { $sum += $_ }
+            
+            $rooms_images_count = $sum
+        }
+        
+    	$data = [ordered]@{
+    		ATCom = $item['Code']
+    		HBG = $item['HotelBedsCode']
+    		TripAdvisorId = $item['TripAdvisorId']
+    		HotelName = $item["Name"]
+    		Description = $item['HotelDescription']
+    		BrowseUrl = Get-Browse-Url -Item $item
+    		VersionNumber = $item.Versions.Count
+    		IsExternalAccommadation = [System.Convert]::ToBoolean([int]$item["ExternalAccommodation"].Value)
+    		NumberOfSubfolder = $item.Children.Count
+    		CountOfImages = $images.Count #Image Folder TemplateId
+    		CountOfFacilities = $facilities.Count #Facility Folder TemplateId
+    		CountOfRooms = $rooms.Count #Room Folder TemplateId
+    		CountOfBoards = $boards.Count #Board Folder TemplateId
+    		Airports = GetAirports ($item['Airports'])
+    		Lat = $item['Latitude']
+    		Long = $item['Longitude']
+    		Strapline = $item['Strapline']
+    		KSP1 = $item['KeySellingPoint1']
+    		KSP2 = $item['KeySellingPoint2']
+    		NearestFacility = $facility.Name
+    		HotelStarRating = $item['StarRating']
+    		TripAdviserRating = $item['HotelRating']
+    		RestortCode = $item.Parent['Code']
+    		CountOfImagesFromS3 = Get-S3-Images-Count -images $images
+    		CountOfImagesInRooms = $rooms_images_count
+    	}
+        
+        
+    	return $data
+    }
+    
+    #find hotels items
+    $items = Find-Hotels-Items
+    
+    #Prepare items to table format
+    $table = Prepare-Data -items $items
+    
+    Create-Data-Folder -Path $folderPath
+    
+    Import-Function -Name ConvertTo-Xlsx
+    
+    [byte[]]$outobject = $table | ForEach-Object { New-Object PSObject -Property $_ } | ConvertTo-Xlsx
+    
+    Out-Download -Name $filename -InputObject $outobject 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191009T122427Z

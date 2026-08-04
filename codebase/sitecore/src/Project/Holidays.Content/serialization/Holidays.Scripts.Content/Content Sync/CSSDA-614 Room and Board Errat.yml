@@ -1,0 +1,107 @@
+﻿---
+ID: "39b159eb-64a7-4807-9c23-8eadb0ca93c6"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-614 Room and Board Errata Message"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version ($item,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+    
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value;
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    function Get-Or-Create-Item ($path,$template) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $template
+    	}
+    	return $item
+    }
+    
+    function Add-Or-Update-Page-Rendering ($page,$renderingPath,$renderingPlaceholder,$dataSourcePath,$parameters = @{}) {
+    	$renderingItem = Get-Item -Database "master" -Path $renderingPath;
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+    
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -DataSource $dataSourcePath
+    		Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath | Set-RenderingParameter -Parameter $parameters | Set-Rendering -Item $page;
+    		Write-Host $renderingItem "Rendering instance added";
+    	}
+    	else {
+    		Write-Host $pageRenderingInstance "Already exists";
+    	}
+    }
+    
+    # Page
+    $roomAndBoardPagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Change Room And Board"
+    $roomAndBoardPage = Get-Or-Create-Item -Path $roomAndBoardPagePath
+    
+    $roomAndBoardRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Room And Board/Amend Room And Board Page"
+    $roomAndBoardRendering = Get-Item -Path $roomAndBoardRenderingPath;
+    
+    $renderedRoomAndBoard = Get-Rendering -Item $roomAndBoardPage -Render $roomAndBoardRendering;
+    
+    $renderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Attention Message";
+    $renderigPlaceholder = "/body/attention-message-" + $renderedRoomAndBoard.UniqueId + "-0";
+    
+    $roomAndBoardAttentionMessagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Room And Board/Page Components/Attention Message";
+    $roomAndBoardAttentionMessageItem = Get-Or-Create-Item -Path $roomAndBoardAttentionMessagePath -Template "{4E3890D9-808D-4390-BE32-749397BE8A74}"
+    
+    if ($roomAndBoardAttentionMessageItem -ne $null) {
+    	$enTitle = "Please read carefully";
+    	$frTitle = "Lisez attentivement s'il vous plaît";
+    	$deTitle = "Bitte aufmerksam lesen";
+    
+    	$roomAndBoardAttentionMessageItem.Editing.BeginEdit();
+    
+    	$roomAndBoardAttentionMessageItem["Title"] = $enTitle;
+    	$roomAndBoardAttentionMessageItem["Type"] = "errata";
+    	$roomAndBoardAttentionMessageItem["Description"] = "";
+    	$roomAndBoardAttentionMessageItem["Icon"] = '<image mediaid="{51A15C31-80B0-4286-9522-30165F61C780}" />'
+    
+    	# Creating languages versions
+    	@( 'fr-CH','fr-FR') | % {
+    		Create-Lang-Version -Item $roomAndBoardAttentionMessageItem -Lang $_ -Field "Title" -Value $frTitle;
+    		Create-Lang-Version -Item $roomAndBoardAttentionMessageItem -Lang $_ -Field "Description" -Value "";
+    	}
+    	@( 'de-CH','de-DE') | % {
+    		Create-Lang-Version -Item $roomAndBoardAttentionMessageItem -Lang $_ -Field "Title" -Value $deTitle;
+    		Create-Lang-Version -Item $roomAndBoardAttentionMessageItem -Lang $_ -Field "Description" -Value "";
+    	}
+    
+    	Write-Host $roomAndBoardAttentionMessageItem.Name "Updated";
+    	$roomAndBoardAttentionMessageItem.Editing.EndEdit() | Out-Null;
+    }
+    
+    Add-Or-Update-Page-Rendering -page $roomAndBoardPage -renderingPath $renderingPath -renderingPlaceholder $renderigPlaceholder -dataSourcePath $roomAndBoardAttentionMessageItem.ID
+    Write-Host "New Attention Message Popup added to Room And Board Page" 
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230628T103556Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

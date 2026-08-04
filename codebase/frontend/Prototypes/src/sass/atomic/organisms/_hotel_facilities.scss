@@ -1,0 +1,113 @@
+.hotel-facilities {
+    margin-top: 50px;
+    margin-bottom: 40px;
+
+    .carousel-container {
+        position: unset;
+    }
+}
+
+.hotel-facilities__title {
+    margin: 0 0 20px;
+    font-family: $fontRoundedHeadline;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.36px;
+
+    @include media-breakpoint-up(sm) {
+        margin-top: 10px;
+        font-size: 24px;
+    }
+}
+
+.hotel-facilities__disclaimer {
+    font-size: 16px;
+    line-height: 1.25;
+}
+
+/** Facilities List Design */
+.hotel-facilities__lists {
+    $list-padding: $container-padding-x_mobile / 2;
+
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -$list-padding;
+    margin-left: -$list-padding;
+
+    .flex-list-box {
+        width: 100%;
+        margin-top: 22px;
+        padding-right: $list-padding;
+        padding-left: $list-padding;
+
+        &:first-child {
+            margin-top: 0;
+        }
+
+        @include media-breakpoint-up(lg) {
+            flex: 0 0 20%;
+            max-width: 20%;
+            margin-top: 0;
+        }
+    }
+
+    .flex-list-head {
+        display: flex;
+        align-items: center;
+        margin: 0 0 8px;
+        font-family: $fontRoundedBook;
+        font-size: 18px;
+        font-weight: bold;
+        line-height: 1.333;
+        color: rgba(0, 0, 0, 0.6);
+
+        @include media-breakpoint-down(md) {
+            font-size: 16px;
+            color: $clrTextMainLight;
+        }
+
+        img {
+            width: 24px;
+            height: 24px;
+            opacity: 0.6;
+
+            @include media-breakpoint-down(md) {
+                opacity: 0.9;
+            }
+        }
+    }
+
+    .list {
+        padding-right: 20px;
+        padding-left: 25px;
+        list-style-type: disc;
+
+        li {
+            padding-left: 7px;
+            background-color: $colorTransparent;
+        }
+
+        @include media-breakpoint-down(md) {
+            font-size: 14px;
+        }
+    }
+}
+
+.hotel-facilities__lists--preview {
+    @include media-breakpoint-down(md) {
+        .list {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0;
+
+            li {
+                width: 50%;
+                margin-top: 6px;
+                margin-right: -15px;
+                margin-left: 15px;
+                padding-right: 20px;
+            }
+        }
+    }
+}

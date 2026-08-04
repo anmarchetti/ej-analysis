@@ -1,0 +1,110 @@
+﻿---
+ID: "8dad0d17-22a8-4ced-9729-761cc206b041"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EDI-153 create sitecore script for translation"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $data = 
+    @(
+    	@{
+    		path = "/sitecore/content/EasyJet/Holidays/Dictionary/Room Types/Buttons/Show More";
+    		fields = @( @{ name = "Phrase"; lang = "de-CH"; value = "Alternative Zimmer ansehen" }, @{ name = "Phrase"; lang = "fr-CH"; value = " Afficher les autres chambres disponibles " } )
+    	},
+    	@{
+    		path = "/sitecore/content/EasyJet/Holidays/Dictionary/Room Types/Buttons/Show Less";
+    		fields = @( @{ name = "Phrase"; lang = "de-CH"; value = "Alternative Zimmer ausblenden" }, @{ name = "Phrase"; lang = "fr-CH"; value = " Masquer les autres chambres disponibles " } )
+    	},
+    	@{
+    		path = "/sitecore/content/EasyJet/Holidays/Dictionary/Board Types/Labels/Included In Holiday";
+    		fields = @( @{ name = "Phrase"; lang = "de-CH"; value = "In deinem Urlaub inbegriffen:" }, @{ name = "Phrase"; lang = "fr-CH"; value = " Inclus dans votre séjour : " } )
+    	},
+    	@{
+    		path = "/sitecore/content/EasyJet/Holidays/Dictionary/Booking Alterations/Labels/Changing From";
+    		fields = @( @{ name = "Phrase"; lang = "de-CH"; value = "Ändern ab" }, @{ name = "Phrase"; lang = "fr-CH"; value = " Changement de " } )
+    	},
+    	@{
+    		path = "/sitecore/content/EasyJet/Holidays/Dictionary/Booking Alterations/Labels/Title";
+    		fields = @( @{ name = "Phrase"; lang = "de-CH"; value = "Änderungen bestätigen" }, @{ name = "Phrase"; lang = "fr-CH"; value = " Confirmer vos modifications " } )
+    	},
+    	@{
+    		path = "/sitecore/content/EasyJet/Holidays/Dictionary/Booking Alterations/Labels/Update To";
+    		fields = @( @{ name = "Phrase"; lang = "de-CH"; value = "Update zum Paket" }, @{ name = "Phrase"; lang = "fr-CH"; value = " Ajouter au forfait " } )
+    	},
+    	@{
+    		path = "/sitecore/content/EasyJet/Holidays/Dictionary/Room Types/Labels/Included In Room";
+    		fields = @( @{ name = "Phrase"; lang = "de-CH"; value = "In Ihrem Zimmer inbegriffen:" }, @{ name = "Phrase"; lang = "fr-CH"; value = " Inclus dans votre chambre : " } )
+    	},
+    	@{
+    		path = "/sitecore/content/EasyJet/Holidays/Dictionary/Room Types/Labels/Edit Room";
+    		fields = @( @{ name = "Phrase"; lang = "de-CH"; value = "Ihr Zimmer bearbeiten" }, @{ name = "Phrase"; lang = "fr-CH"; value = " Modifier votre pièce " } )
+    	},
+    	@{
+    		path = "/sitecore/content/EasyJet/Holidays/Dictionary/Globals/Buttons/Confirm changes";
+    		fields = @( @{ name = "Phrase"; lang = "de-CH"; value = "Bestätigen Sie Änderungen" }, @{ name = "Phrase"; lang = "fr-CH"; value = " Confirmer les modifications " } )
+    	},
+    	@{
+    		path = "/sitecore/content/EasyJet/Holidays/Dictionary/Booking Alterations/Labels/Changing From";
+    		fields = @( @{ name = "Phrase"; lang = "de-CH"; value = "Ändern ab" }, @{ name = "Phrase"; lang = "fr-CH"; value = " Changement de " } )
+    	},
+    	@{
+    		path = "/sitecore/content/EasyJet/Holidays/Dictionary/Booking Alterations/Labels/Title";
+    		fields = @( @{ name = "Phrase"; lang = "de-CH"; value = "Änderungen bestätigen" }, @{ name = "Phrase"; lang = "fr-CH"; value = " Confirmer vos modifications " } )
+    	},
+    	@{
+    		path = "/sitecore/content/EasyJet/Holidays/Dictionary/Booking Alterations/Labels/Update To";
+    		fields = @( @{ name = "Phrase"; lang = "de-CH"; value = "Update zum Paket" }, @{ name = "Phrase"; lang = "fr-CH"; value = " Ajouter au forfait " } )
+    	}
+    )
+    
+    Write-Host 'BEGIN: EDI-153 create sitecore script for translation'
+    
+    foreach ($dataItem in $data) {
+    		
+    		Write-Host 'Try to add translations for ' $dataItem.path
+    		
+    		$itemExists = Get-Item -Path $dataItem.path -ErrorAction SilentlyContinue
+    		if($itemExists -eq $null){
+    		    Write-Host 'Failed: Cannot find item  ' $dataItem.path
+    		    continue
+    		}
+    		
+    		foreach ($field in $dataItem.fields) {
+    		    # Added Language Versions if not exist
+                Add-ItemVersion -Path $dataItem.path -Language "en" -TargetLanguage $field.lang -IfExist Skip 
+               
+                # Get specific item language version
+                $item = Get-Item -path $dataItem.path -Language $field.lang
+                
+                # Update translation
+                $item.Editing.BeginEdit()
+    		    $item[$field.name] = $field.value
+    		    $item.Editing.EndEdit() | Out-Null
+    		}
+    	
+    	    Write-Host 'Translations added successfully: ' $dataItem.path
+    	}
+    
+    # Add Item Versions if not exist, Standard values are populated with translations for fr and de so just need to create language versions
+    Add-ItemVersion -Path "/sitecore/content/EasyJet/Holidays/Home/Hotel Details/Page Components/Room Types" -Language "en" -TargetLanguage "de-CH" -IfExist Skip
+    Add-ItemVersion -Path "/sitecore/content/EasyJet/Holidays/Home/Hotel Details/Page Components/Room Types" -Language "en" -TargetLanguage "fr-CH" -IfExist Skip
+    
+    Write-Host 'END: EDI-153 create sitecore script for translation'
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 370
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230807T175630Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\rkhalupau

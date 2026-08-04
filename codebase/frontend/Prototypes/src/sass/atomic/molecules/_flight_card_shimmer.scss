@@ -1,0 +1,132 @@
+/* stylelint-disable selector-max-compound-selectors */
+
+.loading-shimmers {
+    margin-top: 80px;
+
+    .flight-card-shimmer {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 20px;
+        border-radius: 4px;
+        box-shadow: 0 0 4px 0 rgba(178, 175, 175, .5);
+
+        .placeholder-shimmer {
+            height: 16px;
+            border-radius: 8px;
+        }
+
+        .departure-flight {
+            display: flex;
+            width: 50%;
+            padding: 25px 50px 25px 75px;
+
+            .first-column {
+                width: 50%;
+
+                .date {
+                    width: 50%;
+                    margin-bottom: 10px;
+                }
+
+                .time {
+                    width: 20%;
+                    margin-bottom: 10px;
+                }
+
+                .direction {
+                    width: 70%;
+                }
+            }
+
+            .second-column {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                width: 50%;
+                padding-left: 20%;
+
+                .time {
+                    width: 40%;
+                    margin-bottom: 10px;
+                }
+
+                .direction {
+                    width: 90%;
+                }
+            }
+        }
+
+        .separator {
+            width: 2px;
+            height: auto;
+            margin: 20px 0;
+            background: $colorGray;
+        }
+
+        .arrival-flight {
+            display: flex;
+            justify-content: space-between;
+            width: 50%;
+            padding: 25px 75px 25px 50px;
+
+            > div {
+                width: 30%;
+            }
+
+            .first-column {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+
+                .time {
+                    width: 40%;
+                    margin-bottom: 10px;
+                }
+
+                .direction {
+                    width: 90%;
+                }
+            }
+
+            .second-column {
+                .date {
+                    width: 80%;
+                    margin-bottom: 10px;
+                }
+
+                .time {
+                    width: 40%;
+                    margin-bottom: 10px;
+                }
+
+                .direction {
+                    width: 90%;
+                }
+            }
+
+            .third-column {
+                .btn {
+                    width: 100%;
+                    height: 25px;
+                    border-radius: 13px;
+                }
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+
+            .departure-flight, .arrival-flight {
+                width: 100%;
+                padding: 10px;
+            }
+
+            .separator {
+                height: 2px;
+                width: auto;
+                margin: 0 20px;
+            }
+        }
+    }
+}
+/* stylelint-enable selector-max-compound-selectors */

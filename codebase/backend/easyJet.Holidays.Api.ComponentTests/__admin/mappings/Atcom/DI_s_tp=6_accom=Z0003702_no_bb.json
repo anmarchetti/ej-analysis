@@ -1,0 +1,113 @@
+{
+    "Title": "Accommodation uat offers for s_tp=6&h_tp=P&tpf=Y&direct=N&names=1&accom_no=1&p_tp=TP&cty=1&names=1&sdate=2023-09-26&edate=2023-09-26&stay=7&pax_ad=2&pax_ch=0&pax_in=0&ch_age=&rooms=1&accom=Z0003702&tra_o=2179946923%2f762777&tra_i=2180431590%2f808732&pkg=2213361173%2f2%2f2094%2f7&accom_no=1&p_tp=PP&max_prc=5000&min_prc=100&fc_pp=Y&rm_1=1,2&brnd=F",
+    "Priority": 5,
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "RegexMatcher",
+                    "Pattern": "/fcgi-bin/ezy.*/avcache3_g",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "s_tp",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "6"
+                    }
+                ]
+            },
+            {
+                "Name": "sdate",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "2023-09-26"
+                    }
+                ]
+            },
+            {
+                "Name": "edate",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "2023-09-26"
+                    }
+                ]
+            },
+            {
+                "Name": "stay",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "7"
+                    }
+                ]
+            },
+            {
+                "Name": "pax_ad",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "2"
+                    }
+                ]
+            },
+            {
+                "Name": "pax_ch",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "0"
+                    }
+                ]
+            },
+            {
+                "Name": "pax_in",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "0"
+                    }
+                ]
+            },
+            {
+                "Name": "rooms",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "1"
+                    }
+                ]
+            },
+            {
+                "Name": "accom",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "Z0003702"
+                    }
+                ]
+            },
+            {
+                "Name": "pkg",
+                "Matchers": [
+                    {
+                        "Name": "ExactMatcher",
+                        "Pattern": "2213361173/2/2094/7"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/DI_s_tp=6_accom=Z0003702_no_bb.xml"
+    }
+}

@@ -1,0 +1,197 @@
+.container {
+    padding-bottom: 23px;
+
+    @include media-breakpoint-down(sm) {
+        padding: 0 10px 10px;
+    }
+}
+
+.carousel {
+    position: relative;
+    margin: 16px 0;
+    padding-bottom: 2px;
+
+    @include media-breakpoint-down(sm) {
+        margin: 0 -10px 25px;
+        padding-bottom: 24px;
+    }
+
+    @include media-breakpoint-up(sm) {
+        &::before {
+            content: '';
+            position: absolute;
+            z-index: 10;
+            top: 0;
+            left: 0;
+            width: 230px;
+            height: 100%;
+            background: linear-gradient(90deg, $colorWhite 20%, rgba(255, 255, 255, 0) 100%);
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50px);
+            transition: opacity $animationDuration ease-out;
+        }
+
+        /* Show left blurred gradient only when the first item has been scrolled past */
+        &:has(:global(.react-multi-carousel-item:first-child:not(.react-multi-carousel-item--active))) {
+            &::before {
+                opacity: 1;
+            }
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 230px;
+            height: 100%;
+            background: linear-gradient(270deg, $colorWhite 20%, rgba(255, 255, 255, 0) 100%);
+            pointer-events: none;
+            transform: translateX(50px);
+        }
+    }
+
+    :global {
+        .react-multi-carousel-track {
+            margin: 0 -8px;
+
+            @include media-breakpoint-down(sm) {
+                margin: 0;
+            }
+        }
+
+        .react-multi-carousel-item {
+            padding: 10px;
+
+            @include media-breakpoint-up(sm) {
+                min-width: 276px;
+                max-width: 360px;
+                padding: 0 8px;
+            }
+
+            @include media-breakpoint-only(md) {
+                max-width: 300px;
+            }
+
+            &:not(.react-multi-carousel-item--active) {
+                pointer-events: none;
+            }
+        }
+
+        .react-multi-carousel-dot-list {
+            align-items: center;
+            line-height: 1;
+        }
+
+        .react-multi-carousel-dot {
+            + .react-multi-carousel-dot {
+                margin-left: 10px;
+            }
+
+            button {
+                width: 8px;
+                height: 8px;
+                margin: 0;
+                vertical-align: middle;
+                background: $colorGray;
+                border: none;
+            }
+
+            &.react-multi-carousel-dot--active {
+                button {
+                    width: 12px;
+                    height: 12px;
+                    background: $clrEjOrange;
+                }
+            }
+        }
+    }
+}
+
+.carouselArrow {
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    display: flex;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: $clrSiteBgWhite;
+    border: 1px solid $clrEjOrange;
+    border-radius: 50%;
+    opacity: 0.7;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: all $animationDuration ease-out;
+
+    @include media-breakpoint-down(sm) {
+        // card image height + card header height
+        top: calc(60vw + 110px);
+    }
+
+    &:global(.right) {
+        right: 0;
+    }
+
+    &:global(.left) {
+        left: 0;
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 9px;
+        height: 14px;
+        color: $clrEjOrange;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.footerInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @include media-breakpoint-up(sm) {
+        align-items: flex-start;
+    }
+}
+
+.showMoreLink {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 8px 0 1px;
+    font-family: $fontRoundedDemy;
+    font-size: 16px;
+    line-height: 13px;
+    border-bottom: 1px solid $clrEjOrange;
+
+    svg {
+        display: inline;
+        width: 12px;
+        height: 12px;
+        margin-left: 3px;
+    }
+}
+
+.atolText {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    font-size: 16px;
+    line-height: 13px;
+
+    svg {
+        width: 24px;
+        height: 24px;
+        margin-right: 4px;
+        color: $clrEjOrangeDarkShadow;
+    }
+}

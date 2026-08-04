@@ -1,0 +1,88 @@
+﻿---
+ID: "99103e54-c2fa-48d6-bdc6-e3391cc9c5af"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-299 - Add destinationName token to Exursions and Recommnded carousel"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version ($item,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    function Copy-Excursion($to){
+        $excursionOnConfirmation = Get-Item -Path "$to/Excursions" -ErrorAction SilentlyContinue; 
+        if($excursionOnConfirmation -eq $null){
+            Copy-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Excursions" -Destination "$to/Excursions"
+            Write-Host "Сopied $to"
+        }
+    }
+    
+    function UpdateDatasource($pagePath, $datasource){
+        # Update Rendering
+        $page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue;
+        $datsourceItem = Get-Item -Path $datasource -ErrorAction SilentlyContinue;
+        $renderingItem = Get-Item -Path "master:" -Id "{9C3DFA27-58E8-466E-AB02-1158188EE582}"
+        $rendering = Get-Rendering -Item $page -PlaceHolder "/body/excursions*" -Rendering $renderingItem
+        if ($rendering -ne $null) {
+    	    Set-Rendering -Item $page -Instance $rendering -DataSource $datsourceItem.ID
+    	    Write-Host $page.Name "Excursion Rendering successfully updated"
+        }
+    }
+    
+    
+    
+    $item =  Get-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Recommended Hotels Carousel Folder/Destination Page Carousel Title" -ErrorAction SilentlyContinue; 
+    
+    @('en') | % {
+    	Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Holidays we think you'll like in {destinationName}"
+    }
+    
+    @('de-CH','de-DE') | % {
+    	Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Funktion vorübergehend nicht verfügbar in {destinationName}"
+    }
+    
+    @('fr-CH','fr-FR') | % {
+    	Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Des vacances qui pourraient vous plaire en {destinationName}"
+    }
+    
+    Copy-Excursion -to "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components"
+    Copy-Excursion -to "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components"
+    
+    $item =  Get-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Excursions" -ErrorAction SilentlyContinue; 
+    
+    @('en') | % {
+    	Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Exciting tours and activities in {destinationName}"
+    }
+    
+    @('de-CH','de-DE') | % {
+    	Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Spannende Touren und Aktivitäten in {destinationName}"
+    }
+    
+    @('fr-CH','fr-FR') | % {
+    	Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Des visites et des activités passionnantes en {destinationName}"
+    }
+    
+    UpdateDatasource -pagePath "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation" -datasource "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Excursions"
+    UpdateDatasource -pagePath "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking" -datasource "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Excursions"
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240724T150951Z

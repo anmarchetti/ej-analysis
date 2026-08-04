@@ -1,0 +1,125 @@
+﻿---
+ID: "99e5058d-0c87-49e3-8c18-d5eec843c2e4"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-195 - Hold luggage info banner"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $tradeportalDataSourcePath = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirmation/Page Components/Redirect To Airline For Bag Purchase"
+    Remove-Item -Path $tradeportalDataSourcePath -Permanently
+    
+    $viewbookingDataSourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Redirect To Airline For Bag Purchase"
+    Remove-Item -Path $viewbookingDataSourcePath -Permanently
+    
+    $viewBookingPage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking" 
+    $renderings = Get-Rendering -Item $viewBookingPage
+    $genericRendering = $renderings | Where-Object { $_.ItemId -eq "{8D8FD7DE-A929-4931-8AB5-88C289077A49}" }
+    
+    if($genericRendering -ne $null) {
+        Remove-Rendering -Item $viewBookingPage -instance $genericRendering
+    }
+    
+    $confirmationTradePage = Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirmation" 
+    $renderings = Get-Rendering -Item $confirmationTradePage
+    $genericRendering = $renderings | Where-Object { $_.ItemId -eq "{8D8FD7DE-A929-4931-8AB5-88C289077A49}" }
+    
+    if($genericRendering -ne $null) {
+        Remove-Rendering -Item $confirmationTradePage -instance $genericRendering
+    }
+    
+    
+    $updates = @(
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Redirect To Airline For Bag Purchase/Default Hold Luggage Info Banner Item" 
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Hold Luggage Info Banner Item"
+            Fields      = @{
+                "Title" = @{
+                    "en"    = "Want to take more bags on holiday?"
+                    "fr-CH" = "Vous souhaitez emporter plus de bagages en vacances?"
+                    "fr-FR" = "Vous voulez emporter moins de sacs en vacances ?"
+                    "de-CH" = "Du möchtest mehr Gepäck mit in die Ferien nehmen?"
+                    "de-DE" = "Möchtest du mehr Gepäck in den Urlaub mitnehmen?"
+                }
+                "Description" = @{
+                    "en"    = "If you want to add a large overhead cabin bag, or extra hold luggage to your holiday package &ndash; you can add this to your booking via easyJet.com once you have your flight reference number.<br /><br />Just so you know, any extras you add via easyJet.com will not reflect on easyJet holidays."
+                    "fr-CH" = "Si vous souhaitez ajouter un grand bagage à main ou d'autres bagages en soute à votre forfait vacances, vous pouvez le faire sur easyJet.com une fois que vous avez votre référence de vol.<br /><br /> Pour votre information, les suppléments ajoutés sur easyJet.com ne seront pas visibles sur votre compte easyJet holidays."
+                    "fr-FR" = "Si vous souhaitez ajouter un grand bagage en cabine ou un bagage en soute suppl&eacute;mentaire &agrave; votre forfait vacances &ndash;&nbsp;vous pouvez l'ajouter &agrave; votre r&eacute;servation via easyJet.com une fois que vous avez votre num&eacute;ro de r&eacute;f&eacute;rence de vol. <br /><br />Pour votre information, les suppl&eacute;ments que vous ajoutez via easyJet.com ne seront pas r&eacute;percut&eacute;s sur les vacances easyJet."
+                    "de-CH" = "Wenn du ein grosses Handgepäckstück oder zusätzliches Aufgabegepäck zu deinen Ferien hinzufügen möchtest, kannst du das über easyJet.com tun, sobald du deine Flugreferenz hast.<br /><br />Zur Info: Alle Extras, die du über easyJet.com hinzufügst, kannst du auf der easyJet holidays Webseite nicht sehen."
+                    "de-DE" = "<p>Wenn du ein großes Handgepäckstück oder zusätzliches Aufgabegepäck für deinen Urlaub hinzufügen möchtest, kannst du das über easyJet.com tun, sobald du deine Flugreferenz hast.<br /><br />Zur Info: Alle Extras, die du über easyJet.com hinzufügst, kannst du auf der easyJet holidays Website nicht sehen.</p>"
+                }
+                "Link" = @{
+                    "en"    = '<link text="Add bags" linktype="external" url="https://www.easyjet.com/en?accntmdl=1" anchor="" target="" rel="" />'
+                    "fr-CH" = '<link text="Ajouter des bagages" linktype="external" url="https://www.easyjet.com/ch-fr?accntmdl=1" anchor="" target="" rel="" />'
+                    "fr-FR" = '<link text="Ajouter des bagages" linktype="external" url="https://www.easyjet.com/fr?accntmdl=1" anchor="" target="" rel="" />'
+                    "de-CH" = '<link text="Gepäck hinzufügen" linktype="external" url="https://www.easyjet.com/ch-de?accntmdl=1" anchor="" target="" rel="" />'
+                    "de-DE" = '<link text="Gepäck hinzufügen" linktype="external" url="https://www.easyjet.com/de?accntmdl=1" anchor="" target="" rel="" />'
+                }
+                "Icon" = @{
+                    "en"    = "<image mediaid='{51A15C31-80B0-4286-9522-30165F61C780}' />"
+                    "fr-CH" = "<image mediaid='{51A15C31-80B0-4286-9522-30165F61C780}' />"
+                    "fr-FR" = "<image mediaid='{51A15C31-80B0-4286-9522-30165F61C780}' />"
+                    "de-CH" = "<image mediaid='{51A15C31-80B0-4286-9522-30165F61C780}' />"
+                    "de-DE" = "<image mediaid='{51A15C31-80B0-4286-9522-30165F61C780}' />"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Redirect To Airline For Bag Purchase/Luxury Hold Luggage Info Banner Item" 
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Hold Luggage Info Banner Item"
+            Fields      = @{
+                "Title" = @{
+                    "en"    = "Want to take more bags on holiday?"
+                    "fr-CH" = "Vous souhaitez emporter plus de bagages en vacances?"
+                    "fr-FR" = "Vous voulez emporter moins de sacs en vacances ?"
+                    "de-CH" = "Du möchtest mehr Gepäck mit in die Ferien nehmen?"
+                    "de-DE" = "Möchtest du mehr Gepäck in den Urlaub mitnehmen?"
+                }
+                "Description" = @{
+                    "en"    = "If you want to add extra hold luggage to your holiday package &ndash; you can add this to your booking via easyJet.com once you have your flight reference number.<br /><br />Just so you know, any extras you add via easyJet.com will not reflect on easyJet holidays."
+                    "fr-CH" = "Si vous voulez ajouter des bagages en soute supplémentaires à votre offre de vacances, vous pouvez le faire sur easyJet.com une fois que vous avez votre numéro de réservation de vol.<br /><br />À noter : les suppléments ajoutés via easyJet.com ne seront pas affichés sur easyJet holidays."
+                    "fr-FR" = "Si vous souhaitez ajouter des bagages en soute supplémentaires à votre forfait vacances, vous pouvez le faire sur easyJet.com une fois que vous avez votre numéro de référence de vol.<br /><br />Veuillez noter que tout supplément ajouté via easyJet.com ne sera pas visible sur easyJet holidays."
+                    "de-CH" = "Wenn Sie zusätzliches Aufgabegepäck zu Ihrem Ferienpaket hinzufügen möchten, können Sie dies auf easyJet.com tun, sobald Sie Ihre Flugreferenznummer haben.<br /><br />Bitte beachten Sie, dass Extras, die über easyJet.com hinzugefügt werden, nicht auf easyJet holidays angezeigt werden."
+                    "de-DE" = "Wenn Sie zusätzliches Aufgabegepäck zu Ihrem Urlaubspaket hinzufügen möchten, können Sie dies auf easyJet.com tun, sobald Sie Ihre Flugreferenznummer haben.<br /><br />Bitte beachten Sie, dass über easyJet.com hinzugefügte Extras nicht in Ihrer easyJet holidays-Buchung angezeigt werden."
+                }
+                "Link" = @{
+                    "en"    = '<link text="Add bags" linktype="external" url="https://www.easyjet.com/en?accntmdl=1" anchor="" target="" rel="" />'
+                    "fr-CH" = '<link text="Ajouter des bagages" linktype="external" url="https://www.easyjet.com/ch-fr?accntmdl=1" anchor="" target="" rel="" />'
+                    "fr-FR" = '<link text="Ajouter des bagages" linktype="external" url="https://www.easyjet.com/fr?accntmdl=1" anchor="" target="" rel="" />'
+                    "de-CH" = '<link text="Gepäck hinzufügen" linktype="external" url="https://www.easyjet.com/ch-de?accntmdl=1" anchor="" target="" rel="" />'
+                    "de-DE" = '<link text="Gepäck hinzufügen" linktype="external" url="https://www.easyjet.com/de?accntmdl=1" anchor="" target="" rel="" />'
+                }
+                "Icon" = @{
+                    "en"    = "<image mediaid='{51A15C31-80B0-4286-9522-30165F61C780}' />"
+                    "fr-CH" = "<image mediaid='{51A15C31-80B0-4286-9522-30165F61C780}' />"
+                    "fr-FR" = "<image mediaid='{51A15C31-80B0-4286-9522-30165F61C780}' />"
+                    "de-CH" = "<image mediaid='{51A15C31-80B0-4286-9522-30165F61C780}' />"
+                    "de-DE" = "<image mediaid='{51A15C31-80B0-4286-9522-30165F61C780}' />"
+                }
+                "Key" = @{
+                    "en"    = "luxury"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $updates
+    
+    $page = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation"
+    $rendering = Get-Rendering -Item $page -Placeholder "/body/generic-info-block-banner-{5d228e7e-0347-4e8e-ac47-d911eba730d7}-0"
+    
+    if ($rendering -ne $null) {
+       Set-Rendering -Item $page -Instance $rendering -Placeholder "/body/hold-luggage-info-banner-{5d228e7e-0347-4e8e-ac47-d911eba730d7}-0"
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

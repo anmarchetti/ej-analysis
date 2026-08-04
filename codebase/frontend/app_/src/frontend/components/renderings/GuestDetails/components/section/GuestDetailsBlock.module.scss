@@ -1,0 +1,97 @@
+.wrapper {
+    padding: 24px 32px;
+    border-radius: 8px;
+    border: 2px solid $colorGeyser;
+
+    @include media-breakpoint-down(sm) {
+        padding: 16px;
+    }
+
+    .open {
+        display: grid;
+        grid-template-rows: 1fr!important;
+    }
+
+
+    .closed {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.4s linear;
+    }
+}
+
+.wrapper.disabled {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    line-height: 1;
+
+    .title,
+    .secondaryText {
+        color: $colorSurfaceDisabled;
+    }
+
+    svg {
+        fill: $colorSilver;
+    }
+}
+
+.wrapper.ignoreAnimation {
+    .closed {
+        transition: none;
+    }
+}
+
+.header {
+    line-height: 1;
+
+    button {
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+        padding: 0;
+        display: flex;
+        justify-content: space-between;
+        cursor: pointer;
+        align-items: center;
+        line-height: 1;
+    }
+}
+
+.icon {
+    display: inline-block;
+    margin-right: 12px;
+
+    svg {
+        @include sizeSquare(18px);
+        vertical-align: bottom;
+        fill: $clrTextMain;
+    }
+}
+
+.title {
+    display: inline-block;
+    margin-right: 12px;
+    font-size: 18px;
+    font-weight: 400;
+    color: $clrTextMainLight;
+    letter-spacing: 0.27px;
+}
+
+.secondaryText {
+    display: inline-block;
+    font-size: 14px;
+    color: $clrTextMainLight;
+}
+
+.chevron {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    color: $colorOrange;
+
+    &.expanded {
+        transform: rotate(180deg) translateY(25%);
+    }
+}

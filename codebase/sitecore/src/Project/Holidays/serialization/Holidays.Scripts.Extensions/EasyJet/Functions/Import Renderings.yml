@@ -1,0 +1,267 @@
+﻿---
+ID: "57eb1554-7c06-4264-9c3a-0e3c6ceb71f5"
+Parent: "b1e3c34e-a209-4730-a266-ecc77072d88c"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/SPE/Extensions/EasyJet/Functions/Import Renderings
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Get Rendering And Index By RenderingId"
+        
+    function Attach-Rendering 
+    {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$Title,
+            [Parameter(Mandatory = $true)]
+            [string]$PagePath,
+            [Parameter(Mandatory = $true)]
+            [string]$RenderingId,
+            [Parameter(Mandatory = $false)]
+            [int]$RenderingIndex = 0,
+            [Parameter(Mandatory = $true)]
+            [string]$Placeholder,
+            [Parameter(Mandatory = $false)]
+            [string]$DataSourcePath = $null,
+            [Parameter(Mandatory = $false)]
+            [string]$PlaceBeforeRenderingId = $null,
+            [Parameter(Mandatory = $false)]
+            [int]$PlaceBeforeRenderingIndex = 0,
+            [Parameter(Mandatory = $false)]
+            [System.Collections.Hashtable]$Parameters = $null,
+            [Parameter(Mandatory = $false)]
+            [string]$PlaceholderTargetRenderingId = $null,
+            [Parameter(Mandatory = $false)]
+            [string]$PlaceholderTargetRenderingIndex = 0,
+    
+    
+            [Parameter(Mandatory = $false)]
+            [bool]$FinalLayout = $false
+    
+        )
+    
+    
+        Write-Host ""
+        Write-Host ""
+        Write-Host ""
+        Write-Host "`tAttach-Rendering ..." -ForegroundColor Yellow
+            
+            
+        Write-Host "`tAdding Rendering: $Title" -ForegroundColor Cyan
+        Write-Host "`tProcessing: $PagePath" -ForegroundColor Cyan
+        Write-Host "`tFinalLayout : $FinalLayout" -ForegroundColor Cyan
+        $PagePath = "master:/$($PagePath)"
+        $page = Get-Item -Path $PagePath -ErrorAction SilentlyContinue
+        if ($null -eq $page) 
+        {
+            Write-Host "`tPage '$PagePath' not found" -ForegroundColor Red
+            return
+        }
+        Write-Host "`tRendering Id: $RenderingId" -ForegroundColor Cyan
+        $existingRendering = $null
+        
+        
+         if (![string]::IsNullOrEmpty( $PlaceholderTargetRenderingId)) 
+         {
+            $result= Get-RenderingAndIndexByRenderingId -Page $page -ItemId $PlaceholderTargetRenderingId -Index $PlaceholderTargetRenderingIndex -FinalLayout $FinalLayout
+    
+            $PlaceholderTarget=$result.Rendering;
+    
+            $Placeholder="$Placeholder-$($PlaceholderTarget.UniqueId)-0"
+    
+         }
+            
+    
+        $result= Get-RenderingAndIndexByRenderingId -Page $page -ItemId $RenderingId -Index $RenderingIndex -FinalLayout $FinalLayout -ThrowOnError $false
+        $existingRendering= $result.Rendering
+        
+        $wanteRenderingdIndex=-1
+        if(![string]::IsNullOrEmpty($PlaceBeforeRenderingId))
+        {
+            $result = Get-RenderingAndIndexByRenderingId -Page $page -ItemId $PlaceBeforeRenderingId -Index $PlaceBeforeRenderingIndex -FinalLayout $FinalLayout
+            $PlaceBeforeRendering   = $result.Rendering
+            $wanteRenderingdIndex   = $result.Index
+        }
+    
+        
+        
+        Write-Host "`tWanted Index: $wanteRenderingdIndex" -ForegroundColor Cyan
+        if (-not [string]::IsNullOrEmpty( $DataSourcePath)) 
+        {
+            Write-Host "`tDataSource path: $DataSourcePath" -ForegroundColor Cyan
+            $dataSource = Get-Item -Path  "master:/$($DataSourcePath)" -ErrorAction SilentlyContinue
+            if ($null -eq $dataSource) 
+            {
+                Write-Host "`tDatasource '$DataSourcePath' not found" -ForegroundColor Red
+                return
+            }
+        }
+    
+        if ($null -eq $existingRendering) 
+        {
+            Write-Host ""
+            Write-Host "`tAdding new Rendering..." -ForegroundColor Yellow
+    
+            $renderingInstance = Get-Item -Id $RenderingId -Path "master:" | New-Rendering -Placeholder $Placeholder 
+    
+            Add-Rendering -Item $page -Placeholder $Placeholder -Instance $renderingInstance -Datasource $DataSourcePath -Index $wanteRenderingdIndex -Parameter $Parameters
+    
+            Write-Host "`tRendering attached successfully!"  -ForegroundColor Green
+        }
+        else 
+        {
+            Write-Host ""
+            Write-Host "`tUpdating existing Rendering..." -ForegroundColor Yellow
+    
+            $existingRendering| 
+            Foreach-Object { 
+    
+                if($FinalLayout -eq 1 -or $FinalLayout -eq $true)
+                {
+                    Set-Rendering -Item $page -Parameter $Parameters -Instance $_ -Index $wanteRenderingdIndex -DataSource $DataSourcePath -PlaceHolder $Placeholder -FinalLayout
+                }
+                else
+                {
+                    Set-Rendering -Item $page -Parameter $Parameters -Instance $_ -Index $wanteRenderingdIndex -DataSource $DataSourcePath -PlaceHolder $Placeholder
+                }
+    
+    
+            }
+            Write-Host "`tSuccess!"  -ForegroundColor Green
+        }
+    
+    
+    
+        Write-Host ""
+        Write-Host ""
+        Write-Host ""
+    }
+    
+    function ImportRenderings 
+    {
+        param(
+            [Parameter(Mandatory=$true)]
+            $renderingsToAttach
+        )
+    
+        if ($renderingsToAttach -is [Array]) 
+        {
+            foreach ($renderingInfo in $renderingsToAttach) 
+            {
+                ProcessRendering -renderingInfo $renderingInfo
+            }
+        } 
+        else 
+        {
+            ProcessRendering -itemInfo $renderingsToAttach
+        }
+    
+        Write-Host ""
+        Write-Host ""
+        Write-Host "`tAll renderings updated / attached successfully" -ForegroundColor Green
+    }
+    
+    function ProcessRendering 
+    {
+        param(
+            [Parameter(Mandatory = $true)]
+            $renderingInfo
+        )
+    
+        $Title                      = $renderingInfo.Title
+        $PagePath                   = $renderingInfo.PagePath 
+        $RenderingId              = $renderingInfo.RenderingId
+        $RenderingIndex              = $renderingInfo.RenderingIndex
+        $Placeholder                = $renderingInfo.Placeholder
+        $DataSourcePath             = $null
+    	$PlaceBeforeRenderingId    = $null
+    	$PlaceBeforeRenderingIndex = $null
+    	$Parameters                 = $null
+    	$PlaceholderTargetRenderingId  = $null
+    	$PlaceholderTargetRenderingIndex= $renderingInfo.PlaceholderTargetRenderingIndex
+        $UpdateFinalLayoutAsWell= $renderingInfo.UpdateFinalLayoutAsWell
+    
+    	if($null -ne $renderingInfo.PlaceBeforeRenderingPath)
+        {
+            $PlaceBeforeRenderingPath = "master:/$($renderingInfo.PlaceBeforeRenderingPath)"
+            $PlaceBeforeRendering = Get-Item -Database "master" -Path $PlaceBeforeRenderingPath 
+            $PlaceBeforeRenderingId=$PlaceBeforeRendering.Id
+        }
+    
+    	if($null -ne $renderingInfo.RenderingPath)
+        {
+            $RenderingPath = "master:/$($renderingInfo.RenderingPath)"
+            $rendering = Get-Item -Database "master" -Path $RenderingPath 
+            $RenderingId=$rendering.Id
+        }
+        
+        if($null -ne $renderingInfo.RenderingIndex)
+        {
+            $RenderingIndex =[int]::Parse( $renderingInfo.RenderingIndex)
+        }
+        
+    	if($null -ne $renderingInfo.PlaceholderTargetRenderingId)
+        {
+            $PlaceholderTargetRenderingId = $renderingInfo.PlaceholderTargetRenderingId
+        }
+        
+        if($null -ne $renderingInfo.PlaceholderTargetRenderingIndex)
+        {
+            $PlaceholderTargetRenderingIndex =[int]::Parse( $renderingInfo.PlaceholderTargetRenderingIndex)
+        }
+        
+        if($UpdateFinalLayoutAsWell -eq $null)
+        {
+            $UpdateFinalLayoutAsWell = $false
+        }
+        
+        if($null -ne $renderingInfo.Parameters)
+        {
+            $Parameters = $renderingInfo.Parameters
+        }
+        
+        if($null -ne $renderingInfo.Params)
+        {
+            $Parameters = $renderingInfo.Params
+        }
+        
+        if($null -ne $renderingInfo.DataSourcePath)
+        {
+            $DataSourcePath = $renderingInfo.DataSourcePath
+        }
+        
+    	if($null -ne $renderingInfo.PlaceBeforeRenderingId)
+        {
+            $PlaceBeforeRenderingId = $renderingInfo.PlaceBeforeRenderingId
+        }
+        
+        if($null -ne $renderingInfo.PlaceBeforeRenderingIndex)
+        {
+            $PlaceBeforeRenderingIndex =[int]::Parse( $renderingInfo.PlaceBeforeRenderingIndex)
+        }
+    
+        Write-Host ""
+        Write-Host ""
+        Write-Host "Processing '$PagePath'" -ForegroundColor Cyan
+    
+        Attach-Rendering -Title $Title -PagePath $PagePath -PlaceholderTargetRenderingIndex $PlaceholderTargetRenderingIndex -PlaceholderTargetRenderingId $PlaceholderTargetRenderingId -RenderingId $RenderingId -RenderingIndex $RenderingIndex -Placeholder $Placeholder -DataSourcePath $DataSourcePath -PlaceBeforeRenderingId $PlaceBeforeRenderingId -PlaceBeforeRenderingIndex $PlaceBeforeRenderingIndex -Parameters $Parameters
+        
+        if($UpdateFinalLayoutAsWell -eq 1 -or $UpdateFinalLayoutAsWell -eq $true)
+        {
+            Attach-Rendering -Title $Title -PagePath $PagePath -PlaceholderTargetRenderingIndex $PlaceholderTargetRenderingIndex -PlaceholderTargetRenderingId $PlaceholderTargetRenderingId -RenderingId $RenderingId -RenderingIndex $RenderingIndex -Placeholder $Placeholder -DataSourcePath $DataSourcePath -PlaceBeforeRenderingId $PlaceBeforeRenderingId -PlaceBeforeRenderingIndex $PlaceBeforeRenderingIndex -Parameters $Parameters -FinalLayout $true
+        }
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240125T082214Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,48 @@
+﻿---
+ID: "ce443f77-3b9c-4fcf-ae3e-48c98a4433d0"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Add Destination Guide Fields to Hotel Themes
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $hotelThemesPath = "master:/content/EasyJet/Holidays/Data/Hotel Themes"
+    
+    function update-destination-fields($item, $title, $url){
+        if($item -ne $null){
+            $item.Editing.BeginEdit()
+            $item["DestinationGuideTitle"] = $title
+            $item["DestinationGuideUrl"] = $url
+            $item.Editing.EndEdit() | Out-Null;
+            Write-Host $item.Name "is updated"
+        }
+    }
+    
+    function update-theme($themeName, $title, $url){
+        $theme =  Get-Item -Path "$($hotelThemesPath)/$($themeName)" -ErrorAction SilentlyContinue
+    
+        if($theme -ne $null){
+            update-destination-fields -Item $theme -Title $title -Url $url
+            $types = $theme.GetChildren()
+    
+            ForEach($type in $types){
+              update-destination-fields -Item $type -Title $type['Name'] -Url $type['Name']
+            }
+        }
+    }
+    
+    update-theme -ThemeName 'Beach' -Title 'Beach Holiday' -Url 'Beach Holiday'
+    update-theme -ThemeName 'City' -Title 'City Breaks' -Url 'City Breaks'
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1300
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200221T074829Z

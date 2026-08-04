@@ -1,0 +1,45 @@
+﻿---
+ID: "4ced91de-b861-4e0a-9789-014e17cf58ed"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-636 - Price breakdown new labels"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking"
+                TemplatePath = "/sitecore/templates/Feature/Booking/Cancel Booking/Cancel Booking"
+                Fields      = @{
+                    "PaidLabel" = @{
+                        "en" = "You paid"
+                        "fr-CH" = "Vous avez payé"
+                        "de-CH" = "Sie haben bezahlt"
+                        "fr-FR" = "Vous avez payé"
+                        "de-DE" = "Sie haben bezahlt"
+                    }
+                    "CancellationChargeLabel" = @{
+                        "en" = "Cancellation Charge"
+                        "fr-CH" = "Frais d'annulation"
+                        "de-CH" = "Stornogebühr"
+                        "fr-FR" = "Frais d'annulation"
+                        "de-DE" = "Stornogebühr"
+                    }
+                }
+            }
+        )
+    ImportContent -itemsToCreate $updates
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

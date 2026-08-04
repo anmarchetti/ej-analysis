@@ -1,0 +1,133 @@
+﻿---
+ID: "26ea066e-4811-48b6-9021-8093e24048fa"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC 539 cabin bags
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+            if($item -eq $null){
+                $item = New-Item -Path $path -ItemType $template
+            }
+        return $item
+    }
+    
+    
+    function create-lang-version($itemPath, $lang, $field, $value) {
+    
+            $targetLangItem = Get-Item -Path $itemPath -Language $lang -ErrorAction SilentlyContinue;
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Path $itemPath -TargetLanguage $lang -IfExist Skip
+                $targetLangItem = Get-Item -Path $itemPath -Language $lang -ErrorAction SilentlyContinue;
+    
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $itemPath -Language $lang -ErrorAction SilentlyContinue;
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+        }
+    
+    $CabinBagsPath = '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags'
+    $CabinBagsPathTrade = '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Cabin Bags'
+    
+    $bannerTemplate = "{63D3079B-9A85-4872-AC5E-34D19D8D972E}"
+    $bannerCTAPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags/Cabin Bags Unavailable CTA Banner"
+    $bannerPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags/Cabin Bags Unavailable Banner"
+    $bannerCTATradePath = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Cabin Bags/Cabin Bags Unavailable CTA Banner"
+    $bannerTradePath = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Cabin Bags/Cabin Bags Unavailable Banner"
+    
+    $banner = Get-Or-Create-Item -Path $bannerPath -Template $bannerTemplate
+    $bannerCTA = Get-Or-Create-Item -Path $bannerCTAPath -Template $bannerTemplate
+    $bannerTrade = Get-Or-Create-Item -Path $bannerTradePath -Template $bannerTemplate
+    $bannerCTATrade = Get-Or-Create-Item -Path $bannerCTATradePath -Template $bannerTemplate
+    
+    
+    create-lang-version -itemPath $CabinBagsPath -lang 'en' -field 'CabinBagsUnavailableContent' -value $banner.ID
+    create-lang-version -itemPath $CabinBagsPath -lang 'en' -field 'CabinBagsUnavailableCTAContent' -value $bannerCTA.ID
+    create-lang-version -itemPath $CabinBagsPathTrade -lang 'en' -field 'CabinBagsUnavailableContent' -value $bannerTrade.ID
+    create-lang-version -itemPath $CabinBagsPathTrade -lang 'en' -field 'CabinBagsUnavailableCTAContent' -value $bannerCTATrade.ID
+    
+    create-lang-version -itemPath $CabinBagsPathTrade -lang 'en' -field 'UnavailableLCBSubtitle' -value 'Your cabin bag allowance'
+    create-lang-version -itemPath $CabinBagsPathTrade -lang 'en' -field 'UnavailableLCBDescription' -value 'Each passenger is allowed to take a single small under seat bag on their flights'
+    
+    create-lang-version -itemPath $CabinBagsPath -lang 'en' -field 'UnavailableLCBSubtitle' -value 'Your cabin bag allowance'
+    create-lang-version -itemPath $CabinBagsPath -lang 'en' -field 'UnavailableLCBDescription' -value 'Each passenger is allowed to take a single small under seat bag on their flights'
+    create-lang-version -itemPath $CabinBagsPath -lang 'fr-FR' -field 'UnavailableLCBSubtitle' -value 'Votre franchise de bagages de cabine'
+    create-lang-version -itemPath $CabinBagsPath -lang 'fr-FR' -field 'UnavailableLCBDescription' -value 'Chaque passager est autorisé à emporter un seul petit sac sous le siège sur ses vols'
+    create-lang-version -itemPath $CabinBagsPath -lang 'fr-CH' -field 'UnavailableLCBSubtitle' -value 'Votre franchise de bagages de cabine'
+    create-lang-version -itemPath $CabinBagsPath -lang 'fr-CH' -field 'UnavailableLCBDescription' -value 'Chaque passager est autorisé à emporter un seul petit sac sous le siège sur ses vols'
+    create-lang-version -itemPath $CabinBagsPath -lang 'de-DE' -field 'UnavailableLCBSubtitle' -value 'Ihr Handgepäck'
+    create-lang-version -itemPath $CabinBagsPath -lang 'de-DE' -field 'UnavailableLCBDescription' -value 'Jeder Fluggast darf nur eine einzige kleine Tasche unter dem Sitz mit auf den Flug nehmen'
+    create-lang-version -itemPath $CabinBagsPath -lang 'de-CH' -field 'UnavailableLCBSubtitle' -value 'Ihr Handgepäck'
+    create-lang-version -itemPath $CabinBagsPath -lang 'de-CH' -field 'UnavailableLCBDescription' -value 'Jeder Fluggast darf nur eine einzige kleine Tasche unter dem Sitz mit auf den Flug nehmen'
+    
+    create-lang-version -itemPath $bannerCTAPath -lang 'en' -field 'Title' -value 'Adding cabin bags is currently unavailable'
+    create-lang-version -itemPath $bannerCTAPath -lang 'fr-FR' -field 'Title' -value "L'ajout de bagages de cabine n'est pas disponible pour le moment"
+    create-lang-version -itemPath $bannerCTAPath -lang 'fr-CH' -field 'Title' -value "L'ajout de bagages de cabine n'est pas disponible pour le moment"
+    create-lang-version -itemPath $bannerCTAPath -lang 'de-DE' -field 'Title' -value 'Das Hinzufügen von Handgepäck ist derzeit nicht möglich'
+    create-lang-version -itemPath $bannerCTAPath -lang 'de-CH' -field 'Title' -value 'Das Hinzufügen von Handgepäck ist derzeit nicht möglich'
+    create-lang-version -itemPath $bannerCTAPath -lang 'en' -field 'Subtitle' -value "We're sorry, the ability to add large cabin bags is currently unavailable for these flights. You can still book your flight and add large cabin bags at a later stage. If you wish to add more bags, please do so by adding hold luggage"
+    create-lang-version -itemPath $bannerCTAPath -lang 'fr-FR' -field 'Subtitle' -value "Nous sommes désolés, la possibilité d'ajouter des bagages de grande taille n'est pas disponible pour l'instant pour ces vols. Vous pouvez toujours réserver votre vol et ajouter des bagages de cabine à un stade ultérieur. Si vous souhaitez ajouter d'autres bagages, veuillez le faire en ajoutant des bagages de soute."
+    create-lang-version -itemPath $bannerCTAPath -lang 'fr-CH' -field 'Subtitle' -value "Nous sommes désolés, la possibilité d'ajouter des bagages de grande taille n'est pas disponible pour l'instant pour ces vols. Vous pouvez toujours réserver votre vol et ajouter des bagages de cabine à un stade ultérieur. Si vous souhaitez ajouter d'autres bagages, veuillez le faire en ajoutant des bagages de soute."
+    create-lang-version -itemPath $bannerCTAPath -lang 'de-DE' -field 'Subtitle' -value 'Es tut uns leid, die Möglichkeit, großes Handgepäck hinzuzufügen, ist für diese Flüge derzeit nicht verfügbar. Sie können Ihren Flug immer noch buchen und großes Handgepäck zu einem späteren Zeitpunkt hinzufügen. Wenn Sie mehr Gepäckstücke hinzufügen möchten, tun Sie dies bitte, indem Sie aufgegebenes Gepäck hinzufügen'
+    create-lang-version -itemPath $bannerCTAPath -lang 'de-CH' -field 'Subtitle' -value 'Es tut uns leid, die Möglichkeit, großes Handgepäck hinzuzufügen, ist für diese Flüge derzeit nicht verfügbar. Sie können Ihren Flug immer noch buchen und großes Handgepäck zu einem späteren Zeitpunkt hinzufügen. Wenn Sie mehr Gepäckstücke hinzufügen möchten, tun Sie dies bitte, indem Sie aufgegebenes Gepäck hinzufügen'
+    create-lang-version -itemPath $bannerCTAPath -lang 'en' -field 'ButtonLabel' -value "Add Hold luggage"
+    create-lang-version -itemPath $bannerCTAPath -lang 'fr-FR' -field 'ButtonLabel' -value "Ajouter des bagages de soute"
+    create-lang-version -itemPath $bannerCTAPath -lang 'fr-CH' -field 'ButtonLabel' -value "Ajouter des bagages de soute"
+    create-lang-version -itemPath $bannerCTAPath -lang 'de-DE' -field 'ButtonLabel' -value "Gehaltenes Gepäck hinzufügen"
+    create-lang-version -itemPath $bannerCTAPath -lang 'de-CH' -field 'ButtonLabel' -value "Gehaltenes Gepäck hinzufügen"
+    
+    create-lang-version -itemPath $bannerPath -lang 'en' -field 'Title' -value 'Adding cabin bags is currently unavailable'
+    create-lang-version -itemPath $bannerPath -lang 'fr-FR' -field 'Title' -value "L'ajout de bagages de cabine n'est pas disponible pour le moment"
+    create-lang-version -itemPath $bannerPath -lang 'fr-CH' -field 'Title' -value "L'ajout de bagages de cabine n'est pas disponible pour le moment"
+    create-lang-version -itemPath $bannerPath -lang 'de-DE' -field 'Title' -value 'Das Hinzufügen von Handgepäck ist derzeit nicht möglich'
+    create-lang-version -itemPath $bannerPath -lang 'de-CH' -field 'Title' -value 'Das Hinzufügen von Handgepäck ist derzeit nicht möglich'
+    create-lang-version -itemPath $bannerPath -lang 'en' -field 'Subtitle' -value "We're sorry, the ability to add large cabin bags is currently unavailable for this flight. You can still book your holiday and add large cabin bags at a later stage"
+    create-lang-version -itemPath $bannerPath -lang 'fr-FR' -field 'Subtitle' -value "Nous sommes désolés, la possibilité d'ajouter des bagages de grande taille n'est actuellement pas disponible pour ce vol. Vous pouvez toujours réserver vos vacances et ajouter des bagages de cabine à un stade ultérieur."
+    create-lang-version -itemPath $bannerPath -lang 'fr-CH' -field 'Subtitle' -value "Nous sommes désolés, la possibilité d'ajouter des bagages de grande taille n'est actuellement pas disponible pour ce vol. Vous pouvez toujours réserver vos vacances et ajouter des bagages de cabine à un stade ultérieur."
+    create-lang-version -itemPath $bannerPath -lang 'de-DE' -field 'Subtitle' -value "Es tut uns leid, die Möglichkeit, großes Handgepäck hinzuzufügen, ist für diesen Flug derzeit nicht verfügbar. Sie können Ihren Urlaub trotzdem buchen und zu einem späteren Zeitpunkt großes Handgepäck hinzufügen"
+    create-lang-version -itemPath $bannerPath -lang 'de-CH' -field 'Subtitle' -value "Es tut uns leid, die Möglichkeit, großes Handgepäck hinzuzufügen, ist für diesen Flug derzeit nicht verfügbar. Sie können Ihren Urlaub trotzdem buchen und zu einem späteren Zeitpunkt großes Handgepäck hinzufügen"
+    
+    create-lang-version -itemPath $bannerCTATradePath -lang 'en' -field 'Title' -value 'Adding cabin bags is currently unavailable'
+    create-lang-version -itemPath $bannerCTATradePath -lang 'en' -field 'Subtitle' -value "We're sorry, the ability to add large cabin bags is currently unavailable for these flights. You can still book your flight and add large cabin bags at a later stage. If you wish to add more bags, please do so by adding hold luggage"
+    create-lang-version -itemPath $bannerCTATradePath -lang 'en' -field 'ButtonLabel' -value 'Add hold luggage'
+    
+    create-lang-version -itemPath $bannerTradePath -lang 'en' -field 'Title' -value 'Adding cabin bags is currently unavailable'
+    create-lang-version -itemPath $bannerTradePath -lang 'en' -field 'Subtitle' -value "We're sorry, the ability to add large cabin bags is currently unavailable for this flight. You can still book your holiday and add large cabin bags at a later stage"
+    
+    create-lang-version -itemPath '/sitecore/content/EasyJet/Holidays/Settings/Luggage Settings' -lang 'en' -field 'IsCabinBagsEnabled' -value '1'
+    create-lang-version -itemPath '/sitecore/content/EasyJet/TradePortal/Settings/Luggage Settings' -lang 'en' -field 'IsCabinBagsEnabled' -value '1'
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2010
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240228T110338Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\admin
+- Language: "fr-CH"
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240228T110333Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\admin

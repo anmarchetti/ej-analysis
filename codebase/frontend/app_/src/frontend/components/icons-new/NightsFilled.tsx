@@ -1,0 +1,18 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgNightsFilled = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'nights-filled-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <path d='M21 17.17a1 1 0 00-1-.49 8.33 8.33 0 01-1.42.12 8.63 8.63 0 01-7.51-4.33A8.47 8.47 0 019.9 8.12a8.38 8.38 0 011.35-4.61A1 1 0 0010.12 2a10.13 10.13 0 00-5.25 3.67 10 10 0 00-2 6.14 10 10 0 00.81 4 10.12 10.12 0 005.43 5.43 10 10 0 004 .81 10.18 10.18 0 007.88-3.72 1 1 0 00.01-1.16z' />
+    </svg>
+);
+
+export default SvgNightsFilled;

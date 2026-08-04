@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="AtComRes/CancellationResponse" xmlns:ns1="AtComRes/CancellationResponse" xmlns:p2="AtComRes/Common">
+	<xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+  <xs:element name="CancellationResponse">
+    <xs:annotation>
+        <xs:documentation>Response of cancellation for one or more packages</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+		<xs:complexContent>
+			<xs:extension base="p2:AtcomresBookingBaseResponse">
+			</xs:extension>
+		</xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

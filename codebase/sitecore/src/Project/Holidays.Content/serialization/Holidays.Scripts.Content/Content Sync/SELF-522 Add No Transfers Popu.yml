@@ -1,0 +1,63 @@
+﻿---
+ID: "aa35c6c7-25d2-4624-a56a-b66289edd95a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-522 Add No Transfers Popup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    $popup = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Amend No Transfers Popup" -template "{B83B342E-03C0-48AE-8D88-7F2D4F850E29}"
+    if ($popup -ne $null){
+        $popup.Editing.BeginEdit()
+        $popup["Title"] = "We're sorry, there's no available transfers for your destination"
+        $popup["Description"] = "<p>We are unable to provide you with other transfer options for your destination on {date}</p>
+        <p>If you need to talk to us about your transfer, please contact us</p>"
+        $popup["CTA"] = '<link text="Contact us" linktype="external" url="https://www.easyjet.com/en/holidays/info/contact-us" anchor="" target="_blank" rel="" />'
+        $popup.Editing.EndEdit() | Out-Null
+        Write-Host "Item" $popup.Name "successfully created"
+    }
+    
+    
+    # Page
+    $pagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    $page = Get-Item -path $pagePath -ErrorAction SilentlyContinue
+    
+    # Page components
+    $componentsPath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components"
+    $pageComponents = Get-Item -path $componentsPath -ErrorAction SilentlyContinue
+    
+    # Data source
+    $popupPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Amend No Transfers Popup"
+    $popupTemplateId = "{B83B342E-03C0-48AE-8D88-7F2D4F850E29}"
+    
+    $renderingId = "{ACCA2483-3952-4C4B-80C7-5F00D6E94E1D}"
+    $renderigPlaceholder = "/body/no-transfers-popup-{5500AC44-5DF4-4473-8E8C-EA635A187882}-0";
+    $rendering = Get-Rendering -Item $page -PlaceHolder $renderigPlaceholder | Where-Object {$_.ItemId -eq $renderingId}
+    
+    if($rendering -eq $null){
+        $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $renderigPlaceholder
+        Add-Rendering -Item $page -PlaceHolder $renderigPlaceholder -DataSource $popupPath -Instance $renderingItem
+        Write-Host  "Amend No Transfers Popup Rendering was created"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230214T121314Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

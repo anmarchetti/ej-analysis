@@ -1,0 +1,34 @@
+﻿---
+ID: "804561e1-79c7-4ec2-b3d8-6b43ccbfb74d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-170_Amend-dates-cost-labels"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $amendSummaryDatesItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary/Page Components/Amend Dates Summary Page" -ErrorAction SilentlyContinue;
+    
+    if ($amendSummaryDatesItem -ne $null) {
+    	$amendSummaryDatesItem.Editing.BeginEdit();
+    	
+    	$amendSummaryDatesItem["NewCostLabel"] = "New holiday cost";
+    	$amendSummaryDatesItem["PreviousCostLabel"] = "Previous holiday cost";
+    	$amendSummaryDatesItem["CostTooltipContent"] = "Price subject to change & availability due to daily system updates.<br /><br />The price displayed here will factor in any valid promotional codes.";
+    	$amendSummaryDatesItem["ShowCostTooltip"] = "";
+    	
+    	$amendSummaryDatesItem.Editing.EndEdit() | Out-Null;
+    	Write-Host $amendSummaryDatesItem.Name "Updated";
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 655
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230818T135945Z

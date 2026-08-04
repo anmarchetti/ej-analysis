@@ -1,0 +1,67 @@
+{
+  "Title": "Smartseer recommend for ESRC offers (dedicated, isolated code set for the recommended-offers test)",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/recommender/y85858/v3",
+          "IgnoreCase": true
+        }
+      ]
+    },
+    "Methods": [
+      "Post"
+    ]
+  },
+  "Response": {
+    "Headers": {
+      "Content-Type": "application/json; charset=utf-8"
+    },
+    "StatusCode": 200,
+    "BodyAsJson": {
+      "ptoken": "9b6GcKAC",
+      "elements": [
+        {
+          "id": "ESRC0051",
+          "idType": "ej"
+        },
+        {
+          "id": "ESRC0013",
+          "idType": "ej"
+        },
+        {
+          "id": "ESRC0024",
+          "idType": "ej"
+        },
+        {
+          "id": "ESRC0025",
+          "idType": "ej"
+        },
+        {
+          "id": "ESRC0005",
+          "idType": "ej"
+        },
+        {
+          "id": "ESRC0004",
+          "idType": "ej"
+        },
+        {
+          "id": "ESRC0054",
+          "idType": "ej"
+        },
+        {
+          "id": "ESRC0029",
+          "idType": "ej"
+        },
+        {
+          "id": "ESRC0034",
+          "idType": "ej"
+        }
+      ],
+      "tracking": {
+        "scorer": "personalized"
+      }
+    }
+  }
+}

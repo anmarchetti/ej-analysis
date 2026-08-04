@@ -1,0 +1,108 @@
+.alternativeHotelsSection {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    :global(.card) {
+        margin-bottom: 16px;
+
+        @include media-breakpoint-up(md) {
+            margin-bottom: 24px;
+        }
+    }
+
+    :global(.card),
+    :global(.hotel-card-v2) {
+        border-radius: 6px;
+
+        :global(.hotel-card-head) {
+            padding: 16px 16px 0;
+
+            :global(.hotel-card-head-location) {
+                font-size: 14px;
+            }
+        }
+
+        :global(.hotel-card-head-title) {
+            margin-bottom: 4px;
+            font-size: 18px;
+        }
+
+        :global(.hotel-card-head-views) {
+            margin: 8px 0;
+        }
+
+        :global(.eco-certified) {
+            width: auto;
+            margin: 0;
+            background-color: $colorGrayLighter;
+
+            @include media-breakpoint-up(md) {
+                min-width: 154px;
+            }
+        }
+
+        :global(.hotel-card-info-column-v2) {
+            height: 100%;
+        }
+
+        :global(.hotel-card-options-v2) {
+            display: flex;
+            align-items: flex-start;
+            @include media-breakpoint-up(md) {
+                display: block;
+                margin-top: 0;
+            }
+        }
+
+        :global(.hotel-card-txt) {
+            margin: 0 16px;
+
+            @include media-breakpoint-up(md) {
+                height: 100%;
+                margin: 0;
+            }
+        }
+
+        :global(.hotel-card-head-title-box) {
+            a {
+                pointer-events: none;
+            }
+        }
+
+        :global(.popup__dialog .hotel-card-img) {
+            border-radius: 0;
+        }
+
+        :global(.popup__dialog .image-gallery) {
+            overflow: visible;
+            border-radius: 0;
+        }
+
+        :global(.popup-overlay) {
+            background-color: $colorBlackLight;
+            opacity: 0.95;
+        }
+    }
+
+    :global(.hotel-card.placeholder-shimmer) {
+        @include media-breakpoint-up(md) {
+            margin-bottom: 16px;
+        }
+    }
+}
+
+.loadMoreCTA {
+    align-self: center;
+    width: 160px;
+    margin-top: 8px;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: 2px solid $clrEjOrange;
+    border-radius: 4px;
+
+    &:disabled {
+        background-color: $clrSiteBgWhite;
+        border: 2px solid $colorSilverDark
+    }
+}

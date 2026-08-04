@@ -1,0 +1,46 @@
+.titleRow {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 8px;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 16px;
+    }
+}
+
+.title {
+    font-family: $fontRoundedBook;
+    font-size: 25px;
+    line-height: 1.08;
+    color: $clrTextMain;
+    margin: 0;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    text-transform: uppercase;
+
+    @include media-breakpoint-down(md) {
+        font-size: 20px;
+        line-height: 1.3;
+    }
+}
+
+.iconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include sizeSquare(48px);
+
+    @include media-breakpoint-down(md) {
+        @include sizeSquare(32px);
+    }
+
+    svg {
+        fill: $clrEjOrangeDarkShadow;
+        @include sizeSquare(35px);
+
+        @include media-breakpoint-down(md) {
+            @include sizeSquare(24px);
+        }
+    }
+}

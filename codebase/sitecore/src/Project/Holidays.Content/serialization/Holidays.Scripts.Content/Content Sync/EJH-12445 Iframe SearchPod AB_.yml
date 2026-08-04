@@ -1,0 +1,67 @@
+﻿---
+ID: "d9f2721c-b897-47ee-84bf-d667ff0aa968"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-12445 Iframe SearchPod AB Tests"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $iframePage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/IFrame Search Pod" -ErrorAction SilentlyContinue
+    
+    $searchPodTestId = '103'
+    $searchPodFolderTemplateId = "{CA9B20EB-F054-41A0-873A-F63776B9FE68}"
+    $searchPodRenderingId = "{216FE85C-936E-4135-894B-E7DE8BF8A4C2}"
+    $searchPodTemplateId = "{05D15AAB-CFF6-4FF9-B048-F9E48DA7153E}"
+    
+    function Get-Or-Create-Item($path, $itemName, $templateId){
+        $item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $itemName -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created";
+        }
+        return $item
+    } 
+    
+    function Set-AB-Test-Fields($item, $testId, $testVariant) {
+        $item.Editing.BeginEdit();
+        $item["TestId"] = $testId
+        $item["TestVariant"] = $testVariant
+        $item.Editing.EndEdit() | Out-Null
+    }
+    
+    function Update-Rendering-DataSource($item, $renderingId, $dataSource){
+        $rendering = Get-Rendering -Item $item | Where-Object {$_.ItemId -eq $renderingId} | Select -First 1
+        
+        if($rendering -ne $null){
+            Set-Rendering -Item $item -Instance $rendering -DataSource $dataSource
+        }
+    }
+    
+    
+    function Create-Search-Pods($page) {
+        $searchPodFolder = Get-Or-Create-Item -Path "$($page.FullPath)/Page Components" -ItemName "Search Pods" -TemplateId $searchPodFolderTemplateId
+        $searchPod = Get-Or-Create-Item -Path  $searchPodFolder.FullPath -ItemName "Search Pod" -TemplateId $searchPodTemplateId
+        $tabSearchPod = Get-Or-Create-Item -Path  $searchPodFolder.FullPath -ItemName "Tabs Search Pod" -TemplateId $searchPodTemplateId
+    
+        Set-AB-Test-Fields -item $searchPod -TestId $searchPodTestId -TestVariant 'A'
+        Set-AB-Test-Fields -item $tabSearchPod -TestId $searchPodTestId -TestVariant 'B'
+        
+        Update-Rendering-DataSource -Item $page -RenderingId $searchPodRenderingId -DataSource $searchPod.ID   
+      
+        Write-Host "IFrame search pods created"
+    }
+    
+    if($iframePage -ne $null) {
+        Create-Search-Pods -Page $iframePage
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210402T120115Z

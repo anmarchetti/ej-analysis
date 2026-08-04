@@ -1,0 +1,57 @@
+﻿---
+ID: "3543f0a3-20b2-4ab7-90b9-e80ca24a40a4"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/Report Transfers Info
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $criteria = @(
+        @{Filter = "StartsWith"; Field = "_fullpath"; Value = "/sitecore/content/EasyJet/Holidays/Data/Transfers Info" },
+        @{Filter = "Equal"; Field = "_template"; Value = "{434E365E-D63B-4A66-9E88-88C07EC2B97D}" }
+    )
+    $props = @{
+        Index = "sitecore_transferinfo_master_index"
+        Criteria = $criteria
+    }
+    
+    function Get-Transfers-Info(){
+        $transfersInfo = New-Object Collections.Generic.List[object] 
+        $items = Find-Item @props | Select-Object -Expand "Fields" 
+        foreach($transferInfo in $items){
+            $transfersInfo.Add([ordered]@{
+                    name = $transferInfo.name
+                    airportid = $transferInfo.airportid
+                    resortid = $transferInfo.resortid
+                    resortname = $transferInfo.resortname
+                    duration = $transferInfo.duration
+                    arrivalinstr = $transferInfo.arrivalinstr
+                    depinstr = $transferInfo.depinstr
+                    transfertype = $transferInfo.type
+                    productid = $transferInfo.productid
+                })
+        }
+        return $transfersInfo
+    }
+    
+    function Download($data)
+    {
+        Import-Function -Name ConvertTo-Xlsx
+    
+        [byte[]]$outobject = $data | ForEach-Object { New-Object PSObject -Property $_ } | ConvertTo-Xlsx
+        $date = Get-Date -Format "MMddyyyyHHmmss"
+        Out-Download -Name "report-$($date).xlsx" -InputObject $outobject 
+    }
+    
+    $transfersInfo = Get-Transfers-Info
+    Download -Data $transfersInfo
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201118T082503Z

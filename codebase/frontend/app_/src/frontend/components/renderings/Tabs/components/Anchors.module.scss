@@ -1,0 +1,73 @@
+.sticky {
+    position: sticky;
+    z-index: 100;
+    top: 0;
+    margin-bottom: 60px;
+    background: $clrSiteBgWhite;
+    border: none;
+    box-shadow: $generalBoxShadow;
+
+    @include media-breakpoint-down(lg) {
+        position: static;
+        z-index: unset;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    :global(.wrapper-container) {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 0;
+
+        @include media-breakpoint-down(lg) {
+            position: fixed;
+            z-index: 100;
+            bottom: 0;
+            width: 100%;
+            background: $clrSiteBgWhite;
+            box-shadow: $generalBoxShadow;
+        }
+
+        @include media-breakpoint-down(md) {
+            padding: 5px 20px;
+        }
+    }
+
+    :global(.anchors-box) {
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+
+    :global(.anchors-box .anchor) {
+        margin-right: 32px;
+        padding: 2px 0;
+        font-size: 13px;
+        line-height: 1.2;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    :global(.anchors-box .anchor--active) {
+        border-width: 3px;
+    }
+}
+
+a.button {
+    margin-left: auto;
+    padding: 10px 24px;
+    font-size: 16px;
+
+    @include media-breakpoint-down(lg) {
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        font-size: 14px;
+    }
+}

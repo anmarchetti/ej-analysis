@@ -1,0 +1,126 @@
+﻿---
+ID: "ae4bbef6-3ef3-4ba0-8703-7279dccd3323"
+Parent: "b1e3c34e-a209-4730-a266-ecc77072d88c"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/SPE/Extensions/EasyJet/Functions/Update Rendering DataSource
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Get Rendering And Index By RenderingId"
+    
+    function Update-RenderingDataSource
+    {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$PagePath,
+            
+            [Parameter(Mandatory = $true)]
+            [string] $RenderingId,
+            [Parameter(Mandatory = $false)]
+            [int]$RenderingIndex = 0,
+    
+            [Parameter(Mandatory = $true)]
+            [string]$DataSource,
+            
+            [Parameter(Mandatory = $true)]
+            [string]$TargetRenderingId,
+            
+            [Parameter(Mandatory = $false)]
+            [int]$TargetRenderingIndex = 0,
+    
+            [Parameter(Mandatory = $false)]
+            [bool]$FinalLayout
+        )
+    
+        $PagePath = "master:/$($PagePath)"
+        $page = Get-Item -Path $PagePath -ErrorAction SilentlyContinue
+        if ($null -eq $page) 
+        {
+            Write-Host "`tPage '$PagePath' not found" -ForegroundColor Red
+            return
+        }
+            
+    
+        $PagePath = "master:/$($TargetRenderingPath)"
+        
+        $result= Get-RenderingAndIndexByRenderingId -Page $page -ItemId $TargetRenderingId -Index $TargetRenderingIndex -FinalLayout $FinalLayout
+        $targetRendering=$result.Rendering;
+    
+        $result= Get-RenderingAndIndexByRenderingId -Page $page -ItemId $RenderingId -Index $RenderingIndex -FinalLayout $FinalLayout
+        $existingRendering=$result.Rendering;
+        
+    
+        Write-Host ""
+        Write-Host "`tUpdating Rendering DataSources..." -ForegroundColor Yellow
+        
+    
+        $existingRendering| 
+        Foreach-Object { 
+            $original=$_.DataSource
+            $_.DataSource = "$DataSource"
+            Write-Host "`tChanging DataSource from '$($original)' to '$($_.DataSource)'" -ForegroundColor Green
+            if($FinalLayout -eq 1 -or $FinalLayout -eq $true)
+            {
+                Set-Rendering -Item $page -Instance $_ -FinalLayout
+            }
+            else
+            {
+                Set-Rendering -Item $page -Instance $_
+            }
+            
+        }
+        
+    
+        Write-Host "`tSuccess!"  -ForegroundColor Green
+    
+    }
+    
+    
+    function UpdateRenderingDataSource
+    {
+        param(
+            [Parameter(Mandatory = $true)]
+            $renderingInfo
+        )
+    
+    
+    
+    
+        $PagePath                   = $renderingInfo.PagePath 
+        $RenderingId                = $renderingInfo.RenderingId
+        $RenderingIndex             = $renderingInfo.RenderingIndex
+        $TargetRenderingId        = $renderingInfo.TargetRenderingId
+        $TargetRenderingIndex        = $renderingInfo.TargetRenderingIndex
+        $DataSource               = $renderingInfo.DataSource
+        $UpdateFinalLayoutAsWell    = $renderingInfo.UpdateFinalLayoutAsWell
+        if($UpdateFinalLayoutAsWell -eq $null)
+        {
+            $UpdateFinalLayoutAsWell = $false
+        }
+        Write-Host ""
+        Write-Host ""
+        Write-Host "Processing '$PagePath'" -ForegroundColor Cyan
+        Update-RenderingDataSource -PagePath $PagePath -RenderingId $RenderingId -RenderingIndex $RenderingIndex -TargetRenderingIndex $TargetRenderingIndex -TargetRenderingId $TargetRenderingId -DataSource $DataSource
+        
+        if($UpdateFinalLayoutAsWell -eq 1 -or $UpdateFinalLayoutAsWell -eq $true)
+        {
+            Update-RenderingDataSource -PagePath $PagePath -RenderingId $RenderingId -RenderingIndex $RenderingIndex -TargetRenderingIndex $TargetRenderingIndex -TargetRenderingId $TargetRenderingId -DataSource $DataSource  -FinalLayout $true
+        }
+    
+        Write-Host "`tAll rendering DataSources updated successfully" -ForegroundColor Green
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240125T082214Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

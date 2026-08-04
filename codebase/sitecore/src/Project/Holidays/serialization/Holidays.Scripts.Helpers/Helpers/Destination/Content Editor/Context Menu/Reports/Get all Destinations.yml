@@ -1,0 +1,176 @@
+﻿---
+ID: "96dffe03-34f7-406c-aa7a-e72d5b6e93fc"
+Parent: "982c7ec5-55a4-4af4-9e11-c7584c64295d"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/Destination/Content Editor/Context Menu/Reports/Get all Destinations
+DB: master
+SharedFields:
+- ID: "06d5295c-ed2f-4a54-9bf2-26228d113318"
+  Hint: __Icon
+  Value: Apps/32x32/Map.png
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function -Name ConvertTo-Xlsx
+    Import-Function -Name Export-Xlsx
+    
+    $sourceDb = "master"
+    $dataReportName = "Data"
+    $reportNameRoots = @($dataReportName)
+        
+    $reportsFolderPath = "/sitecore/media library/Files"
+    
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    function Save-Document-ToCsv($reportName, $data){
+            $data = $data | ForEach-Object { New-Object PSObject -Property $_ }
+            $csv = $data | ConvertTo-Csv -NoTypeInformation
+            $stream = New-Object System.IO.MemoryStream
+            $txt = New-Object System.IO.StreamWriter($stream)
+            $csv | ForEach-Object { $txt.WriteLine($_)}
+            $txt.Flush()
+            Out-Download -Name "$($reportName).csv" -InputObject $stream
+            $stream.Close();
+    }
+    
+    function Get-ItemBasedOnTemplate {
+        param(
+            [string]$TemplateId
+        )
+    
+        $queue = New-Object System.Collections.Queue
+        $processedLookup = New-Object System.Collections.Generic.HashSet[string]
+        if(-not(Test-Path -Path "master:$($TemplateId)")) { return }
+        $processedLookup.Add($TemplateId) > $null  
+        Get-ItemReferrer -Id $TemplateId -ItemLink | 
+            Where-Object { $_.SourceItemID } | 
+            ForEach-Object { $queue.Enqueue($_.SourceItemID) }
+    
+        $database = Get-Database -Name "master"
+        while($queue.Count -and ($referrerId = $queue.Dequeue())) {
+            if($processedLookup.Contains($referrerId)) { continue }
+            $processedLookup.Add($referrerId) > $null
+            $referrer = $database.GetItem($referrerId)
+            if(!$referrer) { continue }
+            if($referrer.Paths.FullPath.StartsWith("/sitecore/templates")) { 
+                if($referrer.Name -eq "__Standard values") { continue }
+                foreach($referrerItemLink in Get-ItemReferrer -Id $referrerId -ItemLink | Where-Object { $_.SourceItemID }) {
+                    $queue.Enqueue($referrerItemLink.SourceItemID)
+                }
+                $itemTemplate = [Sitecore.Data.Managers.TemplateManager]::GetTemplate($referrerId, $database)
+            } else {
+                $itemTemplate = [Sitecore.Data.Managers.TemplateManager]::GetTemplate($referrer)
+            }
+            
+            if ($itemTemplate -and $itemTemplate.DescendsFromOrEquals($TemplateId)) {
+                $referrer
+            }
+        }
+    }
+    
+    function Prepare-Data {
+    	param($items, $numberOfReports, $neededReportNames)
+    
+        $rows = @()
+        for($i = 0; $i -lt $numberOfReports; $i++){
+            $rows += ,[System.Collections.ArrayList]@()
+        }
+        
+    	foreach ($item in $items) {
+            $reportsRows = Get-Data-From-Item -Item $item -NeededReportNames $neededReportNames
+            $i = 0
+            foreach($reportRows in $reportsRows){
+                $reportRows | ForEach-Object { $rows[$i].AddRange(@(,$_)) }
+                $i++
+            }
+    	}
+    	
+    	$i = 0
+        foreach($row in $rows){
+            Write-Host "prepared $($row.Count) rows for $($neededReportNames[$i]) report"
+            Write-Log "prepared $($row.Count) rows for $($neededReportNames[$i]) report"
+            $i++
+        }
+        
+        Write-Host "Resort's has been prepared"
+        Write-Log "Resort's has been prepared"
+    	return ,$rows
+    }
+    
+    
+    function Get-Hotels-Data-Report-Data
+    {
+        param($hotel)
+    
+    	$data = [ordered]@{
+    		Country = $item.parent.parent["Name"]
+    		Region = $item.parent["Name"]
+    		Resort = $item["Name"]
+    		ResortCode = $item['Code']
+    	}
+    
+        return $data
+    }
+    
+    
+    function Get-Data-From-Item
+    {
+    	param($item, $neededReportNames)
+        
+        $data = @()
+        
+        if($neededReportNames -contains $dataReportName){
+            $hotelsDataReport = Get-Hotels-Data-Report-Data -Hotel $item
+            $data += ,$hotelsDataReport
+        }
+      
+    	return ,$data  |  Where {$_ -ne $null}
+    }
+    
+    function Save-Reports{
+        param($reports, $reportNameRoots)
+    
+        $i = 0
+    
+        $time = Get-Date -UFormat %s -Millisecond 0
+        $date = Get-Date -Format "dd_MM_yyyy"
+        foreach($report in $reports){
+            if($reportNameRoots[$i] -ne $null){
+                $filename = "DestinationsReport_$($date)_$time"
+                Save-Document-ToCsv -ReportName $filename.Replace(" ", "") -Data $report
+            }
+        }
+    }
+    
+    $stopWatch = New-Object -TypeName System.Diagnostics.Stopwatch
+    $stopWatch.Start()
+    
+    #find resort items
+    $resortTemplate = "{538939B3-07EC-4C23-BF8C-3A68DE0FDC93}"
+    $items = Get-ItemBasedOnTemplate -TemplateId $resortTemplate
+    $itemCount = $items | Measure-Object | Select-Object -Expand Count
+    Write-Log "Resorts were found $($itemCount)"
+    Write-Host "Resorts were found $($itemCount)"
+    
+    #Prepare items to table format
+    $reports = Prepare-Data -items $items -NumberOfReports $reportNameRoots.Count -NeededReportNames $reportNameRoots | Where-Object { $_.Count -ne 0 }
+    
+    Save-Reports -Reports $reports -ReportNameRoots $reportNameRoots | Where { $_.Name -ne $null }
+    
+    $stopWatch.Stop()
+    Write-Output "Info: Elapsed time - $($StopWatch.Elapsed)"
+    Write-Host "Info: Elapsed time - $($StopWatch.Elapsed)"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20221104T123702Z

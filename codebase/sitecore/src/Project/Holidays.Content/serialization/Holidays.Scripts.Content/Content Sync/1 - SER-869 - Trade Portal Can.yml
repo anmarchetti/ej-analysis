@@ -1,0 +1,181 @@
+﻿---
+ID: "58930e25-567b-4793-8099-d3dd55170517"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/1 - SER-869 - Trade Portal Cancelled Page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $defaultDesign = Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Presentation/Page Designs/Default Design"
+    $pageTemplatesField = $defaultDesign.Fields['PageTemplates'].Value
+    $newValue = $pageTemplatesField + "|{833E66D7-0B51-4989-894D-D5D9497BF660}"
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Presentation/Page Designs/Default Design"
+                TemplatePath = "/sitecore/templates/Foundation/Presentation/Page Design"
+                Fields      = @{
+                    "PageTemplates" = @{
+                        "en" = $newValue
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking"
+                TemplatePath = "/sitecore/templates/Project/Trade Portal/Pages/Cancelled Booking Page"
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components"
+                TemplatePath = "/sitecore/templates/Project/Holidays/Page Components"
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components/Booking Hero Banner"
+                TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Booking Hero Banner"
+                Fields      = @{
+                    "TextAbove" = @{
+                        "en" = "{name},"
+                    }
+                    "Title" = @{
+                        "en" = "Holiday cancelled"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components/Breadcrumbs"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Breadcrumbs/Breadcrumbs Folder"
+                Fields       = @{
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components/Breadcrumbs/Find Booking"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Breadcrumbs/Breadcrumbs Item"
+                Fields      = @{
+                    "Text" = @{
+                        "en" = "Find Booking"
+                    }
+                    "Link" = @{
+                        "en" = "<link text="""" anchor="""" linktype=""internal"" class="""" title=""Find Booking""  querystring="""" id=""{E97D1E7B-5EC0-4E29-9D81-B82A5E4279A4}"" />"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components/Breadcrumbs/Cancelled"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Breadcrumbs/Breadcrumbs Item"
+                Fields      = @{
+                    "Text" = @{
+                        "en" = "Cancelled"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components/Booking Toolbar"
+                TemplatePath = "/sitecore/templates/Feature/Booking/Booking Toolbar"
+                Fields      = @{
+                    "CancelledOnLabel" = @{
+                        "en" = "Cancelled On"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "300"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components/Hotel Summary"
+                TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Hotel Summary"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Your cancelled holiday"
+                    }
+                    "PriceTitle" = @{
+                        "en" = "Holiday"
+                    }
+                    "ButtonCloseLabel" = @{
+                        "en" = "Close"
+                    }
+                    "ViewSummaryLabel" = @{
+                        "en" = "View holiday summary"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "400"
+                    }
+                }
+            }
+        )
+        
+    ImportContent -itemsToCreate $updates
+    
+    $page= Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking"
+    
+    $renderingBookingContextProvider  = Get-Item -Path "/sitecore/layout/Renderings/Feature/Booking/BookingContextProvider"
+    $instanceBookingContextProvider = New-Rendering -Item $renderingBookingContextProvider
+    Add-Rendering -Item $page -Instance $instanceBookingContextProvider -PlaceHolder "/body"
+    $pageRenderingBookingContextProvider = Get-Rendering -Item $page -Rendering $renderingBookingContextProvider
+    $uniqueID_BookingContextProvider = $pageRenderingBookingContextProvider.UniqueId
+    
+    
+    $renderingBookingHeroBanner  = Get-Item -Path "/sitecore/layout/Renderings/Feature/Booking/BookingHeroBanner"
+    $instanceBookingHeroBanner = New-Rendering -Item $renderingBookingHeroBanner
+    Add-Rendering -Item $page -Instance $instanceBookingHeroBanner -PlaceHolder "/body/booking-context-$($uniqueID_BookingContextProvider)-0" -DataSource "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components/Booking Hero Banner"
+    $pageRenderingBookingHeroBanner = Get-Rendering -Item $page -Rendering $renderingBookingHeroBanner
+    $uniqueID_BookingHeroBanner = $pageRenderingBookingHeroBanner.UniqueId
+    
+    
+    $renderingBreadcrumbsStatic  = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/Breadcrumbs Static"
+    $instanceBreadcrumbsStatic = New-Rendering -Item $renderingBreadcrumbsStatic
+    Add-Rendering -Item $page -Instance $instanceBreadcrumbsStatic -PlaceHolder "/body/booking-context-$($uniqueID_BookingContextProvider)-0/booking-hero-top-$($uniqueID_BookingHeroBanner)-0" -DataSource "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components/Breadcrumbs" -Parameter @{ "IsHomeIconShown" = "1"; }
+    
+    
+    $renderingComponentWrapper  = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper"
+    $instanceComponentWrapper = New-Rendering -Item $renderingComponentWrapper
+    Add-Rendering -Item $page -Instance $instanceComponentWrapper -PlaceHolder "/body/booking-context-$($uniqueID_BookingContextProvider)-0" -Parameter @{ "IsGreyBackground" = "1"; }
+    $pageRenderingComponentWrapper = Get-Rendering -Item $page -Rendering $renderingComponentWrapper
+    $uniqueID_ComponentWrapper = $pageRenderingComponentWrapper.UniqueId
+    
+    
+    $renderingBookingToolbar  = Get-Item -Path "/sitecore/layout/Renderings/Feature/Booking/Booking Toolbar"
+    $instanceBookingToolbar = New-Rendering -Item $renderingBookingToolbar
+    Add-Rendering -Item $page -Instance $instanceBookingToolbar -PlaceHolder "/body/booking-context-$($uniqueID_BookingContextProvider)-0/component-wrapper-inner-$($uniqueID_ComponentWrapper)-0" -DataSource "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components/Booking Toolbar"
+    $pageRenderingBookingToolbar = Get-Rendering -Item $page -Rendering $renderingBookingToolbar
+    
+    
+    $renderingMasonryWrapper  = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Masonry/Masonry Wrapper"
+    $instanceMasonryWrapper = New-Rendering -Item $renderingMasonryWrapper
+    Add-Rendering -Item $page -Instance $instanceMasonryWrapper -PlaceHolder "/body/booking-context-$($uniqueID_BookingContextProvider)-0" 
+    $pageRenderingMasonryWrapper = Get-Rendering -Item $page -Rendering $renderingMasonryWrapper
+    $uniqueID_MasonryWrapper = $pageRenderingMasonryWrapper.UniqueId
+    
+    
+    $renderingMasonryWrapperItem  = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Masonry/Masonry Wrapper Item"
+    $instanceComponentWrapperItem = New-Rendering -Item $renderingMasonryWrapperItem
+    Add-Rendering -Item $page -Instance $instanceComponentWrapperItem -PlaceHolder "/body/booking-context-$($uniqueID_BookingContextProvider)-0/masonry-aside-$($uniqueID_MasonryWrapper)-0"
+    $pageRenderingMasonryWrapperItem = Get-Rendering -Item $page -Rendering $renderingMasonryWrapperItem
+    $uniqueID_MasonryWrapperItem = $pageRenderingMasonryWrapperItem.UniqueId
+    
+    
+    $renderingHotelSummary  = Get-Item -Path "/sitecore/layout/Renderings/Feature/Booking/HotelSummary"
+    $instanceHotelSummary = New-Rendering -Item $renderingHotelSummary
+    Add-Rendering -Item $page -Instance $instanceHotelSummary -PlaceHolder "/body/booking-context-$($uniqueID_BookingContextProvider)-0/masonry-aside-$($uniqueID_MasonryWrapper)-0/masonry-item-$($uniqueID_MasonryWrapperItem)-0" -DataSource "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components/Hotel Summary"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

@@ -1,0 +1,85 @@
+.wrapper.expanded {
+    .btnWrapper:before {
+        background: transparent;
+    }
+
+    .chevron {
+        transform: rotate(180deg) translateY(10%);
+    }
+}
+
+.contentWrapper {
+    transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+
+    ul {
+        padding-inline-start: 6px;
+        list-style: none;
+    }
+
+    :global {
+        .list--bullet {
+            li:before {
+                background-color: $clrTextMain;
+            }
+        }
+
+        .errata-message__item {
+            li::before {
+                content: '';
+                display: inline-block;
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: $clrTxtLighter;
+                margin-right: 10px;
+                margin-bottom: 1px;
+            }
+        }
+    }
+}
+
+.btnWrapper {
+    position: relative;
+    text-align: right;
+
+    &:before {
+        content: '';
+        position: absolute;
+        height: 60px;
+        left: 0;
+        right: 0;
+        bottom: 20px;
+        background: linear-gradient(0deg, $colorWhite 61.8%, rgba(255, 255, 255, 0) 123.6%);
+    }
+
+    .btn {
+        position: relative;
+        border: none;
+        background: none;
+        padding: 0;
+        display: inline-flex;
+        justify-content: flex-end;
+        cursor: pointer;
+        align-items: center;
+        gap: 10px;
+        color: $clrEjOrange;
+        font-size: 18px;
+        font-family: $fontRoundedDemy;
+        font-weight: 400;
+
+        @media (hover: hover) {
+            &:hover {
+                background-color: $colorTransparent;
+                opacity: 0.8;
+            }
+        }
+    }
+
+    .chevron {
+        display: inline-block;
+        transition: transform 0.3s ease;
+        color: $colorOrange;
+        line-height: 1;
+    }
+}

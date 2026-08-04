@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <PackageReference Include="Optimizely.SDK" />
+    <PackageReference Include="Sitecore.Analytics" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)SitecoreProject.props" />
+  <PropertyGroup>
+    <TargetFramework>$(FrameworkVersion)</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Remove="App_Config\Include\Foundation\easyJet.Foundation.Optimizely.Debug.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Config\Include\Foundation\easyJet.Foundation.Optimizely.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <Content Include="App_Config\Include\Foundation\easyJet.Foundation.Optimizely.CM.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <SonarQubeSetting Include="sonar.coverage.exclusions">
+      <Value>
+      </Value>
+    </SonarQubeSetting>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="App_Config\Include\Foundation\easyJet.Foundation.Optimizely.Debug.config">
+      <IsTransformFile>true</IsTransformFile>
+      <DependentUpon>easyJet.Foundation.Optimizely.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Analytics\code\easyJet.Foundation.Analytics.csproj" />
+    <ProjectReference Include="..\..\Multisite\code\easyJet.Foundation.Multisite.csproj" />
+  </ItemGroup>
+</Project>

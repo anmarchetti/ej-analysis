@@ -1,0 +1,44 @@
+﻿---
+ID: "c7a50eaa-5056-4202-b36f-ef4752ad5527"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Update Alternative Flights Show More Buttons
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $showMoreitemPath = "master:/sitecore/content/EasyJet/Holidays/Dictionary/Alternative Flights/Buttons/Show More"
+    
+    $showMoreItem = Get-Item -path $showMoreitemPath -ErrorAction SilentlyContinue
+    
+    if ($showMoreItem -ne $null) {
+        $showMoreItem.Editing.BeginEdit()
+        $showMoreItem["Phrase"] = 'Show more flights'
+        $showMoreItem.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $showMoreItem.DisplayName "successfully updated"
+    }
+    
+    $showLessItemPath = "master:/sitecore/content/EasyJet/Holidays/Dictionary/Alternative Flights/Buttons/Show Less"
+    
+    $showLessItem = Get-Item -path $showLessItemPath -ErrorAction SilentlyContinue
+    
+    if ($showLessItem -ne $null) {
+        $showLessItem.Editing.BeginEdit()
+        $showLessItem["Phrase"] = 'Show less flights'
+        $showLessItem.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $showLessItem.DisplayName "successfully updated"
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1600
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20200320T120848:637203029283373536Z"

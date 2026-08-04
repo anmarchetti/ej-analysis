@@ -1,0 +1,15 @@
+<select id="{{ control_id }}" name="{{ control_id }}" class="scContentControl scCombobox scRmDropdown"{{ onchange_handler }}>
+    {{ if !first_options || first_options.size == 0 }}
+    <option value=""></option>
+    {{ end }}
+    {{ for opt in first_options }}
+    <option value="{{ opt.value }}"{{ if opt.selected }} selected="selected"{{ end }}>{{ opt.text }}</option>
+    {{ end }}
+    {{ for group in option_groups }}
+    <optgroup label="{{ group.label }}">
+        {{ for option in group.options }}
+        <option value="{{ option.value }}" data-icon="{{ option.icon_url }}"{{ if option.selected }} selected="selected"{{ end }}>{{ option.text }}</option>
+        {{ end }}
+    </optgroup>
+    {{ end }}
+</select>

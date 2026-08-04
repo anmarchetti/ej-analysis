@@ -1,0 +1,149 @@
+﻿---
+ID: "a910b29a-f6fc-4ad5-ac42-12885a45a561"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-613_Payment-page-cabin-bags"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $largeSportPath = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Large Sports Equipment';
+    $largeSport = Get-ChildItem -Path $largeSportPath;
+    $largeSportItems = ($largeSport | select -ExpandProperty Id) -join "|"
+        
+    $smallSportPath = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Small Sports Equipment';
+    $smallSport = Get-ChildItem -Path $smallSportPath;
+    $smallSportItems = ($smallSport | select -ExpandProperty Id) -join "|"
+        
+    $holdBagsPath = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage';
+    $holdBags = Get-ChildItem -Path $holdBagsPath;
+    $holdBagsItems = ($holdBags | select -ExpandProperty Id) -join "|"
+    
+    function Edit-Data-Source ($dataSourcePath) {
+        # Get the English version of the data source as a base item
+        $baseItem = Get-Item -Path $dataSourcePath -Language "en" -ErrorAction SilentlyContinue
+    
+        # Dictionary of translations for the fields
+        $translations = @{
+            "en" = @{
+                "CabinBagsSingular" = "Small cabin bag up to 45 x 36 x 20cm (including any handles and wheels)";
+                "CabinBagsPlural" = "Small cabin bags up to 45 x 36 x 20cm (including any handles and wheels)";
+                "LuggageInfoTitle" = "Bags and Luggage";
+                "SportEquipmentsLabel" = "Sports equipment";
+                "IncludedLuggageName" = "Hold Baggage 23kg";
+                "PramName" = "Pram or Pushchair";
+                "HoldLuggageItems" = $holdBagsItems;
+                "SportEquipmentItems" =  $largeSportItems + '|' + $smallSportItems;
+            }
+            "fr-CH" = @{
+                "CabinBagsSingular" = "Petite valise cabine jusqu'à 45 x 36 x 20 cm (y compris les poignées et les roues)";
+                "CabinBagsPlural" = "Petites valises de cabine jusqu'à 45 x 36 x 20 cm (y compris les poignées et les roues)";
+                 "LuggageInfoTitle" = "Sacs et bagages";
+                "SportEquipmentsLabel" = "Équipements sportifs";
+                "IncludedLuggageName" = "Bagages en soute 23kg";
+                "PramName" = "Landaus ou poussettes";
+                "HoldLuggageItems" = $holdBagsItems;
+                "SportEquipmentItems" =  $largeSportItems + '|' + $smallSportItems;
+            }
+            "fr-FR" = @{
+                "CabinBagsSingular" = "Petite valise cabine jusqu'à 45 x 36 x 20 cm (y compris les poignées et les roues)";
+                "CabinBagsPlural" = "Petites valises de cabine jusqu'à 45 x 36 x 20 cm (y compris les poignées et les roues)";
+                 "LuggageInfoTitle" = "Sacs et bagages";
+                "SportEquipmentsLabel" = "Équipements sportifs";
+                "IncludedLuggageName" = "Bagages en soute 23kg";
+                "PramName" = "Landaus ou poussettes";
+                "HoldLuggageItems" = $holdBagsItems;
+                "SportEquipmentItems" =  $largeSportItems + '|' + $smallSportItems;
+            }
+            "de-CH" = @{
+                "CabinBagsSingular" = "Kleines Handgepäck bis zu 45 x 36 x 20 cm (einschließlich Griffe und Rollen)";
+                "CabinBagsPlural" = "Kleine Handgepäckstücke bis zu einer Größe von 45 x 36 x 20 cm (einschließlich Griffen und Rollen)";
+                 "LuggageInfoTitle" = "Taschen und Reisegepäck";
+                "SportEquipmentsLabel" = "Sportgeräte";
+                "IncludedLuggageName" = "Aufgabegepäck 23kg";
+                "PramName" = "Kinderwagen oder Buggy";
+                "HoldLuggageItems" = $holdBagsItems;
+                "SportEquipmentItems" =  $largeSportItems + '|' + $smallSportItems;
+            }
+            "de-DE" = @{
+                "CabinBagsSingular" = "Kleines Handgepäck bis zu 45 x 36 x 20 cm (einschließlich Griffe und Rollen)";
+                "CabinBagsPlural" = "Kleine Handgepäckstücke bis zu einer Größe von 45 x 36 x 20 cm (einschließlich Griffen und Rollen)";
+                 "LuggageInfoTitle" = "Taschen und Reisegepäck";
+                "SportEquipmentsLabel" = "Sportgeräte";
+                "IncludedLuggageName" = "Aufgabegepäck 23kg";
+                "PramName" = "Kinderwagen oder Buggy";
+                "HoldLuggageItems" = $holdBagsItems;
+                "SportEquipmentItems" =  $largeSportItems + '|' + $smallSportItems;
+            }
+        }
+    
+        foreach ($lang in $translations.Keys) {
+            create-lang-version -item $baseItem -lang $lang -field "CabinBagsPlural" -value $translations[$lang]["CabinBagsPlural"]
+            create-lang-version -item $baseItem -lang $lang -field "CabinBagsSingular" -value $translations[$lang]["CabinBagsSingular"]
+            create-lang-version -item $baseItem -lang $lang -field "LuggageInfoTitle" -value $translations[$lang]["LuggageInfoTitle"]
+            create-lang-version -item $baseItem -lang $lang -field "SportEquipmentsLabel" -value $translations[$lang]["SportEquipmentsLabel"]
+            create-lang-version -item $baseItem -lang $lang -field "IncludedLuggageName" -value $translations[$lang]["IncludedLuggageName"]
+            create-lang-version -item $baseItem -lang $lang -field "PramName" -value $translations[$lang]["PramName"]
+            create-lang-version -item $baseItem -lang $lang -field "HoldLuggageItems" -value $translations[$lang]["HoldLuggageItems"]
+            create-lang-version -item $baseItem -lang $lang -field "SportEquipmentItems" -value $translations[$lang]["SportEquipmentItems"]
+        }
+    }
+    
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    # Your paths
+    Edit-Data-Source -dataSourcePath '/sitecore/content/EasyJet/Holidays/Home/Booking/Payment/Page Components/Payment'
+    Edit-Data-Source -dataSourcePath '/sitecore/content/EasyJet/Holidays/Home/Booking/Pay Balance/Page Components/Pay Balance'
+     
+    #Add trade portal fields
+    $tradeData = Get-Item -Path '/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirm/Page Components/Confirm Booking Details';
+    $largeSportPath = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Large Sports Equipment';
+    $largeSport = Get-ChildItem -Path $largeSportPath;
+    $largeSportItems = ($largeSport | select -ExpandProperty Id) -join "|"
+        
+    $smallSportPath = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Small Sports Equipment';
+    $smallSport = Get-ChildItem -Path $smallSportPath;
+    $smallSportItems = ($smallSport | select -ExpandProperty Id) -join "|"
+        
+    $holdBagsPath = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Hold Baggage';
+    $holdBags = Get-ChildItem -Path $holdBagsPath;
+    $holdBagsItems = ($holdBags | select -ExpandProperty Id) -join "|"
+    if ($tradeData -ne $null) {
+        $tradeData.Editing.BeginEdit();
+        $tradeData["CabinBagsPlural"] = "Small cabin bags up to 45 x 36 x 20cm (including any handles and wheels)";
+        $tradeData["CabinBagsSingular"] = "Small cabin bag up to 45 x 36 x 20cm (including any handles and wheels)"
+        $tradeData["LuggageInfoTitle"] =  "Bags and Luggage";
+        $tradeData["SportEquipmentsLabel"] = "Sports equipment";
+        $tradeData["IncludedLuggageName"] = "Hold Baggage 23kg";
+        $tradeData["PramName"] ="Pram or Pushchair";
+        $tradeData["SportEquipmentItems"] = $largeSportItems + '|' + $smallSportItems;
+        $tradeData["HoldLuggageItems"] = $holdBagsItems;
+        $tradeData.Editing.EndEdit() | Out-Null;
+     }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 520
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231025T162434Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

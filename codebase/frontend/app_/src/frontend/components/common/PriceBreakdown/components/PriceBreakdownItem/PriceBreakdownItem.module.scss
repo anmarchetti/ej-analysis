@@ -1,0 +1,47 @@
+.priceBreakdownItem {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.breakdownRow {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+}
+
+.subItemRow {
+    font-size: 14px;
+    line-height: 18px;
+    color: $colorBoulder;
+}
+
+.tooltipRow {
+    display: flex;
+    white-space: nowrap;
+
+    :global(.callout__container .callout__content) {
+        width: 166px;
+        padding: 16px;
+        font-size: 14px;
+        color: $colorBlack;
+
+        @include media-breakpoint-up(md) {
+            min-width: 208px;
+            max-width: 208px;
+            font-size: 16px;
+        }
+    }
+}
+
+.callout {
+    width: 14px;
+    margin-left: 8px;
+}
+
+.price {
+    white-space: nowrap;
+}

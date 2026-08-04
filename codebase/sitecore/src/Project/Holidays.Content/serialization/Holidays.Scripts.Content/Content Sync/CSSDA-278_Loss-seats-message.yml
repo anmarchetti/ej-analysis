@@ -1,0 +1,70 @@
+﻿---
+ID: "159da0c6-1d62-4a94-95ee-6de1190ba7de"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-278_Loss-seats-message"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    function Add-Or-Update-Page-Rendering ($page,$renderingPath,$renderingPlaceholder,$dataSourcePath, $index) {
+    	$renderingItem = Get-Item -Database "master" -Path $renderingPath;
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -DataSource $dataSourcePath -Index $index;
+    		Write-Host $renderingItem "Rendering instance added";
+    	}
+    	else {
+    		Write-Host $pageRenderingInstance "Already exists";
+    	}
+    }
+    
+    # Creating Loss message item
+    $lossMessageItem = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary/Page Components/Loss Seats Message" -template "{4E3890D9-808D-4390-BE32-749397BE8A74}";
+    
+    if ($lossMessageItem -ne $null) {
+        $lossMessageItem.Editing.BeginEdit();
+    	
+    	$lossMessageItem["Title"]="Please read carefully";
+    	$lossMessageItem["Description"]="When you change your dates, any previously purchased seat selection is not transferred to the new flights. New seats can be purchased back on the View booking page. New seat selection is subject to availability and cannot be guaranteed.";
+    	$lossMessageItem["Icon"]='<image mediaid="{51A15C31-80B0-4286-9522-30165F61C780}" />';
+    	
+    	Write-Host $lossMessageItem.Name "Updated";
+        $lossMessageItem.Editing.EndEdit() | Out-Null;
+    }
+    
+    # Updating page item rendering list
+    $amendSummaryPageItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary" -ErrorAction SilentlyContinue;
+    
+    if ($amendSummaryPageItem -ne $null) {
+        $renderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Attention Message";
+        $renderingPlaceholder = "/body/attention-message-{CEBD339C-592C-46E2-9961-AFE0BD9F74D9}-0";
+        $dataSourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary/Page Components/Loss Seats Message";
+        
+        Add-Or-Update-Page-Rendering -page $amendSummaryPageItem -renderingPath $renderingPath -renderingPlaceholder $renderingPlaceholder -dataSourcePath $dataSourcePath -index 1;
+        
+        Write-Host $amendSummaryPageItem.Name "Updated";
+    }
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 658
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230901T074046Z

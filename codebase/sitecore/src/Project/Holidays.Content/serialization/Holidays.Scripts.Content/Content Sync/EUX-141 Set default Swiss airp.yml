@@ -1,0 +1,66 @@
+﻿---
+ID: "9a722a9a-b14d-4c3b-a1fc-dd179bd3d2c1"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUX-141 Set default Swiss airports"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $langs = @('fr-CH', 'de-CH')
+    $selectedAirportsQuery = "fast:/sitecore/content/EasyJet/Holidays/Data/Airports//*[@@TemplateId='{9B7D85B4-E5CF-42E7-B533-B20FB55EC18D}' and @IsDepartureAirport='1']"
+    $swissAirportQuery = "fast:/sitecore/content/EasyJet/Holidays/Data/Airports/Switzerland/*"
+    
+    function SetDepartureAirports ($query, $lang, $value) {
+        $items = Get-Item -Path "master:" -Query $query -Language $lang
+        
+        if ($null -ne $items) {
+            $items | % {
+    
+               if ($_ -eq $null -or $_.Versions.GetVersions().Count -eq 0) {
+                    Add-ItemLanguage -Item $_ -Language 'en' -TargetLanguage $lang -IfExist Skip
+                }
+    
+                if ($null -ne $_) {
+                    $_.Editing.BeginEdit()
+                    $_["IsDepartureAirport"] = $value
+                    $_.Editing.EndEdit() | Out-Null
+                }
+            }
+        }
+        
+    }
+    
+    # 1. Unselect British airports as a departure airports for Swiss languages
+    $langs | % { SetDepartureAirports -query $selectedAirportsQuery -lang $_ -value 0 }
+    
+    # 2. Select Swiss airports as departure airports for Swiss languages
+    $langs | % { SetDepartureAirports -query $swissAirportQuery -lang $_ -value 1 }
+    
+    # 3. Update UK to show on dropdpown as destination country
+    $langs | % { 
+        $i = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Destinations/United Kingdom" -Language $_ -ErrorAction SilentlyContinue
+    
+        if ($i -eq $null -or $i.Versions.GetVersions().Count -eq 0) {
+            $item = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Destinations/United Kingdom" -Language 'en'
+            Add-ItemLanguage -Item $item -TargetLanguage $_ -IfExist Skip
+        }
+    
+        $i = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Destinations/United Kingdom" -Language $_
+    
+        $i.Editing.BeginEdit()
+        $i["ShowOnDropdown"] = '1'
+        $i.Editing.EndEdit() | Out-Null
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 100
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

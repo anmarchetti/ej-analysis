@@ -1,0 +1,49 @@
+.press-contacts {
+    margin: 0 0 40px;
+    border-top: 1px solid rgba(0, 0, 0, 0.24);
+
+    h4 {
+        margin: 30px 0 20px;
+        font-family: $fontRoundedHeadline;
+        font-size: 24px;
+        font-weight: 700;
+        color: #000;
+        @include media-breakpoint-up(md) {
+            margin: 70px 0 20px;
+            font-size: 32px;
+        }
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+
+        li {
+            margin: 0 0 25px;
+            list-style: none;
+
+            p {
+                margin: 6px 0;
+                font-family: $fontRoundedBook;
+                font-size: 16px;
+                color: #000;
+            }
+        }
+        @include media-breakpoint-up(md) {
+            display: flex;
+            flex-wrap: wrap;
+
+            li {
+                min-width: 50%;
+                padding-right: 50px;
+
+                p {
+                    font-size: 24px;
+                }
+            }
+        }
+    }
+    @include media-breakpoint-up(md) {
+        margin: 20px 0;
+    }
+}

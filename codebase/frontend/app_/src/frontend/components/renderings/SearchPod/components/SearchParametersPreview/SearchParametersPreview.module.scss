@@ -1,0 +1,129 @@
+$searchPodExtendedBorderRadius: $box_border-radius_bg;
+$searchParametersItemPaddingX: 10px;
+$searchParametersItemPaddingXSm: 5px;
+
+.mobileSeparator {
+    display: none;
+
+    @include media-breakpoint-down(sm) {
+        display: inline;
+    }
+}
+
+.wrapper {
+    max-width: $container-max-width + 2 * $container-padding-x_mobile;
+    margin: auto;
+    padding: 0 $container-padding-x_mobile;
+
+    @include media-breakpoint-down(sm) {
+        padding-top: 7px;
+        padding-bottom: 7px;
+    }
+}
+
+.valuesBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 40px;
+}
+
+.valuesLeft {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-right: -$searchParametersItemPaddingX;
+    margin-left: -$searchParametersItemPaddingX;
+
+    @include media-breakpoint-down(md) {
+        flex-wrap: wrap;
+    }
+
+    @include media-breakpoint-down(sm) {
+        display: block;
+        margin-right: -$searchParametersItemPaddingXSm;
+        margin-left: -$searchParametersItemPaddingXSm;
+    }
+}
+
+.valuesLeftApp {
+    .topRow .appSearchValue {
+        font-family: $fontRoundedDemy;
+    }
+
+    .row .appSearchValue {
+        font-size: 14px;
+    }
+}
+
+.row {
+    display: grid;
+    grid-auto-flow: column;
+
+    @include media-breakpoint-down(sm) {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: baseline;
+        width: 100%;
+        font-family: $fontRoundedDemy;
+        font-size: 12px;
+        line-height: 1.25;
+    }
+}
+
+.valuesRight {
+    flex-shrink: 0;
+    margin-left: 32px;
+}
+
+.editSearchParameters {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 8px 20px;
+    font-size: 15px;
+    border: 2px solid $clrEjOrange;
+
+    svg {
+        width: 16px;
+        height: 16px;
+        margin-right: 10px;
+    }
+
+    @include media-breakpoint-down(sm) {
+        padding: 0;
+        font-size: 12px;
+        line-height: 1;
+        text-align: left;
+        border: none;
+
+        svg {
+            margin-right: 5px;
+        }
+    }
+
+    &:global(.btn.btn--transparent) {
+        padding: 8px 20px;
+        font-size: 15px;
+        border: 2px solid $clrEjOrange;
+
+        @include media-breakpoint-down(sm) {
+            padding: 0;
+            font-size: 12px;
+            border: none;
+        }
+    }
+}
+
+.valuesRightApp .editSearchParameters {
+    &:global(.btn.btn--transparent) {
+        font-family: $fontRoundedDemy;
+        font-size: 14px;
+        font-weight: 400;
+    }
+}
+
+.topRow {
+    @include media-breakpoint-down(sm) {
+        margin-bottom: 6px;
+    }
+}

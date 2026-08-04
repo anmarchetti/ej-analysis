@@ -1,0 +1,78 @@
+﻿---
+ID: "3a39b76d-e4d8-4f4b-ab94-ec00b920e12b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-96 Price Toggle on Trade Portal"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $transfersSectionPathTrade = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Transfer Section Trade"
+    $bookingPageComponentsPathTrade = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components"
+    $transferSectionTradeTemplateId = '{43F74290-6BE0-43F8-BE04-F88CC2DCC645}'
+    
+    function Get-Or-Create-Item ($path,$itemName,$templateId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId 
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function create-lang-version ($itemPath,$lang,$field,$value) {
+        $targetLangItem = Get-Item -Path $itemPath -Language $lang
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+        	Add-ItemLanguage -Path $itemPath -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            $targetLangItem = Get-Item -Path $itemPath -Language $lang
+        }
+        
+        if ($null -ne $field) {
+        	$targetLangItem = Get-Item -Path $itemPath -Language $lang
+        	$targetLangItem.Editing.BeginEdit()
+        	$targetLangItem[$field] = $value;
+        	$targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    #create item
+    $transferSectionTradeItem = Get-Or-Create-Item -Path $bookingPageComponentsPathTrade -itemName 'Transfer Section Trade' -templateId $transferSectionTradeTemplateId
+    
+    #update rendering
+    $bookingPage = Get-Item -Path '/sitecore/content/EasyJet/TradePortal/Home/Booking/'
+    $renderingItem = Get-Item -Path 'master:' -Id "{62F93471-0DCA-49AE-95AF-2B346D8098D8}"
+    $rendering = Get-Rendering -Item $bookingPage -PlaceHolder "*body*" -Rendering $renderingItem
+    
+    #Remove-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Transfer Section Trade"
+    
+    if($rendering -ne $null) {
+        Set-Rendering -Item $bookingPage -Instance $rendering -DataSource $transferSectionTradeItem.ID -FinalLayout
+    	Write-Host $page.Name "Transfer Rendering successfully updated"
+    }
+    
+    #delete old rendering
+    $oldTransporSectionDataSource = Get-Item -Path '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Transfer Section' -ErrorAction SilentlyContinue
+    if($oldTransporSectionDataSource -ne $null) {
+        Remove-Item -Path '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Transfer Section'
+        Write-Host "Removed Old Datasource"
+    
+    }
+    
+    create-lang-version -itemPath $transfersSectionPathTrade -lang 'en' -field 'SharedFeesDescriptionPriceHidden' -value 'Our transfer partner charges additional fees for sports equipment. This has been added to your holiday package cost.'
+    create-lang-version -itemPath $transfersSectionPathTrade -lang 'en' -field 'SharedFeesTitle' -value 'Additional fees included'
+    create-lang-version -itemPath $transfersSectionPathTrade -lang 'en' -field 'SharedFeesDescription' -value 'Our transfer partner charges an additional {price} per sports equipment item. This has been added to your holiday package cost.'
+    create-lang-version -itemPath $transfersSectionPathTrade -lang 'en' -field 'PrivateFeesTitle' -value 'Additional fees may apply'
+    create-lang-version -itemPath $transfersSectionPathTrade -lang 'en' -field 'PrivateFeesDescription' -value 'Our transfer partner may charge additional feed for taking sport equipment. You will need to contact the customer support centre after booking.'
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1040
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240709T102000Z

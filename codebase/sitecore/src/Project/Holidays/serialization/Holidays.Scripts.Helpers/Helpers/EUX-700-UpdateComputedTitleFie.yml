@@ -1,0 +1,456 @@
+﻿---
+ID: "e023376a-1447-4afd-ae5b-034ee3850c84"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/EUX-700-UpdateComputedTitleField-fr-CH"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    
+    $dictionaries = @(
+    @{
+    		key = "Destinations/croatia";phrase = "Vacances en Croatie";
+    	},
+    @{
+    		key = "Destinations/czech republic";phrase = "Vacances en République tchèque";
+    	},
+    @{
+    		key = "Destinations/denmark";phrase = "Vacances au Danemark";
+    	},
+    @{
+    		key = "Destinations/egypt";phrase = "Vacances en Égypte";
+    	},
+    @{
+    		key = "Destinations/france";phrase = "Vacances en France";
+    	},
+    @{
+    		key = "Destinations/germany";phrase = "Vacances en Allemagne";
+    	},
+    @{
+    		key = "Destinations/greece";phrase = "Vacances en Grèce";
+    	},
+    @{
+    		key = "Destinations/hungary";phrase = "Vacances en Hongrie";
+    	},
+    @{
+    		key = "Destinations/israel";phrase = "Vacances en Israël";
+    	},
+    @{
+    		key = "Destinations/italy";phrase = "Vacances en Italie";
+    	},
+    @{
+    		key = "Destinations/malta";phrase = "Vacances à Malte";
+    	},
+    @{
+    		key = "Destinations/montenegro";phrase = "Vacances au Monténégro";
+    	},
+    @{
+    		key = "Destinations/morocco";phrase = "Vacances à Morroco";
+    	},
+    @{
+    		key = "Destinations/netherlands";phrase = "Vacances aux Pays-Bas";
+    	},
+    @{
+    		key = "Destinations/poland";phrase = "Vacances en Pologne";
+    	},
+    @{
+    		key = "Destinations/portugal";phrase = "Vacances au Portugal";
+    	},
+    @{
+    		key = "Destinations/united kingdom/scotland";phrase = "Vacances en Écosse";
+    	},
+    @{
+    		key = "Destinations/spain";phrase = "Vacances en Espagne";
+    	},
+    @{
+    		key = "Destinations/united kingdom";phrase = "Vacances au Royaume-Uni";
+    	},
+    @{
+    		key = "Destinations/tunisia";phrase = "Vacances en Tunisie";
+    	},
+    @{
+    		key = "Destinations/turkey";phrase = "Vacances en Turquie";
+    	},
+    	@{
+    		key = "Destinations/morocco/agadir";phrase = "Vacances à Agadir";
+    	},
+    @{
+    		key = "Destinations/france/corsica/ajaccio";phrase = "Vacances à Ajaccio";
+    	},
+    @{
+    		key = "Destinations/italy/sardinia/alghero";phrase = "Vacances à Alghero";
+    	},
+    @{
+    		key = "Destinations/spain/costa blanca/alicante city";phrase = "Vacances à Alicante";
+    	},
+    @{
+    		key = "Destinations/netherlands/amsterdam";phrase = "Vacances à Amsterdam";
+    	},
+    @{
+    		key = "Destinations/turkey/antalya";phrase = "Vacances à Antalya";
+    	},
+    @{
+    		key = "Destinations/greece/athens";phrase = "Vacances à Athènes";
+    	},
+    @{
+    		key = "Destinations/spain/barcelona";phrase = "Vacances à Barcelone";
+    	},
+    @{
+    		key = "Destinations/germany/berlin";phrase = "Vacances à Berlin";
+    	},
+    @{
+    		key = "Destinations/spain/bilbao";phrase = "Vacances à Bilbao";
+    	},
+    @{
+    		key = "Destinations/france/bordeaux";phrase = "Vacances à Bordeaux";
+    	},
+    @{
+    		key = "Destinations/italy/brindisi";phrase = "Vacances à Brindisi";
+    	},
+    @{
+    		key = "Destinations/hungary/budapest";phrase = "Vacances à Budapest";
+    	},
+    @{
+    		key = "Destinations/italy/sicily/catania";phrase = "Vacances à Catania";
+    	},
+    @{
+    		key = "Destinations/denmark/copenhagen";phrase = "Vacances à Copenhaghen";
+    	},
+    @{
+    		key = "Destinations/greece/corfu";phrase = "Vacances à Corfu";
+    	},
+    @{
+    		key = "Destinations/france/corsica";phrase = "Vacances en Corse";
+    	},
+    @{
+    		key = "Destinations/greece/crete";phrase = "Vacances en Crète";
+    	},
+    @{
+    		key = "Destinations/france/paris/disneyland paris";phrase = "Vacances à Disneyland Paris";
+    	},
+    @{
+    		key = "Destinations/croatia/dubrovnik";phrase = "Vacances à Dubrovnik";
+    	},
+    @{
+    		key = "Destinations/united kingdom/scotland/edinburgh city";phrase = "Vacances à Édimbourg";
+    	},
+    @{
+    		key = "Destinations/portugal/algarve/faro";phrase = "Vacances à Faro";
+    	},
+    @{
+    		key = "Destinations/spain/fuerteventura";phrase = "Vacances à Fuerteventura";
+    	},
+    @{
+    		key = "Destinations/spain/gran canaria";phrase = "Vacances à Gran Canaria";
+    	},
+    @{
+    		key = "Destinations/germany/hamburg";phrase = "Vacances à Hambourg";
+    	},
+    @{
+    		key = "Destinations/egypt/hurghada";phrase = "Vacances à Hurgada";
+    	},
+    @{
+    		key = "Destinations/spain/ibiza";phrase = "Vacances à Ibiza";
+    	},
+    @{
+    		key = "Destinations/greece/kos";phrase = "Vacances en kos";
+    	},
+    @{
+    		key = "Destinations/poland/krakow";phrase = "Vacances à Cracovie";
+    	},
+    @{
+    		key = "Destinations/spain/lanzarote";phrase = "Vacances à Lanzarote";
+    	},
+    @{
+    		key = "Destinations/portugal/lisbon";phrase = "Vacances à Lisbonne";
+    	},
+    @{
+    		key = "Destinations/united kingdom/england/london city";phrase = "Vacances à Londres";
+    	},
+    @{
+    		key = "Destinations/spain/madrid";phrase = "Vacances à Madrid";
+    	},
+    @{
+    		key = "Destinations/spain/costa del sol/malaga city";phrase = "Vacances à Malaga";
+    	},
+    @{
+    		key = "Destinations/morocco/marrakech";phrase = "Vacances à Marrakech";
+    	},
+    @{
+    		key = "Destinations/spain/menorca";phrase = "Vacances à Menorca";
+    	},
+    @{
+    		key = "Destinations/france/montpellier";phrase = "Vacances à Montpellier";
+    	},
+    @{
+    		key = "Destinations/greece/mykonos";phrase = "Vacances à Mykonos";
+    	},
+    @{
+    		key = "Destinations/france/nantes";phrase = "Vacances à Nantes";
+    	},
+    @{
+    		key = "Destinations/italy/naples";phrase = "Vacances à Napoli";
+    	},
+    @{
+    		key = "Destinations/france/nice";phrase = "Holidays in Nice";
+    	},
+    @{
+    		key = "Destinations/italy/sardinia/olbia";phrase = "Vacances à Olbia";
+    	},
+    @{
+    		key = "Destinations/portugal/porto";phrase = "Vacances à Oporto";
+    	},
+    @{
+    		key = "Destinations/italy/sicily/palermo";phrase = "Vacances à Palerme";
+    	},
+    @{
+    		key = "Destinations/spain/majorca";phrase = "Vacances à Palma";
+    	},
+    @{
+    		key = "Destinations/france/paris";phrase = "Vacances à Paris";
+    	},
+    @{
+    		key = "Destinations/czech republic/prague";phrase = "Vacances à Prague";
+    	},
+    @{
+    		key = "Destinations/croatia/istrian riviera/pula";phrase = "Vacances à Pula";
+    	},
+    @{
+    		key = "Destinations/greece/rhodes";phrase = "Vacances à Rhodes";
+    	},
+    @{
+    		key = "Destinations/italy/rome";phrase = "Vacances en Roma";
+    	},
+    @{
+    		key = "Destinations/greece/santorini";phrase = "Vacances à Santorin";
+    	},
+    @{
+    		key = "Destinations/italy/sardinia";phrase = "Vacances en Sardaigne";
+    	},
+    @{
+    		key = "Destinations/spain/seville";phrase = "Vacances à Séville";
+    	},
+    @{
+    		key = "Destinations/italy/sicily";phrase = "Vacances en Sicile";
+    	},
+    @{
+    		key = "Destinations/croatia/split";phrase = "Vacances en fente";
+    	},
+    @{
+    		key = "Destinations/israel/tel aviv";phrase = "Vacances à Tel Aviv";
+    	},
+    @{
+    		key = "Destinations/spain/tenerife";phrase = "Vacances à Tenerife";
+    	},
+    @{
+    		key = "Destinations/spain/balearic islands";phrase = "Vacances dans les îles Baléares";
+    	},
+    @{
+    		key = "Destinations/spain/canary islands";phrase = "Vacances dans les îles Canaries";
+    	},
+    @{
+    		key = "Destinations/greece/thessaloniki";phrase = "Vacances à Thessaloniki";
+    	},
+    @{
+    		key = "Destinations/montenegro/tivat";phrase = "Vacances à Tivat";
+    	},
+    @{
+    		key = "Destinations/france/toulouse";phrase = "Vacances à Toulouse";
+    	},
+    @{
+    		key = "Destinations/spain/valencia";phrase = "Vacances à Valence";
+    	},
+    @{
+    		key = "Destinations/italy/venice";phrase = "Vacances à Venise";
+    	},
+    @{
+    		key = "Destinations/croatia/zadar";phrase = "Vacances à Zadar";
+    	},
+    @{
+    		key = "Root/Deals/christmas holidays";phrase = "vacances de Noël";
+    	},
+    @{
+    		key = "Root/Deals/easter deals";phrase = "Vacances de pâques";
+    	},
+    @{
+    		key = "Root/Deals/free child places";phrase = "Lieux d'enfants gratuits";
+    	},
+    @{
+    		key = "Root/Deals/last minute beach holidays";phrase = "Vacances de dernière minute à la plage";
+    	},
+    @{
+    		key = "Root/Deals/last minute city breaks";phrase = "Breaks de la ville de dernière minute";
+    	},
+    @{
+    		key = "Root/Deals/school holiday deals";phrase = "Vacances d'été scolaires";
+    	},
+    @{
+    		key = "Root/Deals/short beach breaks";phrase = "Breaks de plage courtes";
+    	},
+    @{
+    		key = "Root/Deals/sustainable holidays";phrase = "Vacances durables";
+    	},
+    @{
+    		key = "Root/Deals/amsterdam deals";phrase = "Offres de vacances à Amsterdam";
+    	},
+    @{
+    		key = "Root/Deals/egypt holiday deals";phrase = "Offres de vacances en Égypte";
+    	},
+    @{
+    		key = "Root/Deals/greece deals";phrase = "Offres de vacances en Grèce";
+    	},
+    @{
+    		key = "Root/Deals/italy holiday deals";phrase = "Offres de vacances en Italie";
+    	},
+    @{
+    		key = "Root/Deals/malta deals";phrase = "Offres de vacances à Malte";
+    	},
+    @{
+    		key = "Root/Deals/paris deals";phrase = "Offres de vacances à Paris";
+    	},
+    @{
+    		key = "Root/Deals/portugal deals";phrase = "Offres de vacances au Portugal";
+    	},
+    @{
+    		key = "Root/Deals/spain deals";phrase = "Offres de vacances en Espagne";
+    	},
+    @{
+    		key = "Root/Deals/balearic islands";phrase = "Offres de vacances dans les îles Baléares";
+    	},
+    @{
+    		key = "Root/Deals/canary islands";phrase = "Offres de vacances dans les îles Canaries";
+    	},
+    @{
+    		key = "Root/Deals/turkey deals";phrase = "Offres de vacances en Turquie";
+    	},
+    @{
+    		key = "Holiday Types/adults holidays";phrase = " ";
+    	},
+    @{
+    		key = "Holiday Types/all inclusive holidays";phrase = "Vacances tout compris";
+    	},
+    @{
+    		key = "Holiday Types/beach holidays";phrase = "Vacances à la plage";
+    	},
+    @{
+    		key = "Holiday Types/city breaks";phrase = "Les séjours en ville";
+    	},
+    @{
+    		key = "Holiday Types/family holidays";phrase = "Vacances en famille";
+    	},
+    @{
+    		key = "Holiday Types/group holidays";phrase = "Vacances en groupe";
+    	},
+    @{
+    		key = "Holiday Types/honeymoon holidays";phrase = "Vacances en lune de miel";
+    	},
+    @{
+    		key = "Holiday Types/last minute holidays";phrase = "Vacances de dernière minute";
+    	},
+    @{
+    		key = "Holiday Types/luxury holidays";phrase = "Vacances de luxe";
+    	},
+    @{
+    		key = "Holiday Types/self catering holidays";phrase = "Vacances à la restauration autonome";
+    	},
+    @{
+    		key = "Holiday Types/single parent families";phrase = "Familles de parent monoparental et un adulte";
+    	},
+    @{
+    		key = "Holiday Types/solo holidays";phrase = "Vacances en solo";
+    	},
+    @{
+    		key = "Root/Deals/summer city breaks";phrase = "Summer City Breaks";
+    	},
+    @{
+    		key = "Root/Deals/summer holidays";phrase = "Vacances d'été";
+    	},
+    @{
+    		key = "Root/Deals/winter city breaks";phrase = "Hiver City Breaks";
+    	},
+    @{
+    		key = "Root/Deals/winter holidays";phrase = "Vacances d'hiver";
+    	},
+    @{
+    		key = "Root/holidays in april";phrase = "Vacances en avril";
+    	},
+    @{
+    		key = "Root/holidays in august";phrase = "Vacances en août";
+    	},
+    @{
+    		key = "Root/holidays in december";phrase = "Vacances en décembre";
+    	},
+    @{
+    		key = "Root/holidays in february";phrase = "Vacances en février";
+    	},
+    @{
+    		key = "Root/holidays in january";phrase = "Vacances en janvier";
+    	},
+    @{
+    		key = "Root/holidays in july";phrase = "Vacances en juillet";
+    	},
+    @{
+    		key = "Root/holidays in june";phrase = "Vacances en juin";
+    	},
+    @{
+    		key = "Root/holidays in may";phrase = "Vacances en mai";
+    	},
+    @{
+    		key = "Root/holidays in november";phrase = "Vacances en novembre";
+    	},
+    @{
+    		key = "Root/holidays in october";phrase = "Vacances en octobre";
+    	},
+    @{
+    		key = "Root/holidays in september";phrase = "Vacances en septembre";
+    	},
+    	@{
+    		key = "Destinations/greece/kos";phrase = "Vacances en mars";
+    	}
+    
+    )
+    
+    $langs = @(
+        "fr-CH",
+        "fr-FR"
+    )
+    
+    foreach ($lang in $langs){
+        foreach ($dictionary in $dictionaries) {
+            $path ="master:/sitecore/content/EasyJet/Holidays/Home/$($dictionary.key)"
+        	$item = Get-Item -Path $path  -Language $lang -ErrorAction SilentlyContinue
+        
+        	if ($item -ne $null) {
+                if($item["ComposedTitle"] -ne $null ){
+                    if(!$item["ComposedTitle"]){
+                        $item.Editing.BeginEdit()
+                		$item["ComposedTitle"] = $dictionary.phrase
+                		$item.Editing.EndEdit() | Out-Null
+                 		Write-Host "Item successfully updated:" $path "; "
+                    }else{
+                        Write-Host "Field Already Populated:" $path "; " $dictionary.Key "; " $dictionary.phrase
+                    }
+                    
+                }else{
+                   	Write-Host "Field Not Found:" $path "; " $dictionary.Key "; "
+                }
+        	} else{
+        	    Write-Host "Item not found:" $path "; " $dictionary.Key "; "
+        	}
+        }
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230713T093638Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,62 @@
+.stickyFooter {
+    position: relative;
+    z-index: 5;
+}
+
+.stickyFooterShadow {
+    box-shadow: 0 3px 9px 3px rgba($colorBlackLight, 0.15);
+}
+
+.openButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    width: 100%;
+    margin: 0;
+    padding: 8px 15px;
+    font-family: $fontRoundedDemy;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.28;
+    background-color: $colorWhite;
+    border-radius: 0;
+
+    &:hover {
+        background-color: $colorWhite;
+        opacity: 1;
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+        padding: 5px;
+    }
+}
+
+.amountDue {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 24px;
+    font-family: $fontRoundedDemy;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.28;
+    color: $colorBlack;
+    text-align: left;
+    background-color: $colorPorcelain;
+}
+
+.leftColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.price {
+    margin-left: 4px;
+    font-size: 20px;
+}

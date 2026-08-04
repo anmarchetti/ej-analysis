@@ -1,0 +1,378 @@
+﻿---
+ID: "ef4ae87e-5e75-401a-9673-5727ccee1b98"
+Parent: "8739e12b-cfa5-4c5c-ace4-749618112cf3"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/Import/Converting From Plain Text To CSV - Destinations Import"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $files = @(
+        [pscustomobject]@{
+            InputFile = "/sitecore/media library/Files/Import/Delivery Copy of easyJet Holidays Content - Batch 1 - Batch 1 Resorts";
+            OutputFile = "/sitecore/media library/Files/converted/Resorts";
+        },
+        [pscustomobject]@{
+            InputFile = "/sitecore/media library/Files/Import/Delivery Copy of easyJet Holidays Content - Batch 1 - Batch 1 Countries";
+            OutputFile = "/sitecore/media library/Files/converted/Countries";
+        },
+        [pscustomobject]@{
+            InputFile  = "/sitecore/media library/Files/Import/Delivery Copy of easyJet Holidays Content  Batch 1  Batch 1 Regions Destinations";
+            OutputFile = "/sitecore/media library/Files/converted/Regions";
+        }
+    )
+    
+    $countryTemplateId = "{5F03C6EF-EF52-4F2E-BC5A-B1F065A1E745}"
+    $regionTemplateId = "{2F42EC14-7E56-467A-B300-AB9723C74546}"
+    $resortTemplateId = "{538939B3-07EC-4C23-BF8C-3A68DE0FDC93}"
+    
+    $sourceDb = "master"
+    
+    function Get-File ($filePath, $outputFilePath) {
+        $data = [PSCustomObject]@{
+            FileType       = ""
+            OutputFilePath = ""
+            Rows           = @()
+        }
+        $data.OutputFilePath = $outputFilePath
+        $typeIsReviced = $false
+    
+        try {
+            $file = Get-Item -Path $filePath -ErrorAction SilentlyContinue
+            
+            [System.IO.Stream]$body = $file.Fields["Blob"].GetBlobStream()
+            $contents = New-Object byte[] $body.Length
+            $body.Read($contents, 0, $body.Length) | Out-Null
+            $body.Close()
+            $csv = [System.Text.Encoding]::Default.GetString($contents)
+            $csv = $csv.Split([System.Environment]::NewLine) | Where-Object { $_ -ne "" }
+            foreach ($row in $csv) {
+                $columns = Get-Columns -RowData $row -Take 2
+                if ($typeIsReviced -ne $true) {
+                    $data.FileType = $columns[0]
+                    $typeIsReviced = $true
+                }
+                else {
+                    $rowValue = @{ 
+                        Destination  = $columns[0]
+                        DocumentLink = $columns[1]
+                    }
+    
+                    $data.Rows += $rowValue
+                }
+            }
+    
+            return $data
+        }
+        catch {
+            Write-Host "Error occurred opening document with path: $($filePath)"
+            return $null
+        }
+    }
+    
+    function Get-Columns ($rowData, $take) {
+        $columns = $rowData.Split(',')
+        return $columns | Select-Object -First $take
+    }
+    
+    function Get-Title-Index($textRows, $title) {
+        for ($i = 0; $i -lt $textRows.Length; $i++) {
+            if (($textRows[$i] -like $title) -OR ($textRows[$i].StartsWith($title))) {
+                return $i
+            }
+        }
+        return $null
+    }
+    
+    function Get-Title-Index-Ends-With($textRows, $ends) {
+        for ($i = 0; $i -lt $textRows.Count; $i++) {
+            if ($textRows[$i].EndsWith($ends)) {
+                return $i
+            }
+        }
+        return $null
+    }
+    
+    function Get-Text([string]$text, $from, $to, $title, $fromEnds, $ends, $isIncludeFrom = $false, $skip = 1) {
+        if ([string]::IsNullOrWhiteSpace($text)){
+            return $null   
+        }
+        $rows = $text.Trim([System.Environment]::NewLine).Split([System.Environment]::NewLine) | Select-Object -Skip $skip | Where-Object { [string]::IsNullOrWhiteSpace($_) -eq $false } | ForEach-Object { $_.Trim() }
+        $result = @{
+            Title = $rows | Where-Object { $_ -eq $title } | Select-Object -First 1
+            Text = ""
+        }
+        $rows = $rows | Where-Object { $_ -ne $title }
+        if ([string]::IsNullOrWhiteSpace($from) -eq $false) {
+            $startIndex = Get-Title-Index -textRows $rows -title $from
+            if ($startIndex -eq $null -AND $fromEnds -ne $null) {
+                $startIndex = Get-Title-Index-Ends-With -textRows $rows -ends $fromEnds
+                if ($startIndex -ne $null) {
+                    $isIncludeFrom = $true
+                }
+            }
+            if ($isIncludeFrom -eq $false -AND $startIndex -ne $null) {
+                $startIndex++
+            }
+        }
+        else {
+            $startIndex = 0
+        }
+        if ([string]::IsNullOrWhiteSpace($to) -eq $false) {
+            $endIndex = Get-Title-Index -textRows $rows -title $to
+            if ($endIndex -eq $null -AND $ends -ne $null) {
+                $endIndex = Get-Title-Index-Ends-With -textRows $rows -ends $ends
+            }
+            $endIndex--
+        }
+        else {
+            $endIndex = $rows.Length
+        }
+        
+        if ($startIndex -eq $null -OR $endIndex -eq $null) {
+            return $null    
+        }
+        
+        $text = [string]::Join([System.Environment]::NewLine, $rows[$startIndex..$endIndex]) | Out-String
+        if ($result -ne $null -AND [string]::IsNullOrWhiteSpace($result.Title)){
+            return  $text
+        }
+        else {
+            $result.Text = $text
+            return  $result
+        }
+    }
+    
+    function Get-Part-Of-Text-Single-Line($text, $from, $to) {
+        return [regex]::Match($text, "(?<=$($from))([^/]+?)(?=$($to))").Value
+    }
+    
+    function Get-Document($link) {
+        $id = Get-Part-Of-Text-Single-Line -text $link -from "/d/" -to "/e"
+        $document = Download-Document -Id $id
+        return $document
+    }
+    
+    function Find-Destination-Code-By-Name($name, $templateId) {
+        $criteria = @(
+            @{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+            @{ Filter = "Equals"; Field = "_language"; Value = "en"; }
+            @{ Filter = "Equals"; Field = "_template"; Value = $templateId; }
+            @{ Filter = "Equals"; Field = "_name"; Value = $name }
+        )
+    
+        $props = @{
+            Index    = "sitecore_destinations_$($sourceDb)_index"
+            Criteria = $criteria
+        }
+    
+        $item = Find-Item @props | Select-Object -First 1
+        if ($item -ne $null) {
+            return $item.Fields["code_s"]
+        }
+        
+        return $null
+    }
+    
+    function Process-File($inputFilePath, $outputFilePath) {
+        $inputData = Get-File -FilePath $inputFilePath -OutputFilePath $outputFilePath
+        $resultData = @()
+    
+        if ($inputData -ne $null) {
+            foreach ($row in $inputData.Rows) {
+                $document = Get-Document -link $row.DocumentLink
+    
+                if ($inputData.FileType -like "country") {
+                    $convertedResult = Convert-From-Country -Country $row.Destination -Document $document
+                }
+                if ($inputData.FileType -like "destinations" -or $inputData.FileType -like "region") {
+                    $convertedResult = Convert-From-Region -Region $row.Destination -Document $document
+                }
+                if ($inputData.FileType -like "resort") {
+                    $convertedResult = Convert-From-Resort -Resort $row.Destination -Document $document
+                }
+                
+                if($convertedResult -ne $null){
+                    $resultData += $convertedResult
+                }
+            }
+        }
+        Save-Documnet -Data $resultData -OutputFilePath $inputData.OutputFilePath
+    }
+    
+    function Set-Pairs([string]$text, $result, $firstName, $secondName, [Scriptblock]$expression, $skip = 0, $separator = "") {
+        if ([string]::IsNullOrWhiteSpace($text)){
+            return $null   
+        }
+        
+        $rows = $text.Trim([System.Environment]::NewLine).Split([System.Environment]::NewLine) | ForEach-Object { $_.Trim() } | Where-Object { [string]::IsNullOrWhiteSpace($_) -eq $false } | Select-Object -Skip $skip
+        $number = 0
+        $element = @{
+            First  = ""
+            Second = ""
+        }
+        
+        for ($i = 0; $i -lt $rows.Count; $i++) {
+            $isValid = &$expression $rows[$i]
+            if ($isValid) {
+                if ($i -ne 0) {
+                    $result.Add("$($firstName)$($number)", $element.First)
+                    $result.Add("$($secondName)$($number)", $element.Second.Trim())
+                    $element.Second = ""
+                }
+    
+                $element.First = $rows[$i]
+    
+                $number ++ 
+            }
+            else {
+                if([string]::IsNullOrWhiteSpace($separator)) {
+                    $element.Second += $rows[$i]
+                }
+                else {
+                    $element.Second = ([string]::Join($separator,  $element.Second, $rows[$i]) | Out-String).Replace($separator, "")
+                }
+            }
+            if ($i -eq $rows.Count - 1) {
+                $result.Add("$($firstName)$($number)", $element.First)
+                $result.Add("$($secondName)$($number)", $element.Second.Trim())
+            }
+        }
+    }
+    
+    function Convert-From-Country($country, $document) {
+        $result = [ordered]@{ 
+            Country       = $country
+            Code          = Find-Destination-Code-By-Name -Name $country -TemplateId $countryTemplateId
+            PlacesToVisit = Get-text -text $document -From "Places to visit" -To "Shopping"
+            Shopping      = Get-text -text $document -From "Shopping" -To "FAQ" -Ends "?"
+        }
+        $faqsText = Get-Text -text $document -From "FAQ" -FromEnds "?"
+        Set-Pairs -Text $faqsText -result $result -FirstName "Question" -SecondName "Answer" -Expression { param([string]$x) $x.EndsWith("?") }
+        return $result
+    }
+    
+    function Convert-From-Resort($resort, $document) {
+        $content = Get-Text -text $document -To "FAQ" -Ends "?" -Title "Beaches" -Resort $resort
+        $result = [ordered]@{ 
+            Resort = $resort
+            Code   = Find-Destination-Code-By-Name -Name $resort -TemplateId $resortTemplateId
+            Title = $content.Title
+        }
+        $contentText = ""
+        if ($content.Title -eq $null){
+            $contentText = $content
+        }
+        else {
+            $contentText = $content.Text
+        }
+        
+         Set-Pairs -Text $contentText -result $result -FirstName "Title" -SecondName "Description" -Expression { param([string]$x)
+                if($x.EndsWith(".") -OR $x.EndsWith("!")){
+                    return $false 
+                }
+                
+                return $true
+        }
+        $faqsText = Get-Text -text $document -From "FAQ" -FromEnds "?"
+        Set-Pairs -Text $faqsText -result $result -FirstName "Question" -SecondName "Answer" -Expression { param([string]$x) $x.EndsWith("?") }
+        return $result
+    }
+    
+    function Get-Title($text, $from){
+        $result =[ordered]@{
+        }
+        
+        Set-Pairs -Text $text -result $result -FirstName "Title" -SecondName "Description" -Skip 1 -Separator [System.Environment]::NewLine -Expression { param([string]$x)
+               if($x.EndsWith(".") -OR $x.EndsWith("!")){
+                    return $false 
+                }
+                
+                return $true
+        }
+        
+        for($i = 0; $i -lt 7; $i++){
+            $title = $result["Title$($i+1)"]
+            if($title -ne $null -AND $title.StartsWith($from)){
+                return $result["Description$($i+1)"]
+            }
+        }
+    }
+    
+    function Convert-From-Region($region, $document) {
+        $result = [ordered]@{ 
+            Region        = $region
+            Code          = Find-Destination-Code-By-Name -Name $region -TemplateId $regionTemplateId
+            PlacesToVisit = Get-Title -text $document -From "Place"
+            FoodAndDrink  = Get-Title -text $document -From "Food"
+            ThingsToDo    = Get-Title -text $document -From "Things to do"
+            Nightlife     = Get-Title -text $document -From "Nightlife"
+            Shopping      = Get-Title -text $document -From "Shopping"
+        }
+        $faqsText = Get-Text -text $document -From "FAQ" -FromEnds "?"
+        Set-Pairs -Text $faqsText -result $result -FirstName "Question" -SecondName "Answer" -Expression { param([string]$x) $x.EndsWith("?") }
+        return $result
+    }
+    
+    function Download-Document($id) {
+        try {
+            $client = New-Object System.Net.WebClient
+    
+            $response = $client.DownloadData("https://docs.google.com/document/d/$($id)/export?format=txt")
+    
+            $memoryStream = New-Object System.IO.MemoryStream(, $response)
+            $streamReader = New-Object System.IO.StreamReader($memoryStream, ([System.Text.Encoding]::UTF8))
+    
+            #Google within converting "docx" file to txt file inserts "________________" at the end of each page
+            $result = $streamReader.ReadToEnd().Replace("________________", "")
+    
+            $memoryStream.Dispose()
+            $streamReader.Dispose()
+            $client.Dispose()
+    
+            return $result
+        }
+        catch {
+            Write-Host "Error occurred doanloading document with id: $($id)"
+            return $null
+        }
+    }
+    
+    function Save-Documnet($data, $outputFilePath) {
+        try {
+            $data = $data | ForEach-Object { New-Object PSObject -Property $_ }
+            $data = $data | ConvertTo-Csv -Delimiter "," -NoTypeInformation
+            $item = New-Item -Path $outputFilePath -ItemType "{962B53C4-F93B-4DF9-9821-415C867B8903}"
+            [Sitecore.Data.Items.MediaItem]$mediaItem = $item
+            [Sitecore.Resources.Media.Media] $media = [Sitecore.Resources.Media.MediaManager]::GetMedia($mediaItem);
+            $stream = New-Object System.IO.MemoryStream
+            $streamWriter = New-Object System.IO.StreamWriter($stream, ([System.Text.Encoding]::UTF8))
+            foreach ($row in $data) {
+                $streamWriter.WriteLine($row)   
+            }
+            $streamWriter.Flush()
+            $media.SetStream($stream, "csv");
+            $stream.Close();
+            $streamWriter.Close()
+        }
+        catch {
+            Write-Host "Error occurred saving document with path: $($outputFilePath)"
+        }
+    }
+    
+    function Process-Files($files) {
+        foreach ($file in $files) {
+            Process-File -InputFilePath $file.InputFile -OutputFilePath $file.OutputFile
+        }
+    }
+    
+    Process-Files -Files $files
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210528T084852Z

@@ -1,0 +1,110 @@
+.tile-blocks-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -1%;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        margin: 0;
+    }
+}
+
+.tile-block {
+    position: relative;
+    width: 48%;
+    min-height: 240px;
+    margin-right: 1%;
+    margin-bottom: 20px;
+    margin-left: 1%;
+    background-position: center;
+    background-size: cover;
+    border-radius: $box_border-radius_bg;
+    box-shadow: 0 0 13px 0 rgba(178, 175, 175, 0.5);
+    overflow: hidden;
+
+    &:hover {
+        .tile-block-info__title a,
+        .tile-block-info__price {
+            color: $clrEjOrangeLight;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        min-height: 200px;
+        margin-right: 0;
+        margin-left: 0;
+    }
+}
+
+.tile-block__info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 220px;
+    height: 100%;
+    min-height: 240px;
+    padding: 24px 0 24px 24px;
+    background-color: rgba(255, 255, 255, 0.94);
+    border-top-left-radius: inherit;
+    border-bottom-left-radius: inherit;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 100%;
+        display: block;
+        height: 100%;
+        background-image: linear-gradient(
+            100deg,
+            rgba(255, 255, 255, 0.94) 50%,
+            rgba(255, 255, 255, 0) 50.5%
+        );
+        aspect-ratio: 0.18;
+    }
+
+    @include media-breakpoint-down(md) {
+        width: 200px;
+        min-height: 200px;
+        padding: 16px 0 16px 10px;
+    }
+}
+
+.tile-block-info__title {
+    margin: 0;
+    font-family: $fontRoundedHeadline;
+    font-size: 24px;
+    line-height: 1.27;
+    color: $clrTextMain;
+    word-break: break-word;
+
+    @include media-breakpoint-down(md) {
+        font-size: 20px;
+        line-height: 1.35;
+    }
+}
+
+.tile-block-info__price {
+    font-size: 16px;
+    line-height: 1.3;
+    color: $clrTextMain;
+
+    .price {
+        font-size: 26px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 22px;
+        }
+    }
+}
+
+// Styles for Experience Editor
+.tile-block--exp-editor {
+    z-index: 1;
+
+    .sc-image-wrapper {
+        z-index: -1;
+    }
+}

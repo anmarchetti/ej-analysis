@@ -1,0 +1,356 @@
+$tabsHeight: 48px;
+$footerHeight: 80px;
+
+.containerWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+}
+
+// desktop
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background-color: $clrSiteBgWhite;
+
+    .contentWrapper {
+        position: relative;
+        width: 100%;
+        max-width: 1200px;
+        height: 100%;
+        margin: auto;
+        padding: 20px 16px;
+    }
+
+    .calendarWrapper {
+        margin-top: 24px;
+
+        :global {
+            .flatpickr-calendar::before,
+            .flatpickr-calendar::after {
+                display: none;
+            }
+        }
+    }
+
+    .duration {
+        margin: 4px 0 0;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 18px;
+    }
+
+    .legendWrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .legend {
+        display: flex;
+        gap: 24px;
+        margin-top: 16px;
+        line-height: 18px;
+
+        .text {
+            margin-left: 8px;
+            font-size: 14px;
+            color: $clrTextMainLight;
+        }
+    }
+
+    :global(.flatpickr-prev-month),
+    :global(.flatpickr-next-month) {
+        svg path {
+            stroke: $clrEjOrangeDarkShadow;
+            stroke-width: 1px;
+        }
+    }
+
+    :global(.mobile-shadow-right) {
+        right: 0;
+    }
+
+    :global(.graph-navigation) {
+        position: relative;
+    }
+
+    :global(.compare-price-calendar__wrapper) {
+        margin: 0;
+    }
+
+    :global(.graph-wrapper.desktop) {
+        display: flex;
+        justify-content: center;
+    }
+
+    :global(.graph-container) {
+        position: relative;
+        height: 420px;
+        background-color: $clrSiteBgWhite;
+
+        canvas {
+            background-color: $clrSiteBgWhite;
+        }
+    }
+
+    :global(.spinner-container) {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: 0;
+        transform: translate(-50%, 25%);
+    }
+
+    .toggleWrapper {
+        display: flex;
+        align-items: center;
+        padding-left: 16px;
+        white-space: nowrap;
+
+        :global(input:checked ~ .label) {
+            font-family: $fontRoundedDemy;
+            font-weight: 400;
+
+            &:last-child {
+                font-family: $fontRoundedBook;
+                color: $colorBlackLight;
+            }
+        }
+
+        :global(.label) {
+            font-family: $fontRoundedBook;
+            font-size: 14px;
+            line-height: 1.3;
+            color: $colorBlackLight;
+
+        &:last-child {
+                font-family: $fontRoundedDemy;
+                font-weight: 400;
+            }
+        }
+
+        :global(.label2) {
+            margin: 0 0 0 10px;
+            padding-left: 8px;
+        }
+
+        :global(.label1) {
+            margin: 0 10px 0 0;
+            padding-right: 8px;
+        }
+    }
+
+    .toggleWrapperGraph {
+        justify-content: flex-end;
+        padding-bottom: 10px;
+    }
+}
+
+// mobile
+.container.mobile {
+    .header {
+        padding: 20px 12px 3px;
+
+        @include media-breakpoint-down(md) {
+            padding: 12px 12px 8px;
+        }
+    }
+
+    .contentWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        height: 100%;
+        padding: 0;
+    }
+
+    .duration {
+        font-size: 14px;
+    }
+
+    .legend {
+        display: none;
+    }
+
+    .weekdays {
+        display: grid;
+        box-sizing: content-box;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0 4px;
+        min-height: 31px;
+        padding: 5px 10px;
+        overflow-x: auto;
+        font-size: 13px;
+        font-weight: 700;
+        box-shadow: 0 2px 4px 0 $colorBlackShadow;
+
+        @media (width <= 360px) {
+            gap: 0;
+        }
+
+        span {
+            flex-basis: none;
+            flex-grow: none;
+            min-width: 50px;
+
+            @media (width <= 400px) {
+                min-width: 42px;
+            }
+        }
+    }
+
+    .calendarWrapper,
+    .priceGraphWrapper {
+        box-sizing: border-box;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow-y: scroll;
+    }
+
+    :global(.mobile-shadow-right) {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        bottom: 0;
+        box-shadow: 0 0 8px 4px $clrSiteBgWhite;
+    }
+
+    :global(.graph-wrapper) {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 5px;
+        margin-left: 70px;
+        overflow-x: scroll;
+    }
+
+    :global(.y-axis-mobile) {
+        position: absolute;
+        z-index: 0;
+        top: 0;
+        height: 420px;
+    }
+
+    :global(.mobile-shadow-left) {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        bottom: 0;
+        left: 70px;
+        box-shadow: 0 0 8px 4px $clrSiteBgWhite;
+    }
+
+    .toggleWrapper {
+        width: 100%;
+        padding: 0 10px 8px;
+        white-space: unset;
+
+        :global(.toggle) {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        :global(.switcher) {
+            flex-shrink: 0;
+        }
+
+        :global(.label) {
+            display: flex;
+        }
+    }
+
+    .toggleWrapperGraph {
+        padding: 10px;
+    }
+
+    .toggleWithoutTax {
+        margin-top: 10px;
+        padding-top: 0;
+    }
+}
+
+// tabs
+.tabsWrapper {
+    justify-content: center;
+    min-height: $tabsHeight;
+    box-shadow: 0 3px 9px 3px rgba(51, 51, 51, 0.15);
+
+    button {
+        max-width: 300px;
+        padding: 11px 27px 12px;
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        span {
+            position: relative;
+            top: 1px;
+        }
+    }
+
+    @media (width <= 320px) {
+        button {
+            font-size: 14px;
+        }
+    }
+}
+
+.titleWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    line-height: 22px;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+        line-height: 18px;
+    }
+}
+
+// tab-content
+.tabContentWrapper {
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    height: 1px;
+    margin-top: -8px;
+    overflow: auto;
+}
+
+.icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    padding: 2px;
+    font-size: 15px;
+    vertical-align: middle;
+    color: $clrSiteBgWhite;
+    border-radius: 2px;
+
+    &.info {
+        background-color: $colorBlue;
+    }
+
+    &.promo {
+        background-color: $colorGreenDark;
+    }
+
+    &.freeForKids {
+        color: $clrTextMain;
+        background-color: $colorYellow3;
+    }
+
+    svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.hidden {
+    display: none;
+}

@@ -1,0 +1,70 @@
+.redirectPopup {
+    :global {
+        .popup__content {
+            border-radius: 6px;
+        }
+
+        .popup__header {
+            align-self: center;
+            padding: 40px 0 0;
+            text-align: center;
+        }
+
+        .popup__body {
+            padding: 40px 40px 0;
+            font-size: 18px;
+            line-height: 1.3;
+        }
+
+        .popup__footer {
+            padding: 40px;
+
+            .btn.btn--transparent {
+                font-weight: bold;
+            }
+
+            .btn {
+                @include text-truncate;
+
+                min-width: auto;
+            }
+
+            + .btn {
+                margin-left: 32px;
+            }
+        }
+
+        @include media-breakpoint-up(md) {
+            .popup__title {
+                font-size: 32px;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            .popup__header {
+                padding: 24px 0 0;
+            }
+
+            .popup__body {
+                padding: 24px 24px 0;
+                font-size: 16px;
+            }
+
+            .popup__footer {
+                flex-wrap: wrap;
+                gap: 10px;
+                padding: 24px;
+
+                .btn {
+                    flex: 1 0 auto;
+                    max-width: 100%;
+                    padding: 10px 14px;
+                }
+
+                .btn + .btn {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+}

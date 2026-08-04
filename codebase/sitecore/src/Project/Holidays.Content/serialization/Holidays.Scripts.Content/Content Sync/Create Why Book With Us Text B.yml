@@ -1,0 +1,49 @@
+﻿---
+ID: "12a4d75d-159d-4c31-bbbc-6a6f236489fe"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Why Book With Us Text Block
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $textBlocksFolderPath = "/sitecore/content/EasyJet/Holidays/Data/Text Blocks"
+    $whyBookingWithUsItemName = "Why book with us"
+    $whyBookingWithUsItemPath = "$($textBlocksFolderPath)/$($whyBookingWithUsItemName)"
+    $whyBookingWithUsObject = @{
+        Title = "WHY BOOK WITH US?";
+        Description = "When it comes to your holiday, we know everyone likes to have great flexibility and a memorable experience - so we've designed our getaways with you in mind.";
+    }
+    
+    function create-item($name, $path, $templateId)
+    {
+        $item = Get-Item -path "$($path)/$($name)" -ErrorAction SilentlyContinue
+    
+        if($item -eq $null){
+            $item = New-Item -ForceId "{b2fc7eb6-30b6-4254-8f40-289f1c8e2702}" -Path $path -Name $name -ItemType $templateId
+        }
+        
+        return $item
+    }
+    
+    function update-text-block-item($item, $whyBookingWithUsObject)
+    {
+        New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+            $item.Editing.BeginEdit()
+            $item["Title"] = $whyBookingWithUsObject.Title
+            $item["Description"] = $whyBookingWithUsObject.Description
+            $item.Editing.EndEdit()
+        }
+    }
+    
+    $item = create-item -Name $whyBookingWithUsItemName -Path $textBlocksFolderPath -TemplateId "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}"
+    update-text-block-item -Item $item -WhyBookingWithUsObject $whyBookingWithUsObject
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200625T153003Z

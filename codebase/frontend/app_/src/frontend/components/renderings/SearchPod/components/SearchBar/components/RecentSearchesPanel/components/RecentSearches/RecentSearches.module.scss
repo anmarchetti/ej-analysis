@@ -1,0 +1,72 @@
+.recentSearches {
+    flex-basis: 100%;
+    text-align: right;
+    transition: margin-top 300ms ease-in-out;
+
+    @include media-breakpoint-up(sm) {
+        margin-top: 5px;
+
+        .isOpen {
+            transform: rotate(180deg);
+        }
+    }
+
+    :global(.btn--txt) {
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    .desktopDropdown {
+        position: relative;
+        z-index: 1;
+        top: -40px;
+        display: block;
+        margin-bottom: -40px;
+        text-align: left;
+    }
+
+    .mobileDropdown {
+        padding-right: 1.5rem;
+        padding-left: 1.5rem;
+    }
+
+    &.entering,
+    &.exiting,
+    &.exited {
+        margin-top: -24px;
+        opacity: 0;
+    }
+}
+
+.toggle {
+    position: relative;
+    z-index: 2;
+    margin-left: auto;
+    font-size: 15px;
+    line-height: 22px;
+    text-align: right;
+
+    .iconArrow {
+        position: relative;
+        top: 4px;
+        width: 12px;
+        height: 12px;
+        margin-left: 5px;
+
+        @include media-breakpoint-up(sm) {
+            margin-right: 7px;
+            margin-left: 0;
+        }
+    }
+
+    &.exited {
+        margin-top: -24px;
+        opacity: 0;
+    }
+
+    &:global(.btn.btn--transparent) {
+        padding: 0;
+        font-size: 15px;
+        border: none;
+    }
+}

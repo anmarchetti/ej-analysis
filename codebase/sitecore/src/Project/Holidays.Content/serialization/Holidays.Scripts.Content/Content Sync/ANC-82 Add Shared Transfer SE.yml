@@ -1,0 +1,140 @@
+﻿---
+ID: "add9a454-3fee-40ac-904d-315546678c8b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-82 Add Shared Transfer SE"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $translations = @{
+            "fr-CH" = @{
+                "SportTransferFees" = "(hors frais de transfert)"
+                "SharedFeesTitle" = "Frais supplémentaires inclus"
+                "SharedFeesDescription" = "Notre partenaire de transfert facture un {price} supplémentaire par article d'équipement sportif. Ce montant a été ajouté au coût de votre forfait vacances."
+            }
+            "fr-FR" = @{
+                "SportTransferFees" = "(hors frais de transfert)"
+                "SharedFeesTitle" = "Frais supplémentaires inclus"
+                "SharedFeesDescription" = "Notre partenaire de transfert facture un {price} supplémentaire par article d'équipement sportif. Ce montant a été ajouté au coût de votre forfait vacances."
+            }
+            "de-CH" = @{
+                "SportTransferFees" = "(exkl. Transferkosten)"
+                "SharedFeesTitle" = "Zusätzliche Gebühren inklusive"
+                "SharedFeesDescription" = "Unser Transferpartner berechnet einen zusätzlichen {price} pro Sportgerät. Dieser Preis wurde zu den Kosten Ihres Urlaubspakets hinzugefügt."
+            }
+            "de-DE" = @{
+                "SportTransferFees" = "(exkl. Transferkosten)"
+                "SharedFeesTitle" = "Zusätzliche Gebühren inklusive"
+                "SharedFeesDescription" = "Unser Transferpartner berechnet einen zusätzlichen {price} pro Sportgerät. Dieser Preis wurde zu den Kosten Ihres Urlaubspakets hinzugefügt."
+            }
+        }
+    
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+            
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    function Create-Data-Source-Item($name, $path, $templateId){
+        $item = Get-Item -Path "$path/$name" -ErrorAction SilentlyContinue
+        
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $name -ItemType $templateId
+            
+            if($item -ne $null){
+                Write-Host "Transfer Section Datasource is created"
+            }
+                
+            return $item
+        }
+        
+        return $item
+    }
+    
+    function Update-Rendering($pagePath, $data, $renderingId) {
+        $page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+        
+        if ($page) {
+            $rendering = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $renderingId } | Select -First 1
+       
+            if ($rendering -ne $null) {
+                Set-Rendering -Item $page -Instance $rendering -Datasource $data
+            }
+        }
+    }
+    
+    function Transfer-Update($website){
+        $dataSourceName = "Transfer Section"
+        $dataSourcePath ="/sitecore/content/EasyJet/$website/Home/Booking/Page Components"
+        $transferDataSourceTemplateId = "{1D188ABB-6067-499F-A457-51C8EF666CC5}"
+        
+        # Create and fill transfer datasource
+        $dataSourceItem = Create-Data-Source-Item -Name $dataSourceName -Path $dataSourcePath -TemplateId $transferDataSourceTemplateId
+        
+        if($dataSourceItem -ne $null) {
+            $dataSourceItem.Editing.BeginEdit()
+            $dataSourceItem["SharedFeesTitle"] = "Additional fees included"
+            $dataSourceItem["SharedFeesDescription"] = "Our transfer partner charges an additional {price} per sports equipment item. This has been added to your holiday package cost."
+            $dataSourceItem.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Transfer Section Datasource updated"
+        }
+        
+        # Add fees label to Hold Luggage Data Source
+        $holdLuggagePath = "/sitecore/content/EasyJet/$website/Data/Ancillaries/Hold Luggage"
+        $holdLuggageDataSource = Get-Item -Path $holdLuggagePath -ErrorAction SilentlyContinue
+            
+        if($holdLuggageDataSource -ne $null){
+            $holdLuggageDataSource.Editing.BeginEdit()
+            $holdLuggageDataSource["SportTransferFees"] = "(excl. transfer costs)"
+            $holdLuggageDataSource.Editing.EndEdit() | Out-Null
+            Write-Host "Hold Luggage Datasource updated"
+        }
+        
+        # Add translations on Holidays
+        if($website -eq "Holidays"){
+            foreach ($lang in $translations.Keys) {
+                create-lang-version -item $dataSourceItem -lang $lang -field "SharedFeesTitle" -value $translations[$lang]["SharedFeesTitle"]
+                create-lang-version -item $dataSourceItem -lang $lang -field "SharedFeesDescription" -value $translations[$lang]["SharedFeesDescription"]
+                create-lang-version -item $holdLuggageDataSource -lang $lang -field "SportTransferFees" -value $translations[$lang]["SportTransferFees"]
+                
+                Write-Host "Translations added"
+            }
+        }
+        
+        $bookingPath = "/sitecore/content/EasyJet/$website/Home/Booking"
+        $dataSourceFullPath ="$dataSourcePath/$dataSourceName"
+        $transferRenderingId = "{62F93471-0DCA-49AE-95AF-2B346D8098D8}"
+        Update-Rendering -pagePath $bookingPath -data $dataSourceFullPath -renderingId $transferRenderingId
+        Write-Host "Transfers updated on" $website
+    }
+    
+    Transfer-Update -website "Holidays"
+    Transfer-Update -website "TradePortal"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1010
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231109T090531Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,109 @@
+.feedback-carousel-item {
+    padding: 0 15px;
+}
+
+.feedback-carousel-wrapper {
+    position: relative;
+    padding: 0 45px;
+
+    @include media-breakpoint-down(md) {
+        padding: 0 16px;
+
+    }
+}
+
+.feedback-carousel-container {
+    position: static;
+}
+
+.feedback-carousel-dot-list {
+    align-items: center;
+    height: 10px;
+
+    @include media-breakpoint-down(md) {
+        display: none;
+    }
+
+    li button {
+        display: block;
+        width: 8px;
+        height: 8px;
+        margin-right: 12px;
+        background: $colorGray;
+        border: none;
+
+        &:hover {
+            background: $clrEjOrange;
+        }
+
+        &:active {
+            background: $colorGray;
+        }
+    }
+
+    [class~='react-multi-carousel-dot--active'] button {
+        width: 10px;
+        height: 10px;
+        background: $clrEjOrange;
+    }
+
+    li:last-child,
+    li:first-child {
+        &:not([class~='react-multi-carousel-dot--active']) button {
+            width: 6px;
+            height: 6px;
+        }
+    }
+}
+
+.carousel-dot-list {
+    position: relative;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    height: 10px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    list-style: none;
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+    }
+}
+
+.carousel-dot {
+    margin: 0;
+    margin-right: 12px;
+    padding: 0;
+    background: $colorGray;
+    border: none;
+    border-radius: 50%;
+    outline: 0;
+    box-shadow: none;
+    opacity: 1;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &--regular {
+        width: 8px;
+        height: 8px;
+    }
+
+    &--active {
+        width: 10px;
+        height: 10px;
+        background: $clrEjOrange;
+    }
+
+    &--small {
+        width: 6px;
+        height: 6px;
+    }
+
+    &--hidden {
+        width: 0;
+        height: 0;
+        margin: 0;
+    }
+}

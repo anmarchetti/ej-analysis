@@ -1,0 +1,53 @@
+.clusterWrapper {
+    /* stylelint-disable-next-line value-keyword-case */
+    composes: markerWrapper from "./Marker.module.scss";
+
+    &:hover {
+        .extra,
+        .pin {
+            color: $clrEjOrangeDarkShadow;
+        }
+    }
+}
+
+.extra {
+    composes: extra from "./Marker.module.scss";
+    font-size: 14px;
+}
+
+.pin {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 1px 3px;
+    color: $colorLuxuryOrange;
+    background-color: currentcolor;
+    border-radius: 6px;
+    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.25));
+    transition: all 0.2s ease-in-out;
+
+    svg {
+        z-index: 1;
+        width: 18px;
+        margin: 5px 2px;
+        color: $clrSiteBgWhite;
+    }
+
+    .text {
+        z-index: 1;
+        font-size: 16px;
+        color: $clrSiteBgWhite;
+    }
+
+    .pointer {
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        width: 13px;
+        height: 7px;
+        margin: 0;
+        color: inherit;
+        transform: translateX(-50%);
+    }
+}

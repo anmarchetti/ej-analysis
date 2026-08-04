@@ -1,0 +1,21 @@
+.btn {
+    border: none;
+    background: transparent;
+}
+
+.clearIndicator {
+    position: absolute;
+    top: 7px;
+    right: 50px;
+    width: 20px;
+    padding-top: 5px;
+    color: $colorOrange;
+
+    &::after {
+        content: "";
+        height: 100%;
+        margin-left: 10px;
+        padding-top: 3px;
+        border-right: solid 1px $clrTxtLighter;
+    }
+}

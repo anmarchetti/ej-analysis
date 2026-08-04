@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Sitecore.Client" />
+        <PackageReference Include="Sitecore.JavaScriptServices.Configuration" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)TestProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Multisite\code\easyJet.Foundation.Multisite.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\SiteModes\code\easyJet.Foundation.SiteModes.csproj" />
+    </ItemGroup>
+</Project>

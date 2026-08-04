@@ -1,0 +1,139 @@
+﻿---
+ID: "7ca18331-7f58-4f61-bb3e-6fb4beaec2ae"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-675 - Price Promise form fields"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $updates = @(
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Price Promise/Page Components/Price Promise"
+            TemplatePath = "/sitecore/templates/Feature/Destinations/Price Promise"
+            Fields      = @{
+                "NameFieldLabel" = @{
+                    "en"    = "Name"
+                    "fr-CH" = "Nom"
+                    "de-CH" = "Name"
+                    "fr-FR" = "Nom"
+                    "de-DE" = "Name"
+                }
+                "BookingReferenceFieldLabel" = @{
+                    "en"    = "Booking reference"
+                    "fr-CH" = "Référence de réservation"
+                    "de-CH" = "Buchungsnummer"
+                    "fr-FR" = "Référence de réservation"
+                    "de-DE" = "Buchungsnummer"
+                }
+                "BookingDepartureFieldLabel" = @{
+                    "en"    = "Departure date"
+                    "fr-CH" = "Date de départ"
+                    "de-CH" = "Abflugdatum"
+                    "fr-FR" = "Date de départ"
+                    "de-DE" = "Abflugdatum"
+                }
+                "DifferentCompanyLabel" = @{
+                    "en"    = "Provided by a different ATOL Protected holiday company with ABTA membership"
+                    "fr-CH" = "Fourni par une autre société de séjours avec une adhésion ABTA"
+                    "de-CH" = "Bereitgestellt von einem anderen Reiseveranstalter mit Mitgliedschaft im Verband britischer Reisebüros (ABTA)"
+                    "fr-FR" = "Fourni par une autre société de séjours avec une adhésion ABTA"
+                    "de-DE" = "Bereitgestellt von einem anderen Reiseveranstalter mit Mitgliedschaft im Verband britischer Reisebüros (ABTA)"
+                }
+                "SameDatesOfTravelLabel" = @{
+                    "en"    = "Same travel dates"
+                    "fr-CH" = "Mêmes dates de séjour"
+                    "de-CH" = "Gleiche Reisetermine"
+                    "fr-FR" = "Mêmes dates de séjour"
+                    "de-DE" = "Gleiche Reisetermine"
+                }
+                "SameFlightsLabel" = @{
+                    "en"    = "Same hotel and easyJet flights (including flight times)"
+                    "fr-CH" = "Mêmes hôtel et vols easyJet (y compris les horaires de vol)"
+                    "de-CH" = "Gleiches Hotel und easyJet Flüge"
+                    "fr-FR" = "Mêmes hôtel et vols easyJet (y compris les horaires de vol)"
+                    "de-DE" = "Gleiches Hotel und easyJet Flüge"
+                }
+                "SamePartyCompositionLabel" = @{
+                    "en"    = "Same number (and ages) of customers travelling (on the same booking)"
+                    "fr-CH" = "Même nombre de passagers (sur la même réservation)"
+                    "de-CH" = "Gleiche Anzahl von reisenden Gästen"
+                    "fr-FR" = "Même nombre de passagers (sur la même réservation)"
+                    "de-DE" = "Gleiche Anzahl von reisenden Gästen"
+                }
+                "SameRoomTypeAndBoardBasisLabel" = @{
+                    "en"    = "Same room type (name, description, and facilities) and board basis"
+                    "fr-CH" = "Même type de chambre (nom, description et installations) et de pension"
+                    "de-CH" = "Gleicher Zimmertyp und gleiche Verpflegung"
+                    "fr-FR" = "Même type de chambre (nom, description et installations) et de pension"
+                    "de-DE" = "Gleicher Zimmertyp und gleiche Verpflegung"
+                }
+                "InclusiveOn23kgBagLabel" = @{
+                    "en"    = "Includes the same baggage (whether that is 23kg checked-in hold luggage, a large cabin bag or small under seat bag)"
+                    "fr-CH" = "Inclus la même franchise à bagages (qu'il s'agisse d'un bagage en soute de 23 kg, d'un grand bagage à main ou d'un petit bagage à main)"
+                    "de-CH" = "Inklusive desselben Gepäcks (egal ob 23 kg Aufgabegepäck, ein großes Handgepäckstück oder ein kleines Handgepäckstück)"
+                    "fr-FR" = "Inclus la même franchise à bagages (qu'il s'agisse d'un bagage en soute de 23 kg, d'un grand bagage à main ou d'un petit bagage à main)"
+                    "de-DE" = "Inklusive desselben Gepäcks (egal ob 23 kg Aufgabegepäck, ein großes Handgepäckstück oder ein kleines Handgepäckstück)"
+                }
+                "BookedWithinLast24hLabel" = @{
+                    "en"    = "You made your easyJet holidays booking within the last 24 hours"
+                    "fr-CH" = "Vous avez réservé votre séjour easyJet holidays au cours des dernières 24 heures"
+                    "de-CH" = "Der easyJet Urlaub wurde innerhalb der letzten 24 Stunden gebucht"
+                    "fr-FR" = "Vous avez réservé votre séjour easyJet holidays au cours des dernières 24 heures"
+                    "de-DE" = "Der easyJet Urlaub wurde innerhalb der letzten 24 Stunden gebucht"
+                }
+                "InclusiveOfTransfersLabel" = @{
+                    "en"    = "Includes equivalent shared or private transfers (beach or lake holidays, not required for city breaks)"
+                    "fr-CH" = "Inclus les mêmes transferts partagés ou privés (valable pour les séjours à la mer et au bord d'un lac, non requis pour les escapades en ville)"
+                    "de-CH" = "Inklusive Transfers (Urlaub am Strand oder See, nicht erforderlich für Städtereisen)"
+                    "fr-FR" = "Inclus les mêmes transferts partagés ou privés (valable pour les séjours à la mer et au bord d'un lac, non requis pour les escapades en ville)"
+                    "de-DE" = "Inklusive Transfers (Urlaub am Strand oder See, nicht erforderlich für Städtereisen)"
+                }
+                "LinkFieldLabel" = @{
+                    "en"    = "Website link"
+                    "fr-CH" = "Lien vers le site internet"
+                    "de-CH" = "Website-Link"
+                    "fr-FR" = "Lien vers le site internet"
+                    "de-DE" = "Website-Link"
+                }
+                "FileUploadButton" = @{
+                    "en"    = "Choose file"
+                    "fr-CH" = "Choisir un fichier"
+                    "de-CH" = "Datei auswählen"
+                    "fr-FR" = "Choisir un fichier"
+                    "de-DE" = "Datei auswählen"
+                }
+                "RequestTitle" = @{
+                    "en"    = "Thanks for your submission"
+                    "fr-CH" = "Merci pour votre soumission"
+                    "de-CH" = "Vielen Dank!"
+                    "fr-FR" = "Merci pour votre soumission"
+                    "de-DE" = "Vielen Dank!"
+                }
+                "RequestText" = @{
+                    "en"    = "We’ve passed it onto our team. We’ll look into this and get back to you as soon as we can."
+                    "fr-CH" = "Nous l’avons transmis à notre équipe. Nous reviendrons vers vous dès que possible."
+                    "de-CH" = "Wir haben es an unser Team weitergegeben. Wir werden uns das ansehen und uns so schnell wie möglich bei dir melden."
+                    "fr-FR" = "Nous l’avons transmis à notre équipe. Nous reviendrons vers vous dès que possible."
+                    "de-DE" = "Wir haben es an unser Team weitergegeben. Wir werden uns das ansehen und uns so schnell wie möglich bei dir melden."
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $updates
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250317T141742Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

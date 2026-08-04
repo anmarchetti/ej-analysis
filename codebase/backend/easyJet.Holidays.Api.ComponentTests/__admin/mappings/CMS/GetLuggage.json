@@ -1,0 +1,133 @@
+{
+    "Title": "CMS Luggage",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/luggage/get",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "language",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "*"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "LuggageCategories": [
+                {
+                    "Name": "Cabin Bags",
+                    "Type": "Cabin Bags",
+                    "Code": "CABI",
+                    "Children": [
+                        {
+                            "Description": "",
+                            "Icon": "",
+                            "Name": "Large Cabin Bags",
+                            "Code": "SCB1",
+                            "AdditionalBagsLabel": "",
+                            "IsLuggageItemEnabled": "true"
+                        }
+                    ]
+                },
+                {
+                    "Name": "Hold Baggage",
+                    "Type": "Bag",
+                    "Code": "BAGE",
+                    "Children": [
+                        {
+                            "Description": "Maximum 15kg per bag, stored in the plane hold. Outbound and return.",
+                            "Icon": "/-/jssmedia/b4bd6cd35ae34aedafe7439d73a24a26.ashx",
+                            "Name": "Hold Baggage 15kg",
+                            "Code": "LUS",
+                            "AdditionalBagsLabel": "",
+                            "IsLuggageItemEnabled": "true"
+                        },
+                        {
+                            "Description": "Maximum 23kg per bag, stored in the plane hold. Outbound and return.",
+                            "Icon": "/-/jssmedia/ba947d57d6e143748b5a79895084bf84.ashx",
+                            "Name": "Hold Baggage 23kg",
+                            "Code": "LUG",
+                            "AdditionalBagsLabel": "Additional bags",
+                            "IsLuggageItemEnabled": "true"
+                        }
+                    ]
+                },
+                {
+                    "Name": "Large Sports Equipment",
+                    "Type": "Sports Equipment",
+                    "Code": "SEO",
+                    "Children": [
+                        {
+                            "Description": "",
+                            "Icon": null,
+                            "Name": "Bicycle",
+                            "Code": "BIKE",
+                            "AdditionalBagsLabel": "",
+                            "IsLuggageItemEnabled": "true"
+                        },
+                        {
+                            "Description": "",
+                            "Icon": null,
+                            "Name": "Canoe",
+                            "Code": "CANO",
+                            "AdditionalBagsLabel": "",
+                            "IsLuggageItemEnabled": "true"
+                        },
+                        {
+                            "Description": "",
+                            "Icon": null,
+                            "Name": "Hand Glider",
+                            "Code": "HGLD",
+                            "AdditionalBagsLabel": "",
+                            "IsLuggageItemEnabled": "true"
+                        }
+                    ]
+                },
+                {
+                    "Name": "Pre Paid Excess Weight",
+                    "Type": "",
+                    "Code": "WGT",
+                    "Children": [
+                        {
+                            "Description": "",
+                            "Icon": null,
+                            "Name": "Pre Paid Excess Weight 3kg",
+                            "Code": "WGT",
+                            "AdditionalBagsLabel": "",
+                            "IsLuggageItemEnabled": "true"
+                        }
+                    ]
+                },
+                {
+                    "Name": "Small Sports Equipment",
+                    "Type": "Sports Equipment",
+                    "Code": "SEC",
+                    "Children": [
+                        {
+                            "Description": "",
+                            "Icon": null,
+                            "Name": "Golf Bag",
+                            "Code": "GBAG",
+                            "AdditionalBagsLabel": "",
+                            "IsLuggageItemEnabled": "true"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "Title": "CMS Other Routes Settings",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/Content/ByPath",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "path",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "{site}/Settings/Other Routes Settings"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "OpenRouteInNewTab": "",
+            "EnableOtherRoutes": "1",
+            "EnableOtherRoutesInPromoPages": "1",
+            "HideOtherRoutesInPages": "{E6E80B3D-E580-4A8A-A14D-A7ADBF9A9968}|{8E4B306C-FAC0-47A6-832A-25FD9BE7922D}|{D4B7A087-0523-427B-B543-772B27CCD652}|{9CC75298-5DD9-4938-9247-3E3418500593}|{70D81CFC-7FA9-4570-B88C-73C137597399}|{815A5EF2-D099-414C-B7FC-B2906B65CAC4}|{3610C0CE-C741-4E7F-A98A-7FC8279E41A7}|{3FD04B65-E40B-49D8-BA31-3AAC72D9CE54}|{DC8E064D-BD14-4F08-A671-B433BF9E1AA1}|{4B7E03EF-DD76-4EA2-8370-FE1239666C6E}|{43F57967-41ED-41A0-9194-033C4FD42F37}|{9C7EC886-256D-4569-B34D-AEF00A5E8EFA}|{F686D1E0-43FD-4046-8D7F-18A3EEF31FB3}",
+            "IsPublic": "1",
+            "AutoTranslate": "",
+            "SkipTranslate": ""
+        }
+    }
+}

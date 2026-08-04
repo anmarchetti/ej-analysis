@@ -1,0 +1,31 @@
+.bookingList {
+    grid-area: bookingList;
+}
+
+.bookingListHeader {
+    display: flex;
+    justify-content: space-between;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+    }
+}
+
+.anchorsWrapper {
+    display: inline-block;
+    border-bottom: 1px solid $colorGrayDark;
+    margin-bottom: 1.5rem;
+
+    .tab {
+        @include media-breakpoint-down(md) {
+            margin-right: 5px;
+            padding: 10px 3px;
+            font-size: 14px;
+        }
+
+        @include media-breakpoint-down(sm) {
+            font-size: 13px;
+        }
+    }
+}

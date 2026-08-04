@@ -1,0 +1,32 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgCopy = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        width='1em'
+        height='1em'
+        viewBox='0 0 17 17'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'copy-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <path
+            fillRule='evenodd'
+            clipRule='evenodd'
+            d='M14.167 2.125h-8.5v9.917h8.5V2.125ZM5.667.708c-.783 0-1.417.635-1.417 1.417v9.917c0 .782.634 1.416 1.417 1.416h8.5c.782 0 1.416-.634 1.416-1.416V2.125c0-.782-.634-1.417-1.416-1.417h-8.5Z'
+        />
+        <path
+            fillRule='evenodd'
+            clipRule='evenodd'
+            d='M4.25 3.542H2.833c-.782 0-1.417.634-1.417 1.416v9.917c0 .782.635 1.417 1.417 1.417h8.5c.783 0 1.417-.635 1.417-1.417v-1.417h-1.417v1.417h-8.5V4.958H4.25V3.542Z'
+        />
+        <path
+            fillRule='evenodd'
+            clipRule='evenodd'
+            d='M7.083 7.083c0-.39.318-.708.709-.708h4.25a.708.708 0 1 1 0 1.417h-4.25a.708.708 0 0 1-.708-.709ZM7.083 4.25c0-.391.318-.708.709-.708h4.25a.708.708 0 1 1 0 1.416h-4.25a.708.708 0 0 1-.708-.708ZM7.083 9.917c0-.392.318-.709.709-.709h4.25a.708.708 0 1 1 0 1.417h-4.25a.708.708 0 0 1-.708-.708Z'
+        />
+    </svg>
+);
+
+export default SvgCopy;

@@ -1,0 +1,66 @@
+﻿---
+ID: "169e75dc-6f2c-4a55-95b9-b17d8ade997e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-232 Add Contradictory Special Requests"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+    	$item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $templateId
+    		Write-Host $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    $contradictoryGroups = @(
+    	@{
+    		Name = "Floor type"
+    		Options = "{9399E29F-E987-4629-BCDE-C04FFEE8F8AD}|{5407161A-71D6-44FE-8133-A88DA0715CE4}|{A33F62BF-63F8-4310-9995-DACF270FBB53}"
+    	}
+    	@{
+    		Name = "Bed type"
+    		Options = "{28703AC5-9078-49B1-92FA-136BDED0D279}|{AFF38D29-6AB1-4DB2-A96F-1374ED706CD1}"
+    	}
+    )
+    
+    $specialRequests = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Special Requests" -ErrorAction SilentlyContinue
+    
+    if ($specialRequests -ne $null) {
+    	# Create groups folder
+    	$folder = Get-Or-Create-Item -Path "$($specialRequests.FullPath)/Contradictory Requests Groups" -TemplateId "{83B89909-0E5D-452A-AE3B-AC5C7B6823BB}"
+    	$groupIds = @()
+    
+    	# Create groups
+    	foreach ($group in $contradictoryGroups) {
+    		$groupItem = Get-Or-Create-Item -Path "$($folder.FullPath)/$($group.Name)" -TemplateId "{0F8839BE-74AF-40BD-B777-0AD6DBB3BBCE}"
+    
+    		$groupItem.Editing.BeginEdit()
+    		$groupItem["Options"] = $group.Options
+    		$groupItem.Editing.EndEdit() | Out-Null
+    
+    		$groupIds += $groupItem.ID
+    	}
+    
+    	# Set Contradictory Special Requests
+    	$specialRequests.Editing.BeginEdit()
+    	$specialRequests["SpecialRequestsContradictoryGroups"] = [string]::Join("|",$groupIds)
+    	$specialRequests["ContradictoryPopupTitle"] = "PLEASE CHOOSE ONE"
+    	$specialRequests["ContradictoryPopupDescription"] = "You have selected special requests that contradict each other. Please confirm that you would like to swap to the new selection."
+    	$specialRequests["ContradictoryOriginalSelectionTitle"] = "Original selection"
+    	$specialRequests["ContradictoryNewSelectionTitle"] =  "You’re new selection"
+    	$specialRequests.Editing.EndEdit() | Out-Null
+    	Write-Host "Special Requests updated"
+    } 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20221020T130246Z

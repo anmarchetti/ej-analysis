@@ -1,0 +1,554 @@
+﻿---
+ID: "85b3d941-f133-477a-8fd3-a676adcdaca5"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-112 Luxury whats included"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    # 1. Holidays
+    
+    $items_baf4515370b74012927594d4c052c13c_en_v1 = @"
+    {30CA3010-58B8-4BD0-83A7-B87E59B20AE5}|{1F362491-2A40-4055-94AE-E9DDD92DCEC4}|{24067E01-3439-414C-ABAF-4A83145F1F39}|{A9CA3120-A8E5-4C8C-AA0C-8EB12B39AC7E}|{F48DE200-6F39-484E-917F-0D1D5EE1A362}|{7C0B66B9-B586-4015-8D5E-ABB0C7E24A0F}|{E59449C1-270F-4FFC-BE82-C8C09A9E303B}|{DE19D9C3-1181-427D-BACA-FA9313D900A6}|{9787247F-1E25-4D33-9AB4-4795DF1BB625}|{955D14CA-4CA4-41EB-851A-CA9DC26D68B6}
+    "@
+    $icon_e59449c1270f4ffcbe82c8c09a9e303b_en_v1 = @"
+    <image mediaid="{144D0836-0184-4832-9C49-0428E8A8D34D}" />
+    "@
+    $icon_955d14ca4ca441eb851aca9dc26d68b6_en_v1 = @"
+    <image mediaid="{89A4512F-2559-4710-988C-A997F7652FCE}" />
+    "@
+    $icon_de19d9c31181427dbacafa9313d900a6_en_v1 = @"
+    <image mediaid="{9B9556DA-9DCB-4D63-B6F8-97B074881D9C}" />
+    "@
+    $label_a9ca3120a8e54c8caa0c8eb12b39ac7e_frch_v1 = @"
+    1 x grand bagage cabine par personne (compartiment supérieur)
+    "@
+    $icon_a9ca3120a8e54c8caa0c8eb12b39ac7e_en_v1 = @"
+    <image mediaid="{5C6366B3-D217-4012-A469-04A5536C5772}" />
+    "@
+    $icon_9787247f1e254d339ab44795df1bb625_en_v1 = @"
+    <image mediaid="{C41E6C8D-86F7-400C-AC92-E64BA34A3221}" />
+    "@
+    $label_de19d9c31181427dbacafa9313d900a6_en_v1 = @"
+    Fast track (UK only)
+    "@
+    $icon_7c0b66b9b58640158d5eabb0c7e24a0f_en_v1 = @"
+    <image mediaid="{3B253841-A6A8-4145-AD66-D4E069F65B89}" />
+    "@
+    $items_baf4515370b74012927594d4c052c13c_frfr_v1 = @"
+    {30CA3010-58B8-4BD0-83A7-B87E59B20AE5}|{1F362491-2A40-4055-94AE-E9DDD92DCEC4}|{24067E01-3439-414C-ABAF-4A83145F1F39}|{A9CA3120-A8E5-4C8C-AA0C-8EB12B39AC7E}|{F48DE200-6F39-484E-917F-0D1D5EE1A362}|{7C0B66B9-B586-4015-8D5E-ABB0C7E24A0F}|{E59449C1-270F-4FFC-BE82-C8C09A9E303B}|{DE19D9C3-1181-427D-BACA-FA9313D900A6}|{9787247F-1E25-4D33-9AB4-4795DF1BB625}|{955D14CA-4CA4-41EB-851A-CA9DC26D68B6}
+    "@
+    $icon_30ca301058b84bd083a7b87e59b20ae5_en_v1 = @"
+    <image mediaid="{AAA4443B-C4F7-4E02-AB66-E584B1015154}" />
+    "@
+    $label_de19d9c31181427dbacafa9313d900a6_frch_v1 = @"
+    Accès prioritaire (Royaume-Uni uniquement)
+    "@
+    $label_7c0b66b9b58640158d5eabb0c7e24a0f_en_v1 = @"
+    `$name
+    "@
+    $items_baf4515370b74012927594d4c052c13c_frch_v1 = @"
+    {30CA3010-58B8-4BD0-83A7-B87E59B20AE5}|{1F362491-2A40-4055-94AE-E9DDD92DCEC4}|{24067E01-3439-414C-ABAF-4A83145F1F39}|{A9CA3120-A8E5-4C8C-AA0C-8EB12B39AC7E}|{F48DE200-6F39-484E-917F-0D1D5EE1A362}|{7C0B66B9-B586-4015-8D5E-ABB0C7E24A0F}|{E59449C1-270F-4FFC-BE82-C8C09A9E303B}|{DE19D9C3-1181-427D-BACA-FA9313D900A6}|{9787247F-1E25-4D33-9AB4-4795DF1BB625}|{955D14CA-4CA4-41EB-851A-CA9DC26D68B6}
+    "@
+    $icon_f48de2006f39484e917f0d1d5ee1a362_en_v1 = @"
+    <image mediaid="{0A32EE50-562C-4CD5-A772-3B960706228D}" />
+    "@
+    $label_de19d9c31181427dbacafa9313d900a6_frfr_v1 = @"
+    Accès prioritaire (Royaume-Uni uniquement)
+    "@
+    $icon_1f3624912a40405594aee9ddd92dcec4_en_v1 = @"
+    <image mediaid="{6100326F-CB13-45CD-9575-E83784EA8CCD}" />
+    "@
+    $label_de19d9c31181427dbacafa9313d900a6_dech_v1 = @"
+    Fast Track (nur in Großbritannien)
+    "@
+    $label_de19d9c31181427dbacafa9313d900a6_dede_v1 = @"
+    Fast Track (nur in Großbritannien)
+    "@
+    $items_baf4515370b74012927594d4c052c13c_dede_v1 = @"
+    {30CA3010-58B8-4BD0-83A7-B87E59B20AE5}|{1F362491-2A40-4055-94AE-E9DDD92DCEC4}|{24067E01-3439-414C-ABAF-4A83145F1F39}|{A9CA3120-A8E5-4C8C-AA0C-8EB12B39AC7E}|{F48DE200-6F39-484E-917F-0D1D5EE1A362}|{7C0B66B9-B586-4015-8D5E-ABB0C7E24A0F}|{E59449C1-270F-4FFC-BE82-C8C09A9E303B}|{DE19D9C3-1181-427D-BACA-FA9313D900A6}|{9787247F-1E25-4D33-9AB4-4795DF1BB625}|{955D14CA-4CA4-41EB-851A-CA9DC26D68B6}
+    "@
+    $label_a9ca3120a8e54c8caa0c8eb12b39ac7e_frfr_v1 = @"
+    1 x grand bagage cabine par personne (compartiment supérieur)
+    "@
+    $icon_24067e013439414cabaf4a83145f1f39_en_v1 = @"
+    <image mediaid="{0B808B83-23D0-4789-94E3-86AA6E067FEC}" />
+    "@
+    $items_baf4515370b74012927594d4c052c13c_dech_v1 = @"
+    {30CA3010-58B8-4BD0-83A7-B87E59B20AE5}|{1F362491-2A40-4055-94AE-E9DDD92DCEC4}|{24067E01-3439-414C-ABAF-4A83145F1F39}|{A9CA3120-A8E5-4C8C-AA0C-8EB12B39AC7E}|{F48DE200-6F39-484E-917F-0D1D5EE1A362}|{7C0B66B9-B586-4015-8D5E-ABB0C7E24A0F}|{E59449C1-270F-4FFC-BE82-C8C09A9E303B}|{DE19D9C3-1181-427D-BACA-FA9313D900A6}|{9787247F-1E25-4D33-9AB4-4795DF1BB625}|{955D14CA-4CA4-41EB-851A-CA9DC26D68B6}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Listed Items"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Items Folder"
+            Id          = [GUID]"{BE59CF5D-0413-4533-9398-8F8FBBA65A4D}"
+            Fields      = @{
+                "__Sortorder" = @{
+                    "en" = ""
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Items"
+            Id          = [GUID]"{BAF45153-70B7-4012-9275-94D4C052C13C}"
+            Fields      = @{
+                "Items" = @{
+                    "de-CH" = $items_baf4515370b74012927594d4c052c13c_dech_v1
+                    "en" = $items_baf4515370b74012927594d4c052c13c_en_v1
+                    "fr-FR" = $items_baf4515370b74012927594d4c052c13c_frfr_v1
+                    "de-DE" = $items_baf4515370b74012927594d4c052c13c_dede_v1
+                    "fr-CH" = $items_baf4515370b74012927594d4c052c13c_frch_v1
+                }
+                "__Sortorder" = @{
+                    "en" = ""
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/Luxury hotel"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{30CA3010-58B8-4BD0-83A7-B87E59B20AE5}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_30ca301058b84bd083a7b87e59b20ae5_en_v1
+                }
+                "Label" = @{
+                    "de-CH" = "Luxushotel"
+                    "en" = "Luxury hotel"
+                    "fr-FR" = "Hôtel de luxe"
+                    "de-DE" = "Luxushotel"
+                    "fr-CH" = "Hôtel de luxe"
+                }
+                "__Sortorder" = @{
+                    "en" = "0"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/Flights"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{1F362491-2A40-4055-94AE-E9DDD92DCEC4}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_1f3624912a40405594aee9ddd92dcec4_en_v1
+                }
+                "Label" = @{
+                    "de-CH" = "Flüge"
+                    "en" = "Flights"
+                    "fr-FR" = "Vols"
+                    "de-DE" = "Flüge"
+                    "fr-CH" = "Vols"
+                }
+                "__Sortorder" = @{
+                    "en" = "100"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/26kg bag"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{24067E01-3439-414C-ABAF-4A83145F1F39}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_24067e013439414cabaf4a83145f1f39_en_v1
+                }
+                "Label" = @{
+                    "de-CH" = "1 x 26 kg Aufgabegepäck pro Person"
+                    "en" = "1 x 26kg hold luggage pp"
+                    "fr-FR" = "1 x bagage en soute de 26 kg par personne"
+                    "de-DE" = "1 x 26 kg Aufgabegepäck pro Person"
+                    "fr-CH" = "1 x bagage en soute de 26 kg par personne"
+                }
+                "__Sortorder" = @{
+                    "en" = "200"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/Large cabin bag"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{A9CA3120-A8E5-4C8C-AA0C-8EB12B39AC7E}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_a9ca3120a8e54c8caa0c8eb12b39ac7e_en_v1
+                }
+                "Label" = @{
+                    "de-CH" = "1 x großes Handgepäck pro Person für das Gepäckfach"
+                    "en" = "1 x Large overhead cabin bag pp"
+                    "fr-FR" = $label_a9ca3120a8e54c8caa0c8eb12b39ac7e_frfr_v1
+                    "de-DE" = "1 x großes Handgepäck pro Person für das Gepäckfach"
+                    "fr-CH" = $label_a9ca3120a8e54c8caa0c8eb12b39ac7e_frch_v1
+                }
+                "__Sortorder" = @{
+                    "en" = "500"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/Small cabin bag"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{F48DE200-6F39-484E-917F-0D1D5EE1A362}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_f48de2006f39484e917f0d1d5ee1a362_en_v1
+                }
+                "Label" = @{
+                    "de-CH" = "1 x kleine Tasche pro Person unter dem Vordersitz"
+                    "en" = "1 x Small under seat bag pp"
+                    "fr-FR" = "1 x petit bagage sous le siège par personne"
+                    "de-DE" = "1 x kleine Tasche pro Person unter dem Vordersitz"
+                    "fr-CH" = "1 x petit bagage sous le siège par personne"
+                }
+                "__Sortorder" = @{
+                    "en" = "700"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/Private transfer"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{7C0B66B9-B586-4015-8D5E-ABB0C7E24A0F}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_7c0b66b9b58640158d5eabb0c7e24a0f_en_v1
+                }
+                "Label" = @{
+                    "de-CH" = "Privater Transfer"
+                    "en" = "Private transfer"
+                    "fr-FR" = "Transfert privé"
+                    "de-DE" = "Privater Transfer"
+                    "fr-CH" = "Transfert privé"
+                }
+                "__Sortorder" = @{
+                    "en" = "725"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/Complimentary seats selection"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{E59449C1-270F-4FFC-BE82-C8C09A9E303B}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_e59449c1270f4ffcbe82c8c09a9e303b_en_v1
+                }
+                "Label" = @{
+                    "de-CH" = "Kostenfreie Standard-Sitzplatzwahl"
+                    "en" = "Complimentary standard seat selection"
+                    "fr-FR" = "Sélection gratuite de siège standard"
+                    "de-DE" = "Kostenfreie Standard-Sitzplatzwahl"
+                    "fr-CH" = "Sélection gratuite de siège standard"
+                }
+                "__Sortorder" = @{
+                    "en" = "738"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/Fast track"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{DE19D9C3-1181-427D-BACA-FA9313D900A6}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_de19d9c31181427dbacafa9313d900a6_en_v1
+                }
+                "Label" = @{
+                    "de-CH" = $label_de19d9c31181427dbacafa9313d900a6_dech_v1
+                    "en" = $label_de19d9c31181427dbacafa9313d900a6_en_v1
+                    "fr-FR" = $label_de19d9c31181427dbacafa9313d900a6_frfr_v1
+                    "de-DE" = $label_de19d9c31181427dbacafa9313d900a6_dede_v1
+                    "fr-CH" = $label_de19d9c31181427dbacafa9313d900a6_frch_v1
+                }
+                "__Sortorder" = @{
+                    "en" = "750"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/Speedy boarding"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{9787247F-1E25-4D33-9AB4-4795DF1BB625}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_9787247f1e254d339ab44795df1bb625_en_v1
+                }
+                "Label" = @{
+                    "de-CH" = "Bevorzugtes Einsteigen"
+                    "en" = "Speedy boarding"
+                    "fr-FR" = "Embarquement prioritaire"
+                    "de-DE" = "Bevorzugtes Einsteigen"
+                    "fr-CH" = "Embarquement prioritaire"
+                }
+                "__Sortorder" = @{
+                    "en" = "800"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/Prioritised customer service"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{955D14CA-4CA4-41EB-851A-CA9DC26D68B6}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_955d14ca4ca441eb851aca9dc26d68b6_en_v1
+                }
+                "Label" = @{
+                    "de-CH" = "Vorrangiger Kundenservice"
+                    "en" = "Prioritised customer service"
+                    "fr-FR" = "Service client prioritaire"
+                    "de-DE" = "Vorrangiger Kundenservice"
+                    "fr-CH" = "Service client prioritaire"
+                }
+                "__Sortorder" = @{
+                    "en" = "900"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    
+    # 2. Trade Portal
+    
+    $icon_90e909e93d2a492ba2929fccb39df984_en_v1 = @"
+    <image mediaid="{89A4512F-2559-4710-988C-A997F7652FCE}" />
+    "@
+    $icon_27b0b301cc004ac3bbc93e7de73bd82f_en_v1 = @"
+    <image mediaid="{0A32EE50-562C-4CD5-A772-3B960706228D}" />
+    "@
+    $icon_8f22a51626f14d17aba455acc6f8f3e7_en_v1 = @"
+    <image mediaid="{0B808B83-23D0-4789-94E3-86AA6E067FEC}" />
+    "@
+    $icon_76ff65ebd82c4059b1bb494cdfd57299_en_v1 = @"
+    <image mediaid="{6100326F-CB13-45CD-9575-E83784EA8CCD}" />
+    "@
+    $label_8d2e8d419dec484cb9f534c3562a295d_en_v1 = @"
+    Fast track (UK only)
+    "@
+    $icon_bb53f68c0d9d4f03b7a0acb42a5444ad_en_v1 = @"
+    <image mediaid="{AAA4443B-C4F7-4E02-AB66-E584B1015154}" />
+    "@
+    $items_beca3ee75d7c4f93936c9a2d1ce22924_en_v1 = @"
+    {BB53F68C-0D9D-4F03-B7A0-ACB42A5444AD}|{76FF65EB-D82C-4059-B1BB-494CDFD57299}|{8F22A516-26F1-4D17-ABA4-55ACC6F8F3E7}|{1916B429-0BE9-4B87-B1FC-1E4F90FC72C1}|{27B0B301-CC00-4AC3-BBC9-3E7DE73BD82F}|{D2E4B0F8-CADD-45C2-BB62-5579BB26FD44}|{716AE70F-0486-4469-B792-EB4751E2C58A}|{8D2E8D41-9DEC-484C-B9F5-34C3562A295D}|{7EA0EA49-E4E6-4C6D-A930-3020CE5F381F}|{90E909E9-3D2A-492B-A292-9FCCB39DF984}
+    "@
+    $icon_7ea0ea49e4e64c6da9303020ce5f381f_en_v1 = @"
+    <image mediaid="{C41E6C8D-86F7-400C-AC92-E64BA34A3221}" />
+    "@
+    $icon_8d2e8d419dec484cb9f534c3562a295d_en_v1 = @"
+    <image mediaid="{9B9556DA-9DCB-4D63-B6F8-97B074881D9C}" />
+    "@
+    $icon_1916b4290be94b87b1fc1e4f90fc72c1_en_v1 = @"
+    <image mediaid="{5C6366B3-D217-4012-A469-04A5536C5772}" />
+    "@
+    $icon_d2e4b0f8cadd45c2bb625579bb26fd44_en_v1 = @"
+    <image mediaid="{3B253841-A6A8-4145-AD66-D4E069F65B89}" />
+    "@
+    $icon_716ae70f04864469b792eb4751e2c58a_en_v1 = @"
+    <image mediaid="{144D0836-0184-4832-9C49-0428E8A8D34D}" />
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Items Folder"
+            Id          = [GUID]"{02672BF5-ECA7-4228-A1A5-70BDA87E244F}"
+            Fields      = @{
+                "__Sortorder" = @{
+                    "en" = ""
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Items"
+            Id          = [GUID]"{BECA3EE7-5D7C-4F93-936C-9A2D1CE22924}"
+            Fields      = @{
+                "Items" = @{
+                    "en" = $items_beca3ee75d7c4f93936c9a2d1ce22924_en_v1
+                }
+                "__Sortorder" = @{
+                    "en" = ""
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/Luxury hotel"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{BB53F68C-0D9D-4F03-B7A0-ACB42A5444AD}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_bb53f68c0d9d4f03b7a0acb42a5444ad_en_v1
+                }
+                "Label" = @{
+                    "en" = "Luxury hotel"
+                }
+                "__Sortorder" = @{
+                    "en" = "0"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/Flights"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{76FF65EB-D82C-4059-B1BB-494CDFD57299}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_76ff65ebd82c4059b1bb494cdfd57299_en_v1
+                }
+                "Label" = @{
+                    "en" = "Flights"
+                }
+                "__Sortorder" = @{
+                    "en" = "100"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/26kg bag"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{8F22A516-26F1-4D17-ABA4-55ACC6F8F3E7}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_8f22a51626f14d17aba455acc6f8f3e7_en_v1
+                }
+                "Label" = @{
+                    "en" = "1 x 26kg hold luggage pp"
+                }
+                "__Sortorder" = @{
+                    "en" = "200"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/Large cabin bag"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{1916B429-0BE9-4B87-B1FC-1E4F90FC72C1}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_1916b4290be94b87b1fc1e4f90fc72c1_en_v1
+                }
+                "Label" = @{
+                    "en" = "1 x Large overhead cabin bag pp"
+                }
+                "__Sortorder" = @{
+                    "en" = "500"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/Small cabin bag"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{27B0B301-CC00-4AC3-BBC9-3E7DE73BD82F}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_27b0b301cc004ac3bbc93e7de73bd82f_en_v1
+                }
+                "Label" = @{
+                    "en" = "1 x Small under seat bag pp"
+                }
+                "__Sortorder" = @{
+                    "en" = "700"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/Private transfer"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{D2E4B0F8-CADD-45C2-BB62-5579BB26FD44}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_d2e4b0f8cadd45c2bb625579bb26fd44_en_v1
+                }
+                "Label" = @{
+                    "en" = "Private transfer"
+                }
+                "__Sortorder" = @{
+                    "en" = "725"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/Complimentary seats selection"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{716AE70F-0486-4469-B792-EB4751E2C58A}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_716ae70f04864469b792eb4751e2c58a_en_v1
+                }
+                "Label" = @{
+                    "en" = "Complimentary standard seat selection"
+                }
+                "__Sortorder" = @{
+                    "en" = "738"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/Fast track"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{8D2E8D41-9DEC-484C-B9F5-34C3562A295D}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_8d2e8d419dec484cb9f534c3562a295d_en_v1
+                }
+                "Label" = @{
+                    "en" = $label_8d2e8d419dec484cb9f534c3562a295d_en_v1
+                }
+                "__Sortorder" = @{
+                    "en" = "750"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/Speedy boarding"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{7EA0EA49-E4E6-4C6D-A930-3020CE5F381F}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_7ea0ea49e4e64c6da9303020ce5f381f_en_v1
+                }
+                "Label" = @{
+                    "en" = "Speedy boarding"
+                }
+                "__Sortorder" = @{
+                    "en" = "800"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/Prioritised customer service"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Item"
+            Id          = [GUID]"{90E909E9-3D2A-492B-A292-9FCCB39DF984}"
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $icon_90e909e93d2a492ba2929fccb39df984_en_v1
+                }
+                "Label" = @{
+                    "en" = "Prioritised customer service"
+                }
+                "__Sortorder" = @{
+                    "en" = "900"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999935
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250617T082603Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,151 @@
+﻿---
+ID: "c1f96fae-8b07-4828-ab53-89e295e55286"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-993 Seat and Bags Component"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem["Icon"] = '<image mediaid="{1A925155-F9DC-464A-B915-A07A9B27C3D4}" />'
+            $targetLangItem["OutboundIcon"] = '<image mediaid="{B9F44575-D18E-4C58-8979-A2FB86D6C682}" />'
+            $targetLangItem["ReturnIcon"] = '<image mediaid="{7F225E5B-5B19-4426-98F7-5AF8EF977D50}" />'
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    $holidaysSeatAndBagsPath = "/sitecore/content/EasyJet/Holidays/Data/Seat And Bags"
+    $tradePortalSeatAndBagsPath = "/sitecore/content/EasyJet/TradePortal/Data/Seat And Bags"
+        
+    $holidaysSeatAndBags = Get-Item -Path $holidaysSeatAndBagsPath
+    $tradePortalSeatAndBags = Get-Item -Path $tradePortalSeatAndBagsPath
+        
+    $translations = @{
+        "en" = @{
+            "Title" = "Your seats";
+            "Subtitle" = "Book your seats on the plane";
+            "Description" = "Pick your seats to ensure you can sit together and be first off the plane";
+            "SeatDescription" = "Seats from <strong>{seatPrice}pp</strong>";
+            "LegRoomDescription" = "Extra legroom for just <strong>{seatPrice}pp</strong>";
+            "BtnBookSeats" = "Book seats";
+            "BtnReturnSeats" = "Book return seats";
+            "BtnOutboundSeats" = "Book outbound seats";
+            "BtnChangeSeats" = "Change your seats";
+            "CollapseClose" = "Close";
+            "CollapseOpen" = "View passenger seat details";
+        }
+        "fr-CH" = @{
+            "Title" = "Vos sièges";
+            "Subtitle" = "Réservez vos sièges dans l'avion";
+            "Description" = "Choisissez vos sièges pour vous assurer de pouvoir vous asseoir ensemble et être les premiers à sortir de l'avion";
+            "SeatDescription" = "Sièges à partir de <strong>{seatPrice}pp</strong>";
+            "LegRoomDescription" = "Plus d'espace pour les jambes pour seulement <strong>{seatPrice}pp</strong>";
+            "BtnBookSeats" = "Réserver des sièges";
+            "BtnReturnSeats" = "Réserver des sièges de retour";
+            "BtnOutboundSeats" = "Réserver des sièges sortants";
+            "BtnChangeSeats" = "Changer vos sièges";
+            "CollapseClose" = "Fermer";
+            "CollapseOpen" = "Voir les détails des sièges des passagers";
+        }
+        "fr-FR" = @{
+             "Title" = "Vos sièges";
+            "Subtitle" = "Réservez vos sièges dans l'avion";
+            "Description" = "Choisissez vos sièges pour vous assurer de pouvoir vous asseoir ensemble et être les premiers à sortir de l'avion";
+            "SeatDescription" = "Sièges à partir de <strong>{seatPrice}pp</strong>";
+            "LegRoomDescription" = "Plus d'espace pour les jambes pour seulement <strong>{seatPrice}pp</strong>";
+            "BtnBookSeats" = "Réserver des sièges";
+            "BtnReturnSeats" = "Réserver des sièges de retour";
+            "BtnOutboundSeats" = "Réserver des sièges sortants";
+            "BtnChangeSeats" = "Changer vos sièges";
+            "CollapseClose" = "Fermer";
+            "CollapseOpen" = "Voir les détails des sièges des passagers";
+        }
+        "de-CH" = @{
+            "Title" = "Ihre Sitze";
+            "Subtitle" = "Buchen Sie Ihre Sitze im Flugzeug";
+            "Description" = "Wählen Sie Ihre Sitze, um sicherzustellen, dass Sie zusammen sitzen können und als Erste aus dem Flugzeug aussteigen";
+            "SeatDescription" = "Sitze ab <strong>{seatPrice}pp</strong>";
+            "LegRoomDescription" = "Extra Beinfreiheit für nur <strong>{seatPrice}pp</strong>";
+            "BtnBookSeats" = "Sitze buchen";
+            "BtnReturnSeats" = "Rückflugsitze buchen";
+            "BtnOutboundSeats" = "Hinflugsitze buchen";
+            "BtnChangeSeats" = "Ihre Sitze ändern";
+            "CollapseClose" = "Schließen";
+            "CollapseOpen" = "Details der Passagiersitze anzeigen";
+        }
+        "de-DE" = @{
+           "Title" = "Ihre Sitze";
+            "Subtitle" = "Buchen Sie Ihre Sitze im Flugzeug";
+            "Description" = "Wählen Sie Ihre Sitze, um sicherzustellen, dass Sie zusammen sitzen können und als Erste aus dem Flugzeug aussteigen";
+            "SeatDescription" = "Sitze ab <strong>{seatPrice}pp</strong>";
+            "LegRoomDescription" = "Extra Beinfreiheit für nur <strong>{seatPrice}pp</strong>";
+            "BtnBookSeats" = "Sitze buchen";
+            "BtnReturnSeats" = "Rückflugsitze buchen";
+            "BtnOutboundSeats" = "Hinflugsitze buchen";
+            "BtnChangeSeats" = "Ihre Sitze ändern";
+            "CollapseClose" = "Schließen";
+            "CollapseOpen" = "Details der Passagiersitze anzeigen";
+        }
+    }
+        
+    foreach ($lang in $translations.Keys) {
+        create-lang-version -item $holidaysSeatAndBags -lang $lang -field "Title" -value $translations[$lang]["Title"]
+        create-lang-version -item $tradePortalSeatAndBags -lang $lang -field "Title" -value $translations[$lang]["Title"]
+        
+        create-lang-version -item $holidaysSeatAndBags -lang $lang -field "Subtitle" -value $translations[$lang]["Subtitle"]
+        create-lang-version -item $tradePortalSeatAndBags -lang $lang -field "Subtitle" -value $translations[$lang]["Subtitle"]
+        
+        create-lang-version -item $holidaysSeatAndBags -lang $lang -field "Description" -value $translations[$lang]["Description"]
+        create-lang-version -item $tradePortalSeatAndBags -lang $lang -field "Description" -value $translations[$lang]["Description"]
+        
+        create-lang-version -item $holidaysSeatAndBags -lang $lang -field "SeatDescription" -value $translations[$lang]["SeatDescription"]
+        create-lang-version -item $tradePortalSeatAndBags -lang $lang -field "SeatDescription" -value $translations[$lang]["SeatDescription"]
+        
+        create-lang-version -item $holidaysSeatAndBags -lang $lang -field "LegRoomDescription" -value $translations[$lang]["LegRoomDescription"]
+        create-lang-version -item $tradePortalSeatAndBags -lang $lang -field "LegRoomDescription" -value $translations[$lang]["LegRoomDescription"]
+        
+        create-lang-version -item $holidaysSeatAndBags -lang $lang -field "BtnBookSeats" -value $translations[$lang]["BtnBookSeats"]
+        create-lang-version -item $tradePortalSeatAndBags -lang $lang -field "BtnBookSeats" -value $translations[$lang]["BtnBookSeats"]
+        
+        create-lang-version -item $holidaysSeatAndBags -lang $lang -field "BtnReturnSeats" -value $translations[$lang]["BtnReturnSeats"]
+        create-lang-version -item $tradePortalSeatAndBags -lang $lang -field "BtnReturnSeats" -value $translations[$lang]["BtnReturnSeats"]
+        
+        create-lang-version -item $holidaysSeatAndBags -lang $lang -field "BtnOutboundSeats" -value $translations[$lang]["BtnOutboundSeats"]
+        create-lang-version -item $tradePortalSeatAndBags -lang $lang -field "BtnOutboundSeats" -value $translations[$lang]["BtnOutboundSeats"]
+        
+        create-lang-version -item $holidaysSeatAndBags -lang $lang -field "BtnChangeSeats" -value $translations[$lang]["BtnChangeSeats"]
+        create-lang-version -item $tradePortalSeatAndBags -lang $lang -field "BtnChangeSeats" -value $translations[$lang]["BtnChangeSeats"]
+        
+        create-lang-version -item $holidaysSeatAndBags -lang $lang -field "CollapseClose" -value $translations[$lang]["CollapseClose"]
+        create-lang-version -item $tradePortalSeatAndBags -lang $lang -field "CollapseClose" -value $translations[$lang]["CollapseClose"]
+        
+        create-lang-version -item $holidaysSeatAndBags -lang $lang -field "CollapseOpen" -value $translations[$lang]["CollapseOpen"]
+        create-lang-version -item $tradePortalSeatAndBags -lang $lang -field "CollapseOpen" -value $translations[$lang]["CollapseOpen"]
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 228
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231220T153910Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

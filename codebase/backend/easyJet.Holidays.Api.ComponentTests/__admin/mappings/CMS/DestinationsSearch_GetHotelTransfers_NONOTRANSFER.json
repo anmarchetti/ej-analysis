@@ -1,0 +1,58 @@
+{
+    "Title": "Trasnfers for hotel NONOTRANSFER (api/DestinationsSearch/GetHotelTransfers)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetHotelTransfers",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "ExactMatcher",
+                "Pattern": "AtcomIds%5B0%5D=NONOTRANSFER"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": [
+            [
+                {
+                    "Code": "S",
+                    "Name": "Shared",
+                    "Airports": [
+                        {
+                            "Code": "HER"
+                        }
+                    ],
+                    "IconUrl": "/-/media/cacb3397d50d4f128902439355274b26.ashx",
+                    "Content": "Shared transfer for HER airport"
+                },
+                {
+                    "Code": "P",
+                    "Name": "Private",
+                    "Airports": [],
+                    "IconUrl": "/-/media/cacb3397d50d4f128902439355274b26.ashx",
+                    "Content": "Private for all airports"
+                },
+                {
+                    "Code": "H",
+                    "Name": "Private",
+                    "Airports": [
+                        {
+                            "Code": "HHH"
+                        }
+                    ],
+                    "IconUrl": "/-/media/cacb3397d50d4f128902439355274b26.ashx",
+                    "Content": "No shared for HHH airport"
+                }
+            ]
+        ]
+    }
+}

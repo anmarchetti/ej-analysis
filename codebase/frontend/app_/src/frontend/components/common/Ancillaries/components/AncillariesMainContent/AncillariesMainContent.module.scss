@@ -1,0 +1,74 @@
+.promo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    @include media-breakpoint-down(md) {
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    &.promoPostBooking {
+        align-items: flex-start;
+
+        .image {
+            width: 32px;
+            height: 32px;
+            align-self: unset;
+        }
+
+        .description {
+            margin-top: 4px;
+            font-size: 16px;
+        }
+    }
+}
+
+.image {
+    flex-shrink: 0;
+    align-self: center;
+    width: 78px;
+    height: 78px;
+
+    @include media-breakpoint-down(md) {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+.subtitle {
+    font-family: $fontRoundedDemy;
+    font-size: 24px;
+    line-height: 1.3;
+
+    @include media-breakpoint-down(md) {
+        width: 90%;
+        font-size: 16px;
+        line-height: 1.3;
+    }
+}
+
+.altSubtitle {
+    font-family: $fontRoundedDemy;
+    font-size: 18px;
+    line-height: 1.3;
+
+    @include media-breakpoint-down(md) {
+        width: 90%;
+        font-size: 16px;
+        line-height: 1.3;
+    }
+}
+
+.description,
+.description p {
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 18px;
+    line-height: 1.3;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 4px;
+        font-size: 14px;
+    }
+}

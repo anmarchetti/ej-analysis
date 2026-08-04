@@ -1,0 +1,23 @@
+{
+    "Title": "Get booking pdf for Amendment_2",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/get/PDF_A_2",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Methods": [ "GET" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/pdf" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/dFlo/confirmation.response",
+        "BodyDestination": "SameAsSource",
+        "BodyAsFileIsCached": false,
+        "UseTransformer": false
+    }
+}

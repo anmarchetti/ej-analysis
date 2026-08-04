@@ -1,0 +1,36 @@
+﻿---
+ID: "829f015f-206a-42be-abea-501bdc8dafcd"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SEATS-341-TRADE-11-handle-seat-errors-messages"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    $seatAndBags = Get-Or-Create-Item -path "/sitecore/content/EasyJet/TradePortal/Data/Seat And Bags" -template "{27E19C52-90FB-44E3-BF71-9FAAC3FD7B0B}";
+    if ($seatAndBags -ne $null){
+        $seatAndBags.Editing.BeginEdit();
+        $seatAndBags["ErrorDepartureMessage"] = "<p><strong>Seats are unavailable at this time</strong></p><p>We can't book your seats right now, you can select your seats for your flights on <a href='https://www.easyjet.com/en/'>easyJet.com</a> or via our app after you've booked, or when you check in for your flight 30 days before departure.&nbsp;</p>";
+        $seatAndBags["SeriesSeatFlights"] = "<p><strong>Looking to pick your seats?</strong></p><p>If you'd like to select your seats for your flights, you're able to do this when you check in for your flight 30 days before departure.</p>";
+        $seatAndBags["BookingOutOfSync"] = "<p><strong>Looking to pick your seats?</strong></p><p>To view, add or change your selected seats for your flight, please go to<a href='https://www.easyjet.com/en?chkin=2'> easyjet.com</a>.</p>";
+        $seatAndBags.Editing.EndEdit();
+        
+        Write-Host $seatAndBags.Name "is updated";
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230330T115634Z

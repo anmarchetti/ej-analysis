@@ -1,0 +1,184 @@
+﻿---
+ID: "5ac799e0-d3bc-43f3-a25c-4453245d8064"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-321 large SE accommodation fail"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        
+        return $item
+    }
+    
+    $popupTemplateId = '{4683D757-E5BC-46C3-B734-B5735C11A675}'
+    
+    # Large SE Remove Transfer Popup DS creating
+    function Create-SE-Remove-Popup($path){
+        $banner = Get-Or-Create-Item -Path $path -Template $popupTemplateId
+        
+        if($banner -ne $null) {
+            $banner.Editing.BeginEdit()
+            $banner['Title'] = 'Adding large sports equipment items will remove your transfer'
+            $banner['Description'] = "<p>We’re sorry, but our shared transfer provider can’t accommodate large sports equipment items at this time.</p><p>You may add your large sports equipment item {selectedSport}, but we will remove your transfer on this booking.</p>"
+            $banner['ConfirmButtonLabel'] = 'Add, but remove transfer'
+            $banner['CancelButtonLabel'] = 'Cancel'
+            $banner.Editing.EndEdit() | Out-Null
+        }
+        
+        Write-Host "Large SE Remove Transfer Popup DS created on" $path
+        
+        return $banner
+    }
+    
+    $bannerSERemoveTransfer = Create-SE-Remove-Popup -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Transfer Section/Large SE Remove Transfer Popup'
+    $bannerTradeSERemoveTransfer = Create-SE-Remove-Popup -Path '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Transfer Section Trade/Large SE Remove Transfer Popup'
+    
+    # Transfer Remove Large SE Popup DS creating
+    function Create-Transfer-Remove-Popup($path){
+        $banner = Get-Or-Create-Item -Path $path -Template $popupTemplateId
+        
+        if($banner -ne $null) {
+            $banner.Editing.BeginEdit()
+            $banner['Title'] = 'Changing your transfer will remove your large sports equipment'
+            $banner['Description'] = "<p>We’re sorry, but our shared transfer provider can’t accommodate large sports equipment at this time.</p><p>If you select this transfer, we will remove your large sports equipment {selectedSport}.</p>"
+            $banner['ConfirmButtonLabel'] = 'Change transfer anyway'
+            $banner['CancelButtonLabel'] = 'Cancel'
+            $banner.Editing.EndEdit() | Out-Null
+        }
+        
+        Write-Host "Transfer Remove Large SE Popup DS created on" $path
+        
+        return $banner
+    }
+    
+    $bannerTransferRemoveSE = Create-Transfer-Remove-Popup -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Transfer Section/Transfer Remove Large SE Popup'
+    $bannerTradeTransferRemoveSE = Create-Transfer-Remove-Popup -Path '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Transfer Section Trade/Transfer Remove Large SE Popup'
+    
+    # set popups to transfer DS
+    $transferItem =  Get-Item -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Transfer Section' -ErrorAction SilentlyContinue
+    if($transferItem -ne $null) {
+        $transferItem.Editing.BeginEdit()
+        $transferItem['LargeSERemoveTransferPopup'] = $bannerSERemoveTransfer.ID
+        $transferItem['TransferRemoveLargeSEPopup'] = $bannerTransferRemoveSE.ID
+        $transferItem.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Large SE accommodation fail popups set on Holidays"
+    }
+    
+    $transferItemTrade =  Get-Item -Path '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Transfer Section Trade' -ErrorAction SilentlyContinue
+    if($transferItemTrade -ne $null) {
+        $transferItemTrade.Editing.BeginEdit()
+        $transferItemTrade['LargeSERemoveTransferPopup'] = $bannerTradeSERemoveTransfer.ID
+        $transferItemTrade['TransferRemoveLargeSEPopup'] = $bannerTradeTransferRemoveSE.ID
+        $transferItemTrade.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Large SE accommodation fail popups set on Trade"
+    }
+    
+    # holidays popups translations
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+            
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+        
+    $translationsSE = @{
+            "fr-CH" = @{
+                "Title" = "L'ajout d'équipements sportifs de grande taille supprimera votre transfert."
+                "Description" = "<p>Nous sommes désolés, mais notre fournisseur de transferts partagés ne peut pas prendre en charge les équipements sportifs de grande taille pour le moment.</p><p>Vous pouvez ajouter votre grand équipement sportif {selectedSport}, mais nous supprimerons votre transfert pour cette réservation.</p>"
+                "ConfirmButtonLabel" = "Ajouter, mais supprimer le transfert"
+                "CancelButtonLabel" = "Annuler"
+            }
+            "fr-FR" = @{
+                "Title" = "L'ajout d'équipements sportifs de grande taille supprimera votre transfert."
+                "Description" = "<p>Nous sommes désolés, mais notre fournisseur de transferts partagés ne peut pas prendre en charge les équipements sportifs de grande taille pour le moment.</p><p>Vous pouvez ajouter votre grand équipement sportif {selectedSport}, mais nous supprimerons votre transfert pour cette réservation.</p>"
+                "ConfirmButtonLabel" = "Ajouter, mais supprimer le transfert"
+                "CancelButtonLabel" = "Annuler"
+            }
+            "de-CH" = @{
+                "Title" = "Durch das Hinzufügen großer Sportausrüstungsgegenstände wird Ihr Transfer"
+                "Description" = "<p>Es tut uns leid, aber unser Anbieter von Sammeltransfers kann derzeit keine großen Sportgeräte mitnehmen.</p><p>Sie können Ihr großes Sportgerät {selectedSport} hinzufügen, aber wir werden Ihren Transfer für diese Buchung löschen.</p>"
+                "ConfirmButtonLabel" = "Hinzufügen, aber Übertragung entfernen"
+                "CancelButtonLabel" = "Abbrechen"
+            }
+            "de-DE" = @{
+                "Title" = "Durch das Hinzufügen großer Sportausrüstungsgegenstände wird Ihr Transfer"
+                "Description" = "<p>Es tut uns leid, aber unser Anbieter von Sammeltransfers kann derzeit keine großen Sportgeräte mitnehmen.</p><p>Sie können Ihr großes Sportgerät {selectedSport} hinzufügen, aber wir werden Ihren Transfer für diese Buchung löschen.</p>"
+                "ConfirmButtonLabel" = "Hinzufügen, aber Übertragung entfernen"
+                "CancelButtonLabel" = "Abbrechen"
+            }
+    }
+    foreach ($lang in $translationsSE.Keys) {
+        create-lang-version -item $bannerSERemoveTransfer -lang $lang -field "Title" -value $translationsSE[$lang]["Title"]
+        create-lang-version -item $bannerSERemoveTransfer -lang $lang -field "Description" -value $translationsSE[$lang]["Description"]
+        create-lang-version -item $bannerSERemoveTransfer -lang $lang -field "ConfirmButtonLabel" -value $translationsSE[$lang]["ConfirmButtonLabel"]
+        create-lang-version -item $bannerSERemoveTransfer -lang $lang -field "CancelButtonLabel" -value $translationsSE[$lang]["CancelButtonLabel"]
+        
+        Write-Host "$banner SE Remove Transfer Translated on" $lang
+    }  
+    
+    $translationsTransfer = @{
+            "fr-CH" = @{
+                "Title" = "La modification de votre transfert supprimera votre gros équipement de sport"
+                "Description" = "<p>Nous sommes désolés, mais notre fournisseur de transferts partagés ne peut pas prendre en charge les équipements sportifs de grande taille pour le moment.</p><p>Si vous choisissez ce transfert, nous enlèverons votre grand équipement sportif {selectedSport}.</p>"
+                "ConfirmButtonLabel" = "Changer le transfert de toute façon"
+                "CancelButtonLabel" = "Annuler"
+            }
+            "fr-FR" = @{
+                "Title" = "La modification de votre transfert supprimera votre gros équipement de sport"
+                "Description" = "<p>Nous sommes désolés, mais notre fournisseur de transferts partagés ne peut pas prendre en charge les équipements sportifs de grande taille pour le moment.</p><p>Si vous choisissez ce transfert, nous enlèverons votre grand équipement sportif {selectedSport}.</p>"
+                "ConfirmButtonLabel" = "Changer le transfert de toute façon"
+                "CancelButtonLabel" = "Annuler"
+            }
+            "de-CH" = @{
+                "Title" = "Durch den Wechsel der Versetzung wird die große Sportausrüstung entfernt"
+                "Description" = "<p>Es tut uns leid, aber unser gemeinsamer Transferanbieter kann derzeit keine großen Sportgeräte aufnehmen.</p><p>Wenn Sie diesen Transfer wählen, werden wir Ihr großes Sportgerät {selectedSport} entfernen.</p>"
+                "ConfirmButtonLabel" = "Übertragung trotzdem ändern"
+                "CancelButtonLabel" = "Abbrechen"
+            }
+            "de-DE" = @{
+                "Title" = "Durch den Wechsel der Versetzung wird die große Sportausrüstung entfernt"
+                "Description" = "<p>Es tut uns leid, aber unser gemeinsamer Transferanbieter kann derzeit keine großen Sportgeräte aufnehmen.</p><p>Wenn Sie diesen Transfer wählen, werden wir Ihr großes Sportgerät {selectedSport} entfernen.</p>"
+                "ConfirmButtonLabel" = "Übertragung trotzdem ändern"
+                "CancelButtonLabel" = "Abbrechen"
+            }
+        }
+    foreach ($lang in $translationsTransfer.Keys) {
+        create-lang-version -item $bannerTransferRemoveSE -lang $lang -field "Title" -value $translationsTransfer[$lang]["Title"]
+        create-lang-version -item $bannerTransferRemoveSE -lang $lang -field "Description" -value $translationsTransfer[$lang]["Description"]
+        create-lang-version -item $bannerTransferRemoveSE -lang $lang -field "ConfirmButtonLabel" -value $translationsTransfer[$lang]["ConfirmButtonLabel"]
+        create-lang-version -item $bannerTransferRemoveSE -lang $lang -field "CancelButtonLabel" -value $translationsTransfer[$lang]["CancelButtonLabel"]
+        
+        Write-Host "$banner Transfer Remove SE Translated on" $lang
+    }  
+    
+    Write-Host "Script ANC-321 is completed"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240205T155233Z

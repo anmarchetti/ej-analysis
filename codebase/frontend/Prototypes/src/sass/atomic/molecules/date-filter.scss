@@ -1,0 +1,216 @@
+.date-filter {
+    display: flex;
+    justify-content: space-between;
+    max-width: 510px;
+    margin: 0 auto;
+}
+
+.date-filter-mobile {
+    display: flex;
+    flex-direction: column;
+
+    .date-filter-mobile__date-picker {
+        margin-bottom: 24px;
+    }
+
+    .date-filter-mobile__title {
+        margin: 0 53px;
+        margin-bottom: 28px;
+        font-size: 18px;
+        text-align: center;
+    }
+}
+
+.date-filter-calendar-drawer,
+.date-filter-calendar-wrapper {
+    .flatpickr-day {
+        &.today {
+            border-color: $colorTransparent;
+        }
+    }
+
+    .drawer {
+        background-color: $colorWhite !important;
+    }
+
+    .drawer--open .drawer__content {
+        overflow: hidden !important;
+    }
+
+    .search-bar__input-box {
+        margin-bottom: 24px;
+    }
+
+    .flatpickr-input {
+        display: none;
+    }
+
+    .flatpickr-calendar {
+        width: 100% !important;
+        box-shadow: none;
+    }
+
+    .flatpickr-rContainer {
+        width: 100%;
+        .dayContainer {
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            margin-top: 0;
+        }
+    }
+
+    .flatpickr-day.selected {
+        font-weight: 700;
+        color: #f60;
+        background: #fff;
+        border-color: #f60;
+    }
+
+    .flatpickr-months {
+        .flatpickr-prev-month,
+        .flatpickr-next-month {
+            height: 28px;
+            padding: 6px;
+            color: #f60;
+            background: rgb(241, 245, 246);
+            border-radius: 50px;
+        }
+    }
+
+    .flatpickr-current-month {
+        display: none;
+    }
+
+    .flatpickr-weekday {
+        font-size: 16px;
+        color: #000;
+    }
+
+    .year-dropdown__select {
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        text-transform: uppercase;
+
+        .custom-select__menu {
+            width: 210px;
+
+            &::before {
+                left: 90px;
+            }
+        }
+
+        .custom-select__option--is-selected::after {
+            display: none;
+        }
+
+        .custom-select__value-container {
+            display: flex;
+            align-items: flex-start;
+            width: auto;
+            height: 38px;
+            padding: 0;
+        }
+
+        .custom-select__single-value {
+            position: relative;
+            max-width: none;
+            margin-right: 5px;
+        }
+
+        .select-group__control--icon svg {
+            height: 10px;
+        }
+    }
+}
+
+.flatpickr-calendar.date-filter-calendar-wrapper {
+    position: fixed;
+    padding: 10px 20px 20px;
+
+    .flatpickr-month {
+        position: static;
+    }
+
+    .custom-select__control {
+        display: block;
+        padding-right: 15px;
+
+        .custom-select__value-container {
+            display: inline-block;
+        }
+
+        .custom-select__indicators {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            display: inline-flex;
+            transform: translateY(-50%);
+        }
+    }
+
+    .custom-select__menu {
+        left: 50%;
+        margin-left: -105px;
+    }
+
+    .year-dropdown__select .custom-select__menu-list {
+        text-align: left;
+
+        .custom-select__option {
+            width: 100%;
+        }
+    }
+
+    .flatpickr-prev-month {
+        left: 10px !important;
+        margin-top: 10px;
+    }
+
+    .flatpickr-next-month {
+        right: 10px !important;
+        margin-top: 10px;
+    }
+
+    .flatpickr-day {
+        height: 40px;
+        padding: 0;
+        line-height: 40px;
+    }
+
+    .flatpickr-weekday {
+        font-size: 14px;
+    }
+}
+
+.date-filter-calendar-wrapper.active.flatpickr-calendar.open {
+    z-index: 10;
+}
+
+.date-filter,
+.date-filter-mobile {
+    .date-filter-mobile__date-picker {
+        .flatpickr-current-month {
+            display: none;
+        }
+    }
+}
+
+.date-filter-calendar-wrapper,
+.date-filter-calendar-wrapper-mobile {
+    .flatpickr-day:not(.flatpickr-disabled):not(.selected):hover {
+        color: #000;
+        background-color: #fff;
+        border-color: #f60;
+    }
+
+    .flatpickr-day.selected {
+        color: #f60;
+        background: none;
+        border: 1px solid #f60;
+    }
+}

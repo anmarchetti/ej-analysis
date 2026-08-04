@@ -1,0 +1,86 @@
+.helpLink {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &:hover {
+        opacity: 0.8;
+    }
+
+    @include media-breakpoint-down(md) {
+        flex-direction: row;
+        gap: 15px;
+    }
+}
+
+.linkTitle {
+    overflow: hidden;
+    font-family: $fontRoundedDemy;
+    font-size: 18px;
+    line-height: 1.333;
+    color: $clrEjOrange;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @include media-breakpoint-down(lg) {
+        font-size: 16px;
+        line-height: 1.375;
+    }
+}
+
+.arrow {
+    display: flex;
+
+    svg {
+        @include sizeSquare(13px);
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    @include media-breakpoint-down(md) {
+        align-self: center;
+        gap: 5px;
+    }
+}
+
+.description {
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    color: $clrTextHeading;
+
+    @include media-breakpoint-down(lg) {
+        font-size: 16px;
+    }
+}
+
+.icon {
+    @include sizeSquare(75px);
+
+    @include media-breakpoint-down(md) {
+        @include sizeSquare(40px);
+    }
+}
+
+.linkTitleWrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.horizontalAlignment {
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+
+    .content {
+        align-self: center;
+
+        @include media-breakpoint-up(md) {
+            gap: 5px;
+        }
+    }
+}

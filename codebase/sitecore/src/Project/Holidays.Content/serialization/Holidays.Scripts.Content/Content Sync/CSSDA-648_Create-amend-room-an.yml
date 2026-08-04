@@ -1,0 +1,45 @@
+﻿---
+ID: "7e10b12f-e01c-4f0b-a628-6fe009a5658d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-648_Create-amend-room-and-board-page-content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Set-Page-Design ($designPath,$pageTemplateId) {
+        $designItem = Get-Item -Path "$($designPath)" -ErrorAction SilentlyContinue
+        if ($designItem -ne $null) {
+            [Sitecore.Data.Fields.MultilistField]$pageTemplates = $designItem.Fields["PageTemplates"];
+    
+            if (!$pageTemplates.Contains($pageTemplateId)) {
+                $designItem.Editing.BeginEdit();
+                $pageTemplates.add($pageTemplateId);
+                $designItem.Editing.EndEdit() | Out-Null
+                Write-Host $designItem.Name "Page Templates updated"
+            }
+        }
+    }
+    
+    # Add Page To PageDesigns
+    $pageTemplateId = "{C1DE89CC-C05F-4118-A87A-8F72F0974FB3}";
+    $designPath = "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Full Header And Slim Footer";
+    Set-Page-Design -designPath $designPath -pageTemplateId $pageTemplateId;
+    
+    $roomAndBoardDataSourcePage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Room And Board/Page Components/Amend Room And Board";
+    if ($roomAndBoardDataSourcePage -ne $null) {
+        $roomAndBoardDataSourcePage.Editing.BeginEdit();
+        
+        $roomAndBoardDataSourcePage["Title"]="Change your room & board";
+        $roomAndBoardDataSourcePage["Subtitle"]="Please view and select alternative room & board options below.";
+    
+        $roomAndBoardDataSourcePage.Editing.EndEdit() | Out-Null;
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Value: "20231120T112144:638360761042033805Z"

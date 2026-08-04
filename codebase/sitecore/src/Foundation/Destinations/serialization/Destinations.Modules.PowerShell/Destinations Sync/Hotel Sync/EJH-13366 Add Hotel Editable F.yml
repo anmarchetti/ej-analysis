@@ -1,0 +1,49 @@
+﻿---
+ID: "73e3848f-d47e-4217-9778-34e5cecfcf7e"
+Parent: "4c10d78f-07b6-469e-929f-cb4b460bb11e"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Destinations Sync/Hotel Sync/EJH-13366 Add Hotel Editable Fields to Hotel Browse Pages"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $criteria = @(
+    	@{ Filter = "Equals"; Field = "_templatename"; Value = "Hotel"; }
+    	@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    )
+    
+    $props = @{
+    	Index = "sitecore_destinations_master_index"
+    	Criteria = $criteria
+    }
+    
+    $items = Find-Item @props | ForEach-Object { Get-Item -Path master: -Id $_.ItemID }
+    Write-Host "$($items.Count) hotels were found"
+    
+    foreach ($item in $items)
+    {
+    	#Get Hotel Editable Fields item and rendering
+    	$hotelEditableFieldsRenderingId = "{1DCE64E4-7FD2-46BC-BD43-5A908B99DD86}"
+    	$hotelEditableFieldsRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Hotel Details Browse/Hotel Editable Fields"
+    	$hotelEditableFieldsRenderingItem = Get-Item -Path $hotelEditableFieldsRenderingPath -Id $hotelEditableFieldsRenderingId | New-Rendering -PlaceHolder "/body"
+    	$hotelEditableFieldsRendering = Get-Rendering -Item $item | Where-Object { $_.ItemID -eq $hotelEditableFieldsRenderingId }
+    
+    	if ($hotelEditableFieldsRendering -eq $null) {
+    		#Add Hotel Editable Fields to the Hotel Browse Page
+    		Add-Rendering -Item $item -PlaceHolder "/body" -Instance $hotelEditableFieldsRenderingItem
+    		Write-Host "Hotel Editable Fields Rendering was added to $($item.Name)"
+    
+    	}
+    } 
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 150
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200714T084139Z

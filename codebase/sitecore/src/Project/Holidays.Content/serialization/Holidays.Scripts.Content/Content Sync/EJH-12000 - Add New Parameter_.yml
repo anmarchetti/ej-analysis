@@ -1,0 +1,95 @@
+﻿---
+ID: "51be090c-d54d-418a-8409-563bab2f1e21"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-12000 - Add New Parameter To Protection Promise"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $pagePath = "/sitecore/content/EasyJet/Holidays/Home"
+    $genericTemplateId = "{D6E273D0-4C78-4ABD-B412-5C98E7C9DB94}"
+    $pageConfidenceModuleRendering = "{A467C461-2046-49D3-9EDE-C71FB401BE9B}"
+    
+    $page = Get-Item -Path $pagePath;
+    $rendering = Get-Rendering -Item $page | Where-Object {$_.ItemId -eq $pageConfidenceModuleRendering } | Select -First 1
+        if($rendering -ne $null){
+            Set-Rendering -Item $page -Instance $rendering -Parameter @{"IsCarouselMobileView"= "1"} 
+            Write-Host "Update rendering" $page.Name
+        }
+    
+    function Create-Information-Tile($path, $title, $description, $icon) {
+         $item = Get-Item -Path $path -ErrorAction SilentlyContinue;
+          if (-Not $item) {
+            $item = New-Item -Path $path -ItemType '{424BD58C-E281-4DAD-8F46-7FE4DE602C0F}'
+          
+              if ($item) {
+            $item.Editing.BeginEdit();
+            $item["Title"] = $title;
+            $item["Description"] = $description;
+            $item["Icon"] = $icon;
+            $item.Editing.EndEdit() | Out-Null;
+        }
+        
+        if ($confidenceItem -ne $null) {
+        [Sitecore.Data.Fields.MultilistField]$linksField = $confidenceItem.Fields["ConfidenceInfoTiles"];
+        
+        $confidenceItem.Editing.BeginEdit();
+        $linksField.add($item.ID);
+        $confidenceItem.Editing.EndEdit() | Out-Null;
+        }
+        
+        return $item;
+          }
+    }
+    
+    $infoTile1 = Create-Information-Tile -path '/sitecore/content/EasyJet/Holidays/Data/Confidence Module Transformer/Refund Guarantee' -title 'Refund Guarantee' -description "A full refund, and your deposit back as credit, with no fees 28 days before travel" -icon '<image mediaid="{BC5C39B1-A8F2-484B-9026-0971AD444B92}" />'
+    
+    #Fill in Information Tiles folder fields
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+        }
+        return $item
+    }
+    
+    $informationTiles = Get-Or-Create-Item -path '/sitecore/content/EasyJet/Holidays/Data/Confidence Module Transformer' -templateId "{A5727395-0B58-464F-B6CC-83E450109E4E}";
+    
+    if ($informationTiles-ne $null) {
+        [Sitecore.Data.Fields.MultilistField]$linksField = $informationTiles.Fields["ConfidenceInfoTiles"];
+         $informationTiles.Editing.BeginEdit();
+        $linksField.Value = "";
+        $informationTiles.Editing.EndEdit() | Out-Null;
+    }
+    
+    $tiles = Get-ChildItem -Path '/sitecore/content/EasyJet/Holidays/Data/Confidence Module Transformer' -Recurse
+    
+    $tiles| ForEach-Object {
+    
+    	# If the current item has a certain template, print out its path in the tree
+    	if ($_.TemplateName -eq 'Information Tile') {
+    
+    		if ($informationTiles-ne $null) {
+        [Sitecore.Data.Fields.MultilistField]$linksField = $informationTiles.Fields["ConfidenceInfoTiles"];
+        
+        $informationTiles.Editing.BeginEdit();
+        $linksField.add($_.ID);
+        $informationTiles.Editing.EndEdit() | Out-Null;
+    }
+    
+    	}
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4890
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200714T084139Z

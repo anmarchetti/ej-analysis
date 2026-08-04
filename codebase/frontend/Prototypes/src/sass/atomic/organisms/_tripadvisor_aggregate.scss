@@ -1,0 +1,45 @@
+.tripadvisor-aggregate {
+    .tripadvisor_rating {
+        svg {
+            width: 3em;
+            height: 3em;
+            margin-right: 0.3em;
+        }
+
+        span {
+            width: 22px;
+            height: 22px;
+        }
+    }
+
+    &--text {
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        line-height: 19px;
+        color: #1d233c;
+        letter-spacing: 0.03px;
+    }
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .tripadvisor_rating {
+            svg {
+                width: 2.5em;
+                height: 2.5em;
+            }
+
+            span {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        &--text {
+            margin-left: 10px;
+            font-size: 12px;
+        }
+    }
+}

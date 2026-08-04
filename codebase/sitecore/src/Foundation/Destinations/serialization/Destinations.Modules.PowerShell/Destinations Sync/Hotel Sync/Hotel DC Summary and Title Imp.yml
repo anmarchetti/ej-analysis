@@ -1,0 +1,112 @@
+﻿---
+ID: "7e9ad22d-feb5-4908-9186-3063029ff09f"
+Parent: "4c10d78f-07b6-469e-929f-cb4b460bb11e"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Destinations Sync/Hotel Sync/Hotel DC Summary and Title Import
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $hashTable = @{}
+    
+    #Read *.cvs file
+    $csvFile = $SitecoreDataFolder + "\ImportData\DC KSP Descrip Strapline 16-12-19.csv"
+    $table = Import-Csv $csvFile -Delimiter "," -Encoding UTF8
+    
+    
+    foreach ($row in $table) {
+    
+    	$hotelCode = $row.'Accom Code'
+    
+    	if (![string]::IsNullOrEmpty($hotelCode)) {
+    
+    		$hashValue = @{
+    			HotelCode = $hotelCode
+    			Stripline = $row.'Headline'
+    			Copy = $row.'Copy'
+    			KSP1 = $row.'KSP1'
+    			KSP2 = $row.'KSP2'
+    			StarRating = $row.'Star rating'
+    		}
+    		$objTemp = @{ $hotelCode = $hashValue }
+    		$hashTable += $objTemp
+    	}
+    }
+    
+    #Find hotels item
+    $criteria = @(
+    	@{ Filter = "Equals"; Field = "_template"; Value = "28e5e1698f724f90a277280a8302b607"; }
+    	@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    
+    )
+    
+    $props = @{
+    	Index = "sitecore_destinations_master_index"
+    	Criteria = $criteria
+    }
+    
+    $items = Find-Item @props
+    
+    Write-Host "Num of items: " $items.length
+    $counter = 0
+    
+    
+    
+    New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+    	New-UsingBlock (New-Object Sitecore.Data.DatabaseCacheDisabler) {
+    		New-UsingBlock (New-Object Sitecore.Data.Events.EventDisabler) {
+    			New-UsingBlock (New-Object Sitecore.Data.BulkUpdateContext) {
+    				try {
+    					#Update hotel item's Strapline and Description using data from csv file
+    					foreach ($searchResultItem in $items)
+    					{
+    						$item = Get-Item -Path master: -Id $searchResultItem.ItemID
+    
+    						if ($hashtable[$item["Code"]] -ne $null) {
+    							try {
+    
+    								if ($item.Version.Number -eq 1)
+    								{
+    									Add-ItemVersion -Item $item -IfExist Append
+    									$item = $item.Versions.GetLatestVersion();
+    								}
+    
+    								$itemData = $hashtable[$item["Code"]]
+    
+    								# fixed copy formatting 
+    								$description = $itemData['Copy'].split("`n") | where { ![string]::IsNullOrWhiteSpace($_) } | ForEach-Object { "<p>" + $_.Trim() + "</p>" }
+    
+    								$item.Editing.BeginEdit()
+    								$item["StrapLine"] = $itemData['Stripline']
+    								$item["HotelDescription"] = $description
+    								$item["KeySellingPoint1"] = $itemData['KSP1']
+    								$item["KeySellingPoint2"] = $itemData['KSP2']
+    								$item["StarRating"] = $itemData['StarRating']
+    								$item.Editing.EndEdit()
+    								$counter++
+    							} catch {
+    								Write-Host $_.Exception.Message $item["Code"] -ForegroundColor Red
+    								continue
+    							}
+    
+    							Write-Host $item["Code"]
+    						}
+    					}
+    					$counter
+    				} catch {
+    					Write-Host $_.Exception.Message -ForegroundColor Red
+    				}
+    			}
+    		}
+    	}
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191101T141519Z

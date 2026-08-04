@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Sitecore.Analytics" />
+        <PackageReference Include="Sitecore.Analytics.Core" />
+        <PackageReference Include="Sitecore.Analytics.Model" />
+        <PackageReference Include="Sitecore.CES.GeoIp.Core" />
+        <PackageReference Include="Sitecore.Framework.Conditions" />
+        <PackageReference Include="Sitecore.Framework.Data.Blobs.Abstractions" />
+        <PackageReference Include="Sitecore.Marketing" />
+        <PackageReference Include="Sitecore.Marketing.Core" />
+        <PackageReference Include="Sitecore.Marketing.Taxonomy" />
+        <PackageReference Include="Sitecore.XConnect" />
+        <PackageReference Include="Sitecore.XConnect.Collection.Model" />
+        <PackageReference Include="Sitecore.XConnect.Core" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)TestProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Analytics\code\easyJet.Foundation.Analytics.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Destinations\code\easyJet.Foundation.Destinations.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\DynamoDb\code\easyJet.Foundation.DynamoDb.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\XConnect\code\easyJet.Foundation.XConnect.Common.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Feature\Tracker\code\easyJet.Feature.Tracker.csproj" />
+    </ItemGroup>
+</Project>

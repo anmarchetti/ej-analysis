@@ -1,0 +1,59 @@
+﻿---
+ID: "bb662156-0a37-408e-adc6-995392188ab2"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-37 - Fix Hotel Summary Luggage and Sport Equipments for view booking data"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+        function Add-Items-To-List($list, $fieldName, $items){
+            if($list -ne $null -And $items -ne $null) {
+                $list.Editing.BeginEdit()
+                $list[$fieldName] = $items
+                $list.Editing.EndEdit()
+                
+                Write-Host "Items were added to list"
+            }
+        }
+        
+        $luggageTemplatesPath = "master:/sitecore/content/EasyJet/Holidays/Data/Luggage"
+    
+        # Hold Luggage Items:
+        $baggage1 = Get-Item -Path "$($luggageTemplatesPath)/Extra Hold luggage/Hold Baggage 15kg" -ErrorAction SilentlyContinue
+        $baggage2 = Get-Item -Path "$($luggageTemplatesPath)/Hold Baggage/Hold Baggage 23kg" -ErrorAction SilentlyContinue
+        
+        # Large Sport Equipment Items:
+        $bicycle = Get-Item -Path "$($luggageTemplatesPath)/Large Sports Equipment/Bicycle" -ErrorAction SilentlyContinue
+        $canoe = Get-Item -Path "$($luggageTemplatesPath)/Large Sports Equipment/CanoeKayak" -ErrorAction SilentlyContinue
+        $glider = Get-Item -Path "$($luggageTemplatesPath)/Large Sports Equipment/Hand glider" -ErrorAction SilentlyContinue
+        $windsurfer = Get-Item -Path "$($luggageTemplatesPath)/Large Sports Equipment/Windsurfer" -ErrorAction SilentlyContinue
+        
+        # Small Sport Equipment Items:
+        $golf = Get-Item -Path "$($luggageTemplatesPath)/Small Sports Equipment/Golf Bag" -ErrorAction SilentlyContinue
+        $equipment = Get-Item -Path "$($luggageTemplatesPath)/Small Sports Equipment/Other small sports equipment" -ErrorAction SilentlyContinue
+        $skis = Get-Item -Path "$($luggageTemplatesPath)/Small Sports Equipment/Skis and boots" -ErrorAction SilentlyContinue
+        $snowboard = Get-Item -Path "$($luggageTemplatesPath)/Small Sports Equipment/Snowboard" -ErrorAction SilentlyContinue
+        
+        # Hotel Summary data source
+         @('fr-CH', 'fr-FR', 'de-CH', 'de-DE') | % {
+            $hotelSummary = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Hotel Summary" -Lang $_  -ErrorAction SilentlyContinue 
+            Add-Items-To-List -List $hotelSummary -FieldName "HoldLuggageItems"  -Items $("$($baggage1.ID)|$($baggage2.ID)")
+            Add-Items-To-List -List $hotelSummary -FieldName "SportEquipmentItems" -Items $("$($bicycle.ID)|$($canoe.ID)|$($glider.ID)|$($windsurfer.ID)|$($golf.ID)|$($equipment.ID)|$($skis.ID)|$($snowboard.ID)")
+        }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 950
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240417T102022Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,158 @@
+.content {
+    position: relative;
+    height: 60px;
+    margin: 8px 0;
+    padding: 10px 35px 15px 10px;
+    overflow: hidden;
+    background: $clrSiteBgWhite;
+    border: 1px solid $colorGeyser;
+    border-radius: 4px;
+    box-shadow: $generalBoxShadow;
+
+    &:not(.opened) {
+        .text {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+    }
+}
+
+.alert {
+    position: relative;
+    padding-left: 30px;
+}
+
+.opened {
+    height: initial;
+
+    .button {
+        transform: rotate(180deg);
+    }
+
+    .title {
+        white-space: normal;
+    }
+}
+
+.title {
+    margin: 0 0 3px;
+    font-family: $fontRoundedDemy;
+    line-height: 18px;
+    white-space: nowrap;
+
+    @include media-breakpoint-up(sm) {
+        font-size: 14px;
+    }
+}
+
+.text {
+    margin: 0;
+    overflow: hidden;
+    font-family: $fontRoundedBook;
+    line-height: 18px;
+    text-overflow: initial;
+
+    @include media-breakpoint-up(sm) {
+        font-size: 14px;
+        line-height: 18px;
+    }
+}
+
+.button {
+    position: absolute;
+    top: 25px;
+    right: 11px;
+    color: $clrEjOrange;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    appearance: unset;
+    transition: transform 0.3s;
+}
+
+.attention {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    color: $colorBlue;
+
+    svg,
+    img {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.sideFog {
+    $width: 40px;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: $width;
+    height: 100%;
+    background-color: $clrSiteBgWhite;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: $width;
+        height: 100%;
+        background: linear-gradient(to left, $clrSiteBgWhite, $colorTransparent);
+    }
+}
+
+.inline {
+    &.content {
+        height: 18px;
+        margin: 0;
+        padding: 0;
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+    }
+
+    &.opened {
+        height: initial;
+    }
+
+    .alert {
+        display: flex;
+        flex-direction: column;
+        padding-left: 24px;
+
+        @include media-breakpoint-up(md) {
+            flex-direction: row;
+            padding-left: 28px;
+        }
+    }
+
+    .title {
+        margin-right: 0;
+        margin-bottom: 4px;
+
+        @include media-breakpoint-up(md) {
+            margin-right: 8px;
+            margin-bottom: 0;
+        }
+    }
+
+    .button {
+        top: 0;
+        right: 0;
+    }
+
+    .attention {
+        top: 0;
+        left: 0;
+
+        svg,
+        img {
+            width: 16px;
+            height: 16px;
+        }
+    }
+}

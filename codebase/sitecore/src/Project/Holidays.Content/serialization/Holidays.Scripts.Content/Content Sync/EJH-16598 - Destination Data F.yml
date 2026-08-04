@@ -1,0 +1,55 @@
+﻿---
+ID: "bb2b3db9-e318-4d92-b495-e91ffd23d67b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-16598 - Destination Data Folder"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $dataFolderPath = "master:/sitecore/content/EasyJet/Holidays/Data";
+    $folderPath = "master:/sitecore/content/EasyJet/Holidays/Data/Destinations";
+    $folderTemplateId = '{237FBE64-06DE-47FB-AC4C-5C162F3A94E1}';
+    
+    $folder = Get-Item -Path $folderPath -ErrorAction SilentlyContinue
+    if ($folder -eq $null) {
+        $folder = New-Item -Path $dataFolderPath -ItemType $folderTemplateId -Name "Destinations"
+        Write-Host "Item" $folder.Name "successfully created"
+    } else {
+        Write-Host "Folder Destinations already exists"
+    }
+    
+    # For more information, please visit https://doc.sitecorepowershell.com/ 
+    
+    $itemPath = "master:/sitecore/content/EasyJet/Holidays/Data/Destinations/What to do"
+    $itemTemplateId = "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}"
+    
+    # If you want to set specific GUID as Item ID, please use '-ForceId $itemId'
+    # For example, $item = New-Item -Path $itemPath -ItemType $itemTemplateId # -ForceId $itemId
+    
+    $item = Get-Item -path $itemPath -ErrorAction SilentlyContinue
+    if ($item -eq $null) {
+        
+        # create item
+        $item = New-Item -Path $itemPath -ItemType $itemTemplateId
+        Write-Host "Item" $item.Name "successfully created"
+        
+        $item.Editing.BeginEdit()
+        $item["Title"] = "What to do in {region}"
+        $item.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $item.Name "successfully updated"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230208T140219Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

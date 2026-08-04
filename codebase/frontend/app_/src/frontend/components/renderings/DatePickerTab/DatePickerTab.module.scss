@@ -1,0 +1,69 @@
+.wrapper {
+    overflow: hidden;
+
+    h2 {
+        @include media-breakpoint-down(lg) {
+            width: 100%;
+        }
+    }
+}
+
+.content {
+    width: 100%;
+
+    @include media-breakpoint-down(md) {
+        overflow: scroll;
+    }
+}
+
+.switchWrapper {
+    display: grid;
+    align-self: stretch;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 0 40px;
+    border-bottom: 1px solid $colorGeyser;
+
+    @include media-breakpoint-down(md) {
+        margin: 0 15px;
+        border: 1px solid $colorGeyser;
+        border-radius: 4px;
+    }
+}
+
+.switchButton {
+    padding: 8px 8px 12px;
+    font-family: $fontRoundedDemy;
+    font-size: 16px;
+    border-bottom: 4px solid transparent;
+
+    @include media-breakpoint-down(md) {
+        padding: 8px 0;
+        font-size: 14px;
+        background: $colorPorcelain;
+        border-bottom: none;
+    }
+}
+
+.active {
+    color: $clrTextMain;
+    border-bottom: 4px solid $clrEjOrange;
+
+    @include media-breakpoint-down(md) {
+        background: $colorWhite;
+        border-bottom: none;
+    }
+}
+
+.selectedNights {
+    display: none;
+    padding: 12px 15px;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    line-height: 1.5;
+    color: $clrTextHeading;
+    text-align: right;
+
+    @include media-breakpoint-down(md) {
+        display: block;
+    }
+}

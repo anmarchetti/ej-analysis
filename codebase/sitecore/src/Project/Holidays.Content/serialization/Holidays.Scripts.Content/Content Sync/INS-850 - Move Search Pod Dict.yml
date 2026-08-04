@@ -1,0 +1,365 @@
+﻿---
+ID: "fd4c9974-323f-41e4-8fe2-a5af90e45285"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-850 - Move Search Pod Dictionary to Datasource"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $itemsToCreate = @(
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Data/Search Pods/Search Pod"
+    		TemplatePath = "/sitecore/templates/Foundation/Destinations/Search/Search Pod "
+    		Fields = @{
+    		    #Content
+    		    "LoadingLabel" = @{
+    				"de-CH" = "Nach Zielen suchen"
+    				"en" = "Searching for destinations"
+    				"fr-FR" = "Recherche de destinations"
+    				"de-DE" = "Nach Zielen suchen"
+    				"fr-CH" = "Recherche de destinations"
+    			}
+    			"PerfectHolidayTitle" = @{
+    				"de-CH" = "Finde deine perfekten Ferien"
+    				"en" = "Find your perfect holiday"
+    				"fr-FR" = "Trouvez votre séjour de rêve"
+    				"de-DE" = "Finde deinen perfekten Urlaub"
+    				"fr-CH" = "Trouvez votre séjour de rêve"
+    			}
+    			"ResultLabel" = @{
+    			    "de-CH" = "Ergebnis"
+    				"en" = "result"
+    				"fr-FR" = "résultat"
+    				"de-DE" = "Ergebnis"
+    				"fr-CH" = "résultat"
+    			}
+    			"ResultsLabel" = @{
+    			    "de-CH" = "Ergebnisse"
+    				"en" = "results"
+    				"fr-FR" = "résultats"
+    				"de-DE" = "Ergebnisse"
+    				"fr-CH" = "résultats"
+    			}
+    			"ResetToDefaultLabel" = @{
+    			    "de-CH" = "Auf Standard zurücksetzen"
+    				"en" = "Reset to default"
+    				"fr-FR" = "Réinitialiser à la valeur par défaut"
+    				"de-DE" = "Auf Standard zurücksetzen"
+    				"fr-CH" = "Réinitialiser à la valeur par défaut"
+    			}
+    			"AllLabel" = @{
+    			    "de-CH" = "(alle)"
+    				"en" = "(all)"
+    				"fr-FR" = "(tous)"
+    				"de-DE" = "(alle)"
+    				"fr-CH" = "(tous)"
+    			}
+    			#From
+    			"FromDropdownLabel" = @{
+    				"de-CH" = "Wähle die gewünschten Abflughäfen aus"
+    				"en" = "Where would you like to fly from?"
+    				"fr-FR" = "Choisissez les aéroports depuis lesquels vous souhaitez voyager"
+    				"de-DE" = "Wähle die gewünschten Abflughäfen aus"
+    				"fr-CH" = "Choisissez les aéroports depuis lesquels vous souhaitez voyager"
+    			}
+    			"FromFieldAriaDescription" = @{
+    				"de-CH" = "Beginne mit der Eingabe für die automatische Vervollständigung. Wenn für den Herkunftsflughafen automatisch vervollständigte Ergebnisse verfügbar sind, verwende die Tabulatortaste zur Überprüfung und die Leertaste zur Auswahl"
+    				"en" = "Start typing for autocomplete. When autocomplete results are available for the origin airport use tab key to review and space to select"
+    				"fr-FR" = "Commencez à taper pour la saisie automatique. Lorsque les résultats de saisie automatique sont disponibles pour l’aéroport d’origine, utilisez la touche de tabulation pour les consulter et l’espace pour les sélectionner"
+    				"de-DE" = "Beginne mit der Eingabe für die automatische Vervollständigung. Wenn für den Herkunftsflughafen automatisch vervollständigte Ergebnisse verfügbar sind, verwende die Tabulatortaste zur Überprüfung und die Leertaste zur Auswahl"
+    				"fr-CH" = "Commencez à taper pour la saisie automatique. Lorsque les résultats de saisie automatique sont disponibles pour l’aéroport d’origine, utilisez la touche de tabulation pour les consulter et l’espace pour les sélectionner"
+    			}
+    			"FromFieldDropdownToggle" = @{
+    			    "de-CH" = "Abflughäfen auswählen"
+    				"en" = "Choose departure airports"
+    				"fr-FR" = "Choisissez les aéroports de départ"
+    				"de-DE" = "Abflughäfen auswählen"
+    				"fr-CH" = "Choisissez les aéroports de départ"
+    			}
+    			"FromFieldPlaceholder" = @{
+    			    "de-CH" = "Wähle deine Flughäfen"
+    				"en" = "Pick your airports"
+    				"fr-FR" = "Choisissez votre aéroport"
+    				"de-DE" = "Wähle deine Flughäfen"
+    				"fr-CH" = "Choisissez votre aéroport"
+    			}
+    			"FromDropdownStatusResultsCount" = @{
+    			    "de-CH" = "{number} results found"
+    				"en" = "{number} results found"
+    				"fr-FR" = "{number} résultats trouvés"
+    				"de-DE" = "{number} Ergebnisse gefunden"
+    				"fr-CH" = "{number} résultats trouvés"
+    			}
+    			#To
+    			"ToFieldAriaDescription" = @{
+    				"de-CH" = "Beginne mit der Eingabe für die automatische Vervollständigung. Wenn für den Zielflughafen automatisch vervollständigte Ergebnisse verfügbar sind, verwende die Tabulatortaste zur Überprüfung und die Leertaste zur Auswahl"
+    				"en" = "Start typing for autocomplete. When autocomplete results are available for the destination airport use tab key to review and space to select"
+    				"fr-FR" = "Commencez à taper pour la saisie automatique. Lorsque les résultats de la saisie automatique sont disponibles pour l’aéroport de destination, utilisez la touche d’onglet pour les consulter et l’espace pour les sélectionner"
+    				"de-DE" = "Beginne mit der Eingabe für die automatische Vervollständigung. Wenn für den Zielflughafen automatisch vervollständigte Ergebnisse verfügbar sind, verwende die Tabulatortaste zur Überprüfung und die Leertaste zur Auswahl"
+    				"fr-CH" = "Commencez à taper pour la saisie automatique. Lorsque les résultats de la saisie automatique sont disponibles pour l’aéroport de destination, utilisez la touche d’onglet pour les consulter et l’espace pour les sélectionner"
+    			}
+    			"ToFieldDropdownToggle" = @{
+    				"de-CH" = "Zielflughäfen auswählen"
+    				"en" = "Choose destinations airports"
+    				"fr-FR" = "Choisir des aéroports de destination"
+    				"de-DE" = "Zielflughäfen auswählen"
+    				"fr-CH" = "Choisir des aéroports de destination"
+    			}
+    			"ToFieldPlaceholder" = @{
+    			    "de-CH" = "Reiseziele finden"
+    				"en" = "Find destinations"
+    				"fr-FR" = "Choisissez votre destination"
+    				"de-DE" = "Reiseziele finden"
+    				"fr-CH" = "Choisissez votre destination"
+    			}
+    			"ToFieldLabel" = @{
+    			    "de-CH" = "Nach"
+    				"en" = "To"
+    				"fr-FR" = "Vers"
+    				"de-DE" = "Nach"
+    				"fr-CH" = "Vers"
+    			}
+    			"ToDropdownLabel" = @{
+    			    "de-CH" = "Wohin können wir dich bringen?"
+    				"en" = "Where would you like to go?"
+    				"fr-FR" = "Où pouvons-nous vous emmener ?"
+    				"de-DE" = "Wohin können wir dich bringen?"
+    				"fr-CH" = "Où pouvons-nous vous emmener ?"
+    			}
+    			#When
+    			"WhenDropdownLabel" = @{
+    				"de-CH" = "Wähle dein Abflugdatum"
+    				"en" = "Choose your departure date"
+    				"fr-FR" = "Choisissez votre date de départ"
+    				"de-DE" = "Wähle dein Abflugdatum"
+    				"fr-CH" = "Choisissez votre date de départ"
+    			}
+    			"WhenFieldAriaDescription" = @{
+    				"de-CH" = "W&auml;hle ein Ab- und R&uuml;ckflugdatum aus."
+    				"en" = "Choose a departure date and return date."
+    				"fr-FR" = "Choisissez une date de départ et une date de retour."
+    				"de-DE" = "W&auml;hle ein Ab- und R&uuml;ckflugdatum aus."
+    				"fr-CH" = "Choisissez une date de départ et une date de retour."
+    			}
+    			"WhenFieldLabel" = @{
+    			    "de-CH" = "Wann"
+    				"en" =  "When"
+    				"fr-FR" = "Quand"
+    				"de-DE" = "Wann"
+    				"fr-CH" = "Quand"
+    			}
+    			"WhenFieldPlaceholder" = @{
+    			    "de-CH" = "Wähle deine Reisedaten"
+    				"en" = "Choose your dates"
+    				"fr-FR" = "Choisissez vos dates"
+    				"de-DE" = "Wähle deine Reisedaten"
+    				"fr-CH" = "Choisissez vos dates"
+    			}
+    			#Who
+    			"WhoDropdownGuestsLabel" = @{
+    				"de-CH" = "Wer übernachtet in dem/den Zimmer(n)?"
+    				"en" = "Who is staying in the room(s)?"
+    				"fr-FR" = "Qui séjourne dans la/les chambre(s) ?"
+    				"de-DE" = "Wer übernachtet in dem/den Zimmer(n)?"
+    				"fr-CH" = "Qui séjourne dans la/les chambre(s) ?"
+    			}
+    			"WhoDropdownRoomsLabel" = @{
+    				"de-CH" = "Wie viele Zimmer brauchst du?"
+    				"en" = "How many rooms do you need?"
+    				"fr-FR" = "De combien de chambres avez-vous besoin ?"
+    				"de-DE" = "Wie viele Zimmer brauchst du?"
+    				"fr-CH" = "De combien de chambres avez-vous besoin ?"
+    			}
+    			"WhoFieldDropdownLabel" = @{
+    			    "de-CH" = "Zimmer und Gäste auswählen"
+    				"en" = "Choose rooms and guests"
+    				"fr-FR" = "Choisir des chambres et des clients"
+    				"de-DE" = "Zimmer und Gäste auswählen"
+    				"fr-CH" = "Choisir des chambres et des clients"
+    			}
+    			"WhoFieldLabel" = @{
+    			    "de-CH" = "Wer"
+    				"en" = "Who"
+    				"fr-FR" = "Qui"
+    				"de-DE" = "Wer"
+    				"fr-CH" = "Qui"
+    			}
+    			"WhoFieldPlaceholder" = @{
+    			    "de-CH" = "Gäste hinzufügen"
+    				"en" = "Add guests"
+    				"fr-FR" = "Ajouter des clients"
+    				"de-DE" = "Gäste hinzufügen"
+    				"fr-CH" = "Ajouter des clients"
+    			}
+    			# Alternative View Labels
+    			"BackToSearchButtonText" = @{
+    				"de-CH" = "Zurück zu den Suchergebnissen"
+    				"en" = "Back to search results"
+    				"fr-FR" = "Retour aux résultats de la recherche"
+    				"de-DE" = "Zurück zu den Suchergebnissen"
+    				"fr-CH" = "Retour aux résultats de la recherche"
+    			}
+    			"CloseSearchCriteria" = @{
+    				"de-CH" = "Suchkriterien schliessen"
+    				"en" = "Close search criteria"
+    				"fr-FR" = "Fermer les critères de recherche"
+    				"de-DE" = "Suchkriterien schließen"
+    				"fr-CH" = "Fermer les critères de recherche"
+    			}
+    			"CloseSearchCriteriaMobile" = @{
+    			    "de-CH" = "Suche schliessen"
+    				"en" = "Close search"
+    				"fr-FR" = "Fermer la recherche"
+    				"de-DE" = "Suche schließen"
+    				"fr-CH" = "Fermer la recherche"
+    			}
+    			"EditSearchMobile" = @{
+    			    "de-CH" = "Suche bearbeiten"
+    				"en" = "Edit search"
+    				"fr-FR" = "Modifier la recherche"
+    				"de-DE" = "Suche bearbeiten"
+    				"fr-CH" = "Modifier la recherche"
+    			}
+    			"EditSearch" = @{
+    			    "de-CH" = "Suche bearbeiten"
+    				"en" = "Edit your search"
+    				"fr-FR" = "Modifier votre recherche"
+    				"de-DE" = "Suche bearbeiten"
+    				"fr-CH" = "Modifier votre recherche"
+    			}
+    			#Recent Searches
+    			"ViewRecentSearchesSingular" = @{
+    				"de-CH" = "{amount} letzte Suche"
+    				"en" = "{amount} recent search"
+    				"fr-FR" = "{amount} recherche récente"
+    				"de-DE" = "{amount} letzte Suche"
+    				"fr-CH" = "{amount} recherche récente"
+    			}
+    			"ClearRecentSearches" = @{
+    				"de-CH" = "Liste löschen"
+    				"en" = "Clear recents"
+    				"fr-FR" = "Effacer les récents"
+    				"de-DE" = "Liste löschen"
+    				"fr-CH" = "Effacer les récents"
+    			}
+    			"ViewRecentSearchesPlural" = @{
+    				"de-CH" = "{amount} letzte Suchen"
+    				"en" = "{amount} recent searches"
+    				"fr-FR" = "{amount} recherches récentes"
+    				"de-DE" = "{amount} letzte Suchen"
+    				"fr-CH" = "{amount} recherches récentes"
+    			}
+    			"CloseRecentSearches" = @{
+    				"de-CH" = "Letzte Suchen schließen"
+    				"en" = "Close recent searches"
+    				"fr-FR" = "Fermer les recherches récentes"
+    				"de-DE" = "Letzte Suchen schließen"
+    				"fr-CH" = "Fermer les recherches récentes"
+    			}
+    			"NewSearchLabel" = @{
+    			    "de-CH" = "Neue Suche starten"
+    				"en" = "Start new search"
+    				"fr-FR" = "Démarrer une nouvelle recherche"
+    				"de-DE" = "Neue Suche starten"
+    				"fr-CH" = "Démarrer une nouvelle recherche"
+    			}
+    			"NewSearchLabelMobile" = @{
+    			    "de-CH" = "Neue Suche"
+    				"en" =  "New Search"
+    				"fr-FR" = "Nouvelle recherche"
+    				"de-DE" = "Neue Suche"
+    				"fr-CH" = "Nouvelle recherche"
+    			}
+    			"RecentSearchesLabel" = @{
+    			    "de-CH" = "Letzte Suchen"
+    				"en" = "Recent Searches"
+    				"fr-FR" = "Recherches récentes"
+    				"de-DE" = "Letzte Suchen"
+    				"fr-CH" = "Recherches récentes"
+    			}
+    			#Error Message
+    			"NoResultFoundTitle" = @{
+    			    "de-CH" = "Leider fliegen wir diese Strecke nicht"
+    				"en" = "Sorry, we don't fly this route"
+    				"fr-FR" = "Désolé, nous ne proposons pas cet itinéraire"
+    				"de-DE" = "Leider fliegen wir diese Strecke nicht"
+    				"fr-CH" = "Désolé, nous ne proposons pas cet itinéraire"
+    			}
+    			"NoResultFoundDescription" = @{
+    			    "de-CH" = "Bitte versuche ein anderes Reiseziel oder wähle eines aus der Liste aus"
+    				"en" = "Please try another destination or select one from the list"
+    				"fr-FR" = "Veuillez essayer une autre destination ou en sélectionner une dans la liste"
+    				"de-DE" = "Bitte versuche ein anderes Reiseziel oder wähle eines aus der Liste aus"
+    				"fr-CH" = "Veuillez essayer une autre destination ou en sélectionner une dans la liste"
+    			}
+    			"DisableRouteErrorTitle" = @{
+    			    "de-CH" = "Die ausgewählte Verbindung ist gemäß deiner Suchanfrage nicht verfügbar"
+    				"en" = "The route you've selected is not available based on what you've searched for"
+    				"fr-FR" = "L’itinéraire que vous avez sélectionné n’est pas disponible en fonction de ce que vous avez recherché"
+    				"de-DE" = "Die ausgewählte Verbindung ist gemäß deiner Suchanfrage nicht verfügbar"
+    				"fr-CH" = "L’itinéraire que vous avez sélectionné n’est pas disponible en fonction de ce que vous avez recherché"
+    			}
+    			"TryAdjustDatesErrorMessage" = @{
+    			    "de-CH" = "Bitte versuche, die Reisedaten anzupassen, um Ergebnisse zu erhalten. Die geeignetesten Reisedaten sind hervorgehoben."
+    				"en" = "Please try to adjust the dates to get relevant results. The most suitable dates are highlighted."
+    				"fr-FR" = "Veuillez essayer d’ajuster les dates pour obtenir des résultats pertinents. Les dates les plus appropriées sont mises en surbrillance."
+    				"de-DE" = "Bitte versuche, die Reisedaten anzupassen, um Ergebnisse zu erhalten. Die geeignetesten Reisedaten sind hervorgehoben."
+    				"fr-CH" = "Veuillez essayer d’ajuster les dates pour obtenir des résultats pertinents. Les dates les plus appropriées sont mises en surbrillance."
+    			}
+    			# Inspiration Callout
+    			"InspirationCalloutTitle" = @{
+    			    "de-CH" = "Lust auf ein bisschen Inspiration?"
+    				"en" = "Need some inspiration?"
+    				"fr-FR" = "Besoin d’inspiration ?"
+    				"de-DE" = "Lust auf ein bisschen Inspiration?"
+    				"fr-CH" = "Besoin d’inspiration ?"
+    			}
+    			"InspirationCalloutText" = @{
+    			    "de-CH" = 'Mach&nbsp;<a href="/holiday-inspiration">unser Quiz</a> und finde dein ideales Ferienziel!'
+    				"en" = 'Take <a href="/holiday-inspiration">our quiz</a> to find your perfect gateway!'
+    				"fr-FR" = 'R&eacute;pondez &agrave; <a href="/holiday-inspiration">notre quiz</a> pour trouver votre s&eacute;jour id&eacute;al !'
+    				"de-DE" = 'Mach&nbsp;<a href="/holiday-inspiration">unser Quiz</a>&nbsp;und finde dein ideales Reiseziel!'
+    				"fr-CH" = 'R&eacute;pondez &agrave; <a href="/holiday-inspiration">notre quiz</a> pour trouver votre s&eacute;jour id&eacute;al !'
+    			}
+    			# Accesability
+    			"AnchorsGoToSearch" = @{
+    			    "de-CH" = "Zur Suche"
+    				"en" = "Go to search"
+    				"fr-FR" = "Aller à la recherche"
+    				"de-DE" = "Zur Suche"
+    				"fr-CH" = "Aller à la recherche"
+    			}
+    		}
+    	}
+    )
+    ImportContent -itemsToCreate $itemsToCreate 
+    
+    $itemsToCreate = @(
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Home/Holiday Inspiration/Page Components/Departure Airport"
+    		TemplatePath = "/sitecore/templates/Feature/PageContent/Inspire Me/Departure Tab"
+    		Fields = @{
+    		    #Content
+    		    "PickYourAirportLabel" = @{
+    				"de-CH" = "Wähle deine Flughäfen"
+    				"en" = "Pick your airports"
+    				"fr-FR" = "Choisissez votre aéroport"
+    				"de-DE" = "Wähle deine Flughäfen"
+    				"fr-CH" = "Choisissez votre aéroport"
+    			}
+    		}
+    	}
+    )
+    
+    ImportContent -itemsToCreate $itemsToCreate 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250612T092256Z

@@ -1,0 +1,19 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgSelfCatering = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'self-catering-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <path d='M21.63 9.23l-6.86-6.86a1.18 1.18 0 00-1.68 0L9.22 6.24a4.72 4.72 0 00-6.12.46.51.51 0 000 .72l2.47 2.47-3.2 3.2a1.18 1.18 0 000 1.68l6.86 6.86a1.18 1.18 0 001.68 0l4.78-4.78 1.78 1.78a1.45 1.45 0 002 0l.08-.09a1.42 1.42 0 000-2l-1.78-1.78 3.82-3.82a1.18 1.18 0 00.04-1.71zM5.88 7.38a2.73 2.73 0 011.91.3 2.22 2.22 0 01.58.44l.9.9 4.32 4.31-.88.88L8.4 9.89 7 8.48zm4.19 12.26l-5.71-5.71L7 11.31l5.37 5.36a.5.5 0 00.62.07zm6.33-6.33l-.67-.67-5-5 3.24-3.24 5.71 5.71z' />
+        <path d='M16.24 9.62a.86.86 0 001.24 0 .88.88 0 000-1.24l-1.86-1.86a.89.89 0 00-1.25 0 .88.88 0 000 1.24z' />
+    </svg>
+);
+
+export default SvgSelfCatering;

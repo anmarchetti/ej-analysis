@@ -1,0 +1,132 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background: $clrSiteBgWhite;
+
+    @include media-breakpoint-up(md) {
+        padding: 16px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px 2px #33333326;
+    }
+
+    :global {
+        .show-more {
+            padding: 0;
+        }
+
+        .show-more .btn {
+            font-size: 14px;
+            line-height: 1.3;
+        }
+    }
+
+    :global(.show-more .btn svg) {
+        transform: rotate(-90deg);
+    }
+}
+
+.title {
+    margin: 0;
+    font-family: $fontRoundedDemy;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.hotelName {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.rating {
+    margin-top: 4px;
+}
+
+.gallery {
+    position: relative;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 4px;
+
+    :global {
+        .img-carousel-container,
+        .image-gallery-slide {
+            min-height: 165px;
+        }
+
+        .image-gallery-index,
+        .fullscreen-btn {
+            height: 36px;
+            opacity: 0.6;
+        }
+
+        .image-gallery-index {
+            background: $colorBlackMedium;
+            border-radius: 0 4px;
+        }
+
+        .fullscreen-btn {
+            width: 36px;
+            border-radius: 4px 0;
+        }
+
+        .image-gallery-index span {
+            font-size: 12px;
+            line-height: 1.2;
+            color: $colorWhite;
+        }
+
+        .slider-nav {
+            width: 26px;
+            height: 26px;
+            box-shadow: 0 0 4px 0 #c0c0c0;
+
+            svg {
+                width: 8px;
+                height: 8px;
+            }
+        }
+
+        .slider-nav--next svg,
+        .slider-nav--prev svg {
+            margin: unset;
+        }
+    }
+}
+
+.popup {
+    :global(.popup__content) {
+        border-radius: 4px;
+    }
+
+    :global(.popup__body) {
+        margin: 4px;
+        padding: 20px 44px 0 20px;
+
+        &::-webkit-scrollbar-track {
+            background-color: $colorGrayLight;
+        }
+
+        &::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+            background-color: $colorGrayLight;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: $clrEjOrange;
+            border-radius: 2px;
+        }
+    }
+}
+
+:global(#hotel-summary-popup) {
+    .popupContentWithScroll {
+        max-height: calc(100vh - 60px);
+    }
+}

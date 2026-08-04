@@ -1,0 +1,149 @@
+﻿---
+ID: "caa8c600-8324-4ef1-872e-6ee2a7905882"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/TRADE-343 - Sustainability Tabs"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $sustainabilityPagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Sustainability"
+    $pageComponentsPath = "$($sustainabilityPagePath)/Page Components"
+    $tabsDataSourcePath = "$($pageComponentsPath)/Tab Links"
+    
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -Language "en" -ErrorAction SilentlyContinue
+        
+        if (-Not $item){
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item $($item.Name) successfully created"
+        }
+        
+        return $item
+    }
+    
+    function Get-Rendering-Index ($item, $renderingItemId) {
+    	$i = 0
+    	Get-Rendering -Item $item -FinalLayout -Language "en" | ForEach-Object {
+    		if ($_.ItemID -eq $renderingItemId) {
+                          $result = $i
+                           $i++
+    			return $result
+    		}
+    		$i++
+    	}
+    }
+    
+    function Replace-Rendering{
+        param([item]$item,$oldRendering,[string]$placeholder,[int]$index,[string]$datasource,[string]$renderingId)
+    
+        #Remove old rendering
+        if($oldRendering -ne $null) {
+            Remove-Rendering -Item $item -UniqueId $oldRendering.UniqueId -FinalLayout -Language "en"
+        }
+    
+        # Find the rendering item and convert to a rendering
+        $renderingItem = Get-Item -Path "master:" -Id $renderingId | New-Rendering -PlaceHolder $placeholder
+    
+        # Add the rendering to the item
+        Add-Rendering -Item $item -PlaceHolder $placeholder -Instance $renderingItem -Index $index -DataSource $datasource -FinalLayout -Language "en"
+    }
+    
+    function Create-Link-Data-Source($name, $title, $icon, $anchor, $sortOrder){
+        $item = Get-Or-Create-Item -Path "$($tabsDataSourcePath)/$($name)" -TemplateId "{A1E0F757-6AC6-4E76-B2FE-C7A155FF7D9C}"
+    
+        if ($item -ne $null){
+            $item.Editing.BeginEdit()
+            $item["Title"] = $title
+            $item["Icon"] = $icon
+            $item["Anchor"] = $anchor
+            $item["__SortOrder"] = $sortOrder
+            $item.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Created tab-anchor-link data source: " $name
+        }
+    
+        return $item
+    }
+    
+    # Grid Banners data source
+    $tabs = Get-Or-Create-Item -Path $tabsDataSourcePath -TemplateId "{6AF91E01-769F-4806-973E-C2941EBF523B}"
+    
+    if ($tabs -ne $null){
+        $tabs.Editing.BeginEdit()
+        $tabs["CTA"] = '<link text="View eco-certified holidays" linktype="internal" id="{F0EFD02C-A85C-4AEC-BF0E-7AC03169FA21}" />'
+        $tabs.Editing.EndEdit() | Out-Null
+    
+        Write-Host "Created tabs data source"
+    }
+    
+    Create-Link-Data-Source -Name "Our Mission" -Title "Our Mission" -Anchor "our-mission" -Icon '<svg xmlns="http://www.w3.org/2000/svg"><path d="M6.92 2.79a.57.57 0 0 1 .66-.11l9.27 4.64a.56.56 0 0 0 .65-.11l3.7-3.71a.6.6 0 0 1 .86-.04c.11.1.18.25.18.41v13.36c0 .15-.06.3-.17.41l-4.54 4.54a.56.56 0 0 1-.66.11L7.6 17.65a.57.57 0 0 0-.66.11L3.2 21.5a.57.57 0 0 1-1-.37V7.73c0-.15.06-.3.17-.4l4.54-4.54Zm1.55 2.57v10.53l7.74 3.89V9.2a2 2 0 0 1-.26-.09L8.47 5.36ZM20.2 7.33l-1.3 1.29c-.2.2-.44.37-.7.49v9.58l2-2V7.33ZM6.47 6.07 4.2 8.33v9.34l1.26-1.3c.28-.27.62-.48 1-.59V6.07Zm6.8 4.87c.13 0 .26.05.35.15a.48.48 0 0 1 0 .7l-.7.71.7.71a.5.5 0 1 1-.7.7l-.71-.7-.71.7a.5.5 0 1 1-.7-.7l.7-.71-.7-.71a.5.5 0 1 1 .7-.7l.7.7.72-.7c.09-.1.21-.15.35-.15Z"></path></svg>' -SortOrder "50"
+    Create-Link-Data-Source -Name "Our Approach" -Title "Our Approach" -Anchor "our-approach" -Icon '<svg xmlns="http://www.w3.org/2000/svg">
+    <path d="M9.95 9.06c.73 0 1.32.6 1.32 1.33V22h-3.8V10.4c0-.74.6-1.34 1.32-1.34h1.16ZM5.2 12.48c.73 0 1.32.59 1.32 1.32V22h-3.8v-8.2c.01-.73.6-1.32 1.34-1.32H5.2Zm14.24-2.23c.73 0 1.32.6 1.32 1.32V22h-3.8V11.57c0-.73.6-1.32 1.32-1.32h1.16Zm-4.75 3.25c.73 0 1.32.6 1.32 1.33V22h-3.8v-7.17c0-.73.6-1.33 1.33-1.33h1.15ZM7.26 3.28a.95.95 0 0 1 1.34 0l5.74 5.71 3.6-3.62a.95.95 0 0 1 .68-.27h.13c.2.03.4.12.55.27l2.13 2.14c.37.38.37.98 0 1.35a.95.95 0 0 1-1.35 0l-1.5-1.47-3.61 3.62a.95.95 0 0 1-.68.28c-.25 0-.49-.1-.67-.28l-5.7-5.76-3.59 3.6a.95.95 0 0 1-1.34.01.96.96 0 0 1 0-1.35l4.27-4.23Z"></path>
+    </svg>' "__Sortorder" -SortOrder "100"
+    Create-Link-Data-Source -Name "Our Work" -Title "Our Work" -Anchor "our-work" -Icon '<svg xmlns="http://www.w3.org/2000/svg">
+    <path d="m13.98 22.5.3-.06.75-.2.45-.14.37-.15c.17-.06.32-.13.48-.2l.23-.1a10.08 10.08 0 0 0-5.63-19.07l-.47.07-.43.08-.3.08c-.33.08-.64.18-.94.29l-.33.12-.4.17H8l-.31.15h-.06l-.36.19-.3.2-.13.07-.26.16-.49.36-.07.06c-.18.13-.36.27-.52.42l-.08.06-.34.3-.16.17-.13.14-.28.3-.07.09-.15.18a.77.77 0 0 1-.08.11l-.23.3-.1.15c0 .07-.1.13-.14.19l-.06.09-.16.26-.05.1a8.6 8.6 0 0 0-.56 1.11c-.17.36-.3.74-.42 1.12v.19c0 .14-.06.3-.1.44-.04.14 0 .2-.07.3a.3.3 0 0 0 0 .1c0 .11 0 .22-.05.33a3.5 3.5 0 0 0-.06.53v2.1c0 .15 0 .27.06.4.06.15 0 .41.1.6a12.75 12.75 0 0 0 .48 1.56l.1.3.24.47.23.46.21.35.33.51.07.1.08.1c.3.4.64.78 1 1.13a9.3 9.3 0 0 0 1.27 1.07l.25.2.31.19.51.3.19.09.33.15.36.17h.05l.2.06.27.1.39.14.21.05.28.07.44.1h.23l.34.05c.12 0 .25.05.39.06h.99c.27 0 .63 0 .93-.05h.27l.66.1ZM12.14 4.52c.42 0 .84.04 1.25.1l-.54 1.1a.32.32 0 0 0 .15.44l1 .34h.2l1.24-.3.92.3 1.31.27c.4.39.77.82 1.09 1.29l-.34.12-1.8-.3-.58-.9a.34.34 0 0 0-.29-.13h-2.01a.32.32 0 0 0-.23.09l-1.01 1a.35.35 0 0 0-.1.3l.34 2.35c.01.12.1.21.2.26l2.35 1h.21l1.28-.27.74.48V13.38L18.83 16V17a8.07 8.07 0 0 1-9.4 3.13v-1.01l1.2-.9a.34.34 0 0 0 .13-.28v-.87l1.25-1.24.1-.18.33-1.67a.32.32 0 0 0-.27-.4h-1.19l-.85-1.5a.34.34 0 0 0-.3-.17H7.65l-.55-1.15a.28.28 0 0 0-.28-.2.31.31 0 0 0-.3.1l-.43.44v-.53a.33.33 0 0 0-.1-.23l-.57-.58v-.58l2.06-.3h.13l1.68-1 .11-.13.95-1.57.89-.3c.1-.02.18-.1.2-.2l.35-1.01v-.1l.35-.05Zm-6.91 7.45-.39.38a.32.32 0 0 0-.09.23v1.16l.68 1.35c.04.09.13.16.23.18l1.41.28v3.21l.07.18a8.02 8.02 0 0 1-3.02-7.67l1.1.7Z"></path>
+    </svg>' -SortOrder "150"
+    Create-Link-Data-Source -Name "Your Holidays With Us" -Title "Your holiday with us" -Anchor "your-holiday-with-us" -Icon '<svg xmlns="http://www.w3.org/2000/svg"><path d="M20.64 18.2a.94.94 0 1 1 0 1.87 3.58 3.58 0 0 0-1.92.51c-.69.42-1.48.63-2.28.61-.81.02-1.6-.2-2.3-.6a3.62 3.62 0 0 0-1.93-.52 3.58 3.58 0 0 0-1.94.51c-.7.42-1.49.63-2.3.61a4.3 4.3 0 0 1-2.27-.6 3.5 3.5 0 0 0-1.93-.52.94.94 0 0 1 0-1.88c.99-.01 1.96.24 2.81.74.42.27.91.4 1.4.39.5.01 1-.12 1.41-.39.86-.5 1.83-.75 2.82-.74.98-.01 1.96.24 2.81.74.42.27.9.4 1.4.39.5.01 1-.12 1.41-.39.85-.5 1.83-.75 2.81-.74ZM8.6 3.8l.26.74a5.78 5.78 0 0 1 6.56 3.7l.22.58-.61.12a9 9 0 0 0-2.81 1.02l-.2.06h-.19c-.31 0-.63.04-.93.1l1.8 5.01c2.97.1 5.43 1.12 6.28 2.5-.4.13-.78.3-1.14.5-.42.27-.9.4-1.4.39-.5.01-1-.12-1.41-.4a5.45 5.45 0 0 0-2.81-.73 5.37 5.37 0 0 0-2.82.73c-.42.28-.91.42-1.41.4-.5.01-.98-.12-1.4-.4-.36-.19-.73-.35-1.12-.47.75-1.22 2.76-2.16 5.28-2.43l-1.6-4.4c-.3.17-.58.36-.84.57l-.1.1h-.15c-.98.18-1.93.52-2.8 1.01l-.54.28-.22-.6a5.73 5.73 0 0 1 2.6-7.01l-.26-.75 1.28-.47h.1l.38-.14Z"></path></svg>' -SortOrder "200"
+    
+    # Renderings
+    $page = Get-Item -Path $sustainabilityPagePath -ErrorAction SilentlyContinue
+    
+    $heroBannerIndex = Get-Rendering-Index -Item $page -RenderingItemId "{DEBE445D-27F2-44DA-8FD4-F4FD95BDBFF1}" | Select -First 1
+    
+    # Add Tab Links Rendering
+    if($heroBannerIndex -ne -1){
+        $tabsIndex = $heroBannerIndex + 1
+        $tabsRendering = Get-Item -Path "master:/sitecore/layout/Renderings/Feature/PageContent/Tabs" | New-Rendering -Placeholder "body"
+    
+        Add-Rendering -Item $page -PlaceHolder "body" -Instance $tabsRendering -DataSource $tabs.FullPath -Index $tabsIndex -FinalLayout -Language "en"
+        Get-Rendering -Item $page -Index $tabsIndex -FinalLayout -Language "en" | Set-RenderingParameter -Parameter @{ IsSticky = "1" } | Set-Rendering -Item $page -FinalLayout -Language "en"
+    
+        Write-Host "Added a rendering for the Tab Links"
+    }
+    
+    # Remove wrong parameter for items with body placeholders 
+    Get-Rendering -Item $page -Placeholder "body" | Remove-RenderingParameter -Name "SliceDirection" | Set-Rendering -Item $page
+    Get-Rendering -Item $page -Placeholder "body" -FinalLayout -Language "en" | Remove-RenderingParameter -Name "SliceDirection" | Set-Rendering -Item $page -FinalLayout -Language "en"
+    
+    $wrapperRenderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+    $slicedBannerRenderingId = "{9D9AB0BA-3BC2-4D03-B3C5-E861794EC9BD}"
+    
+    $pageWrappersIndexes = Get-Rendering-Index -Item $page -RenderingItemId $wrapperRenderingId
+    $slicedBannersIndexes = Get-Rendering-Index -Item $page -RenderingItemId $slicedBannerRenderingId
+    
+    # Add anchor rendering parameters
+    Get-Rendering -Item $page -Index $pageWrappersIndexes[0] -FinalLayout -Language "en" | Set-RenderingParameter -Parameter @{
+        Anchor = "our-mission"
+    } | Set-Rendering -Item $page -FinalLayout -Language "en"
+    
+    Get-Rendering -Item $page -Index $pageWrappersIndexes[1] -FinalLayout -Language "en" | Set-RenderingParameter -Parameter @{
+        Anchor = "our-approach"
+    } | Set-Rendering -Item $page -FinalLayout -Language "en"
+    
+    Get-Rendering -Item $page -Index $slicedBannersIndexes[0] -FinalLayout -Language "en" | Set-RenderingParameter -Parameter @{
+        Anchor = "our-work"
+        SliceDirection = "right"
+    } | Set-Rendering -Item $page -FinalLayout -Language "en"
+    
+    Get-Rendering -Item $page -Index $slicedBannersIndexes[1] -FinalLayout -Language "en" | Set-RenderingParameter -Parameter @{
+        Anchor = "your-holiday-with-us"
+        SliceDirection = "left"
+    } | Set-Rendering -Item $page -FinalLayout -Language "en"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 150
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230804T102242Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

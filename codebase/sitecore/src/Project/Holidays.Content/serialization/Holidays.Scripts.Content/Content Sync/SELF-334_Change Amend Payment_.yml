@@ -1,0 +1,56 @@
+﻿---
+ID: "f1fbe7d9-7bde-45dd-8d71-a37f3e54aa2d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-334_Change Amend Payment Fields"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $item = Get-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Amend Payment" -ErrorAction SilentlyContinue
+    if ($item -ne $null) {
+        $item.Editing.BeginEdit()
+        $item["AddAmendToBalanceTitle"] = "Create a holiday balance";
+        $item["AddAmendToBalanceDescription"] = "<p>Confirm your changes and create a holiday balance of {amount} to be paid by {date}.</p>";
+        $item["AddToAmendBalanceTotalLabel"] = "Holiday balance";
+        $item["PayFullAmendTitle"] = "Pay for your transfer/flight";
+        $item["PayFullAmendDescription"] = "<p>Confirm your changes and pay a total of {amount} today.</p>"
+        $item["ConfimButtonLabel"] = "Confirm";
+        $item["ConfirmChangesLabel"] = "Confirm changes";
+        $item["RemainingBalanceDue"] = "Due by {date}";
+        $item["TotalCost"] = "You are about to pay";
+        $item["ConfirmRefund"] = "Confirm refund";
+        $item["ImportantInformation"] = "All members of your party must have valid passports, any applicable visas and meet all destination country entry requirements, before traveling. Visit the UK Foreign, Commonwealth and Development Office website for further information and advice. This booking is protected under the ATOL scheme, as set out in the ATOL certificate to be supplied.";
+        $item["OutstandingPaymentOptionDescriptionExtraPrice"] = "<p>Confirm your changes and add the additional cost of {amount} to your current holiday balance.</p><p>Your new balance of {price} needs to be paid by {date}</p>";
+        $item["OutstandingPaymentOptionTitleExtraPrice"] = "Add to holiday balance";
+        $item["OutstandingPaymentOptionPrice"] = "New balance";
+        $item["DueBalanceLessBlockDaysTitle"] = "Your updated holiday balance";
+        $item["DueBalanceLessBlockDaysDescription"] = "Your holiday balance is now due. We will add any additonal costs to your total balance. Please pay now to confirm your booking changes.";
+        $item["DueBalanceLessBlockDaysTotal"] = "Updated balance - Due today";
+        $item["PaidBalanceLessBlockDaysTitle"] = "About additional costs";
+        $item["PaidBalanceLessBlockDaysDescription"] = "Because your holiday is less than {amount} days away, we need to take payment for the additional costs today to confirm your changes.";
+        $item["DueBalanceLessBlockDaysTotalMobile"] = "Updated balance";
+        $item["ProtectionTitle"] = "Your holiday is secure as all easyJet holidays are fully protected.";
+        $item["ProtectionImage"] = '<image mediaid="{3AAF21D8-A435-4832-AD86-58B714E8B5DB}" />'; 
+        $item["RefundCreditsTitle"] = "Holiday Credit";
+        $item["RefundOptionsTitle"] = "Pick how you want to be refunded";
+        $item["CreditDescription"] = "<p>Choosing this option means you'll receive {creditAmount} to spend within <strong>12 months</strong> on another easyJet Holiday.</p><p>This will be immediately be returned to your easyJet account.</p>";
+        $item["RefundDescription"] = "<p>Choosing to refund to original method means we'll refund you the total amount of the changed transfer/flight of {amount}.</p>";
+        
+        Write-Host "Item" "Finished";
+        $item.Editing.EndEdit() | Out-Null
+    }
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 200
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

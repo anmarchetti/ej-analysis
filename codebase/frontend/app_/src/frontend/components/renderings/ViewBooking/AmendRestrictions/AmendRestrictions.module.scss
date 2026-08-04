@@ -1,0 +1,65 @@
+.amendRestrictions {
+    > * {
+        margin-bottom: 20px;
+    }
+
+    .infoBlock {
+        padding: 16px 24px;
+        border: 1px solid $colorMercury;
+        box-shadow: none;
+
+        @include media-breakpoint-down(md) {
+            padding: 16px;
+        }
+    }
+
+    .icon {
+        width: 32px;
+        height: 32px;
+        margin-right: 32px;
+    }
+
+    a.action {
+        margin-left: 5%;
+
+        &:hover,
+        &:active {
+            color: $colorWhite;
+            background-color: $colorOrange;
+            opacity: 1;
+        }
+
+        @include media-breakpoint-down(md) {
+            min-width: 100%;
+            margin: 0;
+        }
+    }
+
+    .luxuryInfoBlock {
+        padding: 16px 34px 16px 16px;
+
+        @include media-breakpoint-down(md) {
+            padding: 16px;
+        }
+
+        .icon {
+            margin-top: 3px;
+
+            img {
+                width: unset;
+                min-width: 100%;
+            }
+        }
+    }
+
+    .luxuryAction {
+        min-width: unset;
+        margin-left: 32px;
+        white-space: nowrap;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            margin-left: 0;
+        }
+    }
+}

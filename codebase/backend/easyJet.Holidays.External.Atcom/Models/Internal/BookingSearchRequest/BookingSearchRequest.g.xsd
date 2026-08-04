@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:p2="AtComRes/Common" xmlns:ns1="AtComRes/BookingSearchRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="AtComRes/BookingSearchRequest" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+	<!-- REVISION HISTORY
+
+         06.02.2008 Created Request-->
+	<xs:element name="BookingSearchRequest">
+		<xs:annotation>
+			<xs:documentation>defines the request to search for bookings. If a search value is not specified, 
+this indicates that the bookings are not filtered by this value. For example, if BkgSts is not specified,
+bookings of any booking state shall be returned (of course only those that match the other search criteria).
+            </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="p2:AtcomresBaseRequest">
+					<xs:sequence>
+						<xs:element name="Search_Bkg_From" type="xs:date" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>
+                                    bookings with a modification or create date at or later than this date shall be returned
+                                </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Search_Bkg_To" type="xs:date" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>
+                                    bookings with a modification or create date at or earlier than this date shall be returned. If this element is missing, the default is today.
+                                </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Search_Trv_From" type="xs:date" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>
+                                    bookings with a travel start date at or later than this date shall be returned
+                                </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Search_Trv_To" type="xs:date" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>
+                                    bookings with a travel end date at or earlier than this date shall be returned
+                                </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="p2:BkgSts" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>
+                                    include bookings of this status in the search result.
+                                </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="p2:ResSts" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>include bookings of this reservation status in the search result.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="p2:Exp_No" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>include bookings with this travel agent number in the search result</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Lastname" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>lastname of any participant in the booking</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="p2:Prd_Cd" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>booking must include this product code. Bookings with arrangements with that product code shall be returned as well.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:choice minOccurs="0">
+							<xs:element ref="p2:Prom" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>include bookings with the specified promotion in the search result.
+                            </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="p2:Prom_Grp" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>include bookings with the specified promotion group in the search result.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:choice>
+                        <xs:element ref="p2:Cus" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>include bookings with the specified customer details</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Include_Pay_Types" type="xs:boolean" default="false" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>Flag to indicat whether to include Pay_Type elements in the BookingSearchResponse.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Return_Non_SPNRs_only" type="xs:boolean" default="true" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    If this flag is set, @ComRes should return non-SPNR bookings only, otherwise all bookings
+									(SPNR as well as non-SPNR) booking should be returned.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Ignore_Agency_Cd" type="xs:boolean" default="false" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    If this flag is set to true, all bookings should be returned, matching the search criteria
+									independent of the agency they belong to and therefore independent of the agency code given
+									in the administration tags at the top of the XML.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

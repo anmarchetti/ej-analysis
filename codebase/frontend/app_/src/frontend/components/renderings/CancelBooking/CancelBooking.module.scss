@@ -1,0 +1,42 @@
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1230px;
+    margin: auto;
+    padding: 0 15px 80px;
+
+    :global(.price-breakdown) {
+        margin-top: 32px;
+    }
+
+    @include media-breakpoint-down(lg) {
+        :global(.basket) {
+            position: fixed;
+            z-index: 200;
+            bottom: 0;
+            width: 100%;
+        }
+
+        :global(.basket .vertical-cells) {
+            display: block;
+            padding-left: 0;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: 0;
+        padding-bottom: 40px;
+    }
+}
+
+.paidTotal {
+    padding-bottom: 16px;
+    font-weight: bold;
+    color: $colorBoulder;
+    border-bottom: 1px solid $colorGeyser;
+}
+
+.chargeFeeRowEnd {
+    padding-bottom: 16px;
+    border-bottom: 1px solid $colorGeyser;
+}

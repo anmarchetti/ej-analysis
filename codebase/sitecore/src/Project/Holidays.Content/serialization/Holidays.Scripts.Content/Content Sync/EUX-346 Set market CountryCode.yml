@@ -1,0 +1,40 @@
+﻿---
+ID: "68d3d965-e5ba-483f-bf8d-e41448794fae"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUX-346 Set market CountryCode"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+        $swissMarket = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Market Settings/Switzerland" -ErrorAction SilentlyContinue
+    
+        if($swissMarket -ne $null){
+            $swissMarket.Editing.BeginEdit()
+            $swissMarket["CountryCode"] = "CH"
+            $swissMarket.Editing.EndEdit()
+        }
+    
+        $ukMarket = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Market Settings/United Kingdom" -ErrorAction SilentlyContinue
+    
+        if($ukMarket -ne $null){
+            $ukMarket.Editing.BeginEdit()
+            $ukMarket["CountryCode"] = "GB"
+            $ukMarket.Editing.EndEdit()
+        }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230116T162118Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

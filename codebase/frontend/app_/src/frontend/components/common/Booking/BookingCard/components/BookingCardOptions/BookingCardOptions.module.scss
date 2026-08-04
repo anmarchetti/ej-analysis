@@ -1,0 +1,18 @@
+.options {
+    position: relative;
+    grid-area: options;
+    padding: 0 10px;
+
+    @include media-breakpoint-up(lg) {
+        position: unset;
+        padding: 0;
+    }
+
+    .cancelledText {
+        display: flex;
+
+        @include media-breakpoint-up(lg) {
+            display: none;
+        }
+    }
+}

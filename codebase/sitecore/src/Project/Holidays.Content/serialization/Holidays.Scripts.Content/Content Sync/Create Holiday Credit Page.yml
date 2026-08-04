@@ -1,0 +1,182 @@
+﻿---
+ID: "adcd0bb3-c5ff-4a79-a80e-ecc27525b0f3"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Holiday Credit Page
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Page
+          $pagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit"
+          $pageTemplateId = "{138FF585-FCF9-4165-9F78-BA27B320ACE5}"
+          $page = Get-Item -path $pagePath -ErrorAction SilentlyContinue
+          if ($page -eq $null) {
+              # create item
+              $page = New-Item -Path $pagePath -ItemType $pageTemplateId
+              Write-Host "Item" $page.Name "successfully created"
+          }
+          
+          # Add page in designs
+          $creditPageTemplateId = "{138FF585-FCF9-4165-9F78-BA27B320ACE5}"
+          $designPath = "master:/content/EasyJet/Holidays/Presentation/Page Designs/Default Design"
+          $design = Get-Item -Path $designPath
+          if($design -ne $null) {
+              [Sitecore.Data.Fields.MultilistField]$field = $design.Fields["PageTemplates"];
+              
+              $design.Editing.BeginEdit();
+              $field.add($creditPageTemplateId);
+              $design.Editing.EndEdit() | Out-Null
+              Write-Host "Holiday Credit Page Template added to Design PageTemplates"
+          }
+          
+          # Insert component wrapper
+          $creditPage= Get-Item -Path $pagePath
+          $componentWrapperPlaceHolder= 'main-wrapper'
+          $componentWrapperRenderingPath = "/sitecore/layout/Renderings/Project/Holidays/Component Wrapper"
+          $componentWrapperItem = Get-Item -Database "master" -Path $componentWrapperRenderingPath | New-Rendering -Placeholder $componentWrapperPlaceHolder
+          Add-Rendering -Item $creditPage -PlaceHolder $componentWrapperPlaceHolder -Instance $componentWrapperItem 
+          
+          # Add Page components folder
+          function Get-Or-Create-Item($path, $templateId) {
+              $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+              if (-Not $item) {
+                  $item = New-Item -Path $path -ItemType $templateId
+                  Write-Host "Item" $item.Name "successfully created"
+              }
+              return $item
+          }
+          Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components" -templateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+          
+          $componentWrapperRenderings = Get-Rendering -Item $creditPage -Placeholder $componentWrapperPlaceHolder
+          if ($componentWrapperRenderings -is [array]) {
+              $componentWrapperRend = $componentWrapperRenderings[0]
+          } else { 
+              $componentWrapperRend = $componentWrapperRenderings
+          }
+          
+          # Add holiday credit block
+          $holidayCreditRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Holiday Credit"
+          $holidayCreditPlaceHolder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0'
+          $holidayCreditItem = Get-Item -Database "master" -Path $holidayCreditRenderingPath | New-Rendering -Placeholder $holidayCreditPlaceHolder
+          Add-Rendering -Item $creditPage -PlaceHolder $holidayCreditPlaceHolder -Instance $holidayCreditItem 
+          $holidayCreditRenderings = Get-Rendering -Item $creditPage -Placeholder $holidayCreditPlaceHolder
+          
+          if ($holidayCreditRenderings -is [array]) {
+              $holidayCreditRend = $holidayCreditRenderings[0]
+          } else { 
+              $holidayCreditRend = $holidayCreditRenderings
+          }
+          
+          # Add text blocks in Page components
+          Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Text Blocks" -templateId "{AB8D608B-3B9D-4ECB-9BA3-8C61306D7A41}"
+          
+          # Add text block
+          $titlePlaceholder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0/credit-page-title-'+ $holidayCreditRend.UniqueId +'-0'
+          $textBlocks = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Text Blocks"
+          $title = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Text Blocks/Your Holiday Credit" -templateId "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}" 
+          $textRenderingPath = '/sitecore/layout/Renderings/Feature/PageContent/Text Block'
+          $textRendering = Get-Item -Database "master" -Path $textRenderingPath | New-Rendering -Placeholder $titlePlaceholder -DataSource $title
+              
+          if ($title -ne $null) {
+              $title.Editing.BeginEdit()
+              $title["Title"] = 'Your Holiday Credit';
+              $title.Editing.EndEdit() | Out-Null
+          }
+              
+          Add-Rendering -Item $creditPage -PlaceHolder $titlePlaceholder -Instance $textRendering -Parameter @{"TitleTag"="h1"; "TitlePosition"="left"; "TitleFontStyle"="rounded"}
+          
+          # Add How To Spend Links
+          $linksFolder = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/How To Spend Links" -templateId "{3FE2DB4D-5816-47D6-B87B-64092FFAEA1B}"
+          $testLink = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/How To Spend Links/Spain Holidays" -templateId "{BC011F0A-976C-4825-9E01-8BAA7C8E6CCA}"
+          if ($testLink -ne $null) {
+              $link = Get-Item -Path "master:/content/EasyJet/Holidays/Home/Destinations/Spain" -ErrorAction SilentlyContinue;
+              $testLink.Editing.BeginEdit()
+              $testLink["Link"] = '<link linktype="internal" id="' + $link.ID + '" text="Spain Holidays" />';
+              $testLink.Editing.EndEdit() | Out-Null
+          }  
+          if ($linksFolder -ne $null) {
+              [Sitecore.Data.Fields.MultilistField]$linksField = $linksFolder.Fields["Links"];
+              $linksFolder.Editing.BeginEdit()
+              $linksFolder["Description"] = "Since you have credit, let’s explore some holidays and see what we can do to put a trip together for you."
+              $linksField.add($testLink.ID);
+              $linksFolder.Editing.EndEdit() | Out-Null
+              Write-Host "Links Card content updated"
+          }
+          
+          $linksCardRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Links Card"
+          $linksCardPlaceHolder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0/credit-links-card-'+ $holidayCreditRend.UniqueId +'-0'
+          $linksCardRend = Get-Item -Database "master" -Path $linksCardRenderingPath | New-Rendering -Placeholder $linksCardPlaceHolder -DataSource $linksFolder
+          
+          Add-Rendering -Item $creditPage -PlaceHolder $linksCardPlaceHolder -Instance $linksCardRend
+    
+     # Add Balance History rendering
+          $balanceHistoryPlaceHolder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0/credit-balance-history-'+ $holidayCreditRend.UniqueId +'-0'
+          $balanceHistoryRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Balance History"
+          $balanceHistoryItem = Get-Item -Database "master" -Path $balanceHistoryRenderingPath | New-Rendering -Placeholder $balanceHistoryPlaceHolder
+          Add-Rendering -Item $creditPage -PlaceHolder $balanceHistoryPlaceHolder -Instance $balanceHistoryItem 
+      
+        
+          # Insert another component wrapper
+          $faqComponentWrapperPlaceHolder= 'faq-wrapper'
+          $faqCcomponentWrapperItem = Get-Item -Database "master" -Path $componentWrapperRenderingPath | New-Rendering -Placeholder $faqComponentWrapperPlaceHolder
+          $params = @{"IsGreyBackground"=1; "IsTriangleStart"=1; "IsTriangleEnd"=1}
+          Add-Rendering -Item $creditPage -PlaceHolder $faqComponentWrapperPlaceHolder -Instance $faqCcomponentWrapperItem -Parameter $params
+          $faqComponentWrapperRenderings = Get-Rendering -Item $creditPage -Placeholder $faqComponentWrapperPlaceHolder
+          
+          if ($faqComponentWrapperRenderings -is [array]) {
+              $faqComponentWrapperRend = $faqComponentWrapperRenderings[0]
+          } else { 
+              $faqComponentWrapperRend = $faqComponentWrapperRenderings
+          }
+          
+          # Add Questions and Answers items
+          $qaFolder = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Questions and Answers" -templateId "{48403D80-0E80-447F-84CC-D2C218D0F2A3}"
+          $testFaq = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Questions and Answers/What is holiday credit" -templateId "{C9FD0113-5386-4ACB-B11C-0C14AD77FFD8}"
+          if ($testFaq -ne $null) {
+              $testFaq.Editing.BeginEdit()
+              $testFaq["Question"] = 'What is holiday credit?'
+              $testFaq["Answer"] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+              $testFaq.Editing.EndEdit() | Out-Null
+          }
+          
+          $faqPlaceHolder = '/body/component-wrapper-inner-'+ $faqComponentWrapperRend.UniqueId +'-0'
+          
+          # Add Text Block
+          $faqTitle = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Text Blocks/Questions And Answers Title" -templateId "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}" 
+          if ($faqTitle -ne $null) {
+              $faqTitle.Editing.BeginEdit() 
+              $faqTitle["Title"] = 'Questions about holiday credit'
+              $faqTitle.Editing.EndEdit() | Out-Null
+          }
+          $faqTitleRendering = Get-Item -Database "master" -Path $textRenderingPath | New-Rendering -Placeholder $faqPlaceHolder -DataSource $faqTitle
+          Add-Rendering -Item $creditPage -PlaceHolder $faqPlaceHolder -Instance $faqTitleRendering -Parameter @{"TitleTag"="h2"; "TitlePosition"="center"; "TitleFontStyle"="rounded"}
+          
+          # Add Questions and Answers rendering
+          $faqRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Question And Answer"
+          $faqItem = Get-Item -Database "master" -Path $faqRenderingPath | New-Rendering -Placeholder $faqPlaceHolder -DataSource $qaFolder
+          Add-Rendering -Item $creditPage -PlaceHolder $faqPlaceHolder -Instance $faqItem
+    
+          # fix component wrappers placeholders
+          Get-Rendering -Item $creditPage -PlaceHolder $componentWrapperPlaceHolder | 
+              Foreach-Object { 
+                  $_.Placeholder = "body"; 
+                  Set-Rendering -Item $creditPage -Instance $_
+              }
+          Get-Rendering -Item $creditPage -PlaceHolder $faqComponentWrapperPlaceHolder | 
+              Foreach-Object { 
+                  $_.Placeholder = "body"; 
+                  Set-Rendering -Item $creditPage -Instance $_
+              }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 700
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200103T112440Z

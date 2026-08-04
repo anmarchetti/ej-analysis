@@ -1,0 +1,130 @@
+﻿---
+ID: "1de8f93d-f92e-43d1-b610-b410c2c6f4fb"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-4 Add Inspire Me Banner"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    function createInspireMeBannerDataSource()
+    {
+    	$templateId = "{66DD9782-7F4A-45B4-9064-52C6515A4C27}"
+    	$itemPath = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Inspire Me Banner"
+    	
+    	$item = Get-Item -Path $itemPath  -ErrorAction SilentlyContinue
+    	
+    	if ($item -eq $null){
+    	   Write-Host "Creating Inspire Me Banner DataSource"
+    	   
+    	   New-Item -Path $itemPath -ItemType $templateId
+    	   
+    	} else{
+    		Write-Host "Inspire Me Banner is already created"
+    	}
+    }
+    
+    function createInspireMeDataSourceLanguageVersions() {
+    	$itemPath = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Inspire Me Banner"
+    	$item  = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+    
+    	if ($item -eq $null) {
+    		Write-Host "Missing Inspire Me Banner datasource in EN language."
+    		return;
+    	}
+    	
+    	@('en') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "unsure about your next travel destination?"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Subtitle" -Value "Holiday Inspiration"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Description" -Value "Take our quiz to find the perfect vacation spot that suits you best!"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Image" -Value '<image mediaid="{63A0C050-2C84-41B9-B62A-C0AC80F5173E}" />'
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Link" -Value '<link text="Start quiz now" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{6364D724-E63F-4AFE-81A3-42E17BCAF280}" />'
+    	}
+    
+    	@('de-CH', 'de-DE') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Sie sind unsicher, was Ihr nächstes Reiseziel angeht?"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Subtitle" -Value "Ferien-Inspiration"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Description" -Value "Machen Sie unser Quiz, um den perfekten Urlaubsort zu finden, der am besten zu Ihnen passt!"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Image" -Value '<image mediaid="{63A0C050-2C84-41B9-B62A-C0AC80F5173E}" />'
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Link" -Value '<link text="Quiz jetzt starten" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{6364D724-E63F-4AFE-81A3-42E17BCAF280}" />'
+    	}
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "vous hésitez sur votre prochaine destination de voyage ?"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Subtitle" -Value "Inspiration pour les fêtes"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Description" -Value "Répondez à notre quiz pour trouver le lieu de vacances qui vous convient le mieux !"
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Image" -Value '<image mediaid="{63A0C050-2C84-41B9-B62A-C0AC80F5173E}" />'
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Link" -Value '<link text="Commencer le quiz" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{6364D724-E63F-4AFE-81A3-42E17BCAF280}" />'
+    	}
+    	
+    	Write-Host "Created language versions for Inspire Me banner datasource"
+    }
+    
+    function createRenderingInPostTravelPage() {
+    	$inspireMeRenderingId = "{5A4E2577-32C2-420F-9F52-494394DA3364}"
+        $pagePath = '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel';
+    	$datasourcePath = '/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Inspire Me Banner'
+        $placeholder = "/body/booking-context-{0b3a1889-94df-4381-aaef-272a10e79e98}-0/masonry-section-{b93f1826-b25c-47d5-8fe3-dffe24e63a17}-0"
+    	
+        $page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    	$inspireMeRendering = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $inspireMeRenderingId }
+    	
+    	if ($inspireMeRendering -ne $null) {
+    	    Write-Host "Inspire Me Banner Rendering already exists"
+    		return
+    	}
+    	
+    	# Add Masonry Wrapper Item
+    	$masonryRenderingId = "{630D2676-483E-420D-8F04-4C15212F3EFF}"
+    	$masonryRenderingPath = "/sitecore/layout/Renderings/Feature/Page Structure/Masonry/Masonry Wrapper Item"
+    	$masonryRendering = Get-Item -Database "master" -Path $masonryRenderingPath | New-Rendering -Placeholder $placeholder 
+    	
+    	Add-Rendering -Item $page -Instance $masonryRendering -PlaceHolder $placeholder -Parameter @{ "ItemOrderOnMobile" = "20" }
+    	
+    	# Get newly added rendering
+    	$page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    	$renderings = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $masonryRenderingId }
+    	$lastRendering = $renderings[-1]
+    	
+    	$inspireMeBannerRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Inspire Me/Inspire Me Banner"
+    	$inspireMeBannerRendering = Get-Item -Database "master" -Path $inspireMeBannerRenderingPath |  New-Rendering -Placeholder "$($placeholder)/masonry-item-$($lastRendering.UniqueId)-0"
+    	
+    	Add-Rendering -Item $page -Instance $inspireMeBannerRendering -PlaceHolder "$($placeholder)/masonry-item-$($lastRendering.UniqueId)-0" -DataSource $datasourcePath
+    	
+    	Write-Host "Added Inspire Me Banner Rendering to Post Travel Page"
+    }
+    
+    createInspireMeBannerDataSource
+    createInspireMeDataSourceLanguageVersions
+    createRenderingInPostTravelPage
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240417T102022Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

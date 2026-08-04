@@ -1,0 +1,67 @@
+﻿---
+ID: "46067615-6402-4968-bc44-25530f44a88e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUXE-621 Set market codes in promotions market folders"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $folderPath = "/sitecore/content/EasyJet/Holidays/Data/Promotions"
+    $folderTemplateId = "{FFDF75B6-AB69-46ED-B8F9-35E426E69542}"
+    $itemTemplateId = "{931C2E00-6C7B-4F50-AB4E-37D91E573C95}"
+    
+    function Get-Market-Id($path, $itemName){
+        $item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        
+        if ($item -eq $null){
+            Write-Host "Couldn't find market: " "$($path)/$itemName"
+            return $null
+        }
+        
+        return $item.Id
+    }
+    
+    $englishMarket = Get-Market-Id -path "/sitecore/content/EasyJet/Holidays/Settings/Market Settings" -itemName "United Kingdom"
+    $swissMarket = Get-Market-Id -path "/sitecore/content/EasyJet/Holidays/Settings/Market Settings" -itemName "Switzerland"
+    $frenchMarket = Get-Market-Id -path "/sitecore/content/EasyJet/Holidays/Settings/Market Settings" -itemName "France"
+    $germanMarket = Get-Market-Id -path "/sitecore/content/EasyJet/Holidays/Settings/Market Settings" -itemName "Germany"
+    
+    function Set-Markets($path, $itemName, $itemType, $markets){
+        $item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $itemName -ItemType $itemType
+        }
+        
+        $item.Editing.BeginEdit()
+        $item["Markets"] = $markets
+        $item.Editing.EndEdit() | Out-Null
+    }
+    
+    $folder = Get-Item -path $folderPath -ErrorAction SilentlyContinue
+    if ($folder -eq $null) {
+        $folder = New-Item -Path $folderPath -ItemType $folderTemplateId
+    }
+    
+    Set-Markets -path $folderPath -itemName "Promotions - All markets" -itemType $itemTemplateId "$englishMarket|$swissMarket|$frenchMarket|$germanMarket"
+    Set-Markets -path $folderPath -itemName "Promotions - UK" -itemType $itemTemplateId "$englishMarket"
+    Set-Markets -path $folderPath -itemName "Promotions - Swiss" -itemType $itemTemplateId "$swissMarket"
+    Set-Markets -path $folderPath -itemName "Promotions - France" -itemType $itemTemplateId "$frenchMarket"
+    Set-Markets -path $folderPath -itemName "Promotions - Germany" -itemType $itemTemplateId "$germanMarket"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230116T162118Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

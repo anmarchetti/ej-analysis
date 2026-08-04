@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<control xmlns:def="Definition" xmlns="http://schemas.sitecore.net/Visual-Studio-Intellisense">
+    <CleanInteractionsData>
+        <FormDialog Header="Clean Interactions" Text="Every interaction, which is older than the selected Date will be deleted. Preferable date is (now - 1 month)." CancelButton="true" OKButtonClass="scButton" OKButton="Submit">
+            <CodeBeside Type="easyJet.Foundation.XConnect.Common.Controls.CleanContactsForm, easyJet.Foundation.XConnect.Common" />
+
+            <Stylesheet Key="inline">
+                .scBar {
+                float: left;
+                margin:2px 0;
+                }
+
+                .scDates {
+                display: none;
+                }
+
+                .scViewer{
+                position:absolute;
+                top:330px;
+                bottom:0;
+                left:0;
+                right:0;
+                margin:20px;
+                height:auto !important;
+                }
+            </Stylesheet>
+
+            <Border Width="100%" Height="100%">
+                <Border Align="Center" >
+                    <GridPanel  Width="100%" Height="100%">
+                        <h1 style="font-size:1.5em;">Delete interactions which has been inactive since:</h1>
+                        <DateCalendar  ID="StartDate"  />
+                        <Checkbox  ID="NotPerformDeletion" Header="Test Run (Do Not Perform Deletion)" />
+                    </GridPanel>
+                </Border>
+
+                <Scrollbox class="scScrollbox scViewer" Height="100%" >
+                    <GridPanel ID="Viewer" Columns="2" Width="100%"/>
+                </Scrollbox>
+
+            </Border>
+        </FormDialog>
+    </CleanInteractionsData>
+</control>

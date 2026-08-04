@@ -1,0 +1,24 @@
+.popupButtons {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+
+    :global(.btn + .btn) {
+        margin-left: 15px;
+    }
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        margin-top: 20px;
+
+        :global(.btn) {
+            display: block;
+            width: 100%;
+
+            + :global(.btn) {
+                margin-top: 15px;
+                margin-left: 0;
+            }
+        }
+    }
+}

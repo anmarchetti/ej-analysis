@@ -1,0 +1,147 @@
+﻿---
+ID: "a6513945-3cf4-4b07-9bf6-5a95881f94a2"
+Parent: "4c10d78f-07b6-469e-929f-cb4b460bb11e"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Destinations Sync/Hotel Sync/Broken Images Links Report
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function -Name ConvertTo-Xlsx
+    Import-Function -Name Export-Xlsx
+    
+    $env = "Local"
+    $time = Get-Date -UFormat %s -Millisecond 0
+    $filename = "BrokenImagesLinksReport_$env_$time.xlsx"
+    $folderPath = "$($SitecoreDataFolder)\ExportData"
+    $resultPath = "$folderPath\$filename"
+    
+    $rootItemPath = "/sitecore/content/EasyJet/Holidays/Home/Destinations"
+    $imagesFolderTemplateId = "{AF7DAAA8-8099-4F22-A607-F0E1FBA6AD0D}"
+    $externalImageTemplateId = "{E4B3BB73-22AB-4843-A816-3AA32EDDC7DC}"
+    $roomsFolderTemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+    $imageFields = @("Small","Medium","Large")
+    
+    function Create-Data-Folder {
+    	param($path)
+    	if (!(Test-Path $path))
+    	{
+    		New-Item -ItemType Directory -Force -Path $path
+    	}
+    }
+    
+    function Get-UrlStatusCode([string] $Url)
+    {
+        try
+        {
+            (Invoke-WebRequest -Uri $Url -UseBasicParsing -DisableKeepAlive).StatusCode
+        }
+        catch [Net.WebException]
+        {
+            [int]$_.Exception.Response.StatusCode
+        }
+    }
+    
+    function Get-Images-Status($images, [string] $type, [string] $hotelCode, [string] $hotelName){
+        $brokenLinks = @()
+        foreach($image in $images){
+            $imageName = $image.name
+            foreach($imageField in $imageFields){
+                $imageStatus = @{}
+                
+                $imgUrl = $image[$imageField]
+                
+                if($imgUrl -ne "" -and $imgUrl -ne $null){
+                    
+                    $statusCode = Get-UrlStatusCode -Url $imgUrl
+                    
+                    if($statusCode -ne 200){
+                        $brokenLinks += [ordered]@{
+                            HotelCode= $hotelCode;
+                            HotelName= $hotelName;
+                            Name= $imageName;
+                            StatusCode= $statusCode;
+                            Size= $imageField;
+                            Url= $imgUrl;
+                            Type= $type;
+                        }
+                    }
+                    
+                } else {
+                    $brokenLinks += [ordered]@{
+                        HotelCode= $hotelCode;
+                        HotelName= $hotelName;
+                        Name= $imageName;
+                        StatusCode= "Empty Field";
+                        Size= $imageField;
+                        Url= "";
+                        Type= $type;
+                    }
+                }
+                
+            }
+        }
+        return $brokenLinks
+    }
+    
+    function Run-Images-Check{
+        $imagesStatuses = @()
+        $counties = Get-ChildItem -Path $rootItemPath | Select -First 2
+        
+        foreach($country in $counties){
+            $regions = $country.Children
+            foreach($region in $regions){
+                $resorts = $region.Children
+                foreach($resort in $resorts){
+                    $hotels = $resort.Children
+                    
+                    foreach($hotel in $hotels){
+                        $hotelCode = $hotel["Code"]
+                        $hotelName = $hotel["Name"]
+                        
+                        $hotelImagesFolder = $hotel.Children | Where { $_.TemplateID -eq  $imagesFolderTemplateId} | Select -First 1
+                        $hotelRoomsFolder = $hotel.Children | Where { $_.TemplateID -eq  $roomsFolderTemplateId} | Select -First 1
+     
+                        $images = $hotelImagesFolder.Children | Where { $_.TemplateID -eq  $externalImageTemplateId}
+                        
+                        $imagesStatuses += Get-Images-Status -images $images -type "Hotel Image" -hotelCode $hotelCode -hotelName $hotelName
+                        
+                        $rooms = $hotelRoomsFolder.Children 
+                        
+                        $roomsImagesFolders = $rooms.Children | Where { $_.TemplateID -eq  $imagesFolderTemplateId}
+                        $roomImages = $roomsImagesFolders.Children | Where { $_.TemplateID -eq  $externalImageTemplateId}
+                        
+                        $roomsImagesStatuses = Get-Images-Status -images $roomImages -type "Room Image" -hotelCode $hotelCode -hotelName $hotelName
+                        
+                        $imagesStatuses += $roomsImagesStatuses
+                    }
+                }
+            }
+        }
+        
+        $imagesStatusesObj = $imagesStatuses | ForEach-Object { New-Object PSObject -Property $_ }
+        
+        $imagesStatusesObj | Export-Xlsx -Path $resultPath # Export $imagesStatuses in Xlsx format to file system on server
+        
+        [byte[]]$imagesStatusesDownload = $imagesStatusesObj | ConvertTo-Xlsx
+        Out-Download -Name $filename -InputObject $imagesStatusesDownload
+    }
+    
+    $stopWatch = New-Object -TypeName System.Diagnostics.Stopwatch
+    $stopWatch.Start()
+    
+    Create-Data-Folder -Path $folderPath
+    
+    Run-Images-Check
+    
+    $stopWatch.Stop()
+    Write-Host "Images Links Check completed. Elapsed time - $($StopWatch.Elapsed)" -ForegroundColor Green 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200408T100643Z

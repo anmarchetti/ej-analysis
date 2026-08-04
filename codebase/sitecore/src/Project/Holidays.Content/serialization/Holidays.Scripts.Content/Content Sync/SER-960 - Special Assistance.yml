@@ -1,0 +1,238 @@
+﻿---
+ID: "83999e2a-052d-495b-9284-cc1347b6094d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-960 - Special Assistance"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Data/Assisted Travel Common Data"
+                TemplatePath = "/sitecore/templates/Common/Folder"
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Data/Assisted Travel Common Data/Contact Us For Assisted Travel Popup"
+                TemplatePath = "/sitecore/templates/Feature/Booking/Popup"
+                ID = "{350E086D-1BC8-49A2-9C46-72C25A541626}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Request assistance"
+                        "fr-CH" = "Demande d’assistance"
+                        "de-CH" = "Unterstützung anfordern"
+                        "fr-FR" = "Demande d’assistance"
+                        "de-DE" = "Unterstützung anfordern"
+                    }
+                    "Description" = @{
+                        "en" = @'
+    <p style="margin-top:0;">To make sure your holiday includes everything you need, you can call us on:</p>
+    <p><strong><a href="tel:+443309126593" style="text-decoration: underline;">+44 330 912 6593</a></strong></p>
+    <p>(select option 2 and then option 4)</p>
+    <p>Monday to Sunday, from 8am to 8pm. Cost of a local call. Calls from mobile or other networks may vary.</p>
+    <p style="margin-bottom:0;">If you use British Sign Language (BSL), you can now get in touch with us through <strong><a rel="noopener noreferrer" href="https://www.convo.io/" target="_blank" style="text-decoration: underline;">Convo</a></strong>.</p>             
+    '@
+                        "fr-CH" = @'
+    <p style="margin-top:0;">Pour vous assurer que votre séjour inclut tout ce dont vous avez besoin, vous pouvez nous appeler au</p>
+    <p><strong><a href="tel:+33481499425" style="text-decoration: underline;">+33 4 81 49 94 25</a></strong> ou au <strong><a href="tel:+41223240012" style="text-decoration: underline;">+41 22 324 00 12</a></strong></p>
+    <p>(sélectionnez l’option 2 puis 4)</p>
+    <p style="margin-bottom:0;">tous les jours de 9 h 00 à 18 h 00. Prix d'un appel local. Le tarif des appels passés depuis un mobile ou d’autres réseaux peut varier.</p>
+    '@
+                        "de-CH" = @'
+    <p style="margin-top:0;">Um sicherzustellen, dass deine Ferien alles beinhaltet, was du benötigst, kannst du uns unter folgender Nummer anrufen:</p>
+    <p><strong><a href="tel:+41223240012" style="text-decoration: underline;">+41 22 324 00 12</a></strong> oder <strong><a href="tel:+493022027698" style="text-decoration: underline;">+49 302 202 7698</a></strong></p>
+    <p>(wähle zuerst Option 2 und dann Option 4)</p>
+    <p style="margin-bottom:0;">Montag bis Sonntag, von 9 Uhr bis 18 Uhr. Kosten eines Ortsgesprächs. Anrufe von Mobiltelefonen oder anderen Netzwerken können abweichen.</p>
+    '@
+                        "fr-FR" = @'
+    <p style="margin-top:0;">Pour vous assurer que votre séjour inclut tout ce dont vous avez besoin, vous pouvez nous appeler au</p>
+    <p><strong><a href="tel:+33481499425" style="text-decoration: underline;">+33 4 81 49 94 25</a></strong> ou au <strong><a href="tel:+41223240012" style="text-decoration: underline;">+41 22 324 00 12</a></strong></p>
+    <p>(sélectionnez l’option 2 puis 4)</p>
+    <p style="margin-bottom:0;">tous les jours de 9 h 00 à 18 h 00. Prix d'un appel local. Le tarif des appels passés depuis un mobile ou d’autres réseaux peut varier.</p>
+    '@
+                        "de-DE" = @'
+    <p style="margin-top:0;">Um sicherzustellen, dass dein Urlaub alles beinhaltet, was du brauchst, ruf uns an unter:</p>
+    <p><strong><a href="tel:+493022027698" style="text-decoration: underline;">+49 (0)302 202 7698</a></strong> oder <strong><a href="tel:+41223240012" style="text-decoration: underline;">+41 (0)223 24 00 12</a></strong></p>
+    <p>(Option 2 und dann Option 4 wählen)</p>
+    <p style="margin-bottom:0;">Täglich von 9 bis 18 Uhr. Zum Ortstarif. Anrufe von Mobiltelefonen oder anderen Netzwerken können abweichen.</p>
+    '@
+                    }
+                    "Icon" = @{
+                        "en" = '<image mediaid="{DB685B7B-2B05-4E62-8EE0-8B8BB7CC8112}" alt="accesability" height="42" width="42" hspace="" vspace="" />'
+    
+                    }
+                    "SecondaryButtonLabel" = @{
+                        "en" = "Close"
+                        "fr-CH" = "Fermer"
+                        "de-CH" = "Schließen"
+                        "fr-FR" = "Fermer"
+                        "de-DE" = "Schließen"
+                    }
+                    "SecondaryButtonScreenReaderText" = @{
+                        "en" = "Close popup"
+                        "fr-CH" = "Fermer la fenêtre contextuelle"
+                        "de-CH" = "Popup schließen"
+                        "fr-FR" = "Fermer la fenêtre contextuelle"
+                        "de-DE" = "Popup schließen"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Data/Assisted Travel Common Data/Special Assistance"
+                TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Special Assistance"
+                Fields      = @{
+                    "SpecialAssistanceTitle" = @{
+                        "en" = "Request assistance"
+                        "fr-CH" = "Demande d’assistance"
+                        "de-CH" = "Unterstützung anfordern"
+                        "fr-FR" = "Demande d’assistance"
+                        "de-DE" = "Unterstützung anfordern"
+                    }
+                    "SpecialAssistanceDescription" = @{
+                        "en" = @'
+    <p style="margin-top:0">If you need help with your flight, transfer, or hotel please request assistance as soon as possible after booking.<strong> You can do this online (up to {days} days before departure).</strong></p>
+    <p>While we'll do our best to help, availability may be limited and cannot always be guaranteed. For last minute transfer and hotel requests, contact us at least 72 hours before travel (48 hours for airport ir airline assistance).&nbsp;</p>
+    <p style="margin-bottom:0">If you've already submitted a request and need to update it, or if you've made changes to your booking, please contact us.</p>               
+    '@
+                        "fr-CH" = @'
+    <p style="margin-top:0">Si vous avez besoin d’assistance pour vos vols, vos transferts ou votre hôtel, veuillez faire une demande d’assistance dès que possible après avoir réservé votre séjour. <strong>Vous pouvez le faire en ligne (jusqu'à {days} jours avant votre départ).</strong></p>
+    <p>Bien que nous ferons de notre mieux pour vous aider, la disponibilité peut être limitée et ne peut pas être toujours garantie. Pour des demandes de dernière minute concernant les transferts ou l’hôtel, veuillez nous contacter au moins 72 heures avant votre départ (48 heures pour un besoin d’assistance à l’aéroport ou pendant le vol).</p>
+    <p style="margin-bottom:0">Si vous avez déjà envoyé une demande et que vous devez la modifier, ou si vous avez apporté des modifications à votre réservation, veuillez nous contacter.</p>
+    '@
+                        "de-CH" = @'
+    <p style="margin-top:0">Wenn du zusätzliche Unterstützung für deinen Flug, Transfer oder dein Hotel benötigst, fordere dies sobald als möglich nach der Buchung an. <strong>Du kannst das bis zu {days} Tage vor Abflug online machen.</strong></p>
+    <p>Wir tun unser Bestes, um zu helfen, aber die Verfügbarkeit kann begrenzt sein und ist nicht immer garantiert. Für kurzfristige Transfer- und Hotelanfragen kontaktiere uns mindestens 72 Stunden vor Reisebeginn. Für Hilfe am Flughafen oder von der Fluggesellschaft kontaktiere uns mindestens 48 Stunden vorher.</p>
+    <p style="margin-bottom:0">Wenn du schon eine Anfrage gestellt hast und sie aktualisieren musst, oder wenn du deine Buchung geändert hast, kontaktiere uns bitte.</p>               
+    '@
+                        "fr-FR" = @'
+    <p style="margin-top:0">Si vous avez besoin d’assistance pour vos vols, vos transferts ou votre hôtel, veuillez faire une demande d’assistance dès que possible après avoir réservé votre séjour. <strong>Vous pouvez le faire en ligne (jusqu'à {days} jours avant votre départ).</strong></p>
+    <p>Bien que nous ferons de notre mieux pour vous aider, la disponibilité peut être limitée et ne peut pas être toujours garantie. Pour des demandes de dernière minute concernant les transferts ou l’hôtel, veuillez nous contacter au moins 72 heures avant votre départ (48 heures pour un besoin d’assistance à l’aéroport ou pendant le vol).</p>
+    <p style="margin-bottom:0">Si vous avez déjà envoyé une demande et que vous devez la modifier, ou si vous avez apporté des modifications à votre réservation, veuillez nous contacter.</p>
+    '@
+                        "de-DE" = @'
+    <p style="margin-top:0">Wenn du zusätzliche Unterstützung für deinen Flug, Transfer oder dein Hotel benötigst, fordere dies sobald als möglich nach der Buchung an. <strong>Du kannst das online bis zu {days} Tage vor Abflug machen.</strong></p>
+    <p>Wir tun unser Bestes, um zu helfen, aber die Verfügbarkeit ist begrenzt und kann nicht immer garantiert werden. Für kurzfristige Transfer- und Hotelanfragen setze dich bitte mindestens 72 Stunden vor Abreise mit uns in Verbindung (mindestens 48 Stunden bei Unterstützung am Flughafen oder durch die Fluggesellschaft).</p>
+    <p style="margin-bottom:0">Wenn du bereits eine Anfrage gestellt hast und diese ändern möchtest, oder wenn sich deine Buchung geändert hat, wende dich bitte an uns.</p>               
+    '@
+                    }
+                    "ContactUsPopup" = @{
+                        "en" = '{350E086D-1BC8-49A2-9C46-72C25A541626}'
+    
+                    }
+                    "Icon" = @{
+                        "en" = '<image mediaid="{DB685B7B-2B05-4E62-8EE0-8B8BB7CC8112}" alt="accesability" height="32" width="32" hspace="" vspace="" />'
+    
+                    }
+                    "PrimaryButtonLabel" = @{
+                        "en" = "Add request"
+                        "fr-CH" = "Effectuer une demande"
+                        "de-CH" = "Anfrage hinzufügen"
+                        "fr-FR" = "Effectuer une demande"
+                        "de-DE" = "Anfrage erstellen"
+                    }
+                    "PrimaryButtonScreenReaderText" = @{
+                        "en" = "Go to assisted travel form to add a request"
+                        "fr-CH" = "Accédez au formulaire d'aide au déplacement pour ajouter une demande"
+                        "de-CH" = "Gehen Sie zum Formular für begleitete Reisen, um eine Anfrage hinzuzufügen"
+                        "fr-FR" = "Accédez au formulaire d'aide au déplacement pour ajouter une demande"
+                        "de-DE" = "Gehen Sie zum Formular für begleitete Reisen, um eine Anfrage hinzuzufügen"
+                    }
+                    "SecondaryButtonLabel" = @{
+                        "en" = "Get in touch"
+                        "fr-CH" = "Nous contacter"
+                        "de-CH" = "Kontaktiere uns"
+                        "fr-FR" = "Nous contacter"
+                        "de-DE" = "Kontakt mit uns"
+                    }
+                    "SecondaryButtonScreenReaderText" = @{
+                        "en" = "Open contact details popup"
+                        "fr-CH" = "Ouvrir la fenêtre contextuelle contenant les coordonnées"
+                        "de-CH" = "Popup mit Kontaktdaten öffnen"
+                        "fr-FR" = "Ouvrir la fenêtre contextuelle contenant les coordonnées"
+                        "de-DE" = "Popup mit Kontaktdaten öffnen"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Data/Assisted Travel Common Data"
+                TemplatePath = "/sitecore/templates/Common/Folder"
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Data/Assisted Travel Common Data/Contact Us For Assisted Travel Popup"
+                TemplatePath = "/sitecore/templates/Feature/Booking/Popup"
+                ID = "{98BA4EDA-A40A-4082-B520-E74D43560E35}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Request assistance"
+                    }
+                    "Description" = @{
+                        "en" = @'
+    <p style="margin-top:0;">To make sure your holiday includes everything you need, you can call us on:</p>
+    <p><strong><a href="tel:+443309126593" style="text-decoration: underline;">+44 330 912 6593</a></strong></p>
+    <p>(select option 2 and then option 4)</p>
+    <p>Monday to Sunday, from 8am to 8pm. Cost of a local call. Calls from mobile or other networks may vary.</p>
+    <p style="margin-bottom:0;">If you use British Sign Language (BSL), you can now get in touch with us through <strong><a rel="noopener noreferrer" href="https://www.convo.io/" target="_blank" style="text-decoration: underline;">Convo</a></strong>.</p>             
+    '@
+                    }
+                    "Icon" = @{
+                        "en" = '<image mediaid="{DB685B7B-2B05-4E62-8EE0-8B8BB7CC8112}" alt="accesability" height="42" width="42" hspace="" vspace="" />'
+    
+                    }
+                    "SecondaryButtonLabel" = @{
+                        "en" = "Close"
+                    }
+                    "SecondaryButtonScreenReaderText" = @{
+                        "en" = "Close popup"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Data/Assisted Travel Common Data/Special Assistance"
+                TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Special Assistance"
+                Fields      = @{
+                    "SpecialAssistanceTitle" = @{
+                        "en" = "Request assistance"
+                    }
+                    "SpecialAssistanceDescription" = @{
+                        "en" = @'
+    <p style="margin-top:0">If you need help with your flight, transfer, or hotel please request assistance as soon as possible after booking.<strong> You can do this online (up to {days} days before departure).</strong></p>
+    <p>While we'll do our best to help, availability may be limited and cannot always be guaranteed. For last minute transfer and hotel requests, contact us at least 72 hours before travel (48 hours for airport ir airline assistance).&nbsp;</p>
+    <p style="margin-bottom:0">If you've already submitted a request and need to update it, or if you've made changes to your booking, please contact us.</p>               
+    '@
+                    }
+                    "ContactUsPopup" = @{
+                        "en" = '{98BA4EDA-A40A-4082-B520-E74D43560E35}'
+    
+                    }
+                    "Icon" = @{
+                        "en" = '<image mediaid="{DB685B7B-2B05-4E62-8EE0-8B8BB7CC8112}" alt="accesability" height="32" width="32" hspace="" vspace="" />'
+    
+                    }
+                    "PrimaryButtonLabel" = @{
+                        "en" = "Add request"
+                    }
+                    "PrimaryButtonScreenReaderText" = @{
+                        "en" = "Go to assisted travel form to add a request"
+                    }
+                    "SecondaryButtonLabel" = @{
+                        "en" = "Get in touch"
+                    }
+                    "SecondaryButtonScreenReaderText" = @{
+                        "en" = "Open contact details popup"
+                    }
+                }
+            }
+        )
+        
+    ImportContent -itemsToCreate $updates
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

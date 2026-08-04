@@ -1,0 +1,314 @@
+﻿---
+ID: "ad2a40c6-4abf-4f24-8531-e8407a196c9c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/9 - SER-457 OTUC FE Elements Deposit Only Paid"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+        $item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+         if ($item -eq $null) {
+                $item = New-Item -Path $path -ItemType $templateId
+                Write-Host "Item" $item.Name "successfully created";
+         }
+         return $item
+    }
+    
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    $translations1 = @{
+                    "en" = @{
+                        'PopupUniqueId' = 'Credit'
+                        "IsLinkVisible"= ''
+                        "LinkText"= 'What does this mean?'
+                        "TitlePopup"= 'What is one time use credit?'
+                        "TextPopup"= "<p>When you cancel, you'll receive {depositPricePP} in one time use easyJet holidays credit, which is valid for 12 months. This credit is non refundable and can be used towards a holiday balance or changes.</p><p>The remaining easyJet holiday credit is valid to use for 12 months, and will be refunded if you choose to cancel for a second time.</p><p>For more information, please read our <a href='~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z' target='_blank'>Booking conditions</a>.</p>"
+                    }
+                    "fr-CH" = @{
+                        'PopupUniqueId' = 'Credit'
+                        "IsLinkVisible"= ''
+                        "LinkText"= "Qu'est-ce que cela signifie?"
+                        "TitlePopup"= "Qu'est-ce qu'un crédit à usage unique?"
+                        "TextPopup"= "<p>Lorsque vous annulez, vous recevrez un crédit vacances easyJet d'une valeur de {depositPricePP}, valable pendant 12 mois. Ce crédit n'est pas remboursable et peut être utilisé pour un solde de vacances ou des modifications.</p><p>Le reste du crédit vacances easyJet est valable pendant 12 mois et sera remboursé si vous décidez d'annuler une seconde fois.</p><p>Pour plus d'informations, veuillez lire nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Conditions de réservation</a>.</p>"
+                    }
+                    "fr-FR" = @{
+                        'PopupUniqueId' = 'Credit'
+                         "IsLinkVisible"= ''
+                         "LinkText"= "Qu'est-ce que cela signifie?"
+                         "TitlePopup"= "Qu'est-ce qu'un crédit à usage unique?"
+                         "TextPopup"= "<p>Lorsque vous annulez, vous recevrez un crédit vacances easyJet d'une valeur de {depositPricePP}, valable pendant 12 mois. Ce crédit n'est pas remboursable et peut être utilisé pour un solde de vacances ou des modifications.</p><p>Le reste du crédit vacances easyJet est valable pendant 12 mois et sera remboursé si vous décidez d'annuler une seconde fois.</p><p>Pour plus d'informations, veuillez lire nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Conditions de réservation</a>.</p>"
+                    }
+                    "de-CH" = @{
+                        'PopupUniqueId' = 'Credit'
+                        "IsLinkVisible"= ''
+                        "LinkText"= 'Was bedeutet das?'
+                        "TitlePopup"= 'Was ist ein Kredit zur einmaligen Verwendung?'
+                        "TextPopup"= "<p>Wenn Sie stornieren, erhalten Sie eine einmalige Gutschrift von {depositPricePP}, die 12 Monate lang gültig ist. Dieses Guthaben ist nicht erstattungsfähig und kann für ein Urlaubsguthaben oder Änderungen verwendet werden.</p><p>Das verbleibende easyJet Urlaubsguthaben ist 12 Monate lang gültig und wird Ihnen bei einer erneuten Stornierung zurückerstattet.</p><p>Für weitere Informationen lesen Sie bitte unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Buchungsbedingungen</a></p>"
+                    }
+                    "de-DE" = @{
+                        'PopupUniqueId' = 'Credit'
+                        "IsLinkVisible"= ''
+                        "LinkText"= 'Was bedeutet das?'
+                        "TitlePopup"= 'Was ist ein Kredit zur einmaligen Verwendung?'
+                        "TextPopup"= "<p>Wenn Sie stornieren, erhalten Sie eine einmalige Gutschrift von {depositPricePP}, die 12 Monate lang gültig ist. Dieses Guthaben ist nicht erstattungsfähig und kann für ein Urlaubsguthaben oder Änderungen verwendet werden.</p><p>Das verbleibende easyJet Urlaubsguthaben ist 12 Monate lang gültig und wird Ihnen bei einer erneuten Stornierung zurückerstattet.</p><p>Für weitere Informationen lesen Sie bitte unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Buchungsbedingungen</a></p>"
+                    }
+                }
+    $translations2 = @{
+                    "en" = @{
+                        'PopupUniqueId' = 'Refund'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Why am I being refunded this way?'
+                        "TitlePopup"= 'Why am I being refunded this way?'
+                        "TextPopup"= "<p>If you&rsquo;re 28 days or more from your departure date and want to cancel, unlike with most other holiday companies, you&rsquo;ll be pleased to know you won&rsquo;t lose your deposit (which would usually be non-refundable). As part of our <a href='~/link.aspx?_id=4A8303A3E9BA40CEBEA344C66F6DDA65&amp;_z=z'' target='_blank'>ultimate flexibility</a>, your deposit will be returned to you as credit to your online easyJet holidays account. If you've paid more than the deposit amount of {depositPricePP}, the difference will be refunded to your original payment method for this booking.</p><p>If you&rsquo;re within 28 days, the closer to your planned departure date you cancel your holiday will determine the cancellation charges that will apply, as per our <a href='~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z' target='_blank'>booking conditions</a>:</p><ul><li>27-21 days from departure &ndash; either 50% of your booking value returned to you as easyJet holidays credit, or 25% as a refund to your original method of payment for your booking.</li><li>20-14 days from departure &ndash; 25% of your booking value returned to you as easyJet holidays credit.</li><li>13-0 days from departure &ndash; full cancellation charges apply.</li></ul>"
+                    }
+                    "fr-CH" = @{
+                        'PopupUniqueId' = 'Refund'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TitlePopup"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TextPopup"= "<p>Si vous souhaitez annuler au moins 28&nbsp;jours avant la date de d&eacute;part, vous ne perdrez pas votre acompte (qui est normalement non remboursable), contrairement &agrave; la plupart des autres agences de voyages. Dans le cadre de notre <a href='~/link.aspx?_id=4A8303A3E9BA40CEBEA344C66F6DDA65&amp;_z=z' target='_blank'>flexibilit&eacute; in&eacute;gal&eacute;e</a>, votre acompte vous sera restitu&eacute; sous forme de cr&eacute;dit sur votre compte easyJet holidays en ligne Si vous avez pay&eacute; plus que le montant de l&rsquo;acompte de {depositPricePP}, la diff&eacute;rence sera rembours&eacute;e sur votre mode de paiement initial pour cette r&eacute;servation.</p><p>S&rsquo;il reste 28&nbsp;jours ou moins avant le d&eacute;part, les frais d&rsquo;annulation seront d&eacute;termin&eacute;s par le nombre de jours restants avant la date de d&eacute;part pr&eacute;vue, conform&eacute;ment &agrave; nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>conditions de r&eacute;servation</a>&nbsp;:</p><ul><li>De 27&nbsp;&agrave; 21&nbsp;jours avant le d&eacute;part&nbsp;: soit 50&nbsp;% de la valeur de votre r&eacute;servation vous est restitu&eacute;e sous forme de cr&eacute;dit easyJet holidays, soit 25&nbsp;% en tant que remboursement sur votre moyen de paiement initial pour votre r&eacute;servation.</li><li>De 20&nbsp;&agrave; 14&nbsp;jours avant le d&eacute;part&nbsp;: 25&nbsp;% de la valeur de votre r&eacute;servation vous est restitu&eacute;e sous forme de cr&eacute;dit easyJet holidays.</li><li>13&nbsp;jours avant le d&eacute;part au jour du d&eacute;part&nbsp;: les frais d&rsquo;annulation sont enti&egrave;rement &agrave; votre charge.</li></ul>"
+                    }
+                    "fr-FR" = @{
+                        'PopupUniqueId' = 'Refund'
+                         "IsLinkVisible"= '1'
+                        "LinkText"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TitlePopup"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TextPopup"= "<p>Si vous souhaitez annuler au moins 28&nbsp;jours avant la date de d&eacute;part, vous ne perdrez pas votre acompte (qui est normalement non remboursable), contrairement &agrave; la plupart des autres agences de voyages. Dans le cadre de notre <a href='~/link.aspx?_id=4A8303A3E9BA40CEBEA344C66F6DDA65&amp;_z=z' target='_blank'>flexibilit&eacute; in&eacute;gal&eacute;e</a>, votre acompte vous sera restitu&eacute; sous forme de cr&eacute;dit sur votre compte easyJet holidays en ligne Si vous avez pay&eacute; plus que le montant de l&rsquo;acompte de {depositPricePP}, la diff&eacute;rence sera rembours&eacute;e sur votre mode de paiement initial pour cette r&eacute;servation.</p><p>S&rsquo;il reste 28&nbsp;jours ou moins avant le d&eacute;part, les frais d&rsquo;annulation seront d&eacute;termin&eacute;s par le nombre de jours restants avant la date de d&eacute;part pr&eacute;vue, conform&eacute;ment &agrave; nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>conditions de r&eacute;servation</a>&nbsp;:</p><ul><li>De 27&nbsp;&agrave; 21&nbsp;jours avant le d&eacute;part&nbsp;: soit 50&nbsp;% de la valeur de votre r&eacute;servation vous est restitu&eacute;e sous forme de cr&eacute;dit easyJet holidays, soit 25&nbsp;% en tant que remboursement sur votre moyen de paiement initial pour votre r&eacute;servation.</li><li>De 20&nbsp;&agrave; 14&nbsp;jours avant le d&eacute;part&nbsp;: 25&nbsp;% de la valeur de votre r&eacute;servation vous est restitu&eacute;e sous forme de cr&eacute;dit easyJet holidays.</li><li>13&nbsp;jours avant le d&eacute;part au jour du d&eacute;part&nbsp;: les frais d&rsquo;annulation sont enti&egrave;rement &agrave; votre charge.</li></ul>"
+                    }
+                    "de-CH" = @{
+                        'PopupUniqueId' = 'Refund'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TitlePopup"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TextPopup"= '<p>Wenn du mindestens 28&nbsp;Tage vor dem Datum des geplanten Abflugdatums stornieren m&ouml;chtest, verlierst du anders als bei den meisten anderen Reiseveranstaltern nicht deine Anzahlung (die normalerweise nicht erstattet wird). Im Rahmen unserer <a href="~/link.aspx?_id=4A8303A3E9BA40CEBEA344C66F6DDA65&amp;_z=z" target="_blank">ultimativen Flexibilit&auml;t</a> wird dir deine Anzahlung als Guthaben auf dein easyJet holidays-Konto zur&uuml;ckerstattet. Wenn du mehr als die Anzahlung von {depositPricePP} bezahlt hast, wird der Differenzbetrag auf das von dir bei der Buchung gew&auml;hlte Zahlungsmittel zur&uuml;ckerstattet.</p><p>Wenn du deinen Urlaub innerhalb eines Zeitraums von 28&nbsp;Tagen vor dem geplanten Abflugdatum stornierst, werden die Stornierungsgeb&uuml;hren gem&auml;&szlig; unseren <a href="~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z" target="_blank">Buchungsbedingungen</a>&nbsp;entsprechend h&ouml;her, je n&auml;her das Datum des geplanten Reiseantritts r&uuml;ckt:</p><ul><li>27&ndash;21&nbsp;Tage vor Reisebeginn: Du erh&auml;ltst 50&nbsp;% des Wertes der Buchung als easyJet holidays-Guthaben oder es werden dir 25&nbsp;% des Wertes auf das von dir bei der Buchung gew&auml;hlte Zahlungsmittel r&uuml;ckerstattet.</li><li>20&ndash;14&nbsp;Tage vor Reisebeginn: Du erh&auml;ltst 25&nbsp;% des Wertes der Buchung als easyJet holidays-Guthaben.</li><li>13&ndash;0&nbsp;Tage vor Reisebeginn: Es fallen die vollen Geb&uuml;hren an.</li></ul>'
+                    }
+                    "de-DE" = @{
+                        'PopupUniqueId' = 'Refund'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TitlePopup"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TextPopup"= '<p>Wenn du mindestens 28&nbsp;Tage vor dem Datum des geplanten Abflugdatums stornieren m&ouml;chtest, verlierst du anders als bei den meisten anderen Reiseveranstaltern nicht deine Anzahlung (die normalerweise nicht erstattet wird). Im Rahmen unserer <a href="~/link.aspx?_id=4A8303A3E9BA40CEBEA344C66F6DDA65&amp;_z=z" target="_blank">ultimativen Flexibilit&auml;t</a> wird dir deine Anzahlung als Guthaben auf dein easyJet holidays-Konto zur&uuml;ckerstattet. Wenn du mehr als die Anzahlung von {depositPricePP} bezahlt hast, wird der Differenzbetrag auf das von dir bei der Buchung gew&auml;hlte Zahlungsmittel zur&uuml;ckerstattet.</p><p>Wenn du deinen Urlaub innerhalb eines Zeitraums von 28&nbsp;Tagen vor dem geplanten Abflugdatum stornierst, werden die Stornierungsgeb&uuml;hren gem&auml;&szlig; unseren <a href="~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z" target="_blank">Buchungsbedingungen</a>&nbsp;entsprechend h&ouml;her, je n&auml;her das Datum des geplanten Reiseantritts r&uuml;ckt:</p><ul><li>27&ndash;21&nbsp;Tage vor Reisebeginn: Du erh&auml;ltst 50&nbsp;% des Wertes der Buchung als easyJet holidays-Guthaben oder es werden dir 25&nbsp;% des Wertes auf das von dir bei der Buchung gew&auml;hlte Zahlungsmittel r&uuml;ckerstattet.</li><li>20&ndash;14&nbsp;Tage vor Reisebeginn: Du erh&auml;ltst 25&nbsp;% des Wertes der Buchung als easyJet holidays-Guthaben.</li><li>13&ndash;0&nbsp;Tage vor Reisebeginn: Es fallen die vollen Geb&uuml;hren an.</li></ul>'
+                    }
+                }
+                
+    function create-popup($path, $translations ){
+        $data = Get-Or-Create-Item -path $path -templateId '{30B4CEE4-5754-4021-B936-4D9D5F71457E}'
+        foreach ($lang in $translations.Keys) {
+                create-lang-version -item $data -lang $lang -field "IsLinkVisible" -value $translations[$lang]["IsLinkVisible"]
+                create-lang-version -item $data -lang $lang -field "LinkText" -value $translations[$lang]["LinkText"]
+                create-lang-version -item $data -lang $lang -field "TitlePopup" -value $translations[$lang]["TitlePopup"]
+                create-lang-version -item $data -lang $lang -field "TextPopup" -value $translations[$lang]["TextPopup"]
+                create-lang-version -item $data -lang $lang -field "PopupUniqueId" -value $translations[$lang]["PopupUniqueId"]
+            }    
+            
+        return $data;
+    }
+    
+    $dataFolder = Get-Or-Create-Item -path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Explanation Popup Folder' -templateId '{6BB9F1C2-7E1D-4B8C-BE83-5E2670D2FE14}'
+    $creditOld = create-popup -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Explanation Popup Folder/Credit Refund Old' -Translations $translations1
+    $refundOld = create-popup -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Explanation Popup Folder/Original Payment Old' -Translations $translations2
+    
+    #OTUC
+    $depositNoOtuc = @{
+                    "en" = @{
+                        'PopupUniqueId'= 'DepositNoOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Why am I being refunded in credit?'
+                        "TitlePopup"= 'Why am I being refunded in credit?'
+                        "TextPopup"= "<p>When booking, we took a {depositPricePP} non-refundable deposit to secure your holiday</p><p>We’re sorry this holiday isn’t quite right for you, so as part of our <b>ultimate flexibility</b>, we are returning your deposit this time, but as easyJet holidays credit so you can use it to book a holiday that is right for you.</p><p>For more information about deposits and refunds, please see our <a href='~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z' target='_blank'>Booking conditions</a></p>"
+                        
+                    }
+                    "fr-CH" = @{
+                        'PopupUniqueId'= 'DepositNoOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TitlePopup"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TextPopup"= "<p>Lors de votre réservation, nous avons prélevé un acompte non remboursable de {depositPricePP} afin de sécuriser votre séjour.</p><p>Nous sommes désolés que ces vacances ne vous conviennent pas tout à fait. Dans le cadre de notre politique <b>Ultimate Flexibility</b>, nous vous restituons exceptionnellement votre acompte sous forme de crédit easyJet holidays, que vous pourrez utiliser pour réserver des vacances qui vous conviennent mieux.</p><p>Pour plus d’informations sur les acomptes et les remboursements, veuillez consulter nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Conditions de réservation</a>.</p>"
+                    }
+                    "fr-FR" = @{
+                        'PopupUniqueId'= 'DepositNoOTUC'
+                         "IsLinkVisible"= '1'
+                        "LinkText"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TitlePopup"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TextPopup"= "<p>Lors de votre réservation, nous avons prélevé un acompte non remboursable de {depositPricePP} afin de sécuriser votre séjour.</p><p>Nous sommes désolés que ces vacances ne vous conviennent pas tout à fait. Dans le cadre de notre politique <b>Ultimate Flexibility</b>, nous vous restituons exceptionnellement votre acompte sous forme de crédit easyJet holidays, que vous pourrez utiliser pour réserver des vacances qui vous conviennent mieux.</p><p>Pour plus d’informations sur les acomptes et les remboursements, veuillez consulter nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Conditions de réservation</a>.</p>"
+                    }
+                    "de-CH" = @{
+                        'PopupUniqueId'= 'DepositNoOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TitlePopup"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TextPopup"= "<p>Bei der Buchung haben wir eine nicht erstattungsfähige Anzahlung von {depositPricePP} erhoben, um Ihren Urlaub zu sichern.</p><p>Es tut uns leid, dass dieser Urlaub nicht ganz das Richtige für Sie ist. Im Rahmen unserer <b>Ultimate Flexibility</b> erstatten wir Ihnen Ihre Anzahlung dieses Mal zurück – jedoch in Form eines easyJet holidays Guthabens, das Sie für die Buchung eines passenderen Urlaubs nutzen können.</p><p>Für weitere Informationen zu Anzahlungen und Rückerstattungen lesen Sie bitte unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Buchungsbedingungen</a>.</p>"
+                    }
+                    "de-DE" = @{
+                        'PopupUniqueId'= 'DepositNoOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TitlePopup"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TextPopup"= "<p>Bei der Buchung haben wir eine nicht erstattungsfähige Anzahlung von {depositPricePP} erhoben, um Ihren Urlaub zu sichern.</p><p>Es tut uns leid, dass dieser Urlaub nicht ganz das Richtige für Sie ist. Im Rahmen unserer <b>Ultimate Flexibility</b> erstatten wir Ihnen Ihre Anzahlung dieses Mal zurück – jedoch in Form eines easyJet holidays Guthabens, das Sie für die Buchung eines passenderen Urlaubs nutzen können.</p><p>Für weitere Informationen zu Anzahlungen und Rückerstattungen lesen Sie bitte unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Buchungsbedingungen</a>.</p>"
+                    }
+                }
+    $depositPartialOtuc = @{
+                    "en" = @{
+                        'PopupUniqueId'= 'DepositPartialOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Why am I not being refunded in full?'
+                        "TitlePopup"= 'Why am I not being refunded in full?'
+                        "TextPopup"= "<p>When booking, we took a {depositPricePP} non-refundable deposit to secure your holiday.</p><p>As part of our <b>ultimate flexibility</b>, we are returning part of your deposit this time, but as easyJet holidays credit so you can use it to book a holiday that is right for you.</p><p>For more information about deposits and refunds, please see our <a href='~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z' target='_blank'>Booking conditions</a>.</p>"
+                        
+                    }
+                    "fr-CH" = @{
+                        'PopupUniqueId'= 'DepositPartialOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= "Pourquoi ne suis-je pas remboursé intégralement ?"
+                        "TitlePopup"= "Pourquoi ne suis-je pas remboursé intégralement ?"
+                        "TextPopup"= "<p>Lors de votre réservation, nous avons prélevé un acompte non remboursable de {depositPricePP} afin de sécuriser votre séjour.</p><p>Dans le cadre de notre Ultimate Flexibility, nous vous restituons cette fois une partie de votre acompte, sous forme de crédit easyJet holidays, que vous pourrez utiliser pour réserver des vacances qui vous conviennent mieux.</p><p>Pour plus d’informations sur les acomptes et les remboursements, veuillez consulter nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Conditions de réservation</a>.</p>"
+                    }
+                    "fr-FR" = @{
+                        'PopupUniqueId'= 'DepositPartialOTUC'
+                         "IsLinkVisible"= '1'
+                        "LinkText"= "Pourquoi ne suis-je pas remboursé intégralement ?"
+                        "TitlePopup"= "Pourquoi ne suis-je pas remboursé intégralement ?"
+                        "TextPopup"= "<p>Lors de votre réservation, nous avons prélevé un acompte non remboursable de {depositPricePP} afin de sécuriser votre séjour.</p><p>Dans le cadre de notre Ultimate Flexibility, nous vous restituons cette fois une partie de votre acompte, sous forme de crédit easyJet holidays, que vous pourrez utiliser pour réserver des vacances qui vous conviennent mieux.</p><p>Pour plus d’informations sur les acomptes et les remboursements, veuillez consulter nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Conditions de réservation</a>.</p>"
+                    }
+                    "de-CH" = @{
+                        'PopupUniqueId'= 'DepositPartialOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Warum wird mir nicht der volle Betrag erstattet?'
+                        "TitlePopup"= 'Warum wird mir nicht der volle Betrag erstattet?'
+                        "TextPopup"= "<p>Bei der Buchung haben wir eine nicht erstattungsfähige Anzahlung von {depositPricePP} erhoben, um Ihren Urlaub zu sichern.</p><p>Im Rahmen unserer <b>Ultimate Flexibility</b> erstatten wir Ihnen dieses Mal einen Teil Ihrer Anzahlung – jedoch in Form eines easyJet holidays Guthabens, das Sie für die Buchung eines passenderen Urlaubs nutzen können.</p><p>Für weitere Informationen zu Anzahlungen und Rückerstattungen lesen Sie bitte unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Buchungsbedingungen</a>.</p>"
+                    }
+                    "de-DE" = @{
+                        'PopupUniqueId'= 'DepositPartialOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Warum wird mir nicht der volle Betrag erstattet?'
+                        "TitlePopup"= 'Warum wird mir nicht der volle Betrag erstattet?'
+                        "TextPopup"= "<p>Bei der Buchung haben wir eine nicht erstattungsfähige Anzahlung von {depositPricePP} erhoben, um Ihren Urlaub zu sichern.</p><p>Im Rahmen unserer <b>Ultimate Flexibility</b> erstatten wir Ihnen dieses Mal einen Teil Ihrer Anzahlung – jedoch in Form eines easyJet holidays Guthabens, das Sie für die Buchung eines passenderen Urlaubs nutzen können.</p><p>Für weitere Informationen zu Anzahlungen und Rückerstattungen lesen Sie bitte unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Buchungsbedingungen</a>.</p>"
+                    }
+                }
+                
+    $depositNoOtuc = create-popup -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Explanation Popup Folder/Deposit Only No OTUC' -Translations $depositNoOtuc
+    $depositPartialOtuc = create-popup -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Explanation Popup Folder/Deposit Balance Partial OTUC' -Translations $depositPartialOtuc
+    
+    #no refund case
+    $translations = @{
+                    "en" = @{
+                        'NoRefundTitle'= 'Your refund amount'
+                        "DepositOnlyOTUCDescription"= '<p>Because you only paid a deposit, you&rsquo;re not due a refund. Please see our <a  target="_blank" href="~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z">booking conditions</a>&nbsp;for more information.</p><p>It&rsquo;s important you still cancel your holiday, or you may be charged the remaining balance</p>'
+                        "DepositOnlyCloseToDepartureDescription"= '<p>Because you&rsquo;re cancelling within 60 days of your departure date you&rsquo;re not due a refund. Please see our <a  target="_blank" href="~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z">booking conditions</a>&nbsp;for more information.</p><p>It&rsquo;s important you still cancel your holiday, or you may be charged the remaining balance</p>'
+                    }
+                    "fr-CH" = @{
+                        'NoRefundTitle'= 'Montant de votre remboursement'
+                        "DepositOnlyOTUCDescription"= "<p>Comme vous n'avez payé qu'un acompte, vous n'avez pas droit à un remboursement. Veuillez consulter nos <a  href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Conditions de réservation</a> pour plus d'informations.</p><p>Il est important que vous annuliez tout de même votre séjour, sans quoi le solde restant pourrait vous être facturé.</p>"
+                        "DepositOnlyCloseToDepartureDescription"= "<p>Comme vous annulez dans les 60 jours précédant votre date de départ, vous n'avez pas droit à un remboursement. Veuillez consulter nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Conditions de réservation</a> pour plus d'informations.</p><p>Il est important que vous annuliez tout de même votre séjour, sans quoi le solde restant pourrait vous être facturé.</p>"
+                    }
+                    "fr-FR" = @{
+                        'NoRefundTitle'= 'Montant de votre remboursement'
+                        "DepositOnlyOTUCDescription"= "<p>Comme vous n'avez payé qu'un acompte, vous n'avez pas droit à un remboursement. Veuillez consulter nos <a  target='_blank' href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z'>Conditions de réservation</a> pour plus d'informations.</p><p>Il est important que vous annuliez tout de même votre séjour, sans quoi le solde restant pourrait vous être facturé.</p>"
+                        "DepositOnlyCloseToDepartureDescription"= "<p>Comme vous annulez dans les 60 jours précédant votre date de départ, vous n'avez pas droit à un remboursement. Veuillez consulter nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Conditions de réservation</a> pour plus d'informations.</p><p>Il est important que vous annuliez tout de même votre séjour, sans quoi le solde restant pourrait vous être facturé.</p>"
+                    }
+                    "de-CH" = @{
+                        'NoRefundTitle'= 'Ihr Erstattungsbetrag'
+                        "DepositOnlyOTUCDescription"= "<p>Da Sie nur eine Anzahlung geleistet haben, steht Ihnen keine Rückerstattung zu. Bitte lesen Sie unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Buchungsbedingungen</a> für weitere Informationen.</p><p>Es ist wichtig, dass Sie Ihren Urlaub dennoch stornieren, da Ihnen sonst der verbleibende Restbetrag in Rechnung gestellt werden könnte.</p>"
+                        "DepositOnlyCloseToDepartureDescription"= "<p>Da Sie Ihre Reise innerhalb von 60 Tagen vor dem Abreisedatum stornieren, steht Ihnen keine Rückerstattung zu. Bitte lesen Sie unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Buchungsbedingungen</a> für weitere Informationen.</p><p>Es ist wichtig, dass Sie Ihren Urlaub dennoch stornieren, da Ihnen sonst der verbleibende Restbetrag in Rechnung gestellt werden könnte.</p>"
+                    }
+                    "de-DE" = @{
+                        'NoRefundTitle'= 'Ihr Erstattungsbetrag'
+                        "DepositOnlyOTUCDescription"= "<p>Da Sie nur eine Anzahlung geleistet haben, steht Ihnen keine Rückerstattung zu. Bitte lesen Sie unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Buchungsbedingungen</a> für weitere Informationen.</p><p>Es ist wichtig, dass Sie Ihren Urlaub dennoch stornieren, da Ihnen sonst der verbleibende Restbetrag in Rechnung gestellt werden könnte.</p>"
+                        "DepositOnlyCloseToDepartureDescription"= "<p>Da Sie Ihre Reise innerhalb von 60 Tagen vor dem Abreisedatum stornieren, steht Ihnen keine Rückerstattung zu. Bitte lesen Sie unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>Buchungsbedingungen</a> für weitere Informationen.</p><p>Es ist wichtig, dass Sie Ihren Urlaub dennoch stornieren, da Ihnen sonst der verbleibende Restbetrag in Rechnung gestellt werden könnte.</p>"
+                    }
+                }
+    $cancelData = Get-Or-Create-Item -path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking' -templateId '{6BB9F1C2-7E1D-4B8C-BE83-5E2670D2FE14}'
+    foreach ($lang in $translations.Keys) {
+            create-lang-version -item $cancelData -lang $lang -field "NoRefundTitle" -value $translations[$lang]["NoRefundTitle"]
+            create-lang-version -item $cancelData -lang $lang -field "DepositOnlyOTUCDescription" -value $translations[$lang]["DepositOnlyOTUCDescription"]
+            create-lang-version -item $cancelData -lang $lang -field "DepositOnlyCloseToDepartureDescription" -value $translations[$lang]["DepositOnlyCloseToDepartureDescription"]
+    }   
+    
+    #create Credit Refund OTUC
+    $translations = @{
+                    "en" = @{
+                        'RefundUniqueId'= 'CreditOTUC'
+                        "OptionTitle"= 'easyJet holidays credit'
+                        "CashLabel"= 'easyJet holidays credit'
+                        "CreditLabel"= 'easyJet holidays credit'
+                        "TotalLabel"= "Total"
+                        
+                    }
+                    "fr-CH" = @{
+                        'RefundUniqueId'= 'CreditOTUC'
+                        "OptionTitle"= 'Crédit easyJet holidays'
+                        "CashLabel"= "Crédit easyJet holidays"
+                        "CreditLabel"= "Crédit easyJet holidays"
+                        "TotalLabel"= "Total"
+                    }
+                    "fr-FR" = @{
+                        'RefundUniqueId'= 'CreditOTUC'
+                         "OptionTitle"= 'Crédit easyJet holidays'
+                        "CashLabel"= "Crédit easyJet holidays"
+                        "CreditLabel"= "Crédit easyJet holidays"
+                        "TotalLabel"= "Total"
+                    }
+                    "de-CH" = @{
+                        'RefundUniqueId'= 'CreditOTUC'
+                        "OptionTitle"= 'easyJet holidays Gutschrift'
+                        "CashLabel"= 'easyJet holidays Gutschrift'
+                        "CreditLabel"= 'easyJet holidays Gutschrift'
+                        "TotalLabel"= "Gesamt"
+                    }
+                    "de-DE" = @{
+                        'RefundUniqueId'= 'CreditOTUC'
+                        "OptionTitle"= 'easyJet holidays Gutschrift'
+                        "CashLabel"= 'easyJet holidays Gutschrift'
+                        "CreditLabel"= 'easyJet holidays Gutschrift'
+                        "TotalLabel"= "Gesamt"
+                    }
+                }
+    $data = Get-Or-Create-Item -path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking/Credit Refund OTUC' -templateId '{039B23C0-8AD4-413C-B0B1-7027F74F6C5F}'
+    foreach ($lang in $translations.Keys) {
+            create-lang-version -item $data -lang $lang -field "RefundUniqueId" -value $translations[$lang]["RefundUniqueId"]
+            create-lang-version -item $data -lang $lang -field "OptionTitle" -value $translations[$lang]["OptionTitle"]
+            create-lang-version -item $data -lang $lang -field "CashLabel" -value $translations[$lang]["CashLabel"]
+             create-lang-version -item $data -lang $lang -field "CreditLabel" -value $translations[$lang]["CreditLabel"]
+              create-lang-version -item $data -lang $lang -field "TotalLabel" -value $translations[$lang]["TotalLabel"]
+    }   
+    
+    #set popups
+    function set-popup($path, $val ){
+        $data = Get-Or-Create-Item -path $path -templateId '{039B23C0-8AD4-413C-B0B1-7027F74F6C5F}'
+       if ($null -ne $data) {
+            $data.Editing.BeginEdit()
+            $data['Popups'] = $val
+            $data.Editing.EndEdit() | Out-Null
+         }
+    } 
+    set-popup -path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking/CreditRefund' -val $creditOld[0].ID
+    set-popup -path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking/OriginalPayment' -val $refundOld[0].ID
+    $val =  @($depositNoOtuc[0].ID, $depositPartialOtuc[0].ID) -join "|"
+    set-popup -path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking/Credit Refund OTUC' -val $val
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250317T141742Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

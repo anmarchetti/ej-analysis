@@ -1,0 +1,124 @@
+﻿---
+ID: "cacf56f1-1636-4bc9-a4db-ea4954c13157"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-909 Add Post-travel Trip Advisor Link"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    
+    function createFeedbackBanner() {
+    	$templateId = "{A20EBFD2-9D67-47DB-97FD-C6D6AE25CEC5}"
+    	$feedbackItemPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Feedback"
+    	
+    	$feedbackBanner = Get-Item -Path $feedbackItemPath -ErrorAction SilentlyContinue
+    	
+    	if ($feedbackBanner -eq $null){
+    	   Write-Host "Creating Feedback banner"
+    	   
+    	   $feedbackBanner = New-Item -Path $feedbackItemPath -ItemType $templateId
+    	   
+    	} else{
+    		Write-Host "feedbackBanner already created"
+    	}
+    }
+    
+    function createFeedbackBannerLanguageVersions() {
+    	
+    	$feedbackBannerPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Feedback"
+    	$feedbackBanner = Get-Item -Path $feedbackBannerPath -ErrorAction SilentlyContinue
+    
+    	if ($feedbackBanner -eq $null) {
+    		Write-Host "Missing ContactuUsBanner in EN language. Missing item: $($feedbackBannerPath)"
+    		return;
+    	}
+    	
+    	@('en') | % {
+    		Create-Lang-Version -Item $feedbackBanner -Lang $_ -Field "Title" -Value "How was your hotel?"
+    		Create-Lang-Version -Item $feedbackBanner -Lang $_ -Field "Subtitle" -Value "Your feedback means a lot to us.<br/> Leave a review of your hotel."
+    		Create-Lang-Version -Item $feedbackBanner -Lang $_ -Field "CTAButtonLabel" -Value "Leave a review"
+    	}
+    
+    	@('de-CH', 'de-DE') | % {
+    		Create-Lang-Version -Item $feedbackBanner -Lang $_ -Field "Title" -Value "Wie war Ihr Hotel?"
+    		Create-Lang-Version -Item $feedbackBanner -Lang $_ -Field "Subtitle" -Value "Ihr Feedback bedeutet uns sehr viel.<br/>Hinterlassen Sie eine Bewertung für Ihr Hotel."
+    		Create-Lang-Version -Item $feedbackBanner -Lang $_ -Field "CTAButtonLabel" -Value "Eine Bewertung hinterlassen"
+    	}
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Create-Lang-Version -Item $feedbackBanner -Lang $_ -Field "Title" -Value "Comment était votre hôtel?"
+    		Create-Lang-Version -Item $feedbackBanner -Lang $_ -Field "Subtitle" -Value "Votre avis nous intéresse beaucoup.<br/>Laissez un commentaire sur votre hôtel."
+    		Create-Lang-Version -Item $feedbackBanner -Lang $_ -Field "CTAButtonLabel" -Value "Laisser un commentaire"
+    	}
+    	
+    	Write-Host "Created language version for item $($feedbackBannerPath)"
+    }
+    
+    
+    function createRenderingInPostTravelPage() {
+    	$feedbackRenderingId = "{95E5B1D2-6632-46F6-99DC-D78BB4C9D5A5}"
+        $pagePath = '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel';
+    	$datasourcePath = '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Feedback'
+        $placeholder = "/body/booking-context-{0b3a1889-94df-4381-aaef-272a10e79e98}-0/masonry-aside-{b93f1826-b25c-47d5-8fe3-dffe24e63a17}-0"
+    	
+        $page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    	$feedbackRendering = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $feedbackRenderingId }
+    	
+    	if ($feedbackRendering -ne $null) {
+    	    Write-Host "Feedback Rendering already exists"
+    		return
+    	}
+    	
+    	# Add Masonry Wrapper Item
+    	$masonryRenderingId = "{630D2676-483E-420D-8F04-4C15212F3EFF}" 
+    	$masonryRenderingPath = "/sitecore/layout/Renderings/Feature/Page Structure/Masonry/Masonry Wrapper Item"
+    	$masonryRendering = Get-Item -Database "master" -Path $masonryRenderingPath | New-Rendering -Placeholder $placeholder 
+    	
+    	Add-Rendering -Item $page -Instance $masonryRendering  -PlaceHolder $placeholder  -Parameter @{ "Item Order On Mobile" = "1" }
+    	
+    	# Get newly added rendering
+    	$page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    	$renderings = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $masonryRenderingId }
+    	$lastRendering = $renderings[-1]
+    	
+    	# Add Feedback Banner Rendering
+    	$feedbackRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/Feedback Banner"
+    	$feedbackBannerRendering = Get-Item -Database "master" -Path $feedbackRenderingPath |  New-Rendering -Placeholder "$($placeholder)/masonry-item-$($lastRendering.UniqueId)-0"
+    	
+    	Add-Rendering -Item $page -Instance $feedbackBannerRendering -PlaceHolder "$($placeholder)/masonry-item-$($lastRendering.UniqueId)-0" -DataSource $datasourcePath
+    }
+    
+    createFeedbackBanner
+    createFeedbackBannerLanguageVersions
+    createRenderingInPostTravelPage
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 909
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240417T102022Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

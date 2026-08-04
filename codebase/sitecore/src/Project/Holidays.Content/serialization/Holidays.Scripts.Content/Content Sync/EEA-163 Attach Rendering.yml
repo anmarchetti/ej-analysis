@@ -1,0 +1,36 @@
+﻿---
+ID: "79420ada-8bb8-452e-a8cc-9c2f95f41534"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-163 Attach Rendering"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # This is just an Example for ContentSync
+    
+    Import-Function "Import Renderings"
+    $myRenderings = @(
+        @{ 
+            Title          = "Booked Airport Parking"
+            PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation"
+            RenderingPath  = "/sitecore/layout/Renderings/Foundation/ExternalExtras/Booked Airport Parking"
+            Placeholder    = "/body/booked-airport-parking-{5D228E7E-0347-4E8E-AC47-D911EBA730D7}-0"
+            DataSourcePath = "/sitecore/content/EasyJet/Holidays/Data/External Extras/Airport Parking"
+            PlaceAfterRenderingPath = "/sitecore/layout/Renderings/Feature/Ancillaries/Luggage/Hold Luggage Selected"
+        }
+    )
+    
+    ImportRenderings -renderingsToAttach $myRenderings
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1900
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20191118T132901:637096805412053434Z"

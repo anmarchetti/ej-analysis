@@ -1,0 +1,92 @@
+﻿---
+ID: "7abfce4d-7fdc-4fea-991a-3daff84915fc"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-226_Attention-popup-fileds-populate"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function update-item-with-lang($data, $item) {
+        function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+    };
+    
+        if ($item -ne $null) {
+            $data | ForEach-Object {
+            $fieldName = $_.fieldName;
+            $values = $_.values;
+        
+            if ($values -ne $null) {
+              
+                if ($values.en -ne $null) {
+                    $item.Editing.BeginEdit();
+                    $item[$fieldName] = $values.en;
+                    $item.Editing.EndEdit() | Out-Null
+                }
+                 if ($values.fr -ne $null) {
+                     @('fr-CH', 'fr-FR') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.fr;
+                    }
+                }
+                 if ($values.de -ne $null) {
+                     @('de-CH', 'de-DE') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.de;
+                    }
+                }
+                
+                Write-Host $fieldName "Updated"
+            }
+        }
+        }
+    }
+    
+    $amendDatesItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Page Components/Change Dates" -ErrorAction SilentlyContinue;
+    $data = @(
+        @{fieldName="AttentionPopupTitle"; 
+            values=@{
+                en="Please read carefully"; 
+                fr="Veuillez lire attentivement"; 
+                de="Bitte sorgfältig lesen"
+            }
+        },
+        @{fieldName="AttentionPopupSubtext"; 
+            values=@{
+                en="For the dates you've chosen, we cannot find an exact match. By selecting " + '"continue"' + " you will be presented with a recommended alternative package for your hotel. Please review this information carefully before continuing to payment."; 
+                fr="Pour les dates que vous avez choisies, nous ne pouvons pas trouver de correspondance exacte. En sélectionnant " + '"continuer"' + " vous obtiendrez un forfait alternatif recommandé pour votre hôtel. Veuillez lire attentivement ces informations avant de poursuivre le paiement."; 
+                de="Für die von Ihnen gewählten Daten können wir keine genaue Übereinstimmung finden. Wenn Sie auf " + '"Weiter"' + " klicken, wird Ihnen ein alternatives Paket für Ihr Hotel empfohlen. Bitte prüfen Sie diese Informationen sorgfältig, bevor Sie mit der Zahlung fortfahren."
+            }
+        },
+         @{fieldName="AttentionPopupCloseCTALabel"; 
+            values=@{
+                en="Back to calendar"; 
+                fr="Retour au calendrier"; 
+                de="Zurück zum Kalender"
+            }
+        }
+    );
+        
+    
+    
+    update-item-with-lang -Data $data -Item $amendDatesItem;
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231213T104836Z

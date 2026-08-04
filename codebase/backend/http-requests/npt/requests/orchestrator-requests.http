@@ -1,0 +1,40 @@
+###
+
+# @name Apple Pay Session
+# @expected status=200
+# @description Call to Start Apple Pay session (getting a merchant validation)
+
+POST {{orchestrator-host}}/_api/v1/payment/apple-pay/session
+Accept: application/json
+Content-Type: application/json
+
+{
+  "validationUrl": "https://apple-pay-gateway-cert.apple.com/paymentservices/startSession",
+  "requestDomain": "easyjet.local"
+}
+
+###
+
+# @name commitBookingWithApplePay
+# @expected status=200
+# @description This request is used to commit a booking with Apple Pay for EasyJet Holidays.
+
+POST {{orchestrator-host}}/_api/v1/booking/commit
+Accept: application/json
+Content-Type: application/json
+X-ejh-Idempotency-Key: {{$guid}}
+
+< ./json-requests-data/booking-commit-apple-pay-request.json
+
+###
+
+# @name commitBookingWithCardPayment
+# @expected status=200
+# @description This request is used to commit a booking with Credit Card for EasyJet Holidays.
+
+POST {{orchestrator-host}}/_api/v1/booking/commit
+Accept: application/json
+Content-Type: application/json
+X-ejh-Idempotency-Key: {{$guid}}
+
+< ./json-requests-data/booking-commit-3DS-card-request.json

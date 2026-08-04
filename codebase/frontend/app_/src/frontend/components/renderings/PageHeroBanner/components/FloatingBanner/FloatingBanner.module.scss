@@ -1,0 +1,228 @@
+.simpleHeroBanner {
+    position: relative;
+    background-position: center center;
+    background-size: cover;
+
+    :global(.live-price__suffix) {
+        color: $colorWhite;
+    }
+
+    :global(.credit-anchor--pill) {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        font-size: 8px;
+        line-height: 13px;
+        color: $colorOrange;
+        background: rgba($colorWhite, 0.9);
+    }
+
+    :global(.live-price__content),
+    :global(.live-price__nights) {
+        font-size: 24px;
+        line-height: 25px;
+        color: $colorWhite;
+        font-family: $fontRoundedDemy;
+
+        @include media-breakpoint-down(md) {
+            font-size: 16px;
+        }
+    }
+
+    :global(.live-price__nights span) {
+        margin-left: 5px;
+    }
+
+    :global(.live-price__chevron-icon) {
+        width: 0.6em;
+        height: 0.6em;
+        margin-left: 0.4em;
+    }
+
+    :global(.path-breadcrumbs) {
+        padding: 7px 16px 7px 13px;
+
+        @include media-breakpoint-down(md) {
+            padding: 5px 16px 5px 13px;
+        }
+    }
+
+    :global(.path-breadcrumbs-wrap) {
+        margin-bottom: 30px;
+        padding: 0;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 10px;
+        }
+    }
+
+    :global(.path-breadcrumbs li a) {
+        @include media-breakpoint-down(md) {
+            font-size: 11px;
+            line-height: 16px;
+        }
+    }
+
+    :global(.path-breadcrumbs li span) {
+        @include media-breakpoint-down(md) {
+            font-size: 11px;
+            line-height: 16px;
+        }
+    }
+
+    :global(.path-breadcrumbs li) {
+        @include media-breakpoint-down(md) {
+            margin-bottom: 0;
+        }
+    }
+
+    :global(.path-breadcrumbs li > svg) {
+        @include media-breakpoint-down(md) {
+            width: 6px;
+            height: 6px;
+        }
+    }
+
+    :global(.path-breadcrumbs li .path-breadcrumbs__icon svg) {
+        @include media-breakpoint-down(md) {
+            width: 11px;
+        }
+    }
+}
+
+.imageShadow {
+    &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            126.05deg,
+            $colorBlack 0%,
+            rgba($colorBlack, 0.25) 49.99%,
+            rgba($colorBlack, 0) 100%
+        );
+    }
+}
+
+.inner {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    max-width: 1230px;
+    min-height: 440px;
+    margin: 0 auto;
+    padding: 20px 15px;
+
+    @include media-breakpoint-down(md) {
+        min-height: 200px;
+        padding-top: 15px;
+    }
+}
+
+.logoPosition {
+    flex-shrink: 0;
+    margin-left: 20px;
+}
+
+.creditAnchorWrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    min-height: 60px;
+    margin-top: 10px;
+
+    @include media-breakpoint-down(lg) {
+        min-height: 50px;
+    }
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
+        min-height: 74px;
+
+        > span {
+            order: 1;
+        }
+    }
+
+    > :global(.btn) {
+        min-width: 215px;
+        margin-right: 30px;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 20px;
+        color: $colorWhite;
+        background-color: $colorOrange;
+        border-radius: 4px;
+
+        @include media-breakpoint-down(md) {
+            order: 2;
+            min-width: inherit;
+            margin: 10px 0 0;
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+    }
+}
+
+.logo {
+    width: 110px;
+    padding: 5px;
+    background-color: $colorWhite;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 5px rgba(152, 148, 148, 0.2);
+
+    img {
+        position: relative !important;
+        display: block;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    @include media-breakpoint-down(md) {
+        width: 60px;
+    }
+}
+
+.content {
+    @include media-breakpoint-up(md) {
+        min-height: 325px;
+    }
+}
+
+.logoWrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.desktopSearchPod {
+    position: absolute;
+    z-index: $z-index-over-element;
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-width: $container-max-width;
+    margin: 0 auto;
+    padding-top: 30px;
+
+    :global(.search-bar-box) {
+        border-radius: 4px;
+    }
+
+    :global(.search-bar__title) {
+        display: none;
+    }
+
+    :global(.sbv3.search-bar-box .search-bar__title + div .search-fields) {
+        padding-top: 0;
+    }
+}
+
+.floatingSearchPodWrapper {
+    position: relative;
+    min-height: 168px;
+}

@@ -1,0 +1,43 @@
+.item {
+    display: flex;
+    flex-direction: column;
+    font-family: $fontRoundedBook;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.date {
+    margin: 0 0 5px;
+    font-size: 16px;
+    font-weight: 700;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.time {
+    margin-bottom: 12px;
+    line-height: 22px;
+
+    @include media-breakpoint-down(md) {
+        line-height: 18px;
+    }
+}
+
+.airport {
+    line-height: 18px;
+}
+
+.previousDetail {
+    margin-top: 8px;
+    font-size: 14px;
+    color: $colorSilverDark;
+    text-decoration: line-through;
+}
+
+.previousDate {
+    font-weight: 700;
+}

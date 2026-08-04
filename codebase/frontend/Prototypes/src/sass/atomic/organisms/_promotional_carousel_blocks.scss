@@ -1,0 +1,152 @@
+.promo-blocks-slider.promotional-carousel-slider {
+    height: 100%;
+    margin: 0;
+}
+
+.promotional-carousel-slider.promo-blocks-slider .carousel-container {
+    height: 100%;
+    padding-bottom: 0;
+
+    .react-multi-carousel-track, .react-multi-carousel-item {
+        height: 100%;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding-bottom: 20px;
+    }
+}
+
+.promotional-carousel-container {
+    min-height: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px 0 rgba(100, 100, 100, 0.14);
+
+    @include media-breakpoint-down(lg) {
+        box-shadow: none;
+    }
+
+    .promotional-carousel-link {
+        width: 245px;
+        padding: 14px 8px 12px 17px;
+        font-size: 20px;
+        line-height: normal;
+        color: $colorBlack;
+        letter-spacing: 0;
+        background: rgba($color: #fff, $alpha: 0.75);
+        border-radius: 0 4px 4px 0;
+
+        .promo-slide__item__price {
+            display: flex;
+            align-items: baseline;
+
+            svg {
+                margin-left: auto;
+                margin-right: 0;
+            }
+        }
+
+        .promotional-carousel-title,
+        .price {
+            font-family: $fontRoundedHeadline;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .price-prefix,
+        .price-suffix {
+            font-size: 14px;
+        }
+
+        .price-prefix {
+            margin-right: 5px;
+        }
+
+        .icon-arrow {
+            font-size: 14px;
+            color: $clrEjOrangeLight;
+        }
+    }
+
+    .slide-button {
+        position: absolute;
+        top: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        background: $clrSiteBgGrey;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        transform: translateY(-50%);
+
+        svg {
+            width: 10px;
+            color: $clrEjOrange;
+        }
+
+        &.next {
+            right: 20px;
+        }
+
+        &.prev {
+            left: 20px;
+        }
+
+        @include media-breakpoint-up(md) {
+            top: 45%;
+        }
+    }
+
+    .promo-block-card {
+        margin: 0;
+
+        .background {
+            height: 100%;
+            padding-bottom: 14px;
+            @include media-breakpoint-up(md) {
+                padding-bottom: 30px;
+            }
+
+            @include media-breakpoint-down(md) {
+                height: 280px;
+            }
+        }
+
+        .background::after {
+            display: none;
+        }
+    }
+
+    .react-multi-carousel-dot-list {
+        display: flex;
+        margin-bottom: 12px;
+
+        button {
+            width: 8px;
+            height: 8px;
+            background-color: $colorWhite;
+            border: none;
+        }
+    }
+
+    .react-multi-carousel-dot--active {
+        button {
+            width: 10px;
+            height: 10px;
+            background-color: $clrEjOrange;
+        }
+    }
+}
+
+@include media-breakpoint-up(md) {
+    .promo-blocks-slider {
+        .carousel-container.promotional-carousel-container {
+            .react-multi-carousel-dot-list {
+                display: flex;
+                margin-bottom: 2px;
+            }
+        }
+    }
+}

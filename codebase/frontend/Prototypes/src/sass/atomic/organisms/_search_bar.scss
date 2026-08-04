@@ -1,0 +1,205 @@
+/* stylelint-disable selector-max-compound-selectors */
+
+.search-bar-box {
+    width: 100%;
+    background-color: #fff;
+    border: var(--searchpod-border-width, 1px) solid $colorTransparent;
+    box-shadow: 0 2px 4px 0 rgba(152, 148, 148, 0.3);
+
+    &.search-bar-box--extended {
+        .search-bar {
+            display: none;
+
+            > h4 {
+                display: none;
+            }
+        }
+    }
+}
+
+@include media-breakpoint-up(md) {
+    .sticky {
+        .search-bar > h4 {
+            display: none;
+        }
+    }
+}
+
+.search-bar__error {
+    height: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+    background-color: rgba(255, 0, 0, 0.1);
+    border: 0.5px solid #f00;
+    border-radius: 3px;
+    box-shadow: 0 0 4px 0 rgba(255, 0, 0, 0.3);
+
+    span {
+        font-family: $fontRoundedBook;
+        font-size: 13px;
+        line-height: 28px;
+        color: $clrTextMain;
+    }
+}
+
+.search-bar__dropdowns {
+    font-size: 15px;
+
+    .search-bar__num-wr {
+        margin: 20px;
+
+        @include media-breakpoint-down(md) {
+            margin: 20px 0;
+        }
+
+        .num-control {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+
+            .num-control__label {
+                display: flex;
+                align-items: center;
+
+                .num-control__label--description {
+                    margin-left: 15px;
+                    font-family: $fontRoundedBook;
+                    font-size: 16px;
+                    line-height: 23px;
+                    color: $clrTextMain;
+                }
+            }
+        }
+
+        .num-control--error {
+            .num-control__label {
+                .num-control__label--description {
+                    color: $colorRed;
+                }
+            }
+        }
+
+        .num-error {
+            width: 100%;
+            height: 28px;
+            margin-top: 15px;
+            font-family: $fontRoundedBook;
+            font-size: 13px;
+            line-height: 28px;
+            color: $clrTextMain;
+            text-align: center;
+            background-color: $clrErrorBg;
+            border: 0.5px solid $colorRed;
+            border-radius: 3px;
+            box-shadow: 0 0 4px 0 $clrErrorShadow;
+        }
+    }
+
+    .search-bar__rooms-icon {
+        margin: 5px 0;
+        text-align: center;
+
+        svg {
+            max-width: 55px;
+            height: 35px;
+            color: $colorOrange;
+        }
+    }
+
+    .search-bar__dropdown-btns-rooms {
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+    }
+
+    .search-bar__add-room-btn-box {
+        display: flex;
+        align-items: stretch;
+
+        label {
+            font-family: $fontRoundedBook;
+            line-height: 30px;
+        }
+    }
+
+    .checkbox-row {
+        position: relative;
+        margin: 30px 0;
+        padding-left: 4%;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        .checkbox-row__dropdown {
+            position: absolute;
+            left: 0;
+            padding: 0;
+            background: none;
+            border: none;
+
+            svg {
+                width: 15px;
+                height: 25px;
+                color: $clrEjOrangeLight;
+                cursor: pointer;
+            }
+
+            &.open {
+                svg {
+                    color: $clrTxtLighter;
+                    transform: rotate(180deg);
+                }
+            }
+        }
+
+        .row {
+            display: none;
+        }
+
+        &.open {
+            .row {
+                display: flex;
+                margin: 0;
+
+                .checkbox-item {
+                    margin-top: 30px;
+                }
+            }
+        }
+    }
+
+    .checkbox {
+        justify-content: flex-start;
+        color: $clrTextMain;
+
+        .checkbox__control {
+            margin-right: 15px;
+            border-color: $secondary-color;
+        }
+
+        .checkbox--label span {
+            font-weight: bold;
+        }
+
+        svg {
+            flex: 0 0 auto;
+            max-width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+
+        input:checked {
+            ~ .checkbox__control {
+                border-color: $secondary-color;
+            }
+        }
+    }
+}
+
+.search-bar__rooms-box {
+    border: 1px solid $colorTransparent;
+}
+
+/* stylelint-enable selector-max-compound-selectors */

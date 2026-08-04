@@ -1,0 +1,41 @@
+{
+    "Title": "CMS ExcursionMap data for Costa Blanca (Costa Blanca region)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "ExactMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetMuzementData",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "code",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "ESCB"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "MuzementIds": [
+                "335",
+                "614",
+                "7089",
+                "4659"
+            ],
+            "Type": "Region",
+            "Radius": 100,
+            "Coordinates": null
+        }
+    }
+}

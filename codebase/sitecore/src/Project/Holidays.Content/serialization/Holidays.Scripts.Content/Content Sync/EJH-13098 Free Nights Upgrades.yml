@@ -1,0 +1,39 @@
+﻿---
+ID: "61051765-1611-4dc5-96db-540e6b0088af"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-13098 Free Nights Upgrades Settings"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Create-Settings () {
+    	$itemTemplateId = '{6e9cbf06-c5b6-4af5-8028-49d7b27ba176}';
+    	$itemPath = "/sitecore/content/EasyJet/Holidays/Settings/Free Upgrades Settings"
+    
+    	$item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue;
+    
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $itemPath -ItemType $itemTemplateId
+    
+    		$item.Editing.BeginEdit()
+    		$item["IsFreeNightsEnabled"] = "1";
+    		$item["FreeNightsIcon"] = '<image mediaid="{CAE7372B-1B62-4A92-9F23-CFC4D9E536AE}" />'
+    		$item.Editing.EndEdit() | Out-Null
+    
+    		Write-Host $item.Name "successfully created"
+    	}
+    }
+    
+    Create-Settings
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210729T143300Z

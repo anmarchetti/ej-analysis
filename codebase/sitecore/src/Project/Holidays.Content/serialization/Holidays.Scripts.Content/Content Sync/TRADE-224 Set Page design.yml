@@ -1,0 +1,46 @@
+﻿---
+ID: "cecef692-353f-4590-a1ba-670cb7441d7b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/TRADE-224 Set Page design"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Set-Page-Design ($designPath,$pageTemplateId) {
+    	$designItem = Get-Item -Path "$($designPath)" -ErrorAction SilentlyContinue
+    	if ($designItem -ne $null) {
+    		[Sitecore.Data.Fields.MultilistField]$pageTemplates = $designItem.Fields["PageTemplates"];
+    
+    		if (!$pageTemplates.Contains($pageTemplateId)) {
+    			$designItem.Editing.BeginEdit();
+    			$pageTemplates.add($pageTemplateId);
+    			$designItem.Editing.EndEdit() | Out-Null
+    			Write-Host $designItem.Name "Page Templates updated"
+    		}
+    	}
+    }
+    
+    
+    $pageTemplateId = "{B32F6A34-A054-4A5F-AC99-A1BB8B87DA03}"
+    
+    # Add Page To PageDesigns
+    Set-Page-Design -designPath "/sitecore/content/EasyJet/TradePortal/Presentation/Page Designs/Default Design" -pageTemplateId $pageTemplateId
+    
+    Write-Host "Page Design for Group Booking Page has been set"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 175
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230113T070056Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

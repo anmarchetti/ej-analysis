@@ -1,0 +1,76 @@
+﻿---
+ID: "b4dd5d3b-b74b-4f55-9835-28380ec8c40f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14006  Replace Video Player on Sustainability Hub page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+    	$item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $templateId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function Get-Rendering-Index ($item,$renderingItemId) {
+    	$i = 0
+    	Get-Rendering -Item $item | ForEach-Object {
+    		if ($_.ItemID -eq $renderingItemId) {
+    			return $i
+    		}
+    		$i++
+    	}
+    }
+    
+    $pagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Sustainability";
+    $page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue;
+    
+    
+    $textBlockRenderingId = "{43546A28-D231-4287-96D2-25DEF529F1A5}";
+    $textBlockRenderings = Get-Rendering -Item $page | Where-Object { $_.ItemID -eq $textBlockRenderingId };
+    
+    $componentWrapperRenderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}";
+    $componentWrapperFirstIndex = Get-Rendering-Index -Item $page -RenderingItemId $componentWrapperRenderingId | Select -First 1;
+    
+    $componentWrapperIndex = $componentWrapperFirstIndex + $textBlockRenderings.length;
+    
+    # Insert ComponentWrapper for lower TextBlock
+    $componentWrapperPlaceHolder = 'body';
+    $componentWrapperRenderingPath = "/sitecore/layout/Renderings/Project/Holidays/Component Wrapper";
+    $componentWrapperItem = Get-Item -Database "master" -Path $componentWrapperRenderingPath | New-Rendering -PlaceHolder $componentWrapperPlaceHolder;
+    Add-Rendering -Item $page -PlaceHolder $componentWrapperPlaceHolder -Instance $componentWrapperItem -Index $componentWrapperIndex;
+    
+    $componentWrapperRenderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}";
+    $componentWrapperRend = Get-Rendering -Item $page | Where-Object { $_.ItemID -eq $componentWrapperRenderingId }| Select -Index 1;
+    
+    # Change lower TextBlock placeholder
+    $textBlock = $textBlockRenderings[1];
+    $newTextBlockPlaceHolder = '/body/component-wrapper-inner-' + $componentWrapperRend.UniqueId + '-0';
+    Set-Rendering -Item $page -Instance $textBlock -PlaceHolder $newTextBlockPlaceHolder
+    
+    # Change MediaVideo Index
+    $newMediaVideoIndex = $componentWrapperIndex - 1;
+    
+    $mediaVideoRenderingId = "{C26DC3D2-BAAE-4354-8A0E-1BE074262AEC}";
+    $mediaVideoRendering = Get-Rendering -Item $page | Where-Object { $_.ItemID -eq $mediaVideoRenderingId } | Select -First 1;
+    Set-Rendering -Item $page -Instance $mediaVideoRendering -Index $newMediaVideoIndex;
+    
+    
+    Write-Host "Script is completed"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 500
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210405T123057Z

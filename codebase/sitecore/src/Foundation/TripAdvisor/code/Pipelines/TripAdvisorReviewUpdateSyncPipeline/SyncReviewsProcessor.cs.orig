@@ -1,0 +1,62 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using easyJet.Foundation.Destinations.ContentSearch.Repositories;
+using easyJet.Foundation.Destinations.ContentSearch.SearchTypes;
+using easyJet.Foundation.Destinations.Pipelines.Arguments;
+using easyJet.Foundation.SitecoreExtensions.Services;
+using easyJet.Foundation.TripAdvisor.Logging;
+using easyJet.Foundation.TripAdvisor.Services.Sync;
+using Sitecore.Configuration;
+using Sitecore.Data.Items;
+
+namespace easyJet.Foundation.TripAdvisor.Pipelines.TripAdvisorReviewUpdateSyncPipeline
+{
+    public class SyncReviewsProcessor : BaseTripAdvisorSyncProcessor
+    {
+        private readonly IDestinationsRepository hotelsRepository;
+        private readonly ISitecoreDatabaseAccessService sitecoreDatabaseAccessService;
+        private const int DefaultBatchSize = 1000;
+
+        public SyncReviewsProcessor(ISyncDataService syncDataService, IDestinationsRepository hotelsRepository, ISitecoreDatabaseAccessService sitecoreDatabaseAccessService, ITripAdvisorLogger logger)
+            : base(syncDataService, logger)
+        {
+            this.hotelsRepository = hotelsRepository;
+            this.sitecoreDatabaseAccessService = sitecoreDatabaseAccessService;
+        }
+
+        /// <inheritdoc />
+        protected override void ProcessSync(DestinationPipelineArgs args)
+        {
+            Logger.Info("Location reviews sync from TripAdvisor started", this);
+
+            List<Item> items;
+            var page = 1;
+            var batchSize = Settings.GetIntSetting("TripAdvisor.BatchSize", DefaultBatchSize);
+            var totalProcessedHotels = 0;
+
+            do
+            {
+<<<<<<< HEAD
+                items = hotelsRepository.GetHotels<HotelSyncSearchResultItem>(args.Parent.Paths.Path, page, batchSize, false, false)
+                    ?.Select(x => x.Document.GetItem())
+=======
+                items = hotelsRepository.GetHotels(args.Parent.Paths.Path, page, batchSize, false, false)
+                    ?.Select(x => sitecoreDatabaseAccessService.GetItem(x.Document.Uri))
+>>>>>>> b624e46e79 (introducing ISitecoreDatabaseAccessService)
+                    .Where(x => x != null)
+                    .ToList() ?? new List<Item>();
+
+                if (items.Any())
+                {
+                    var locations = SyncDataService.SyncRatings(items);
+                    totalProcessedHotels += items.Count;
+                    Logger.Info($"{locations?.Count()} location reviews was updated from TripAdvisor (Page:{page} - batch size:{batchSize})", this);
+                }
+
+                page++;
+            }
+            while (items.Count > 0);
+            Logger.Info($"Location reviews sync from TripAdvisor finished ({totalProcessedHotels} hotels have been processed)", this);
+        }
+    }
+}

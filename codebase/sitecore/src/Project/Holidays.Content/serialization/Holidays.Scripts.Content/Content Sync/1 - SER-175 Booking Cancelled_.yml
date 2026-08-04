@@ -1,0 +1,250 @@
+﻿---
+ID: "9f476e90-a5a1-4692-9ed8-5d8313ae65d4"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/1 - SER-175 Booking Cancelled Page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $itemName, $templateId, $itemId){
+        $item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $itemId
+            Write-Host "Item" $item.Name "successfully created";
+        }
+        return $item
+    }
+    
+    function Set-Page-Design($designPath, $pageTemplateId) {
+        $designItem = Get-Item -Path "$($designPath)" -ErrorAction SilentlyContinue
+        if ($designItem -ne $null) {
+             [Sitecore.Data.Fields.MultilistField]$pageTemplates = $designItem.Fields["PageTemplates"];
+            
+            if(!$pageTemplates.Contains($pageTemplateId)) {
+                $designItem.Editing.BeginEdit();
+                $pageTemplates.add($pageTemplateId);
+                $designItem.Editing.EndEdit() | Out-Null
+                Write-Host "Page Templates of" $designItem.Name "are updated"
+            }
+        }
+    }
+    
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    function Create-Breadcrumbs($path, $breadcrumbs, $index){
+        $folder = Get-Or-Create-Item -path $path -templateId '{342C2741-9124-4499-8DAC-056FBBD364B0}'
+        
+        $name = $breadcrumbs['en']["Text"];
+        $breadcrumb = Get-Or-Create-Item -path "$path/$name" -templateId '{D21FBF7C-4FD3-40EC-8D39-CAD55D3AC14D}'
+       
+        foreach ($lang in $breadcrumbs.Keys) {
+            create-lang-version -item $folder -lang $lang 
+            create-lang-version -item $breadcrumb  -lang $lang -field "Text" -value $breadcrumbs[$lang]["Text"]    
+            create-lang-version -item $breadcrumb  -lang $lang -field "Link" -value $breadcrumbs[$lang]["Link"]    
+        }
+        
+        $breadcrumb.Editing.BeginEdit()
+            $breadcrumb['__SortOrder'] = $index
+            $breadcrumb.Editing.EndEdit() | Out-Null
+        
+        return $breadcrumb;
+    }
+    
+    # Create Page
+    $pageTemplateId = "{A93C4899-6582-49EC-9481-C5FDC7863D18}"
+    $page = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking" -ItemName "Booking Cancelled" -TemplateId $pageTemplateId
+    
+    # Add Page To PageDesigns
+    Set-Page-Design -designPath "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Default Design" -pageTemplateId $pageTemplateId
+    Set-Page-Design -designPath "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Default Design" -pageTemplateId $pageTemplateId
+    
+    # Create Page Components
+    $pageComponents = Get-Or-Create-Item -Path $page.FullPath -ItemName "Page Components" -TemplateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    
+    $translations1 = @{
+                    "en" = @{
+                        "Title"= 'Holiday cancelled'
+                        "TextAbove" = "{name},";
+                    }
+                    "fr-CH" = @{
+                        "TextAbove" = "{name},";
+                        "Title"= 'Vacances annulées'
+                    }
+                    "fr-FR" = @{
+                         "TextAbove" = "{name},";
+                         "Title"= 'Vacances annulées'
+                    }
+                    "de-CH" = @{
+                        "TextAbove" = "{name},";
+                        "Title"= 'Urlaub gestrichen'
+                       
+                    }
+                    "de-DE" = @{
+                        "TextAbove" = "{name},";
+                        "Title"= 'Urlaub gestrichen'
+                    }
+                }
+        
+    $pagePath = $page.FullPath        
+    $contentData = Get-Or-Create-Item -path "$pagePath/Page Components/Booking Hero Banner" -templateId '{2E91B030-571A-4E34-A5F4-31C21589090E}'
+    foreach ($lang in $translations1.Keys) {
+        create-lang-version -item $pageComponents  -lang $lang 
+        create-lang-version -item $contentData  -lang $lang -field "TextAbove" -value $translations1[$lang]["TextAbove"]
+        create-lang-version -item $contentData -lang $lang -field "Title" -value $translations1[$lang]["Title"]
+    }    
+     Get-Rendering -Item $page | Where-Object -FilterScript {$_.ItemID -eq '{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}' }  | Set-Rendering -Item $page -DataSource  $contentData.ID
+    
+    $breadcrumbs1 = @{
+                    "en" = @{
+                        "Text" = "My bookings";
+                        "Link" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{E3A5DDD5-CA70-4419-B5C4-E7F72564F4F3}" />'
+                    }
+                    "fr-CH" = @{
+                        "Text" = "Mes réservations";
+                        "Link" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{E3A5DDD5-CA70-4419-B5C4-E7F72564F4F3}" />'
+                    }
+                    "fr-FR" = @{
+                        "Text" = "Mes réservations";
+                        "Link" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{E3A5DDD5-CA70-4419-B5C4-E7F72564F4F3}" />'
+                    }
+                    "de-CH" = @{
+                        "Text" = "Meine Buchungen";
+                        "Link" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{E3A5DDD5-CA70-4419-B5C4-E7F72564F4F3}" />'
+                    }
+                    "de-DE" = @{
+                        "Text" = "Meine Buchungen";
+                        "Link" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{E3A5DDD5-CA70-4419-B5C4-E7F72564F4F3}" />'
+                    }
+    }
+                    
+                    $breadcrumbs2 = @{
+                    "en" = @{
+                        "Text" = "Cancelled";
+                        "Link" = ""
+                    }
+                    "fr-CH" = @{
+                        "Text" = "Annulé";
+                        "Link" = ""
+                    }
+                    "fr-FR" = @{
+                        "Text" = "Annulé";
+                        "Link" = ""
+                    }
+                    "de-CH" = @{
+                        "Text" = "Abgesagt";
+                        "Link" = ""
+                    }
+                    "de-DE" = @{
+                        "Text" = "Abgesagt";
+                        "Link" = ""
+                    }
+                }
+                
+                 Create-Breadcrumbs -path '/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Breadcrumbs' -breadcrumbs $breadcrumbs1 -index 0
+                 Create-Breadcrumbs -path '/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Breadcrumbs' -breadcrumbs $breadcrumbs2 -index 1
+                
+                
+    
+    $breadcrumbsData = Get-Item "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Breadcrumbs"
+    Get-Rendering -Item $page | Where-Object -FilterScript {$_.ItemID -eq '{3C4B5E64-BD84-48D9-83BE-01D3017B7843}' }  | Set-Rendering -Item $page -DataSource  $breadcrumbsData.ID
+    
+    #Set settings
+    $setting = Get-Item "/sitecore/content/EasyJet/Holidays/Settings/Booking Settings"
+    $pageID = $page.ID
+    if ($setting -ne $null) {
+            $setting.Editing.BeginEdit()
+            $setting['CancelledBookingLink'] = "<link text='' anchor='' linktype='internal' class='' title=''  querystring='' id='" + $pageID + "' />"
+            $setting.Editing.EndEdit() | Out-Null
+         }
+         
+    #add lang versions
+    function create-lang-version2($item, $lang, $fieldValuePairs) {
+        $target = Get-Item -Path $item.Paths.FullPath -Language $lang
+        
+        if ($target -eq $null -or $target.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+        }
+        
+        $setting = Get-Item "/sitecore/content/EasyJet/Holidays/Settings/Booking Settings" -Language $lang
+        $pageID = $page.ID
+        if ($setting -ne $null) {
+            $setting.Editing.BeginEdit()
+            $setting['CancelledBookingLink'] = "<link text='' anchor='' linktype='internal' class='' title=''  querystring='' id='" + $pageID + "' />"
+            $setting.Editing.EndEdit() | Out-Null
+         }
+        
+        
+        if ($fieldValuePairs -ne $null) {
+            $target = Get-Item -Path $item.Paths.FullPath -Language $lang
+            $target.Editing.BeginEdit()
+            foreach ($pair in $fieldValuePairs.GetEnumerator()) {
+                $target['Name'] = $pair.Value['Name']
+                 $target['PageTitle'] = $pair.Value['PageTitle']
+            }
+            $target.Editing.EndEdit() | Out-Null
+        }
+    }
+         
+    $fields =  @{
+                    "fr-CH" = @{
+                        "Name" = "Réservation annulée";
+                        "PageTitle" = "Réservation annulée"
+                    }
+                    "fr-FR" = @{
+                         "Name" = "Réservation annulée";
+                        "PageTitle" = "Réservation annulée"
+                    }
+                    "de-CH" = @{
+                        "Name" = "Buchung storniert";
+                        "PageTitle" = "Buchung storniert"
+                    }
+                    "de-DE" = @{
+                        "Name" = "Buchung storniert";
+                        "PageTitle" = "Buchung storniert"
+                    }
+    }
+    
+    
+    @('de-CH', 'de-DE', 'fr-CH', 'fr-FR') | % {
+        Create-Lang-Version2 -Item $page -Lang $_ -FieldValuePairs $fields
+        
+        $targetLangItem = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/EU - Default design' -Language $_ -ErrorAction SilentlyContinue;
+        if ($targetLangItem -ne $null) {
+             [Sitecore.Data.Fields.MultilistField]$pageTemplates = $targetLangItem.Fields["PageTemplates"];
+            
+            if(!$pageTemplates.Contains($pageTemplateId)) {
+                $targetLangItem.Editing.BeginEdit();
+                $pageTemplates.add($pageTemplateId);
+                $targetLangItem.Editing.EndEdit() | Out-Null
+                Write-Host "Page Templates of" $targetLangItem.Name "are updated"
+            }
+        }
+    }
+    
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 7000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241024T104545Z

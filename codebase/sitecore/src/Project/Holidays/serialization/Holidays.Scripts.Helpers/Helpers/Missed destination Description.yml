@@ -1,0 +1,134 @@
+﻿---
+ID: "247291d2-7ecb-4df9-aeae-73cff4eea85d"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/Missed destination Descriptions And Image Banner
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function -Name ConvertTo-Xlsx
+    
+    $resortTemplateId = "{538939B3-07EC-4C23-BF8C-3A68DE0FDC93}"
+    $regionTemplateId = "{2F42EC14-7E56-467A-B300-AB9723C74546}"
+    $countryTemplateId = "{5F03C6EF-EF52-4F2E-BC5A-B1F065A1E745}"
+    $regionCityTemplateId = "{33B3542E-1316-40CA-8971-1CDB3C1D452D}"
+    
+    $pageComponetnsTeamplteId = "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    $destinationInfoBlockFolderTemplateId = "{82C5913D-9B19-4455-B0D3-1D8317FF85EE}"
+    $destinationInfoBlockTemplateId = "{3A4782E4-7E02-4065-8BC4-78816838C8F0}"
+    
+    $pageComponentsName = "Page Components"
+    $destinationInfoBlockFolderName = "Destination Info Blocks"
+    $destinationInfoBlockName = "Intro Heading and Description"
+    
+    $startPath = "/sitecore/content/EasyJet/Holidays/Home/Destinations"
+    $sourceDb = "master"
+    
+    $fileName = "destination-descriptions-and-images-report"
+    
+    function Find-Items($templateId){
+        	$criteria = @(
+    		@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    		@{ Filter = "Equals"; Field = "_template"; Value = $templateId; }
+    		@{ Filter = "StartsWith"; Field = "_fullpath"; Value = $startPath;  }
+    	)
+    
+    	$props = @{
+    		Index = "sitecore_destinations_$($sourceDb)_index"
+    		Criteria = $criteria
+    	}
+    
+    	$items = Find-Item @props
+    
+    	Write-Host "$($items.Count) items were found"
+    
+    	return $items
+    }
+    
+    function Download-Report-File($data, $fileName){
+            $data = $data | ForEach-Object { New-Object PSObject -Property $_ }
+            [byte[]]$data = $data | ConvertTo-Xlsx
+            Out-Download -Name "$($fileName).xlsx" -InputObject $data
+    }
+    
+    function Get-Item-By-Template-And-Name($items, $templateId, $itemName){
+        $item = $items | Where-Object { $_.TemplateId -eq $templateId -AND $_.Name -eq $itemName} | Select-Object -First 1
+        return $item
+    }
+    
+    function Get-Published-Status($item){
+        $isPublished = Test-Path -Path "web:$($item.paths.fullpath)"
+        if ($isPublished){
+            return "Yes"
+        }
+        
+        return "No"
+    }
+    
+    function Get-Report(){
+        $result = @()
+        $countries = Find-Items -TemplateId $countryTemplateId
+        $regions = Find-Items -TemplateId $regionTemplateId
+        $resorts = Find-Items -TemplateId $resortTemplateId
+        $cityRegions = Find-Items -TemplateId $regionCityTemplateId
+        $searchItems = @()
+        $searchItems += $countries
+        $searchItems += $regions
+        $searchItems += $resorts
+        $searchItems += $cityRegions
+        foreach ($searchItem in $searchItems){
+            $item = $searchItem.GetItem()
+            $isFailed = $false
+            $resultItem = [ordered]@{
+                Name = ""
+                Code = ""
+                Path = ""
+                Description = ""
+                ImageBanner = ""
+                Published = ""
+            }
+            $resultItem.Name = $item.Name
+            $resultItem.Code = $item["Code"]
+            $resultItem.Path = $item.Paths.FullPath
+            $resultItem.Published = Get-Published-Status -Item $item
+            
+            $pageComponetns = Get-Item-By-Template-And-Name -Items $item.Children -TemplateId $pageComponetnsTeamplteId -ItemName $pageComponentsName 
+            $destinationInfoBlockFolder = Get-Item-By-Template-And-Name -Items $pageComponetns.Children -TemplateId $destinationInfoBlockFolderTemplateId -ItemName $destinationInfoBlockFolderName 
+            $destinationInfoBlock = Get-Item-By-Template-And-Name -Items $destinationInfoBlockFolder.Children -TemplateId $destinationInfoBlockTemplateId -ItemName $destinationInfoBlockName
+            if ($destinationInfoBlock -eq $null)
+            {
+                $resultItem.Description = "Description item does not exist"
+                $isFailed = $true
+            }
+            elseif([string]::IsNullOrWhiteSpace($destinationInfoBlock["Title"]) -OR [string]::IsNullOrWhiteSpace($destinationInfoBlock["Description"]))
+            {
+                $resultItem.Description = "Title or description are empty"
+                $isFailed = $true
+            }
+            
+            if ([string]::IsNullOrWhiteSpace($item["Image"]))
+            {
+                $resultItem.ImageBanner = "Destination image is empty"
+                $isFailed = $true
+            }
+            
+            if ($isFailed){
+                $result += $resultItem
+            }
+        }
+        
+        return $result
+    }
+    
+    $report = Get-Report
+    Download-Report-File -Data $report -FileName $fileName
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210803T111711Z

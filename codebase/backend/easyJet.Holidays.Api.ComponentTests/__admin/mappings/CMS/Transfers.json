@@ -1,0 +1,24 @@
+{
+    "Title": "CMS Destination ",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/Transfers/GetHolidayTransferByProductId",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "ArrivalInstr": "On arrival once you�ve collected your luggage and exited the baggage hall please exit the airport building, head down the ramp and look out for the local easyJet holidays team near desk numbers 5 \u0026 6 who will be waiting to direct you to your transfer vehicle. If you have any difficulty in locating your transfer please call our local partner on +90 554 5933979.",
+            "DepInstr": "When you�re going home we plan to collect you from your accommodation between 3 hours 15 minutes and 2 hours 45 minutes before your flight. Please ensure you are ready to go with all of your party and their luggage. The day before you are going home you can log onto https://www.dianatravel.com/easyjet and enter your 7 digit easyJet holidays booking reference to find out your exact pick-up time.  We will also email it to your hotel reception. If you have any problems with your transfer on the day of going home please contact our local partner on +90 554 976 0917.",
+            "Duration": 30
+        }
+    }
+}

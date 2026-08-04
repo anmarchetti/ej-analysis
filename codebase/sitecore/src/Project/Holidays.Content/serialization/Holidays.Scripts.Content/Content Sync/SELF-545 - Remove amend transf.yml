@@ -1,0 +1,58 @@
+﻿---
+ID: "88f3cbb4-283c-4f99-86fe-f524375f6f10"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-545 - Remove amend transfer pp"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # change upgrade transfer phrase
+    $itemPath = "/sitecore/content/EasyJet/Holidays/Dictionary/View Booking/Labels/Upgrade Transfer"
+    $item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+    
+    if ($item -ne $null) {
+    	$item.Editing.BeginEdit()
+    	$item["Phrase"] = "Upgrade your transfer for {price}"
+    	$item.Editing.EndEdit() | Out-Null
+    
+    	Write-Host "Item" $item.Name "successfully updated"
+    }
+    
+    function Get-Or-Create-Item ($path,$itemName,$templateId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function Update-Rendering-DataSource ($item,$renderingId,$placeHolder,$newDataSource) {
+    	$rendering = Get-Rendering -Item $item -PlaceHolder $placeHolder | Where-Object { $_.ItemId -eq $renderingId } | Select -First 1
+    
+    	if ($rendering -ne $null) {
+    		Set-Rendering -Item $item -Instance $rendering -DataSource $newDataSource
+    		Write-Host $item.Name "Rendering successfully updated"
+    	}
+    }
+    
+    # update passenger details DS
+    $pageTemplateId = "{0F2BB3A3-BA6B-4CF3-9455-2FA30495C558}"
+    $page = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking" -ItemName "Passenger Details" -TemplateId $pageTemplateId
+    $pageComponents = Get-Or-Create-Item -Path $page.FullPath -ItemName "Page Components" -TemplateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    $amendPassengerComponent = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Change Passengers Details" -TemplateId "{994482F2-C7EF-4255-8225-F90269796BFC}"
+    
+    Update-Rendering-DataSource -Item $page -PlaceHolder "/body" -RenderingId "{0548A519-2CDB-4251-A6EE-033692B781AC}" -NewDataSource $amendPassengerComponent.ID 
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 999999
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20221208T142719Z

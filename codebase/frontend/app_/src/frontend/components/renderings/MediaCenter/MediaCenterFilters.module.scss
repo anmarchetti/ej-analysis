@@ -1,0 +1,51 @@
+.pressReleasesBreadcrumbs {
+    max-width: 1230px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 20px 15px;
+    padding-top: 0;
+    padding-bottom: 0;
+
+    @include media-breakpoint-down(md) {
+        background: $clrSiteBgWhite;
+    }
+
+    .pathBreadcrumbsWrapper {
+        padding: 20px 0 15px;
+    }
+
+    .pathBreadcrumbs {
+        border-radius: 16px;
+        box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.13);
+    }
+}
+
+.filtersApplied {
+    padding-top: 1px;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.24);
+}
+
+.filtersWrapper {
+    @include media-breakpoint-down(md) {
+        position: sticky;
+        z-index: 3;
+        top: 0;
+
+        // Add padding to prevent the margin collapsing for children elements
+        padding-top: 0.1px;
+        background-color: $clrSiteBgGrey;
+    }
+}
+
+.mediaCenterFilters {
+    &:global(.search-filter .search-pod-filter__button) {
+        @include media-breakpoint-down(md) {
+            height: 58px;
+
+            svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+}

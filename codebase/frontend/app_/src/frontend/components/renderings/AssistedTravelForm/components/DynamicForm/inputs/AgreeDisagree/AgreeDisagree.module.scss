@@ -1,0 +1,54 @@
+.description {
+    h2 {
+        margin: 0;
+        font-family: $fontRoundedDemy;
+        font-size: 16px;
+        line-height: 1.375;
+        color: $colorBlackLight;
+
+        @include media-breakpoint-up(sm) {
+            font-size: 18px;
+            line-height: 1.375;
+        }
+    }
+
+    ul {
+        margin: 0;
+        margin-top: 8px;
+        padding-left: 25px;
+    }
+}
+
+.buttonGroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 32px;
+
+    @include media-breakpoint-up(sm) {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    
+    .btn {
+        width: 100%;
+        min-height: auto;
+        padding: 13px 24px;
+        font-family: $fontRoundedDemy;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.375;
+        text-align: center;
+
+        @include media-breakpoint-up(sm) {
+            width: 200px;
+            min-width: 100px;
+        }
+    }
+
+    .btnSecondary {
+        border: 2px solid $colorOrange;
+    }
+}

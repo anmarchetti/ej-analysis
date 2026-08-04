@@ -1,0 +1,18 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgDeleteFilled = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'delete-filled-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <path d='M21 4.69h-4.75V4a1.31 1.31 0 00-1.31-1.3H9.05A1.3 1.3 0 007.75 4v.68H3a1 1 0 000 2h1.5V20a1.31 1.31 0 001.31 1.31h12.38A1.31 1.31 0 0019.5 20V6.69H21a1 1 0 000-2zM9.25 17.49a.5.5 0 01-1 0v-9a.5.5 0 011 0zm3.25 0a.5.5 0 01-1 0v-9a.5.5 0 011 0zm3.25 0a.5.5 0 01-.5.5.5.5 0 01-.5-.5v-9a.5.5 0 01.5-.5.51.51 0 01.5.5z' />
+    </svg>
+);
+
+export default SvgDeleteFilled;

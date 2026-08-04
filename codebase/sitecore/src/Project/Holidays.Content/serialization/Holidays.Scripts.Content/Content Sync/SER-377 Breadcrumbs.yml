@@ -1,0 +1,138 @@
+﻿---
+ID: "8ac3c2e2-3b1d-4a79-9adc-f2df43f3375a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-377 Breadcrumbs"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+                
+                $holidayCreditPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit"
+               
+                $destinationBreadcrumbsRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Breadcrumbs Static"
+                $destinationBreadcrumbsRenderingId = "{3C4B5E64-BD84-48D9-83BE-01D3017B7843}"
+                
+                
+                $breadcrumnsFolderTemplatePath = "/sitecore/templates/Feature/PageContent/Breadcrumbs/Breadcrumbs Folder"
+                $breadcrumnsItemTemplatePath = "/sitecore/templates/Feature/PageContent/Breadcrumbs/Breadcrumbs Item" 
+                
+                $breadcrumbsParamsTemplatePath = "/sitecore/templates/Feature/PageContent/Breadcrumbs/Breadcrumbs Rendering Parameters"
+                
+                $componentWrapperRenderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+                $componentWrapperRendetingPath = "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper"
+                
+                $datasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Breadcrumbs"
+                
+                
+                 function Get-Or-Create-Item($path, $templateId) {
+                $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+                if (-Not $item) {
+                    $item = New-Item -Path $path -ItemType $templateId
+                    Write-Host "Item" $item.Name "successfully created"
+                }
+                return $item
+            }
+            
+            function New-Breadcrumbs-Content($datasoursePath) {
+                $parentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components"
+                $name = "Breadcrumbs"
+                    New-Item -Path $parentPath -Name $name -ItemType $breadcrumnsFolderTemplatePath
+                    
+                        $link1 = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Booking/My_Bookings" -templateId "{71FE9E37-1343-4E71-8741-3B26E072F9D3}"
+        
+                    
+                    $updates = @(
+                        @{
+                            Name        = "My Bookings"
+                            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Breadcrumbs/My Bookings"
+                            TemplatePath = $breadcrumnsItemTemplatePath
+                            Fields      = @{
+                                "Text" = @{
+                                    "en" = "My Bookings"
+                                    "fr-CH" = "Mes réservations"
+                                    "de-CH" = "Meine Buchungen"
+                                    "fr-FR" = "Mes réservations"
+                                    "de-DE" = "Meine Buchungen"
+                                }
+                                "Link"= @{
+                                    "en" = '<link linktype="internal" id="' + $link1.ID + '" text="My Bookings" />'
+                                    "fr-CH" = '<link linktype="internal" id="' + $link1.ID + '" text="Mes réservations" />'
+                                    "de-CH" = '<link linktype="internal" id="' + $link1.ID + '" text="Meine Buchungen" />'
+                                    "fr-FR" = '<link linktype="internal" id="' + $link1.ID + '" text="Mes réservations" />'
+                                    "de-DE" = '<link linktype="internal" id="' + $link1.ID + '" text="Meine Buchungen" />'
+                                }
+                            }
+                        },
+                        @{
+                            Name        = "Credit"
+                            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Breadcrumbs/Credit"
+                            TemplatePath = $breadcrumnsItemTemplatePath
+                            Fields      = @{
+                                "Text" = @{
+                                    "en" = "Holiday Credit"
+                                    "fr-CH" = "Crédit vacances"
+                                    "de-CH" = "Urlaubsguthaben"
+                                    "fr-FR" = "Crédit vacances"
+                                    "de-DE" = "Urlaubsguthaben"
+                                }
+                                "Link"= @{
+                                    "en" = ''
+                                    "fr-CH" = ''
+                                    "de-CH" = ''
+                                    "fr-FR" = ''
+                                    "de-DE" = ''
+                                }
+                            }
+                        }
+                    )
+                    
+                    ImportContent -itemsToCreate $updates
+                    
+                    $item1 = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Breadcrumbs/My Bookings"
+                    $item1.Editing.BeginEdit()
+                    $item1["__Sortorder"] = "100"
+                    $item1.Editing.EndEdit()
+                    
+                      $item2 = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Breadcrumbs/Credit"
+                    $item2.Editing.BeginEdit()
+                    $item2["__Sortorder"] = "200"
+                    $item2.Editing.EndEdit()
+                }
+                
+                function Add-Breadcrumbs-Rendering($pagePath) {
+                    $page = Get-Item -Path $pagePath
+                
+                $componentWrapperRendering =  Get-Item -Path $componentWrapperRendetingPath
+                $componentWrapperInstance = New-Rendering -Item $componentWrapperRendering 
+                
+                 Add-Rendering -Item $page -Instance $componentWrapperInstance -Placeholder "body" -Index 0 -Parameter @{
+                        "IsGreyBackground" = "1"
+                    }
+                    
+                    
+                    $componentWrapperRenderings = Get-Rendering -Item $page | Where-Object {$_.ItemId -eq $componentWrapperRenderingId}
+                    $neededWrapper = $componentWrapperRenderings[0]
+                    
+                
+                    $destinationBreadcrumbsRendering = Get-Item -Path $destinationBreadcrumbsRenderingPath
+                    $destinationBreadcrumbsInstance = New-Rendering -Item $destinationBreadcrumbsRendering 
+                     New-Breadcrumbs-Content -DatasoursePath $datasourcePath;
+                    Add-Rendering -Item $page -Instance $destinationBreadcrumbsInstance -Placeholder "/body/component-wrapper-inner-$($neededWrapper.UniqueId)-0" -DataSource $datasourcePath -Index 1 -Parameter @{
+                        "IsWrapped" = "1"
+                        "IsOpaque" = "1"
+                        "IsShadowed" = "1"
+                    }
+                }
+                
+                Add-Breadcrumbs-Rendering -PagePath $holidayCreditPagePath
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260123T122359Z

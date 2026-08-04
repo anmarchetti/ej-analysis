@@ -1,0 +1,99 @@
+.creditButton {
+    grid-area: creditButton;
+}
+
+.wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    gap: 16px;
+
+    @include media-breakpoint-down(xl) {
+        flex-direction: column;
+    }
+}
+
+.creditAmountWrapper {
+    display: flex;
+    flex-flow: column wrap;
+}
+
+.creditDescription {
+    font-family: $fontRoundedBook;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 14px;
+}
+
+.creditAmount {
+    font-family: $fontRoundedHeadline;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 25px;
+}
+
+.buttonsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    margin-left: auto;
+    white-space: nowrap;
+
+    @include media-breakpoint-down(xl) {
+        margin-left: 0;
+    }
+}
+
+.button {
+    flex-grow: 1;
+}
+
+.cardFooter {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+
+    @include media-breakpoint-down(xl) {
+        flex-direction: column;
+        align-items: unset;
+        gap: 8px;
+    }
+}
+
+.multipleCurrenciesInfo {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    font-size: 14px;
+    line-height: 1.285;
+    color: #616161;
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    color: $colorBlue;
+    transform: scale(0.9);
+    min-width: 16px;
+    min-height: 16px;
+}
+
+.viewCreditError {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    color: $colorRed;
+
+    span {
+        font-size: 16px;
+    }
+
+    svg {
+        width: 25px;
+        margin-right: 10px;
+    }
+}

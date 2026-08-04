@@ -1,0 +1,182 @@
+﻿---
+ID: "ffb95dec-018e-4213-8ca9-558c85ecce81"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-15028 - new virtual groups"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $virtualGroupingFolderPath = "/sitecore/content/EasyJet/Holidays/Data/Facility Virtual Grouping"
+    $overviewVirtualGroupingTemplateId = "{15C8583C-F86B-4982-85E3-B21AC3C587C1}"
+    $foodAndDrinkVirtualGroupingTemplateId = "{C89A2C46-8F19-49F4-AF5C-B6992ED5C77D}"
+    $topFacilites = @()
+    
+    $typesIcons = @(
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Data/Facility Types/Catering/1 buffet restaurant"
+    		Icon = "{F0E3B1B1-AF45-4C96-9F0E-B9EF412A31B6}"
+    	},
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Data/Facility Types/Catering/A la carte restaurant"
+    		Icon = "{92FB1322-37D6-46C5-B3F1-65D462696B8F}"
+    	},
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Data/Facility Types/Catering/Bar"
+    		Icon = "{D45EBB91-9333-4EE4-8436-DED8FA13CDCA}"
+    	},
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Data/Facility Types/Entertainment/Outdoor freshwater pool"
+    		Icon = "{4B74B5CC-0375-4EF8-9443-6784E48D1B36}"
+    	},
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Data/Facility Types/Entertainment/Kids club"
+    		Icon = "{F625DF5B-4758-46B9-A109-2513115142C9}"
+    	},
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Data/Facility Types/Entertainment/Aqua park"
+    		Icon = "{8EAAAAD6-0155-40F0-9F84-340C020B92D5}"
+    	},
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Data/Facility Types/Sports/Gym"
+    		Icon = "{61C1CB28-B866-4446-A290-86AF37703BD3}"
+    	},
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Data/Facility Types/Health/Spa centre"
+    		Icon = "{E39CB997-BCB6-4E86-8920-37C1BFD99B22}"
+    	},
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Data/Facility Types/Facilities/Air conditioning in public areas"
+    		Icon = "{CB092280-6EEF-4EBE-955A-94110E9D0922}"
+    	},
+    	@{
+    		Path = "/sitecore/content/EasyJet/Holidays/Data/Facility Types/Facilities/Wi-fi"
+    		Icon = "{18827BF5-8D67-4C85-8DEF-1EAC7E3128D3}"
+    	}
+    )
+    
+    
+    function Get-Or-Create-Item ($path,$templateId) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $templateId
+    	}
+    
+    	return $item
+    }
+    
+    function Get-Ids-By-Paths ($paths) {
+    	$ids = @()
+    	foreach ($path in $paths) {
+    		$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    		if ($item -ne $null) {
+    			$ids += $item.Id
+    		}
+    	}
+    	return [string]::Join("|",$ids)
+    }
+    
+    
+    
+    foreach ($item in $typesIcons) {
+    	$facilityTypeItem = Get-Item -Path $item.Path -ErrorAction SilentlyContinue
+    	if ($facilityTypeItem -ne $null)
+    	{
+    		$topFacilites += $facilityTypeItem.Id
+    		$facilityTypeItem.Editing.BeginEdit()
+    		$facilityTypeItem.Fields["Icon"].Value = "<image mediaid='$($item.Icon)' />"
+    		$facilityTypeItem.Editing.EndEdit()
+    	}
+    }
+    
+    $overview = Get-Or-Create-Item -Path "$($virtualGroupingFolderPath)/Overview" -TemplateId $overviewVirtualGroupingTemplateId
+    $overview.Editing.BeginEdit()
+    $overview.Fields["Code"].Value = "OV"
+    $overview.Fields["Name"].Value = "Overview"
+    $overview.Fields["Title"].Value = "Overview"
+    $overview.Fields["TopFacilities"].Value = [string]::Join("|",$topFacilites)
+    $overview.Fields["Icon"].Value = "<image mediaid='{B91E3E91-B5CE-4DE4-A7FB-074A87DAD078}' />"
+    $overview.Fields["__sortorder"].Value = 100
+    $overview.Editing.EndEdit()
+    
+    $foodAndDrink = Get-Or-Create-Item -Path "$($virtualGroupingFolderPath)/Food And Drink New" -TemplateId $foodAndDrinkVirtualGroupingTemplateId
+    $foodAndDrink.Editing.BeginEdit()
+    $foodAndDrink.Fields["Code"].Value = "FD"
+    $foodAndDrink.Fields['__Display name'].Value = "Food & drink"
+    $foodAndDrink.Fields["Name"].Value = "Food & Drink"
+    $foodAndDrink.Fields["Icon"].Value = "<image mediaid='{0504482E-1E5D-4E8F-9493-F808F7A894CF}' />"
+    $foodAndDrink.Fields["FacilityGroups"].Value = "{B493C7FC-D4E7-47CF-BF35-A3F090FF7126}"
+    $foodAndDrink.Fields["__sortorder"].Value = 200
+    $foodAndDrink.Editing.EndEdit()
+    
+    $ent = Get-Or-Create-Item -Path "$($virtualGroupingFolderPath)/Entertainment" -TemplateId "{319054B1-87D3-4C7B-8230-0FA70331BB98}"
+    $ent.Editing.BeginEdit()
+    $ent.Fields["Code"].Value = "ENTMT"
+    $ent.Fields["__sortorder"].Value = 300
+    $ent.Editing.EndEdit()
+    
+    $acc = Get-Or-Create-Item -Path "$($virtualGroupingFolderPath)/Accommodation" -TemplateId "{319054B1-87D3-4C7B-8230-0FA70331BB98}"
+    $acc.Editing.BeginEdit()
+    $acc.Fields["Code"].Value = "GNRL"
+    $acc.Fields["__sortorder"].Value = 400
+    $acc.Editing.EndEdit()
+    
+    $sp = Get-Or-Create-Item -Path "$($virtualGroupingFolderPath)/Sports and health" -TemplateId "{319054B1-87D3-4C7B-8230-0FA70331BB98}"
+    $sp.Editing.BeginEdit()
+    $sp.Fields["Code"].Value = "SH"
+    $sp.Fields["__sortorder"].Value = 500
+    $sp.Editing.EndEdit()
+    
+    $rf = Get-Or-Create-Item -Path "$($virtualGroupingFolderPath)/Room Facilities" -TemplateId "{319054B1-87D3-4C7B-8230-0FA70331BB98}"
+    $rf.Editing.BeginEdit()
+    $rf.Fields["Code"].Value = "RM"
+    $rf.Fields["__sortorder"].Value = 600
+    $rf.Editing.EndEdit()
+    
+    
+    $foodAndDrinkOld = Get-Item -Path "$($virtualGroupingFolderPath)/Food and drink" -ErrorAction SilentlyContinue
+    if ($foodAndDrinkOld -ne $null) {
+    	$foodAndDrinkOld | Remove-Item
+    }
+    
+    # Rename "Room Facilities Settings" to "Facilities Settings"
+    $facilitiesSettings = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Room Facilities Settings" -ErrorAction SilentlyContinue
+    if ($facilitiesSettings -ne $null) {
+    	$facilitiesSettings.Editing.BeginEdit()
+    	$facilitiesSettings.Name = "Facilities Settings"
+    	$facilitiesSettings.Editing.EndEdit() | Out-Null;
+    	Write-Host "Rename Room Facilities"
+    }
+    
+    # Set Facilities Design Variants
+    $facilitiesSettings = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Facilities Settings" -ErrorAction SilentlyContinue
+    if ($facilitiesSettings -ne $null) {
+    	$facilitiesSettings.Editing.BeginEdit()
+    	$facilitiesSettings["IsHotelFacilitiesTabsDesignEnabled"] = "1"
+    	$facilitiesSettings["HotelFacilitiesVariantTabsDesign"] = Get-Ids-By-Paths -paths @(
+    		"/sitecore/content/EasyJet/Holidays/Data/Facility Virtual Grouping/Overview",
+    		"/sitecore/content/EasyJet/Holidays/Data/Facility Virtual Grouping/Food And Drink New",
+    		"/sitecore/content/EasyJet/Holidays/Data/Facility Virtual Grouping/Entertainment",
+    		"/sitecore/content/EasyJet/Holidays/Data/Facility Virtual Grouping/Sports and health",
+    		"/sitecore/content/EasyJet/Holidays/Data/Facility Virtual Grouping/Room Facilities"
+    	)
+    	$facilitiesSettings["HotelFacilitiesVariantListDesign"] = Get-Ids-By-Paths -paths @(
+    		"/sitecore/content/EasyJet/Holidays/Data/Facility Virtual Grouping/Food And Drink New",
+    		"/sitecore/content/EasyJet/Holidays/Data/Facility Virtual Grouping/Entertainment",
+    		"/sitecore/content/EasyJet/Holidays/Data/Facility Virtual Grouping/Accommodation",
+    		"/sitecore/content/EasyJet/Holidays/Data/Facility Virtual Grouping/Sports and health",
+    		"/sitecore/content/EasyJet/Holidays/Data/Facility Virtual Grouping/Room Facilities"
+    	)
+    	$facilitiesSettings.Editing.EndEdit()
+    	Write-Host "Facilities Settings Updates"
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220221T090847Z

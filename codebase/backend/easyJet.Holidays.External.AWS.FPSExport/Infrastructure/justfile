@@ -1,0 +1,19 @@
+export AWS_PROFILE := env('AWS_PROFILE', 'ejh-web-dev')
+
+help:
+  @just --list
+
+init *args:
+  terraform init -backend-config=".config.local.tfbackend" {{ args }}
+
+workspace environment="INT1":
+  terraform workspace select 'FpsExport-{{ environment }}'
+
+plan:
+  terraform plan --var-file='vars/variables.int1.tfvars'
+
+apply:
+  terraform apply --var-file='vars/variables.int1.tfvars'
+
+fmt:
+  terraform fmt -recursive

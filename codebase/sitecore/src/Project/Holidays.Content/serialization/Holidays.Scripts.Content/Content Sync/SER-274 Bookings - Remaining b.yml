@@ -1,0 +1,108 @@
+﻿---
+ID: "5d244aac-dbcb-48ea-b4f2-94cc090bf1f1"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-274 Bookings - Remaining balance banner"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+        $item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+         if ($item -eq $null) {
+                $item = New-Item -Path $path -ItemType $templateId
+                Write-Host "Item" $item.Name "successfully created";
+         }
+         return $item
+    }
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    $translations = @{
+                    "en" = @{
+                        "Title" = "Remaining balance due in {number} days";
+                        "Subtitle" = "You need to pay your balance by {date}.";
+                        "Icon" = '<image mediaid="{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}" />';
+                        "ButtonLabel" = "Pay now";
+                    }
+                    "fr-CH" = @{
+                         "Title" = "Montant restant dû dans {number} jours";
+                        "Subtitle" = "Vous devez payer votre solde avant le {date}.";
+                        "Icon" = '<image mediaid="{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}" />';
+                        "ButtonLabel" = "Payez maintenant";
+                    }
+                    "fr-FR" = @{
+                         "Title" = "Montant restant dû dans {number} jours";
+                        "Subtitle" = "Vous devez payer votre solde avant le {date}.";
+                        "Icon" = '<image mediaid="{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}" />';
+                        "ButtonLabel" = "Payez maintenant";
+                    }
+                    "de-CH" = @{
+                         "Title" = "Restbetrag fällig in {number} tagen";
+                        "Subtitle" = "Sie müssen Ihren Restbetrag bis zum {date} bezahlen.";
+                        "Icon" = '<image mediaid="{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}" />';
+                        "ButtonLabel" = "Jetzt bezahlen";
+                       
+                    }
+                    "de-DE" = @{
+                         "Title" = "Restbetrag fällig in {number} tagen";
+                        "Subtitle" = "Sie müssen Ihren Restbetrag bis zum {date} bezahlen.";
+                        "Icon" = '<image mediaid="{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}" />';
+                        "ButtonLabel" = "Jetzt bezahlen";
+                    }
+                }
+    $contentData = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Remaining Balance Reminder" -templateId '{A0065A01-A046-482E-A50A-B48561495BD8}'
+    foreach ($lang in $translations.Keys) {
+        create-lang-version -item $contentData -lang $lang -field "Title" -value $translations[$lang]["Title"]
+        create-lang-version -item $contentData -lang $lang -field "Subtitle" -value $translations[$lang]["Subtitle"]
+        create-lang-version -item $contentData -lang $lang -field "Icon" -value $translations[$lang]["Icon"]
+        create-lang-version -item $contentData -lang $lang -field "ButtonLabel" -value $translations[$lang]["ButtonLabel"]
+    }   
+    
+    
+    function Update-Rendering($itemPath) {
+        $pageItem = Get-Item -Path $itemPath
+                
+        Get-Rendering -Item $pageItem  | 
+        Where-Object -FilterScript {$_.ItemID -eq '{8DAB7C3D-3DFC-4974-B3B7-082964A3738F}'} | 
+        Set-Rendering -Item $pageItem -DataSource $contentData.ID
+    }
+            
+    Update-Rendering -ItemPath '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking'
+    
+    #remove banner from unnecessary pages
+    function Remove-Banner($pagePath){
+        $page = Get-Item -Path $pagePath
+        $allRenderings = Get-Rendering -Item $page
+        
+        foreach($rendering in $allRenderings){
+             if($rendering.ItemId -eq '{8DAB7C3D-3DFC-4974-B3B7-082964A3738F}'){
+                 Remove-Rendering -Item $page -Instance $rendering
+                 Write-Host "ItemId: " $rendering.ItemId "successfully removed";
+             }
+         }
+    }
+            
+    Remove-Banner -pagePath '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel'
+    Remove-Banner -pagePath '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination'
+    Remove-Banner -pagePath '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel'
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241111T133222Z

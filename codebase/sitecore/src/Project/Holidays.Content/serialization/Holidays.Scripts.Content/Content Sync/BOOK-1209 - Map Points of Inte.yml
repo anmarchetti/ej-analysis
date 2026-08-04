@@ -1,0 +1,476 @@
+﻿---
+ID: "c23981a6-991f-4c36-98aa-f2e1fbf762bb"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/BOOK-1209 - Map Points of Interest Component Create"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $holidaysdatamappointsofinterestattractions_Id = "{F56FF3CD-5D1A-4F64-9CCE-B8E795B87619}"
+    $holidaysdatamappointsofinterestnature_Id = "{5D740F46-E8DD-41B4-A2AF-5A41541DFE31}"
+    $holidaysdatamappointsofinterest_Id = "{66B98F37-5E1A-4AFC-B58F-EC574F2980A5}"
+    $holidaysdatamappointsofinterestnearby_Id = "{DFA81709-C5E8-4A31-9B46-D233345F2581}"
+    $holidaysdatamappointsofinterestamenities_Id = "{0BBE34C0-87FC-46AA-ADC1-8ADADD43FCCC}"
+    $mappointsofinterest_title_66b98f375e1a4afcb58fec574f2980a5_frfr_v1 = @"
+    QUE TROUVE-T-ON À PROXIMITÉ DU {hotelName} ?
+    "@
+    $nearby_icon_dfa81709c5e84a319b46d233345f2581_dech_v1 = @"
+    <image mediaid="{0C14F69C-879A-4DD8-9731-EBDC65E4AD12}" />
+    "@
+    $attractions_icon_f56ff3cd5d1a4f649cceb8e795b87619_frfr_v1 = @"
+    <image mediaid="{4E200714-BC87-4339-B099-4A63D0A52078}" />
+    "@
+    $mappointsofinterest_distance_66b98f375e1a4afcb58fec574f2980a5_frfr_v1 = @"
+    {distance} km
+    "@
+    $mappointsofinterest_disclaimertext_66b98f375e1a4afcb58fec574f2980a5_en_v1 = @"
+    Distances shown are measured in a straight line.
+    "@
+    $mappointsofinterest_title_66b98f375e1a4afcb58fec574f2980a5_dech_v1 = @"
+    WAS GIBT'S IN DER NÄHE VOM {hotelName}?
+    "@
+    $mappointsofinterest_mobiledrawertitle_66b98f375e1a4afcb58fec574f2980a5_frfr_v1 = @"
+    Que trouve-t-on à proximité ?
+    "@
+    $attractions_icon_f56ff3cd5d1a4f649cceb8e795b87619_frch_v1 = @"
+    <image mediaid="{4E200714-BC87-4339-B099-4A63D0A52078}" />
+    "@
+    $mappointsofinterest_categories_66b98f375e1a4afcb58fec574f2980a5_dede_v1 = @"
+    $holidaysdatamappointsofinterestnearby_Id|$holidaysdatamappointsofinterestattractions_Id|$holidaysdatamappointsofinterestnature_Id|$holidaysdatamappointsofinterestamenities_Id
+    "@
+    $amenities_icon_0bbe34c087fc46aaadc18adadd43fccc_frfr_v1 = @"
+    <image mediaid="{105E38E7-92EA-4413-802D-119383E0FA5D}" />
+    "@
+    $mappointsofinterest_categories_66b98f375e1a4afcb58fec574f2980a5_dech_v1 = @"
+    $holidaysdatamappointsofinterestnearby_Id|$holidaysdatamappointsofinterestattractions_Id|$holidaysdatamappointsofinterestnature_Id|$holidaysdatamappointsofinterestamenities_Id
+    "@
+    $nearby_icon_dfa81709c5e84a319b46d233345f2581_dede_v1 = @"
+    <image mediaid="{0C14F69C-879A-4DD8-9731-EBDC65E4AD12}" />
+    "@
+    $mappointsofinterest_distance_66b98f375e1a4afcb58fec574f2980a5_dech_v1 = @"
+    {distance} km
+    "@
+    $mappointsofinterest_categories_66b98f375e1a4afcb58fec574f2980a5_frch_v1 = @"
+    $holidaysdatamappointsofinterestnearby_Id|$holidaysdatamappointsofinterestattractions_Id|$holidaysdatamappointsofinterestnature_Id|$holidaysdatamappointsofinterestamenities_Id
+    "@
+    $amenities_icon_0bbe34c087fc46aaadc18adadd43fccc_dech_v1 = @"
+    <image mediaid="{105E38E7-92EA-4413-802D-119383E0FA5D}" />
+    "@
+    $mappointsofinterest_distance_66b98f375e1a4afcb58fec574f2980a5_en_v1 = @"
+    {distance} km
+    "@
+    $mappointsofinterest_disclaimertext_66b98f375e1a4afcb58fec574f2980a5_frch_v1 = @"
+    Les distances affichées sont mesurées à partir d'une ligne droite.
+    "@
+    $attractions_icon_f56ff3cd5d1a4f649cceb8e795b87619_dech_v1 = @"
+    <image mediaid="{4E200714-BC87-4339-B099-4A63D0A52078}" />
+    "@
+    $mappointsofinterest_disclaimertext_66b98f375e1a4afcb58fec574f2980a5_dech_v1 = @"
+    Die angegebenen Entfernungen sind in Luftlinie gemessen.
+    "@
+    $mappointsofinterest_mobiledrawertitle_66b98f375e1a4afcb58fec574f2980a5_dech_v1 = @"
+    Was gibt's noch in der Nähe?
+    "@
+    $nearby_icon_dfa81709c5e84a319b46d233345f2581_frch_v1 = @"
+    <image mediaid="{0C14F69C-879A-4DD8-9731-EBDC65E4AD12}" />
+    "@
+    $nature_icon_5d740f46e8dd41b4a2af5a41541dfe31_dech_v1 = @"
+    <image mediaid="{EBA3EF73-012A-438E-AEAA-0923A847B253}" />
+    "@
+    $nearby_icon_dfa81709c5e84a319b46d233345f2581_en_v1 = @"
+    <image mediaid="{0C14F69C-879A-4DD8-9731-EBDC65E4AD12}" />
+    "@
+    $mappointsofinterest_distance_66b98f375e1a4afcb58fec574f2980a5_frch_v1 = @"
+    {distance} km
+    "@
+    $nature_icon_5d740f46e8dd41b4a2af5a41541dfe31_frch_v1 = @"
+    <image mediaid="{EBA3EF73-012A-438E-AEAA-0923A847B253}" />
+    "@
+    $amenities_icon_0bbe34c087fc46aaadc18adadd43fccc_dede_v1 = @"
+    <image mediaid="{105E38E7-92EA-4413-802D-119383E0FA5D}" />
+    "@
+    $mappointsofinterest_disclaimertext_66b98f375e1a4afcb58fec574f2980a5_frfr_v1 = @"
+    Les distances affichées sont mesurées à partir d'une ligne droite.
+    "@
+    $mappointsofinterest_title_66b98f375e1a4afcb58fec574f2980a5_frch_v1 = @"
+    QUE TROUVE-T-ON À PROXIMITÉ DU {hotelName} ?
+    "@
+    $mappointsofinterest_disclaimertext_66b98f375e1a4afcb58fec574f2980a5_dede_v1 = @"
+    Die angegebenen Entfernungen sind in Luftlinie gemessen.
+    "@
+    $amenities_icon_0bbe34c087fc46aaadc18adadd43fccc_en_v1 = @"
+    <image mediaid="{105E38E7-92EA-4413-802D-119383E0FA5D}" />
+    "@
+    $mappointsofinterest_mobiledrawertitle_66b98f375e1a4afcb58fec574f2980a5_frch_v1 = @"
+    Que trouve-t-on à proximité ?
+    "@
+    $mappointsofinterest_distance_66b98f375e1a4afcb58fec574f2980a5_dede_v1 = @"
+    {distance} km
+    "@
+    $nearby_icon_dfa81709c5e84a319b46d233345f2581_frfr_v1 = @"
+    <image mediaid="{0C14F69C-879A-4DD8-9731-EBDC65E4AD12}" />
+    "@
+    $nature_icon_5d740f46e8dd41b4a2af5a41541dfe31_en_v1 = @"
+    <image mediaid="{EBA3EF73-012A-438E-AEAA-0923A847B253}" />
+    "@
+    $amenities_icon_0bbe34c087fc46aaadc18adadd43fccc_frch_v1 = @"
+    <image mediaid="{105E38E7-92EA-4413-802D-119383E0FA5D}" />
+    "@
+    $mappointsofinterest_categories_66b98f375e1a4afcb58fec574f2980a5_frfr_v1 = @"
+    $holidaysdatamappointsofinterestnearby_Id|$holidaysdatamappointsofinterestattractions_Id|$holidaysdatamappointsofinterestnature_Id|$holidaysdatamappointsofinterestamenities_Id
+    "@
+    $mappointsofinterest_mobiledrawertitle_66b98f375e1a4afcb58fec574f2980a5_dede_v1 = @"
+    Was gibt's noch in der Nähe?
+    "@
+    $mappointsofinterest_title_66b98f375e1a4afcb58fec574f2980a5_dede_v1 = @"
+    WAS GIBT'S IN DER NÄHE VOM {hotelName}?
+    "@
+    $nature_icon_5d740f46e8dd41b4a2af5a41541dfe31_frfr_v1 = @"
+    <image mediaid="{EBA3EF73-012A-438E-AEAA-0923A847B253}" />
+    "@
+    $mappointsofinterest_mobiledrawertitle_66b98f375e1a4afcb58fec574f2980a5_en_v1 = @"
+    What's nearby?
+    "@
+    $mappointsofinterest_title_66b98f375e1a4afcb58fec574f2980a5_en_v1 = @"
+    What's nearby {hotelName} hotel?
+    "@
+    $attractions_icon_f56ff3cd5d1a4f649cceb8e795b87619_en_v1 = @"
+    <image mediaid="{4E200714-BC87-4339-B099-4A63D0A52078}" />
+    "@
+    $attractions_icon_f56ff3cd5d1a4f649cceb8e795b87619_dede_v1 = @"
+    <image mediaid="{4E200714-BC87-4339-B099-4A63D0A52078}" />
+    "@
+    $nature_icon_5d740f46e8dd41b4a2af5a41541dfe31_dede_v1 = @"
+    <image mediaid="{EBA3EF73-012A-438E-AEAA-0923A847B253}" />
+    "@
+    $mappointsofinterest_categories_66b98f375e1a4afcb58fec574f2980a5_en_v1 = @"
+    $holidaysdatamappointsofinterestnearby_Id|$holidaysdatamappointsofinterestattractions_Id|$holidaysdatamappointsofinterestnature_Id|$holidaysdatamappointsofinterestamenities_Id
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Map Points of Interest"
+            TemplatePath = "Feature/PageContent/Map Points Of Interest"
+            Id          = $holidaysdatamappointsofinterest_Id
+            Fields      = @{
+                "DisclaimerText" = @{
+                    "de-CH" = $mappointsofinterest_disclaimertext_66b98f375e1a4afcb58fec574f2980a5_dech_v1
+                    "en" = $mappointsofinterest_disclaimertext_66b98f375e1a4afcb58fec574f2980a5_en_v1
+                    "fr-FR" = $mappointsofinterest_disclaimertext_66b98f375e1a4afcb58fec574f2980a5_frfr_v1
+                    "de-DE" = $mappointsofinterest_disclaimertext_66b98f375e1a4afcb58fec574f2980a5_dede_v1
+                    "fr-CH" = $mappointsofinterest_disclaimertext_66b98f375e1a4afcb58fec574f2980a5_frch_v1
+                }
+                "Distance" = @{
+                    "de-CH" = $mappointsofinterest_distance_66b98f375e1a4afcb58fec574f2980a5_dech_v1
+                    "en" = $mappointsofinterest_distance_66b98f375e1a4afcb58fec574f2980a5_en_v1
+                    "fr-FR" = $mappointsofinterest_distance_66b98f375e1a4afcb58fec574f2980a5_frfr_v1
+                    "de-DE" = $mappointsofinterest_distance_66b98f375e1a4afcb58fec574f2980a5_dede_v1
+                    "fr-CH" = $mappointsofinterest_distance_66b98f375e1a4afcb58fec574f2980a5_frch_v1
+                }
+                "ShowMoreButtonText" = @{
+                    "de-CH" = "Mehr anzeigen"
+                    "en" = "Show more"
+                    "fr-FR" = "Afficher plus"
+                    "de-DE" = "Mehr anzeigen"
+                    "fr-CH" = "Afficher plus"
+                }
+                "Categories" = @{
+                    "de-CH" = $mappointsofinterest_categories_66b98f375e1a4afcb58fec574f2980a5_dech_v1
+                    "en" = $mappointsofinterest_categories_66b98f375e1a4afcb58fec574f2980a5_en_v1
+                    "fr-FR" = $mappointsofinterest_categories_66b98f375e1a4afcb58fec574f2980a5_frfr_v1
+                    "de-DE" = $mappointsofinterest_categories_66b98f375e1a4afcb58fec574f2980a5_dede_v1
+                    "fr-CH" = $mappointsofinterest_categories_66b98f375e1a4afcb58fec574f2980a5_frch_v1
+                }
+                "Title" = @{
+                    "de-CH" = $mappointsofinterest_title_66b98f375e1a4afcb58fec574f2980a5_dech_v1
+                    "en" = $mappointsofinterest_title_66b98f375e1a4afcb58fec574f2980a5_en_v1
+                    "fr-FR" = $mappointsofinterest_title_66b98f375e1a4afcb58fec574f2980a5_frfr_v1
+                    "de-DE" = $mappointsofinterest_title_66b98f375e1a4afcb58fec574f2980a5_dede_v1
+                    "fr-CH" = $mappointsofinterest_title_66b98f375e1a4afcb58fec574f2980a5_frch_v1
+                }
+                "MobileDrawerTitle" = @{
+                    "de-CH" = $mappointsofinterest_mobiledrawertitle_66b98f375e1a4afcb58fec574f2980a5_dech_v1
+                    "en" = $mappointsofinterest_mobiledrawertitle_66b98f375e1a4afcb58fec574f2980a5_en_v1
+                    "fr-FR" = $mappointsofinterest_mobiledrawertitle_66b98f375e1a4afcb58fec574f2980a5_frfr_v1
+                    "de-DE" = $mappointsofinterest_mobiledrawertitle_66b98f375e1a4afcb58fec574f2980a5_dede_v1
+                    "fr-CH" = $mappointsofinterest_mobiledrawertitle_66b98f375e1a4afcb58fec574f2980a5_frch_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Map Points of Interest/Amenities"
+            TemplatePath = "Feature/PageContent/Map Points of Interest Category"
+            Id          = $holidaysdatamappointsofinterestamenities_Id
+            Fields      = @{
+                "Icon" = @{
+                    "de-CH" = $amenities_icon_0bbe34c087fc46aaadc18adadd43fccc_dech_v1
+                    "en" = $amenities_icon_0bbe34c087fc46aaadc18adadd43fccc_en_v1
+                    "fr-FR" = $amenities_icon_0bbe34c087fc46aaadc18adadd43fccc_frfr_v1
+                    "de-DE" = $amenities_icon_0bbe34c087fc46aaadc18adadd43fccc_dede_v1
+                    "fr-CH" = $amenities_icon_0bbe34c087fc46aaadc18adadd43fccc_frch_v1
+                }
+                "Key" = @{
+                    "en" = "Amenities"
+                }
+                "Name" = @{
+                    "de-CH" = "Shoppen & Essen"
+                    "en" = "Amenities"
+                    "fr-FR" = "Services"
+                    "de-DE" = "Shoppen & Essen"
+                    "fr-CH" = "Services"
+                }
+                "MaxNumberOfItems" = @{
+                    "de-CH" = 20
+                    "en" = 20
+                    "fr-FR" = 20
+                    "de-DE" = 20
+                    "fr-CH" = 20
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Map Points of Interest/Attractions"
+            TemplatePath = "Feature/PageContent/Map Points of Interest Category"
+            Id          = $holidaysdatamappointsofinterestattractions_Id
+            Fields      = @{
+                "Icon" = @{
+                    "de-CH" = $attractions_icon_f56ff3cd5d1a4f649cceb8e795b87619_dech_v1
+                    "en" = $attractions_icon_f56ff3cd5d1a4f649cceb8e795b87619_en_v1
+                    "fr-FR" = $attractions_icon_f56ff3cd5d1a4f649cceb8e795b87619_frfr_v1
+                    "de-DE" = $attractions_icon_f56ff3cd5d1a4f649cceb8e795b87619_dede_v1
+                    "fr-CH" = $attractions_icon_f56ff3cd5d1a4f649cceb8e795b87619_frch_v1
+                }
+                "Key" = @{
+                    "en" = "Attractions"
+                }
+                "Name" = @{
+                    "de-CH" = "Sehenswertes"
+                    "en" = "Attractions"
+                    "fr-FR" = "Attractions"
+                    "de-DE" = "Sehenswertes"
+                    "fr-CH" = "Attractions"
+                }
+                "MaxNumberOfItems" = @{
+                    "de-CH" = 20
+                    "en" = 20
+                    "fr-FR" = 20
+                    "de-DE" = 20
+                    "fr-CH" = 20
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Map Points of Interest/Nature"
+            TemplatePath = "Feature/PageContent/Map Points of Interest Category"
+            Id          = $holidaysdatamappointsofinterestnature_Id
+            Fields      = @{
+                "Icon" = @{
+                    "de-CH" = $nature_icon_5d740f46e8dd41b4a2af5a41541dfe31_dech_v1
+                    "en" = $nature_icon_5d740f46e8dd41b4a2af5a41541dfe31_en_v1
+                    "fr-FR" = $nature_icon_5d740f46e8dd41b4a2af5a41541dfe31_frfr_v1
+                    "de-DE" = $nature_icon_5d740f46e8dd41b4a2af5a41541dfe31_dede_v1
+                    "fr-CH" = $nature_icon_5d740f46e8dd41b4a2af5a41541dfe31_frch_v1
+                }
+                "Key" = @{
+                    "en" = "Nature"
+                }
+                "Name" = @{
+                    "de-CH" = "Natur"
+                    "en" = "Nature"
+                    "fr-FR" = "Nature"
+                    "de-DE" = "Natur"
+                    "fr-CH" = "Nature"
+                }
+                "MaxNumberOfItems" = @{
+                    "de-CH" = 20
+                    "en" = 20
+                    "fr-FR" = 20
+                    "de-DE" = 20
+                    "fr-CH" = 20
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Map Points of Interest/Nearby"
+            TemplatePath = "Feature/PageContent/Map Points of Interest Category"
+            Id          = $holidaysdatamappointsofinterestnearby_Id
+            Fields      = @{
+                "Icon" = @{
+                    "de-CH" = $nearby_icon_dfa81709c5e84a319b46d233345f2581_dech_v1
+                    "en" = $nearby_icon_dfa81709c5e84a319b46d233345f2581_en_v1
+                    "fr-FR" = $nearby_icon_dfa81709c5e84a319b46d233345f2581_frfr_v1
+                    "de-DE" = $nearby_icon_dfa81709c5e84a319b46d233345f2581_dede_v1
+                    "fr-CH" = $nearby_icon_dfa81709c5e84a319b46d233345f2581_frch_v1
+                }
+                "Key" = @{
+                    "en" = "Nearby"
+                }
+                "Name" = @{
+                    "de-CH" = "In der Nähe"
+                    "en" = "Nearby"
+                    "fr-FR" = "À proximité"
+                    "de-DE" = "In der Nähe"
+                    "fr-CH" = "À proximité"
+                }
+                "MaxNumberOfItems" = @{
+                    "de-CH" = 5
+                    "en" = 5
+                    "fr-FR" = 5
+                    "de-DE" = 5
+                    "fr-CH" = 5
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    Import-Function "Import Content"
+    $tradeportaldatamappointsofinterestnearby_Id = "{7A4FB1EF-E7FF-47E7-86BD-492D1C70C6EE}"
+    $tradeportaldatamappointsofinterestnature_Id = "{3B5B04F2-8022-4991-9978-78446EDC7FED}"
+    $tradeportaldatamappointsofinterestamenities_Id = "{0EC2A7C1-E69F-405B-9481-4BEB4753E98C}"
+    $tradeportaldatamappointsofinterestattractions_Id = "{760E4E64-E58C-47F1-943A-15CB2A214C1A}"
+    $tradeportaldatamappointsofinterest_Id = "{C8471136-D1C4-4722-A6FD-83C92E6F9513}"
+    $nearby_icon_7a4fb1efe7ff47e786bd492d1c70c6ee_en_v1 = @"
+    <image mediaid="{0C14F69C-879A-4DD8-9731-EBDC65E4AD12}" />
+    "@
+    $nature_icon_3b5b04f280224991997878446edc7fed_en_v1 = @"
+    <image mediaid="{EBA3EF73-012A-438E-AEAA-0923A847B253}" />
+    "@
+    $mappointsofinterest_title_c8471136d1c44722a6fd83c92e6f9513_en_v1 = @"
+    What's nearby {hotelName} hotel?
+    "@
+    $attractions_icon_760e4e64e58c47f1943a15cb2a214c1a_en_v1 = @"
+    <image mediaid="{4E200714-BC87-4339-B099-4A63D0A52078}" />
+    "@
+    $amenities_icon_0ec2a7c1e69f405b94814beb4753e98c_en_v1 = @"
+    <image mediaid="{105E38E7-92EA-4413-802D-119383E0FA5D}" />
+    "@
+    $mappointsofinterest_categories_c8471136d1c44722a6fd83c92e6f9513_en_v1 = @"
+    $tradeportaldatamappointsofinterestnearby_Id|$tradeportaldatamappointsofinterestattractions_Id|$tradeportaldatamappointsofinterestnature_Id|$tradeportaldatamappointsofinterestamenities_Id
+    "@
+    $mappointsofinterest_disclaimertext_c8471136d1c44722a6fd83c92e6f9513_en_v1 = @"
+    Distances shown are measured in a straight line.
+    "@
+    $mappointsofinterest_distance_c8471136d1c44722a6fd83c92e6f9513_en_v1 = @"
+    {distance} km
+    "@
+    $mappointsofinterest_mobiledrawertitle_c8471136d1c44722a6fd83c92e6f9513_en_v1 = @"
+    What's nearby?
+    "@
+    $tradeItemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Map Points Of Interest"
+            TemplatePath = "Feature/PageContent/Map Points Of Interest"
+            Id          = $tradeportaldatamappointsofinterest_Id
+            Fields      = @{
+                "DisclaimerText" = @{
+                    "en" = $mappointsofinterest_disclaimertext_c8471136d1c44722a6fd83c92e6f9513_en_v1
+                }
+                "Distance" = @{
+                    "en" = $mappointsofinterest_distance_c8471136d1c44722a6fd83c92e6f9513_en_v1
+                }
+                "ShowMoreButtonText" = @{
+                    "en" = "Show more"
+                }
+                "Categories" = @{
+                    "en" = $mappointsofinterest_categories_c8471136d1c44722a6fd83c92e6f9513_en_v1
+                }
+                "Title" = @{
+                    "en" = $mappointsofinterest_title_c8471136d1c44722a6fd83c92e6f9513_en_v1
+                }
+                "MobileDrawerTitle" = @{
+                    "en" = $mappointsofinterest_mobiledrawertitle_c8471136d1c44722a6fd83c92e6f9513_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Map Points Of Interest/Amenities"
+            TemplatePath = "Feature/PageContent/Map Points of Interest Category"
+            Id          = $tradeportaldatamappointsofinterestamenities_Id
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $amenities_icon_0ec2a7c1e69f405b94814beb4753e98c_en_v1
+                }
+                "Key" = @{
+                    "en" = "Amenities"
+                }
+                "Name" = @{
+                    "en" = "Amenities"
+                }
+                "MaxNumberOfItems" = @{
+                    "en" = 20
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Map Points Of Interest/Attractions"
+            TemplatePath = "Feature/PageContent/Map Points of Interest Category"
+            Id          = $tradeportaldatamappointsofinterestattractions_Id
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $attractions_icon_760e4e64e58c47f1943a15cb2a214c1a_en_v1
+                }
+                "Key" = @{
+                    "en" = "Attractions"
+                }
+                "Name" = @{
+                    "en" = "Attractions"
+                }
+                "MaxNumberOfItems" = @{
+                    "en" = 20
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Map Points Of Interest/Nature"
+            TemplatePath = "Feature/PageContent/Map Points of Interest Category"
+            Id          = $tradeportaldatamappointsofinterestnature_Id
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $nature_icon_3b5b04f280224991997878446edc7fed_en_v1
+                }
+                "Key" = @{
+                    "en" = "Nature"
+                }
+                "Name" = @{
+                    "en" = "Nature"
+                }
+                "MaxNumberOfItems" = @{
+                    "en" = 20
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Map Points Of Interest/Nearby"
+            TemplatePath = "Feature/PageContent/Map Points of Interest Category"
+            Id          = $tradeportaldatamappointsofinterestnearby_Id
+            Fields      = @{
+                "Icon" = @{
+                    "en" = $nearby_icon_7a4fb1efe7ff47e786bd492d1c70c6ee_en_v1
+                }
+                "Key" = @{
+                    "en" = "Nearby"
+                }
+                "Name" = @{
+                    "en" = "Nearby"
+                }
+                "MaxNumberOfItems" = @{
+                    "en" = 5
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $tradeItemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 100000049
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20251010T112537Z

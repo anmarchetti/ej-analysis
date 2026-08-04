@@ -1,0 +1,19 @@
+export AWS_PROFILE := env('AWS_PROFILE', 'ejh-shared-dev')
+
+help:
+  @just --list
+
+init *args:
+  terraform init -backend-config=".config.local.tfbackend" {{ args }}
+
+workspace:
+  terraform workspace select 'Atcom-TST-Lambda-DatahubReplaySyncPublisher'
+
+plan:
+  terraform plan --var-file='vars/variables.local.tst.tfvars'
+
+apply:
+  terraform apply --var-file='vars/variables.local.tst.tfvars'
+
+fmt:
+  terraform fmt -recursive

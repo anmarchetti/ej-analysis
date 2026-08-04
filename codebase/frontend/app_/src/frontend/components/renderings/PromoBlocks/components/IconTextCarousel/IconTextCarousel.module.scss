@@ -1,0 +1,83 @@
+.container {
+    display: flex;
+}
+
+.carousel {
+    max-width: calc($container-max-width - 1px); // Prevent shadow clipping on the last right item
+    margin: 20px 0;
+    padding: 3px 0; // Prevent horizontal shadow clipping
+
+    :global(.react-multi-carousel-dot) {
+        margin-top: 20px;
+
+        button {
+            width: 8px;
+            height: 8px;
+            background-color: #dae2e4;
+            border: none;
+        }
+    }
+
+    :global(.react-multi-carousel-dot--active) {
+        button {
+            width: 10px;
+            height: 10px;
+            background-color: $colorOrange;
+        }
+    }
+
+    :global(.react-multi-carousel-item) {
+        padding: 0 8px;
+    }
+}
+
+.showDots {
+    :global(.react-multi-carousel-track) {
+        margin-bottom: 25px;
+    }
+
+    :global(.react-multi-carousel-item) {
+        padding-bottom: 14px;
+    }
+
+    :global(.react-multiple-carousel__arrow) {
+        top: calc(50% - 19px); // 5px (offset) + 14px (bottom padding of .react-multi-carousel-item)
+    }
+}
+
+.sliderButton {
+    position: absolute;
+    z-index: $z-index-over-element;
+    top: calc(50% - 19px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    min-height: 30px;
+    padding: 0;
+    background: $colorWhite;
+    border: 0;
+    border-radius: 35px;
+    outline: 0;
+    box-shadow: 0 0 6px 0 rgba(135, 135, 135, 0.39);
+    opacity: 1;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: all 0.5s;
+
+    svg {
+        width: 16px;
+        height: 16px;
+        color: $colorOrange;
+    }
+
+    &:global(.next) {
+        right: -8px;
+    }
+
+    &:global(.prev) {
+        left: -8px;
+    }
+}

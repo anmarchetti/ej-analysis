@@ -1,0 +1,63 @@
+{
+    "Title": "Documents list for with ref=VALID_REF",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/list/Documents",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "ExactMatcher",
+                "Pattern": "[{\"field\":\"ResID\",\"operator\":\"eq\",\"value\":\"VALID_REF\"}]"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "text/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": [
+            {
+                "DocType": "PDF",
+                "ResID": "VALID_REF",
+                "Document": "Confirmation",
+                "ID": "NDIwMGttTUR6RXE0Mg=="
+            },
+            {
+                "DocType": "PDF",
+                "ResID": "VALID_REF",
+                "Document": "Atol",
+                "ID": "NDIwM0hhaGpxbXZhZXBuNDI="
+            },
+            {
+                "DocType": "HTML",
+                "ResID": "VALID_REF",
+                "Document": "Amendment",
+                "ID": "HTML_A_1"
+            },
+            {
+                "DocType": "PDF",
+                "ResID": "VALID_REF",
+                "Document": "Amendment",
+                "ID": "PDF_A_1"
+            },
+            {
+                "DocType": "PDF",
+                "ResID": "VALID_REF",
+                "Document": "Atol",
+                "ID": "MjA0NDhyd0tmbUc0Mg=="
+            },
+            {
+                "DocType": "PDF",
+                "ResID": "VALID_REF",
+                "Document": "Amendment",
+                "ID": "PDF_A_2"
+            }
+        ]
+    }
+}

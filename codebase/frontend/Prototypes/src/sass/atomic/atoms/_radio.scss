@@ -1,0 +1,104 @@
+.radio {
+    position: relative;
+    display: block;
+    flex: 0 0 auto;
+
+    input[type="radio"] {
+        position: absolute;
+        left: 0;
+        opacity: 0;
+
+        &:checked + .radio__label::after {
+            display: block;
+        }
+
+        &:focus + .radio__label::before {
+            outline: $colorOrange auto 2px;
+        }
+    }
+}
+
+.radio--disabled {
+    color: $clrTxtLight;
+
+    .radio__label {
+        cursor: default;
+
+        &::after {
+            opacity: 0.4;
+        }
+    }
+}
+
+.radio--pill {
+    input[type="radio"] {
+        &:checked + .radio__label {
+            --border-colour: #{$colorOrange};
+        }
+    }
+
+    .radio__label {
+        --radio-left: 10px;
+        --border-colour: #{$colorGrayDark};
+
+        padding: 8px;
+        padding-left: 36px;
+        font-family: $fontRoundedDemy;
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 17px;
+        color: $colorOrange;
+        border: 1px solid var(--border-colour);
+        border-radius: 25px;
+    }
+}
+
+.radio__label {
+    --radio-size: 16px;
+    --radio-inner-dot-size: 10px;
+    --radio-left: 0px;
+
+    position: relative;
+    display: inline-block;
+    padding-left: 30px;
+    font-size: 15px;
+    cursor: pointer;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        display: inline-block;
+        margin: auto;
+    }
+
+    /* Outer box of the fake radio */
+    &::before {
+        left: var(--radio-left);
+        width: var(--radio-size);
+        height: var(--radio-size);
+        background-color: #fff;
+        border: 1px solid $colorGrayDark;
+        border-radius: $box_border-radius_round;
+    }
+
+    /* Checkmark of the fake radio */
+    &::after {
+        left: calc(
+            var(--radio-left) + 1px + (var(--radio-size) - var(--radio-inner-dot-size)) / 2
+        );
+        display: none;
+        width: var(--radio-inner-dot-size);
+        height: var(--radio-inner-dot-size);
+        background-color: $colorOrange;
+        border-radius: $box_border-radius_round;
+    }
+}
+
+.error {
+    .radio__label::before {
+        border: 1px solid $colorRed;
+    }
+}

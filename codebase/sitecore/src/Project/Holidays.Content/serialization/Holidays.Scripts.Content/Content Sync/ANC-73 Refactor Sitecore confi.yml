@@ -1,0 +1,220 @@
+﻿---
+ID: "998d38b1-0cd3-46df-bd16-f255563526b6"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-73 Refactor Sitecore configuration for all pages"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$template) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $template
+    	}
+    	return $item
+    }
+    
+    function create-lang-version ($itemPath,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $itemPath -Language $lang
+    
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Path $itemPath -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    			$targetLangItem = Get-Item -Path $itemPath -Language $lang
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $itemPath -Language $lang
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value;
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    function Add-New-Rendering($item, $placeholder, $renderingId, $datasource, $index, $parameters){
+            $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $placeholder
+            if($parameters -ne $null)
+            {
+                Add-Rendering -Item $item -Instance $renderingItem -PlaceHolder $placeholder -Parameter $parameters -DataSource $datasource -Index $index
+            }
+            else
+            {
+                Add-Rendering -Item $item -Instance $renderingItem -PlaceHolder $placeholder -DataSource $datasource -Index $index
+            }
+    }
+    
+    function Add-Rendering-To($item, $renderingId, $newRenderingId, $datasource, $sign){
+            $index = 0
+            Get-Rendering -Item $item |
+            Foreach-Object { 
+                $index++
+                if($_.ItemId -eq $renderingId)
+                {
+                    
+                        $incrementIndex = $index
+                        if ($sign -ne 0){
+                            $incrementIndex = $index + $sign
+                        }
+                        
+                        $newPlaceholder = $_.Placeholder + '/extra-luggage-' + $_.UniqueId + '-0';
+                    
+                        Add-New-Rendering -Item $item -Placeholder $newPlaceholder -RenderingId $newRenderingId -Datasource $datasource -Index $incrementIndex -Parameters $parameters
+                }
+            }
+    }
+    
+    #Create Extra Luggage Lists datasource for Holidays and Trade
+    $listPath = '/sitecore/content/EasyJet/Holidays/Data/Extra Luggage Lists';
+    
+    $listData = Get-Or-Create-Item -Path $listPath -Template '{E5EA8662-0A89-49AC-A06C-CE412A7F67E4}'
+    
+    $bagsPath = '/sitecore/content/EasyJet/Holidays/Data/Luggage/'
+    
+    $holdBagsPath = $bagsPath + 'Extra Hold Luggage';
+    $bags = Get-ChildItem -Path $holdBagsPath;
+    $holdLuggageItemsTrade = ($bags | select -ExpandProperty Id) -join "|"
+        
+    $largeSportPath = $bagsPath + 'Large Sports Equipment';
+    $largeSport = Get-ChildItem -Path $largeSportPath;
+    $largeSportItems = ($largeSport | select -ExpandProperty Id) -join "|"
+        
+    $smallSportPath = $bagsPath + 'Small Sports Equipment';
+    $smallSport = Get-ChildItem -Path $smallSportPath;
+    $smallSportItems = ($smallSport | select -ExpandProperty Id) -join "|"
+    
+    $sportTrade = $largeSportItems + '|' + $smallSportItems
+    
+    create-lang-version -itemPath $listPath -lang 'en' -field 'HoldLuggageItems' -value $holdLuggageItemsTrade
+    create-lang-version -itemPath $listPath -lang 'en' -field 'SportsEquipmentItems' -value $sportTrade;
+    create-lang-version -itemPath $listPath -lang 'fr-CH' 
+    create-lang-version -itemPath $listPath -lang 'de-DE'
+    create-lang-version -itemPath $listPath -lang 'de-CH' 
+    
+    #Trade
+    $listPathTrade = '/sitecore/content/EasyJet/TradePortal/Data/Extra Luggage Lists';
+    
+    $listDataTrade = Get-Or-Create-Item -Path $listPathTrade -Template '{E5EA8662-0A89-49AC-A06C-CE412A7F67E4}'
+    
+    $bagsPathTrade = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/'
+    
+    $holdBagsPath = $bagsPathTrade + 'Extra Hold Luggage';
+    $bags = Get-ChildItem -Path $holdBagsPath;
+    $holdLuggageItems = ($bags | select -ExpandProperty Id) -join "|"
+        
+    $largeSportPath = $bagsPathTrade + 'Large Sports Equipment';
+    $largeSport = Get-ChildItem -Path $largeSportPath;
+    $largeSportItems = ($largeSport | select -ExpandProperty Id) -join "|"
+        
+    $smallSportPath = $bagsPathTrade + 'Small Sports Equipment';
+    $smallSport = Get-ChildItem -Path $smallSportPath;
+    $smallSportItems = ($smallSport | select -ExpandProperty Id) -join "|"
+    
+    $sport = $largeSportItems + '|' + $smallSportItems
+    
+    create-lang-version -itemPath $listPathTrade -lang 'en' -field 'HoldLuggageItems' -value $holdLuggageItems
+    create-lang-version -itemPath $listPathTrade -lang 'en' -field 'SportsEquipmentItems' -value $sport;
+    
+    #Create rendering and attach it to Hold lugggae on extras page
+    $bookingPagePathHolidays = '/sitecore/content/EasyJet/Holidays/Home/Booking'
+    $bookingPageHolidays = Get-Item -Path $bookingPagePathHolidays -ErrorAction SilentlyContinue
+    $bookingPagePathTrade = '/sitecore/content/EasyJet/TradePortal/Home/Booking'
+    $bookingPageTrade = Get-Item -Path $bookingPagePathTrade -ErrorAction SilentlyContinue
+    
+    Add-Rendering-To -item $bookingPageHolidays  -renderingId '{89F16941-1EA9-4990-88BD-794D3B45292D}' -newRenderingId '{771959C1-9EA9-43D6-B8F4-A24D90D06974}' -datasource $listData.ID -sign 0
+    Add-Rendering-To -item $bookingPageTrade -renderingId '{89F16941-1EA9-4990-88BD-794D3B45292D}'  -newRenderingId '{771959C1-9EA9-43D6-B8F4-A24D90D06974}' -datasource $listDataTrade.ID -sign 0
+    
+    #Create rendering and attach it to Hold luggage Popup on extras page
+    Add-Rendering-To -item $bookingPageHolidays  -renderingId '{F06DA5C1-EE75-4075-92B7-B8171C857EA8}' -newRenderingId '{4A3C0532-C5CC-4CBC-BB76-D31310FD1EF3}' -datasource $listData.ID -sign 0
+    Add-Rendering-To -item $bookingPageTrade -renderingId '{F06DA5C1-EE75-4075-92B7-B8171C857EA8}'  -newRenderingId '{4A3C0532-C5CC-4CBC-BB76-D31310FD1EF3}' -datasource $listDataTrade.ID -sign 0
+    
+    #Create rendering and attach it to Payment and Pay remaining balance
+    $paymentPagePathHolidays = '/sitecore/content/EasyJet/Holidays/Home/Booking/Payment'
+    $paymentPageHolidays = Get-Item -Path $paymentPagePathHolidays -ErrorAction SilentlyContinue
+    
+    $balancePagePathHolidays = '/sitecore/content/EasyJet/Holidays/Home/Booking/Pay Balance'
+    $balancePageHolidays = Get-Item -Path $balancePagePathHolidays -ErrorAction SilentlyContinue
+    
+    $paymentPagePathTrade = '/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirm'
+    $paymentPageTrade = Get-Item -Path $paymentPagePathTrade -ErrorAction SilentlyContinue
+    
+    Add-Rendering-To -item $paymentPageHolidays  -renderingId '{9D5C09DD-EFB0-4AF8-AE1E-C84444E69106}' -newRenderingId '{BF659A79-29F5-48EB-B07B-D92298ABE8DB}' -datasource $listData.ID -sign 0
+    Add-Rendering-To -item $balancePageHolidays  -renderingId '{5357E74B-96BE-4BE8-B512-F0B419FBA5FE}' -newRenderingId '{BF659A79-29F5-48EB-B07B-D92298ABE8DB}' -datasource $listData.ID -sign 0
+    Add-Rendering-To -item $paymentPageTrade -renderingId '{CA5E35EB-3705-4999-847E-5333C8F26728}'  -newRenderingId '{BF659A79-29F5-48EB-B07B-D92298ABE8DB}' -datasource $listDataTrade.ID -sign 0
+    
+    #Create rendering and attach it to View Booking Page
+    $viewPathHolidays = '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking'
+    $viewPageHolidays = Get-Item -Path $viewPathHolidays -ErrorAction SilentlyContinue
+    
+    $viewPathTrade = '/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking'
+    $viewPageTrade = Get-Item -Path $viewPathTrade -ErrorAction SilentlyContinue
+    
+    function Add-Rendering-To-View($item, $renderingId, $newRenderingId, $datasource, $sign,  $viewBookingRendId){
+        $bagsRend;
+        $viewBookingRendId = Get-Rendering -Item $item |
+            Foreach-Object { 
+                if($_.ItemId -eq $viewBookingRendId){
+                    return $_.UniqueId
+                }
+            }
+            
+        
+            $index = 0
+            Get-Rendering -Item $item |
+            Foreach-Object { 
+                $index++
+                if($_.ItemId -eq $renderingId)
+                {
+                        $bagsRend = $_;
+                        $incrementIndex = $index
+                        if ($sign -ne 0){
+                            $incrementIndex = $index + $sign
+                        }
+                        
+                        $placeholder= '/body/extra-luggage-' + $viewBookingRendId + '-0';
+                       
+                    
+                        Add-New-Rendering -Item $item -Placeholder $placeholder -RenderingId $newRenderingId -Datasource $datasource -Index $incrementIndex -Parameters $parameters
+                        
+                        $newRendering = Get-Rendering -Item $item |
+            Foreach-Object { 
+                if($_.ItemId -eq $newRenderingId){
+                   
+                   $bagsRend.Placeholder = $_.Placeholder + '/bags-' + $_.UniqueId + '-0';
+                   Set-Rendering -Item $item -Instance $bagsRend
+                }
+            }
+                }
+            }
+            
+            
+            
+    }
+    
+    Add-Rendering-To-View -item $viewPageHolidays -renderingId '{9FD91E19-714F-4313-9E52-FF77B4E9F030}'  -newRenderingId '{E6D72918-68EB-4437-9725-8EF2EB19B6A7}' -datasource $listDataTrade.ID -sign -1  -viewBookingRendId '{B932CD1B-05BD-4F1D-947F-1E6F48C4F649}'
+    Add-Rendering-To-View -item $viewPageTrade -renderingId '{9FD91E19-714F-4313-9E52-FF77B4E9F030}'  -newRenderingId '{E6D72918-68EB-4437-9725-8EF2EB19B6A7}' -datasource $listDataTrade.ID -sign -1 -viewBookingRendId '{9DD5E883-9307-49FB-82F8-D8D778A828E0}'
+    
+    #Create rendering and attach it to Confirmation Page
+    $confirmationPathHolidays = '/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation'
+    $confirmationPageHolidays = Get-Item -Path $confirmationPathHolidays -ErrorAction SilentlyContinue
+    
+    $confirmationPathTrade = '/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirmation'
+    $confirmationPageTrade = Get-Item -Path $confirmationPathTrade -ErrorAction SilentlyContinue
+    
+    Add-Rendering-To -item $confirmationPageHolidays  -renderingId '{89F16941-1EA9-4990-88BD-794D3B45292D}' -newRenderingId '{771959C1-9EA9-43D6-B8F4-A24D90D06974}' -datasource $listData.ID -sign 0
+    Add-Rendering-To -item $confirmationPageTrade  -renderingId '{89F16941-1EA9-4990-88BD-794D3B45292D}' -newRenderingId '{771959C1-9EA9-43D6-B8F4-A24D90D06974}' -datasource $listData.ID -sign 0
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1020
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240424T151849Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

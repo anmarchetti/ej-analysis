@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="AWSSDK.Core" />
+        <PackageReference Include="AWSSDK.DynamoDBv2" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)TestProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src/Foundation/DynamoDb/code/easyJet.Foundation.DynamoDb.csproj" />
+    </ItemGroup>
+</Project>

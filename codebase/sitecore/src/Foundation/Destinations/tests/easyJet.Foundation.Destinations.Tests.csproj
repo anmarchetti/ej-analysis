@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Sitecore.Analytics.Model" />
+        <PackageReference Include="Sitecore.CES.GeoIp.Core" />
+        <PackageReference Include="Sitecore.Framework.Conditions" />
+        <PackageReference Include="Sitecore.Framework.Data.Blobs.Abstractions" />
+        <PackageReference Include="Sitecore.JavaScriptServices.Configuration" />
+        <PackageReference Include="Sitecore.Logging.Client" />
+        <PackageReference Include="Sitecore.XConnect.Diagnostics" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)TestProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Analytics\code\easyJet.Foundation.Analytics.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Multisite\code\easyJet.Foundation.Multisite.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\SiteModes\code\easyJet.Foundation.SiteModes.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Destinations\code\easyJet.Foundation.Destinations.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Pipelines\S3BrokenImagesLinksReportPipeline\" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,112 @@
+---
+ID: "7d3f8e2a-9b5c-4f1e-a6d7-3c8b9e1f4a2d"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/PC-402 Add Promo Merch Banner with Personalization
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $promoMerchBannerTemplateId = "{84F4258D-4E3A-4AC1-AFF0-EBF4E14ED3F5}"
+    $promoMerchBannerRenderingId = "{8EE16D28-F907-4EC0-B5D6-E1256E541278}"
+    $personalizeRuleConditionId = "{9FF7A6CB-CB9A-474B-9341-D4C41D28D8CF}"
+    $hideRenderingActionId = "{25F351A1-712D-45F8-857D-8AD95BB2ACE9}"
+    $datasourceActionId = "{0F3C6BEC-E56B-4875-93D7-2846A75881D2}"
+    $placeholderId = "/body/component-wrapper-inner-{DB591CCB-DB53-48D0-A87F-018C730CF899}-0"
+    
+    $datasource = New-Item -Path "master:/content/EasyJet/Holidays/Home/Page Components/Promo Merch Banner" -ItemType $promoMerchBannerTemplateId
+    $loginPage = Get-Item -Path "master:/content/EasyJet/Holidays/Home/Login"
+    
+    $datasource.Editing.BeginEdit()
+    $datasource["Title"] = "Sign in or create an account"
+    $datasource["Description"] = "Get access to exclusive deals and manage your bookings"
+    $datasource["Link"] = '<link linktype="internal" id="' + $loginPage.ID + '" text="Sign In" querystring="redirectUrl=/" />'
+    $datasource["Icon"] = '<image mediaid="{00000000-0000-0000-0000-000000000000}" />'
+    $datasource.Editing.EndEdit() | Out-Null
+    
+    $homePage = Get-Item -Path "master:/content/EasyJet/Holidays/Home"
+    $renderingItem = Get-Item -Path "master:/layout/Renderings/Feature/PageContent/Promo Merch Banner"
+    $renderingInstance = $renderingItem | New-Rendering
+    
+    Add-Rendering -Item $homePage -PlaceHolder $placeholderId -Instance $renderingInstance -FinalLayout
+    
+    $rendering = Get-Rendering -Item $homePage -PlaceHolder $placeholderId -FinalLayout | Where-Object { $_.ItemID -eq $promoMerchBannerRenderingId }
+    $renderingUid = $rendering.UniqueId
+    
+    $rule1Uid = [guid]::NewGuid().ToString("B").ToUpper()
+    $rule1ConditionUid = [guid]::NewGuid().ToString("B").ToUpper()
+    $rule1ActionUid = [guid]::NewGuid().ToString("B").ToUpper()
+    
+    $rule1 = @"
+    <rule uid="$rule1Uid" name="If Authenticated - Hide">
+      <conditions>
+        <condition uid="$rule1ConditionUid" id="$personalizeRuleConditionId" ExperimentId="authentication" SelectionAttribute="Authenticated" CacheMinutes="1" />
+      </conditions>
+      <actions>
+        <action uid="$rule1ActionUid" id="$hideRenderingActionId" />
+      </actions>
+    </rule>
+    "@
+    
+    $rule2Uid = [guid]::NewGuid().ToString("B").ToUpper()
+    $rule2ConditionUid = [guid]::NewGuid().ToString("B").ToUpper()
+    $rule2ActionUid = [guid]::NewGuid().ToString("B").ToUpper()
+    
+    $rule2 = @"
+    <rule uid="$rule2Uid" name="If Not Authenticated - Show">
+      <conditions>
+        <condition uid="$rule2ConditionUid" id="$personalizeRuleConditionId" ExperimentId="authentication" SelectionAttribute="NotAuthenticated" CacheMinutes="1" />
+      </conditions>
+      <actions>
+        <action uid="$rule2ActionUid" id="$datasourceActionId" DataSource="$($datasource.ID)" />
+      </actions>
+    </rule>
+    "@
+    
+    $rule3Uid = [guid]::NewGuid().ToString("B").ToUpper()
+    $rule3ActionUid = [guid]::NewGuid().ToString("B").ToUpper()
+    
+    $rule3 = @"
+    <rule uid="$rule3Uid" name="Default - Hide">
+      <conditions>
+      </conditions>
+      <actions>
+        <action uid="$rule3ActionUid" id="$hideRenderingActionId" />
+      </actions>
+    </rule>
+    "@
+    
+    $rulesetXml = @"
+    <ruleset>
+      $rule1
+      $rule2
+      $rule3
+    </ruleset>
+    "@
+    
+    $layoutField = $homePage.Fields[[Sitecore.FieldIDs]::FinalLayoutField]
+    $layoutXmlString = [Sitecore.Data.Fields.LayoutField]::GetFieldValue($layoutField)
+    
+    [xml]$layoutXml = New-Object -TypeName XML
+    $layoutXml.LoadXml($layoutXmlString)
+    
+    $renderingNode = $layoutXml.SelectSingleNode("//r[@uid='$renderingUid']")
+    $rulesNode = $layoutXml.CreateElement("rls")
+    $renderingNode.AppendChild($rulesNode) | Out-Null
+    
+    $rulesetDoc = [xml]$rulesetXml
+    $importedRuleset = $layoutXml.ImportNode($rulesetDoc.DocumentElement, $true)
+    $rulesNode.AppendChild($importedRuleset) | Out-Null
+    
+    $homePage.Editing.BeginEdit()
+    $homePage.Fields[[Sitecore.FieldIDs]::FinalLayoutField].Value = $layoutXml.OuterXml
+    $homePage.Editing.EndEdit() | Out-Null
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250114T100000Z

@@ -1,0 +1,138 @@
+﻿---
+ID: "4c4fe1c9-f80d-4122-9b22-a836299b7c16"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/PC-285 update trade portal promocode input"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $colourcode_366e8b5fb8344354b8cf186be4736fb4_en_v1 = @"
+    #ff6600
+    "@
+    $subtitle_59bc481d604941b28bd261e0f6b59dff_en_v1 = @"
+    I have a promo code or gift card.
+    "@
+    $colourcode_4d0ee467dcb64609a2be969151336d7a_en_v1 = @"
+    #000000
+    "@
+    $appliedlabel_59bc481d604941b28bd261e0f6b59dff_en_v1 = @"
+    {content} was successfully applied
+    "@
+    $tooltiptext_59bc481d604941b28bd261e0f6b59dff_en_v1 = @"
+    Please note that promo codes are case sensitive. Please enter your code exactly as you received it.
+    "@
+    $tooltiptext_59bc481d604941b28bd261e0f6b59dff_dede_v1 = @"
+    Bitte beachte, dass bei Promo-Codes zwischen Gross- und Kleinschreibung unterschieden wird. Bitte gib deinen Code genau so ein, wie du ihn erhalten hast. Promo-Codes gelten nicht für Sitzplätze.
+    "@
+    $tooltiptext_59bc481d604941b28bd261e0f6b59dff_frch_v1 = @"
+    Veuillez noter que les codes promotionnels sont sensibles à la casse. Veuillez saisir votre code exactement comme vous l’avez reçu. Les codes promotionnels ne s’appliquent pas aux sièges.
+    "@
+    $offertext_59bc481d604941b28bd261e0f6b59dff_en_v1 = @"
+    Save {discount} on your holiday this summer
+    "@
+    $colourcode_a8e3eea46a0644008f4c7eab6e98cf12_en_v1 = @"
+    #0399FF
+    "@
+    $termsandconditions_59bc481d604941b28bd261e0f6b59dff_en_v1 = @"
+    <a href="https://www.easyjet.com/en/holidays#offer-conditions">T&amp;C apply</a>
+    "@
+    $usecodetext_59bc481d604941b28bd261e0f6b59dff_en_v1 = @"
+    Use code:
+    "@
+    $salestext_59bc481d604941b28bd261e0f6b59dff_en_v1 = @"
+    Sales ends {date}
+    "@
+    $appliedoffertext_59bc481d604941b28bd261e0f6b59dff_en_v1 = @"
+    You saved {discount} on your holiday
+    "@
+    $stickyoffertext_59bc481d604941b28bd261e0f6b59dff_en_v1 = @"
+    Use your promo code to save {discount}*
+    "@
+    
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Promocode Input"
+            TemplatePath = "Feature/Destinations/Promocode Input"
+            Fields      = @{
+                "TermsAndConditions" = @{
+                    "en" = $termsandconditions_59bc481d604941b28bd261e0f6b59dff_en_v1
+                }
+                "OfferText" = @{
+                    "en" = $offertext_59bc481d604941b28bd261e0f6b59dff_en_v1
+                }
+                "AppliedLabel" = @{
+                    "en" = $appliedlabel_59bc481d604941b28bd261e0f6b59dff_en_v1
+                }
+                "Subtitle" = @{
+                    "en" = $subtitle_59bc481d604941b28bd261e0f6b59dff_en_v1
+                }
+                "UseCodeText" = @{
+                    "en" = $usecodetext_59bc481d604941b28bd261e0f6b59dff_en_v1
+                }
+                "ColourScheme" = @{
+                    "en" = "Blue"
+                }
+                "Placeholder" = @{
+                    "en" = "Promo code or gift card"
+                }
+                "TooltipText" = @{
+                    "en" = $tooltiptext_59bc481d604941b28bd261e0f6b59dff_en_v1
+                }
+                "ApplyCodeText" = @{
+                    "en" = "Apply code"
+                }
+                "StickyOfferText" = @{
+                    "en" = $stickyoffertext_59bc481d604941b28bd261e0f6b59dff_en_v1
+                }
+                "AppliedOfferText" = @{
+                    "en" = $appliedoffertext_59bc481d604941b28bd261e0f6b59dff_en_v1
+                }
+                "SalesText" = @{
+                    "en" = $salestext_59bc481d604941b28bd261e0f6b59dff_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Promocode Input/Black"
+            TemplatePath = "Feature/Destinations/Promo Code Colour Scheme"
+            Fields      = @{
+                "ColourCode" = @{
+                    "en" = $colourcode_4d0ee467dcb64609a2be969151336d7a_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Promocode Input/Blue"
+            TemplatePath = "Feature/Destinations/Promo Code Colour Scheme"
+            Fields      = @{
+                "ColourCode" = @{
+                    "en" = $colourcode_a8e3eea46a0644008f4c7eab6e98cf12_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Promocode Input/Orange"
+            TemplatePath = "Feature/Destinations/Promo Code Colour Scheme"
+            Fields      = @{
+                "ColourCode" = @{
+                    "en" = $colourcode_366e8b5fb8344354b8cf186be4736fb4_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250609T101227Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

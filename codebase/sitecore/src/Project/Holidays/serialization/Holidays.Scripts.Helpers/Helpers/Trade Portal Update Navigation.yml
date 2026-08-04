@@ -1,0 +1,68 @@
+﻿---
+ID: "c636b578-7fbe-45d9-89a2-67f4dd37e761"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/Trade Portal Update Navigation Links
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $siteContext = [Sitecore.Sites.SiteContext]::GetSite("holidays");
+    $navigations = Get-Item -Path "master:/sitecore/content/EasyJet/TradePortal/Data/Navigations/Countries"
+    New-UsingBlock(New-Object -TypeName "Sitecore.Sites.SiteContextSwitcher" -ArgumentList $siteContext) {
+        foreach($navigation in $navigations.Children){
+            try{        
+                $itemField = $navigation.Fields["Link"]
+                $field = [Sitecore.Data.Fields.FieldTypeManager]::GetField($itemField)
+    
+                $path = $field.TargetItem.Paths.FullPath -replace "Holidays", "TradePortal"
+              
+                $newItem = Get-Item -Path $path -ErrorAction SilentlyContinue
+                
+                if($newItem -ne $null){
+                    $navigation.Editing.BeginEdit()
+                    $field.TargetID = $newItem.ID
+                    $navigation.Editing.EndEdit() | Out-Null 
+                    $path
+                }
+                
+            }catch{
+                Write-Warning "Cannot proccess navigation item $($navigation.Name)" 
+                Write-Warning $Error[0]
+            }
+        }
+    }
+    
+    $links = Get-Item -Path "master:/sitecore/content/EasyJet/TradePortal/Data/Navigations/Destinations Groups"
+    $destinationItem = Get-Item -Path "master:/sitecore/content/EasyJet/TradePortal/Home/Destinations"
+    foreach($item in $links.Children){
+        #skip top adults holiday
+        if($item.Name -ne "Top Adult Holidays"){
+            $itemField = $item.Fields["Link"]
+            $field = [Sitecore.Data.Fields.FieldTypeManager]::GetField($itemField)
+            $item.Editing.BeginEdit()
+            $field.TargetID = $destinationItem.ID
+            $item.Editing.EndEdit() | Out-Null 
+            
+        }
+    }
+    
+    $linkItem = Get-Item -Path "master:/sitecore/content/EasyJet/TradePortal/Data/Navigations/Destinations Groups/View All Destinations"
+    $linkValue = '<link text="View all destinations" linktype="external" url="/en/holidays/trade-portal/destinations" anchor="" target="" rel="" />'
+    $linkItem.Editing.BeginEdit()
+    $linkItem.Fields["Link"].Value = $linkValue
+    $linkItem.Editing.EndEdit() | Out-Null 
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220830T122655Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

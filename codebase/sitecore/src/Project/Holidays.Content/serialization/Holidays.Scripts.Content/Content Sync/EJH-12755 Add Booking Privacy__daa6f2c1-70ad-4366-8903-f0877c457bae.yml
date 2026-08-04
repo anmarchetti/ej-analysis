@@ -1,0 +1,92 @@
+﻿---
+ID: "daa6f2c1-70ad-4366-8903-f0877c457bae"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-12755 Add Booking Privacy to View Booking"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+    	$item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $templateId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function Get-Rendering-Index ($item,$renderingItemId) {
+    	$i = 0
+    	Get-Rendering -Item $item | ForEach-Object {
+    		if ($_.ItemID -eq $renderingItemId) {
+    			return $i
+    		}
+    		$i++
+    	}
+    }
+    
+    function Get-Last-ComponentWrapper-Id () {
+    	$componentWrapperPlaceHolder = '/body'
+    	$componentWrapperRenderingPath = "/sitecore/layout/Renderings/Project/Holidays/Component Wrapper"
+    	$componentWrapperItem = Get-Item -Database "master" -Path $componentWrapperRenderingPath | New-Rendering -PlaceHolder $componentWrapperPlaceHolder
+    	$componentWrapperRenderings = Get-Rendering -Item $viewBookingPage -PlaceHolder "/body"
+    	$componentWrapperIndex = $componentWrapperRenderings.length - 1
+    	$componentWrapperRendering = $componentWrapperRenderings[$componentWrapperIndex]
+    
+    	return $componentWrapperRendering.UniqueId
+    }
+    
+    function Update-Booking-Privacy () {
+    	$bookingPrivacy.Editing.BeginEdit()
+    	$bookingPrivacy["Heading"] = 'HOLIDAY DATA PRIVACY';
+    	$bookingPrivacy["Title"] = 'Keeping you in control of your data';
+    	$bookingPrivacy["Description"] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Feugiat nisl pretium fusce id. Nec feugiat nisl pretium fusce id &nbsp;<a href="/en/holidays/info/privacy-policy">privacy policy</a>.';
+    	$bookingPrivacy["Icon"] = '<image mediaid="{F44EEADC-5BAE-4D1B-AED1-B7C4BEF0EEF5}" />';
+    	$bookingPrivacy["DebounceTimeout"] = 1000;
+    	$bookingPrivacy["CheckboxLabelLeft"] = 'Not private';
+    	$bookingPrivacy["CheckboxLabelRight"] = 'Private';
+    	$bookingPrivacy.Editing.EndEdit() | Out-Null
+    }
+    
+    function Update-View-Booking-Renderings () {
+    	$bookingPrivacyRendering = Get-Rendering -Item $viewBookingPage | Where-Object { $_.ItemID -eq $bookingPrivacyRenderingId } | Select -First 1
+    	$helpLinksRenderingId = "{9133F3CA-553F-42F5-8529-54734B53A378}"
+    	$helpLinksRenderingIndex = Get-Rendering-Index -Item $viewBookingPage -RenderingItemId $helpLinksRenderingId
+    
+    	$lastComponentWrapperId = Get-Last-ComponentWrapper-Id
+    	Write-Host "componentWrapper id" $lastComponentWrapperId
+    
+    	if (($bookingPrivacyRendering -eq $null) -and ($bookingPrivacy -ne $null) -and ($helpLinksRenderingIndex -ne $null)) {
+    		$renderingInstance = Get-Item -Path "master:" -Id $bookingPrivacyRenderingId | New-Rendering
+    		$privacyBookingPlaceholder = '/body/component-wrapper-inner-' + $lastComponentWrapperId + '-0'
+    		Add-Rendering -Item $viewBookingPage -PlaceHolder $privacyBookingPlaceholder -Instance $renderingInstance -DataSource $bookingPrivacy.ID -Index $helpLinksRenderingIndex
+    
+    		$privacyBookingRendering = Get-Rendering -Item $viewBookingPage -PlaceHolder $privacyBookingPlaceholder
+    
+    		Write-Host "Booking Privacy added to ViewBooking page"
+    	}
+    }
+    
+    $pagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    $viewBookingPage = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    
+    $bookingPrivacyPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Booking Privacy"
+    $bookingPrivacyTemplateId = "{7B8BAEF3-4583-4DCF-B8B1-28E35794D626}"
+    $bookingPrivacy = Get-Or-Create-Item -Path $bookingPrivacyPath -TemplateId $bookingPrivacyTemplateId
+    $bookingPrivacyRenderingId = "{cc4d8814-64a1-4ff5-a90a-85c8a91ab66a}"
+    
+    Update-Booking-Privacy
+    Update-View-Booking-Renderings 
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210405T123057Z

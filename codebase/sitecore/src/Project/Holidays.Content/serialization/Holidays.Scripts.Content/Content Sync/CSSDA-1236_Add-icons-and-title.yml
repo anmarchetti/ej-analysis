@@ -1,0 +1,152 @@
+﻿---
+ID: "e0ca30f7-65e2-4075-baa9-169dbf76985f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-1236_Add-icons-and-title-for-flows"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    ## UPDATE FILEDS WITH LANGS
+    function update-item-with-lang($data, $item) {
+        function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+    };
+    
+        if ($item -ne $null) {
+            $data | ForEach-Object {
+            $fieldName = $_.fieldName;
+            $values = $_.values;
+        
+            if ($values -ne $null) {
+              
+                if ($values.en -ne $null) {
+                    $item.Editing.BeginEdit();
+                    $item[$fieldName] = $values.en;
+                    $item.Editing.EndEdit() | Out-Null
+                }
+                 if ($values.fr -ne $null) {
+                     @('fr-CH', 'fr-FR') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.fr;
+                    }
+                }
+                 if ($values.de -ne $null) {
+                     @('de-CH', 'de-DE') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.de;
+                    }
+                }
+                
+                Write-Host $fieldName "Updated"
+            }
+        }
+        }
+    };
+    ##
+    
+    $manedPaymentItem = Get-Item "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Amend Payment" -ErrorAction SilentlyContinue;
+    $manedPaymentData = @(
+        @{
+            fieldName = "TransfersFlowTitle";
+            values = @{
+                en = "Transfer";
+                fr = "Transfert";
+                de = "Übertragung";
+            };
+        },
+         @{
+            fieldName = "TransfersFlowIcon";
+            values = @{
+                en = '<image mediaid="{40485169-2D8F-4B91-83B2-350DF87BBFF9}" />';
+            };
+        },
+        @{
+            fieldName = "FlightsFlowTitle";
+            values = @{
+                en = "Flights";
+                fr = "Vols";
+                de = "Flüge";
+            };
+        },
+         @{
+            fieldName = "FlightsFlowIcon";
+            values = @{
+                en = '<image mediaid="{CCB14584-E846-40B5-9C7F-DA5E87966B5C}" />';
+            };
+        },
+        @{
+            fieldName = "DatesFlowTitle";
+            values = @{
+                en = "Your Holiday";
+                fr = "Vos vacances";
+                de = "Ihr Urlaub";
+            };
+        },
+        @{
+            fieldName = "DatesFlowIcon";
+            values = @{
+                en = '<image mediaid="{C305577F-9476-4781-8953-7F739CEB01EC}" />';
+            };
+        },
+        @{
+            fieldName = "RoomAndBoardFlowTitle";
+            values = @{
+                en = "Room & Board";
+                fr = "Chambre et pension";
+                de = "Unterkunft und Verpflegung";
+            };
+        },
+        @{
+            fieldName = "RoomAndBoardFlowIcon";
+            values = @{
+                en = '<image mediaid="{A1213E57-01B9-4780-8280-8E90C85850FC}" />';
+            };
+        },
+        @{
+            fieldName = "TotalLabel";
+            values = @{
+                en = "Total";
+                fr = "Total";
+                de = "Insgesamt";
+            };
+        },
+        @{
+            fieldName = "CreditDescription";
+            values = @{
+                en = "<p>Choosing this option means you'll receive {amount} to spend within <strong>12 months</strong> on another easyJet Holiday.</p><p>This will be immediately refunded to your easyJet account.</p>";
+                fr = "<p>En choisissant cette option, vous recevrez {amount} à dépenser dans les <strong>12 mois</strong> sur un autre séjour easyJet.</p><p>Ce montant sera immédiatement remboursé sur votre compte easyJet.</p>";
+                de = "<p>Wenn Sie diese Option wählen, erhalten Sie {amount}, den Sie innerhalb von <strong>12 Monaten</strong> für einen anderen easyJet-Urlaub ausgeben können.</p><p>Dieser Betrag wird sofort auf Ihr easyJet-Konto zurückerstattet.</p>";
+            };
+        },
+         @{
+            fieldName = "RefundDescription";
+            values = @{
+                en = "Choosing to refund to original payment method means we'll refund you the total amount of {transport} of {amount}";
+                fr = "En choisissant de rembourser le mode de paiement initial, nous vous rembourserons le montant total du {transport} de {amount}";
+                de = "Wenn Sie sich für die Rückerstattung an die ursprüngliche Zahlungsmethode entscheiden, erstatten wir Ihnen den Gesamtbetrag für {transport} von {amount}";
+            };
+        }
+    );
+    
+    
+    update-item-with-lang -Item $manedPaymentItem -Data $manedPaymentData;
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240308T110448Z

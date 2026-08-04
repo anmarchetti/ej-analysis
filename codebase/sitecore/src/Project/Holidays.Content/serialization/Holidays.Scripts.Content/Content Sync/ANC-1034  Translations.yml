@@ -1,0 +1,51 @@
+﻿---
+ID: "e58f22e0-5b86-4ed7-9287-5b060b088fb0"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-1034  Translations"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $path = 'master:/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage/Hold Baggage 23kg'
+    
+      function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value
+               
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+        }
+        
+         $item = Get-Item -Path $path
+          
+          # Creating languages versions
+          	@('fr-CH', 'fr-FR') | % {
+                 Create-Lang-Version -Item $item -Lang $_ -Field "AdditionalBagsLabel" -Value 'Sacs supplémentaires';
+                
+              }
+            @('de-CH', 'de-DE') | % {
+                 Create-Lang-Version -Item $item -Lang $_ -Field "AdditionalBagsLabel" -Value 'Zusätzliche Taschen';
+                 
+            }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231229T102426Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

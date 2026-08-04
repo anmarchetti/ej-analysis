@@ -1,0 +1,93 @@
+﻿---
+ID: "65542342-913f-415c-b30c-096afd77c25b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Default Sort Orders And Remove Old Sort Orders
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $dataFolderPath = "/sitecore/content/EasyJet/Holidays/Data"
+    $settingsFolderPath = "/sitecore/content/EasyJet/Holidays/Settings"
+    
+    $sortOrderSettingsFolderTemplateId = "{2B9F5A29-7B13-4D8E-87BF-93F40B37477B}"
+    $sortOrderSettingsFolderName = "Sort Orders"
+    $sortOrderSettingsFolderPath = "$($dataFolderPath)/$($sortOrderSettingsFolderName)" 
+    
+    $sortOrderSettingTemplateId = "{F1A11D93-990A-4932-9DFC-F19C3E98BE3A}"
+    
+    #Default sort order item for search result page
+    $sortOrderSettingForceIdForSearchResultPage = "{4E62E29A-C9D9-471A-B0AA-73A0200D8403}"
+    $sortOrderSettingNameForSearchResultPage = "Default Ordering For Search Results"
+    
+    #Default sort order item for promo pages
+    $sortOrderSettingForceIdForPromoPage = "{15CD9ACC-A2C6-4951-9B14-8A05D9062772}"
+    $sortOrderSettingNameForPromoPage = "Default Ordering For Promo Page"
+    
+    #Default sort order settings
+    $defaultSortOrderSettings = @(
+        "{544AF9B2-74EF-4A2C-8DE8-DC71C30246CB}", #Recommended
+        "{1E986E7D-4F81-42EE-AD2B-73F00FD32126}", #Price: Low To High
+        "{001E9720-3F29-450F-B4E7-96E762C94D60}", #Price: High To Low 
+        "{99B15DEB-26D5-4553-A5B3-67D244774F85}") #Discount Amount 
+    
+    #Old item pathes
+    $oldSortOrderSettingsInDataFolderName = "Sort Order Setting Folder"
+    $oldSortOrderSettingsInSettingsFolderName = "Sort Order Items Folder"
+    
+    function create-item($path, $name, $templateId, $forceId)
+    {
+        $pathToItem = "$($path)/$($name)"
+        $item = Get-Item -Path $pathToItem -ErrorAction SilentlyContinue
+        if ($item -eq $null){
+            if($forceId -eq $null)
+            {
+                $item = New-Item -Path $pathToItem -ItemType $templateId   
+            }
+            else
+            {
+                $item = New-Item -ForceId $forceId -Path $pathToItem -ItemType $templateId
+            }
+        }
+        return $item
+    }
+    
+    function delete-item($path, $name)
+    {
+        $pathToItem = "$($path)/$($name)"
+        $item = Get-Item -Path $pathToItem -ErrorAction SilentlyContinue
+        if ($item -ne $null){
+                $item | Remove-Item -Recurse -Permanently
+        }
+    }
+    
+    function update-sort-order-item($item, $value)
+    {
+        New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+            $item.Editing.BeginEdit()
+            $item["SortOrders"] = $value -join "|"
+            $item.Editing.EndEdit()
+        }
+    }
+    
+    #Removing old "Sort Order" items
+    delete-item -Path $dataFolderPath -Name $oldSortOrderSettingsInDataFolderName #Remove sort order settings item in data folder
+    delete-item -Path $settingsFolderPath -Name $oldSortOrderSettingsInSettingsFolderName #Remove sort order settings item in settings folder
+    
+    #Creating new sort orders settings
+    create-item -Path $dataFolderPath -Name $sortOrderSettingsFolderName -TemplateId $sortOrderSettingsFolderTemplateId #Creating sort order settings folder
+    $defaultForSR = create-item -Path $sortOrderSettingsFolderPath -Name $sortOrderSettingNameForSearchResultPage -TemplateId $sortOrderSettingTemplateId -ForceId $sortOrderSettingForceIdForSearchResultPage #Creating sort order setting item for "Search Result" page
+    $defaultForPromo = create-item -Path $sortOrderSettingsFolderPath -Name $sortOrderSettingNameForPromoPage -TemplateId $sortOrderSettingTemplateId -ForceId $sortOrderSettingForceIdForPromoPage #Creating sort order setting item for "Promo" page
+    
+    #Setting default values into order setting items
+    update-sort-order-item -Item $defaultForSR -Value $defaultSortOrderSettings
+    update-sort-order-item -Item $defaultForPromo -Value $defaultSortOrderSettings
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200831T142709Z

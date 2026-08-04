@@ -1,0 +1,55 @@
+.read-more-box-wrapper {
+    .read-more-box > div {
+        margin-top: 16px;
+    }
+
+    .read-more-box .btn {
+        margin-top: 19px;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 12px;
+        }
+    }
+}
+
+.read-more-box {
+    display: inline-block;
+}
+
+.read-more-box .btn--txt svg {
+    position: relative;
+    top: 2px;
+    max-width: 17px;
+    height: 13px;
+    margin-left: 10px;
+    vertical-align: baseline;
+}
+
+.read-more-box-alt .btn {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.read-more-box-alt .btn--txt svg {
+    margin-right: 10px;
+    margin-bottom: 4px;
+    margin-left: 0;
+    @include media-breakpoint-down(md) {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+.read-more-box-alt .btn--txt {
+    font-size: 16px;
+    line-height: 1.4;
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+        line-height: 1.3;
+    }
+}
+
+.read-more-box .btn--txt {
+    margin-right: 30px;
+}

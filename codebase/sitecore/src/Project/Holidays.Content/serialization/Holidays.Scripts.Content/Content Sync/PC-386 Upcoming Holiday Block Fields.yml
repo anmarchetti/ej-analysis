@@ -1,0 +1,35 @@
+---
+ID: "f7a8b9c0-d1e2-3456-f012-666666666606"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/PC-386 Upcoming Holiday Block Fields"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $itemPath = "/sitecore/content/EasyJet/Holidays/Home/Page Components/UK/Upcoming Holiday Block"
+    $item = Get-Item -Path $itemPath -Language "en" -ErrorAction SilentlyContinue
+    if ($item -eq $null) {
+        Write-Host "Item not found at path: $itemPath"
+        return
+    }
+    $item.Editing.BeginEdit()
+    $item["CountdownTextSingular"] = "{count} day until your holiday!"
+    $item["CountdownTextPlural"] = "{count} days until your holiday!"
+    $item.Editing.EndEdit() | Out-Null
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260526T120000Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

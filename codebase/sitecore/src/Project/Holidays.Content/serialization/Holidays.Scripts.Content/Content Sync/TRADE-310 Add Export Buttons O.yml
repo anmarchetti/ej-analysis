@@ -1,0 +1,146 @@
+﻿---
+ID: "e9bc4507-cce6-4f5f-bb33-d96bdc2c88b9"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/TRADE-310 Add Export Buttons On HD"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item $($item.Name) successfully created"
+        }
+        
+        return $item
+    }
+    
+    function Create-Folder-Data-Source($path, $templateId){
+        $item = Get-Or-Create-Item -Path $path -TemplateId $templateId
+    
+        if ($item -ne $null) {
+            Write-Host "Created data source: Export Buttons Folder"
+        }
+    
+        return $item
+    }
+    
+    function Create-Poster-Data-Source($path, $templateId){
+        $item = Get-Or-Create-Item -Path $path -TemplateId $templateId
+    
+        if ($item -ne $null) {
+            $item.Editing.BeginEdit()
+    
+            $item["Title"] = "You're about to download a summary of the holiday as a PDF file";
+            $item["Description"] = "Please have a look at a preview of the PDF";
+            $item["LogoImage"] = "<image mediaid='{01548208-7DD9-42DA-A595-49CB9F683C93}' />";
+            $item["ExportPromoLabel"] = "Export promotional poster";
+            $item["ExportPromoTooltip"] = "You're able to download a summary of the holiday as a PDF file.";
+            $item["ReturnLabel"] = "Back to hotel details";
+            $item["LogoCheckboxLabel"] = "Place easyJet holidays logo";
+            $item["DownloadLabel"] = "Download";
+    
+            $item.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Created data sources: Hotel Poster"
+        }
+    
+        return $item
+    }
+    
+    function Create-Social-Data-Source($path, $templateId){
+        $item = Get-Or-Create-Item -Path $path -TemplateId $templateId
+    
+        if ($item -ne $null) {
+            $item.Editing.BeginEdit()
+    
+            $item["Title"] = "You're about to export a social share of this Holiday";
+            $item["Description"] = "Please have a look at a preview of the social media image and content";
+            $item["LogoImage"] = "<image mediaid='{01548208-7DD9-42DA-A595-49CB9F683C93}' />";
+            $item["ExportPromoLabel"] = "Export social media data";
+            $item["ExportPromoTooltip"] = "Generate text content and a 500px x 500px image for use on social media";
+            $item["ReturnLabel"] = "Back to hotel details";
+            $item["LogoCheckboxLabel"] = "Include easyJet holidays logo";
+            $item["DownloadLabel"] = "Download Image";
+    
+            $item.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Created data sources: Social Media"
+        }
+    
+        return $item
+    }
+    
+    function Get-Rendering-Index{
+        param($item, $renderingUniqueId)
+        $i = 0
+        
+        Get-Rendering -Item $item | ForEach-Object{
+            if ($_.UniqueId -eq $renderingUniqueId) {
+                return $i
+            }
+            $i++
+        }
+        
+        return -1
+    }
+    
+    # Add folder Export Buttons in Page Components
+    $hotelDetailsPagePath = "master:/sitecore/content/EasyJet/TradePortal/Home/Hotel Details";
+    $hotelDetailsPage = Get-Item -Path $hotelDetailsPagePath -ErrorAction SilentlyContinue
+    
+    $pageComponentsPath = "$($hotelDetailsPagePath)/Page Components"
+    
+    $exportButtonsFolderDataSourcePath = "$($pageComponentsPath)/Export Buttons"
+    $exportButtonsFolderTemplateId = "{0854D747-84A2-4388-954B-265A2BC6C3ED}"
+    $exportButtonsFolderDataSource = Create-Folder-Data-Source -Path $exportButtonsFolderDataSourcePath -TemplateId $exportButtonsFolderTemplateId
+    
+    $exportButtonTemplateId = "{1A460743-4EF1-4058-84DD-A08189E65580}"
+    # Export Buttons/Hotel Poster
+    $posterDataSourcePath = "$($exportButtonsFolderDataSourcePath)/Hotel Poster"
+    $hotelPosterDataSource = Create-Poster-Data-Source -Path $posterDataSourcePath -TemplateId $exportButtonTemplateId
+    
+    # Export Buttons/Social Media
+    $socialDataSourcePath = "$($exportButtonsFolderDataSourcePath)/Social Media"
+    $socialDataSource = Create-Social-Data-Source -Path $socialDataSourcePath -TemplateId $exportButtonTemplateId
+    
+    # Add export buttons rendering   
+    $imageGalleryRenderingUid = "{27ea1f90-1983-4ac8-9251-73c2c0627cc2}"
+    $placeholderName = "/body/component-wrapper-inner-{c6fd7b30-86a0-416d-822c-b64b2e95074f}-0"
+    $renderingId = "{86DE4A49-4CEF-422C-B1DB-1A4E423CFF67}"
+    
+    $insertIndex = (Get-Rendering-Index -Item $hotelDetailsPage -RenderingUniqueId $imageGalleryRenderingUid | Select -First 1) + 1
+    $existsRendering = Get-Rendering -Item $hotelDetailsPage -PlaceHolder $placeholderName  | Where-Object {$_.ItemId -eq $renderingId}
+    $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering  -Placeholder $placeholderName
+    
+    if($existsRendering -eq $null){
+        Add-Rendering -Item $hotelDetailsPage -PlaceHolder $placeholderName -DataSource $exportButtonsFolderDataSource.FullPath -Instance $renderingItem -Index $insertIndex
+        Write-Host "Added rendering: Export Buttons"
+    }
+    $newRendering = Get-Rendering -Item $hotelDetailsPage -PlaceHolder $placeholderName  | Where-Object {$_.ItemId -eq $renderingId}
+    $newRenderingUid = $newRendering.UniqueId
+    
+    # Update Hotel Poster’s placeholder 
+    $posterRenderingId = "{705184BB-B790-4EF3-8DF8-C49FB1D9E89C}"
+    $existingHotelPosterRendering = Get-Rendering -Item $hotelDetailsPage -PlaceHolder "/body/component-wrapper-inner-{c6fd7b30-86a0-416d-822c-b64b2e95074f}-0" | Where-Object {$_.ItemId -eq $posterRenderingId}
+    
+    if ($existingHotelPosterRendering -ne $null) {
+        Set-Rendering -Item $hotelDetailsPage -Instance $existingHotelPosterRendering -PlaceHolder "/body/component-wrapper-inner-{c6fd7b30-86a0-416d-822c-b64b2e95074f}-0/poster-inner-$($newRenderingUid)-0"
+        Write-Host "Updated rendering Hotel Poster placeholder"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231122T124215Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

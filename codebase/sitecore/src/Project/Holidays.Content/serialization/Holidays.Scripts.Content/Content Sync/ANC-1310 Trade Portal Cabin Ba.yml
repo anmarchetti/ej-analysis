@@ -1,0 +1,72 @@
+﻿---
+ID: "3b183f18-ea5c-43eb-b46e-5578a6d9bc5f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-1310 Trade Portal Cabin Bags Confirm Page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Write-Host  "Start script: ANC-1310 Cabin Bags on Confirm Page"
+    
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    $cabinBagsTradePortal = Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Cabin Bags"
+    
+    $paymentTradePortal = Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirm/Page Components/Confirm Booking Details"
+    
+    $translations = @{
+        "en" = @{
+            "IncludedBagsLabel" = '{count} x small under seat bags';
+            "OverheadBagAddedLabel" = '{count} x large overhead cabin bags with speedy boarding';
+            "IncludedWithInfantLabel" = '{count} x small under seat bags, {infantCount} x baby change bags';
+            "IncludedIcon" = '<image mediaid="{CB598726-D37F-4F61-8B1C-B7A9DEF9DEE9}" />';
+            "OverheadAddedIcon" = '<image mediaid="{D04439D4-A1E7-409F-B074-CBA5D1B14D5E}" />';
+        }
+    }
+    
+    create-lang-version -item $cabinBagsTradePortal -lang "en" -field "IncludedBagsLabel" -value $translations["en"]["IncludedBagsLabel"]
+    create-lang-version -item $paymentTradePortal -lang "en" -field "IncludedBagsLabel" -value $translations["en"]["IncludedBagsLabel"]
+    
+    create-lang-version -item $cabinBagsTradePortal -lang "en" -field "OverheadBagAddedLabel" -value $translations["en"]["OverheadBagAddedLabel"]
+    create-lang-version -item $paymentTradePortal -lang "en" -field "OverheadBagAddedLabel" -value $translations["en"]["OverheadBagAddedLabel"]
+    
+    create-lang-version -item $cabinBagsTradePortal -lang "en" -field "IncludedWithInfantLabel" -value $translations["en"]["IncludedWithInfantLabel"]
+    create-lang-version -item $paymentTradePortal -lang "en" -field "IncludedWithInfantLabel" -value $translations["en"]["IncludedWithInfantLabel"]
+    
+    create-lang-version -item $cabinBagsTradePortal -lang "en" -field "IncludedIcon" -value $translations["en"]["IncludedIcon"]
+    create-lang-version -item $paymentTradePortal -lang "en" -field "IncludedIcon" -value $translations["en"]["IncludedIcon"]
+    
+    create-lang-version -item $cabinBagsTradePortal -lang "en" -field "OverheadAddedIcon" -value $translations["en"]["OverheadAddedIcon"]
+    create-lang-version -item $paymentTradePortal -lang "en" -field "OverheadAddedIcon" -value $translations["en"]["OverheadAddedIcon"]
+        
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2090
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240320T131052Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

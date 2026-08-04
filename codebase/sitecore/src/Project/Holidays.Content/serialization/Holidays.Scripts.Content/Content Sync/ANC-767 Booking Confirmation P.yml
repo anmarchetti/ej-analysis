@@ -1,0 +1,82 @@
+﻿---
+ID: "f307127b-a074-4b56-8388-8a4ba4f29130"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-767 Booking Confirmation Page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # variables
+    $renderingId = "{89F16941-1EA9-4990-88BD-794D3B45292D}"
+    $holdLuggageDSHolidaysPath = "/sitecore/content/EasyJet/Holidays/Data/Hold Luggage"
+    $holdLuggageDSTradePath = "/sitecore/content/EasyJet/TradePortal/Data/Hold Luggage"
+    $pageHoliday = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation"
+    $pageTrade = Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirmation"
+    
+    # remove bags rendering from confirmation page
+    function Delete-Rendering($page){
+        $bags = Get-Rendering -Item $page | Where-Object {$_.ItemId -eq '{9FD91E19-714F-4313-9E52-FF77B4E9F030}'} -ErrorAction SilentlyContinue
+        
+        if ($bags -ne $null) {
+            Remove-Rendering -Item $page -Instance $bags
+        }
+    }
+    
+    
+    Delete-Rendering -page $pageHoliday
+    Delete-Rendering -page $pageTrade
+    
+    # move hold luggage data source to Data folder
+    Move-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Hold Luggage" -Destination $holdLuggageDSHolidaysPath -ErrorAction SilentlyContinue
+    Move-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Hold Luggage Trade Portal" -Destination $holdLuggageDSTradePath -ErrorAction SilentlyContinue
+    Write-Host "Hold Luggage data sources were successfully moved";
+    
+    #update datasources on extras page
+    function Update-Rendering ($pagePath, $data) {
+        $page = Get-Item -Path $pagePath
+        $rendering = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq '{89F16941-1EA9-4990-88BD-794D3B45292D}' } | Select -First 1
+       
+       if ($rendering -ne $null) {
+           Set-Rendering -Item $page -Instance $rendering -Datasource $data
+           Write-Host "Hold luggage data source updated on extras page";
+       }
+    }
+    
+    Update-Rendering -pagePath '/sitecore/content/EasyJet/Holidays/Home/Booking' -data $holdLuggageDSHolidaysPath
+    Update-Rendering -pagePath '/sitecore/content/EasyJet/TradePortal/Home/Booking' -data $holdLuggageDSTradePath
+    
+    # add hold luggage rendering to holidays site
+    $dataSource = Get-Item -Path $holdLuggageDSHolidaysPath
+    $renderingWrapperHoliday = Get-Rendering -Item $pageHoliday  | Where-Object {$_.ItemId -eq '{E10ECB4E-19CE-4255-982C-04E6E3592A20}'}
+    $renderingPlaceholderHoliday = "/body/bags-$($renderingWrapperHoliday.UniqueId)-0"
+    
+    $bagsRenderingHoliday = Get-Item -Database "master" -Path $renderingId | New-Rendering
+    Add-Rendering -Item $pageHoliday -Instance $bagsRenderingHoliday -PlaceHolder $renderingPlaceholderHoliday -DataSource $dataSource.ID
+    Write-Host "Hold Luggage rendering was successfully added to confirmation page";
+    
+    #add hold luggage rendering to trade portal site
+    $dataSourceTrade = Get-Item -Path $holdLuggageDSTradePath
+    $renderingWrapperTrade = Get-Rendering -Item $pageTrade  | Where-Object {$_.ItemId -eq '{355B5C34-78DB-4494-AA2C-33C453186F2C}'}
+    $renderingPlaceholderTrade = "/body/bags-$($renderingWrapperTrade.UniqueId)-0"
+    
+    $bagsRenderingTrade = Get-Item -Database "master" -Path $renderingId | New-Rendering
+    Add-Rendering -Item $pageTrade -Instance $bagsRenderingTrade -PlaceHolder $renderingPlaceholderTrade -DataSource $dataSourceTrade.ID
+    Write-Host "Hold Luggage rendering was successfully added to trade portal confirmation page";
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230804T102242Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,165 @@
+﻿---
+ID: "707faec7-6021-4ddc-9fe2-cc6de6fd8b2a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-591 Add hold luggage popup 1"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+        $item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+         if ($item -eq $null) {
+                $item = New-Item -Path $path -ItemType $templateId
+                Write-Host "Item" $item.Name "successfully created";
+         }
+         return $item
+    }
+    
+    function Create-Datasource ($path, $bagsPath){
+        $bags = Get-ChildItem -Path $bagsPath;
+        $holdLuggageItems = ($bags | select -ExpandProperty Id) -join "|"
+        
+        $holdLuggagePopupData =  Get-Or-Create-Item -path $path -templateId "{6EF73B24-21E2-4091-9CBD-BEBC57953B66}"
+        if ($holdLuggagePopupData -ne $null) {
+            $holdLuggagePopupData.Editing.BeginEdit()
+            $holdLuggagePopupData["BackToExtras"] =  'Back to extras';
+            $holdLuggagePopupData["NoLuggageAddedLabel"] = "No additional hold luggage added";
+            $holdLuggagePopupData["NoLuggageAddedButton"] = "Skip hold luggage";
+            $holdLuggagePopupData["Header"] =  'Add more Hold Luggage';
+            $holdLuggagePopupData["Description"] = "All items selected are included for the outbound and return flights. Add up to 3 additional and 1 piece of sports equipment per passenger.";
+            $holdLuggagePopupData["DescriptionNote"] = "* Prices are are averaged across both flights in your holiday to get the price you will pay. Prices may vary if you add bags at a later stage.";
+            $holdLuggagePopupData["AdditionalLuggageTitle"] = 'Additional luggage items';
+            $holdLuggagePopupData["HoldLuggageItems"] = $holdLuggageItems;
+            $holdLuggagePopupData["LuggageAddedLabel"] = '{number} Additional items added';
+            $holdLuggagePopupData["LuggageAddedButton"] = 'Confirm hold luggage';
+             $holdLuggagePopupData["PriceLabel"] = '<b>+ {price}</b> per item';
+            $holdLuggagePopupData.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    function Add-New-Rendering($item, $placeholder, $renderingId, $datasource, $index){
+        $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $placeholder
+        Add-Rendering -Item $item -Instance $renderingItem -PlaceHolder $placeholder -DataSource $datasource -Index $index
+    }
+    
+    function Add-Rendering-To($item, $renderingId, $newRenderingId, $datasource, $sign){
+        $index = 0
+        Get-Rendering -Item $item |
+        Foreach-Object { 
+            $index++
+            if($_.ItemId -eq $renderingId)
+            {
+                    $incrementIndex = $index
+                    if ($sign -ne 0){
+                        $incrementIndex = $index + $sign
+                    }
+                
+                    Add-New-Rendering -Item $item -Placeholder $_.Placeholder -RenderingId $newRenderingId -Datasource $datasource -Index $incrementIndex 
+                }
+            }
+        }
+    
+    
+    function Create-Rendering-Data-On-Site ($pagePath, $dataSourcePath, $bagsPath){
+        # Create data source
+        Create-Datasource -Path $dataSourcePath -BagsPath $bagsPath;
+        
+        # Add rendering
+        
+        $previousRendering = '{62F93471-0DCA-49AE-95AF-2B346D8098D8}'
+        $myRenderingId = '{F06DA5C1-EE75-4075-92B7-B8171C857EA8}'
+        $sign = -1
+        $page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+    
+        Add-Rendering-To -item $page -renderingId $previousRendering -newRenderingId $myRenderingId -datasource  $dataSourcePath -sign $sign
+    }
+    
+    # Set content to luggage items
+    $bags = @(
+            @{
+              'Name' = "Hold Baggage 15kg"
+              'Code' = 'LUS'
+              'Path' = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage/Hold Baggage 15kg'
+              'Description' = ''
+              'AdditionalBagsLabel' = ''
+              'Icon' = '<image mediaid="{B4BD6CD3-5AE3-4AED-AFE7-439D73A24A26}" />'
+               },
+            @{
+              'Name' = "Hold Baggage 23kg"
+              'Code' = 'LUG'
+              'Path' = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage/Hold Baggage 23kg'
+              'Description' = '{number} included with holiday package'
+              'AdditionalBagsLabel' = 'Additional bags'
+              'Icon' = '<image mediaid="{BA947D57-D6E1-4374-8B5A-79895084BF84}" />'
+               }
+    )
+    
+    foreach($bag in $bags){
+        $item = Get-Item -Path $bag['Path'];
+        $item.Editing.BeginEdit()
+        $item["Description"] = $bag['Description']
+        $item["AdditionalBagsLabel"] =  $bag['AdditionalBagsLabel']
+        $item["Icon"] =  $bag['Icon']
+        $item.Editing.EndEdit()
+    }
+    
+    $bags = @(
+            @{
+              'Name' = "Hold Baggage 15kg"
+              'Code' = 'LUS'
+              'Path' = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Hold Baggage/Hold Baggage 15kg'
+              'Description' = ''
+              'AdditionalBagsLabel' = ''
+              'Icon' = '<image mediaid="{B4BD6CD3-5AE3-4AED-AFE7-439D73A24A26}" />'
+               },
+            @{
+              'Name' = "Hold Baggage 23kg"
+              'Code' = 'LUG'
+              'Path' = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Hold Baggage/Hold Baggage 23kg'
+              'Description' = '{number} included with holiday package'
+              'AdditionalBagsLabel' = 'Additional bags'
+              'Icon' = '<image mediaid="{BA947D57-D6E1-4374-8B5A-79895084BF84}" />'
+               }
+    )
+    
+    foreach($bag in $bags){
+        $item = Get-Item -Path $bag['Path'];
+        $item.Editing.BeginEdit()
+        $item["Description"] = $bag['Description']
+        $item["AdditionalBagsLabel"] =  $bag['AdditionalBagsLabel']
+        $item["Icon"] =  $bag['Icon']
+        $item.Editing.EndEdit()
+    }
+    
+    # Holidays
+    
+    $pagePath = '/sitecore/content/EasyJet/Holidays/Home/Booking';
+    $data = '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Hold Luggage Popup'
+        
+    Create-Rendering-Data-On-Site -pagePath $pagePath -dataSourcePath $data -bagsPath '/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage'
+    
+    # Trade
+    
+    $pagePath = '/sitecore/content/EasyJet/TradePortal/Home/Booking'
+    $data = '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Hold Luggage Popup'
+        
+    Create-Rendering-Data-On-Site -pagePath $pagePath -dataSourcePath $data -bagsPath '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Hold Baggage'
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 115
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230804T102242Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

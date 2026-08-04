@@ -1,0 +1,65 @@
+﻿---
+ID: "6cee8431-d1a1-4120-a008-0420c32ec883"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-594 Update 23kg descriptions"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Edit-Popup-Data-Source ($dataSourcePath){
+        # Get data source
+        $popupDS = Get-Item -path $dataSourcePath -ErrorAction SilentlyContinue
+        
+        # update data source
+        if ($popupDS -ne $null) {
+            $popupDS.Editing.BeginEdit()
+            $popupDS["IncludedBagLabel"] = "{number} included with holiday package";
+            $popupDS.Editing.EndEdit() | Out-Null
+            Write-Host $popupDS.Name "is updated";
+        }
+    }
+    
+    # Holidays
+    Edit-Popup-Data-Source -dataSourcePath '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Hold Luggage Popup'
+    
+    # Trade
+    Edit-Popup-Data-Source -dataSourcePath '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Hold Luggage Popup'
+    
+    function Edit-Luggage-Data-Source ($dataSourcePath, $description){
+        # Get data source
+        $luggageDS = Get-Item -path $dataSourcePath -ErrorAction SilentlyContinue
+        
+        # update data source
+        if ($luggageDS -ne $null) {
+            $luggageDS.Editing.BeginEdit()
+            $luggageDS["Description"] = $description;
+            $luggageDS.Editing.EndEdit() | Out-Null
+            Write-Host $luggageDS.Name "is updated";
+        }
+    }
+    
+    # 15kg
+    Edit-Luggage-Data-Source -dataSourcePath '/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage/Hold Baggage 15kg' -description "Maximum 15kg per bag, stored in the plane hold. Outbound and return."
+    Edit-Luggage-Data-Source -dataSourcePath '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Hold Baggage/Hold Baggage 15kg' -description "Maximum 15kg per bag, stored in the plane hold. Outbound and return."
+    
+    #23kg
+    Edit-Luggage-Data-Source -dataSourcePath '/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage/Hold Baggage 23kg' -description "Maximum 23kg per bag, stored in the plane hold. Outbound and return."
+    Edit-Luggage-Data-Source -dataSourcePath '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Hold Baggage/Hold Baggage 23kg' -description "Maximum 23kg per bag, stored in the plane hold. Outbound and return."
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 200
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230807T121141Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

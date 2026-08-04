@@ -1,0 +1,81 @@
+﻿---
+ID: "bdb8f59f-7547-4744-9e8e-517e73f0ddd3"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/DestinationsStructureReport
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $countryTemplateId = "{5F03C6EF-EF52-4F2E-BC5A-B1F065A1E745}" # Country
+    $regionTemplateId = "{2F42EC14-7E56-467A-B300-AB9723C74546}" # Region
+    $resortTemplateId = "{538939B3-07EC-4C23-BF8C-3A68DE0FDC93}" # Resort
+    $hotelTemplateId = "{28E5E169-8F72-4F90-A277-280A8302B607}" # Hotel
+    
+    $destinations = New-Object Collections.Generic.List[object] 
+    
+    $startPath = "/sitecore/content/EasyJet/Holidays/Home/Destinations"
+    
+    function Get-Hotels($countryItem,$regionItem,$resortItem){
+        $hotelsItems = Get-ChildItem -Path $resortItem.FullPath | Where-Object { $_.TemplateId -eq $hotelTemplateId }
+        foreach($hotelItem in $hotelsItems){
+            $destinations.Add([ordered]@{
+                    COUNTRY_CODE = $countryItem.Fields["code"].value
+                    COUNTRY = $countryItem.Name
+                    REGION_CODE = $regionItem.Fields["code"].value 
+                    REGION = $regionItem.Name
+                    RESORT_CODE = $resortItem.Fields["code"].value
+                    RESORT = $resortItem.Name
+                    HOTEL_CODE = $hotelItem.Fields["code"].value
+                    HOTEL = $hotelItem.Name
+                })
+        }
+    }
+    
+    function Get-Resorts($countryItem,$regionItem){
+        $resortsItems = Get-ChildItem -Path $regionItem.FullPath | Where-Object { $_.TemplateId -eq $resortTemplateId }
+        foreach($resortItem in $resortsItems){
+            Get-Hotels -CountryItem $countryItem -RegionItem $regionItem -ResortItem $resortItem
+        }
+    }
+    
+    function Get-Regions($countryItem){
+        $regionsItems = Get-ChildItem -Path $countryItem.FullPath | Where-Object { $_.TemplateId -eq $regionTemplateId }
+        foreach($regionItem in $regionsItems){
+            Get-Resorts -CountryItem $countryItem -RegionItem $regionItem
+        }
+    }
+    
+    function Get-Countries($destinationsItem){
+        $countriesItems = Get-ChildItem -Path $destinationsItem.FullPath | Where-Object { $_.TemplateId -eq $countryTemplateId }
+        foreach($countryItem in $countriesItems){
+            Get-Regions -CountryItem $countryItem
+        }
+    }
+    
+    function Get-Destinations($path){
+        $destinationsItem = Get-Item -Path $path
+        Get-Countries -DestinationsItem $destinationsItem
+    }
+    
+    function Download($data)
+    {
+        Import-Function -Name ConvertTo-Xlsx
+    
+        [byte[]]$outobject = $data | ForEach-Object { New-Object PSObject -Property $_ } | ConvertTo-Xlsx
+    
+        Out-Download -Name "destinations.xlsx" -InputObject $outobject 
+    }
+    
+    Get-Destinations -Path $startPath
+    Download -Data $destinations
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210225T133435Z

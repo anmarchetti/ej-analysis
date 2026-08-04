@@ -1,0 +1,55 @@
+﻿---
+ID: "f465ab96-7c2e-465f-a9e7-e07e653158ee"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Booking Disruption Options
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Page
+    $pagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    $page = Get-Item -path $pagePath -ErrorAction SilentlyContinue
+    
+    # Data source
+    $bookingDisruptionPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Credit or Amend Booking"
+    $bookingDisruptionTemplateId = "{FB6C8E36-1676-4F1C-9309-8A78C40936C6}"
+    
+    $bookingDisruption = Get-Item -Database "master" -path $bookingDisruptionPath -ErrorAction SilentlyContinue
+    
+    if ($bookingDisruption -eq $null) {
+        # create item
+        $bookingDisruption = New-Item -Path $bookingDisruptionPath -ItemType $bookingDisruptionTemplateId
+        Write-Host "Item" $bookingDisruption.Name "successfully created"
+    }
+    
+    $bookingDisruption.Editing.BeginEdit()
+    $bookingDisruption["Title"] = "Making changes to your holiday"
+    $bookingDisruption["Description"] = "We understand there’s some uncertainty around traveling at the moment. Therefore we wanted to give you the chance to amend your holiday or credit your account for no extra cost. <a rel=""noopener noreferrer"" target=""_blank"" href=""https://www.easyjet.com/en/holidays/Info/credit-terms"">T&amp;C’s</a> apply."
+    $bookingDisruption["AmendTitle"] = "Amend your holiday"
+    $bookingDisruption["AmendDescription"] = "Make changes to your existing holiday or cancel and rebook a new one."
+    $bookingDisruption["AmendButtonText"] = "Find out more"
+    $bookingDisruption["CreditTitle"] = "Get credit on your account"
+    $bookingDisruption["CreditDescription"] = "Not decided on your new holiday yet? No problem! We’ll cancel your old holiday and apply credit to your account so you can re-book when you’re ready."
+    $bookingDisruption["CreditButtonText"] = "Find out more"
+    $bookingDisruption.Editing.EndEdit() | Out-Null
+    
+    # Update Rendering
+    $renderingId = "{E7C360E8-EBF4-4505-B084-CCE8D6492004}"
+    $renderigPlaceholder = "/body/component-wrapper-inner-{b256b26a-da9c-4195-b68a-bc4ed53685e3}-0/credit-booking-disruption-{5500ac44-5df4-4473-8e8c-ea635a187882}-0";
+    $renderingInstance = Get-Rendering -Item $page -PlaceHolder $renderigPlaceholder
+    
+    if($renderingInstance -ne $null){
+        $renderingInstance.ItemID = $renderingId
+        Set-Rendering -Item $page -Instance $renderingInstance -DataSource $bookingDisruptionPath
+        Write-Host  "Rendering was updated"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200513T074412Z

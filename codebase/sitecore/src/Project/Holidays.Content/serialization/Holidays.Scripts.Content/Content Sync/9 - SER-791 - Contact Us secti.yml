@@ -1,0 +1,176 @@
+﻿---
+ID: "35330a5d-318f-4904-965a-d368d47b89f1"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/9 - SER-791 - Contact Us section"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    Move-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Text Blocks/Contact us" -Destination "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Contact us - Section Title"
+    Move-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/New Help Links" -Destination "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Help Links"
+    Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Text Blocks" | Remove-Item
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Contact us - Section Title"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "STILL STUCK?"
+                        "fr-CH" = "ENCORE COINCÉ ?"
+                        "de-CH" = "IMMER NOCH STECKEN GEBLIEBEN?"
+                        "fr-FR" = "TOUJOURS BLOQUÉ ?"
+                        "de-DE" = "IMMER NOCH FESTGEFAHREN?"
+                    }
+                    "Description" = @{
+                        "en" = @'
+    <p style="font-size: 14px;">We understand waiting can feel stressful, but thanks for giving us some time. Our team is currently working on alternative arrangements and will reach out as soon as we have more information using the contact details provided when you booked your holiday. </p>
+    <p style="font-size: 14px;">In the meantime, feel free to visit our <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">Help Centre</span></strong></a>&nbsp;for assistance, or our <a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z"><strong><span style="text-decoration: underline;">Contact Us</span></strong></a>&nbsp;page if you still need extra help.</p>
+    '@
+                        "fr-CH" = @'
+    <p style="font-size: 14px;">Nous comprenons que l'attente peut être stressante, mais nous vous remercions de nous accorder un peu de temps. Notre équipe travaille actuellement à la mise en place de solutions alternatives et vous contactera dès que nous aurons plus d'informations, en utilisant les coordonnées fournies lors de la réservation de vos vacances. </p>
+    <p style="font-size: 14px;">En attendant, n'hésitez pas à consulter notre <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">Centre d'aide</span></strong></a>&nbsp; pour obtenir de l'aide, ou notre page <a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z"><strong><span style="text-decoration: underline;">Contactez-nous</span></strong></a>&nbsp;si vous avez encore besoin d'aide.</p>
+    '@
+                        "de-CH" = @'
+    <p style="font-size: 14px;">Wir verstehen, dass das Warten stressig sein kann, aber danke, dass du uns etwas Zeit gibst. Unser Team arbeitet gerade an alternativen Lösungen und wird sich mit dir in Verbindung setzen, sobald wir mehr Infos haben. Wir nutzen dafür die Kontaktdaten, die du bei der Buchung deines Urlaubs angegeben hast. </p>
+    <p style="font-size: 14px;">In der Zwischenzeit können Sie gerne unser <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">Hilfe-Center</span></strong></a>&nbsp; oder unsere Seite <a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z"><strong><span style="text-decoration: underline;">Kontakt</span></strong></a>, wenn Sie weitere Hilfe benötigen. </p>
+    '@
+                        "fr-FR" = @'
+    <p style="font-size: 14px;">Nous comprenons que l'attente peut être stressante, mais nous vous remercions de nous accorder un peu de temps. Notre équipe travaille actuellement à la mise en place de solutions alternatives et vous contactera dès que nous aurons plus d'informations, en utilisant les coordonnées fournies lors de la réservation de vos vacances. </p>
+    <p style="font-size: 14px;">En attendant, n'hésitez pas à consulter notre <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">Centre d'aide</span></strong></a>&nbsp; pour obtenir de l'aide, ou notre page <a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z"><strong><span style="text-decoration: underline;">Contactez-nous</span></strong></a>&nbsp;si vous avez encore besoin d'aide.</p>
+    '@
+                        "de-DE" = @'
+    <p style="font-size: 14px;">Wir verstehen, dass das Warten stressig sein kann, aber danke, dass du uns etwas Zeit gibst. Unser Team arbeitet gerade an alternativen Lösungen und wird sich mit dir in Verbindung setzen, sobald wir mehr Infos haben. Wir nutzen dafür die Kontaktdaten, die du bei der Buchung deines Urlaubs angegeben hast. </p>
+    <p style="font-size: 14px;">In der Zwischenzeit können Sie gerne unser <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">Hilfe-Center</span></strong></a>&nbsp; oder unsere Seite <a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z"><strong><span style="text-decoration: underline;">Kontakt</span></strong></a>, wenn Sie weitere Hilfe benötigen. </p>
+    '@
+                    }
+                    "Icon" = @{
+                        "en" = '<image mediaid="{911BA700-854E-49C8-A401-3027C414F1B6}" alt="message" height="80" width="80" hspace="" vspace="" />'
+                        "fr-CH" = '<image mediaid="{911BA700-854E-49C8-A401-3027C414F1B6}" alt="message" height="80" width="80" hspace="" vspace="" />'
+                        "de-CH" = '<image mediaid="{911BA700-854E-49C8-A401-3027C414F1B6}" alt="Nachricht" height="80" width="80" hspace="" vspace="" />'
+                        "fr-FR" = '<image mediaid="{911BA700-854E-49C8-A401-3027C414F1B6}" alt="message" height="80" width="80" hspace="" vspace="" />'
+                        "de-DE" = '<image mediaid="{911BA700-854E-49C8-A401-3027C414F1B6}" alt="Nachricht" height="80" width="80" hspace="" vspace="" />'
+                    }
+                    "__Sortorder" = @{
+                        "en" = "1300"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Help Links"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Help Link"
+                Fields      = @{
+                    "__Sortorder" = @{
+                        "en" = "1400"
+                    }
+                    "Links" = @{
+                        "en" = "{E33CF41F-62D9-4AB0-B77A-C9663AB3C392}|{5DFA9330-2415-4064-AE6F-E706CBAAABEA}"
+                        "fr-CH" = "{E33CF41F-62D9-4AB0-B77A-C9663AB3C392}|{5DFA9330-2415-4064-AE6F-E706CBAAABEA}"
+                        "de-CH" = "{E33CF41F-62D9-4AB0-B77A-C9663AB3C392}|{5DFA9330-2415-4064-AE6F-E706CBAAABEA}"
+                        "fr-FR" = "{E33CF41F-62D9-4AB0-B77A-C9663AB3C392}|{5DFA9330-2415-4064-AE6F-E706CBAAABEA}"
+                        "de-DE" = "{E33CF41F-62D9-4AB0-B77A-C9663AB3C392}|{5DFA9330-2415-4064-AE6F-E706CBAAABEA}"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Help Links/Contact us"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Help Link"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Contact Us"
+                        "fr-CH" = "Contactez-nous"
+                        "de-CH" = "Kontaktieren Sie uns"
+                        "fr-FR" = "Nous contacter"
+                        "de-DE" = "Kontaktieren Sie uns"
+                    }
+                    "TrackingLabel" = @{
+                        "en" = "contact us"
+                    }
+                    "Description" = @{
+                        "en" = ""
+                        "fr-CH" = ""
+                        "de-CH" = ""
+                        "fr-FR" = ""
+                        "de-DE" = ""
+                    }
+                    "Icon" = @{
+                        "en" = '<image mediaid="{C0D4A8E6-BA76-4D93-BF0A-7D850F10D974}" alt="Contact Us" />'
+                    }
+                    "Link" = @{
+                        "en" = '<link text="Contact us" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />'
+                        "fr-CH" = '<link text="Contact us" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />'
+                        "de-CH" = '<link text="Contact us" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />'
+                        "fr-FR" = '<link text="Contact us" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />'
+                        "de-DE" = '<link text="Contact us" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />'
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Help Links/Help centre"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Help Link"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Help centre"
+                        "fr-CH" = "Centre d’aide"
+                        "de-CH" = "Hilfe-Center"
+                        "fr-FR" = "Centre d’assistance"
+                        "de-DE" = "Hilfe-Center"
+                    }
+                    "TrackingLabel" = @{
+                        "en" = "help centre"
+                    }
+                    "Description" = @{
+                        "en" = ""
+                        "fr-CH" = ""
+                        "de-CH" = ""
+                        "fr-FR" = ""
+                        "de-DE" = ""
+                    }
+                    "Icon" = @{
+                        "en" = '<image mediaid="{2710E02E-944D-49ED-BA31-EA40163039EB}" height="" hspace="" width="" alt="Help centre" vspace="" />'
+                    }
+                    "Link" = @{
+                        "en" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />'
+                        "fr-CH" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />'
+                        "de-CH" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />'
+                        "fr-FR" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />'
+                        "de-DE" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />'
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                }
+            }
+        )
+        
+    ImportContent -itemsToCreate $updates
+    
+    $page= Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption"
+    $componentWrapper = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper"
+    $renderingComponentWrapper = Get-Rendering -Item $page -Rendering $componentWrapper
+    
+    Set-Rendering -Item $page -Instance $renderingComponentWrapper[6] -PlaceHolder "/body" -Parameter @{ "PaddingTop" = "Padding Top 32px"; "PaddingTopMobile" = "Padding Top Mobile 32px" }
+    
+    $textBlock = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/Text Block"
+    $renderingTextBlock = Get-Rendering -Item $page -Rendering $textBlock
+    Set-Rendering -Item $page -PlaceHolder "/body/component-wrapper-inner-$($renderingComponentWrapper[6].UniqueId)-0" -Instance $renderingTextBlock[$renderingTextBlock.length - 1] -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Contact us - Section Title" -Parameter @{ "TitleTag" = "h2"; "TitleFontStyle" = "rounded demi"; "TitleFontSize" = "Mobile - 20px Desktop - 32px"; "TitleWeight" = 400; "PaddingSize" = "0px"; "IsIconAboveTitle" = "1" } 
+    
+    $promoBlocks = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/Help Links"
+    $renderingpromoBlocks = Get-Rendering -Item $page -Rendering $promoBlocks
+    Set-Rendering -Item $page -Instance $renderingpromoBlocks -PlaceHolder "/body/component-wrapper-inner-$($renderingComponentWrapper[6].UniqueId)-0" -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Help Links" -Parameter @{ "Variant" = "Horizontal Alignment" }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

@@ -1,0 +1,209 @@
+---
+ID: "7ba786e1-998f-4803-9033-f8ee0b1d3fbb"
+Parent: "4c10d78f-07b6-469e-929f-cb4b460bb11e"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Destinations Sync/Hotel Sync/Hotel Room Facilities Import
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-ReferenceTypes {
+    	param($parent)
+    
+    	$referenceTypes = @{}
+    	foreach ($item in $parent.GetChildren()) {
+    		if (![string]::IsNullOrEmpty($item["Code"])) {
+    			$referenceTypes[$item["Code"]] = $item
+    		}
+    	}
+    	return $referenceTypes
+    }
+    
+    function Find-Hotels-Items {
+    	$criteria = @(
+    		@{ Filter = "Equals"; Field = "_template"; Value = "28e5e1698f724f90a277280a8302b607"; }
+    		@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    	)
+    
+    	$props = @{
+    		Index = "sitecore_destinations_master_index"
+    		Criteria = $criteria
+    	}
+    
+    	$items = Find-Item @props
+    	Write-Host "Number of Hotels retrived: " $items.Count -ForegroundColor Green
+    
+    	return $items
+    }
+    
+    function Get-Rooms-Data {
+    	param($filePath)
+    	$hashTable = @{}
+    
+    	$csvFile = Import-Csv $filePath -Delimiter ','
+    	$hotels = $csvFile | Group-Object -Property { $_.'ACCOM_CODE' } -AsHashTable -AsString
+    	foreach ($hotelKey in $hotels.Keys) {
+    
+    		$hotelData = @{
+    			HotelCode = $hotelKey
+    			Rooms = @()
+    		}
+    
+    		$hotelRooms = $hotels[$hotelKey] | Group-Object -Property { $_.'ROOM_CODE' } -AsHashTable -AsString
+    
+    
+    		$hotelRoomsData = @()
+    		foreach ($roomKey in $hotelRooms.Keys) {
+    
+    			$hotelRoomData = @{
+    				RoomCode = $roomKey
+    				RoomName = $hotelRooms[$roomKey].'ROOM_NAME' | Select -First 1
+    				Facilities = Get-Facilities -roomFacilities $hotelRooms[$roomKey]
+    			}
+    
+    			$hotelRoomsData += $hotelRoomData
+    		}
+    
+    		$hotelData.Rooms = $hotelRoomsData
+    
+    		$objTemp = @{ $hotelKey = $hotelData }
+    		$hashTable += $objTemp
+    	}
+    
+    	return $hashTable
+    }
+    
+    function Get-Facilities {
+    	param($roomFacilities)
+    	$facilityList = @()
+    	foreach ($roomFacility in $roomFacilities)
+    	{
+    		$facility = @{
+    			Code = $roomFacility.'CODE'
+    			Name = $roomFacility.'NAME'
+    		}
+    		$facilityList += $facility
+    	}
+    
+    	return $facilityList
+    }
+    
+    function Get-Or-Create-Item {
+    	param($parent,$itemName,$templateId)
+    
+    	$item = Get-ChildItem -Item $parent | Where-Object { $_.Name -eq $itemName } | Select -First 1
+    
+    	if ($item.Count -eq 0) {
+    		$validName = [Sitecore.Data.Items.ItemUtil]::ProposeValidItemName($itemName)
+    		New-Item -Parent $parent -Name $validName -ItemType $templateId
+    	}
+    
+    	return $item
+    }
+    
+    function Get-Or-Create-ReferenceType-ByCodes {
+    	param($parent,$itemName, $code,$name,[ref]$referenceTypes, $templateId)
+        
+    	if ($referenceTypes.Value[$code] -ne $null) {
+    		return $referenceTypes.Value[$code]
+    	}
+    
+    	$referenceItem = Get-Or-Create-Item -Parent $parent -itemName $itemName -templateId $templateId
+    
+    	$referenceItem.Editing.BeginEdit()
+    	$referenceItem["Code"] = $code
+    	$referenceItem["Name"] = $name
+    	$referenceItem.Editing.EndEdit()
+    	
+    	$referenceTypes.Value[$code] += $referenceItem
+    
+    	return $referenceItem
+    }
+    
+    function Remove-Children-Items-ByTemplate {
+    	param($Item,$templateId)
+    
+    	New-UsingBlock (New-Object Sitecore.Data.BulkUpdateContext) {
+    		Get-ChildItem -Item $Item | Where-Object { $_.TemplateId -eq $templateId } | Remove-Item
+    	}
+    }
+    
+    #Find Destionations Items
+    $hotels = Find-Hotels-Items
+    $csvFile = "$SitecoreDataFolder\ImportData\16-01 Room Facilities upload.csv"
+    $hotelData = Get-Rooms-Data -FilePath $csvFile
+    
+    $atcomTypeFolder = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Room Types/Atcom"
+    $roomTypes = Get-ReferenceTypes -Parent $atcomTypeFolder
+    
+    $facilityTypesFolder = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Facility Types"
+    $dcFacilityFolder = Get-Or-Create-Item -Parent $facilityTypesFolder -itemName "DC Facilities" -templateId "{7E1CEEB8-9A59-4584-91E8-6014A5B0FF56}"
+    $facilityTypes = Get-ReferenceTypes -Parent $dcFacilityFolder
+    
+     New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+     	New-UsingBlock (New-Object Sitecore.Data.DatabaseCacheDisabler) {
+    		New-UsingBlock (New-Object Sitecore.Data.Events.EventDisabler) {
+    		    New-UsingBlock (New-Object Sitecore.Data.BulkUpdateContext) {
+    				foreach ($hotel in $hotels)
+    				{
+    					try {
+    						$hotelItem = Get-Item -Path "master:" -Id $hotel.ItemId
+    						if ($hotelItem -ne $null) {
+    
+    							$roomsData = $hotelData[$hotelItem["Code"]]
+    							if ($roomsData -ne $null) {
+                                    
+    								#get Room folder 
+    								$roomFolder = Get-Or-Create-Item -Parent $hotelItem -itemName "Rooms" -templateId "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}" #Accommadation Rooms Folder
+    
+    								foreach ($room in $roomsData.Rooms)
+    								{
+    									$roomItem = Get-Or-Create-Item -Parent $roomFolder -itemName $room.RoomCode -templateId "{BA1EC5C3-14C7-40B3-8B69-D020590DA1F3}" #Accommadation Room 
+    									$roomType = Get-Or-Create-ReferenceType-ByCodes -Parent $atcomTypeFolder -itemName "$($room.RoomCode) - $($room.RoomName)" -code $room.RoomCode -Name $room.RoomName -referenceTypes ([ref]$roomTypes) -templateId "{85911381-FCEA-453C-89A7-D8B86532EBE0}" #Room type Template
+    
+    									$roomItem.Editing.BeginEdit()
+    									$roomItem["RoomType"] = $roomType.ID
+    									$roomItem.Editing.EndEdit()
+    
+    									#get Room Facility folder 
+    									$facilityFolder = Get-Or-Create-Item -Parent $roomItem -itemName "Facilities" -templateId "{EA39971C-094D-4BEC-A479-9171279553C0}" # Accommadation Facilities Folder
+    									$i = 0
+    
+    									#Remove-Children-Items-ByTemplate -Item $facilityFolder -templateId "{1EC134E4-4753-498E-9D1A-6DC67A8975BE}" #Room facility template
+    
+    									foreach ($facility in $room.Facilities)
+    									{
+    
+    										$facilityItem = Get-Or-Create-Item -Parent $facilityFolder -itemName $facility.Name -templateId "{1EC134E4-4753-498E-9D1A-6DC67A8975BE}"
+    										$facilityType = Get-Or-Create-ReferenceType-ByCodes -Parent $dcFacilityFolder -itemName $facility.Name -code $facility.Code -Name $facility.Name -referenceTypes ([ref]$facilityTypes) -templateId "{0AE072FB-5BCF-4E09-95B5-239CBE370B2B}" #Facility Type
+    
+    										$facilityItem.Editing.BeginEdit()
+    										$facilityItem["__sortorder"] = $i * 100
+    										$facilityItem["FacilityType"] = $facilityType.ID
+    										$facilityItem.Editing.EndEdit()
+    										$i++ 
+    									}
+            
+    								}
+                                    
+                                    
+    								Write-Host "Hotel " $hotelItem.ID "has been updated"
+    							}
+    						}
+    					} catch {
+    						Write-Host $_.Exception.Message $hotelItem.Name $_.Exception.ItemName -ForegroundColor Red
+    					}
+    			}
+    		}
+    		}
+    	}
+    } 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191112T125811Z

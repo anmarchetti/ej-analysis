@@ -1,0 +1,236 @@
+﻿---
+ID: "6e13ddae-338d-418a-9f0a-38c4f310885d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-13647 Sustainability Page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$itemName,$templateId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function Update-Rendering-DataSource ($item,$renderingId,$placeHolder,$newDataSource,$last) {
+        if ($last -eq $null) {
+            $rendering = Get-Rendering -Item $item -PlaceHolder $placeHolder | Where-Object { $_.ItemId -eq $renderingId } | Select -First 1
+        } else {
+            $rendering = Get-Rendering -Item $item -PlaceHolder $placeHolder | Where-Object { $_.ItemId -eq $renderingId } | Select -Last 1
+        }
+    
+    	if ($rendering -ne $null) {
+    		Set-Rendering -Item $item -Instance $rendering -DataSource $newDataSource
+    		Write-Host $item.Name "Rendering successfully updated"
+    	}
+    }
+    
+    function Set-Page-Design ($designPath,$pageTemplateId) {
+    	$designItem = Get-Item -Path "$($designPath)" -ErrorAction SilentlyContinue
+    	if ($designItem -ne $null) {
+    		[Sitecore.Data.Fields.MultilistField]$pageTemplates = $designItem.Fields["PageTemplates"];
+    
+    		if (!$pageTemplates.Contains($pageTemplateId)) {
+    			$designItem.Editing.BeginEdit();
+    			$pageTemplates.add($pageTemplateId);
+    			$designItem.Editing.EndEdit() | Out-Null
+    			Write-Host $designItem.Name "Page Templates updated"
+    		}
+    	}
+    }
+    
+    
+    $pageTemplateId = "{CA44C600-239E-40CF-8E8A-B4F417C935D9}"
+    
+    # Add Page To PageDesigns
+    Set-Page-Design -designPath "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Full Header And Footer With Phone Number" -pageTemplateId $pageTemplateId
+    
+    # Create Page
+    $page = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home" -ItemName "Sustainability" -TemplateId $pageTemplateId
+    
+    # Create Page Components
+    $pageComponents = Get-Or-Create-Item -Path $page.FullPath -ItemName "Page Components" -TemplateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    
+    function Create-Hero-Banner () {
+        $heroBannerTemplateId = "{2EB9DAA0-43A7-4A89-8DD2-BBF92C29285D}"
+        $heroBannerRenderingId = "{DEBE445D-27F2-44DA-8FD4-F4FD95BDBFF1}"
+        
+        $heroBanner = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Hero Banner" -TemplateId $heroBannerTemplateId
+        $heroBanner.Editing.BeginEdit();
+    	$heroBanner["Image"] = '<image mediaid="{64B55804-F985-490C-BC4A-FCA7804B5368}" />'
+    	$heroBanner["Title"] = "Holidays that don’t cost the earth"
+        $heroBanner["Subtitle"] = "Nothing beats the excitement of touching down somewhere special. And if you’re on the hunt to find out how we’re building genuinely sustainable easyJet holidays that give a lot more than they take, then you’ve landed in the right place. So step this way for our vision, mission, and overall approach to sustainability..."
+        $heroBanner["Variant"] = "Opaque White Stripe"
+        $heroBanner["PromoLogo"] = '<image mediaid="{99FF9F17-D18C-4A6A-9CB2-E2B5D4A2DCBE}" />'
+    	$heroBanner.Editing.EndEdit() | Out-Null
+    
+        Update-Rendering-DataSource -Item $page -RenderingId $heroBannerRenderingId -PlaceHolder "body" -NewDataSource $heroBanner.ID
+    }
+    
+    function Create-Text-Blocks () {
+    	# Create Text Blocks Folder
+    	$textBlocksFolder = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Text Blocks" -TemplateId "{AB8D608B-3B9D-4ECB-9BA3-8C61306D7A41}"
+    	$textBlockTemplateId = "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}"
+    	$textBlockRenderingId = "{43546A28-D231-4287-96D2-25DEF529F1A5}"
+    
+    	# Create "Come With Us" Text Block
+    	$comeWithUsTextBlock = Get-Or-Create-Item -Path $textBlocksFolder.FullPath -ItemName "Come With Us" -TemplateId $textBlockTemplateId
+    	$comeWithUsTextBlock.Editing.BeginEdit();
+    	$comeWithUsTextBlock["Title"] = "COME WITH US"
+    	$comeWithUsTextBlock["Description"] = "We’re on a mission to become the most trusted holiday provider in the UK. For us that means being honest and open about our economic, social, and environmental impacts. Because we’re on a sustainability journey. And we want you to join us. We’ve even made a little video about it which will tell you just how and why we’re leading the travel industry by example and working towards a world where sustainable travel is accessible to everyone – without passing the cost on to you, or costing the earth. Want to know more? Then take a peep."
+    	$comeWithUsTextBlock.Editing.EndEdit() | Out-Null
+    	
+        # Set "Come With Us" DataSource
+    	Update-Rendering-DataSource -Item $page -RenderingId $textBlockRenderingId -PlaceHolder "/body/component-wrapper-inner-{09e200d1-ab7d-4e2c-aebc-8f97d4565e1c}-0" -NewDataSource $comeWithUsTextBlock.ID
+    
+    
+    	# Create "Our Vision" Text Block
+    	$ourVisionTextBlock = Get-Or-Create-Item -Path $textBlocksFolder.FullPath -ItemName "Our Vision" -TemplateId $textBlockTemplateId
+    	$ourVisionTextBlock.Editing.BeginEdit();
+    	$ourVisionTextBlock["Title"] = "Our vision is a world where travel makes a positive impact on the environment and local communities"
+    	$ourVisionTextBlock.Editing.EndEdit() | Out-Null
+    
+    	# Set "Our Vision" DataSource
+    	Update-Rendering-DataSource -Item $page -RenderingId $textBlockRenderingId -PlaceHolder "/body/component-wrapper-inner-{09e200d1-ab7d-4e2c-aebc-8f97d4565e1c}-0" -NewDataSource $ourVisionTextBlock.ID -Last True
+    }
+    
+    function Create-Information-Banners () {
+        # Create Folder
+    	$bannersFolder = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Information Banners" -TemplateId "{ED924453-895C-4D34-8487-79D82FF505F9}"
+    	$bannerTemplateId = "{049F0CD3-A3F4-4C04-9856-CDECAD8DE6AC}"
+    	$bannerRenderingId = "{9548AF18-BCAB-4DAE-A754-B3A99C14A429}"
+    
+    	# Create "Our Mission" banner
+    	$ourMissionBanner = Get-Or-Create-Item -Path $bannersFolder.FullPath -ItemName "Our Mission" -TemplateId $bannerTemplateId
+    	$ourMissionBanner.Editing.BeginEdit();
+    	$ourMissionBanner["Title"] = "Our Mission"
+    	$ourMissionBanner["Description"] = "When it comes to sustainability we want to raise the bar, positively shake things up and lead the industry. To make sustainability part of our everyday culture, enabling us, our partners, and our customers to reduce their footprint, and make a positive impact on the people and places that make our destinations so special."
+        $ourMissionBanner["Image"] = '<image mediaid="{9EEFFC73-A852-4582-908F-14DC8A5BBD67}" />'
+    	$ourMissionBanner.Editing.EndEdit() | Out-Null
+    	
+        # Set "Our Mission" DataSource
+    	Update-Rendering-DataSource -Item $page -RenderingId $bannerRenderingId -PlaceHolder "body" -NewDataSource $ourMissionBanner.ID
+    
+        # Create "Carbon Offsetting" banner
+    	$carbonOffsettingBanner = Get-Or-Create-Item -Path $bannersFolder.FullPath -ItemName "Carbon Offsetting" -TemplateId $bannerTemplateId
+    	$carbonOffsettingBanner.Editing.BeginEdit();
+    	$carbonOffsettingBanner["Title"] = "CARBON OFFSETTING"
+    	$carbonOffsettingBanner["Description"] = "<p>We’re proud to be the first major tour operator to offset the carbon emissions from our package holidays. That’s all the fuel used for flights and your in-destination transfers, as well as the energy used for hotel stays – all without passing the cost onto you. Better still, we’ve backdated this move to offset all our holidays since we launched back in November 2019.</p><p>easyJet got the ball rolling in November 2019, becoming the first major airline to offset the carbon emissions from the fuel used on all its flights. Since then it’s also minimised its impact by flying a modern fleet of fuel efficient aircraft leading, by the year 2000, to a cut in carbon emissions per passenger, per kilometre by a third. </p><p>But because we know carbon offsetting is only an interim answer, easyJet is hard at work pioneering the all-electric, hybrid and hydrogen propulsion systems we all need to achieve zero-emission flying in the future. </p><p>But because we know carbon offsetting is only an interim answer, easyJet is hard at work pioneering the all-electric, hybrid and hydrogen propulsion systems we all need to achieve zero-emission flying in the future. </p><p />We’re also working hard with our partners to expand the scope of our carbon offsetting to include even more elements of your holiday – from door to door – and, of course, we’ll keep you posted.<p />"
+        $carbonOffsettingBanner["Image"] = '<image mediaid="{EF03DAFE-79C6-430D-BFD5-E5064147BB97}" />'
+    	$carbonOffsettingBanner.Editing.EndEdit() | Out-Null
+    	
+        # Set "Our Mission" DataSource
+    	Update-Rendering-DataSource -Item $page -RenderingId $bannerRenderingId -PlaceHolder "body" -NewDataSource $carbonOffsettingBanner.ID -Last True
+    }
+    
+    function Create-Animation-Tiles () {
+        # Create Folder
+    	$tilesFolder = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Animation Tiles" -TemplateId "{3AF77EDE-17AF-4085-825E-2070709FE525}"
+    	$tileTemplateId = "{331FD319-A0B8-495E-B1A3-42CE1A674F50}"
+    	$tilesRenderingId = "{1FB98C17-18AC-4CD8-83A1-BBE216389B0B}"
+    
+    	# Create "Enable Our Customers" banner
+    	$enableCustomers = Get-Or-Create-Item -Path $tilesFolder.FullPath -ItemName "Enable Our Customers" -TemplateId $tileTemplateId
+    	$enableCustomers.Editing.BeginEdit();
+    	$enableCustomers["Icon"] = '<image mediaid="{50066EB0-0E9D-4F5B-804F-94327D508AE3}" />'
+    	$enableCustomers["Title"] = "Enable our customers"
+        $enableCustomers["MoreText"] = "More details"
+        $enableCustomers["Image"] = '<image mediaid="{91AE3ABE-ED63-4769-892C-8520DD5038B6}" />'
+        $enableCustomers["HoverTitle"] = "Enable our customers"
+        $enableCustomers["HoverDescription"] = "By making sustainable travel affordable and accessible to everyone. Yep, that’s our commitment. We want all of our holidaymakers to enjoy authentic travel experiences that directly support sustainable practices by 2025."
+        $enableCustomers["HoverIcon"] = '<image mediaid="{D1758E38-491B-4977-AAD8-ACE77088341B}" />'
+        $enableCustomers["__Sortorder"] = 50
+    	$enableCustomers.Editing.EndEdit() | Out-Null
+    
+        # Create "Support Our Destinations" banner
+    	$supportDestinations = Get-Or-Create-Item -Path $tilesFolder.FullPath -ItemName "Support Our Destinations" -TemplateId $tileTemplateId
+    	$supportDestinations.Editing.BeginEdit();
+    	$supportDestinations["Icon"] = '<image mediaid="{E39F2708-9178-43BB-AF46-C2563BD5E787}" />'
+    	$supportDestinations["Title"] = "Support our destinations"
+        $supportDestinations["MoreText"] = "More details"
+        $supportDestinations["Image"] = '<image mediaid="{1F7C23B5-D0CC-4556-976B-BA4572BB4217}" />'
+        $supportDestinations["HoverTitle"] = "Support our destinations"
+        $supportDestinations["HoverDescription"] = "By making sustainable travel affordable and accessible to everyone. Yep, that’s our commitment. We want all of our holidaymakers to enjoy authentic travel experiences that directly support sustainable practices by 2025."
+        $supportDestinations["HoverIcon"] = '<image mediaid="{01AAACC0-DD18-499C-9FF9-AE13E9807C20}" />'
+        $supportDestinations["__Sortorder"] = 100
+    	$supportDestinations.Editing.EndEdit() | Out-Null
+    
+        # Create "Lead From The Inside Out" banner
+    	$leadFromInsideOut = Get-Or-Create-Item -Path $tilesFolder.FullPath -ItemName "Lead From The Inside Out" -TemplateId $tileTemplateId
+    	$leadFromInsideOut.Editing.BeginEdit();
+    	$leadFromInsideOut["Icon"] = '<image mediaid="{5527B71D-50C8-4DC9-BB72-1CF7F50C29BF}" />'
+    	$leadFromInsideOut["Title"] = "Lead from the inside out"
+        $leadFromInsideOut["MoreText"] = "More details"
+        $leadFromInsideOut["Image"] = '<image mediaid="{5B1774C4-7E6F-4105-B443-1C667C452D28}" />'
+        $leadFromInsideOut["HoverTitle"] = "Lead from the inside out"
+        $leadFromInsideOut["HoverDescription"] = "By embedding sustainability into everything we do and pioneering meaningful change in our industry. This also means building sustainability into the very fabric of our business culture and all our decisions. Because if we can get that right then we can really influence our industry to move forward."
+        $leadFromInsideOut["HoverIcon"] = '<image mediaid="{3F57B002-5BF4-49FC-BED0-E437B38E5967}" />'
+        $leadFromInsideOut["__Sortorder"] = 150
+    	$leadFromInsideOut.Editing.EndEdit() | Out-Null
+    	
+        # Set Tiles DataSource
+    	Update-Rendering-DataSource -Item $page -RenderingId $tilesRenderingId -PlaceHolder "body" -NewDataSource $tilesFolder.ID
+    }
+    
+    function Create-Partnerships () {
+        # Create Folder
+    	$partnershipsFolder = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Partnerships And Certificates" -TemplateId "{BC02C1DA-F6D3-4528-8CF8-247F73661AD9}"
+    	$partnerItemTemplateId = "{5B5DE304-8F4D-4EFA-9AD6-2C4E7CD04821}"
+    	$partnerItemRenderingId = "{F4FF6B9C-CA30-4123-A52E-3868FEAEF9F1}"
+    
+    	$travelFoundation = Get-Or-Create-Item -Path $partnershipsFolder.FullPath -ItemName "Travel Foundation" -TemplateId $partnerItemTemplateId
+    	$travelFoundation.Editing.BeginEdit();
+    	$travelFoundation["Description"] = "The Travel Foundation brings together different players in the travel industry to develop the practical solutions needed to maximise the benefits and minimise the negative impacts of tourism in everyone&rsquo;s holiday destinations. Which is why we&rsquo;re partnering with the Travel Foundation to shape our approach from the ground up."
+        $travelFoundation["Icon"] = '<image mediaid="{78150FEE-3E9B-4252-9D71-C6F22C5606E4}" />'
+    	$travelFoundation.Editing.EndEdit() | Out-Null
+    	
+    	$abta = Get-Or-Create-Item -Path $partnershipsFolder.FullPath -ItemName "ABTA" -TemplateId $partnerItemTemplateId
+    	$abta.Editing.BeginEdit();
+    	$abta["Description"] = "ABTA offers advice and guidance to the travel industry on high service standards, health and safety, and promoting responsible tourism &ndash; making them the perfect partner to help us on our journey towards a Travelife accreditation &ndash; an internationally&nbsp; recognised sustainability certification."
+        $abta["Icon"] = '<image mediaid="{19EA4E30-BCA5-4EF6-9F51-B307CFD0DA41}" />'
+    	$abta.Editing.EndEdit() | Out-Null
+        
+        $partnershipsFolder.Editing.BeginEdit();
+        $partnershipsFolder["Title"] = "Our Partnerships and Certifications"
+        $partnershipsFolder["Items"] = "$($travelFoundation.ID)|$($abta.ID)";
+        $partnershipsFolder.Editing.EndEdit() | Out-Null
+    
+    
+    	Update-Rendering-DataSource -Item $page -RenderingId $partnerItemRenderingId -PlaceHolder "/body/component-wrapper-inner-{7f17a79a-6a60-4c2d-81a3-dc51e0810503}-0" -NewDataSource $partnershipsFolder.ID
+    }
+    
+    function Create-Policies () {
+        $policies = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Our Policies" -TemplateId "{64F26678-8902-4AA0-BE58-939A70A6858D}"
+        $policies.Editing.BeginEdit();
+        $policies['Title'] = "Our Policies"
+        $policies['Description'] = "<p>Read more about our policies here.</p><p>The great thing about all this is that we’re in it together. And if you’re reading this, then you’re as passionate about holidays that don’t cost the earth as we are. So go on, tell us what sustainability means to you. We’re all ears.</p>"
+        $policies['Link'] = '<link text="Learn more" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{0518D8C6-B7CA-4C73-86C2-A29D971EBEAB}" />'
+        $policies.Editing.EndEdit() | Out-Null
+    
+        Update-Rendering-DataSource -Item $page -RenderingId "{1824D23D-F253-4974-AB84-1632328453E7}" -PlaceHolder "/body/component-wrapper-inner-{7f17a79a-6a60-4c2d-81a3-dc51e0810503}-0" -NewDataSource $policies.ID
+    }
+    
+    Create-Hero-Banner
+    Create-Text-Blocks
+    Create-Information-Banners
+    Create-Animation-Tiles
+    Create-Partnerships
+    Create-Policies
+    
+    Write-Host "Finished"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 200
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

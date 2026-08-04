@@ -1,0 +1,82 @@
+﻿<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <soap:Body>
+      <RequestXmlResponse xmlns="http://b2b.easyjet.com/">
+         <RequestXmlResult>
+            <ResponseRoot Success="1" xmlns="">
+               <DataListRoot>
+                  <GetBookingSummaryResponseV1 BookingReference="EXTEXT" GdsBookingReference="70182651" CreatedAt="2023-08-31T17:12:32" IsDutyTravel="false">
+                     <Originator>
+                        <B2B PartnerName="ejHolidays">
+                           <Office OfficeID="ATAGTCODE"/>
+                        </B2B>
+                     </Originator>
+                     <Contacts Language="EN">
+                        <PersonName FirstName="TEST" LastName="PANTHER"/>
+                        <Email ContactAddress="easyjetholidaysbookings@easyJet.com"/>
+                        <Phone Work="0330 365 5000"/>
+                        <Address Line1="HANGAR 89 LONDON LUTON AIRPORT" City="LUTON" StateProvince="BEDFORDSHIRE" PostalCode="LU2 9PF" Country="UK"/>
+                     </Contacts>
+                     <Passengers>
+                        <Passenger OriginalPassengerIdentification="36487EEA" IsChild="false">
+                           <PersonName TitleTypeCode="MR" FirstName="TEST" LastName="PANTHER"/>
+                           <Itinerary>
+                              <Segment OriginalSegmentIdentification="918FF713" TravelerItineraryID="2442131219" IsStandby="false">
+								 <Disruption Level="1" UpdatedAt="today" /> 
+                                 <Flight FlightKey="20230917LGWAGP8067" CarrierCode="EZY" FlightNumber="8067">                                   
+                                    <Departure>
+                                       <LocalTime>2023-09-17T05:45:00+01:00</LocalTime>
+                                       <Airport Code="LGW"/>
+                                       <Terminal Code="N" Name="North Terminal"/>
+                                    </Departure>
+                                    <Arrival>
+                                       <LocalTime>2023-09-17T09:40:00+02:00</LocalTime>
+                                       <Airport Code="AGP"/>
+                                    </Arrival>
+                                 </Flight>
+                                 <Fare FareClass="Y"/>
+                                 <DCS IsCheckedIn="false" IsBoarded="false"/>
+                                 <Benefits>
+                                    <Benefit Key="B0001" Quantity="1"/>
+                                 </Benefits>
+                              </Segment>
+                              <Segment OriginalSegmentIdentification="918FF714" TravelerItineraryID="2442131220" IsStandby="false">
+                                 <Flight FlightKey="20230923AGPLGW8068" CarrierCode="EZY" FlightNumber="8068">
+                                    <Departure>
+                                       <LocalTime>2023-09-23T10:50:00+02:00</LocalTime>
+                                       <Airport Code="AGP"/>
+                                    </Departure>
+                                    <Arrival>
+                                       <LocalTime>2023-09-23T12:40:00+01:00</LocalTime>
+                                       <Airport Code="LGW"/>
+                                       <Terminal Code="N" Name="North Terminal"/>
+                                    </Arrival>
+                                 </Flight>
+                                 <Fare FareClass="Y"/>
+                                 <DCS IsCheckedIn="false" IsBoarded="false"/>
+                                 <Benefits>
+                                    <Benefit Key="B0001" Quantity="1"/>
+                                 </Benefits>
+                              </Segment>
+                           </Itinerary>
+                           <TravelDocuments APISStatusCode="3"/>
+                        </Passenger>
+                     </Passengers>
+                     <Products>
+                        <Product ChargeCode="LUG" Quantity="1">
+                           <Bag Weight="23"/>
+                        </Product>
+                     </Products>
+                     <Payments>
+                        <Payment CreatedAt="2023-08-31T17:12:32" Amount="247.46" CurrencyCode="GBP" FormCode="Cash"/>
+                     </Payments>
+                     <Policies>
+                        <Cancellation EligibleForCancellationRefund="true" CancellationRefundUntil="2023-09-01T17:12:32"/>
+                        <ATOL Protected="false"/>
+                     </Policies>
+                  </GetBookingSummaryResponseV1>
+               </DataListRoot>
+            </ResponseRoot>
+         </RequestXmlResult>
+      </RequestXmlResponse>
+   </soap:Body>
+</soap:Envelope>

@@ -1,0 +1,313 @@
+.promopage-search-pod {
+    position: relative;
+
+    &__wrapper {
+        position: relative;
+        display: flex;
+        height: 100%;
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+    &__content {
+        display: flex;
+        flex: 1 0 auto;
+        flex-direction: column;
+        width: 50%;
+    }
+
+    &__header {
+        display: flex;
+        align-content: stretch;
+        justify-content: space-between;
+        margin-bottom: 18px;
+    }
+
+    &__title {
+        align-self: center;
+        margin: 0;
+        font-size: 52px;
+        line-height: 48px;
+        color: rgb(58, 58, 58);
+    }
+
+    &__subtitle {
+        font-family: $fontRoundedHeadline;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 25px;
+    }
+
+    &__icon {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-left: 40px;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -20px;
+            display: block;
+            width: 1px;
+            background: rgba(51, 51, 51, 0.35);
+        }
+
+        img {
+            display: block;
+            max-width: 120px;
+            max-height: 90px;
+        }
+    }
+
+    &__form {
+        width: 70%;
+        margin-top: 30px;
+        margin-bottom: 8px;
+
+        &--submitted {
+            width: 100%;
+            margin-top: 36px;
+            margin-bottom: 22px;
+        }
+    }
+
+    &__buttons {
+        display: flex;
+        align-items: center;
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 230px;
+            margin-right: 15px;
+            padding: 15px 18px;
+            font-family: $fontRoundedDemy;
+            font-size: 16px;
+            line-height: 26px;
+            border: 1px solid $clrEjOrange;
+            border-radius: 4px;
+
+            svg {
+                margin-right: 12px;
+            }
+        }
+    }
+
+    &__drawer-container {
+        margin: 0;
+    }
+
+    .search-bar-box {
+        padding: 0;
+        border: none;
+        box-shadow: none;
+    }
+
+    @include media-breakpoint-down(lg) {
+        &::before {
+            width: 54%;
+            min-width: 550px;
+        }
+
+        &__content {
+            width: 51%;
+        }
+
+        &__form {
+            width: 100%;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        &::before {
+            content: none;
+        }
+
+        &__wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 100%;
+        }
+
+        &__container {
+            position: static;
+            width: 100%;
+            min-height: 0;
+
+            &.wrapper-container {
+                padding: 0;
+            }
+        }
+
+        &__content {
+            position: relative;
+            width: 100%;
+            padding: 0 15px 15px;
+
+            &::before {
+                content: "";
+                position: absolute;
+                z-index: -1;
+                top: -173px;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(
+                    -174deg,
+                    rgba(255, 255, 255, 0) 170px,
+                    #fff 171px,
+                );
+            }
+        }
+
+        &__divider {
+            margin: 4px 12px;
+        }
+
+        &__header {
+            justify-content: flex-start;
+            margin-bottom: 10px;
+        }
+
+        &__title {
+            font-size: 40px;
+            line-height: 36px;
+        }
+
+        &__icon {
+            img {
+                max-width: 60px;
+                max-height: 90%;
+            }
+        }
+
+        &__subtitle {
+            width: 80%;
+            font-size: 14px;
+            line-height: 19px;
+        }
+
+        &__buttons {
+            .btn {
+                min-width: 170px;
+                padding: 10px;
+                font-size: 13px;
+                line-height: 16px;
+            }
+        }
+
+        &__form {
+            margin-top: 20px;
+            margin-bottom: 0;
+
+            &--submitted {
+                margin-top: 14px;
+                margin-bottom: 15px;
+            }
+        }
+    }
+}
+
+.promopage-search-pod__image {
+    z-index: -1;
+
+    img {
+        z-index: -1;
+    }
+
+    @include media-breakpoint-up(md) {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        max-width: 52%;
+        height: 100%;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 150px;
+            height: 200%;
+            background-color: #fff;
+            transform: rotate(11deg);
+            transform-origin: 100% 0;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        flex-basis: 230px;
+        flex-grow: 1;
+        max-width: 100%;
+        height: 230px;
+    }
+}
+
+.promopage-search-pod-description {
+    padding-top: 20px;
+    padding-bottom: 15px;
+
+    p:first-child {
+        margin-top: 0;
+    }
+
+    .read-more-box {
+        .btn {
+            margin-right: 0;
+            font-size: $body_font-size;
+            font-weight: 400;
+
+            @include media-breakpoint-down(md) {
+                font-size: $body_font-size_mobile;
+            }
+        }
+    }
+}
+
+.promopage-search-pod--translucent-slant {
+    .promopage-search-pod__image::before {
+        background: linear-gradient(
+            -102deg,
+            rgba(255, 255, 255, 0.8),
+            $clrSiteBgWhite 150px
+        );
+    }
+
+    .promopage-search-pod__content::before {
+        background: linear-gradient(
+            -174deg,
+            rgba(255, 255, 255, 0) 170px,
+            rgba(255, 255, 255, 0.9) 171px,
+            #fff 220px
+        );
+    }
+}
+
+
+.promopage-search-pod--no-mobile-img {
+    .promopage-search-pod__image {
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    .promopage-search-pod__header {
+        @include media-breakpoint-down(md) {
+            margin-top: 25px;
+        }
+    }
+}

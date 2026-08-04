@@ -1,0 +1,80 @@
+.wrapper {
+    min-height: 56px;
+}
+
+.container {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 16px;
+    overflow: hidden;
+    background: $clrSiteBgWhite;
+    border-radius: 4px;
+    box-shadow: $panelShadow;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    max-width: $container-max-width;
+    padding: 8px 16px;
+}
+
+.stuck {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    box-shadow: $generalBoxShadow;
+    z-index: $z-index-fixed;
+    border-radius: 0;
+}
+
+.icon {
+    @include sizeSquare(40px);
+
+    position: relative;
+}
+
+.text {
+    flex: 1;
+    min-width: 0;
+    margin: 8px 0;
+    overflow: hidden;
+    line-height: 22px;
+
+    &.isCollapsed {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    br {
+        display: none;
+    }
+}
+
+.title {
+     font-family: $fontRoundedDemy;
+}
+
+.expand {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    min-width: 120px;
+    white-space: nowrap;
+    place-self: flex-start flex-end;
+}
+
+:global(.wrapper-component-container):has(.stuck) {
+    container-type: inline-size;
+}
+
+.description {
+    p {
+        display: inline;
+    }
+}

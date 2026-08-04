@@ -1,0 +1,117 @@
+.listHeader {
+    display: flex;
+    flex-direction: column;
+}
+
+.subsection {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    @include media-breakpoint-up(md) {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.subsection.sticky {
+    position: sticky;
+    z-index: $z-index-fixed + 3; // it should be over see more and change fee banner, but when isn't sticky, see more should be on top of this element
+    top: 0;
+}
+
+.subtitle {
+    flex-shrink: 0;
+    margin-bottom: 0;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 16px;
+    }
+}
+
+.filterAndSortWrap {
+    width: 240px;
+
+    button {
+        padding: 12px 16px;
+        font-size: 14px;
+
+
+        svg {
+            margin:0 8px;
+        }
+
+        &:disabled {
+            filter: grayscale(1);
+            opacity: 0.4;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+        margin-bottom: 16px;
+
+        &::before {
+            content: '';
+            position: absolute;
+            z-index: $z-index-negative;
+            top: 0;
+            left: -15px;
+            width: 100vw;
+            height: 100%;
+            background-color: $colorPorcelain;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.13);
+        }
+    }
+}
+
+.filterIcon svg {
+    @include sizeSquare(24px);
+}
+
+.activeIcon svg {
+    @include sizeSquare(16px);
+
+    margin-top: 3px;
+}
+
+.divider {
+    width: 1px;
+    height: 24px;
+    background-color: $colorAlto;
+}
+
+.countAndFilters {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 16px;
+    }
+
+    :global(.placeholder-shimmer) {
+        min-width: 240px;
+        height: 54px;
+        border-radius: 200px;
+    }
+}
+
+.numbersOfHotelsShimmer {
+    @include media-breakpoint-down(md) {
+       width: 200px;
+       height: 25px;
+       margin-bottom: 16px;
+       border-radius: 200px;
+    }
+}

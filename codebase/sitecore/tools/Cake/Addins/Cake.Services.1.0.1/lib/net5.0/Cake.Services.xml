@@ -1,0 +1,1011 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cake.Services</name>
+    </assembly>
+    <members>
+        <member name="T:Cake.Services.ServiceAliases">
+            <summary>
+            Windows service aliases.
+            </summary>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.CreateManager(Cake.Core.ICakeContext)">
+            <summary>
+            Gets the <see cref="T:Cake.Services.ServiceManager"/> that is used to control windows services
+            </summary>
+            <param name="context">The cake context.</param>
+            <returns>The <see cref="T:Cake.Services.ServiceManager"/> used to control services.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.GetService(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Gets the <see cref="T:System.ServiceProcess.ServiceController"/> that is associated with an existing service on the specified computer.
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>The <see cref="T:System.ServiceProcess.ServiceController"/> that is associated with an existing service on the specified computer.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.GetService(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Gets the <see cref="T:System.ServiceProcess.ServiceController"/> that is associated with an existing service on the specified computer.
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>The <see cref="T:System.ServiceProcess.ServiceController"/> that is associated with an existing service on the specified computer.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.GetServices(Cake.Core.ICakeContext)">
+            <summary>
+            Gets a list of <see cref="T:System.ServiceProcess.ServiceController"/> on the specified computer.
+            </summary>
+            <param name="context">The cake context.</param>
+            <returns>A list of <see cref="T:System.ServiceProcess.ServiceController"/> on the specified computer.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.GetServices(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Gets a list of <see cref="T:System.ServiceProcess.ServiceController"/> on the specified computer.
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>A list of <see cref="T:System.ServiceProcess.ServiceController"/> on the specified computer.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.GetServiceStatus(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Gets the <see cref="T:System.ServiceProcess.ServiceControllerStatus"/> status of a service on the specified computer.
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>The <see cref="T:System.ServiceProcess.ServiceControllerStatus"/> status of a service on the specified computer.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.GetServiceStatus(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Gets the <see cref="T:System.ServiceProcess.ServiceControllerStatus"/> status of a service on the specified computer.
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>The <see cref="T:System.ServiceProcess.ServiceControllerStatus"/> status of a service on the specified computer.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServiceContinuing(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Checks if the named service is continuing
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service is continuing.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServiceContinuing(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Checks if the named service is continuing
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is continuing.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServiceInstalled(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Checks if the named service is installed
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service is installed.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServiceInstalled(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Checks if the named service is installed
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is installed.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServicePaused(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Checks if the named service is paused
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service is paused.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServicePaused(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Checks if the named service is paused
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is paused.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServicePausing(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Checks if the named service is pausing
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service is pausing.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServicePausing(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Checks if the named service is pausing
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is pausing.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServiceRunning(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Checks if the named service is running
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service is running.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServiceRunning(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Checks if the named service is running
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is running.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServiceStarting(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Checks if the named service is starting
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service is starting.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServiceStarting(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Checks if the named service is starting
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is starting.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServiceStopped(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Checks if the named service is stopped
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service is stopped.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServiceStopped(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Checks if the named service is stopped
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is stopped.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServiceStopping(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Checks if the named service is stopping
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service is stopping.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.IsServiceStopping(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Checks if the named service is stopping
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is stopping.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.CanServicePauseAndContinue(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Checks if the named service can be paused and continued
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service can be paused and continued.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.CanServicePauseAndContinue(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Checks if the named service can be paused and continued
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service can be paused and continued.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.CanServiceStop(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Checks if the named service can be stopped
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service can be stopped.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.CanServiceStop(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Checks if the named service can be stopped
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service can be stopped.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.CanServiceShutdown(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Checks if the named service can be shutdown
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service can be shutdown.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.CanServiceShutdown(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Checks if the named service can be shutdown
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service can be shutdown.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.StartService(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Starts a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service was started.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.StartService(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Starts a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service was started.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.StartService(Cake.Core.ICakeContext,System.String,System.String,System.Int32)">
+            <summary>
+            Starts a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <returns>If the service was started.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.StartService(Cake.Core.ICakeContext,System.String,System.String,System.Int32,System.String[])">
+            <summary>
+            Starts a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <param name="args">The arguments to pass to the service when starting</param>
+            <returns>If the service was started.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.StopService(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Stops a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service was stopped.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.StopService(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Stops a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service was stopped.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.StopService(Cake.Core.ICakeContext,System.String,System.String,System.Int32)">
+            <summary>
+            Stops a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <returns>If the service was stopped.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.RestartService(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Restarts a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service was restarted.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.RestartService(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Restarts a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service was restarted.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.RestartService(Cake.Core.ICakeContext,System.String,System.String,System.Int32)">
+            <summary>
+            Restarts a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <returns>If the service was restarted.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.PauseService(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Pauses a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service was paused.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.PauseService(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Pauses a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service was paused.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.PauseService(Cake.Core.ICakeContext,System.String,System.String,System.Int32)">
+            <summary>
+            Pauses a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <returns>If the service was paused.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.ContinueService(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Continues a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service was continued.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.ContinueService(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Continues a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service was continued.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.ContinueService(Cake.Core.ICakeContext,System.String,System.String,System.Int32)">
+            <summary>
+            Continues a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <returns>If the service was continued.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.ExecuteServiceCommand(Cake.Core.ICakeContext,System.String,System.Int32)">
+            <summary>
+            Executes a command on a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="command">The command to execute.</param>
+            <returns>If the command was executed.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.ExecuteServiceCommand(Cake.Core.ICakeContext,System.String,System.String,System.Int32)">
+            <summary>
+            Executes a command on a named service
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="command">The command to execute.</param>
+            <returns>If the command was executed.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.InstallService(Cake.Core.ICakeContext,Cake.Services.InstallSettings)">
+            <summary>
+            Installs a service on a computer
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="settings">The settings to use when installing the service.</param>
+            <returns>If the service was installed.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.InstallService(Cake.Core.ICakeContext,System.String,Cake.Services.InstallSettings)">
+            <summary>
+            Installs a service on a computer
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="settings">The settings to use when installing the service.</param>
+            <returns>If the service was installed.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.UninstallService(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            Uninstalls a service from a computer
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <returns>If the service was uninstalled.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceAliases.UninstallService(Cake.Core.ICakeContext,System.String,System.String)">
+            <summary>
+            Uninstalls a service from a computer
+            </summary>
+            <param name="context">The cake context.</param>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service was uninstalled.</returns>
+        </member>
+        <member name="T:Cake.Services.InstallSettingsExtensions">
+            <summary>
+            Contains extension methods for <see cref="T:Cake.Services.InstallSettings" />.
+            </summary>
+        </member>
+        <member name="M:Cake.Services.InstallSettingsExtensions.WithArguments(Cake.Services.InstallSettings,System.Action{Cake.Core.IO.ProcessArgumentBuilder})">
+            <summary>
+            Sets the arguments to use during installation
+            </summary>
+            <param name="settings">The installation settings.</param>
+            <param name="arguments">The arguments to append.</param>
+            <returns>The same <see cref="T:Cake.Services.InstallSettings"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Services.InstallSettingsExtensions.SetServiceName(Cake.Services.InstallSettings,System.String)">
+            <summary>
+            Specifies the service name returned by the getkeyname operation.
+            </summary>
+            <param name="settings">The installation settings.</param>
+            <param name="name">The name of the service</param>
+            <returns>The same <see cref="T:Cake.Services.InstallSettings"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Services.InstallSettingsExtensions.SetDisplayName(Cake.Services.InstallSettings,System.String)">
+            <summary>
+            Specifies a friendly name that can be used by user interface programs to identify the service.
+            </summary>
+            <param name="settings">The process settings.</param>
+            <param name="name">The friendly name of the service</param>
+            <returns>The same <see cref="T:Cake.Services.InstallSettings"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Services.InstallSettingsExtensions.SetExecutablePath(Cake.Services.InstallSettings,Cake.Core.IO.FilePath)">
+            <summary>
+            Specifies a path to the service binary file.
+            </summary>
+            <param name="settings">The installation settings.</param>
+            <param name="path">The path to the service binary file.</param>
+            <returns>The same <see cref="T:Cake.Services.InstallSettings"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Services.InstallSettingsExtensions.SetStartMode(Cake.Services.InstallSettings,System.String)">
+            <summary>
+            Specifies the start type for the service. The default setting is start= demand.
+            </summary>
+            <param name="settings">The process settings.</param>
+            <param name="mode">The start type for the service</param>
+            <returns>The same <see cref="T:Cake.Services.InstallSettings"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Services.InstallSettingsExtensions.SetDependencies(Cake.Services.InstallSettings,System.String)">
+            <summary>
+            Specifies the names of services or groups that must start before this service starts. The names are separated by forward slashes (/).
+            </summary>
+            <param name="settings">The installation settings.</param>
+            <param name="dependencies">The names of services or groups that must start before this service starts</param>
+            <returns>The same <see cref="T:Cake.Services.InstallSettings"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Services.InstallSettingsExtensions.SetDescription(Cake.Services.InstallSettings,System.String)">
+            <summary>
+            Specifies a description for the specified service. If no string is specified, the description of the service is not modified. There is no limit to the number of characters in the service description.
+            </summary>
+            <param name="settings">The installation settings.</param>
+            <param name="description">The description of the service</param>
+            <returns>The same <see cref="T:Cake.Services.InstallSettings"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Services.InstallSettingsExtensions.UseUsername(Cake.Services.InstallSettings,System.String)">
+            <summary>
+            Gets or sets the credentials to use when connecting
+            </summary>
+            <param name="settings">The installation settings.</param>
+            <param name="username">The username to connect with.</param>
+            <returns>The same <see cref="T:Cake.Services.InstallSettings"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Services.InstallSettingsExtensions.UsePassword(Cake.Services.InstallSettings,System.String)">
+            <summary>
+            Gets or sets the credentials to use when connecting
+            </summary>
+            <param name="settings">The installation settings.</param>
+            <param name="password">The password to connect with.</param>
+            <returns>The same <see cref="T:Cake.Services.InstallSettings"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="T:Cake.Services.IServiceManager">
+            <summary>
+            Responsible for controlling windows services
+            </summary>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.GetService(System.String,System.String)">
+            <summary>
+            Gets the <see cref="T:System.ServiceProcess.ServiceController"/> that is associated with an existing service on the specified computer.
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>The <see cref="T:System.ServiceProcess.ServiceController"/> that is associated with an existing service on the specified computer.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.GetServices(System.String)">
+            <summary>
+            Gets a list of <see cref="T:System.ServiceProcess.ServiceController"/> on the specified computer.
+            </summary>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>A list of <see cref="T:System.ServiceProcess.ServiceController"/> on the specified computer.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.ServiceExists(System.String,System.String)">
+            <summary>
+            Checks if the named service exists
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service exists.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.GetStatus(System.String,System.String)">
+            <summary>
+            Gets the <see cref="T:System.ServiceProcess.ServiceControllerStatus"/> status of a service on the specified computer.
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>The <see cref="T:System.ServiceProcess.ServiceControllerStatus"/> status of a service on the specified computer.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.IsContinuing(System.String,System.String)">
+            <summary>
+            Checks if the named service is continuing
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is continuing.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.IsInstalled(System.String,System.String)">
+            <summary>
+            Checks if the named service is installed
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is installed.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.IsPaused(System.String,System.String)">
+            <summary>
+            Checks if the named service is paused
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is paused.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.IsPausing(System.String,System.String)">
+            <summary>
+            Checks if the named service is pausing
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is pausing.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.IsRunning(System.String,System.String)">
+            <summary>
+            Checks if the named service is running
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is running.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.IsStarting(System.String,System.String)">
+            <summary>
+            Checks if the named service is starting
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is starting.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.IsStopped(System.String,System.String)">
+            <summary>
+            Checks if the named service is stopped
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is stopped.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.IsStopping(System.String,System.String)">
+            <summary>
+             Checks if the named service is stopping
+             </summary>
+             /// <param name="name">The name that identifies the service to the system.</param>
+             <param name="computer">The computer on which the service resides.</param>
+             <returns>If the service is stopping.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.CanPauseAndContinue(System.String,System.String)">
+            <summary>
+            Checks if the named service can be paused and continued
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service can be paused and continued.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.CanStop(System.String,System.String)">
+            <summary>
+            Checks if the named service can be stopped
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service can be stopped.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.CanShutdown(System.String,System.String)">
+            <summary>
+            Checks if the named service can be shutdown
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service can be shutdown.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.Start(System.String,System.String,System.Int32,System.String[])">
+            <summary>
+            Starts a named service
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <param name="args">The arguments to pass to the service when starting</param>
+            <returns>If the service was started.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.Stop(System.String,System.String,System.Int32)">
+            <summary>
+            Stops a named service
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <returns>If the service was stopped.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.Restart(System.String,System.String,System.Int32)">
+            <summary>
+            Restarts a named service
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <returns>If the service was restarted.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.Pause(System.String,System.String,System.Int32)">
+            <summary>
+            Pauses a named service
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <returns>If the service was paused.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.Continue(System.String,System.String,System.Int32)">
+            <summary>
+            Continues a named service
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <returns>If the service was continued.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.ExecuteCommand(System.String,System.String,System.Int32)">
+            <summary>
+            Executes a command on a named service
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="command">The command to execute.</param>
+            <returns>If the command was executed.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.Install(System.String,Cake.Services.InstallSettings)">
+            <summary>
+            Installs a service on a computer
+            </summary>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="settings">The settings to use when installing the service.</param>
+            <returns>If the service was installed.</returns>
+        </member>
+        <member name="M:Cake.Services.IServiceManager.Uninstall(System.String,System.String)">
+            <summary>
+            Uninstalls a service from a computer
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service was uninstalled.</returns>
+        </member>
+        <member name="T:Cake.Services.InstallSettings">
+            <summary>
+            Windows service installation settings.
+            </summary>
+        </member>
+        <member name="M:Cake.Services.InstallSettings.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Services.InstallSettings" /> class.
+            </summary>
+        </member>
+        <member name="P:Cake.Services.InstallSettings.ServiceName">
+            <summary>
+            Specifies the service name returned by the getkeyname operation.
+            </summary>
+        </member>
+        <member name="P:Cake.Services.InstallSettings.DisplayName">
+            <summary>
+            Specifies a friendly name that can be used by user interface programs to identify the service.
+            </summary>
+        </member>
+        <member name="P:Cake.Services.InstallSettings.ExecutablePath">
+            <summary>
+            Specifies a path to the service binary file.
+            </summary>
+        </member>
+        <member name="P:Cake.Services.InstallSettings.StartMode">
+            <summary>
+            Specifies the start type for the service. The default setting is start= demand.
+            </summary>
+        </member>
+        <member name="P:Cake.Services.InstallSettings.Dependencies">
+            <summary>
+            Specifies the names of services or groups that must start before this service starts. The names are separated by forward slashes (/).
+            </summary>
+        </member>
+        <member name="P:Cake.Services.InstallSettings.Description">
+            <summary>
+            Specifies a description for the specified service. If no string is specified, the description of the service is not modified. There is no limit to the number of characters in the service description.
+            </summary>
+        </member>
+        <member name="P:Cake.Services.InstallSettings.Username">
+            <summary>
+            Gets or sets the credentials to use when connecting
+            </summary>
+        </member>
+        <member name="P:Cake.Services.InstallSettings.Password">
+            <summary>
+            Gets or sets the credentials to use when connecting
+            </summary>
+        </member>
+        <member name="P:Cake.Services.InstallSettings.OutputToAppConsole">
+            <summary>
+            If the host should output to the app's console
+            </summary>
+        </member>
+        <member name="P:Cake.Services.InstallSettings.Arguments">
+            <summary>
+            Sets the arguments to use during installation
+            </summary>
+        </member>
+        <member name="T:Cake.Services.ServiceManager">
+            <summary>
+            Responsible for controlling windows services
+            </summary>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.#ctor(Cake.Core.ICakeEnvironment,Cake.Core.Diagnostics.ICakeLog,Cake.Powershell.IPowershellRunner)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Services.ServiceManager" /> class.
+            </summary>
+            <param name="environment">The environment.</param>
+            <param name="log">The log.</param>
+            <param name="powershellRunner">The powershell runner.</param>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.GetService(System.String,System.String)">
+            <summary>
+            Gets the <see cref="T:System.ServiceProcess.ServiceController"/> that is associated with an existing service on the specified computer.
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>The <see cref="T:System.ServiceProcess.ServiceController"/> that is associated with an existing service on the specified computer.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.GetServices(System.String)">
+            <summary>
+            Gets a list of <see cref="T:System.ServiceProcess.ServiceController"/> on the specified computer.
+            </summary>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>A list of <see cref="T:System.ServiceProcess.ServiceController"/> on the specified computer.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.ServiceExists(System.String,System.String)">
+            <summary>
+            Checks if the named service exists
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service exists.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.GetStatus(System.String,System.String)">
+            <summary>
+            Gets the <see cref="T:System.ServiceProcess.ServiceControllerStatus"/> status of a service on the specified computer.
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>The <see cref="T:System.ServiceProcess.ServiceControllerStatus"/> status of a service on the specified computer.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.IsContinuing(System.String,System.String)">
+            <summary>
+            Checks if the named service is continuing
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is continuing.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.IsInstalled(System.String,System.String)">
+            <summary>
+            Checks if the named service is installed
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is installed.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.IsPaused(System.String,System.String)">
+            <summary>
+            Checks if the named service is paused
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is paused.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.IsPausing(System.String,System.String)">
+            <summary>
+            Checks if the named service is pausing
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is pausing.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.IsRunning(System.String,System.String)">
+            <summary>
+            Checks if the named service is running
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is running.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.IsStarting(System.String,System.String)">
+            <summary>
+            Checks if the named service is starting
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is starting.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.IsStopped(System.String,System.String)">
+            <summary>
+            Checks if the named service is stopped
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service is stopped.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.IsStopping(System.String,System.String)">
+            <summary>
+             Checks if the named service is stopping
+             </summary>
+             /// <param name="name">The name that identifies the service to the system.</param>
+             <param name="computer">The computer on which the service resides.</param>
+             <returns>If the service is stopping.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.CanPauseAndContinue(System.String,System.String)">
+            <summary>
+            Checks if the named service can be paused and continued
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service can be paused and continued.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.CanStop(System.String,System.String)">
+            <summary>
+            Checks if the named service can be stopped
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service can be stopped.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.CanShutdown(System.String,System.String)">
+            <summary>
+            Checks if the named service can be shutdown
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service can be shutdown.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.Start(System.String,System.String,System.Int32,System.String[])">
+            <summary>
+            Starts a named service
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <param name="args">The arguments to pass to the service when starting</param>
+            <returns>If the service was started.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.Stop(System.String,System.String,System.Int32)">
+            <summary>
+            Stops a named service
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <returns>If the service was stopped.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.Restart(System.String,System.String,System.Int32)">
+            <summary>
+            Restarts a named service
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <returns>If the service was restarted.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.Pause(System.String,System.String,System.Int32)">
+            <summary>
+            Pauses a named service
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <returns>If the service was paused.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.Continue(System.String,System.String,System.Int32)">
+            <summary>
+            Continues a named service
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="timeout">The duration to wait for the command to complete.</param>
+            <returns>If the service was continued.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.ExecuteCommand(System.String,System.String,System.Int32)">
+            <summary>
+            Executes a command on a named service
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="command">The command to execute.</param>
+            <returns>If the command was executed.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.Install(Cake.Services.InstallSettings)">
+            <summary>
+            Installs a service on a computer
+            </summary>
+            <param name="settings">The settings to use when installing the service.</param>
+            <returns>If the service was installed.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.Install(System.String,Cake.Services.InstallSettings)">
+            <summary>
+            Installs a service on a computer
+            </summary>
+            <param name="computer">The computer on which the service resides.</param>
+            <param name="settings">The settings to use when installing the service.</param>
+            <returns>If the service was installed.</returns>
+            <inheritdoc />
+        </member>
+        <member name="M:Cake.Services.ServiceManager.Uninstall(System.String,System.String)">
+            <summary>
+            Uninstalls a service from a computer
+            </summary>
+            <param name="name">The name that identifies the service to the system.</param>
+            <param name="computer">The computer on which the service resides.</param>
+            <returns>If the service was uninstalled.</returns>
+        </member>
+        <member name="M:Cake.Services.ServiceManager.CreateInstallArguments(System.String,Cake.Services.InstallSettings)">
+            <summary>
+            Assemble the args to pass to sc.exe
+            </summary>
+            <param name="computer"></param>
+            <param name="settings"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cake.Services.NamespaceDoc">
+            <summary>
+            This namespace contains Windows service aliases and related members.
+            </summary>
+        </member>
+    </members>
+</doc>

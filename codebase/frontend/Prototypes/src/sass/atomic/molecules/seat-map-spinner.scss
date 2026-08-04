@@ -1,0 +1,100 @@
+$placeholderShimmer_bg-image: linear-gradient(-120deg, $colorWhiter 8%, $colorAlto 18%, $colorWhiter 33%);
+$placeholderShimmer_bg-size: 400% 400%;
+
+.seat-map-spinner {
+    .overlay-spinner {
+        position: fixed;
+        z-index: 10000;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 15px;
+        background-color: rgba(255, 255, 255, 0.95);
+        opacity: 1;
+    }
+
+    .overlay-spinner__container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 290px;
+        margin: 0 auto;
+        padding: 42px 10px 10px;
+        text-align: center;
+        background: white;
+        border-radius: 4px;
+        box-shadow: 0 0 12px 2px $colorAlto;
+
+        .overlay-spinner__icon-container {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            margin: 0 auto;
+
+            svg {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                width: auto;
+                height: 24px;
+                margin: auto;
+                color: $clrEjOrange;
+            }
+        }
+
+        .overlay-spinner__header {
+            margin-top: 32px;
+            font-family: $fontRoundedHeadline;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 25px;
+        }
+
+        .overlay-spinner__icon {
+            width: 100%;
+            height: 100%;
+            border: 4px solid $colorConcrete;
+            border-left-color: $clrEjOrange;
+            border-radius: 50%;
+            transform: translateZ(0);
+            animation: load8 1.1s infinite linear;
+        }
+
+        .placeholder-shimmer {
+            background-image: $placeholderShimmer_bg-image;
+            background-size: $placeholderShimmer_bg-size;
+            opacity: 0.7;
+            animation-name: placeHolderShimmer;
+            animation-duration: 3s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-fill-mode: forwards;
+        }
+
+        .animation-wrapper {
+            margin-top: 55px;
+        }
+
+        .animation-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .placeholder-loading {
+            display: inline-block;
+            flex: 1;
+            width: 38px;
+            height: 40px;
+            margin: 5px;
+        }
+    }
+}

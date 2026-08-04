@@ -1,0 +1,26 @@
+{
+    "Title": "FlightExtraRequest successful response for HRGLGW3TLGWHRG flights",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/EZYDMO/VRPWebservice/AniteGateway/AniteGateway.aspx",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "XPathMatcher",
+                "Pattern": "/*:FlightExtraSearchRequest//*:Flt_Inv_Id/text()='HRGLGW3TLGWHRG'"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/validate-package/seats/FlightExtra_HRGLGW3TLGWHRG_no_cache.xml"
+    }
+}

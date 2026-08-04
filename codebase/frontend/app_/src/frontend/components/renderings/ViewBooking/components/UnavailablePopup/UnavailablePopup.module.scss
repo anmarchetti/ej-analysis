@@ -1,0 +1,36 @@
+.popup {
+    max-width: 700px !important;
+
+    :global(.popup_body) {
+        @include media-breakpoint-down(lg) {
+            padding: 40px 24px 24px !important;
+        }
+    }
+
+    :global(.popup_content) {
+        max-width: 700px;
+    }
+
+    :global(.popup_title) {
+        margin-top: 16px;
+        margin-bottom: 0;
+        padding-bottom: 0;
+        font-family: $fontRoundedHeadline;
+        font-size: 32px;
+        font-weight: 400;
+        border-bottom: none;
+
+        @include media-breakpoint-down(lg) {
+            font-size: 24px;
+        }
+    }
+
+    :global(.popup_description) {
+        margin: 24px 0;
+        font-size: 14px;
+    }
+
+    :global(.popup_cta) {
+        width: initial;
+    }
+}

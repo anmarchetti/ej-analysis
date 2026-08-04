@@ -1,0 +1,24 @@
+.shrink {
+    :global(.info),
+    :global(.info-head) {
+        margin-top: 0;
+    }
+}
+
+.topContentWrapper {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 40px;
+
+    @include media-breakpoint-up(md) {
+        max-width: 1230px;
+        margin: auto;
+        padding-right: 15px;
+        padding-bottom: 80px;
+        padding-left: 15px;
+
+        :global(.price-breakdown) {
+            margin-top: 32px;
+        }
+    }
+}

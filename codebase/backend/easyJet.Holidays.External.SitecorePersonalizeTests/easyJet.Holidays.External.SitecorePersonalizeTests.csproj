@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>warnings</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Moq" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\easyJet.Holidays.Api.Domain\easyJet.Holidays.Api.Domain.csproj" />
+    <ProjectReference Include="..\easyJet.Holidays.External.SitecorePersonalize\easyJet.Holidays.External.SitecorePersonalize.csproj" />
+    <ProjectReference Include="..\easyJet.Holidays.Tests.Domain\easyJet.Holidays.Tests.Domain.csproj" />
+  </ItemGroup>
+</Project>

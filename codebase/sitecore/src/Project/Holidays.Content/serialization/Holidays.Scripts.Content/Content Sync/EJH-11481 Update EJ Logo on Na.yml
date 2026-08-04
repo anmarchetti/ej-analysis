@@ -1,0 +1,59 @@
+﻿---
+ID: "afc38df4-f4ec-444b-b184-ffe4f085bc95"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-11481 Update EJ Logo on Navigation Bar"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    ############# SLIM HEADER
+    
+    #Create New Logo on Slim Header
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Data/Navigations/Headers/Slim Header"
+    $datasourceTemplateId = "{FD0CEA6B-FE05-4106-A496-E8F1C75F9445}"
+    
+    $datasource = Get-Item -Database "master" -path $datasourcePath -ErrorAction SilentlyContinue
+    
+    if ($datasource -ne $null) {
+           
+        $datasource.Editing.BeginEdit()
+        $datasource["Logo"] = "<image mediaid=`"{8B8A8CF1-B6C2-41A9-8A60-BA97544EC768}`" />"
+        $datasource.Editing.EndEdit() | Out-Null
+    
+    }
+    
+    Write-Host "Finished Logo on Slim Header"
+    
+    ############# FULL HEADER
+    
+    #Create New Logo on Full Header
+    $datasourcePathFull = "/sitecore/content/EasyJet/Holidays/Data/Navigations/Headers/Full Header"
+    $datasourceTemplateIdFull = "{FD0CEA6B-FE05-4106-A496-E8F1C75F9445}"
+    
+    $datasourceFull = Get-Item -Database "master" -path $datasourcePathFull -ErrorAction SilentlyContinue
+    
+    if ($datasourceFull -ne $null) {
+        
+        $datasourceFull.Editing.BeginEdit()
+        $datasourceFull["Logo"] = "<image mediaid=`"{8B8A8CF1-B6C2-41A9-8A60-BA97544EC768}`" />"
+        $datasourceFull.Editing.EndEdit() | Out-Null
+    }
+    
+    Write-Host "Finished Logo on Full Header"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 150
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220426T123254Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

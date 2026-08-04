@@ -1,0 +1,100 @@
+.promo-blocks-slider {
+    position: relative;
+    display: none;
+    margin: 0 -10px;
+
+    .react-multiple-carousel__arrow {
+        z-index: 100;
+    }
+
+    &.show {
+        display: block;
+    }
+
+    &.mobile-show {
+        @include media-breakpoint-down(md) {
+            display: block;
+        }
+    }
+
+    .react-multi-carousel-item {
+        display: flex;
+    }
+
+    .slide-wrapper {
+        display: flex;
+        width: 100%;
+    }
+
+    .slide-button {
+        position: absolute;
+        top: 50%;
+        display: flex;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        background: $clrSiteBgGrey;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        transform: translateY(-50%);
+
+        svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            margin: auto;
+            color: $clrEjOrange;
+            transform: translate(-50%, -50%);
+        }
+
+        &.next {
+            right: 0;
+        }
+
+        &.prev {
+            left: 0;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        .slide-wrapper {
+            flex-direction: column;
+            margin: 10px;
+        }
+
+        .slide-button {
+            display: none;
+        }
+    }
+
+    .carousel-container {
+        padding-bottom: 20px;
+
+        .react-multi-carousel-dot-list {
+            display: none;
+        }
+
+        @include media-breakpoint-down(md) {
+            .react-multi-carousel-dot-list {
+                display: flex;
+                margin-top: 20px;
+
+                button {
+                    width: 10px;
+                    height: 10px;
+                    background-color: $colorGrayDark;
+                    border: none;
+                }
+            }
+
+            .react-multi-carousel-dot--active {
+                button {
+                    background-color: $clrEjOrange;
+                }
+            }
+        }
+    }
+}

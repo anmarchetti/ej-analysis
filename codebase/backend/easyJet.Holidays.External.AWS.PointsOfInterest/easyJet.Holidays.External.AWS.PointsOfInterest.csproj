@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <GenerateLambdaAnnotationsSource>true</GenerateLambdaAnnotationsSource>
+    <AWSProjectType>Lambda</AWSProjectType>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	<OutputType>Library</OutputType>
+	<!-- Add this so the built DLL name matches the assembly the runtime is trying to load -->
+	<AssemblyName>PointsOfInterest</AssemblyName>
+	<!-- (Optional) keep original root namespace if you want -->
+	<RootNamespace>PointsOfInterest</RootNamespace>
+  </PropertyGroup>
+    <PropertyGroup>
+        <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.Logging.AspNetCore" />
+    <PackageReference Include="AWSSDK.Bedrock" />
+    <PackageReference Include="AWSSDK.BedrockRuntime" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" />
+    <PackageReference Include="AWSSDK.LocationService" />
+    <PackageReference Include="AWSSDK.SSO" />
+    <PackageReference Include="AWSSDK.SSOOIDC" />
+    <PackageReference Include="AWSSDK.SecurityToken" />
+	<PackageReference Include="GeoCoordinate.NetStandard1" />
+	  <!-- Lambda specific -->
+    <PackageReference Include="Amazon.Lambda.Annotations" />
+    <PackageReference Include="Amazon.Lambda.Core" />
+    <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+	<PackageReference Include="Microsoft.Extensions.Http" />
+	<PackageReference Include="Portable.BouncyCastle" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\easyJet.Holidays.Api.Domain\easyJet.Holidays.Api.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleResponses\GetResorts.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    </ItemGroup>
+</Project>

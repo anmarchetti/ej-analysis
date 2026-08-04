@@ -1,0 +1,129 @@
+﻿---
+ID: "5935619c-a70a-4638-b5d6-879251fcf15e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-208 Fix sitecore names"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    $translations = @{
+        "en" = @{
+            "15DefaultName" = "15kg Hold bag"
+            "15DefaultDesc" = "Maximum 15kg per bag, stored in the plane hold. Outbound and return."
+            
+            "23DefaultName" = "23kg Hold bag"
+            "23DefaultDesc" = "Maximum 23kg per bag, stored in the plane hold. Outbound and return."
+            
+            "15ExtraName" = "Extra 15kg Hold bag"
+            "15ExtraDesc" = "Maximum 15kg per bag, stored in the plane hold. Outbound and return."
+            
+            "23ExtraName" = "Extra 23kg Hold bag"
+            "23ExtraDesc" = "Maximum 23kg per bag, stored in the plane hold. Outbound and return."
+           
+        }
+        "fr-CH" = @{
+            "15DefaultName" = "Sac de maintien de 15 kg"
+            "15DefaultDesc" = "Maximum 15kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+            
+            "23DefaultName" = "Bagages en soute 23kg"
+            "23DefaultDesc" = "Maximum 23kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+            
+             "15ExtraName" = "Bagages en soute 15kg supplémentaires"
+            "15ExtraDesc" = "Maximum 15kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+            
+             "23ExtraName" = "Bagages en soute 23kg supplémentaires"
+            "23ExtraDesc" = "Maximum 23kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+        }
+        "fr-FR" = @{
+             "15DefaultName" = "Sac de maintien de 15 kg"
+            "15DefaultDesc" = "Maximum 15kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+            
+            "23DefaultName" = "Bagages en soute 23kg"
+            "23DefaultDesc" = "Maximum 23kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+            
+             "15ExtraName" = "Bagages en soute 15kg supplémentaires"
+            "15ExtraDesc" = "Maximum 15kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+            
+             "23ExtraName" = "Bagages en soute 23kg supplémentaires"
+            "23ExtraDesc" = "Maximum 23kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+        }
+        "de-CH" = @{
+            "15DefaultName" = "15kg Beutel halten"
+            "15DefaultDesc" = "Maximal 15kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+            
+            "23DefaultName" = "Aufgegebenes Gepäck 23kg"
+            "23DefaultDesc" = "Maximal 23kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+            
+             "15ExtraName" = "Extra aufgegebenes Gepäck 15kg"
+            "15ExtraDesc" = "Maximal 15kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+            
+             "23ExtraName" = "Extra aufgegebenes Gepäck 23kg"
+            "23ExtraDesc" = "Maximal 23kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+        }
+        "de-DE" = @{
+             "15DefaultName" = "15kg Beutel halten"
+            "15DefaultDesc" = "Maximal 15kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+            
+            "23DefaultName" = "Aufgegebenes Gepäck 23kg"
+            "23DefaultDesc" = "Maximal 23kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+            
+             "15ExtraName" = "Extra aufgegebenes Gepäck 15kg"
+            "15ExtraDesc" = "Maximal 15kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+            
+             "23ExtraName" = "Extra aufgegebenes Gepäck 23kg"
+            "23ExtraDesc" = "Maximal 23kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+        }
+    }
+    
+    $extra15 = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Data/Luggage/Extra Hold luggage/Extra Hold Baggage 15kg'
+    $extra23 = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Data/Luggage/Extra Hold luggage/Extra Hold Baggage 23kg'
+    
+    $default15 = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage/Hold Baggage 15kg'
+    $default23 = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage/Hold Baggage 23kg'
+    
+    foreach ($lang in $translations.Keys) {
+        create-lang-version -item $default15 -lang $lang -field "Name" -value $translations[$lang]["15DefaultName"]
+        create-lang-version -item $default15 -lang $lang -field "Description" -value $translations[$lang]["15DefaultDesc"]
+        
+        create-lang-version -item $default23 -lang $lang -field "Name" -value $translations[$lang]["23DefaultName"]
+        create-lang-version -item $default23 -lang $lang -field "Description" -value $translations[$lang]["23DefaultDesc"]
+        
+        create-lang-version -item $extra15 -lang $lang -field "Name" -value $translations[$lang]["15ExtraName"]
+        create-lang-version -item $extra15 -lang $lang -field "Description" -value $translations[$lang]["15ExtraDesc"]
+        
+        create-lang-version -item $extra23 -lang $lang -field "Name" -value $translations[$lang]["23ExtraName"]
+        create-lang-version -item $extra23 -lang $lang -field "Description" -value $translations[$lang]["23ExtraDesc"]
+        
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1070
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240606T155429Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,96 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    max-width: 650px;
+    border-radius: 4px;
+    @include media-breakpoint-down(md) {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        border-radius: 0;
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 24px;
+        overflow: hidden;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding: 16px;
+        }
+
+        .errorPopupIcon {
+            $size: 96px;
+
+            width: $size;
+            height: $size;
+        }
+
+        button {
+            width: calc(100% + 48px);
+            height: 80px;
+            margin-bottom: -24px;
+            font-family: $fontRoundedDemy;
+            font-size: 16px;
+            color: $clrEjOrange;
+            background: transparent;
+        }
+    }
+}
+
+.genericPopup {
+    :global(.popup_icon) {
+        display: none;
+
+        @include media-breakpoint-down(md) {
+            display: flex;
+        }
+    }
+
+    :global(.popup_description > p:first-child) {
+        margin-bottom: 24px;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 16px;
+        }
+    }
+}
+
+.popupDescription {
+    width: 100%;
+    margin-bottom: 30px;
+    padding-top: 24px;
+    border-top: 1px solid $colorGeyser;
+
+    p {
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+
+    p:last-child {
+        margin-bottom: 0;
+    }
+
+    a {
+        font-family: $fontRoundedDemy;
+    }
+}
+
+.popupHeader {
+    margin: 0 0 24px;
+    margin-bottom: 0;
+    font-family: $fontRoundedBook;
+    font-size: 26px;
+    line-height: 30px;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 6px;
+        font-size: 24px;
+        line-height: 27px;
+    }
+}

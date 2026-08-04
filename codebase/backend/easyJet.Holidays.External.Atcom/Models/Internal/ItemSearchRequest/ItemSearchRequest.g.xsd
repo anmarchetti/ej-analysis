@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 sp1 (http://www.altova.com) by Kim Howells (Anite Business Systems) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="AtComRes/ItemSearchRequest" xmlns:p2="AtComRes/Common" targetNamespace="AtComRes/ItemSearchRequest" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+    <xs:element name="ItemSearchRequest">
+        <xs:annotation>
+            <xs:documentation>defines the request to search for Item products (no packages)</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="p2:AtcomresBaseOfferSearchRequest">
+                    <xs:sequence>
+                        <xs:element name="Base_Prd" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>The base product for which upselling products shall be searched.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element ref="p2:Prd_Cd" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation>defines the product for which upselling items are searched.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element ref="p2:Prom" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation>defines the promotion of the base product</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="Room_Code" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+                                        <xs:annotation>
+                                            <xs:documentation>room code of the room type for which to search items</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element ref="p2:Route" minOccurs="0" maxOccurs="unbounded">
+                                        <xs:annotation>
+                                            <xs:documentation>Defines the airports of the base product for which items shall be searched. (for NPM R3, this will be outbound arrival and inbound departure airport)</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element ref="p2:SubServPaxs" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation>Prices for the participants. Needed only if an insurance for the base product is searched, because the insurance price depends on the price of the booking.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:sequence>
+                                        <xs:annotation>
+                                            <xs:documentation>This is only needed when sending message to tracs</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:element ref="p2:PackageNo" minOccurs="0"/>
+                                        <xs:element ref="p2:Accom" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element ref="p2:Item_Search_Type" minOccurs="0" maxOccurs="unbounded">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    defines the type of products for which the item must be offered, e.g. accom only
+                                    If missing, allow all types for base product.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element ref="p2:Set_Type" minOccurs="0" maxOccurs="unbounded">
+                            <xs:annotation>
+                                <xs:documentation>the set types to be returned</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element ref="p2:Item_Type" minOccurs="0" maxOccurs="unbounded">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    type of items to be search, for example sport, wellness.
+                                    If missing, search for any item set type.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element ref="p2:Display_Type" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    defines for which process (search or upselling) this search request is used.
+                                    If missing, search for any display_type.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element ref="p2:Search_Context" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    type of items to be search, for example sport, wellness.
+                                    If missing, search for any item set type.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element ref="p2:Yield_Late_Sup" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

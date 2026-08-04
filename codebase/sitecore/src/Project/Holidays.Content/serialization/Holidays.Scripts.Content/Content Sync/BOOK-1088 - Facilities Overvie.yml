@@ -1,0 +1,65 @@
+﻿---
+ID: "047854ef-1dc9-4075-80f1-540fb314856f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/BOOK-1088 - Facilities Overview Content Update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $holidaysdatafacilityvirtualgroupingoverview_Id = [GUID]"{83373347-8175-4BA5-ABE5-91158B313F3D}"
+    $holidaysItemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Facility Virtual Grouping/Overview"
+            TemplatePath = "Foundation/Destinations/Facilities/Overview Facility Virtual Grouping"
+            Id          = $holidaysdatafacilityvirtualgroupingoverview_Id
+            Fields      = @{
+                "Title" = @{
+                    "de-CH" = "Wissenswertes"
+                    "en" = "Good to know"
+                    "fr-FR" = "Bon à savoir"
+                    "de-DE" = "Wissenswertes"
+                    "fr-CH" = "Bon à savoir"
+                }
+                "Name" = @{
+                    "de-CH" = "Wissenswertes"
+                    "en" = "Good to know"
+                    "fr-FR" = "Bon à savoir"
+                    "de-DE" = "Wissenswertes"
+                    "fr-CH" = "Bon à savoir"
+                }
+            }
+        }
+    )
+    
+    $tradeportaldatafacilityvirtualgroupingoverview_Id = [GUID]"{C927293C-9A66-4AA4-8E6D-402D2151E959}"
+    $tradePortalItemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Facility Virtual Grouping/Overview"
+            TemplatePath = "Foundation/Destinations/Facilities/Overview Facility Virtual Grouping"
+            Id          = $tradeportaldatafacilityvirtualgroupingoverview_Id
+            Fields      = @{
+                "Title" = @{
+                    "en" = "Good to know"
+                }
+                "Name" = @{
+                    "en" = "Good to know"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $holidaysItemsToCreate
+    ImportContent -itemsToCreate $tradePortalItemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 100000056
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260206T074554Z

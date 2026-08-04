@@ -1,0 +1,19 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgEmailFilled = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'email-filled-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <path d='M22.05 8.48a4.08 4.08 0 00-.1-.93 4.2 4.2 0 00-.27-.85l-9.05 7a1 1 0 01-.61.21 1 1 0 01-.59-.19L2.22 7a5.75 5.75 0 00-.2.71 4 4 0 00-.08.78v7A4.48 4.48 0 002.72 18a4.54 4.54 0 001.41 1.35 6.54 6.54 0 00.59.3 4.51 4.51 0 001.77.36h11a4.42 4.42 0 002.54-.78 4.46 4.46 0 00.67-.55 4.37 4.37 0 001-1.45 4.5 4.5 0 00.36-1.76v-7z' />
+        <path d='M20.47 5.07a5.64 5.64 0 00-.63-.46 5 5 0 00-.66-.32l-.24-.08a4.61 4.61 0 00-.57-.21 4 4 0 00-.86 0h-11a4 4 0 00-.92.1h-.1a4.43 4.43 0 00-2.2 1.21L12 11.62z' />
+    </svg>
+);
+
+export default SvgEmailFilled;

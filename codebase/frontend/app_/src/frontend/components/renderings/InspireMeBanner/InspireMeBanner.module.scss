@@ -1,0 +1,72 @@
+.subtitle {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 18px;
+    line-height: 1.21;
+    text-transform: uppercase;
+}
+
+.title {
+    margin: 0;
+    font-family: $fontGenerationHeadline;
+    font-size: 40px;
+    line-height: 0.95;
+}
+
+.description {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.imageContainer {
+    position: relative;
+    z-index: $z-index-negative;
+    height: 200px;
+}
+
+.infoContainer {
+    z-index: 0;
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    gap: 16px;
+    width: auto;
+    padding: 16px;
+    background-color: $colorWhite;
+
+
+    &::before {
+        content: "";
+        position: absolute;
+        z-index: $z-index-negative;
+        top: 26px;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(
+            -177deg,
+            rgba($colorWhite, 0) 170px,
+            rgba($colorWhite, 1) 171px,
+            $colorWhite 230px
+        );
+    }
+}
+
+.banner {
+    position: relative;
+    display: flex;
+    flex-direction: column-reverse;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0px 2px 6px 2px rgba($colorBlackLight, 0.15);
+}
+
+a.link {
+    margin-top: 16px;
+    font-size: 16px;
+
+    @include media-breakpoint-up(lg) {
+        width: fit-content;
+        min-width: 260px;
+    }
+}

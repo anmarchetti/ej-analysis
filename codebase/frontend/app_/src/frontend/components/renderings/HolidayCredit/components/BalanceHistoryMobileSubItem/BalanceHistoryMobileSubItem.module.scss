@@ -1,0 +1,75 @@
+.subItem {
+    display: flex;
+    border-top: 1px solid $colorGeyser;
+    flex-direction: column-reverse;
+    gap: 8px;
+    padding: 16px;
+
+    @include media-breakpoint-up(md) {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+}
+
+.balanceContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+
+    @include media-breakpoint-up(md) {
+        align-items: flex-end;
+    }
+}
+
+.balance {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    color: #616161;
+    font-size: 14px;
+    line-height: 1.285;
+
+    @include media-breakpoint-up(md) {
+        flex-direction: row;
+        text-align: right;
+    }
+}
+
+.transferPrice {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    color: $clrTextMain;
+    text-align: right;
+    font-size: 16px;
+    line-height: 1.375;
+
+    @include media-breakpoint-up(md) {
+        flex-direction: row;
+        text-align: right;
+    }
+}
+
+.date {
+    font-size: 14px;
+
+    @include media-breakpoint-up(md) {
+        font-size: 16px;
+    }
+}
+
+.refund {
+    color: #03a947;
+}
+
+.purchase {
+    color: $clrTextMain;
+}

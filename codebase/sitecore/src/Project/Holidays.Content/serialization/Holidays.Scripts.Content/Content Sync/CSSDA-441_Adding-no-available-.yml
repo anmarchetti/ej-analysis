@@ -1,0 +1,41 @@
+﻿---
+ID: "fd483595-4c68-4abf-92c4-0a364d91718a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-441_Adding-no-available-transfer-popup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Add-Or-Update-Page-Rendering ($page,$renderingPath,$renderingPlaceholder,$dataSourcePath) {
+    	$renderingItem = Get-Item -Database "master" -Path $renderingPath;
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -DataSource $dataSourcePath;
+    		Write-Host $renderingItem "Rendering instance added";
+    	}
+    	else {
+    		Write-Host $pageRenderingInstance "Already exists";
+    	}
+    }
+    
+    # Updating summary page renderings
+    $amendDatesSummaryPage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary" -ErrorAction SilentlyContinue;
+    
+    if($amendDatesSummaryPage -ne $null) {
+        Add-Or-Update-Page-Rendering -page $amendDatesSummaryPage -renderingPath "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend No Transfers Popup" -renderingPlaceholder "/body/no-transfers-popup-{CEBD339C-592C-46E2-9961-AFE0BD9F74D9}-0" -dataSourcePath "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Amend No Transfers Popup";
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2600
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231006T141014Z

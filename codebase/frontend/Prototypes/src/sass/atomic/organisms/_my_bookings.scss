@@ -1,0 +1,166 @@
+.bookings-container {
+    .view-credit.btn {
+        margin-left: 10px;
+
+        @include media-breakpoint-down(md) {
+            margin-left: 0;
+        }
+    }
+
+    .view-credit__error {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+        color: $colorRed;
+
+        span {
+            font-size: 16px;
+        }
+
+        svg {
+            width: 25px;
+            margin-right: 10px;
+        }
+    }
+
+    .rounded-container {
+        @include media-breakpoint-up(md) {
+            height: 200px;
+            padding: 23px;
+        }
+
+        @include media-breakpoint-up(lg) {
+            height: 190px;
+        }
+        @media (min-width: 1180px) {
+            height: 170px;
+        }
+
+        .description {
+            .price-big {
+                margin-left: 30px;
+                font-weight: bold;
+                text-align: right;
+
+                @include media-breakpoint-down(md) {
+                    font-size: 20px;
+                    line-height: 25px;
+                }
+
+                span {
+                    display: block;
+                    min-width: 75px;
+                    font-family: $fontRoundedBook;
+                    font-size: 14px;
+                    font-weight: normal;
+                    line-height: 18px;
+
+                    @include media-breakpoint-down(md) {
+                        font-size: 11px;
+                        line-height: 14px;
+                    }
+                }
+            }
+
+            @include media-breakpoint-down(xl) {
+                display: flex;
+            }
+        }
+
+        .buttons-container {
+            .btn {
+                opacity: 1;
+            }
+            @include media-breakpoint-down(md) {
+                width: 100%;
+
+                .btn:first-child {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+
+        .bottom-content {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+
+            @include media-breakpoint-up(md) {
+                position: absolute;
+                right: 23px;
+                bottom: 23px;
+                left: 23px;
+            }
+        }
+
+        .credit-block {
+            flex-direction: column-reverse;
+
+            .btn {
+                margin-top: 10px;
+            }
+
+            @include media-breakpoint-up(md) {
+                flex-direction: row-reverse;
+
+                .btn {
+                    margin-top: 0;
+                }
+            }
+        }
+
+        .btn {
+            padding: 10px 15px;
+            font-size: 14px;
+            line-height: 18px;
+            border: 1px solid $colorOrange;
+            border-radius: 3px;
+
+            @include media-breakpoint-up(md) {
+                width: auto;
+                padding: 12px 20px;
+                font-size: 14px;
+                line-height: 18px;
+                border: 1px solid $colorOrange;
+                border-radius: 4px;
+            }
+        }
+
+        h4 {
+            font-family: $fontRoundedDemy;
+            font-size: 16px;
+            line-height: 26px;
+
+            @include media-breakpoint-up(md) {
+                font-size: 18px;
+                line-height: 24px;
+            }
+
+            svg {
+                width: 10px;
+                height: 10px;
+                margin-left: 15px;
+                color: $colorOrange;
+            }
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
+
+    .price-big {
+        font-family: $fontRoundedHeadline;
+        font-size: 32px;
+        line-height: 25px;
+    }
+}
+
+@include media-breakpoint-up(md) {
+    .offset-top-card {
+        position: relative;
+        top: -125px;
+        margin-bottom: -100px;
+    }
+}

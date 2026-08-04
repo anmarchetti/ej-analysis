@@ -1,0 +1,83 @@
+.card-head {
+    .card-head__content {
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+    }
+
+    .card-head__subtitle {
+        display: flex;
+        justify-content: space-between;
+
+        a {
+            text-decoration: underline;
+        }
+    }
+
+    .card-head__subtitle_text {
+        font-family: $fontRoundedBook;
+        font-size: 14px;
+    }
+
+    .card-head__subtitle_link {
+        font-family: $fontRoundedBook;
+        font-size: 14px;
+        font-weight: normal;
+        text-decoration: underline;
+    }
+
+    .card-head__title {
+        margin: 10px 0;
+        font-family: $fontRoundedBook;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.1;
+
+        @include media-breakpoint-down(md) {
+            font-size: 20px;
+        }
+    }
+
+    .card-head__grey_text {
+        font-size: 17px;
+    }
+
+    .card-head__text {
+        font-size: 20px;
+    }
+
+    .card-head__text--orange {
+        font-size: 14px;
+        color: $clrEjOrange;
+    }
+
+    .card-head__reviews {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        .star_rating {
+            margin-right: 10px;
+
+            @include media-breakpoint-down(md) {
+                order: 1;
+            }
+        }
+    }
+}
+
+.card-head__actions {
+    display: inline-flex;
+    align-items: flex-start;
+
+    .hotel-card-head-bookmark {
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    .share-holiday {
+        margin-left: 8px;
+    }
+}

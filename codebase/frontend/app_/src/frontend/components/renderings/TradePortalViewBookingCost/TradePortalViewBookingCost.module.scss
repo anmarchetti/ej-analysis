@@ -1,0 +1,143 @@
+.tradePortalViewBookingCost {
+    margin: 30px 0 50px;
+    padding-top: 40px;
+    border-top: $view-booking-card-border;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 20px;
+    }
+
+    .title {
+        margin: 0 0 50px;
+        font-family: $fontRoundedHeadline;
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 1.15;
+        color: $clrTextMain;
+        break-inside: avoid;
+
+        @include media-breakpoint-down(md) {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+    }
+
+    .table {
+        border-top: $view-booking-card-border;
+        border-right: 0;
+        border-bottom: 0;
+        border-left: 0;
+    }
+
+    .tableRow {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 30px;
+        font-size: 18px;
+        line-height: 1.2;
+        color: $clrTextMain;
+        border-top: $view-booking-card-border;
+
+        &:first-child {
+            border-top: none;
+        }
+
+        @include media-breakpoint-down(md) {
+            padding: 15px;
+            font-size: 14px;
+        }
+    }
+
+    .head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 87px;
+        padding: 30px;
+
+        @include media-breakpoint-down(md) {
+            height: 60px;
+            padding: 20px 15px;
+        }
+    }
+
+    .headTitle {
+        margin: 0;
+        font-family: $fontRoundedBook;
+        font-size: 26px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 16px;
+        }
+    }
+
+    .toggle {
+        display: inline-flex;
+        align-items: center;
+        margin-left: auto;
+        font-size: 16px;
+
+        svg {
+            width: 18px;
+            height: 18px;
+            margin-left: 10px;
+        }
+
+        &:hover {
+            text-decoration: none;
+        }
+
+        @include media-breakpoint-down(md) {
+            font-size: 14px;
+
+            svg {
+                width: 11px;
+                height: 11px;
+                margin-left: 10px;
+            }
+        }
+    }
+
+    .details {
+        padding: 0;
+    }
+
+    .totalBlock {
+        padding: 0 30px;
+        background-color: $colorGrayLighter;
+
+        @include media-breakpoint-down(md) {
+            padding: 0;
+
+            :global(.fees-popup-link) {
+                padding: 0 15px;
+            }
+        }
+    }
+
+    .total {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 90px;
+        padding: 0;
+        font-size: 30px;
+        line-height: 1.2;
+
+        @include media-breakpoint-down(md) {
+            height: 55px;
+            padding: 0 15px;
+            font-size: 18px;
+        }
+
+        :global(.price-big) {
+            font-size: 42px;
+            letter-spacing: 0.26px;
+
+            @include media-breakpoint-down(md) {
+                font-size: 24px;
+                letter-spacing: 0.15px;
+            }
+        }
+    }
+}

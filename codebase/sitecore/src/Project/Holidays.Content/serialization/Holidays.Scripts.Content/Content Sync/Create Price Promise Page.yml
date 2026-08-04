@@ -1,0 +1,84 @@
+﻿---
+ID: "c2bc5c12-30ac-40ae-9899-d16018458010"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Price Promise Page
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $itemName, $templateId){
+        $item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $itemName -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created";
+        }
+        return $item
+    } 
+    
+    function Update-Rendering-DataSource($item, $renderingId, $newDataSource){
+        $rendering = Get-Rendering -Item $item | Where-Object {$_.ItemId -eq $renderingId} | Select -First 1
+        
+        if($rendering -ne $null){
+            Set-Rendering -Item $item -Instance $rendering -DataSource $newDataSource
+            Write-Host $item.Name  "Rendering successfully updated"
+        }
+    }
+    
+    function Set-Page-Design($designPath, $pageTemplateId) {
+        $designItem = Get-Item -Path "$($designPath)" -ErrorAction SilentlyContinue
+        if ($designItem -ne $null) {
+             [Sitecore.Data.Fields.MultilistField]$pageTemplates = $designItem.Fields["PageTemplates"];
+            
+            if(!$pageTemplates.Contains($pageTemplateId)) {
+                $designItem.Editing.BeginEdit();
+                $pageTemplates.add($pageTemplateId);
+                $designItem.Editing.EndEdit() | Out-Null
+                Write-Host "Page Templates of" $designItem.Name "are updated"
+            }
+        }
+    }
+    
+    $pageTemplateId = "{D3387F64-3182-419F-A6EF-E472985F2D25}"
+    
+    # Add Page To PageDesigns
+    Set-Page-Design -designPath "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Default Design" -pageTemplateId $pageTemplateId
+    
+    # Create Page
+    $page = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home" -ItemName "Price Promise" -TemplateId $pageTemplateId
+    
+    $page.Editing.BeginEdit();
+    $page["Name"] = "Our price promise to you"
+    $page["Icon"] = '<image mediaid="{20F2D4B2-256F-4E06-A57B-8CB33ED1D53E}" />'
+    $page.Editing.EndEdit() | Out-Null
+    
+    # Create Page Components
+    $pageComponents = Get-Or-Create-Item -Path $page.FullPath -ItemName "Page Components" -TemplateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+    
+    # Create Price Promise Component
+    $pricePromise = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Price Promise" -TemplateId "{0E1EA7B2-F437-4442-BD66-C51F1AD5E0C9}"
+    $pricePromise.Editing.BeginEdit();
+    $pricePromise["Title"] = 'The holiday you found'
+    $pricePromise["BookingDetailsTitle"] = 'Your details'
+    $pricePromise["BookingReferenceTooltip"] = 'Your booking reference should only contain numbers. If you booked a flight only, please go to <a rel="noopener noreferrer" href="https://www.easyjet.com/" target="_blank">easyjet.com</a>'
+    $pricePromise["CheckboxGroupTitle"] = 'The holiday you found'
+    $pricePromise["LinkTitle"] = 'Link to holiday in question'
+    $pricePromise["LinkTooltip"] = 'Please copy and paste the full URL of the page where you found a cheaper holiday'
+    $pricePromise["FileUploadTitle"] = 'Screens of holiday in question'
+    $pricePromise["FileUploadDescription"] = 'Please, upload field for a screenshot of the holiday in question.<br/> Total attachment capacity is 10MB.'
+    $pricePromise.Editing.EndEdit() | Out-Null
+                
+                
+    # Update Rendering
+    $pricePromiseRenderingId = "{DBBA196A-9F60-4853-95D8-5DCB3B664430}"
+    Update-Rendering-DataSource -Item $page -RenderingId $pricePromiseRenderingId -NewDataSource $pricePromise.ID 
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200815T055305Z

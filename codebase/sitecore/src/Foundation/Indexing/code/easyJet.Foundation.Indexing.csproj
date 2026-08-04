@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <PackageReference Include="Sitecore.ContentSearch" />
+    <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" />
+    <PackageReference Include="SolrNet.Core" />
+    <PackageReference Include="Sitecore.ContentSearch.SolrProvider" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)SitecoreProject.props" />
+  <PropertyGroup>
+    <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratedAssemblyInfoFile>Properties\Assemblyinfo.cs</GeneratedAssemblyInfoFile>
+  </PropertyGroup>
+</Project>

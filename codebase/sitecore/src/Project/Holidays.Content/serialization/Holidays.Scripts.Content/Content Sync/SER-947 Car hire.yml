@@ -1,0 +1,167 @@
+﻿---
+ID: "92fa9b0c-9be0-443a-9e95-0387816d2249"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-947 Car hire"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+            Import-Function "Import Content"
+    
+            $pagePath = "/sitecore/content/EasyJet/Holidays/Home/Extras hub"
+            $componentWrapperRenderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+            $promoBlocksRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Promo Blocks"
+            $promoBlocksDatasoursePath = "/sitecore/content/EasyJet/Holidays/Home/Extras hub/Page Components/Promo Blocks Folder 4"
+            $promoBlockTemplatePath = "/sitecore/templates/Feature/PageContent/Promo Block" 
+    
+            function New-Content() {
+                    $updates = @(
+                         @{
+                            Path         = "/sitecore/content/EasyJet/Holidays/Home/Extras hub/Page Components/Promo Blocks Folder 4/Tours and Exp"
+                            TemplatePath = "/sitecore/templates/Feature/PageContent/Promo Block"
+                            Fields      = @{
+                                "__Sortorder" = @{
+                                    "en" = "100"
+                                }
+                                 "Title" = @{
+                                    "en" = "Tours and experiences"
+                                    "fr-CH" = "Visites et activités"
+                                    "de-CH" = "Touren und Erlebnisse"
+                                    "fr-FR" = "Visites et activités"
+                                    "de-DE" = "Touren und Erlebnisse"
+                                }
+                                 "Description" = @{
+                                    "en" = "Check out a wide range of tours and experiences for your holiday. From cultural experiences to thrill-seeking adventures, we have it all. All products are provided by Musement.&nbsp;"
+                                    "fr-CH" = "Parcourez un large &eacute;ventail de visites et d'activit&eacute;s locales &agrave; r&eacute;server pour vos vacances. Des exp&eacute;riences culturelles aux aventures &agrave; sensations fortes, nous avons tout ce qu&rsquo;il vous faut. Tous les produits sont fournis par Musement."
+                                    "de-CH" = "Hier findest du diverse Touren und Ausfl&uuml;ge f&uuml;r deine Ferien. Von spannenden Abenteuern bis zu kulturellen Entdeckungen &ndash; wir haben alles im Angebot. Alle Erlebnisse werden von Musement angeboten.&nbsp;"
+                                    "fr-FR" = "Parcourez un large &eacute;ventail de visites et d'activit&eacute;s locales &agrave; r&eacute;server pour vos vacances. Des exp&eacute;riences culturelles aux aventures &agrave; sensations fortes, nous avons tout ce qu&rsquo;il vous faut. Tous les produits sont fournis par Musement."
+                                    "de-DE" = "Hier findest du diverse Touren und Ausfl&uuml;ge f&uuml;r deinen Urlaub. Von spannenden Abenteuern bis zu kulturellen Entdeckungen &ndash; wir haben alles im Angebot. Alle Erlebnisse werden von Musement angeboten.&nbsp;"
+                                }
+                                "Link" = @{
+                                    "en" = "<link text='View All' linktype='external' url='https://experiences.easyjet.com/uk/?utm_source=UK-en-GB-Content-Extras-Page&amp;utm_campaign=generic&amp;utm_medium=web&amp;cid=extras-page' anchor='' target='_blank' rel='' />"
+                                    "fr-CH" = "<link text='Tout afficher' linktype='external' url='https://experiences.easyjet.com/fr/?utm_source=CH-fr-CH-Content-Extras-Page&amp;utm_campaign=generic&amp;utm_medium=web&amp;cid=extras-page' anchor='' target='_blank' rel='' />"
+                                    "de-CH" = "<link text='Alle anzeigen' linktype='external' url='https://experiences.easyjet.com/de/?utm_source=CH-de-CH-Content-Extras-Page&amp;utm_campaign=generic&amp;utm_medium=web&amp;cid=extras-page' anchor='' target='_blank' rel='' />"
+                                    "fr-FR" = "<link text='Parcourir' linktype='external' url='https://experiences.easyjet.com/fr/?utm_source=FR-fr-FR-Content-Extras-Page&amp;utm_campaign=generic&amp;utm_medium=web&amp;cid=extras-page' anchor='' target='_blank' rel='' />"
+                                    "de-DE" = "<link text='Alle anzeigen' linktype='external' url='https://experiences.easyjet.com/de/?utm_source=DE-de-DE-Content-Extras-Page&amp;utm_campaign=generic&amp;utm_medium=web&amp;cid=extras-page' anchor='' target='_blank' rel='' />"
+                                }
+                                "Image" = @{
+                                    "en" = "<image mediaid='{FACF2375-A258-44E2-BE31-D54B90C09997}' dfx='51' dfy='40' mfx='' mfy='' />"
+                                    "fr-CH" = "<image mediaid='{FACF2375-A258-44E2-BE31-D54B90C09997}' dfx='51' dfy='40' mfx='' mfy='' />"
+                                    "de-CH" = "<image mediaid='{FACF2375-A258-44E2-BE31-D54B90C09997}' dfx='51' dfy='40' mfx='' mfy='' />"
+                                    "fr-FR" = "<image mediaid='{FACF2375-A258-44E2-BE31-D54B90C09997}' dfx='51' dfy='40' mfx='' mfy='' />"
+                                    "de-DE" = "<image mediaid='{FACF2375-A258-44E2-BE31-D54B90C09997}' dfx='51' dfy='40' mfx='' mfy='' />"
+                                }
+                            }
+                            }
+                            
+                            
+                            @{
+                            Path         = "/sitecore/content/EasyJet/Holidays/Home/Extras hub/Page Components/Promo Blocks Folder 4/Car rental"
+                            TemplatePath = "/sitecore/templates/Feature/PageContent/Promo Block"
+                            Fields      = @{
+                                "__Sortorder" = @{
+                                    "en" = "500"
+                                }
+                                 "Title" = @{
+                                    "en" = "Car rental"
+                                    "fr-CH" = "Location de voiture"
+                                    "de-CH" = "Autovermietung"
+                                    "fr-FR" = "Location de voiture"
+                                    "de-DE" = "Autovermietung"
+                                }
+                                 "Description" = @{
+                                    "en" = "<span>Explore your way with flexible car hire you can trust.</span><div style='display: flex; flex-wrap: wrap; gap:9px; margin-top: 8px;'><div style='display: flex; gap:9px;'><img alt='avis' style='height:26px; width:70px;' src='-/jssmedia/c65a2b51060c48ccb28f6588eba63464.ashx' /><img alt='budget' style='height:26px; width:70px;' src='-/jssmedia/c4d29b694ae64ef9a0b2a27de3816201.ashx' /><img alt='europcar' style='height:26px; width:70px;' src='-/jssmedia/da3f2619c7304b44ae3b3342ab86b7df.ashx' /></div><div style='display: flex; gap:9px;'><img alt='hertz' style='height:26px; width:70px;' src='-/jssmedia/b243b738626148fe8f7ba4be6c7c8a08.ashx' /><img alt='sixt' style='height:26px; width:70px;' src='-/jssmedia/6b563a951f9f4005adb275486b203a8b.ashx' /><img alt='alamo' style='height:26px; width:70px;' src='-/jssmedia/33229cfde99948b19c82647565777375.ashx' /></div></div>"
+                                    "fr-CH" = "<span>Explorez à votre rythme grâce à une location de voiture flexible et fiable.</span><div style='display: flex; flex-wrap: wrap; gap:9px; margin-top: 8px;'><div style='display: flex; gap:9px;'><img alt='avis' style='height:26px; width:70px;' src='-/jssmedia/c65a2b51060c48ccb28f6588eba63464.ashx' /><img alt='budget' style='height:26px; width:70px;' src='-/jssmedia/c4d29b694ae64ef9a0b2a27de3816201.ashx' /><img alt='europcar' style='height:26px; width:70px;' src='-/jssmedia/da3f2619c7304b44ae3b3342ab86b7df.ashx' /></div><div style='display: flex; gap:9px;'><img alt='hertz' style='height:26px; width:70px;' src='-/jssmedia/b243b738626148fe8f7ba4be6c7c8a08.ashx' /><img alt='sixt' style='height:26px; width:70px;' src='-/jssmedia/6b563a951f9f4005adb275486b203a8b.ashx' /><img alt='alamo' style='height:26px; width:70px;' src='-/jssmedia/33229cfde99948b19c82647565777375.ashx' /></div></div>"
+                                    "de-CH" = "<span>Entdecken Sie, so wie Sie es möchten – mit flexiblen Mietwagen, denen Sie vertrauen können.</span><div style='display: flex; flex-wrap: wrap; gap:9px; margin-top: 8px;'><div style='display: flex; gap:9px;'><img alt='avis' style='height:26px; width:70px;' src='-/jssmedia/c65a2b51060c48ccb28f6588eba63464.ashx' /><img alt='budget' style='height:26px; width:70px;' src='-/jssmedia/c4d29b694ae64ef9a0b2a27de3816201.ashx' /><img alt='europcar' style='height:26px; width:70px;' src='-/jssmedia/da3f2619c7304b44ae3b3342ab86b7df.ashx' /></div><div style='display: flex; gap:9px;'><img alt='hertz' style='height:26px; width:70px;' src='-/jssmedia/b243b738626148fe8f7ba4be6c7c8a08.ashx' /><img alt='sixt' style='height:26px; width:70px;' src='-/jssmedia/6b563a951f9f4005adb275486b203a8b.ashx' /><img alt='alamo' style='height:26px; width:70px;' src='-/jssmedia/33229cfde99948b19c82647565777375.ashx' /></div></div>"
+                                    "fr-FR" = "<span>Explorez à votre rythme grâce à une location de voiture flexible et fiable.</span><div style='display: flex; flex-wrap: wrap; gap:9px; margin-top: 8px;'><div style='display: flex; gap:9px;'><img alt='avis' style='height:26px; width:70px;' src='-/jssmedia/c65a2b51060c48ccb28f6588eba63464.ashx' /><img alt='budget' style='height:26px; width:70px;' src='-/jssmedia/c4d29b694ae64ef9a0b2a27de3816201.ashx' /><img alt='europcar' style='height:26px; width:70px;' src='-/jssmedia/da3f2619c7304b44ae3b3342ab86b7df.ashx' /></div><div style='display: flex; gap:9px;'><img alt='hertz' style='height:26px; width:70px;' src='-/jssmedia/b243b738626148fe8f7ba4be6c7c8a08.ashx' /><img alt='sixt' style='height:26px; width:70px;' src='-/jssmedia/6b563a951f9f4005adb275486b203a8b.ashx' /><img alt='alamo' style='height:26px; width:70px;' src='-/jssmedia/33229cfde99948b19c82647565777375.ashx' /></div></div>"
+                                    "de-DE" = "<span>Entdecken Sie, so wie Sie es möchten – mit flexiblen Mietwagen, denen Sie vertrauen können.</span><div style='display: flex; flex-wrap: wrap; gap:9px; margin-top: 8px;'><div style='display: flex; gap:9px;'><img alt='avis' style='height:26px; width:70px;' src='-/jssmedia/c65a2b51060c48ccb28f6588eba63464.ashx' /><img alt='budget' style='height:26px; width:70px;' src='-/jssmedia/c4d29b694ae64ef9a0b2a27de3816201.ashx' /><img alt='europcar' style='height:26px; width:70px;' src='-/jssmedia/da3f2619c7304b44ae3b3342ab86b7df.ashx' /></div><div style='display: flex; gap:9px;'><img alt='hertz' style='height:26px; width:70px;' src='-/jssmedia/b243b738626148fe8f7ba4be6c7c8a08.ashx' /><img alt='sixt' style='height:26px; width:70px;' src='-/jssmedia/6b563a951f9f4005adb275486b203a8b.ashx' /><img alt='alamo' style='height:26px; width:70px;' src='-/jssmedia/33229cfde99948b19c82647565777375.ashx' /></div></div>"
+                                }
+                                "Link" = @{
+                                    "en" = "<link text='Get a quote' linktype='external' url='https://cars.easyjet.com/en/?clientId=423633' anchor='' target='_blank' rel='' />"
+                                    "fr-CH" = "<link text='Obtenez un devis' linktype='external' url='https://cars.easyjet.com/fr-ch/?clientId=423633' anchor= target='_blank' rel='' />"
+                                    "de-CH" = "<link text='Mietwagen finden' linktype='external' url='https://cars.easyjet.com/de-ch/?clientId=423633' anchor= target='_blank' rel='' />"
+                                    "fr-FR" = "<link text='Obtenez un devis' linktype='external' url='https://cars.easyjet.com/fr/?clientId=423633' anchor= target='_blank' rel='' />"
+                                    "de-DE" = "<link text='Mietwagen finden' linktype='external' url='https://cars.easyjet.com/de/?clientId=423633' anchor= target='_blank' rel='' />"
+                                }
+                                "Image" = @{
+                                    "en" = "<image mediaid='{BAD7D0E8-60F9-4601-ADD2-3E66184D54DD}' dfx='51' dfy='40' mfx='' mfy='' />"
+                                    "fr-CH" = "<image mediaid='{BAD7D0E8-60F9-4601-ADD2-3E66184D54DD}' dfx='51' dfy='40' mfx='' mfy='' />"
+                                    "de-CH" = "<image mediaid='{BAD7D0E8-60F9-4601-ADD2-3E66184D54DD}' dfx='51' dfy='40' mfx='' mfy='' />"
+                                    "fr-FR" = "<image mediaid='{BAD7D0E8-60F9-4601-ADD2-3E66184D54DD}' dfx='51' dfy='40' mfx='' mfy='' />"
+                                    "de-DE" = "<image mediaid='{BAD7D0E8-60F9-4601-ADD2-3E66184D54DD}' dfx='51' dfy='40' mfx='' mfy='' />"
+                                }
+                            }
+                            }
+                         
+                         
+                    )
+                    ImportContent -itemsToCreate $updates
+                }
+                
+                #  function Add-Renderings($pagePath) {
+                    $page = Get-Item -Path $pagePath
+                    $componentWrapperRenderings = Get-Rendering -Item $page -FinalLayout | Where-Object {$_.ItemId -eq $componentWrapperRenderingId} 
+                    
+                    $promoBlocksRendering = Get-Item -Path $promoBlocksRenderingPath
+                    $promoBlocksInstance = New-Rendering -Item $promoBlocksRendering
+                    
+                    $updates = @(
+                         @{
+                            Path         = "/sitecore/content/EasyJet/Holidays/Home/Extras hub/Page Components/Promo Blocks Folder 4"
+                            TemplatePath = "/sitecore/templates/Feature/PageContent/Promo Blocks Folder"
+                            Id = "{AB26733A-9CC1-4C12-BCAB-FA28C28B5B11}"
+                            Fields =@{
+                                "Link" = @{
+                                    "en" = ""
+                                    "fr-CH" = ""
+                                    "de-CH" = ""
+                                    "fr-FR" = ""
+                                    "de-DE" = ""
+                                }
+                            }
+                            })
+                    
+                    ImportContent -itemsToCreate $updates
+                    
+                    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Extras hub/Page Components/Partnership Component" -Permanently
+           
+                    $partnershipRenderingId = "{EF923FE5-72B8-41AE-9D17-BD2B8B99A377}"
+    
+                     $languages = @("en", "fr-CH", "de-CH", "fr-FR", "de-DE")
+                    foreach ($lang in $languages) {
+           
+                        $langPage = Get-Item -Path $pagePath -Language $lang
+                        $partnershipRendering = Get-Rendering -Item $langPage -FinalLayout | Where-Object {$_.ItemId -eq $partnershipRenderingId} 
+                        if ($null -ne $partnershipRendering -and $partnershipRendering.Count -gt 0) {
+                            Remove-Rendering -Item $langPage -Instance $partnershipRendering[0] -FinalLayout
+                            Write-Host "Removed partnership rendering for language: $lang" -ForegroundColor Yellow
+                        } else {
+                            Write-Host "Partnership rendering not found for language: $lang, skipping removal" -ForegroundColor Gray
+                        }
+                        $promoBlocksRendering = Get-Item -Path $promoBlocksRenderingPath
+                        $promoBlocksInstance = New-Rendering -Item $promoBlocksRendering
+                        $componentWrapperRenderings = Get-Rendering -Item $langPage -FinalLayout | Where-Object {$_.ItemId -eq $componentWrapperRenderingId}
+                        Add-Rendering -Item $langPage -Instance $promoBlocksInstance -Language $lang -Index 11 -FinalLayout -Parameter @{"IsButtonOutlined" = "1"; "Theme" = "Vertical Stripe Variant" } -Placeholder "/body/component-wrapper-inner-$($componentWrapperRenderings[1].UniqueId)-0" -DataSource "{AB26733A-9CC1-4C12-BCAB-FA28C28B5B11}"
+                        Write-Host "Added rendering for language: $lang" -ForegroundColor Green
+                    }
+                    
+                    New-Content
+                #  }
+    
+                # Add-Renderings -PagePath "/sitecore/content/EasyJet/Holidays/Home/Extras hub"
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260520T125255Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

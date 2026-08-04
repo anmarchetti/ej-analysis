@@ -1,0 +1,59 @@
+{
+    "Title": "Hotels polygon search(api/DestinationsSearch/GetHotelsByEntryInPolygonBorders)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetHotelsCoordinatesByParentCode",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "code",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "ESP"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": [
+            {
+                "Latitude": 38.53788,
+                "Longitude": -0.123016,
+                "Code": "X9001937",
+                "Name": "Benidorm Centre Only Adult",
+                "Type": null,
+                "ShowOnSearchPod": false,
+                "isGreatDeal": false
+            },
+            {
+                "Latitude": 38.53837,
+                "Longitude": -0.127753,
+                "Code": "X9000246",
+                "Name": "Agua Azul",
+                "Type": null,
+                "ShowOnSearchPod": false,
+                "isGreatDeal": false
+            },
+            {
+                "Latitude": 38.53811,
+                "Longitude": -0.122537,
+                "Code": "X9000253",
+                "Name": "Los Alamos",
+                "Type": null,
+                "ShowOnSearchPod": false,
+                "isGreatDeal": false
+            }
+        ]
+    }
+}

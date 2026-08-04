@@ -1,0 +1,198 @@
+.merchandising-banner {
+    font-family: $fontRoundedBook;
+    font-size: 17px;
+    line-height: 1.3;
+    color: #fff;
+    background: #ff4600;
+
+    .wrapper-container {
+        display: flex;
+        align-items: center;
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+
+    .merchandising-banner__icon {
+        flex-shrink: 0;
+        width: 18px;
+        height: 18px;
+        margin-right: 14px;
+        line-height: 1;
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+
+        .wrapper-container {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .merchandising-banner__icon {
+            margin-right: 10px;
+        }
+    }
+}
+
+.merchandising-alert-banner {
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    line-height: 22px;
+    background: $colorPorcelain;
+
+    @include media-breakpoint-down(lg) {
+        line-height: 18px;
+    }
+
+    .wrapper-container {
+        position: relative;
+        display: flex;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .merchandising-banner__icon-wrapper {
+        @include media-breakpoint-down(md) {
+            display: flex;
+            flex: 0 0 auto;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 24px;
+            height: 36px;
+        }
+    }
+
+    .merchandising-banner__icon {
+        position: absolute;
+        top: 50%;
+        left: 15px;
+        max-width: 30px;
+        transform: translateY(-50%);
+
+        @include media-breakpoint-down(md) {
+            position: relative;
+            top: 0;
+            left: inherit;
+            width: 100%;
+            max-width: 24px;
+            transform: none;
+        }
+    }
+
+    .merchandising-banner__bg-wrapper {
+        filter: drop-shadow(8px 0 5px $colorAlto);
+
+        .merchandising-banner__bg {
+            position: relative;
+            width: 70px;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                $colorPorcelain 1.66%,
+                $colorWhite 98.64%
+            );
+            clip-path: polygon(0 0, 100% 0%, 70% 100%, 0% 100%);
+
+            @include media-breakpoint-down(lg) {
+                width: 60px;
+            }
+
+            @include media-breakpoint-down(md) {
+                display: none;
+            }
+        }
+    }
+
+    .merchandising-banner__content {
+        width: 100%;
+        margin-left: 10px;
+        padding: 14px 0;
+
+        @include media-breakpoint-down(lg) {
+            margin-left: 0;
+            padding: 8px;
+            padding-left: 0;
+        }
+
+        @include media-breakpoint-down(md) {
+            position: relative;
+            display: flex;
+            padding: 6px 30px 6px 12px;
+
+            &:not(.expanded) {
+                overflow: hidden;
+
+                .merchandising-banner__description,
+                .merchandising-banner__countdown,
+                .merchandising-banner__link {
+                    display: inline;
+                    margin-right: 10px;
+                    white-space: nowrap;
+                }
+            }
+
+            &.expanded {
+                .icon-arrow::before {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .merchandising-banner__wrapper {
+        margin-left: 10px;
+    }
+
+    .merchandising-banner__title {
+        font-weight: bold;
+    }
+
+    .merchandising-banner__title,
+    .merchandising-banner__description,
+    .merchandising-banner__countdown {
+        @include media-breakpoint-up(md) {
+            display: inline;
+            margin-right: 10px;
+        }
+    }
+
+    .merchandising-banner__link {
+        font-weight: 700;
+    }
+
+    .icon-arrow {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 30px;
+        background: $colorPorcelain;
+
+        &::before {
+            @include media-breakpoint-down(md) {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 30px;
+                width: 30px;
+                height: 100%;
+                background: linear-gradient(
+                    90deg,
+                    rgba(245, 247, 248, 0) -12.5%,
+                    $colorPorcelain 100%
+                );
+            }
+        }
+
+        svg {
+            position: absolute;
+            top: 17px;
+            left: 50%;
+            width: 11px;
+            height: 11px;
+            color: $clrEjOrange;
+            transform: translateX(-50%);
+        }
+    }
+}

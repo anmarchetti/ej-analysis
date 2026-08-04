@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+    <!--
+    Marketing Automation Activity Services configuration
+  -->
+    <Sitecore>
+        <XConnect>
+            <MarketingAutomation>
+                <Engine>
+                    <Services>
+                        <!-- The services to provide to activities -->
+                        <easyJet.PushNotificationService>
+                            <Type>easyJet.Foundation.PushNotifications.Services.PushNotificationService, easyJet.Foundation.PushNotifications</Type>
+                            <As>easyJet.Foundation.PushNotifications.Services.IPushNotificationService, easyJet.Foundation.PushNotifications</As>
+                            <LifeTime>Singleton</LifeTime>
+                            <Options>
+                                <Endpoint>#{Sitecore.PushNotifications.Endpoint}</Endpoint>
+                            </Options>
+                        </easyJet.PushNotificationService>
+                        <easyJet.UtmParamsService>
+                            <Type>easyJet.Foundation.PushNotifications.Services.UtmParamsService, easyJet.Foundation.PushNotifications</Type>
+                            <As>easyJet.Foundation.PushNotifications.Services.IUtmParamsService, easyJet.Foundation.PushNotifications</As>
+                            <LifeTime>Transient</LifeTime>
+                            <Options>
+                                <QueryParams>
+                                    <utm_medium>push</utm_medium>
+                                    <utm_source>holidays</utm_source>
+                                </QueryParams>
+                            </Options>
+                        </easyJet.UtmParamsService>
+                    </Services>
+                </Engine>
+            </MarketingAutomation>
+        </XConnect>
+    </Sitecore>
+</Settings>

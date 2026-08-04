@@ -1,0 +1,264 @@
+﻿---
+ID: "d359810d-3d5b-484f-9917-6add2bac8ca6"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/MAN-122_un-ava-popups"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    ## UPDATE FILEDS WITH LANGS
+    function Update-item-with-lang($data, $itemPath) {
+        $item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue;
+        
+        function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+        };
+    
+        if ($item -ne $null) {
+            $data | ForEach-Object {
+            $fieldName = $_.fieldName;
+            $values = $_.values;
+        
+            if ($values -ne $null) {
+              
+                if ($values.en -ne $null) {
+                    $item.Editing.BeginEdit();
+                    $item[$fieldName] = $values.en;
+                    $item.Editing.EndEdit() | Out-Null
+                }
+                 if ($values.fr -ne $null) {
+                     @('fr-CH', 'fr-FR') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.fr;
+                    }
+                }
+                 if ($values.de -ne $null) {
+                     @('de-CH', 'de-DE') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.de;
+                    }
+                }
+                
+                Write-Host $fieldName "Updated"
+            }
+        }
+        }
+    };
+    ##
+    
+    ## UPDATE PAGE RENDERING
+     function Add-Or-Update-Page-Rendering ($pagePath, $renderingPath, $renderingPlaceholder, $dataSourcePath, $parameters = @{}) {
+    	$renderingItem = Get-Item -Path $renderingPath;
+    	$dataSourceItem = Get-Item -Path $dataSourcePath;
+    	$page = Get-Item $pagePath;
+    	
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -DataSource $dataSourcePath -Parameter $parameters
+    
+    		Write-Host $renderingItem.Name "- Rendering instance added";
+    	}
+    	else {
+    		Write-Host $renderingItem.Name "- Already exists";
+    	}
+        }
+    ##
+    
+    ## GET RENDERING INSTANCE
+    function Get-Rendering-Instance($itemPath, $renderingPath, $dataSourcePath) {
+        $pageItem = Get-Item -Path $itemPath;
+        $renderingItem = Get-Item -Path $renderingPath;
+        $dataSourceItem = Get-Item -Path $dataSourcePath;
+        $rendering = Get-Rendering -Item $pageItem -Rendering $renderingItem -DataSource $dataSourcePath;
+        
+        if ($rendering -ne $null) {
+            return $rendering;
+        }
+    
+     
+        return Get-Rendering -Item $pageItem -Rendering $renderingItem -DataSource $dataSourceItem.ID;
+    }
+    ##
+    
+    ## REMOVE RENDERING INSTANCE
+    function Remove-Rendering-Instance($itemPath, $renderingPath, $dataSourcePath) {
+        $pageItem = Get-Item -Path $itemPath;
+           $renderingItem = Get-Item -Path $renderingPath;
+        $renderingInstance = Get-Rendering-Instance -ItemPath $itemPath -RenderingPath $renderingPath -DataSourcePath $dataSourcePath;
+     
+        if ($renderingInstance -ne $null) {
+            Remove-Rendering -Item $pageItem -Instance $renderingInstance;
+            
+            Write-Host $renderingItem.Name "Deleted";
+        } else {
+            Write-Host $renderingItem.Name " - Not found";
+        }
+    }
+    ##
+    
+    $popupFlightChangeData = @(
+        @{
+        	fieldName = "Title";
+        	Values = @{
+        		en = "We’re sorry, there’s no other available flights from your current departure airport to {airport} on your travel dates";
+        		fr = "Nous sommes désolés, il n'y a pas d'autres vols disponibles entre votre aéroport de départ actuel et {airport} à vos dates de voyage";
+        		de = "Es tut uns leid, es gibt keine anderen verfügbaren Flüge von Ihrem aktuellen Abflughafen nach {airport} zu Ihren Reisedaten"
+        	}
+        },
+        @{
+        	fieldName = "Description";
+        	Values = @{
+        		en = "There’s no available flights online on {date} from {airport} or nearby airports. If you need to talk to us about your flights please contact us.";
+        		fr = "Il n'y a pas de vols disponibles en ligne le {departureDate} à partir de {airport} ou des aéroports voisins. Si vous souhaitez nous parler de vos vols, veuillez nous contacter.";
+        		de = "Es gibt keine verfügbaren Flüge am {date} von {airport} oder nahe gelegenen Flughäfen. Wenn Sie mit uns über Ihre Flüge sprechen möchten, kontaktieren Sie uns bitte."
+        	}
+        },
+         @{
+        	fieldName = "CTALink";
+        	Values = @{
+        		en = '<link text="" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />';
+        		fr = '<link text="" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />';
+        		de = '<link text="" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />';
+        	}
+        }
+    );
+    $popupTransferChangeData = @(
+        @{
+        	fieldName = "Description";
+        	Values = @{
+        		en = "We are unable to provide you with other transfer options for your destination on {date}. If you need to talk to us about your transfer, please contact us.";
+        		fr = "Nous ne sommes pas en mesure de vous proposer d'autres options de transfert pour votre destination le {date}. Si vous souhaitez nous parler de votre transfert, veuillez nous contacter.";
+        		de = "Wir sind nicht in der Lage, Ihnen andere Transferoptionen für Ihr Ziel am {date} anzubieten. Wenn Sie mit uns über Ihren Transfer sprechen möchten, kontaktieren Sie uns bitte."
+        	}
+        },
+          @{
+        	fieldName = "CTALink";
+        	Values = @{
+        		en = '<link text="" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />';
+        		fr = '<link text="" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />';
+        		de = '<link text="" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />';
+        	}
+        }
+    );
+    $rbcData = @(
+          @{
+        	fieldName = "CTALink";
+        	Values = @{
+        		en = '<link text="" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />';
+        		fr = '<link text="" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />';
+        		de = '<link text="" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />';
+        	}
+        }
+    );
+    $datesData = @(
+          @{
+        	fieldName = "CTALink";
+        	Values = @{
+        		en = '<link text="" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />';
+        		fr = '<link text="" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />';
+        		de = '<link text="" anchor="" linktype="internal" class="" title="" target="_blank" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />';
+        	}
+        }
+    );
+    
+    
+    $viewBookingPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking";
+    $amendDatesSummaryPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary";
+    
+    $noFlightsPath = "/sitecore/content/EasyJet/Holidays/Data/No Flights Available Popup";
+    $noHotelPath = "/sitecore/content/EasyJet/Holidays/Data/No Hotels Available Popup";
+    $noTransfersPath = "/sitecore/content/EasyJet/Holidays/Data/No Tranfers Available Popup";
+    $noDatesPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/No Dates Popup";
+    $noRBCPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Room And Board Unavailable Popup";
+    
+    $RBCRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Room And Board Unavailable Popup";
+    $datesRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Dates Unavailable Popup";
+    $transfersRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Transfers Unavailable Popup";
+    $flightsRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Flights Unavailable Popup";
+    $hotelRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Hotels Unavailable Popup";
+    
+    ## Update fields
+    Update-item-with-lang -ItemPath $noFlightsPath -Data $popupFlightChangeData;
+    Update-item-with-lang -ItemPath $noTransfersPath -Data $popupTransferChangeData;
+    Update-item-with-lang -ItemPath $noDatesPath -Data $datesData;
+    Update-item-with-lang -ItemPath $noRBCPath -Data $rbcData;
+    
+    $viewBookingRenderingInstance = Get-Rendering-Instance -ItemPath $viewBookingPagePath -RenderingPath "/sitecore/layout/Renderings/Feature/Destinations/View Booking" -DataSourcePath "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/View Booking";
+    $amendDatesSummaryRenderingInstance = Get-Rendering-Instance -ItemPath $amendDatesSummaryPagePath -RenderingPath "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Dates/Amend Dates Summary" -DataSourcePath "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary/Page Components/Amend Dates Summary Page";
+    
+    $viewBookingPlaceholder = "/body/unavailable-flow-popup-" + $viewBookingRenderingInstance.UniqueId + "-0";
+    $datesSummaryPlaceholder = "/body/unavailable-flow-popup-" + $amendDatesSummaryRenderingInstance.UniqueId + "-0";
+    
+    
+    Add-Or-Update-Page-Rendering -PagePath $viewBookingPagePath -RenderingPath $RBCRenderingPath -RenderingPlaceholder $viewBookingPlaceholder -DataSourcePath $noRBCPath;
+    Add-Or-Update-Page-Rendering -PagePath $viewBookingPagePath -RenderingPath $datesRenderingPath -RenderingPlaceholder $viewBookingPlaceholder -DataSourcePath $noDatesPath;
+    Add-Or-Update-Page-Rendering -PagePath $viewBookingPagePath -RenderingPath $transfersRenderingPath -RenderingPlaceholder $viewBookingPlaceholder -DataSourcePath $noTransfersPath;
+    Add-Or-Update-Page-Rendering -PagePath $viewBookingPagePath -RenderingPath $flightsRenderingPath -RenderingPlaceholder $viewBookingPlaceholder -DataSourcePath $noFlightsPath;
+    Add-Or-Update-Page-Rendering -PagePath $viewBookingPagePath -RenderingPath $hotelRenderingPath -RenderingPlaceholder $viewBookingPlaceholder -DataSourcePath $noHotelPath;
+    
+    Add-Or-Update-Page-Rendering -PagePath $amendDatesSummaryPagePath -RenderingPath $transfersRenderingPath -RenderingPlaceholder $datesSummaryPlaceholder -DataSourcePath $noTransfersPath;
+    Add-Or-Update-Page-Rendering -PagePath $amendDatesSummaryPagePath -RenderingPath $flightsRenderingPath -RenderingPlaceholder $datesSummaryPlaceholder -DataSourcePath $noFlightsPath;
+    
+    
+    ### Remove
+    $attentionPopupPath = "/sitecore/layout/Renderings/Feature/Destinations/Popups/Attention Popup";
+    
+    Remove-Rendering-Instance -ItemPath $viewBookingPagePath -RenderingPath $attentionPopupPath -DataSourcePath $noRBCPath;
+    Remove-Rendering-Instance -ItemPath $viewBookingPagePath -RenderingPath $attentionPopupPath -DataSourcePath $noDatesPath;
+    Remove-Rendering-Instance -ItemPath $viewBookingPagePath -RenderingPath $attentionPopupPath -DataSourcePath $noTransfersPath;
+    Remove-Rendering-Instance -ItemPath $viewBookingPagePath -RenderingPath $attentionPopupPath -DataSourcePath $noHotelPath;
+    Remove-Rendering-Instance -ItemPath $viewBookingPagePath -RenderingPath $attentionPopupPath -DataSourcePath $noFlightsPath;
+    
+    Remove-Rendering-Instance -ItemPath $amendDatesSummaryPagePath -RenderingPath $attentionPopupPath -DataSourcePath $noFlightsPath;
+    Remove-Rendering-Instance -ItemPath $amendDatesSummaryPagePath -RenderingPath $attentionPopupPath -DataSourcePath $noTransfersPath;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1401
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250128T124703Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

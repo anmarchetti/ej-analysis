@@ -1,0 +1,82 @@
+﻿---
+ID: "89bd9adb-ba18-4b01-8493-b2a5019fce71"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/NPT-187 Amount Left To Pay"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_frch_v1 = @"
+     Veuillez sélectionner un mode de paiment pour régler votre solde restant de {amount}
+    "@
+    $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_dede_v1 = @"
+    Wähle die gewünschte Zahlungsart für den Restbetrag vo {amount}
+    "@
+    $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_frfr_v1 = @"
+     Veuillez sélectionner un mode de paiment pour régler votre solde restant de {amount}
+    "@
+    $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_en_v1 = @"
+    Please choose how you’d like to pay the remaining {amount}
+    "@
+    $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_dech_v1 = @"
+    Wähle die gewünschte Zahlungsart für den Restbetrag von {amount}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Booking/Payment/Page Components/Payment"
+            TemplatePath = "Feature/Destinations/Payment"
+            Id          = [GUID]"{4E2EBB07-B958-46C6-A3E8-7198552048C3}"
+            Fields      = @{
+                "AmountLeftToPay" = @{
+                    "de-CH" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_dech_v1
+                    "en" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_en_v1
+                    "fr-FR" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_frfr_v1
+                    "de-DE" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_dede_v1
+                    "fr-CH" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_frch_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Booking/Pay Balance/Page Components/Pay Balance"
+            TemplatePath = "Feature/Destinations/Pay Balance"
+            Id          = [GUID]"{09813C5B-71A5-4AC4-BAC5-0AE8E00A7D85}"
+            Fields      = @{
+                "AmountLeftToPay" = @{
+                    "de-CH" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_dech_v1
+                    "en" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_en_v1
+                    "fr-FR" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_frfr_v1
+                    "de-DE" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_dede_v1
+                    "fr-CH" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_frch_v1
+                }
+            }
+        },
+         @{
+             Path        = "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Amend Payment"
+            TemplatePath = "Feature/Destinations/Amend/Amend Payment"
+            Id          = [GUID]"{5B9407BB-F99A-4870-8817-4F4389507D79}"
+            Fields      = @{
+                "AmountLeftToPay" = @{
+                    "de-CH" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_dech_v1
+                    "en" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_en_v1
+                    "fr-FR" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_frfr_v1
+                    "de-DE" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_dede_v1
+                    "fr-CH" = $amounttopaybycard_4e2ebb07b95846c6a3e87198552048c3_frch_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999935
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250618T111059Z

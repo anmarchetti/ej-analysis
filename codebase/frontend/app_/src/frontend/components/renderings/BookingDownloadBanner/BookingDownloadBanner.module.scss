@@ -1,0 +1,94 @@
+.stickyBar:global(.sticky-box.sticky-mobile.sticky) {
+    overflow-x: unset;
+    overflow-y: unset;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+}
+
+.navBar {
+    background: $clrSiteBgWhite;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.08);
+
+    :global(.wrapper-container) {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+    }
+}
+
+.extra {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    @include media-breakpoint-up(md) {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .travelDocumentBtn,
+    .printBtn {
+        display: none;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+
+        @include media-breakpoint-up(sm) {
+            display: block;
+        }
+
+        svg {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            padding: 2px;
+            vertical-align: bottom;
+
+            @include media-breakpoint-up(md) {
+                vertical-align: unset;
+            }
+        }
+
+        &:global(.btn--loading) {
+            &::before {
+                position: relative;
+                top: 0;
+                left: 0;
+                width: 22px;
+                height: 22px;
+                margin: 0;
+            }
+        }
+    }
+}
+
+.extraLabel {
+    display: none;
+    margin-right: 8px;
+    font-size: 12px;
+    line-height: 1.28;
+    white-space: nowrap;
+
+    @include media-breakpoint-up(md) {
+        display: block;
+        font-size: 14px;
+        line-height: 1.28;
+    }
+
+    @include media-breakpoint-up(sm) {
+        display: block;
+    }
+}
+
+.buttonsWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

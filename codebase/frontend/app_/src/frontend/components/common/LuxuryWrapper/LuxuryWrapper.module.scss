@@ -1,0 +1,96 @@
+.luxuryWrapper {
+    background: $luxuryNewThemeGradient border-box;
+    border: 2px solid transparent;
+    border-radius: 4px;
+
+    :global(.image-gallery) {
+        border-radius: 0;
+    }
+}
+
+.luxuryBanner {
+    display: flex;
+    padding: 8px 16px;
+    color: $colorLuxuryChampagne;
+    background: $colorLuxuryBlack;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+
+    span {
+        font-family: $fontRoundedDemy;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.375;
+        text-transform: uppercase;
+        letter-spacing: 4.8px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 14px;
+            line-height: 1.28;
+            letter-spacing: 4.2px;
+        }
+    }
+
+    .icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+
+        @include media-breakpoint-down(md) {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+        }
+    }
+}
+
+.luxuryContent {
+    overflow: hidden;
+    background-color: $colorWhite;
+    border-radius: 0 0 3px 3px;
+}
+
+.noBorders {
+    border: none;
+}
+
+.luxuryWrapper.darkOrangeTheme {
+    background: $luxuryThemeGradient border-box;
+
+    @include media-breakpoint-down(md) {
+        background: linear-gradient(180deg, $colorLuxuryOrange -0.02%, $colorLuxuryYellow 99.98%) border-box;
+    }
+
+    .luxuryBanner {
+        color: $colorWhite;
+        background: $luxuryThemeGradient;
+
+         @include media-breakpoint-down(md) {
+            background: $colorOrange;
+        }
+    }
+}
+
+
+.luxuryWrapper.lightTheme {
+    background: $luxuryThemeGradient border-box;
+
+    @include media-breakpoint-down(md) {
+        background: linear-gradient(180deg, $clrEjOrange -0.02%, $colorLuxuryYellow 99.98%) border-box;
+    }
+
+    .icon {
+        fill: $colorOrange;
+    }
+
+    .luxuryBanner {
+        color: $colorWhite;
+        background: linear-gradient(89deg, #FFF0E6 49.98%, #FEF9F1 89.02%);
+
+        span {
+            color: $colorOrange;
+        }
+    }
+}
+

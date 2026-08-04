@@ -1,0 +1,96 @@
+﻿---
+ID: "c3ffebe0-630f-46d8-bf6e-e7102b31e60a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/MAN-915-empty-hotel-list-block"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    ## UPDATE FILEDS WITH LANGS
+    function update-item-with-lang($data, $item) {
+        function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+    };
+    
+        if ($item -ne $null) {
+            $data | ForEach-Object {
+            $fieldName = $_.fieldName;
+            $values = $_.values;
+        
+            if ($values -ne $null) {
+              
+                if ($values.en -ne $null) {
+                    $item.Editing.BeginEdit();
+                    $item[$fieldName] = $values.en;
+                    $item.Editing.EndEdit() | Out-Null
+                }
+                 if ($values.fr -ne $null) {
+                     @('fr-CH', 'fr-FR') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.fr;
+                    }
+                }
+                 if ($values.de -ne $null) {
+                     @('de-CH', 'de-DE') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.de;
+                    }
+                }
+                
+                Write-Host $fieldName "Updated"
+            }
+        }
+        }
+    };
+    ##
+    
+    $item = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Page Components/Amend Hotel";
+    $data = @(
+        @{
+            fieldName = "EmptyListTitle";
+            values = @{
+                en = "We searched high and low for your hotel";
+                de = "Wir haben lange nach Ihrem Hotel gesucht";
+                fr = "Nous avons cherché votre hôtel dans les moindres recoins"
+            }
+        },
+        @{
+            fieldName = "EmptyListDescription";
+            values = @{
+                en = "Sorry, we couldn't find a hotel that matches your search. Please clear your filters to see more hotel options.";
+                de = "Wir konnten leider kein Hotel finden, das Ihrer Suche entspricht. Bitte deaktivieren Sie Ihre Filter, um weitere Hoteloptionen anzuzeigen.";
+                fr = "Désolé, nous n'avons pas trouvé d'hôtel correspondant à votre recherche. Veuillez modifier vos filtres pour voir plus d'options d'hôtels."
+            }
+        },
+        @{
+            fieldName = "EmptyListIcon";
+            values = @{
+                en = '<image mediaid="{70A5E00C-5A6A-4500-A64F-32B890DEB341}" />';
+            }
+        }  
+    );
+    
+    update-item-with-lang -Item $item -Data $data;
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250404T111320Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

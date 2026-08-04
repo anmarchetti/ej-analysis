@@ -1,0 +1,119 @@
+.bread {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+    .bread-item {
+        display: flex;
+        align-items: center;
+        margin: 15px 34px;
+        font-family: $fontRoundedBook;
+        font-size: 14px;
+        color: $clrTxtLighter;
+
+        div {
+            position: relative;
+            width: 25px;
+            height: 25px;
+            margin-right: 10px;
+            line-height: 25px;
+            color: $clrTxtLighter;
+            text-align: center;
+            border: 1px solid;
+            border-radius: $box_border-radius_round;
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                right: 100%;
+                width: 48px;
+                height: 1px;
+                margin-right: 10px;
+                font-size: 0;
+                border-top: 1px solid $clrTxtLighter;
+            }
+
+            svg {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                width: 14px;
+                height: 14px;
+                margin: auto;
+            }
+        }
+
+        &.bread-item--ready {
+            color: $clrEjOrange;
+
+            div {
+                color: $clrEjOrange;
+                background-color: $colorWhite;
+            }
+        }
+
+        &.bread-item--next {
+            color: $clrTxtLight;
+
+            div {
+                color: $clrTxtLight;
+                background-color: $colorTransparent;
+                border: 1px solid $clrTxtLight;
+            }
+        }
+
+        &.active {
+            font-family: $fontRoundedBook;
+            color: $clrEjOrange;
+
+            div {
+                color: $colorWhite;
+                background-color: $clrEjOrange;
+            }
+        }
+
+        &:first-child {
+            div {
+                &::before {
+                    content: none;
+                }
+            }
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-top: 10px;
+        margin-bottom: 10px;
+
+        .bread-item {
+            flex-direction: column;
+            margin: 0 15px;
+            font-size: 10px;
+
+            .bread-item__title {
+                margin-top: 10px;
+            }
+
+            div {
+                margin-right: 0;
+
+                &::before {
+                    width: 25px;
+                }
+            }
+        }
+    }
+
+    &.bread__extra-space {
+        margin: 60px 0;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 30px;
+            margin-bottom: 40px;
+        }
+    }
+}

@@ -1,0 +1,62 @@
+﻿---
+ID: "0a13649b-56eb-4d54-9a56-532c0ebaafe7"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-237 Add seat map back to summary label"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version ($item,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+    
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value;
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    $seatMapDataSourcePath = "/sitecore/content/EasyJet/Holidays/Data/SeatsMap"
+    $tradePortalSeatMapDataSourcePath = "/sitecore/content/EasyJet/TradePortal/Data/Seats Map Trade"
+    $seatMapDataSource = Get-Item -Path $seatMapDataSourcePath -ErrorAction SilentlyContinue
+    $tradePortalSeatMapDatasource = Get-Item -Path $tradePortalSeatMapDataSourcePath -ErrorAction SilentlyContinue
+    
+    
+    $seatMapDataSource.Editing.BeginEdit()
+    $tradePortalSeatMapDatasource.Editing.BeginEdit()
+    
+    $seatMapDataSource["BackToSummaryLabel"] = "Back to summary";
+    $tradePortalSeatMapDataSource["BackToSummaryLabel"] = "Back to summary";
+    
+    @( 'fr-CH','fr-FR') | % {
+    	Create-Lang-Version -Item $seatMapDataSource -Lang $_ -Field "BackToSummaryLabel" -Value "Retour au résumé"
+    	Create-Lang-Version -Item $tradePortalSeatMapDataSource -Lang $_ -Field "BackToSummaryLabel" -Value "Retour au résumé"
+    }
+    @( 'de-CH','de-DE') | % {
+    	Create-Lang-Version -Item $seatMapDataSource -Lang $_ -Field "BackToSummaryLabel" -Value "Zurück zur Zusammenfassung"
+    	Create-Lang-Version -Item $tradePortalSeatMapDataSource -Lang $_ -Field "BackToSummaryLabel" -Value "Zurück zur Zusammenfassung"
+    }
+    
+    $seatMapDatasource.Editing.EndEdit() | Out-Null;
+    $tradePortalSeatMapDatasource.Editing.EndEdit() | Out-Null;
+    
+    Write-Host "label value has been set for holidays site and trade portal"; 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240417T101859Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

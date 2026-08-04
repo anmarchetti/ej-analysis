@@ -1,0 +1,151 @@
+﻿---
+ID: "c2c5dbbc-262a-45d1-a9f9-50e4253149c2"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-86 Update Seat Component"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Seat And Bags/Content"
+    $datasourcePathTrade = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seat And Bags/Content"
+    
+    $updates = @(
+        @{
+            Path         = $datasourcePath
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Ancillaries Content Folder/Ancillaries Content"
+        },
+        @{
+            Path         = $datasourcePath + "/Default content" 
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Ancillaries Content Folder/Ancillaries Content Item"
+            Fields      = @{
+                "Subtitle" = @{
+                    "en"    = "Book your seats on the plane"
+                    "fr-CH" = "Réservez vos sièges dans l'avion"
+                    "fr-FR" = "Réservez vos sièges dans l'avion"
+                    "de-CH" = "Buchen Sie Ihre Sitze im Flugzeug"
+                    "de-DE" = "Buchen Sie Ihre Sitze im Flugzeug"
+                }
+                "Description" = @{
+                    "en"    = "Pick your seats to ensure you can sit together and be first off the plane"
+                    "fr-CH" = "Choisissez vos sièges pour vous assurer de pouvoir vous asseoir ensemble et être les premiers à sortir de l'avion"
+                    "fr-FR" = "Choisissez vos sièges pour vous assurer de pouvoir vous asseoir ensemble et être les premiers à sortir de l'avion"
+                    "de-CH" = "Wählen Sie Ihre Sitze, um sicherzustellen, dass Sie zusammen sitzen können und als Erste aus dem Flugzeug aussteigen"
+                    "de-DE" = "Wählen Sie Ihre Sitze, um sicherzustellen, dass Sie zusammen sitzen können und als Erste aus dem Flugzeug aussteigen"
+                }
+            }
+        },
+        @{
+            Path         = $datasourcePath + "/Luxury content" 
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Ancillaries Content Folder/Ancillaries Content Item"
+            Fields      = @{
+                "Subtitle" = @{
+                    "en"    = "Don’t miss your complimentary standard seats!"
+                    "fr-CH" = "Ne manquez pas vos places standard gratuites!"
+                    "fr-FR" = "Ne manquez pas vos places standard gratuites!"
+                    "de-CH" = "Verpassen Sie nicht Ihre kostenlosen Standardplätze!"
+                    "de-DE" = "Verpassen Sie nicht Ihre kostenlosen Standardplätze!"
+                }
+                "Description" = @{
+                    "en"    = "Enjoy complimentary standard seats as part of your package - or upgrade to extra leg room."
+                    "fr-CH" = "Bénéficiez de sièges standard gratuits dans le cadre de votre forfait - ou surclassez-vous pour bénéficier d'un espace supplémentaire pour les jambes."
+                    "fr-FR" = "Bénéficiez de sièges standard gratuits dans le cadre de votre forfait - ou surclassez-vous pour bénéficier d'un espace supplémentaire pour les jambes."
+                    "de-CH" = "Genießen Sie kostenlose Standardsitze als Teil Ihres Pakets - oder ein Upgrade für mehr Beinfreiheit."
+                    "de-DE" = "Genießen Sie kostenlose Standardsitze als Teil Ihres Pakets - oder ein Upgrade für mehr Beinfreiheit."
+                }
+            }
+        },
+        @{
+            Path         = $datasourcePathTrade
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Ancillaries Content Folder/Ancillaries Content"
+        },
+        @{
+            Path         = $datasourcePathTrade + "/Default content" 
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Ancillaries Content Folder/Ancillaries Content Item"
+            Fields      = @{
+                "Subtitle" = @{
+                    "en"    = "Book your seats on the plane"
+                }
+                "Description" = @{
+                    "en"    = "Pick your seats to ensure you can sit together and be first off the plane"
+                }
+            }
+        },
+        @{
+            Path         = $datasourcePathTrade + "/Luxury content" 
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Ancillaries Content Folder/Ancillaries Content Item"
+            Fields      = @{
+                "Subtitle" = @{
+                    "en"    = "Don’t miss your complimentary standard seats!"
+                }
+                "Description" = @{
+                    "en"    = "Enjoy complimentary standard seats as part of your package - or upgrade to extra leg room."
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $updates
+    
+    Add-ItemLanguage -Path $datasourcePath -TargetLanguage 'fr-CH' -IfExist Skip -DoNotCopyFields;
+    Add-ItemLanguage -Path $datasourcePath -TargetLanguage 'fr-FR' -IfExist Skip -DoNotCopyFields;
+    Add-ItemLanguage -Path $datasourcePath -TargetLanguage 'de-CH' -IfExist Skip -DoNotCopyFields;
+    Add-ItemLanguage -Path $datasourcePath -TargetLanguage 'de-DE' -IfExist Skip -DoNotCopyFields;
+    
+    $defaultItem = Get-Item -Path "$($datasourcePath)/Default content" -ErrorAction SilentlyContinue;
+    $luxuryItem = Get-Item -Path "$($datasourcePath)/Luxury content"  -ErrorAction SilentlyContinue;
+    
+    $defaultItemTrade = Get-Item -Path "$($datasourcePathTrade)/Default content" -ErrorAction SilentlyContinue;
+    $luxuryItemPortal = Get-Item -Path "$($datasourcePathTrade)/Luxury content"  -ErrorAction SilentlyContinue;
+    
+    $updates = @(
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Seat And Bags" 
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage/Seat And Bags"
+            Fields      = @{
+                "DefaultTitling" = @{
+                    "en"    = $defaultItem.ID
+                }
+                "LuxuryTitling" = @{
+                    "en"    = $luxuryItem.ID
+                }
+                "SeatDescriptionLux" = @{
+                    "de-CH" = 'Standard-Sitze sind <b>inbegriffen</b>'
+                    "en" = 'Standard seats are <b>included</b>'
+                    "fr-FR" = 'Les sièges standard sont <b>inclus</b>'
+                    "de-DE" = 'Standard-Sitze sind <b>inbegriffen</b>'
+                    "fr-CH" = 'Les sièges standard sont <b>inclus</b>'
+                    }
+                
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seat And Bags" 
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage/Seat And Bags"
+            Fields      = @{
+                "DefaultTitling" = @{
+                    "en"    = $defaultItemTrade.ID
+                }
+                "LuxuryTitling" = @{
+                    "en"    = $luxuryItemPortal.ID
+                }
+                "SeatDescriptionLux" = @{
+                    "en" = 'Standard seats are <b>included</b>'
+                    
+                }
+                
+            }
+        }
+        
+    )
+    ImportContent -itemsToCreate $updates
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Value: "20250605T104101:638847168614166262Z"

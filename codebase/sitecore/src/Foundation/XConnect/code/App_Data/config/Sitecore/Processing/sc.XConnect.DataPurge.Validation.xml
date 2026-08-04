@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+    <Sitecore>
+        <Processing>
+            <Services>
+                <DataPurgeTaskOptionsValidator>
+                    <Type>Sitecore.XConnect.DataTools.Tasks.Options.Validation.DataPurgeTaskOptionsValidator, Sitecore.XConnect.DataTools.Tasks.Options.Validation</Type>
+                    <As>Sitecore.Processing.Engine.Model.ITaskOptionsValidator, Sitecore.Processing.Engine.Model</As>
+                    <LifeTime>Transient</LifeTime>
+                </DataPurgeTaskOptionsValidator>
+                <DataPurgeTaskOptionsValidatorOptions>
+                    <Type>Sitecore.XConnect.DataTools.Tasks.Options.Validation.DataPurgeTaskOptionsValidatorOptions, Sitecore.XConnect.DataTools.Tasks.Options.Validation</Type>
+                    <Options>
+                        <MinimumContactCutoffDays>120</MinimumContactCutoffDays>
+                        <MinimumInteractionStartedDaysCutoff>120</MinimumInteractionStartedDaysCutoff>
+                        <AllowedContactConditionIds>
+                            <Anonymous>AnonymousCondition</Anonymous>
+                            <AnonymousWithoutPushNotifications>AnonymousWithoutPushNotificationsCondition</AnonymousWithoutPushNotifications>
+                        </AllowedContactConditionIds>
+                        <AllowedInteractionConditionIds>
+                        </AllowedInteractionConditionIds>
+                    </Options>
+                </DataPurgeTaskOptionsValidatorOptions>
+                <DataExportTaskOptionsValidator>
+                    <Type>Sitecore.XConnect.DataTools.Tasks.Options.Validation.DataExportTaskOptionsValidator, Sitecore.XConnect.DataTools.Tasks.Options.Validation</Type>
+                    <As>Sitecore.Processing.Engine.Model.ITaskOptionsValidator, Sitecore.Processing.Engine.Model</As>
+                </DataExportTaskOptionsValidator>
+            </Services>
+        </Processing>
+    </Sitecore>
+</Settings>

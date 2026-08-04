@@ -1,0 +1,20 @@
+.container {
+    :global(.free-for-kids-pill .callout__content) {
+        min-width: 200px;
+        font-size: 16px;
+        line-height: 1.4;
+        text-align: left;
+
+        @include media-breakpoint-down(md) {
+            font-size: 14px;
+        }
+    }
+
+    :global(.fee-banner-desktop) {
+        margin-top: 40px;
+    }
+
+    :global(.fee-banner-mobile:not(.stuck)) {
+        margin-top: 16px;
+    }
+}

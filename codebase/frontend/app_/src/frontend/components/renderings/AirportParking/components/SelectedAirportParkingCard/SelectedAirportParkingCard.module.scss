@@ -1,0 +1,152 @@
+@mixin button {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+    @include media-breakpoint-down(md) {
+        width: 50%;
+    }
+}
+
+.container {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: $colorWhite;
+    border-radius: 4px;
+    box-shadow: 0 0 12px 2px $colorAlto;
+
+    @include media-breakpoint-down(md) {
+        display: block;
+    }
+}
+
+.content {
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    @include media-breakpoint-down(md) {
+        display: block;
+    }
+}
+
+.title {
+    margin: 0.5rem 0 1rem;
+    font-size: 1.5rem;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.parkingNameAndPriceWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    @include media-breakpoint-down(md) {
+        align-items: flex-start;
+        gap: 1.25rem;
+    }
+}
+
+.parkingName,
+.price {
+    margin: 0;
+    font-family: $fontRoundedDemy;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 2rem;
+    text-transform: capitalize;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 1rem;
+    }
+}
+
+.image {
+    width: 180px;
+    min-height: 110px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 8px;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        padding-bottom: 68%;
+    }
+
+    @media (orientation: landscape) {
+        @include media-breakpoint-down(md) {
+            height: 29.68rem;
+        }
+    }
+}
+
+.noImageBox {
+    height: 110px;
+    background-color: $colorGrayLight;
+    border-radius: 8px 8px 0 0;
+}
+
+.dateAndButtonsContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+
+    span {
+        display: block;
+        font-family: $fontRoundedBook;
+        font-size: 1.125rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.5rem;
+    }
+
+    @include media-breakpoint-down(md) {
+        display: block;
+    }
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+
+    @include media-breakpoint-down(md) {
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+}
+
+.editButton {
+    @include button;
+
+    order: 2;
+    width: 140px;
+    padding: 12px 24px;
+
+    @include media-breakpoint-down(md) {
+        order: 1;
+    }
+}
+
+.removeButton {
+    @include button;
+
+    order: 1;
+
+    svg {
+        width: 1rem;
+        margin-right: 6px;
+    }
+
+    @include media-breakpoint-down(md) {
+        order: 2;
+    }
+}

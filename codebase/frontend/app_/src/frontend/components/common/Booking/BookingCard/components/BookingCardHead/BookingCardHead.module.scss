@@ -1,0 +1,84 @@
+.head {
+    grid-area: head;
+
+    :global {
+        .hotel-card-theme {
+            align-self: flex-start;
+            min-width: 120px;
+        }
+
+        .hotel-card-head-title-wrapper {
+            gap: 12px;
+        }
+    }
+
+    .referenceNumber {
+        font-weight: 700;
+    }
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    @include media-breakpoint-up(md) {
+        flex-flow: row wrap;
+        align-items: center;
+    }
+}
+
+.ratings {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    margin: 5px 0;
+}
+
+.ratingItem {
+    position: relative;
+
+    &:not(:last-child) {
+        @include media-breakpoint-up(md) {
+            padding-right: 10px;
+        }
+    }
+
+    &:not(:last-child)::after {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        height: 20px;
+        border-left: 1px solid $colorAlto;
+        transform: translateY(-50%);
+
+        @include media-breakpoint-up(md) {
+            content: '';
+        }
+    }
+
+    :global {
+        .star_rating,
+        .hotel-reviews,
+        .eco-certified {
+            margin: 0;
+        }
+
+        .eco-certified .icon-svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .eco-certified__title {
+            font-size: 12px;
+            line-height: 13px;
+        }
+
+        .eco-certified__callout_container {
+            display: flex;
+            align-items: center;
+        }
+    }
+}

@@ -1,0 +1,18 @@
+.flights {
+    flex-grow: 1;
+
+    @include media-breakpoint-up(md) {
+        display: flex;
+    }
+}
+
+.separator {
+    margin: 24px 0;
+    border-top: 1px solid $colorGeyser;
+
+    @include media-breakpoint-up(md) {
+        margin: 0 16px;
+        border-top: 0;
+        border-left: 1px solid $colorGeyser;
+    }
+}

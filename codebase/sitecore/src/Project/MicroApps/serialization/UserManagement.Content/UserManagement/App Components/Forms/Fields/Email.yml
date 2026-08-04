@@ -1,0 +1,41 @@
+﻿---
+ID: "422a73e2-dc73-44f0-a458-d92da49b8502"
+Parent: "ad7e80db-840a-4356-9075-4cfbd3b94bf3"
+Template: "6eb9d51d-3d3a-465d-9709-acba91606b0f"
+Path: /sitecore/content/EasyJet/UserManagement/App Components/Forms/Fields/Email
+DB: master
+SharedFields:
+- ID: "01f5edc3-38ba-4e22-b00b-e7a42f324cc0"
+  Hint: RegexPattern
+  Value: |
+    ^(?=.{1,60}$)([a-zA-Z0-9_+\-\.\']+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,12}|[0-9]{1,12})(\]?)$
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 800
+- ID: "c6d980b1-1904-4de0-a5c8-587441e4ac92"
+  Hint: Type
+  Value: email
+- ID: "d1619a2a-d7bb-4e4b-996d-fe4ec397753d"
+  Hint: Required
+  Type: Checkbox
+  Value: 1
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "126bd6be-9d24-43d9-ae50-21027b38857f"
+      Hint: Label
+      Value: Email address
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220810T094021Z
+    - ID: "50ab4e06-42a3-44ba-bcad-d051c4d685c1"
+      Hint: LabelForScreenReader
+      Value: Please enter user's email
+    - ID: "a39a15c2-fdc5-4648-a504-4ce516802808"
+      Hint: RegexPatternErrorMessage
+      Value: The email you've entered is not valid, please try again
+    - ID: "fbd8d1f5-c0d7-47ed-8ef3-a0c5ef747ce5"
+      Hint: RequiredErrorMessage
+      Value: Please enter user's email

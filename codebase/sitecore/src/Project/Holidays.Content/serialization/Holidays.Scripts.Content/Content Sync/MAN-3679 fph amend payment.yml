@@ -1,0 +1,830 @@
+﻿---
+ID: "e02e6344-5f58-4ac7-9683-9f4d3cbfc430"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/MAN-3679 fph amend payment"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $holidayshomebookingamendpaymentpagecomponentsfphamendpayment_Id = "{8928891B-DAC2-40E8-AF26-B5707F3241C1}"
+    $fphamendpayment_readmorelink_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <link text="Read more about bags" linktype="external" url="http://www.easyjet.com/en/help/baggage/cabin-bag-and-hold-luggage" anchor="" target="_blank" />
+    "@
+    $fphamendpayment_importantinformationconfirmation_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <span style="line-height: 107%;">Tick this box to confirm you agree to proceed with the amendment(s) to your booking, including booking cost changes (where stated), and that you agree to our easyJet credit </span><span style="line-height: 107%;"><a href="https://www.easyjet.com/en/holidays/flight-plus-hotel/booking-conditions">terms and conditions</a></span><span style="line-height: 107%;"> for any credit issued. You are responsible for informing all persons named in the booking, details of the amendments being made. We&rsquo;ll send you updated booking documents, please keep these safe.</span>
+    "@
+    $fphamendpayment_takefrombalancefortransferdescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    When you click “Confirm”, you will receive an email to confirm we have successfully changed your transfer and took off {amount} off your existing holiday balance of {balanceAmount}. You will see this refund break down on your booking and in your confirmation email.
+    "@
+    $fphamendpayment_childicon_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{C4438D39-6DF3-4330-8173-7B3928E49B8A}" />
+    "@
+    $fphamendpayment_pickrefundoption_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Please pick how you would like to get your refund.
+    "@
+    $fphamendpayment_includedbagslabel_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    {count} x small under seat bags
+    "@
+    $fphamendpayment_paymentimages_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    {19D3ED30-17EA-4774-840D-7A7BFAE6926A}|{0D275411-1860-4794-85DC-E20CCFEE7E92}|{EA7A5C7C-672B-4164-BE58-36B1FE4415DD}|{E04FBB64-3414-49D0-9003-684002B31EDB}|{CA0BEA75-4E5B-4385-87CB-5866133C1345}|{CA99592F-A46A-4F1F-94BA-AEDE0F8A2361}
+    "@
+    $fphamendpayment_paymenterrordescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p>We've been unable to make this change to your {transport}.<br />If you have been charged, this will be refunded</p>
+    <p>Please call the call centre for additional support</p>
+    <a href="tel:03309126593">03309126593</a>
+    "@
+    $fphamendpayment_duebalancelessblockdaysdescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    As your full holiday balance is now due, you’ll need to pay the remainder of this balance today - along with any additional costs or price reductions for these changes. Check the details below to make sure this looks as expected.
+    "@
+    $fphamendpayment_amountlefttopay_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Please enter your card details to pay the remaining {amount}
+    "@
+    $fphamendpayment_newtaxpopupcontent_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Pay in local currency approx {amount}. Based on current exchange rate {rate}. To be paid at the property.
+    <br /><br />
+    Exchange rate and local taxes may change before you travel.
+    "@
+    $fphamendpayment_adulticon_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{3A6C0836-39AA-41AF-B77A-58A0757FA51A}" />
+    "@
+    $fphamendpayment_protectiontitle_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Your holiday is secure as all easyJet holidays are fully protected.
+    "@
+    $fphamendpayment_amountlefttopaywithapplepaytoggleon_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Please choose how you’d like to pay the remaining {amount}
+    "@
+    $fphamendpayment_seatsflowicon_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{912798ED-F604-461C-B660-D2DBFB62F1A5}" />
+    "@
+    $fphamendpayment_payremainingby_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Pay remaining balance by {date}
+    "@
+    $fphamendpayment_errorpopuptitle_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Sorry, something went wrong
+    "@
+    $fphamendpayment_eligibleforcreditrefunddescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    You are eligible for a credit refund of the remaining amount {creditAmount}.
+    "@
+    $fphamendpayment_takefrombalanceforflightdescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    When you click “Confirm”, you will receive an email to confirm we have successfully changed your flight and took off {amount} off your existing holiday balance of {balanceAmount}. You will see this refund break down on your booking and in your confirmation email.
+    "@
+    $fphamendpayment_overheadaddedicon_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{D04439D4-A1E7-409F-B074-CBA5D1B14D5E}" />
+    "@
+    $fphamendpayment_paidbalancelessblockdaysdescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Because your holiday is less than {amount} days away, we’ll need to take payment today to confirm your changes.
+    "@
+    $fphamendpayment_promocodeupdatedsubtext_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Your original promo code has been upgraded to {promoCode}. This increase in discount has been included in the total package price change.
+    "@
+    $fphamendpayment_outstandingpaymentoptiondescriptionextraprice_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Confirm your change and add the additional cost of {amount} to your holiday balance to total {price}. This needs to be paid by {date}.
+    "@
+    $fphamendpayment_promocodedowngradedsubtext_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Your original promo code has been downgraded to {promoCode}. This decrease in discount has been included in the total package price change.
+    "@
+    $fphamendpayment_promocodeerrorsubtext_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <span>Your original promo code can't be found and will be removed <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z?helpCategory=changes" target="_blank">What does this mean</a></span>
+    "@
+    $fphamendpayment_eligibleforomoprefunddescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    You are eligible for a cash refund of {cashAmount}.
+    "@
+    $fphamendpayment_refundtobalanceoptiondescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    As you haven’t paid your full balance, we’ll update your total holiday price to reflect these changes.
+    "@
+    $fphamendpayment_payfeeamenddescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p>Confirm your changes and pay a fee of {amount} now.</p>
+    "@
+    $fphamendpayment_includedicon_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{CB598726-D37F-4F61-8B1C-B7A9DEF9DEE9}" />
+    "@
+    $fphamendpayment_addamendtobalancedescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p>Confirm your changes and create a holiday balance of {amount} to be paid by {date}.</p>
+    "@
+    $fphamendpayment_newtax_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    New taxes & charges (paid at hotel)
+    "@
+    $fphamendpayment_cvvinfo_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{F5BF2F87-BA36-4B7E-B300-D0E3DC117EFB}" />
+    "@
+    $fphamendpayment_newbalancewarning_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p>Your new balance of {balanceAmount} to be paid by {date}.</p>
+    "@
+    $fphamendpayment_promocoderemoveddefaulterror_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    This promocode is no longer valid and has been removed.
+    "@
+    $fphamendpayment_amendrefundcreditsonlydescriptionreminder_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p>As you&rsquo;ve paid for your holiday using easyJet holidays credit, we'll return this refund of {amount} to you as further easyJet holidays credit. You'll have <strong>12 months</strong> to spend this on another easyJet holiday.</p>
+    "@
+    $fphamendpayment_amendzeropricedescriptionreminder_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p><span style="line-height: 107%;">This change won&rsquo;t affect your holiday balance, which is still due on&nbsp;</span>{date}.</p>
+    "@
+    $fphamendpayment_updatedbalancewarning_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p>Your updated balance of {balanceAmount} must be paid by {date}</p>
+    "@
+    $fphamendpayment_balancewillbepaiddescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <b>The entire balance will be paid off.</b>
+    "@
+    $fphamendpayment_hotelflowicon_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{7F4A1142-A7A9-48F9-AED6-ADBA04D0A227}" alt="Hotel" height="" width="" hspace="" vspace="" />
+    "@
+    $fphamendpayment_errorpopupdescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Please, try again later
+    "@
+    $fphamendpayment_popupicon_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{A484212A-377A-4DC9-8754-BABFE7701E3D}" alt="Exclamation mark" height="" width="" hspace="" vspace="" />
+    "@
+    $fphamendpayment_creditdescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p>Choosing this option means you'll receive {amount} to spend within <strong>12 months</strong> on another easyJet Holiday.</p><br /><p>This will be immediately refunded to your easyJet account.</p>
+    "@
+    $fphamendpayment_payfullamenddescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p>Confirm your changes and pay a total of <strong data-cs-mask="true"{amount} now.</strong></p>
+    "@
+    $fphamendpayment_creditrefundtc_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Tick this box to confirm you agree to proceed with the amendment(s) to your booking, including holiday cost changes (where stated), and that you agree to our easyJet holidays credit <a href="https://www.easyjet.com/en/holidays/Info/Credit-Terms">terms and conditions</a> for any credit issued. You are responsible for informing all persons named in the booking, details of the amendments being made. We&rsquo;ll send you updated booking documents, please keep these safe.
+    "@
+    $fphamendpayment_roomandboardflowicon_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{DE54C5B9-4843-4F40-9F58-424ECEB1FDF3}" />
+    "@
+    $fphamendpayment_issuenumberinfo_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{9C046B89-DB21-4E98-BBDD-A39DC7B8D784}" />
+    "@
+    $fphamendpayment_transfersflowicon_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{40485169-2D8F-4B91-83B2-350DF87BBFF9}" />
+    "@
+    $fphamendpayment_prevtax_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Prev. taxes & charges
+    "@
+    $fphamendpayment_usecreditdescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    You have <strong>{amount}</strong> available in your holiday credit account.
+    "@
+    $fphamendpayment_flightsflowicon_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{CF25BE3C-DE61-49F6-B331-3B1F3909E3DC}" />
+    "@
+    $fphamendpayment_newtaxpopuptitle_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    New taxes & charges<br />(Paid at hotel)
+    "@
+    $fphamendpayment_amendrefunddescriptionreminder_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p><span style="line-height: 107%;">As you haven&rsquo;t paid your full balance, we&rsquo;ll update your total holiday price to reflect these changes. Check the details below to make sure this looks as expected.</span></p>
+    "@
+    $fphamendpayment_remainingrefundafterbalancetitle_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Although we have taken {amount} off your balance you are still due some more refund
+    "@
+    $fphamendpayment_paymentdeny_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Unfortunately we haven&rsquo;t been able to authorise your payment. Please contact easyJet Holidays customer services on 0330 912 6593 and quote the error code shown below:<br />
+    Error Code: 267<rprot001><br />
+    Contact Us - <a href="https://www.easyjet.com/en/help/contact">https://www.easyjet.com/en/help/contact</a><br />
+    If you&rsquo;re attempting to book a holiday departing within the next 30 days please call us to ensure the matter is resolved as soon as possible.</rprot001>
+    "@
+    $fphamendpayment_fullrefundfrombalancesubtitle_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    You still have a remaining balance to pay on your holiday.
+    "@
+    $fphamendpayment_cvvinfoamex_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{3C3FEA8B-FB56-4261-844E-F38C68019CEB}" />
+    "@
+    $fphamendpayment_roomandboardflowtitle_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Room & Board
+    "@
+    $fphamendpayment_datesflowicon_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{C305577F-9476-4781-8953-7F739CEB01EC}" />
+    "@
+    $fphamendpayment_roomandboardlabel_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    new room & board
+    "@
+    $fphamendpayment_overheadbagaddedlabel_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    {count} x large overhead cabin bags with speedy boarding
+    "@
+    $fphamendpayment_refundcreditsonlydescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p><span style="line-height: 107%;">Choosing this option means you&rsquo;ll receive&nbsp;{amount} to spend within <strong>12 months</strong> on another easyJet holiday.&nbsp;</span></p>
+    <p><span style="line-height: 107%;">This will be immediately returned to your easyJet holidays account.&nbsp;</span></p>
+    "@
+    $fphamendpayment_includedwithinfantlabel_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    {count} x small under seat bags, {infantCount} x baby change bags
+    "@
+    $fphamendpayment_paidtous_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    (paid to us)
+    "@
+    $fphamendpayment_remainingbalancedue_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Due by {date}
+    "@
+    $fphamendpayment_cashrefundonlytc_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Tick this box to confirm you agree to proceed with the amendment(s) to your booking, including holiday cost changes (where stated). You are responsible for informing all persons named in the booking, details of the amendments being made. We’ll send you updated booking documents, please keep these safe.
+    "@
+    $fphamendpayment_infanticon_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{5BC87EFD-A61A-4D50-8BDE-3D4DCAA9E812}" />
+    "@
+    $fphamendpayment_seatspopupdescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p>Unfortunately, your seats are now unavailable. Please go back to summary to select new seats or continue to payment and your seats will be removed.</p>
+    "@
+    $fphamendpayment_protectionimage_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{3AAF21D8-A435-4832-AD86-58B714E8B5DB}" />
+    "@
+    $fphamendpayment_usecreditlogintext_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Looking to use your holiday credit? Please <a href="~/link.aspx?_id=39D2516DE32A4B54B5B47FFB40F67EAA&amp;_z=z">login</a>&nbsp;into your account.
+    "@
+    $fphamendpayment_payremainingbalancetc_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Tick this box to confirm you agree to proceed with the amendment(s) to your booking, including holiday cost changes (where stated). You are responsible for informing all persons named in the booking, details of the amendments being made. We’ll send you updated booking documents, please keep these safe.
+    "@
+    $fphamendpayment_paypartamenddescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p>Choosing this option means you can enter in the amount you prefer to pay right now, leaving you with an outstanding balance which you'll need to pay by {date}.</p>
+    "@
+    $fphamendpayment_refunddescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Choosing to refund to original payment method means we'll refund you the total amount of the changed {transport} of {amount}.
+    "@
+    $fphamendpayment_remainingbalancewarning_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p>Your remaining balance of {balanceAmount} to be paid by {date}</p>
+    "@
+    $fphamendpayment_changetooltip_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Price subject to change &amp; availability due to daily system updates. The price displayed here does factor in any change to your promotional code.
+    "@
+    $fphamendpayment_changefeedescription_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <p>Your change fee of {amount} needs to be paid now.</p>
+    "@
+    $fphamendpayment_promocodeicon_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    <image mediaid="{D69BC0AA-5047-4BCA-86AB-3A35BDCE1884}" />
+    "@
+    $fphamendpayment_confirmbuttonlabel_8928891bdac240e8af26b5707f3241c1_en_v1 = @"
+    Confirm & Pay
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/FPH Amend Payment"
+            TemplatePath = "/sitecore/templates/Feature/Destinations/Amend/Amend Payment"
+            Id          = $holidayshomebookingamendpaymentpagecomponentsfphamendpayment_Id
+            Fields      = @{
+                "FlightsFlowIcon" = @{
+                    "en" = $fphamendpayment_flightsflowicon_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PromoCodeUpdatedSubtext" = @{
+                    "en" = $fphamendpayment_promocodeupdatedsubtext_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PayingToday" = @{
+                    "en" = "Paying today"
+                }
+                "PrevTax" = @{
+                    "en" = $fphamendpayment_prevtax_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "RefundAmount" = @{
+                    "en" = "Refund amount"
+                }
+                "RemainingRefundAfterBalanceTitle" = @{
+                    "en" = $fphamendpayment_remainingrefundafterbalancetitle_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "ProtectionTitle" = @{
+                    "en" = $fphamendpayment_protectiontitle_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "RoomAndBoardLabel" = @{
+                    "en" = $fphamendpayment_roomandboardlabel_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "RefundOptionsTitle" = @{
+                    "en" = "Choose how you want to be refunded"
+                }
+                "DatesFlowIcon" = @{
+                    "en" = $fphamendpayment_datesflowicon_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "RefundToBalanceOptionDescription" = @{
+                    "en" = $fphamendpayment_refundtobalanceoptiondescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "NewTaxPopupTitle" = @{
+                    "en" = $fphamendpayment_newtaxpopuptitle_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "RefundCreditsOnlyDescription" = @{
+                    "en" = $fphamendpayment_refundcreditsonlydescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "NewBalanceWarning" = @{
+                    "en" = $fphamendpayment_newbalancewarning_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "TotalCostOfChange" = @{
+                    "en" = "Total cost of change"
+                }
+                "RoomAndBoardFlowTitle" = @{
+                    "en" = $fphamendpayment_roomandboardflowtitle_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PaymentAtcomErrorCTA" = @{
+                    "en" = "Back to View Booking"
+                }
+                "RefundCalculationMainTitle" = @{
+                    "en" = "Your payment calculation"
+                }
+                "ErrorPopupButton" = @{
+                    "en" = "Close"
+                }
+                "EligibleForOMOPRefundDescription" = @{
+                    "en" = $fphamendpayment_eligibleforomoprefunddescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PromoCodeChangedTitle" = @{
+                    "en" = "Your promo code discount has changed"
+                }
+                "RoomAndBoardFlowIcon" = @{
+                    "en" = $fphamendpayment_roomandboardflowicon_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "DueBalanceLessBlockDaysTotal" = @{
+                    "en" = "Updated holiday balance - due today"
+                }
+                "TakeFromBalanceForFlightDescription" = @{
+                    "en" = $fphamendpayment_takefrombalanceforflightdescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "SeatsFlowIcon" = @{
+                    "en" = $fphamendpayment_seatsflowicon_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PayFullAmendDescription" = @{
+                    "en" = $fphamendpayment_payfullamenddescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "UpdatedBalanceWarning" = @{
+                    "en" = $fphamendpayment_updatedbalancewarning_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "AmountTakenFromBalance" = @{
+                    "en" = "Amount taken from the remaining balance"
+                }
+                "ConfirmRefund" = @{
+                    "en" = "Confirm changes"
+                }
+                "StepTwoConfirmTitle" = @{
+                    "en" = "CONFIRM"
+                }
+                "NewTax" = @{
+                    "en" = $fphamendpayment_newtax_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "CreditRefundOfRemainingBalance" = @{
+                    "en" = "Credit refund of the remaining amount"
+                }
+                "TakeFromBalanceForTransferDescription" = @{
+                    "en" = $fphamendpayment_takefrombalancefortransferdescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "AmountToBeRefunded" = @{
+                    "en" = "Amount to be refunded"
+                }
+                "RemainingBalanceDue" = @{
+                    "en" = $fphamendpayment_remainingbalancedue_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "StepTwoTitle" = @{
+                    "en" = "PICK HOW YOU WANT TO PAY"
+                }
+                "AddAmendToBalanceDescription" = @{
+                    "en" = $fphamendpayment_addamendtobalancedescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PaymentDeny" = @{
+                    "en" = $fphamendpayment_paymentdeny_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PriceBreakdownTitle" = @{
+                    "en" = "Price Breakdown"
+                }
+                "PaymentOptionsTitle" = @{
+                    "en" = "Pick how you want to pay"
+                }
+                "FlightsFlowTitle" = @{
+                    "en" = "Flights"
+                }
+                "InfantIcon" = @{
+                    "en" = $fphamendpayment_infanticon_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PromoCodeErrorTitle" = @{
+                    "en" = "Promo code will be removed"
+                }
+                "DatesLabel" = @{
+                    "en" = "dates"
+                }
+                "ProtectionImage" = @{
+                    "en" = $fphamendpayment_protectionimage_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "SeatsPopupSecondaryCTA" = @{
+                    "en" = "Continue without seats"
+                }
+                "PaidToUs" = @{
+                    "en" = $fphamendpayment_paidtous_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PaymentErrorCTA" = @{
+                    "en" = "Close"
+                }
+                "PromoCodeUpdatedHeading" = @{
+                    "en" = "Promo code updated"
+                }
+                "AdditionalCost" = @{
+                    "en" = "Additional cost"
+                }
+                "ConfirmNoPriceChange" = @{
+                    "en" = "Confirm"
+                }
+                "SeatsPopupTitle" = @{
+                    "en" = "There is a problem with your seats"
+                }
+                "UpdatedHolidayBalanceLabel" = @{
+                    "en" = "Updated holiday balance"
+                }
+                "OutstandingPaymentOptionTitleExtraPrice" = @{
+                    "en" = "Add to holiday balance"
+                }
+                "ChangeTooltip" = @{
+                    "en" = $fphamendpayment_changetooltip_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "AmendRefundDescriptionReminder" = @{
+                    "en" = $fphamendpayment_amendrefunddescriptionreminder_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PayPartAmendTitle" = @{
+                    "en" = "Pay in part"
+                }
+                "PaymentErrorTitle" = @{
+                    "en" = "Change failed"
+                }
+                "StepTwoRefundTitle" = @{
+                    "en" = "PICK HOW YOU`D WANT TO BE REFUNDED"
+                }
+                "AmountLeftToPay" = @{
+                    "en" = $fphamendpayment_amountlefttopay_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "DatesChange" = @{
+                    "en" = "Date change"
+                }
+                "StepThreeTitle" = @{
+                    "en" = "CONFIRM AND PAY"
+                }
+                "SeatsPopupDescription" = @{
+                    "en" = $fphamendpayment_seatspopupdescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PreviousBalanceLabel" = @{
+                    "en" = "Previous balance"
+                }
+                "FlightChange" = @{
+                    "en" = "Flight change"
+                }
+                "ChildIcon" = @{
+                    "en" = $fphamendpayment_childicon_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PromoCodeDowngradedSubtext" = @{
+                    "en" = $fphamendpayment_promocodedowngradedsubtext_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "AmountLeftToPayWithApplePayToggleOn" = @{
+                    "en" = $fphamendpayment_amountlefttopaywithapplepaytoggleon_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "AmendTitleReminder" = @{
+                    "en" = "Your updated holiday balance"
+                }
+                "SeatsLabel" = @{
+                    "en" = "seats"
+                }
+                "RefundCreditsTitle" = @{
+                    "en" = "easyJet holidays Credit"
+                }
+                "AmountPayingLabel" = @{
+                    "en" = "Amount paying today"
+                }
+                "HotelChange" = @{
+                    "en" = "Hotel change"
+                }
+                "AmountPaidByCard" = @{
+                    "en" = "Amount paid by card"
+                }
+                "PayRemainingBy" = @{
+                    "en" = $fphamendpayment_payremainingby_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "NonCreditRefundOptionTitle" = @{
+                    "en" = "Refund to original payment method"
+                }
+                "HolidayCredit" = @{
+                    "en" = "Holiday credit"
+                }
+                "TransfersFlowIcon" = @{
+                    "en" = $fphamendpayment_transfersflowicon_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "ErrorPopupDescription" = @{
+                    "en" = $fphamendpayment_errorpopupdescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PromoCodeRemovedHeading" = @{
+                    "en" = "Promo code removed"
+                }
+                "RefundOptionToCreditTitle" = @{
+                    "en" = "Refund to holiday credit"
+                }
+                "AmendRefundCreditsOnlyTitleReminder" = @{
+                    "en" = "Refund in easyJet holidays credit"
+                }
+                "DatesFlowTitle" = @{
+                    "en" = "Your Holiday"
+                }
+                "DueBalanceLessBlockDaysDescription" = @{
+                    "en" = $fphamendpayment_duebalancelessblockdaysdescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PayFullAmendTitle" = @{
+                    "en" = "Pay for your change now"
+                }
+                "UpdatedRemainingBalance" = @{
+                    "en" = "Updated remaining pay balance"
+                }
+                "PayNow" = @{
+                    "en" = "Pay now"
+                }
+                "PickRefundOption" = @{
+                    "en" = $fphamendpayment_pickrefundoption_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "TransferLabel" = @{
+                    "en" = "transfer"
+                }
+                "RefundToBalanceOptionTitle" = @{
+                    "en" = "Refund to balance"
+                }
+                "PromoCodeErrorSubtext" = @{
+                    "en" = $fphamendpayment_promocodeerrorsubtext_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "NewTaxPopupContent" = @{
+                    "en" = $fphamendpayment_newtaxpopupcontent_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "FullRefundFromBalanceSubtitle" = @{
+                    "en" = $fphamendpayment_fullrefundfrombalancesubtitle_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "FullRefundFromBalanceTitle" = @{
+                    "en" = "Take the refund amount off my existing balance"
+                }
+                "PayPartAmendDescription" = @{
+                    "en" = $fphamendpayment_paypartamenddescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "CreditDescription" = @{
+                    "en" = $fphamendpayment_creditdescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "ErrorPopupTitle" = @{
+                    "en" = $fphamendpayment_errorpopuptitle_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "ConfirmButtonLabel" = @{
+                    "en" = $fphamendpayment_confirmbuttonlabel_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "RefundOptionToOriginalMethodTitle" = @{
+                    "en" = "Refund to original payment method"
+                }
+                "RemainingBalanceWarning" = @{
+                    "en" = $fphamendpayment_remainingbalancewarning_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "TotalCost" = @{
+                    "en" = "You are about to pay"
+                }
+                "StepThreeRefundTitle" = @{
+                    "en" = "CONFIRM"
+                }
+                "TakeAmountOffBalance" = @{
+                    "en" = "Take amount off existing balance"
+                }
+                "AddToAmendBalanceTotalLabel" = @{
+                    "en" = "Holiday balance"
+                }
+                "PopupIcon" = @{
+                    "en" = $fphamendpayment_popupicon_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "ChangeFeeTitle" = @{
+                    "en" = "Change fee"
+                }
+                "HotelFlowIcon" = @{
+                    "en" = $fphamendpayment_hotelflowicon_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "CreditRefundOptionTitle" = @{
+                    "en" = "Refund to holiday credit"
+                }
+                "BalanceWillBePaidOff" = @{
+                    "en" = "The balance of your holiday will be paid"
+                }
+                "SeatsChange" = @{
+                    "en" = "Seats change"
+                }
+                "PromoCodeDowngradeHeading" = @{
+                    "en" = "Promo code updated"
+                }
+                "SeatsFlowTitle" = @{
+                    "en" = "Seats"
+                }
+                "CurrentRemainingBalance" = @{
+                    "en" = "Current remaining balance"
+                }
+                "HotelLabel" = @{
+                    "en" = "hotel"
+                }
+                "PartRefundFromBalanceTitle" = @{
+                    "en" = "What we will take of your balance"
+                }
+                "RoomAndBoardChange" = @{
+                    "en" = "Room and board change"
+                }
+                "LuggageTitle" = @{
+                    "en" = "Your luggage"
+                }
+                "OutstandingPaymentOptionPrice" = @{
+                    "en" = "New balance"
+                }
+                "PaymentErrorDescription" = @{
+                    "en" = $fphamendpayment_paymenterrordescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "BalanceWillBePaidDescription" = @{
+                    "en" = $fphamendpayment_balancewillbepaiddescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "ConfirmChangesLabel" = @{
+                    "en" = "Confirm changes"
+                }
+                "BalanceReduction" = @{
+                    "en" = "Price reduction"
+                }
+                "HotelFlowTitle" = @{
+                    "en" = "Your new selection"
+                }
+                "RefundCreditsOnlyTitle" = @{
+                    "en" = "Refund in easyJet holidays credit"
+                }
+                "AmendZeroPriceDescriptionReminder" = @{
+                    "en" = $fphamendpayment_amendzeropricedescriptionreminder_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "AmendRefundCreditsOnlyDescriptionReminder" = @{
+                    "en" = $fphamendpayment_amendrefundcreditsonlydescriptionreminder_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "AdultIcon" = @{
+                    "en" = $fphamendpayment_adulticon_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "SeatsPopupPrimaryCTA" = @{
+                    "en" = "Back to summary"
+                }
+                "PromoCodeRemovedDefaultError" = @{
+                    "en" = $fphamendpayment_promocoderemoveddefaulterror_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PromoCodeIcon" = @{
+                    "en" = $fphamendpayment_promocodeicon_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "CurrentBalanceLabel" = @{
+                    "en" = "Current balance"
+                }
+                "DueBalanceLessBlockDaysTitle" = @{
+                    "en" = "Your holiday balance"
+                }
+                "PromoCodeRemovedTitle" = @{
+                    "en" = "Your promo code is no longer valid"
+                }
+                "AddAmendToBalanceTitle" = @{
+                    "en" = "Pay for your change later"
+                }
+                "StepOneTitle" = @{
+                    "en" = "CONFIRM YOUR SELECTION"
+                }
+                "TransfersFlowTitle" = @{
+                    "en" = "Transfer"
+                }
+                "PaidBalanceLessBlockDaysDescription" = @{
+                    "en" = $fphamendpayment_paidbalancelessblockdaysdescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "RefundDescription" = @{
+                    "en" = $fphamendpayment_refunddescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "EligibleForCreditRefundDescription" = @{
+                    "en" = $fphamendpayment_eligibleforcreditrefunddescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "NoChangeTotal" = @{
+                    "en" = "Total"
+                }
+                "ChangeFeeDescription" = @{
+                    "en" = $fphamendpayment_changefeedescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "OutstandingPaymentOptionDescriptionExtraPrice" = @{
+                    "en" = $fphamendpayment_outstandingpaymentoptiondescriptionextraprice_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "TransferChange" = @{
+                    "en" = "Transfer change"
+                }
+                "ImportantInformationConfirmation" = @{
+                    "en" = $fphamendpayment_importantinformationconfirmation_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "ConfirmRefundTitle" = @{
+                    "en" = "Confirm Refund of"
+                }
+                "FlightLabel" = @{
+                    "en" = "flight"
+                }
+                "PaidBalanceLessBlockDaysTitle" = @{
+                    "en" = "Your additional holiday cost"
+                }
+                "TotalLabel" = @{
+                    "en" = "Total"
+                }
+                "PayFeeAmendDescription" = @{
+                    "en" = $fphamendpayment_payfeeamenddescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "OverheadBagAddedLabel" = @{
+                    "en" = $fphamendpayment_overheadbagaddedlabel_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "CreditDebitCardLabel" = @{
+                    "en" = "Credit/debit card"
+                }
+                "OverheadAddedIcon" = @{
+                    "en" = $fphamendpayment_overheadaddedicon_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "IncludedIcon" = @{
+                    "en" = $fphamendpayment_includedicon_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "UseCreditDescription" = @{
+                    "en" = $fphamendpayment_usecreditdescription_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "IssueNumberInfo" = @{
+                    "en" = $fphamendpayment_issuenumberinfo_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "IsUseCreditShown" = @{
+                    "en" = "1"
+                }
+                "SportEquipmentsLabel" = @{
+                    "en" = "Sports equipment"
+                }
+                "__Sortorder" = @{
+                    "en" = "50"
+                }
+                "ReadMoreLink" = @{
+                    "en" = $fphamendpayment_readmorelink_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "UseCreditTitle" = @{
+                    "en" = "Use your holiday credit"
+                }
+                "PaymentImages" = @{
+                    "en" = $fphamendpayment_paymentimages_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "CreditRefundTC" = @{
+                    "en" = $fphamendpayment_creditrefundtc_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "IncludedWithInfantLabel" = @{
+                    "en" = $fphamendpayment_includedwithinfantlabel_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "CashRefundOnlyTC" = @{
+                    "en" = $fphamendpayment_cashrefundonlytc_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "UseCreditFormTitle" = @{
+                    "en" = "How much of your credit would you like to use"
+                }
+                "CvvInfo" = @{
+                    "en" = $fphamendpayment_cvvinfo_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "CvvInfoAMEX" = @{
+                    "en" = $fphamendpayment_cvvinfoamex_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "PramName" = @{
+                    "en" = "Pram or Pushchair"
+                }
+                "PayRemainingBalanceTC" = @{
+                    "en" = $fphamendpayment_payremainingbalancetc_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "UseCreditLogInText" = @{
+                    "en" = $fphamendpayment_usecreditlogintext_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+                "LuggageInfoTitle" = @{
+                    "en" = "Bags and Luggage"
+                }
+                "IncludedBagsLabel" = @{
+                    "en" = $fphamendpayment_includedbagslabel_8928891bdac240e8af26b5707f3241c1_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesamendpayment_Id = "{338F7B28-7075-431F-A687-4A4CA48FFA58}"
+    $amendpayment_allowedrenderings_338f7b287075431fa6874a4ca48ffa58_en_v1 = @"
+    {491706BB-AF33-46EA-84CE-70FC10F99653}|{37D5CA0C-FC48-4501-841B-4D6EE9DA60AB}|{7910DC7C-14B7-48F1-9256-C570F700F085}|{8AE530B1-7702-48B7-A4B9-442E50845EFA}|{25CE2509-12AE-46CC-888B-B13CC0251D8E}|{B53565E7-F4C3-48AE-9C47-29FF16D2DD0E}|{34B4FD1F-0FF8-4056-A13E-8BBE210A1B69}|{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{DB2BA5D7-CAAE-4F2B-ABF3-D74925FA31BB}|{BF2F2B3C-FF58-481F-AF91-2467A32EBF89}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{70DEBC3A-51E1-42E7-A0B9-124DB446B811}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{1F56A2E2-6217-4749-A104-010F800B94E1}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{CD5896B7-610B-42AC-8AB5-25DB60A8A357}|{23FB9E3D-6976-4FA4-9B79-B60335104650}|{1BE9E86B-46EE-4D90-AA80-9873341F1324}|{6C234F53-080F-4C8E-AC01-CE83E3C28998}|{98D6518D-053C-4A0B-9CCE-262B51E43F22}|{BF0D518B-282B-4ABC-A499-47AD5B0A0A87}
+    "@
+    $amendpayment_page_338f7b287075431fa6874a4ca48ffa58_en_v1 = @"
+    {815A5ACA-4AEC-4344-A65F-D6020A853D05}
+    "@
+    $amendpayment_renderingreplacements_338f7b287075431fa6874a4ca48ffa58_en_v1 = @"
+    {37D5CA0C-FC48-4501-841B-4D6EE9DA60AB}:{37D5CA0C-FC48-4501-841B-4D6EE9DA60AB}:Placeholder=body&Data+Source=%7b8928891B-DAC2-40E8-AF26-B5707F3241C1%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Amend Payment"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesamendpayment_Id
+            Fields      = @{
+                "Page" = @{
+                    "en" = $amendpayment_page_338f7b287075431fa6874a4ca48ffa58_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $amendpayment_allowedrenderings_338f7b287075431fa6874a4ca48ffa58_en_v1
+                }
+                "RenderingReplacements" = @{
+                    "en" = $amendpayment_renderingreplacements_338f7b287075431fa6874a4ca48ffa58_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    
+    $item = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider"
+    $currentValue = $item["Pages"]
+    
+    $item.Editing.BeginEdit()
+    $item["Pages"] = "$currentValue|{338F7B28-7075-431F-A687-4A4CA48FFA58}"
+    $item.Editing.EndEdit() | Out-Null
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260526T120000Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

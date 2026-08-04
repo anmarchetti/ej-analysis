@@ -1,0 +1,40 @@
+﻿---
+ID: "62991f4f-0c1a-4454-9223-e0dce34bbf1f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Update Full Mode Rule
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $holidaysRoot = "/sitecore/content/EasyJet/Holidays"
+    $rulesSettingsFolderTempalteId = "{5595D59A-2165-490A-BFEB-69F278A85FB8}"
+    $rulesSettingsTempalteId = "{F47AD901-0CC5-434D-A8A6-B004DE99D704}"
+    
+    function create-item($path,$name, $templateId){
+        $item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+           $item =  New-Item -Path $path -Name $name -ItemType $templateId
+        }
+        return $item
+    }
+    
+    $rulesSettingsFolder = create-item -Path $holidaysRoot -Name "Rules"  -TemplateId $rulesSettingsFolderTempalteId
+    
+    $rulesSettings = create-item -Path $rulesSettingsFolder.Paths.FullPath -Name "Full Maintenance Mode"  -TemplateId $rulesSettingsTempalteId
+    
+    $rulesSettings.Editing.BeginEdit()
+    $rulesSettings["Rules"] = '<ruleset> 	<rule uid="{7B622A82-50C5-4332-9D23-9030374DD5C8}"><conditions><and uid="99585D76198E4A92B78082E444F3FF41"><condition id="{47A0321C-C9B7-4035-881B-FAEFF77859C7}" uid="0980CD52EECA4CDF9409FB9ABFB114F7" /><or uid="11F4B10C501747D7BBB0637EF66BDB18"><or uid="EC844A6D57364369B96FC949DF4D2DB0"><or uid="1F3BA724A60A4794AD39BF3F6231F5DF"><or uid="6D939AD8ED174B70A09840E8858EE60B"><or uid="8743B71682DE4B4AA58E5F8904E8E11F"><or uid="3E767EABEAB84393B05964D255B2B59F"><or uid="4888041E1905454DB447EDF18CF6C9EF"><or uid="C78AFE2C8E3F4B468BB9EC738C205372"><or uid="3BE571F241574D9FB5306EB976364029"><or uid="C4690E513EBD4284BCFA4DC46DCA6F93"><condition id="{5DE6D53E-EA62-4D17-8BDD-FEBCD80AC07B}" uid="70E23F462CAA4E8182D87DCC479C2FAF" templateid="{AD6B7F4F-48B0-4EC9-AE43-FFE895BEE377}" /><condition id="{5DE6D53E-EA62-4D17-8BDD-FEBCD80AC07B}" uid="AA9CE62A960147B99DB73B69B3280304" templateid="{757936EF-C946-447F-9E37-90140EE1D938}" /></or><condition id="{5DE6D53E-EA62-4D17-8BDD-FEBCD80AC07B}" uid="1FB0FB73B9E7499E977AFC7CD4F9606B" templateid="{09BEF082-3309-4083-9F0B-71FB8D60D7F5}" /></or><condition id="{5DE6D53E-EA62-4D17-8BDD-FEBCD80AC07B}" uid="97F6787D859F45608DFD8298D2602BE9" templateid="{49ACD12D-BE7B-4F0C-8D11-4E3A66F826C7}" /></or><condition id="{5DE6D53E-EA62-4D17-8BDD-FEBCD80AC07B}" uid="73CC157F2DEA438C9DF66D2DE1910E6D" templateid="{CBCF50A8-017C-4FBE-A642-55979E8B1877}" /></or><condition id="{5DE6D53E-EA62-4D17-8BDD-FEBCD80AC07B}" uid="E75E63B625184D54B51B43875F224D23" templateid="{4EDEE9C4-1042-453A-B567-958BE3D89DA5}" /></or><condition id="{5DE6D53E-EA62-4D17-8BDD-FEBCD80AC07B}" uid="C39527D121194259AAE50895683C6640" templateid="{089BDF45-B601-48EF-8515-7E5DFC659E5F}" /></or><condition id="{5DE6D53E-EA62-4D17-8BDD-FEBCD80AC07B}" uid="CAC6B9A34B8749A3A076661436B7328F" templateid="{DE24620D-0E4B-42AA-9206-0F0EEEA76BB6}" /></or><condition id="{5DE6D53E-EA62-4D17-8BDD-FEBCD80AC07B}" uid="3D2D1777991641D5AF285C7776FD885E" templateid="{138FF585-FCF9-4165-9F78-BA27B320ACE5}" /></or><condition id="{5DE6D53E-EA62-4D17-8BDD-FEBCD80AC07B}" uid="195B5B9AFAD24DF7800B0C05430DD9DC" templateid="{89B3FA91-A1DC-4DCC-B581-51103E374969}" /></or><condition id="{5DE6D53E-EA62-4D17-8BDD-FEBCD80AC07B}" uid="8C0FBDD1DCF94EB1AE2EA2AC7D8538E4" templateid="{5C4AE9E9-24C0-4052-8197-F27C6789AFED}" /></or></and></conditions><actions><action id="{85EBB3FA-F2C8-469F-A774-6C6840786201}" uid="AA6883C913F64646907BF631ACE082DC" Page="{0518D8C6-B7CA-4C73-86C2-A29D971EBEAB}" /></actions></rule></ruleset>'
+    $rulesSettings.Editing.EndEdit() | Out-Null
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 5590
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200916T065140Z

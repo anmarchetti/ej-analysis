@@ -1,0 +1,27 @@
+{
+    "Title": "CMS Destination titles for (api/DestinationsSearch/GetDestinationCodeByName)",
+    "Request": {
+        "BodyAsJson": {
+            "Matcher": {
+                "Name": "ExactMatcher",
+                "Pattern": "/api/DestinationsSearch/GetDestinationCodeByName?name=Dubrovnik",
+                "IgnoreCase": true
+            }
+        },
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "ExactMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetDestinationCodeByName",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": "HRDB"
+    }
+}

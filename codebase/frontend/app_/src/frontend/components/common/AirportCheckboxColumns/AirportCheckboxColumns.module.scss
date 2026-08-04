@@ -1,0 +1,20 @@
+$gapBetweenItems: 30px;
+
+.column {
+    display: flex;
+    flex: 1 0 calc(50% - 15px);
+    flex-direction: column;
+    gap: $gapBetweenItems 0;
+    width: fit-content;
+
+    @include media-breakpoint-down(lg) {
+        flex: 0 0 100%;
+        width: 100%;
+        max-width: none;
+        padding: 0 15px;
+
+        & + & {
+            margin-top: $gapBetweenItems;
+        }
+    }
+}

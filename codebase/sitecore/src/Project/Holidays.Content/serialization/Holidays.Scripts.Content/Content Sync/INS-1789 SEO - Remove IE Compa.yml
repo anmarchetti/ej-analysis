@@ -1,0 +1,57 @@
+﻿---
+ID: "9e25ef87-9793-4ab2-bf04-2ce516d16066"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-1789 SEO - Remove IE Compatibility Banner"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $bannerRenderingId = "{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}"
+    $bannerDatasourcePath = "/sitecore/content/EasyJet/Holidays/Data/HTML Blocks/IE Compatibility Banner"
+    $itemPaths = @(
+        "/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Full Header",
+        "/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Full Header With Market Selector",
+        "/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Slim Header"
+    )
+    
+    foreach ($itemPath in $itemPaths) {
+        $item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+        if ($null -eq $item) {
+            Write-Warning "Item not found: $itemPath"
+            continue
+        }
+    
+        $renderings = Get-Rendering -Item $item | Where-Object { $_.ItemId -eq $bannerRenderingId }
+        if ($null -eq $renderings -or $renderings.Count -eq 0) {
+            Write-Host "Rendering not found in shared layout: $($item.Paths.FullPath)"
+            continue
+        }
+    
+        foreach ($rendering in $renderings) {
+            Remove-Rendering -Item $item -Instance $rendering -ErrorAction SilentlyContinue
+        }
+    
+        Write-Host "Removed $($renderings.Count) rendering(s) from shared layout: $($item.Paths.FullPath)"
+    }
+    
+    $bannerDatasourceItem = Get-Item -Path $bannerDatasourcePath -ErrorAction SilentlyContinue
+    if ($null -eq $bannerDatasourceItem) {
+        Write-Host "Datasource item not found: $bannerDatasourcePath"
+    } else {
+        Remove-Item -Path $bannerDatasourcePath -Force -ErrorAction SilentlyContinue
+        Write-Host "Removed datasource item: $bannerDatasourcePath"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260316T180512Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

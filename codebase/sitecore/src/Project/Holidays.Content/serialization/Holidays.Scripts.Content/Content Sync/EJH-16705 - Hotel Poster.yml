@@ -1,0 +1,41 @@
+﻿---
+ID: "d835be73-cf9a-485b-8ef6-5eb7aff68abc"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-16705 - Hotel Poster"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # For more information, please visit https://doc.sitecorepowershell.com/ 
+    
+    $itemPath = "master:/content/EasyJet/TradePortal/Home/Hotel Details/Page Components/Hotel Poster"
+    
+    $item = Get-Item -path $itemPath -ErrorAction SilentlyContinue
+    if ($item -ne $null) {
+        
+        $item.Editing.BeginEdit()
+        $item["Title"] = "You're about to download a summary of the holiday as a PDF file"
+        $item["Description"] = 'Please have a look at a preview of the PDF'
+        $item["LogoImage"] = '<image mediaid="{01548208-7DD9-42DA-A595-49CB9F683C93}" />'
+        $item["ExportPromoLabel"] = "Export promotional poster"
+        $item["ExportPromoTooltip"] = "You're able to download a summary of the holiday as a PDF file."
+        $item["ReturnLabel"] = "Back to hotel details"
+        $item["LogoCheckboxLabel"] = "Place easyJet holidays logo"
+        $item["DownloadLabel"] = "Download"
+        $item.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $item.Name "successfully updated"
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 150
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20191118T132901:637096805412053434Z"

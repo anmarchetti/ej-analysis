@@ -1,0 +1,224 @@
+﻿---
+ID: "f64ce0b8-61a8-4092-b318-78623fb8b3c5"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-264 Hero Banner Update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+        $item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+         if ($item -eq $null) {
+                $item = New-Item -Path $path -ItemType $templateId
+                Write-Host "Item" $item.Name "successfully created";
+         }
+         return $item
+    }
+    function Get-Rendering-Index{
+        param($item, $renderingId)
+        $i = 0
+        
+        Get-Rendering -Item $item | ForEach-Object{
+            if ($_.ItemID -eq $renderingId){
+                return $i
+            }
+            $i++
+        }
+        
+        return -1
+    }
+    function Get-Rendering-Uid{
+        param($item, $renderingId)
+        $i = 0
+        
+        Get-Rendering -Item $item | ForEach-Object{
+            if ($_.ItemID -eq $renderingId){
+                return $_.UniqueID;
+            }
+            $i++
+        }
+        
+        return -1
+    }
+    function Add-Rendering-To($page, $renderingPath, $index, $placeholder,  $datasource){
+        $renderingItem = Get-Item -Database "master" -Path $renderingPath | New-Rendering -Placeholder $placeholder
+    	Add-Rendering -Item $page -PlaceHolder $placeholder -Instance $renderingItem -Index $index  -DataSource $datasource -Parameter @{ "ShowCountdown"="1" } 
+    	Write-Host $item.Name "$renderingPath rendering is added"
+    }
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    function Create-Breadcrumbs($path, $breadcrumbs){
+        $folder = Get-Or-Create-Item -path $path -templateId '{342C2741-9124-4499-8DAC-056FBBD364B0}'
+        $name = $breadcrumbs['en']["Text"];
+        $breadcrumb = Get-Or-Create-Item -path "$path/$name" -templateId '{D21FBF7C-4FD3-40EC-8D39-CAD55D3AC14D}'
+       
+        foreach ($lang in $breadcrumbs.Keys) {
+            create-lang-version -item $breadcrumb  -lang $lang -field "Text" -value $breadcrumbs[$lang]["Text"]    
+            create-lang-version -item $breadcrumb  -lang $lang -field "Link" -value $breadcrumbs[$lang]["Link"]    
+        }
+    }
+    
+    $translations1 = @{
+                    "en" = @{
+                        "BannerSubtitleView" = "You’re going to";
+                        "Title"= '{region},</br>{country}'
+                        "BannerSubtitleDest" = "Your holiday to";
+                    }
+                    "fr-CH" = @{
+                        "BannerSubtitleView" = "Vous allez";
+                        "BannerSubtitleDest" = "Vos vacances à";
+                        "Title"= '{region},</br>{country}'
+                    }
+                    "fr-FR" = @{
+                        "BannerSubtitleView" = "Vous allez";
+                         "BannerSubtitleDest" = "Vos vacances à";
+                         "Title"= '{region},</br>{country}'
+                    }
+                    "de-CH" = @{
+                        "BannerSubtitleView" = "Sie werden";
+                        "BannerSubtitleDest" = "Ihr Urlaub in";
+                        "Title"= '{region},</br>{country}'
+                       
+                    }
+                    "de-DE" = @{
+                        "BannerSubtitleView" = "Sie werden";
+                        "BannerSubtitleDest" = "Ihr Urlaub in";
+                        "Title"= '{region},</br>{country}'
+                    }
+                }
+                
+    function Update-View-Booking ($path, $rendBeforeId, $isTrade){
+        $pageItem = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($pageItem -ne $null) {
+            $componentBefore = Get-Rendering-Index -item $pageItem -renderingId $rendBeforeId | Select -First 1
+            $componentBeforeUid = Get-Rendering-Uid -item $pageItem -renderingId $rendBeforeId | Select -First 1
+            $newIndex = $componentBefore + 1
+            $bannerPlaceholder = "/body/hero-banner-top-section-$componentBeforeUid-0"
+                
+            $contentData = Get-Or-Create-Item -path "$path/Page Components/Booking Hero Banner" -templateId '{2E91B030-571A-4E34-A5F4-31C21589090E}'
+            foreach ($lang in $translations1.Keys) {
+                create-lang-version -item $contentData -lang $lang -field "TextAbove" -value $translations1[$lang]["BannerSubtitleView"]
+                create-lang-version -item $contentData -lang $lang -field "Title" -value $translations1[$lang]["Title"]
+            }    
+                
+            Add-Rendering-To -page $pageItem -renderingPath "/sitecore/layout/Renderings/Feature/Booking/BookingHeroBanner" -index $newIndex  -placeholder $bannerPlaceholder -datasource $contentData.ID
+            
+            if( $isTrade -ne $true){
+                #Breadcrumbs
+                $breadcrumbs1 = @{
+                    "en" = @{
+                        "Text" = "My bookings";
+                        "Link" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{E3A5DDD5-CA70-4419-B5C4-E7F72564F4F3}" />'
+                    }
+                    "fr-CH" = @{
+                        "Text" = "Mes réservations";
+                        "Link" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{E3A5DDD5-CA70-4419-B5C4-E7F72564F4F3}" />'
+                    }
+                    "fr-FR" = @{
+                        "Text" = "Mes réservations";
+                        "Link" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{E3A5DDD5-CA70-4419-B5C4-E7F72564F4F3}" />'
+                    }
+                    "de-CH" = @{
+                        "Text" = "Meine Buchungen";
+                        "Link" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{E3A5DDD5-CA70-4419-B5C4-E7F72564F4F3}" />'
+                    }
+                    "de-DE" = @{
+                        "Text" = "Meine Buchungen";
+                        "Link" = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{E3A5DDD5-CA70-4419-B5C4-E7F72564F4F3}" />'
+                    }
+                }
+                $breadcrumbs2 = @{
+                    "en" = @{
+                        "Text" = "View booking";
+                        "Link" = ""
+                    }
+                    "fr-CH" = @{
+                        "Text" = "Voir la réservation";
+                        "Link" = ""
+                    }
+                    "fr-FR" = @{
+                        "Text" = "Voir la réservation";
+                        "Link" = ""
+                    }
+                    "de-CH" = @{
+                        "Text" = "Buchung ansehen";
+                        "Link" = ""
+                    }
+                    "de-DE" = @{
+                        "Text" = "Buchung ansehen";
+                        "Link" = ""
+                    }
+                }
+                Create-Breadcrumbs -path '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Breadcrumbs' -breadcrumbs $breadcrumbs1
+                Create-Breadcrumbs -path '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Breadcrumbs' -breadcrumbs $breadcrumbs2
+                
+                $componentBefore = Get-Rendering-Index -item $pageItem -renderingId "{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}" | Select -First 1
+                $componentBeforeUid = Get-Rendering-Uid -item $pageItem -renderingId "{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}" | Select -First 1
+                $newIndex = $componentBefore + 1
+                $breadcrumbs = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Breadcrumbs" -ErrorAction SilentlyContinue
+                    
+                Add-Rendering-To -page $pageItem -renderingPath "/sitecore/layout/Renderings/Feature/PageContent/Breadcrumbs Static" -index $newIndex  -placeholder "$bannerPlaceholder/booking-hero-top-$componentBeforeUid-0" -datasource $breadcrumbs.ID
+            }
+           
+           }
+    }
+    function Update-Confirmation($path, $rendBeforeId, $isTrade){
+        $pageItem = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($pageItem -ne $null) {
+            $componentBefore = Get-Rendering-Index -item $pageItem -renderingId $rendBeforeId | Select -First 1
+            $componentBeforeUid = Get-Rendering-Uid -item $pageItem -renderingId $rendBeforeId | Select -First 1
+            $newIndex = $componentBefore + 1
+            $bannerPlaceholder = "/body/hero-banner-top-section-$componentBeforeUid-0"
+            
+            $contentData = Get-Or-Create-Item -path "$path/Page Components/Booking Hero Banner" -templateId '{2E91B030-571A-4E34-A5F4-31C21589090E}'
+            foreach ($lang in $translations1.Keys) {
+                create-lang-version -item $contentData  -lang $lang -field "TextAbove" -value $translations1[$lang]["BannerSubtitleView"]
+                create-lang-version -item $contentData -lang $lang -field "Title" -value $translations1[$lang]["Title"]
+            }    
+            }
+                
+            Add-Rendering-To -page $pageItem -renderingPath "/sitecore/layout/Renderings/Feature/Booking/BookingHeroBanner" -index $newIndex  -placeholder $bannerPlaceholder -datasource $contentData.ID
+            
+    }
+    
+    function SetCountDown(){
+        $parameters = [ordered]@{"ShowCountdown"="1" }
+        $item = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel"
+        Get-Rendering -Item $item -Placeholder "/body/booking-context-{0b3a1889-94df-4381-aaef-272a10e79e98}-0" | Where-Object -FilterScript {$_.ItemID -eq '{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}' } | Set-RenderingParameter -Parameter $parameters  | Set-Rendering -Item $item
+    }
+    
+    
+    Update-View-Booking -path  "master:/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking" -rendBeforeId '{B932CD1B-05BD-4F1D-947F-1E6F48C4F649}' -isTrade false;
+    Update-View-Booking -path  "master:/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking" -rendBeforeId '{9DD5E883-9307-49FB-82F8-D8D778A828E0}' -isTrade true;
+    Update-Confirmation -path  "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation" -rendBeforeId '{E10ECB4E-19CE-4255-982C-04E6E3592A20}' -isTrade false;
+    Update-Confirmation -path  "master:/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirmation" -rendBeforeId '{355B5C34-78DB-4494-AA2C-33C453186F2C}' -isTrade true;
+    SetCountDown
+    
+    
+    $contentData = Get-Item -path '/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Booking Hero Banner'
+    foreach ($lang in $translations1.Keys) {
+                create-lang-version -item $contentData  -lang $lang -field "TextAbove" -value $translations1[$lang]["BannerSubtitleDest"]
+                create-lang-version -item $contentData -lang $lang -field "Title" -value $translations1[$lang]["Title"]
+            }  
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241011T142205Z

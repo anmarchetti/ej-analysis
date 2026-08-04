@@ -1,0 +1,1 @@
+export const DEFAULT_HOTEL_CODE_LENGTH = 8;

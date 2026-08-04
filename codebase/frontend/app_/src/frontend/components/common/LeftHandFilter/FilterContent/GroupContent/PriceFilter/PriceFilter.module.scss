@@ -1,0 +1,115 @@
+.priceRangeFilterContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.priceSwitcher {
+    margin-bottom: 10px;
+    text-align: left;
+
+    :global(.toggle .label) {
+        font-size: 16px;
+        user-select: none;
+    }
+
+    :global(.toggle .label1) {
+        margin-left: 0;
+    }
+}
+
+.priceRangeRow {
+    width: 100%;
+    margin-bottom: 18px;
+}
+
+.priceRangeFilter {
+    display: grid;
+    flex-grow: 1;
+    grid-template-columns: repeat(2, 1fr);
+    grid-row-gap: 0;
+    grid-column-gap: 0;
+
+    :global(.compound-slider-wr) {
+        grid-area: 1 / 1 / 2 / 3;
+        margin-right: 19px;
+        margin-left: 15px;
+
+        :global(.compound-slider-box) {
+            height: 75px;
+        }
+    }
+
+    :global(.compound-slider__handle-value) {
+        white-space: nowrap;
+    }
+}
+
+.priceRangeTxt {
+    align-self: center;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    color: $colorBoulder;
+
+    &:global(.min) {
+        grid-area: 2 / 1 / 3 / 3;
+        text-align: left;
+    }
+
+    &:global(.max) {
+        grid-area: 2 / 2 / 3 / 3;
+        text-align: right;
+    }
+}
+
+.priceRangeFieldsRow {
+    margin-bottom: 24px;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    text-align: left;
+
+    > span {
+        font-size: 16px;
+    }
+}
+
+.priceRangeFieldsBox {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+
+    > div {
+        .form-control__input {
+            width: 100%;
+        }
+    }
+
+    > span {
+        margin: 0 14px;
+        font-size: 16px;
+
+        @include text-truncate;
+    }
+
+    :global(.form-field) {
+        display: inline-block;
+
+        :global(.form-control__label) {
+            top: -8px;
+            height: 16px;
+            line-height: 1;
+            background-image: linear-gradient(to top, $clrSiteBgWhite 51%, $colorTransparent 49%);
+        }
+
+        :global(.form-control__input) {
+            width: 100px;
+            padding-right: 20px;
+            -moz-appearance: textfield;
+            appearance: textfield;
+
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+            }
+        }
+    }
+}

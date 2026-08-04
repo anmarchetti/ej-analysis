@@ -1,0 +1,63 @@
+﻿---
+ID: "4bad5d4d-e687-4c2f-a739-d93f34b4e2be"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Add Login Message To Cancelled Credited Booking
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $itemName, $templateId, $itemId){
+        $item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $itemId
+            Write-Host "Item" $item.Name "successfully created";
+        }
+        return $item
+    } 
+    
+    # 0. Create New item `Cancelled Credited Login Message` in "My Booking > Page Components"
+    $cancelledCreditedMessagePath = "master:/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components"
+    $cancelledCreditedMessageItem = Get-Or-Create-Item -Path $cancelledCreditedMessagePath -ItemName "Cancelled Credited Login Message" -TemplateId "{4274027C-AF42-47ED-BAF0-5E8DBC6A8EB8}"
+    
+    # 1. Update new item
+    $cancelledCreditedMessageItem.Editing.BeginEdit()
+    $cancelledCreditedMessageItem["Title"] = "We've cancelled your holiday to {country} and credited your account. Please log in to see your credit"
+    $cancelledCreditedMessageItem["Description"] = "Sorry your holiday to {destination} has been cancelled. Your holiday has been credited. Please log in to see your holiday credit."
+    $cancelledCreditedMessageItem["Link"] = '<link text="Log in" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{39D2516D-E32A-4B54-B5B4-7FFB40F67EAA}" />'
+    $cancelledCreditedMessageItem.Editing.EndEdit() | Out-Null
+    Write-Host "Link" $cancelledCreditedMessageItem.Name "successfully updated";
+    
+    # 2. Update Presentation Details
+    $myBookingPath = "master:/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    $myBookingItem= Get-Item -Path $myBookingPath
+    
+    # 2.1 Add Grey ComponentWrapper
+    $componentWrapperPlaceHolder= 'message-wrapper'
+    $componentWrapperRenderingPath = "/sitecore/layout/Renderings/Project/Holidays/Component Wrapper"
+    $componentWrapperItem = Get-Item -Database "master" -Path $componentWrapperRenderingPath | New-Rendering -Placeholder $componentWrapperPlaceHolder
+    Add-Rendering -Item $myBookingItem -PlaceHolder $componentWrapperPlaceHolder -Instance $componentWrapperItem -Parameter @{"IsGreyBackground"=1} -Index 0
+    $componentWrapperRendering = Get-Rendering -Item $myBookingItem -Placeholder $componentWrapperPlaceHolder
+    
+    # 2.2 Add LoginMessage to ComponentWrapper
+    $loginMessageRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Login Message"
+    $loginMessagePlaceHolder = '/body/component-wrapper-inner-'+ $componentWrapperRendering.UniqueId +'-0'
+    $loginMessageDataSource = $cancelledCreditedMessageItem.ID
+    $loginMessageItem = Get-Item -Database "master" -Path $loginMessageRenderingPath | New-Rendering -Placeholder $loginMessagePlaceHolder
+    Add-Rendering -Item $myBookingItem -PlaceHolder $loginMessagePlaceHolder -Instance $loginMessageItem -DataSource $loginMessageDataSource -Index 1
+    
+    # 3 Update ComponentWrapper placeholder
+    Get-Rendering -Item $myBookingItem -PlaceHolder $componentWrapperPlaceHolder | 
+      Foreach-Object { 
+          $_.Placeholder = "body"; 
+          Set-Rendering -Item $myBookingItem -Instance $_
+      }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20191118T132901:637096805412053434Z"

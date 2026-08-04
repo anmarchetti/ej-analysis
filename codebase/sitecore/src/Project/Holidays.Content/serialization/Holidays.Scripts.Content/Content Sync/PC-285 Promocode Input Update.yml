@@ -1,0 +1,102 @@
+﻿---
+ID: "abc3002f-6b52-4489-aba9-152d5704e803"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/PC-285 Promocode Input Update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $salestext_59bc481d604941b28bd261e0f6b59dff_frfr_v1 = @"
+    Fin des ventes : {date}
+    "@
+    $stickyoffertext_59bc481d604941b28bd261e0f6b59dff_dede_v1 = @"
+    Verwenden Sie Ihren Promo-Code, um {discount}* zu sparen
+    "@
+    $salestext_59bc481d604941b28bd261e0f6b59dff_dede_v1 = @"
+    Der Verkauf endet am {date}
+    "@
+    $stickyoffertext_59bc481d604941b28bd261e0f6b59dff_frfr_v1 = @"
+    Utilisez votre code promo pour économiser {discount}*
+    "@
+    $salestext_59bc481d604941b28bd261e0f6b59dff_dech_v1 = @"
+    Der Verkauf endet am {date}
+    "@
+    $stickyoffertext_59bc481d604941b28bd261e0f6b59dff_dech_v1 = @"
+    Verwenden Sie Ihren Promo-Code, um {discount}* zu sparen
+    "@
+    $appliedoffertext_59bc481d604941b28bd261e0f6b59dff_dech_v1 = @"
+    Sie haben {discount} bei Ihrem Urlaub gespart
+    "@
+    $salestext_59bc481d604941b28bd261e0f6b59dff_frch_v1 = @"
+    Fin des ventes : {date}
+    "@
+    $appliedoffertext_59bc481d604941b28bd261e0f6b59dff_frfr_v1 = @"
+    Vous avez économisé {discount} sur vos vacances
+    "@
+    $appliedoffertext_59bc481d604941b28bd261e0f6b59dff_dede_v1 = @"
+    Sie haben {discount} bei Ihrem Urlaub gespart
+    "@
+    $stickyoffertext_59bc481d604941b28bd261e0f6b59dff_frch_v1 = @"
+    Utilisez votre code promo pour économiser {discount}*
+    "@
+    $salestext_59bc481d604941b28bd261e0f6b59dff_en_v1 = @"
+    Sales ends {date}
+    "@
+    $appliedoffertext_59bc481d604941b28bd261e0f6b59dff_en_v1 = @"
+    You saved {discount} on your holiday
+    "@
+    $stickyoffertext_59bc481d604941b28bd261e0f6b59dff_en_v1 = @"
+    Use your promo code to save {discount}*
+    "@
+    $appliedoffertext_59bc481d604941b28bd261e0f6b59dff_frch_v1 = @"
+    Vous avez économisé {discount} sur vos vacances
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Promocode Input"
+            TemplatePath = "Feature/Destinations/Promocode Input"
+            Id          = [GUID]"{59BC481D-6049-41B2-8BD2-61E0F6B59DFF}"
+            Fields      = @{
+                "StickyOfferText" = @{
+                    "de-CH" = $stickyoffertext_59bc481d604941b28bd261e0f6b59dff_dech_v1
+                    "en" = $stickyoffertext_59bc481d604941b28bd261e0f6b59dff_en_v1
+                    "fr-FR" = $stickyoffertext_59bc481d604941b28bd261e0f6b59dff_frfr_v1
+                    "de-DE" = $stickyoffertext_59bc481d604941b28bd261e0f6b59dff_dede_v1
+                    "fr-CH" = $stickyoffertext_59bc481d604941b28bd261e0f6b59dff_frch_v1
+                }
+                "AppliedOfferText" = @{
+                    "de-CH" = $appliedoffertext_59bc481d604941b28bd261e0f6b59dff_dech_v1
+                    "en" = $appliedoffertext_59bc481d604941b28bd261e0f6b59dff_en_v1
+                    "fr-FR" = $appliedoffertext_59bc481d604941b28bd261e0f6b59dff_frfr_v1
+                    "de-DE" = $appliedoffertext_59bc481d604941b28bd261e0f6b59dff_dede_v1
+                    "fr-CH" = $appliedoffertext_59bc481d604941b28bd261e0f6b59dff_frch_v1
+                }
+                "SalesText" = @{
+                    "de-CH" = $salestext_59bc481d604941b28bd261e0f6b59dff_dech_v1
+                    "en" = $salestext_59bc481d604941b28bd261e0f6b59dff_en_v1
+                    "fr-FR" = $salestext_59bc481d604941b28bd261e0f6b59dff_frfr_v1
+                    "de-DE" = $salestext_59bc481d604941b28bd261e0f6b59dff_dede_v1
+                    "fr-CH" = $salestext_59bc481d604941b28bd261e0f6b59dff_frch_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1000000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250609T094823Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

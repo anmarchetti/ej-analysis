@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" />
+        <PackageReference Include="Sitecore.ContentSearch.Linq" />
+        <PackageReference Include="Sitecore.ContentSearch.ContentExtraction" />
+        <PackageReference Include="Sitecore.ContentSearch" />
+        <PackageReference Include="Sitecore.Analytics.XConnect" />
+        <PackageReference Include="Sitecore.Analytics.Model" />
+        <PackageReference Include="Sitecore.Analytics" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)SitecoreProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GeneratedAssemblyInfoFile>Properties\Assemblyinfo.cs</GeneratedAssemblyInfoFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="GlobalLink.Adaptor.dll">
+            <HintPath>$(SolutionDir)lib\GlobalLink\GlobalLink.Adaptor.dll</HintPath>
+        </Reference>
+        <Reference Include="GlobalLink.TranslationManager">
+            <HintPath>$(SolutionDir)lib\GlobalLink\GlobalLink.TranslationManager.dll</HintPath>
+        </Reference>
+        <Reference Include="Globallink.TranslationUtility">
+            <HintPath>$(SolutionDir)lib\GlobalLink\Globallink.TranslationUtility.dll</HintPath>
+        </Reference>
+        <Reference Include="GLobalLink.TranslationAPIConnect">
+            <HintPath>$(SolutionDir)lib\GlobalLink\GLobalLink.TranslationAPIConnect.dll</HintPath>
+        </Reference>
+        <Reference Include="Oracle.DataAccess">
+            <HintPath>$(SolutionDir)lib\GlobalLink\Oracle.DataAccess.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Multisite\code\easyJet.Foundation.Multisite.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Destinations\code\easyJet.Foundation.Destinations.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="App_Config\Include\Translate.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <Content Include="Sitecore\shell\Applications\Dialogs\GlobalLink\TranslateGL.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <None Include="App_Config\Include\Translate.Debug.config">
+            <DependentUpon>Translate.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Translate.Release.config">
+            <DependentUpon>Translate.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <Content Include="App_Config\Include\TranslateApp.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <None Include="App_Config\Include\TranslateApp.Debug.config">
+            <DependentUpon>TranslateApp.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\TranslateApp.Release.config">
+            <DependentUpon>TranslateApp.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="Sitecore\shell\Applications\Dialogs\**\*.*">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="Sitecore\shell\Applications\Dialogs\GlobalLink\TranslateGL.xml" />
+    </ItemGroup>
+</Project>

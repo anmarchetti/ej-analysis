@@ -1,0 +1,132 @@
+﻿---
+ID: "eedcaac6-7d2b-4ea2-b670-97e5deb4159a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SEATS-261-seatsAndBags-seatsMap-content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    $smallCabinBagPath = "/sitecore/content/EasyJet/TradePortal/Data/Benefits/B0001 - One small cabin bag";
+    $smallCabinBag = Get-Item -Path $smallCabinBagPath -ErrorAction SilentlyContinue;
+    
+    $seatAndBags = Get-Or-Create-Item -path "/sitecore/content/EasyJet/TradePortal/Data/Seat And Bags" -template "{27E19C52-90FB-44E3-BF71-9FAAC3FD7B0B}";
+    if ($seatAndBags -ne $null){
+        $seatAndBags.Editing.BeginEdit();
+        $seatAndBags["FallbackBenefit"] = $smallCabinBag.ID;
+        $seatAndBags["OutboundIcon"] = "<image mediaid='{B9F44575-D18E-4C58-8979-A2FB86D6C682}' />";
+        $seatAndBags["ReturnIcon"] = "<image mediaid='{7F225E5B-5B19-4426-98F7-5AF8EF977D50}' />";
+        $seatAndBags["SeatDescription"] = "Seats from <strong>{currency}{seatPrice}pp</strong>";  
+        $seatAndBags["LegRoomDescription"] = "Extra leg room for just <strong>{currency}{seatPrice}pp</strong>";
+        $seatAndBags.Editing.EndEdit();
+        
+        Write-Host $seatAndBags.Name "is updated";
+    }
+    
+    $seatMap = Get-Or-Create-Item -path "/sitecore/content/EasyJet/TradePortal/Data/SeatsMap" -template "{54E8234A-234C-4BDC-9EA6-778F7CC75D76}";
+    if ($seatMap -ne $null){
+        $seatMap.Editing.BeginEdit();
+        $seatMap["SeatIconPassengerTypeAdult"] = "<image mediaid='{06F8D2AE-DE03-423D-AF5C-D9FBB2CA2555}' />";
+        $seatMap["SeatIconPassengerTypeAdultWithInfant"] = "<image mediaid='{DBC393C1-3FBB-4C74-B29F-2B53695ADA06}' />";
+        $seatMap["SeatIconPassengerTypeChild"] = "<image mediaid='{284C41F9-AF81-49AF-A3CE-D22B64C454B7}' />";
+        $seatMap.Editing.EndEdit();
+        
+        Write-Host "updated seatMap - Seat Icon Passengers Type values";
+    }
+    
+    $passengerBox = Get-Or-Create-Item -path "/sitecore/content/EasyJet/TradePortal/Data/SeatsMap" -template "{54E8234A-234C-4BDC-9EA6-778F7CC75D76}";
+    if ($passengerBox -ne $null){
+        $passengerBox.Editing.BeginEdit();
+        $passengerBox["PassengerIconTypeAdult"] = "<image mediaid='{A6FE7575-8ACA-4EDB-8BBA-C9B861EB1262}' />";
+        $passengerBox["PassengerIconTypeAdultWithInfant"] = "<image mediaid='{B8474117-27D3-4103-884C-80AC6BCED485}' />";
+        $passengerBox["PassengerIconTypeChild"] = "<image mediaid='{70DDDF74-3195-4B6D-8872-491F10A550E9}' />";
+        $passengerBox.Editing.EndEdit();
+        
+        Write-Host "updated Seat And bags - Seat Icon Passengers Type values";
+    }
+    
+    $adult = Get-Or-Create-Item -path "/sitecore/content/EasyJet/TradePortal/Data/Seat And Bags/Adult" -template "{3CC028F4-4555-4A87-83EE-15F5AF0C67EB}";
+    if ($adult -ne $null){
+        $adult.Editing.BeginEdit();
+        $adult["Icon"] = "<image mediaid='{A6FE7575-8ACA-4EDB-8BBA-C9B861EB1262}' />";
+        $adult["TitleConstant"] = "Adult {passengerIndex}";
+        $adult.Editing.EndEdit();
+        
+        Write-Host "updated Seat And Bag - Passenger Adult - Icon";
+    }
+    
+    
+    $adultAndInfant = Get-Or-Create-Item -path "/sitecore/content/EasyJet/TradePortal/Data/Seat And Bags/Adult And Infant" -template "{3CC028F4-4555-4A87-83EE-15F5AF0C67EB}";
+    if ($adultAndInfant -ne $null){
+        $adultAndInfant.Editing.BeginEdit();
+        $adultAndInfant["Icon"] = "<image mediaid='{B8474117-27D3-4103-884C-80AC6BCED485}' />";
+        $adultAndInfant["TitleConstant"] = "Adult {passengerIndex} + infant";
+        $adultAndInfant.Editing.EndEdit();
+        
+        Write-Host "updated Seat And Bag - Passenger Adult with infant - Icon";
+    }
+    
+    $children = Get-Or-Create-Item -path "/sitecore/content/EasyJet/TradePortal/Data/Seat And Bags/Child" -template "{3CC028F4-4555-4A87-83EE-15F5AF0C67EB}";
+    if ($children -ne $null){
+        $children.Editing.BeginEdit();
+        $children["Icon"] = "<image mediaid='{70DDDF74-3195-4B6D-8872-491F10A550E9}' />";
+        $children["TitleConstant"] = "Child (age {passengerAge})";
+        $children.Editing.EndEdit();
+        
+        Write-Host "updated Seat And Bag - Passenger Child- Icon";
+    }
+    
+    
+    $seatMapSetting = Get-Or-Create-Item -path "/sitecore/content/EasyJet/TradePortal/Settings/Seat Map Settings" -ErrorAction SilentlyContinue;
+    if ($seatMapSetting -ne $null){
+        $seatMapSetting.Editing.BeginEdit();
+        $seatMapSetting["IsPublic"] = "1"
+        $seatMapSetting.Editing.EndEdit();
+        
+        Write-Host "updated Seat Map - Settings - isPublic";
+    }
+    
+    $adultHolidays = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Data/Seat And Bags/Adult" -template "{3CC028F4-4555-4A87-83EE-15F5AF0C67EB}";
+    if ($adultHolidays -ne $null){
+        $adultHolidays.Editing.BeginEdit();
+        $adultHolidays["TitleConstant"] = "Adult {passengerIndex}";
+        $adultHolidays.Editing.EndEdit();
+        
+        Write-Host "updated Seat And Bag - Passenger Adult - Icon - holidays instance";
+    }
+    
+    
+    $adultAndInfantHolidays = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Data/Seat And Bags/Adult And Infant" -template "{3CC028F4-4555-4A87-83EE-15F5AF0C67EB}";
+    if ($adultAndInfantHolidays -ne $null){
+        $adultAndInfantHolidays.Editing.BeginEdit();
+        $adultAndInfantHolidays["TitleConstant"] = "Adult {passengerIndex} + infant";
+        $adultAndInfantHolidays.Editing.EndEdit();
+        
+        Write-Host "updated Seat And Bag - Passenger Adult with infant - Icon - holidays instance";
+    }
+    
+    $childrenHolidays = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Data/Seat And Bags/Child" -template "{3CC028F4-4555-4A87-83EE-15F5AF0C67EB}";
+    if ($childrenHolidays -ne $null){
+        $childrenHolidays.Editing.BeginEdit();
+        $childrenHolidays["TitleConstant"] = "Child (age {passengerAge})";
+        $childrenHolidays.Editing.EndEdit();
+        
+        Write-Host "updated Seat And Bag - Passenger Child - Icon - holidays instance";
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230324T120932Z

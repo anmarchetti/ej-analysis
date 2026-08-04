@@ -1,0 +1,75 @@
+﻿---
+ID: "d33ff807-788e-4d26-b115-368a489dd6fb"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/TRADE-061 - Restricted Access Page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path, $template) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+        	$item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    $pageName = "restricted-access"
+    $pageLocation = "/sitecore/content/EasyJet/TradePortal/Home"
+    $pageTemplateId = "{59C5B252-D3C1-4E37-8BC0-9200F1842F50}"
+        
+    $item = Get-Or-Create-Item -Path "$pageLocation/$pageName" -Template $pageTemplateId
+    
+    $item.Editing.BeginEdit()
+    $item["__Display Name"] = "Restricted Access";
+    $item["PageNotFoundMessage"] = "Sorry, super users can't make any bookings";
+    $item.Editing.EndEdit() | Out-Null
+    
+    # remove all renderings from standard values
+    Remove-Rendering -Path "$pageLocation/$pageName" -Device (Get-LayoutDevice "Default")
+    
+    # component wrapper rendering
+    $pageToUpdate = Get-Item -Path "$pageLocation/$pageName"
+    $wrapperRenderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}";
+    $wrapperRendering = Get-Rendering -Item $pageToUpdate -PlaceHolder "body" -Index 0 | Where-Object {$_.ItemId -eq $wrapperRenderingId}
+    
+    if($wrapperRendering -eq $null){
+        $wrapperRenderingItem = Get-Item -Path "master:" -ID $wrapperRenderingId | New-Rendering -Placeholder "body"
+        Add-Rendering -Item $pageToUpdate -PlaceHolder "body" -Instance $wrapperRenderingItem -index 0
+        $wrapperRendering = Get-Rendering -Item $pageToUpdate -PlaceHolder "body" -Index 0 | Where-Object {$_.ItemId -eq $wrapperRenderingId}
+        Write-Host  "Wrapper Rendering was created"
+    }
+    
+    # not found block rendering
+    $notFoundBlockRenderingPlaceholder = "/body/component-wrapper-inner-$($wrapperRendering.UniqueId)-0";
+    $notFoundBlockRenderingId = "{DBDBC5C1-EDD5-4D40-BB28-DB11AC480487}"
+    $notFoundBlockRenderingItem = Get-Item -Path "master:" -ID $notFoundBlockRenderingId | New-Rendering -Placeholder $notFoundBlockRenderingPlaceholder
+    $notFoundBlockRendering = Get-Rendering -Item $pageToUpdate -PlaceHolder $notFoundBlockRenderingPlaceholder -Index 0 | Where-Object {$_.ItemId -eq $notFoundBlockRenderingId}
+    
+    if($notFoundBlockRendering -eq $null){
+        Add-Rendering -Item $pageToUpdate -PlaceHolder $notFoundBlockRenderingPlaceholder -Instance $notFoundBlockRenderingItem -index 1
+        $breadRendering = Get-Rendering -Item $pageToUpdate -PlaceHolder $notFoundBlockRenderingPlaceholder -Index 0 | Where-Object {$_.ItemId -eq $notFoundBlockRenderingId}
+        Write-Host  "Not Found Block Rendering was created"
+    }
+    
+    # update link on Home page
+    $homePageItem = Get-Item -Path $pageLocation -ErrorAction SilentlyContinue
+    
+    $homePageItem.Editing.BeginEdit()
+    $homePageItem["TradePortalSuperUserRedirectUrl"] = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="' + $pageToUpdate.ID + '" />';
+    $homePageItem.Editing.EndEdit() | Out-Null
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230302T083838Z

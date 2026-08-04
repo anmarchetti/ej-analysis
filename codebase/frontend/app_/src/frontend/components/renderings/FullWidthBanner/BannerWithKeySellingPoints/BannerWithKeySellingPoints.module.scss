@@ -1,0 +1,183 @@
+.wrapper {
+    position: relative;
+    display: flex;
+    margin: 24px 0 48px;
+    overflow: hidden;
+    background-color: $colorPorcelain;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px 2px rgba(51, 51, 51, 0.15);
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column-reverse;
+        box-shadow: 0 3px 9px 3px rgba(51, 51, 51, 0.15);
+    }
+}
+
+.infoWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 50%;
+    min-width: 500px;
+    padding: 32px 0 32px 32px;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        min-width: 100%;
+        padding: 0 16px 16px;
+    }
+
+    :global(.btn) {
+        padding: 15px 30px;
+        font-size: 16px;
+        border-radius: 2px;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            padding: 16px 24px;
+            border-radius: 4px;
+        }
+    }
+}
+
+.title {
+    margin: 16px 0;
+    font-family: $fontUnboundedSans;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1;
+    color: $colorBlackLight;
+
+    @include media-breakpoint-down(md) {
+        font-size: 32px;
+    }
+}
+
+.description {
+    margin-bottom: 16px;
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    color: $colorBlackLight;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 12px;
+    }
+}
+
+.keySellingPoints {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    gap: 24px 40px;
+    margin-bottom: 32px;
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+        flex-direction: column;
+        gap: 8px 0;
+        width: 100%;
+        max-width: none;
+        margin-bottom: 24px;
+    }
+}
+
+.imageWrapper {
+    position: relative;
+    display: inline-block;
+    width: 50%;
+    overflow: hidden;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        height: 135px;
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        z-index: $zIndexCardTooltip;
+        top: -5px;
+        left: -5px;
+        width: 85px;
+        height: calc(100% + 5px);
+        background: $colorPorcelain;
+        clip-path: polygon(0 0, 100% 0, 0 calc(100% + 30px));
+
+        @include media-breakpoint-down(md) {
+            top: auto;
+            right: -5px;
+            bottom: -5px;
+            left: -5px;
+            width: calc(100% + 10px);
+            height: 40px;
+            clip-path: polygon(-10px 0, calc(100% + 50px) 100%, -10px 100%);
+        }
+    }
+
+    .badge {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        width: 40px;
+        height: 40px;
+        margin: 0;
+        border-radius: 4px;
+
+        @include media-breakpoint-down(md) {
+            top: 20px;
+            right: 20px;
+        }
+    }
+
+    .badgeIcon {
+        width: 36px;
+        height: 36px;
+        border-radius: 3px;
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}
+
+.image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0 6px 6px 0;
+
+    @include media-breakpoint-down(md) {
+        border-radius: 6px 6px 0 0;
+    }
+}
+
+.pill {
+    align-self: flex-start;
+    padding: 2px 8px;
+    font-family: $fontRoundedDemy;
+    font-size: 12px;
+    line-height: 15.6px;
+}
+
+.rightAligned {
+    align-items: flex-end;
+
+    .pill {
+        align-self: flex-end;
+    }
+
+    .description, .title {
+        text-align: right;
+    }
+
+    .item {
+        justify-content: flex-end;
+    }
+}
+
+.link {
+    font-size: 16px;
+    font-weight: bold;
+}

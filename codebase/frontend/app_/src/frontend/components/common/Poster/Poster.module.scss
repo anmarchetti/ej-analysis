@@ -1,0 +1,36 @@
+.barActions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: $container-padding-x_mobile * 2;
+
+    @include media-breakpoint-down(md) {
+        flex: 1;
+    }
+}
+
+.barAction {
+    height: 43px;
+    padding: 0 25px;
+    font-size: 14px;
+}
+
+.checkbox :global(.checkbox__control) {
+    margin-right: 12px;
+}
+
+.errorPopup {
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+
+    .errorDescription {
+        margin-bottom: 40px;
+        padding-top: 10px;
+        color: $clrTextMain;
+    }
+
+    .errorButton {
+        width: 260px;
+    }
+}

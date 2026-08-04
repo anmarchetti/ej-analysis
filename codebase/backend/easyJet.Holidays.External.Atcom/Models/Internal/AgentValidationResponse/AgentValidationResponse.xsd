@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 sp1 (http://www.altova.com) by Kim Howells (Anite Business Systems) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="AtComRes/AgentValidationResponse" xmlns:p2="AtComRes/Common" targetNamespace="AtComRes/AgentValidationResponse" elementFormDefault="qualified">
+	<xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+	<xs:element name="AgentValidationResponse">
+		<xs:annotation>
+			<xs:documentation>Response to inform the server for successful closing of the session</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="p2:AtcomresBaseResponse">
+					<xs:sequence>
+						<xs:element name="ValidationSuccessful" type="xs:boolean"/>
+						<xs:element name="Agent_Name">
+							<xs:annotation>
+								<xs:documentation>agent name</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="60"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Agent_Tp" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Agent type name and code</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="Code" type="xs:string" use="required">
+											<xs:annotation>
+												<xs:documentation>Agent types code</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+										<xs:attribute name="Name" type="xs:string" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Agent_Group" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>If teh agent  is part of a multiple, this will return the multiple code and name</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="Code" type="xs:string" use="required">
+											<xs:annotation>
+												<xs:documentation>Agent group's code</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+										<xs:attribute name="Name" type="xs:string" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Sales_Sts" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Sales status. Values ON - On sale, OFF - Off sale</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="ON"/>
+									<xs:enumeration value="OFF"/>
+									<xs:enumeration value=""/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Credit_Sts" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Credit Status. Values CR - Credit Agent, CA - Cash Agent</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="CR"/>
+									<xs:enumeration value="CA"/>
+									<xs:enumeration value=""/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Agent_Mth" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Agent method. 
+								Values  STD - Standard Agent, LOC - Local Agent, DIR - Direct Agent, COL - Collect Agent
+								</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="STD"/>
+									<xs:enumeration value="DIR"/>
+									<xs:enumeration value="LOC"/>
+									<xs:enumeration value="COL"/>
+									<xs:enumeration value=""/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Mkt_List" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>List of Markets</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Mkt_Cd" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>Market Code</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="xs:string">
+													<xs:attribute name="Default" type="xs:boolean" default="false">
+														<xs:annotation>
+															<xs:documentation>true if Default market for agent</xs:documentation>
+														</xs:annotation>
+													</xs:attribute>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Lates_Dt" type="xs:date" minOccurs="0"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

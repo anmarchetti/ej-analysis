@@ -1,0 +1,81 @@
+$payment-booking-padding-x: 30px;
+$payment-booking-border-color: #d8d8d8;
+
+.guestDetailsItem {
+    position: relative;
+    flex: 0 0 50%;
+    max-width: 50%;
+    height: 100%;
+    margin: 10px 0;
+    padding-right: 10px;
+    padding-left: 55px;
+    font-size: 16px;
+    line-height: 1.5;
+
+    @include media-breakpoint-down(lg) {
+        flex-basis: 100%;
+        max-width: 100%;
+        padding-right: 0;
+        padding-left: 35px;
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.clarification {
+    font-family: $fontRoundedDemy;
+    font-size: 12px;
+    line-height: 2;
+    color: $clrTxtLight;
+}
+
+.svgIcon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 28px;
+    height: 28px;
+
+    @include media-breakpoint-down(lg) {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.bgIcon {
+    position: absolute;
+    left: 0;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: contain;
+}
+
+.listItem {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px $payment-booking-padding-x;
+    padding-right: 0;
+    padding-left: 0;
+    font-size: 18px;
+    border-top: 1px solid $payment-booking-border-color;
+
+    &:first-child {
+        border-top: 0;
+    }
+
+    @include media-breakpoint-down(lg) {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}

@@ -1,0 +1,137 @@
+.holiday-brief-card {
+    margin: 10px 0 20px;
+    font-family: $fontRoundedBook;
+    color: $clrTextMain;
+    background: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+
+    @include media-breakpoint-up(md) {
+        display: flex;
+        margin: 20px 0 40px;
+    }
+}
+
+.holiday-brief-card__image {
+    min-height: 150px;
+    background-position: center;
+    background-size: cover;
+
+    @include media-breakpoint-up(md) {
+        flex: 0 0 30%;
+        max-width: 30%;
+    }
+}
+
+.holiday-brief-card__text {
+    position: relative;
+    padding: 10px;
+
+    @include media-breakpoint-up(md) {
+        flex: 0 0 70%;
+        max-width: 70%;
+        padding: 20px;
+    }
+}
+
+.holiday-brief-card__title {
+    margin: 0 0 5px;
+    font-family: $fontRoundedBook;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(md) {
+        font-size: 17px;
+    }
+}
+
+.holiday-brief-card__rating {
+    display: flex;
+
+    .star_rating {
+        margin-right: 20px;
+
+        svg {
+            width: 11px;
+            height: 11px;
+            margin-right: 5px;
+        }
+    }
+
+    .tripadvisor_rating {
+        svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        span {
+            width: 11px;
+            height: 11px;
+            border-width: 1px;
+        }
+    }
+}
+
+.holiday-brief-card__location {
+    margin: 10px 0 15px;
+    font-size: 14px;
+
+    @include media-breakpoint-down(md) {
+        margin: 5px 0 10px;
+        font-size: 12px;
+    }
+}
+
+.holiday-brief-card__details-item {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 13px;
+
+    @include media-breakpoint-down(md) {
+        font-size: 12px;
+    }
+
+    svg,
+    .icon--bg-image {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+    }
+}
+
+.holiday-brief-card__price {
+    position: absolute;
+    right: 25px;
+    bottom: 15px;
+    font-size: 16px;
+    text-align: right;
+
+    @include media-breakpoint-down(md) {
+        position: static;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        margin-top: 20px;
+        padding: 15px 0 10px;
+        font-size: 14px;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+}
+
+.holiday-brief-card__price-value {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+
+    @include media-breakpoint-down(md) {
+        margin-left: 8px;
+        font-size: 24px;
+    }
+}
+
+.holiday-brief-card__price-small {
+    font-size: 60%;
+}

@@ -1,0 +1,146 @@
+.wrapper {
+    width: 100%;
+    overflow-y: auto;
+
+    h2 {
+        @include media-breakpoint-down(lg) {
+            width: 100%;
+        }
+    }
+
+    .content {
+        padding: 0 40px 40px;
+
+        @include media-breakpoint-down(md) {
+            padding: 0 15px 60px;
+        }
+    }
+}
+
+.description {
+    align-self: flex-start;
+    margin-top: 0;
+    font-size: 16px;
+    line-height: 1.5;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.groupWrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    padding-bottom: 40px;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        height: 100%;
+        overflow-y: auto;
+    }
+}
+
+.groupCard {
+    position: relative;
+    display: flex;
+    box-sizing: border-box;
+    flex: 1 0 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 240px;
+    padding: 16px;
+    font-family: $fontGenerationHeadline;
+    font-size: 34px;
+    line-height: 32px;
+    color: $colorOrange;
+    border: 1px solid $colorSilver;
+    border-radius: 8px;
+    transition: 0.5s background;
+
+    .icon {
+        width: 72px;
+        height: 72px;
+    }
+
+    .hoverIcon {
+        display: none;
+    }
+
+    &:has(input:focus-visible) {
+        outline: 2px solid $colorBlack !important;
+    }
+
+    &:hover {
+        color: $colorWhite;
+        background: $clrEjOrangeDarkShadow;
+        border-color: $colorWhite;
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25) inset;
+        cursor: pointer;
+
+        &.selected::before {
+            border-color: transparent;
+        }
+
+        .icon {
+            display: none;
+        }
+
+        .hoverIcon {
+            display: block;
+        }
+
+        div {
+            text-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+        }
+    }
+
+    :global {
+        .radio__label {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .radio__label::before {
+            display: none;
+        }
+
+        input[type='radio']:checked + .radio__label::after {
+            display: none;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        flex-direction: row;
+        gap: 16px;
+        height: auto;
+        padding: 16px 32px;
+    }
+}
+
+.selected {
+    border-color: $colorWhite;
+}
+
+.selected::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 6px);
+    height: calc(100% - 6px);
+    border: 3px solid $colorOrange;
+    border-radius: 8px;
+}
+
+.selectedIcon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+}

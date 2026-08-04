@@ -1,0 +1,33 @@
+.promo {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    margin-top: -7px;
+    padding: 10px 32px;
+    background: $clrEjOrange;
+    border-radius: 0 0 4px 4px;
+    
+    > span {
+        font-size: 12px;
+        font-weight: bold;
+        color: $colorWhite;
+        text-transform: uppercase;
+    
+        @include media-breakpoint-down(md) {
+            text-align: center;
+        }
+    }
+    
+    :global(.more-info) svg {
+        color: #fff;
+    }
+    
+    :global(.callout__container) {
+        margin-left: 7px;
+    }
+    
+    @include media-breakpoint-down(md) {
+        order: -1;
+        border-radius: 4px 4px 0 0;
+    }
+}

@@ -1,0 +1,45 @@
+.title {
+    margin-top: 40px;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.list {
+    margin: 0;
+    padding: 0;
+}
+
+.clearBtn,
+.cancelBtn {
+    margin-top: 15px;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 60px;
+        text-decoration: underline;
+    }
+
+    &:global(.btn.btn--transparent) {
+        padding: 0;
+        border: none;
+    }
+}
+
+.cancelBtn {
+    padding-right: 45px;
+}

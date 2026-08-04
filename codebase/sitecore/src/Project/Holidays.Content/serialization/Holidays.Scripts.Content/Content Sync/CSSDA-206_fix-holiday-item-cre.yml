@@ -1,0 +1,32 @@
+﻿---
+ID: "4f20e51e-eb54-4b3b-8263-6450d9040ba4"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-206_fix-holiday-item-creation"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $manedHolidayItemSource = Get-Item -Path "/sitecore/system/Settings/Foundation/Destinations/Amend Details/Amend Types/Holiday" -ErrorAction SilentlyContinue;
+    $holidayItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Amend Types/Holiday" -ErrorAction SilentlyContinue;
+    
+    if ($manedHolidayItemSource -ne $null) {
+         $holidayItem.Editing.BeginEdit();
+         $holidayItem["Type"] = $manedHolidayItemSource.ID;
+         
+         $holidayItem.Editing.EndEdit() | Out-Null;
+         
+         Write-Host $holidayItem.Name "Updated";
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 657
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230904T070424Z

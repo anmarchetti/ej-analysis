@@ -1,0 +1,50 @@
+.content {
+    display: flex;
+    flex-direction: column;
+
+    h2 {
+        margin: 0;
+        font-family: 'easyjet_rounded_demi', sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 32px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 18px;
+        }
+    }
+}
+
+.description {
+    margin: 0;
+    font-size: 16px;
+    line-height: 24px;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.wide {
+    h2 {
+        margin-bottom: 25px;
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+    svg {
+        margin-right: 16px;
+        @include sizeSquare(56px);
+    }
+
+
+    @include media-breakpoint-down(md) {
+        svg {
+            @include sizeSquare(36px);
+        }
+    }
+}

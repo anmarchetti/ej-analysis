@@ -1,0 +1,96 @@
+﻿---
+ID: "bf0adb86-e6c6-41b3-ae1f-8ef666ef8a5e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Confidence Module For Home Page
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+        }
+        return $item
+    }
+    
+    #Create Information Tile Confidence Module data source
+    $confidenceItem = Get-Or-Create-Item -path '/sitecore/content/EasyJet/Holidays/Data/Information Tiles/Global Information Tiles/Information Tile Confidence Module' -templateId "{E36A7420-E60E-4FED-B38B-981279156ADE}";
+    
+    if ($confidenceItem -ne $null) {
+        $confidenceItem.Editing.BeginEdit();
+        $confidenceItem["Icon"] = '<image mediaid="{74932F81-07DD-4DEA-A899-0B4B574BAB40}" />';
+        $confidenceItem["Title"] = 'Passport to confidence';
+        $confidenceItem["Link"] = '<link text="Primary" anchor="" linktype="internal" class="" title=""  querystring="" id="{0518D8C6-B7CA-4C73-86C2-A29D971EBEAB}" />';
+        $confidenceItem["Text"] = "<p>When it comes to your holiday, we know everyone likes to have great flexibility<br /> and a memorable experience - so we've designed our getaways with you in mind</p>";
+        $confidenceItem.Editing.EndEdit() | Out-Null;
+    }
+    
+    #Fill in Information Tiles folder fields
+    $informationTiles = Get-Or-Create-Item -path '/sitecore/content/EasyJet/Holidays/Data/Information Tiles/Global Information Tiles' -templateId "{A5727395-0B58-464F-B6CC-83E450109E4E}";
+    
+    if ($informationTiles -ne $null) {
+        $informationTiles.Editing.BeginEdit();
+        $informationTiles["ConfidenceModule"] = $confidenceItem.ID ;
+        $informationTiles.Editing.EndEdit() | Out-Null;
+    }
+    
+    $tiles = Get-ChildItem -Path '/sitecore/content/EasyJet/Holidays/Data/Information Tiles/Global Information Tiles' -Recurse
+    
+    $tiles| ForEach-Object {
+    
+    	# If the current item has a certain template, print out its path in the tree
+    	if ($_.TemplateName -eq 'Information Tile') {
+    
+    		if ($informationTiles-ne $null) {
+        [Sitecore.Data.Fields.MultilistField]$linksField = $informationTiles.Fields["Tiles"];
+        
+        $informationTiles.Editing.BeginEdit();
+        $linksField.add($_.ID);
+        $informationTiles.Editing.EndEdit() | Out-Null;
+    }
+    
+    	}
+    }
+    
+    #Update Text block rendering for tiles block
+    $homePage = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Home';
+    $renderings = Get-Rendering -Path '/sitecore/content/EasyJet/Holidays/Home';
+    
+    $renderings| ForEach-Object {
+    	# If the current item has a certain template, print out its path in the tree
+    	if ($_.Datasource -eq $informationTiles.ID) {
+    $informationTilesRendering = $_;
+    	}
+    }
+    
+    
+    
+    $textBlocksRenderings = Get-Rendering -Item $homePage -Placeholder $informationTilesRendering.Placeholder;
+    
+    if ($textBlocksRenderings -is [array]) {
+        $textBlocksRendering = $textBlocksRenderings[0];
+    } else { 
+        $textBlocksRendering = $textBlocksRenderings;
+    }
+    
+    $textBlocksRendering.Datasource = $null;
+    Set-Rendering -Item $homePage -Instance $textBlocksRendering;
+    
+    
+    
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 9300
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200714T084139Z

@@ -1,0 +1,62 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    :global(.star_rating ){
+        margin-right: 10px;
+
+        svg {
+            width: 12px;
+            height: 12px;
+            margin-right: 5px;
+        }
+    }
+
+    :global(.tripadvisor_rating) {
+        svg {
+            @include sizeSquare(22px);
+        }
+
+        span {
+            @include sizeSquare(12px);
+
+            border-width: 1px;
+        }
+    }
+
+    :global(.eco-certified) {
+        position: relative;
+        margin-left: 20px;
+
+        @include media-breakpoint-down(sm) {
+            margin-left: 0;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            height: 20px;
+            border-left: 1px solid $colorAlto;
+
+            @include media-breakpoint-down(sm) {
+                content: none;
+            }
+        }
+
+        .icon-svg {
+            @include sizeSquare(16px);
+        }
+    }
+
+    :global(.eco-certified__title) {
+        font-size: 12px;
+        line-height: 13px;
+    }
+
+    :global(.eco-certified__callout_container) {
+        display: flex;
+        align-items: center;
+    }
+}

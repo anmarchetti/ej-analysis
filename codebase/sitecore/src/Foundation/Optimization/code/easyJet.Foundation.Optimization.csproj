@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <PackageReference Include="Dianoga" />
+    <PackageReference Include="Dianoga.ImageMagick" />
+    <PackageReference Include="Dianoga.svgtools" />
+    <PackageReference Include="Sitecore.JavaScriptServices.Media" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)SitecoreProject.props" />
+  <PropertyGroup>
+    <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratedAssemblyInfoFile>Properties\Assemblyinfo.cs</GeneratedAssemblyInfoFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="App_Config\Include\Dianoga\Dianoga.Jpeg.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <None Include="App_Config\Include\Dianoga\Dianoga.Jpeg.Debug.config">
+      <DependentUpon>Dianoga.Jpeg.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Dianoga\Dianoga.Jpeg.Release.config">
+      <DependentUpon>Dianoga.Jpeg.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <Content Include="App_Config\Include\Foundation\easyJet.Foundation.Optimization.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Optimization.Debug.config">
+      <DependentUpon>easyJet.Foundation.Optimization.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Optimization.Release.config">
+      <DependentUpon>easyJet.Foundation.Optimization.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Data\Dianoga Tools\**\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

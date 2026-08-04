@@ -1,0 +1,578 @@
+.header_trade {
+    position: relative;
+    width: 100%;
+    height: 65px;
+    background: $clrEjOrange;
+}
+
+.header_trade__nav {
+    z-index: 12;
+    height: 100%;
+    padding-left: 15px;
+
+    .navigation__link {
+        display: grid;
+    }
+
+    .navigation__link:hover > a {
+        display: flex;
+        height: 100%;
+        color: $colorWhite;
+        opacity: 1;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 48px;
+            display: block;
+            width: calc(100% - 36px);
+            border-bottom: 2px solid $colorWhite;
+        }
+    }
+}
+
+.header_trade__actions {
+    z-index: 13;
+    $header-items-gap: 56px;
+    $header-height: 65px;
+
+    flex-shrink: 0;
+    margin-left: -10px;
+    padding-left: 25px;
+    position: relative;
+    height: $header-height;
+    background: $tradeAccountGradient;
+
+    &::before {
+        content: '';
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-bottom: $header-height/2 solid transparent;
+        border-left: 20px solid $colorOrange;
+        border-right: 20px solid transparent;
+        border-top: $header-height/2 solid $colorOrange;
+    }
+
+    > li {
+        display: none;
+    }
+
+    .parent-link {
+        padding: 4px;
+        border-radius: 36px;
+        background: rgba($colorWhite, 0.20);
+        transition: background-color $animationDurationFast;
+        
+        svg {
+            position: relative;
+            transition: top $animationDurationFast;
+            top: 0;
+        }
+        
+        &.is-active {
+            background: $clrEjOrangeDarkShadow;
+            opacity: 1;
+
+            svg {
+                top: 4px;
+            }
+        }
+    }
+
+    .header_trade__navigation__link--icon {
+        display: grid;
+        padding: 0 7px;
+
+        $icon-width: 28px;
+
+        img {
+            display: block;
+            min-width: $icon-width;
+            max-width: $icon-width;
+        }
+
+        .svg-inline--fa {
+            width: 10px;
+            margin-left: 7px;
+            margin-right: 5px;
+        }
+
+        ul {
+            position: absolute;
+            top: 59px;
+            right: -15px;
+            left: inherit;
+            display: none;
+            width: 184px;
+            margin-top: 10px;
+            padding: 0;
+            background: $colorWhite;
+            border-radius: 6px;
+            box-shadow: 0 0 15px 0 rgba(178, 175, 175, 0.5);
+
+            &::before {
+                content: "";
+                position: absolute;
+                right: 14px;
+                bottom: 100%;
+                width: 0;
+                height: 0;
+                border-color: $colorTransparent $colorTransparent
+                    $colorWhite $colorTransparent;
+                border-style: solid;
+                border-width: 0 15px 15px;
+                transform: translateX(-25%);
+            }
+
+            &.is-shown {
+                display: block;
+            }
+        }
+    }
+
+    .header_trade__navigation {
+        position: relative;
+        z-index: 12;
+
+        > ul {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+    }
+}
+
+.header_trade__navigation {
+    height: 100%;
+
+    > ul {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+
+        li {
+            align-items: center;
+            height: 100%;
+            list-style-type: none;
+            break-inside: avoid-column;
+            -webkit-column-break-inside: avoid-column;
+
+            a, button {
+                cursor: pointer;
+            }
+        }
+
+        > li {
+            display: none;
+        }
+    }
+
+    &__link {
+        a {
+            display: inline-block;
+            width: 100%;
+            font-size: 16px;
+            line-height: 20px;
+            color: $colorWhite;
+            cursor: pointer;
+        }
+
+        > a {
+            display: inline-block;
+            flex-direction: column;
+            justify-content: center;
+            height: auto;
+            padding: 0 10px;
+            font-family: $fontRoundedDemy;
+        }
+
+        &--active {
+            height: 100%;
+        }
+
+        &.logged_in-action {
+            display: none;
+        }
+
+        &.has-children > a {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            svg {
+                width: 10px;
+                min-width: 10px;
+                max-width: 10px;
+                margin-left: 8px;
+            }
+        }
+
+        .header_trade__navigation &--icon {
+            position: relative;
+
+            .parent-link {
+                display: flex;
+                width: auto;
+
+                svg {
+                    color: $colorWhite;
+                }
+            }
+
+            ul {
+                li {
+                    display: block;
+                    border-bottom: 0.5px solid rgb(218, 223, 224);
+
+                    a, button {
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        width: 100%;
+                        height: 100%;
+                        padding: 10px 14px 10px 20px;
+                        font-size: 14px;
+                        color: rgb(51, 51, 51);
+                        letter-spacing: 0;
+
+                        &.block-link {
+                            display: block;
+                        }
+
+                        span {
+                            display: block;
+                            font-family: $fontRoundedBook;
+                        }
+
+                        .icon-logout {
+                            height: 14px;
+                            margin-right: 10px;
+
+                            svg {
+                                color: $colorOrange;
+                                transform: rotate(90deg);
+                            }
+                        }
+
+                        .icon-chevron {
+                            position: absolute;
+                            top: 50%;
+                            right: 14px;
+                            width: 9px;
+                            height: 14px;
+                            transform: translateY(-50%);
+
+                            svg {
+                                color: $colorOrange;
+                            }
+                        }
+                    }
+
+                    button {
+                        background-color: initial;
+                        line-height: 1.5;
+                        border-style: none;
+                        font-weight: 700;
+                    }
+
+                    button:hover {
+                        opacity: 0.8;
+                    }
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                }
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 100%;
+                    width: 100%;
+                    height: 17px;
+                    background: $colorTransparent;
+                }
+            }
+        }
+    }
+
+    &__button {
+        margin-right: 6px;
+        margin-left: 6px;
+
+        &.is-empty {
+            display: none;
+        }
+
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            line-height: 21px;
+            color: $colorOrange;
+            white-space: nowrap;
+            background: $colorWhite;
+            border-radius: $box_border-radius_bg;
+        }
+    }
+}
+
+.header_trade__destination-menu {
+    position: absolute;
+    z-index: 15;
+    top: 65px;
+    right: 0;
+    left: 0;
+    display: none;
+    overflow: hidden;
+    background-color: $colorWhite;
+    box-shadow: 0 10px 12px -4px $colorAlto;
+
+    &.is-shown {
+        display: block;
+    }
+
+    .wrapper-container {
+        display: flex;
+        margin: auto;
+    }
+
+    .header_trade__destination-menu__container {
+        z-index: 2;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        justify-content: flex-start;
+        width: 66%;
+        padding: 0 10px;
+
+        &.has-full-width {
+            width: 100%;
+        }
+
+        &.is-featured {
+            position: relative;
+            z-index: 1;
+            width: 34%;
+            margin: -20px 0;
+            padding: 20px 0;
+            text-align: right;
+            background: $colorGrayLighter;
+
+            .header_trade__destination-menu__list {
+                width: 100%;
+            }
+
+            &::before,
+            &::after {
+                content: "";
+                position: absolute;
+                width: 0;
+                height: 0;
+            }
+
+            &::before {
+                top: 0;
+                left: 0;
+                border-color: $colorWhite $colorWhite $colorGrayLighter
+                    $colorWhite;
+                border-style: solid;
+                border-width: 0 0 1500px 250px;
+                transform: translateX(-150px);
+            }
+
+            &::after {
+                top: 0;
+                left: 100%;
+                width: 9999px;
+                height: 100%;
+                background: $colorGrayLighter;
+            }
+        }
+
+        .header_trade__destination-menu__list:last-child {
+            margin-right: 0;
+        }
+    }
+}
+
+.header_trade__destination-menu__list {
+    width: 50%;
+
+    .has-full-width & {
+        width: 100%;
+    }
+
+    .list__title,
+    a.list__title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 14px 0;
+        padding: 0 10px 0 16px;
+        font-family: $fontRoundedHeadline;
+        font-size: 18px;
+        color: $colorOrange;
+        letter-spacing: 1px;
+
+        @include media-breakpoint-down(lg) {
+            margin: 15px 0;
+        }
+    }
+
+    .is-featured & {
+        .list__container {
+            columns: 1;
+
+            li {
+                display: block;
+
+                a {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+
+    .list__container {
+        padding: 3px 0 10px 34px;
+        list-style: none;
+
+        &:not(.one-column) {
+            columns: 2;
+        }
+
+        li {
+            column-break-inside: avoid;
+
+            a {
+                margin: 0 0 14px;
+                padding: 0;
+                font-family: $fontRoundedBook;
+                font-size: 16px;
+                font-weight: normal;
+                color: $colorOrange;
+            }
+
+            svg {
+                width: 7px;
+                height: 12px;
+                color: $colorOrange;
+            }
+        }
+    }
+}
+
+.header_trade__destination-menu__list--hidden {
+    position: absolute;
+    height: 0;
+    visibility: hidden;
+
+    &.list__container {
+        padding: 0;
+    }
+}
+
+.header_trade__destination-menu__list-col {
+    min-height: 240px;
+    padding: 24px 0 20px;
+    border-right: 1px solid $colorAlto;
+}
+
+.header_trade__destination-menu__list-col--no-border {
+    border-right: 0;
+}
+
+.header_trade__destination-menu__list-promotion-col {
+    flex: 1;
+    padding: 24px 0 30px 25px;
+    font-family: $fontRoundedBook;
+    font-weight: normal;
+
+    .header_trade__destination-menu__list-promotion-cta {
+        padding: 0;
+        color: $colorBlack;
+
+        &:hover {
+            opacity: 1;
+
+            .header_trade__destination-menu__list-promotional-link {
+                opacity: 0.8;
+            }
+        }
+    }
+
+    .header_trade__destination-menu__list-promotional-image {
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        min-width: 230px;
+        height: 130px;
+        overflow: hidden;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        border-radius: 3px;
+    }
+
+    .header_trade__destination-menu__list-promotional-link {
+        padding: 13px 0 5px;
+        font-size: 16px;
+        line-height: 20px;
+        color: $colorOrange;
+        text-transform: uppercase;
+
+        .fa-chevron-right {
+            width: 11px;
+            height: 11px;
+        }
+    }
+
+    .header_trade__destination-menu__list-promotional-description {
+        font-size: 14px;
+        line-height: 18px;
+    }
+}
+
+.header_trade__destination-menu__list__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: $colorOrange;
+    background-color: $colorWhite;
+    border-top: $destination_menu_border;
+    border-left: 3px solid $colorWhite;
+
+    .fa-chevron-right {
+        width: 12px;
+        height: 12px;
+        margin-right: 10px;
+    }
+}
+
+.header_trade__destination-menu__list__item:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.header_trade__destination-menu__list__item:last-child {
+    border-bottom: $destination_menu_border;
+}
+
+.header_trade__destination-menu__list__item.header_trade__destination-menu__list__item--active {
+    background-color: $colorPorcelain;
+    border-top: 1px solid $colorPorcelain;
+    border-left: 3px solid $clrEjOrange;
+}

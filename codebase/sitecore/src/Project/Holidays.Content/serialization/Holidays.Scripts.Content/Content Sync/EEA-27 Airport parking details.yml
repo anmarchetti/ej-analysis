@@ -1,0 +1,72 @@
+﻿---
+ID: "2ad47762-ee33-42d8-ab80-c5d4ef1c2794"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-27 Airport parking details view"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/External Extras/Airport Parking"
+            TemplatePath = "Foundation/ExternalExtras/Page Components/Airport Parking"
+            Id          = [GUID]"{4E1B324C-C4C1-4574-8562-4C551E85A01E}"
+            Fields      = @{
+                "BackToExtrasButtonText" = @{
+                    "de-CH" = "Zurück zu Extras"
+                    "en" = "Back to Extras"
+                    "fr-FR" = "Retour aux extras"
+                    "de-DE" = "Zurück zu Extras"
+                    "fr-CH" = "Retour aux extras"
+                }
+                "ParkingListMoreInfoButtonText" = @{
+                    "de-CH" = "Mehr Infos"
+                    "en" = "More Info"
+                    "fr-FR" = "Plus d'infos"
+                    "de-DE" = "Mehr Infos"
+                    "fr-CH" = "Plus d'infos"
+                }
+                "ParkingDetailsViewBackButtonTextMobile" = @{
+                    "de-CH" = "Zurück zur Liste"
+                    "en" = "Back to list"
+                    "fr-FR" = "Retour à la liste"
+                    "de-DE" = "Zurück zur Liste"
+                    "fr-CH" = "Retour à la liste"
+                }
+                "ParkingDetailsViewBackButtonText" = @{
+                    "de-CH" = "Zurück zur Parkplatzliste"
+                    "en" = "Back to parking list"
+                    "fr-FR" = "Retour à la liste des parkings"
+                    "de-DE" = "Zurück zur Parkplatzliste"
+                    "fr-CH" = "Retour à la liste des parkings"
+                }
+                "ParkingDetailsViewLogoText" = @{
+                    "de-CH" = "Bereitgestellt von"
+                    "en" = "Provided by"
+                    "fr-FR" = "Fourni par"
+                    "de-DE" = "Bereitgestellt von"
+                    "fr-CH" = "Fourni par"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999934
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250605T092726Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

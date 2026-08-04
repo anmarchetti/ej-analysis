@@ -1,0 +1,100 @@
+﻿---
+ID: "277bed0b-60ba-4082-a82d-cfa04a4c94ea"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-911 - In Destination Contact Us Form Link"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        
+        if (-Not $item){
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item $($item.Name) successfully created"
+        }
+        
+        return $item
+    }
+    
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue
+    
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+    
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    function updatePostTravelContactUsBanner() {
+        $postTravelContactUsBannerPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Contact Us Banner"
+        $postTravelContactUsBanner = Get-Item -Path $postTravelContactUsBannerPath -ErrorAction SilentlyContinue
+    
+        if ($postTravelContactUsBanner -eq $null) {
+            Write-Host "Missing ContactUsBanner in EN language. Missing item: /sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Contact Us Banner"
+            return
+        }
+    
+        @('en') | % {
+            Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "InfoText" -Value "<p>If you need to speak to our team about your recent holiday, please fill in {contactFormLink} with all the details we ask for and need. We&rsquo;ll do our best to respond to your message within 28 days.</p>"     
+        }
+    
+        @('de-CH', 'de-DE') | % {
+            Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "InfoText" -Value "<p>Wenn Sie mit unserem Team über Ihren letzten Urlaub sprechen möchten, füllen Sie bitte {contactFormLink} mit allen Angaben, die wir verlangen und benötigen. Wir werden unser Bestes tun, um Ihre Nachricht innerhalb von 28 Tagen zu beantworten.</p>"     
+        }
+    
+        @('fr-CH', 'fr-FR') | % {
+            Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "InfoText" -Value "</p> <p>Si vous souhaitez parler à notre équipe au sujet de vos récentes vacances, veuillez remplir {contactFormLink} avec tous les détails que nous demandons et dont nous avons besoin. Nous ferons de notre mieux pour répondre à votre message dans les 28 jours."   
+        }
+    
+        Write-Host "Updated contact us content for Post Travel page"
+    }
+    
+    function updateContactUsDictionary() {
+        $contactUsDictionaryPath = "/sitecore/content/EasyJet/Holidays/Dictionary/Generic Messages/Link To Contact Form HTML"
+        $contactUsDictionary = Get-Or-Create-Item -Path $contactUsDictionaryPath -TemplateId "{6D1CD897-1936-4A3A-A511-289A94C2A7B1}"
+    
+        @('en') | % {
+            Create-Lang-Version -Item $contactUsDictionary -Lang $_ -Field "Key" -Value 'GenericMessages.LinkToContactFormHTML'
+            Create-Lang-Version -Item $contactUsDictionary -Lang $_ -Field "Phrase" -Value "<a href='/help/contact-form' target='_blank'>our contact form</a>"
+        }
+    
+        @('de-CH', 'de-DE') | % {
+            Create-Lang-Version -Item $contactUsDictionary -Lang $_ -Field "Key" -Value 'GenericMessages.LinkToContactFormHTML'
+            Create-Lang-Version -Item $contactUsDictionary -Lang $_ -Field "Phrase" -Value "<a href='/hilfe/kontakt-form' target='_blank'>unser Kontaktformular</a>"
+        }
+    
+        @('fr-CH', 'fr-FR') | % {
+            Create-Lang-Version -Item $contactUsDictionary -Lang $_ -Field "Key" -Value 'GenericMessages.LinkToContactFormHTML'
+            Create-Lang-Version -Item $contactUsDictionary -Lang $_ -Field "Phrase" -Value "<a href='/aide/formulaire-de-contact' target='_blank'>notre formulaire de contact</a>"
+        }
+    
+        Write-Host "Updated dictionary GenericMessages.LinkToContactFormHTML"
+    }
+    
+    updatePostTravelContactUsBanner
+    updateContactUsDictionary
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 980
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230804T102242Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

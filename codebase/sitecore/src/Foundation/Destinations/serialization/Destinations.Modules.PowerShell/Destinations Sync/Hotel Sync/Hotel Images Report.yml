@@ -1,0 +1,254 @@
+﻿---
+ID: "445d2891-0c7f-4ed7-8f85-8cf98bcb1c76"
+Parent: "4c10d78f-07b6-469e-929f-cb4b460bb11e"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Destinations Sync/Hotel Sync/Hotel Images Report
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $time = Get-Date -UFormat %s -Millisecond 0
+    $filename = "HotelImagesReport_$time.xlsx"
+    $folderPath = "$($SitecoreDataFolder)\ExportData"
+    $filePath = "$($folderPath)\$filename"
+    $sitePath = "http://sc.holidays.local/en/holidays/"
+    
+    function Create-Data-Folder {
+    	param($path)
+    	if (!(Test-Path $path))
+    	{
+    		New-Item -ItemType Directory -Force -Path $path
+    	}
+    }
+    
+    function Find-Hotels-Items {
+    	$criteria = @(
+    		@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    		@{ Filter = "Equals"; Field = "_template"; Value = "28e5e1698f724f90a277280a8302b607"; }
+    		@{ Filter = "Equals"; Field = "_name"; Value = "__Standard Values"; "Invert" = $true}
+    	)
+    
+    	$props = @{
+    		Index = "sitecore_master_index"
+    		Criteria = $criteria
+    	}
+    
+    	$items = Find-Item @props
+    
+    	Write-Host "$($items.Count) Hotels were found"
+    
+    	return $items
+    }
+    
+    function Prepare-Data {
+    	param($items)
+    
+    	$data = @()
+    	foreach ($searchResultItem in $items) {
+    
+    		$item = Get-Item -Path master: -Id $searchResultItem.ItemId
+    		$rows = Get-Data-From-Item -Item $item
+    		$rows | ForEach-Object { $data += $_}
+    	}
+    
+    	Write-Host "Hotel's report has been prepered"
+    
+    	return $data
+    }
+    
+    
+    function Get-Browse-Url {
+    	param($item)
+    	$path = $item.Paths.ContentPath -replace "/EasyJet/Holidays/Home/Destinations/",$sitePath
+    	$validPath = $path -replace "\s+",'-'
+    	return $validPath.ToLower()
+    }
+    
+    function Get-Children-By-Template {
+    	param($parent,$templateId)
+        
+    	$item = Get-ChildItem -Item $parent | Where-Object { $_.TemplateId -eq $templateId } | Select -First 1
+    
+    	return $item.Children
+    }
+    
+    function Get-Children-Count-By-Template-Deep {
+    	param($parent, $childTemplateId)
+        
+    	$childItems = Get-ChildItem -Item $parent | Where-Object {$_.TemplateId -eq $childTemplateId}
+    	
+    	if ($childItems -eq $null){
+    	    return 0
+    	}
+    	
+    	return $childItems.Children.Count
+    }
+    
+    
+    function Get-S3-Images-Count
+    {
+    	param($images)
+    
+    	if ($images -eq $null)
+    	{
+    		return 0
+    	}
+    
+    	$s3Images = $images | Where { $_['Small'].Contains('s3') }
+    
+    	if ($s3Images -eq $null)
+    	{
+    		return 0
+    	}
+    
+    	return $s3Images.Count
+    }
+    
+    function Get-Room-Name-Type{
+        param($room)
+    
+        $name = $room.Fields["Name"].Value
+        $typeItem = Get-Item -Path "master:" -ID $room.Fields["RoomType"].Value 
+        $type = ""
+    
+        if ($typeItem -ne $null) 
+        {
+            $type = $typeItem.Fields["Code"].Value
+        }
+    
+        $result = @{}
+        $result.Add("Name", $name)
+        $result.Add("Type", $type)
+    
+        return $result
+    }
+    
+    function Get-Image-Data
+    {
+        param($image, $roomcode)
+        
+        Write-Host $room_code
+        
+        $result = @{}
+        $result.Add("ItemName", $image.Name)
+        $result.Add("RoomCode", $roomcode)
+        $result.Add("Small", $image.Fields["Small"])
+        $result.Add("Medium", $image.Fields["Medium"])
+        $result.Add("Large", $image.Fields["Large"])
+        $result.Add("ShowOnSite", $image.Fields["ShowOnSite"])
+        
+        return $result
+    }
+    
+    function Get-Room-Code
+    {
+        param($room)
+        
+        $room_type_item = Get-Item "master:" -ID $room.Fields["RoomType"].Value
+        
+        if($room_type_item -ne $null){
+            return $room_type_item["Code"]
+        }else{
+            return ""
+        }
+    }
+    
+    function Get-Room-Images
+    {
+        param($room)
+        
+        $room_images_folder = $room.Children | Where-Object { $_.TemplateId -eq "{AF7DAAA8-8099-4F22-A607-F0E1FBA6AD0D}" }
+        
+        if($room_images_folder -ne $null){
+            return $room_images_folder.Children
+        }
+    }
+    
+    function Get-Data-From-Item
+    {
+    	param($item)
+    
+    	# closest facility 
+    	if (![string]::IsNullOrEmpty($item['ClosestFacility'])) {
+    		$facility = Get-Item master: -Id $item['ClosestFacility']
+    	}
+    
+    	# hotel' child folders
+    	$images = Get-Children-By-Template -Parent $item -templateId "{AF7DAAA8-8099-4F22-A607-F0E1FBA6AD0D}"
+    	$rooms = Get-Children-By-Template -Parent $item -templateId "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+    	
+    	$images_data = @()
+    	$images_data += $images | Where-Object { $_ -ne $null} | ForEach-Object { Get-Image-Data -Image $_ -RoomCode "" }
+    	
+    	
+    	$rooms | Where-Object  {$_ -ne $null } | ForEach-Object { 
+    
+    	    $room_code = Get-Room-Code -Room $_
+    	    
+    	    Write-Host $room_code
+    	    Write-Host $_.Name
+    	    
+    	    $room_images = @()
+    	    $room_images += Get-Room-Images $_
+    	    
+    	    For($i = 0; $i -lt $room_images.Count; $i++){
+    	        $images_data += Get-Image-Data -Image $room_images[$i] -RoomCode $room_code
+    	    }
+    	}
+    	
+        
+        $data = @()
+        
+        if($images_data.Count -eq 0){
+        	$data += [ordered]@{
+        		ATCom = $item['Code']
+        		HotelName = $item["Name"]
+        		RoomCode = ""
+        		ItemName = ""
+        		Small = ""
+        		Medium = ""
+        		Large = ""
+        		ShowOnSite = ""
+        	}
+        }
+        else{
+            For($i = 0; $i -lt $images_data.Count; $i++){
+                
+                $data += [ordered]@{
+                    ATCom = $item['Code']
+            		HotelName = $item["Name"]
+            		RoomCode = $images_data[$i]["RoomCode"]
+            		ItemName = $images_data[$i]["ItemName"]
+            		Small = $images_data[$i]["Small"]
+            		Medium = $images_data[$i]["Medium"]
+            		Large = $images_data[$i]["Large"]
+            		ShowOnSite = $images_data[$i]["ShowOnSite"]
+                }
+            }
+        }
+        
+    	return $data
+    }
+    
+    #find hotels items
+    $items = Find-Hotels-Items | Select -First 15
+    
+    #Prepare items to table format
+    $table = Prepare-Data -items $items
+    
+    Create-Data-Folder -Path $folderPath
+    
+    Import-Function -Name ConvertTo-Xlsx
+    
+    [byte[]]$outobject = $table | ForEach-Object { New-Object PSObject -Property $_ } | ConvertTo-Xlsx
+    
+    Out-Download -Name $filename -InputObject $outobject 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200312T112224Z

@@ -1,0 +1,69 @@
+.priceBlockWithDuration {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 15px 15px;
+    font-family: $fontRoundedBook;
+    background: $clrSiteBgWhite;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: -20px;
+        right: 0;
+        display: block;
+        width: 100%;
+        height: 20px;
+        background-image: linear-gradient(-6.1deg, $clrSiteBgWhite 49%, rgba(255, 255, 255, 0) 51%);
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: 5px 12px;
+    }
+}
+
+.pricePrefix {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: lowercase;
+
+    @include media-breakpoint-down(md) {
+        font-size: 12px;
+    }
+}
+
+.price {
+    font-size: 24px;
+    color: $clrEjOrange;
+
+    @include media-breakpoint-down(md) {
+        font-size: 18px;
+    }
+}
+
+.priceSuffix {
+    font-size: 18px;
+    color: $clrEjOrange;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.masonryItemFeaturedHotel {
+    height: 100%;
+
+    @include media-breakpoint-down(md) {
+        height: 120px;
+    }
+}
+
+.callout > :first-child {
+    border-radius: 5px 0 0;
+
+    @include media-breakpoint-down(md) {
+        border-radius: 4px 0 0;
+    }
+}

@@ -1,0 +1,209 @@
+.hotel-search-results-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 24px 0;
+
+    .results-count {
+        padding-right: 12px;
+        white-space: nowrap;
+
+        p {
+            margin: 0;
+            font-size: 25px;
+
+            @include media-breakpoint-down(md) {
+                font-size: 20px;
+            }
+        }
+    }
+
+    .results-details {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        padding-left: 12px;
+        white-space: nowrap;
+    }
+
+    .hotel-sort {
+        display: flex;
+        min-width: 250px;
+
+        .select-group {
+            margin: 0;
+        }
+
+        .callout__container {
+            margin-left: 14px;
+        }
+
+        @include media-breakpoint-down(md) {
+            flex: 1;
+            min-width: auto;
+        }
+
+        .custom-select {
+            .custom-select__value-container--has-value,
+            .custom-select__control--menu-is-open,
+            .custom-select__control--is-focused {
+                .custom-select__placeholder {
+                    top: -1.5px;
+                }
+            }
+        }
+    }
+}
+
+.hotel-search-results-box {
+    .confidence-module {
+        background-color: $colorGrayLighter;
+    }
+
+    .no-offers-found {
+        text-align: center;
+
+        h3 {
+            margin: 15px 0;
+            font-family: $fontRoundedHeadline;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 26px;
+            color: rgba(0, 0, 0, 0.8);
+            letter-spacing: 0.29px;
+        }
+
+        p {
+            margin-top: 0;
+            width: 100%;
+            font-family: $fontRoundedHeadline;
+            font-size: 18px;
+            font-weight: 700;
+            color: $clrTextHeading;
+        }
+
+        button {
+            min-height: 50px;
+            margin-top: 25px;
+            padding-right: 70px;
+            padding-left: 70px;
+        }
+    }
+
+    .price-graph-widget {
+        margin-bottom: 20px;
+
+        &__title {
+            width: 60%;
+            margin: 50px 0;
+            font-family: $fontRoundedHeadline;
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: 0;
+        }
+
+        &__text {
+            margin: 0 0 10px;
+            font-family: $fontRoundedBook;
+            font-size: 18px;
+            font-weight: 700;
+            color: $clrTextMainLight;
+        }
+
+        &__selected-dates {
+            margin: 0;
+        }
+
+        &__footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 30px;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        .no-offers-found {
+            margin-top: 0;
+
+            p {
+                margin-top: 0;
+            }
+        }
+
+        .price-graph-widget {
+            margin: 0 -15px 25px;
+            overflow: hidden;
+
+            .graph-container {
+                canvas {
+                    background-color: #fff;
+                }
+            }
+
+            .y-axis-mobile {
+                position: absolute;
+                z-index: 0;
+                top: 0;
+                height: 420px;
+            }
+
+            &__title {
+                width: 100%;
+                margin: 10px;
+                font-size: 30px;
+            }
+
+            &__text {
+                margin: 0 10px;
+                font-size: 20px;
+                color: $clrTextHeading;
+                text-transform: uppercase;
+            }
+
+            &__selected-dates {
+                margin: 5px 10px;
+                font-family: $fontRoundedBook;
+                color: $clrTextMainLight;
+            }
+
+            &__footer {
+                padding: 0 10px;
+            }
+
+            .mobile-shadow-left {
+                position: absolute;
+                z-index: 10;
+                top: 60px;
+                bottom: 0;
+                left: 50px;
+                box-shadow: 0 0 8px 6px #fff;
+            }
+        }
+    }
+}
+
+.hotel-search-results {
+    position: relative;
+
+    .card {
+        margin-bottom: 30px;
+        border-radius: 6px;
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.05);
+
+        &.sponsored {
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.05),
+                0 0 0 1px #ffca00 inset;
+        }
+
+        @include media-breakpoint-down(md) {
+            box-shadow: 0 2px 4px 0 rgba(178, 178, 175, 0.5);
+        }
+
+        @include media-breakpoint-down(lg) {
+            overflow: hidden;
+        }
+    }
+}

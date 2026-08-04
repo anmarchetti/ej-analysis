@@ -1,0 +1,55 @@
+﻿---
+ID: "e96e6de3-d469-4331-b5ef-d07dafb8cd61"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/Add postfix to HBG hotels
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Find-Hotels-Items {
+    	$criteria = @(
+    		@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    		@{ Filter = "Equals"; Field = "_template"; Value = "28e5e1698f724f90a277280a8302b607"; }
+    		@{ Filter = "StartsWith"; Field = "_fullpath"; Value = "/sitecore/content/EasyJet/Holidays/Home/Destinations"; }
+    		@{ Filter = "Equals"; Field = "_name"; Value = "__Standard Values"; "Invert" = $true}
+    	)
+    
+    	$props = @{
+    		Index = "sitecore_destinations_master_index"
+    		Criteria = $criteria
+    	}
+    
+    	$items = Find-Item @props
+    
+    	Write-Host "$($items.Count) Hotels were found"
+    
+    	return $items
+    }
+    
+    function Update-Hotels($hotels){
+        foreach($hotel in $hotels){
+            $hotelItem = $hotel.GetItem()
+            if ($hotelItem -ne $null){
+                if ($hotelItem["Code"].StartsWith("X9")){
+                    $name = $hotelItem.Name
+                    $hotelItem.Editing.BeginEdit()
+                    $hotelItem.Fields["__Display name"].Value = $name
+                    $hotelItem.Name = "$($name)-HBG"
+                    $hotelItem.Editing.EndEdit()
+                }
+            }
+        }
+    }
+    
+    $hotels = Find-Hotels-Items
+    Update-Hotels -Hotels $hotels
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220222T140640Z

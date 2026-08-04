@@ -1,0 +1,124 @@
+// Alphabet Nav
+.alphabet-nav__list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    > li {
+        @include media-breakpoint-up(md) {
+            margin: 0 5px;
+        }
+    }
+}
+
+.alphabet-nav__letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 6px;
+    font-family: $fontRoundedDemy;
+    font-size: 20px;
+    line-height: 1;
+
+    @include media-breakpoint-down(lg) {
+        font-size: 18px;
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 16px;
+    }
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.alphabet-nav__letter--active {
+    color: $clrTextMain;
+    border-bottom: 4px solid $clrEjOrange;
+
+    &:hover,
+    &:active,
+    &:focus,
+    &:visited {
+        color: $clrTextMain;
+    }
+
+    @include media-breakpoint-down(lg) {
+        &,
+        &:hover,
+        &:active,
+        &:focus,
+        &:visited {
+            color: $clrEjOrange;
+            border-bottom: none;
+        }
+    }
+}
+
+// Alphabet Sticky Selector
+.alphabet-sticky-selector__toggle {
+    position: fixed;
+    z-index: 100;
+    right: 18px;
+    bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    font-family: $fontRoundedDemy;
+    font-size: 15px;
+    color: $clrTextMain;
+    background: #fff;
+    border: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.32);
+    cursor: pointer;
+}
+
+.alphabet-sticky-selector__popup {
+    position: fixed;
+    z-index: 1050;
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    padding: 12px 10px;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.32);
+
+    .alphabet-nav__list {
+        justify-content: flex-start;
+
+        > li {
+            margin: 8px 10px;
+        }
+    }
+
+    .alphabet-nav__letter {
+        width: 24px;
+        height: 24px;
+        padding: 5px;
+        font-size: 16px;
+    }
+}
+
+.alphabet-sticky-letter {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    font-family: $fontRoundedDemy;
+    font-size: 20px;
+    background: #fff;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.08);
+}

@@ -1,0 +1,40 @@
+﻿---
+ID: "1af3d493-359b-47bf-a609-f95faef77734"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-959 Remove old product unavailable popup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$template) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $template
+    	}
+    	return $item
+    }
+    
+    # Remove existing Product Unavailable Popup from amend payment page 
+    $amendPaymentPagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment"
+    $amendPaymentPage = Get-Or-Create-Item -Path $amendPaymentPagePath
+    $amendPaymentRenderingInstance = Get-Rendering -Item $amendPaymentPage -PlaceHolder "body" -DataSource "{8B09703F-E23F-4A3B-A818-F59AEA6741D0}";
+    if ($amendPaymentRenderingInstance -ne $null) {
+    	Remove-Rendering -Path $amendPaymentPagePath -Instance $amendPaymentRenderingInstance;
+    	Write-Host "Amend payment page Product Unavailable Popup rendering removed";
+    }
+    
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231120T122525Z

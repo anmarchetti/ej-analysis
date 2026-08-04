@@ -1,0 +1,81 @@
+﻿---
+ID: "98059c37-eb80-453d-b2b8-80d1da8c383c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-332 add missing text"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Booking Hero Banner"
+            TemplatePath = "Feature/Booking/View Booking/Booking Hero Banner"
+            Id          = [GUID]"{613D5DD4-2C2E-4630-B1F9-C8A03BB954E4}"
+            Fields      = @{
+                           "AltTextAbove" = @{
+                    "de-CH" = "Ihr Luxusurlaub in"
+                    "en" = "Your luxury holiday to"
+                    "fr-FR" = "Vos vacances de luxe à"
+                    "de-DE" = "Ihr Luxusurlaub in"
+                    "fr-CH" = "Vos vacances de luxe à"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Booking Hero Banner"
+            TemplatePath = "Feature/Booking/View Booking/Booking Hero Banner"
+            Id          = [GUID]"{50CC5057-CE3B-4185-A60C-20CCBD083466}"
+            Fields      = @{
+                           "AltTextAbove" = @{
+                    "de-CH" = "Ihr Luxusurlaub in"
+                    "en" = "Your luxury holiday to"
+                    "fr-FR" = "Vos vacances de luxe à"
+                    "de-DE" = "Ihr Luxusurlaub in"
+                    "fr-CH" = "Vos vacances de luxe à"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirmation/Page Components/Booking Hero Banner"
+            TemplatePath = "Feature/Booking/View Booking/Booking Hero Banner"
+            Id          = [GUID]"{B4622C08-11AD-4346-A268-947E3246D1FE}"
+            Fields      = @{
+                           "AltTextAbove" = @{
+                    "de-CH" = "Ihr Luxusurlaub in"
+                    "en" = "Your luxury holiday to"
+                    "fr-FR" = "Vos vacances de luxe à"
+                    "de-DE" = "Ihr Luxusurlaub in"
+                    "fr-CH" = "Vos vacances de luxe à"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking/Page Components/Booking Hero Banner"
+            TemplatePath = "Feature/Booking/View Booking/Booking Hero Banner"
+            Id          = [GUID]"{278257CC-BEC7-44E9-8711-147BCC555948}"
+            Fields      = @{
+                           "AltTextAbove" = @{
+                    "de-CH" = "Ihr Luxusurlaub in"
+                    "en" = "Your luxury holiday to"
+                    "fr-FR" = "Vos vacances de luxe à"
+                    "de-DE" = "Ihr Luxusurlaub in"
+                    "fr-CH" = "Vos vacances de luxe à"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999939
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250710T105001Z

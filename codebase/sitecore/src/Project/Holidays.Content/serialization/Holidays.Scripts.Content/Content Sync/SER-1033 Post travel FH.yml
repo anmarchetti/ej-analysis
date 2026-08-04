@@ -1,0 +1,297 @@
+﻿---
+ID: "b1fad6d1-41a3-4278-badd-6239d876ecd2"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-1033 Post travel FH"
+DB: master
+SharedFields:
+    - ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+      Hint: Script
+      Value: |
+          Import-Function "Import Content"
+              
+                       #   Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Special Requests F and H" -Recurse -Permanent
+              
+                                 function Get-RenderingFromPage {
+                                 param (
+                                     [string]$PagePath,
+                                     [string]$RenderingId,
+                                     [int]$Index = 0
+                                 )
+                                 $item = Get-Item -Path $PagePath
+                                 $layoutField = New-Object -TypeName "Sitecore.Data.Fields.LayoutField" -ArgumentList $item
+                                 if ([string]::IsNullOrEmpty($layoutField.Value)) { return $null }
+              
+                                 $layoutXml = [Sitecore.Layouts.LayoutDefinition]::Parse($layoutField.Value)
+                                 $device = $layoutXml.Devices[0]
+              
+                                 $matchingRenderings = @($device.Renderings | Where-Object { $_.ItemID -eq $RenderingId })
+              
+                                 if ($Index -lt $matchingRenderings.Count) {
+                                     $rendering = $matchingRenderings[$Index]
+                                     return @{
+                                         Placeholder = $rendering.Placeholder
+                                         UniqueId = $rendering.UniqueId
+                                         Parameters = $rendering.Parameters
+                                         DataSource = $rendering.Datasource
+                                     }
+                                 }
+                                 return $null
+                                 }
+              
+                                 function Get-PageConfiguration {
+                                 param (
+                                     [Parameter(Mandatory=$true)] [string]$PagePath
+                                 )
+              
+              
+                                 filter ConvertTo-Params {
+                                     param($ds, $ph, $extraParams)
+                                     $p = [ordered]@{
+                                         "Placeholder"           = $ph
+                                         "Data Source"            = $ds
+                                     }
+                                 $params = ($p.Keys | ForEach-Object { 
+                                         $k = [System.Web.HttpUtility]::UrlEncode($_).Replace("%20", "+")
+                                         $v = [System.Web.HttpUtility]::UrlEncode($p[$_]).Replace("%20", "+")
+                                         "$k=$v"
+                                     }) -join "&"
+                                     if (-not [string]::IsNullOrEmpty($extraParams)) {
+                                         $params += "&$extraParams"
+                                     }
+                                     return $params
+                                 }
+              
+                                 $renderings = @(
+                                     @{ id = "{C30624AB-A71F-492A-ADFF-73A1952FF024}"} #context provider
+                                     @{ id = "{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}"; ds = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Booking Hero Banner"} #booking hero banner
+                                     @{ id = "{3C4B5E64-BD84-48D9-83BE-01D3017B7843}"} #breadcrumbs static
+                                     @{ id = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"} #component wrapper
+                                     @{ id = "{A266310A-FCBC-46A1-80C8-3AECB4F06727}"} #booking toolbar
+                                     @{ id = "{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}"; ds = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Hotel Summary"} #hotel summary
+                                     @{ id = "{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}"; index = 1; readFromPage = $true; ds = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Hotel Summary" } #hotel summary (2nd instance, in toolbar)
+                                     @{ id = "{9AA0CE7E-FB69-49BC-B39E-E92EE4A6631D}"} #disruption banner
+                                     @{ id = "{6615BDBE-E40B-4166-972A-5754B34A1F0E}"} #masonry wrapper
+                                     @{ id = "{630D2676-483E-420D-8F04-4C15212F3EFF}"} #masonry wrapper item
+                                     @{ id = "{D80590E8-7A27-422E-95E2-D7A686A9206C}"; ds = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Contact Us Banner"} #contact us banner
+                                   #   @{ id = "{1153FDBF-CE73-4BB6-A9D0-949435EA7F57}"} # social banner
+                                     @{ id = "{95E5B1D2-6632-46F6-99DC-D78BB4C9D5A5}"} #feedback banner
+                                   #   @{ id = "{9548AF18-BCAB-4DAE-A754-B3A99C14A429}"} #full width banner
+                                     @{ id = "{5A4E2577-32C2-420F-9F52-494394DA3364}"} #inspire me banner
+                                     @{ id = "{E78B6A7E-0EC5-4324-A290-971EE74C1FC8}"} #generic recommended hotels
+                                 )
+              
+              
+                                 $simpleList = @()
+                             $complexMapping = @()
+              
+                         # Count rendering IDs that need mapping to detect duplicates
+                         $dsRenderingIdCounts = @{}
+                         foreach ($r in $renderings) {
+                             if (($null -ne $r.ds -and $r.ds -ne "") -or $r.readFromPage -eq $true) {
+                                 if ($dsRenderingIdCounts.ContainsKey($r.id)) { $dsRenderingIdCounts[$r.id]++ } else { $dsRenderingIdCounts[$r.id] = 1 }
+                             }
+                         }
+              
+                         foreach ($r in $renderings) {
+                                 if ($simpleList -notcontains $r.id) {
+                                     $simpleList += $r.id
+                                 }
+                                 $finalDs = ""
+              
+                                 if ($null -ne $r.ds -and $r.ds -ne "") {
+              
+                                     $renderingIndex = if ($null -ne $r.index) { [int]$r.index } else { 0 }
+                                     $renderingInfo = Get-RenderingFromPage -PagePath "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel" -RenderingId $r.id -Index $renderingIndex
+                                     $currentPh = if ($null -ne $renderingInfo) { $renderingInfo.Placeholder } else { "" }
+                                     $uniqueId = if ($null -ne $renderingInfo) { $renderingInfo.UniqueId } else { "" }
+                                     $extraParams = if ($null -ne $renderingInfo -and -not [string]::IsNullOrEmpty($renderingInfo.Parameters)) { $renderingInfo.Parameters } else { "" }
+              
+                                     $sourceItem = Get-Item -Path $r.ds
+                                     $newName = "$($sourceItem.Name) F and H"
+                                     $parentPath = $sourceItem.Parent.Paths.FullPath
+                                     $targetPath = "$parentPath/$newName"
+              
+                                     $existingItem = Get-Item -Path $targetPath -ErrorAction SilentlyContinue
+              
+                                    if ($null -eq $existingItem) {
+                                         $duplicateItem = $sourceItem.Duplicate()
+              
+                                         $duplicateItem.Editing.BeginEdit()
+                                         try {
+                                             $duplicateItem.Name = $newName
+                                             $duplicateItem["__Display name"] = "$($sourceItem.Name) F&H"
+                                         } finally {
+                                             $duplicateItem.Editing.EndEdit() | Out-Null
+                                         }
+              
+                                         $duplicateItem = Get-Item -Path "$parentPath/$newName"
+              
+                                         $childMapping = @{}
+                                         function Build-ChildMapping {
+                                             param($SourceParent, $DuplicateParent, [hashtable]$Mapping)
+                                             foreach ($oldChild in $SourceParent.Children) {
+                                                 $newChild = $DuplicateParent.Children | Where-Object { $_.Name -eq $oldChild.Name }
+                                                 if ($null -ne $newChild) {
+                                                     $Mapping[$oldChild.ID.ToString()] = $newChild.ID.ToString()
+                                                     Build-ChildMapping -SourceParent $oldChild -DuplicateParent $newChild -Mapping $Mapping
+                                                 } else {
+                                                     Write-Host "WARNING: No match for '$($oldChild.Name)' in duplicate!" -ForegroundColor Red
+                                                 }
+                                             }
+                                         }
+                                         Build-ChildMapping -SourceParent $sourceItem -DuplicateParent $duplicateItem -Mapping $childMapping
+                                         Write-Host "Total mapping entries (recursive): $($childMapping.Count)" -ForegroundColor Cyan
+              
+                                         $duplicateItem.Fields.ReadAll()
+                                         $duplicateItem.Editing.BeginEdit()
+                         try {
+                             foreach ($field in $duplicateItem.Fields) {
+                                 if ($field.Name.StartsWith("__") -or [string]::IsNullOrEmpty($field.Value)) { continue }
+              
+                                 $fieldValue = $field.Value
+                                 $isFieldUpdated = $false
+              
+                                 foreach ($oldId in $childMapping.Keys) {
+                                     if ($fieldValue.ToLower().Contains($oldId.ToLower())) {
+                                         $newId = $childMapping[$oldId]
+                                         $fieldValue = $fieldValue -ireplace [regex]::Escape($oldId), $newId
+                                         $isFieldUpdated = $true
+                                     }
+                                 }
+              
+                                 if ($isFieldUpdated) {
+                                     $duplicateItem[$field.Name] = $fieldValue
+                                     Write-Host "Auto-fixed field '$($field.Name)' in '$newName'" -ForegroundColor Magenta
+                                 }
+                             }
+                         } finally {
+                             $duplicateItem.Editing.EndEdit() | Out-Null
+                         }
+              
+                         function Update-DescendantFields {
+                             param($ParentItem, [hashtable]$Mapping)
+                             foreach ($child in $ParentItem.Children) {
+                                 $child.Fields.ReadAll()
+                                 $child.Editing.BeginEdit()
+                                 $childUpdated = $false
+                                 try {
+                                     foreach ($field in $child.Fields) {
+                                         if ($field.Name.StartsWith("__") -or [string]::IsNullOrEmpty($field.Value)) { continue }
+              
+                                         $fieldValue = $field.Value
+                                         $isFieldUpdated = $false
+              
+                                         foreach ($oldId in $Mapping.Keys) {
+                                             if ($fieldValue.ToLower().Contains($oldId.ToLower())) {
+                                                 $newId = $Mapping[$oldId]
+                                                 Write-Host "  Replacing '$oldId' -> '$newId' in field '$($field.Name)' on '$($child.Name)'" -ForegroundColor Yellow
+                                                 $fieldValue = $fieldValue -ireplace [regex]::Escape($oldId), $newId
+                                                 $isFieldUpdated = $true
+                                             }
+                                         }
+              
+                                         if ($isFieldUpdated) {
+                                             $child[$field.Name] = $fieldValue
+                                             $childUpdated = $true
+                                             Write-Host "Auto-fixed field '$($field.Name)' in '$($child.Name)'" -ForegroundColor Magenta
+                                         }
+                                     }
+                                 } finally {
+                                     if ($childUpdated) {
+                                         $child.Editing.EndEdit() | Out-Null
+                                     } else {
+                                         $child.Editing.CancelEdit()
+                                     }
+                                 }
+                                 Update-DescendantFields -ParentItem $child -Mapping $Mapping
+                             }
+                         }
+                         Update-DescendantFields -ParentItem $duplicateItem -Mapping $childMapping
+              
+                                         $finalDs = $duplicateItem.ID.ToString()
+                                     } else {
+                                         $finalDs = $existingItem.ID.ToString()
+                                     }
+              
+                                     $pString = ConvertTo-Params -ds $finalDs -ph $currentPh -extraParams $extraParams
+                                     $mappingEntry = "$($r.id):$($r.id):$pString"
+                                     if ($dsRenderingIdCounts[$r.id] -gt 1 -and -not [string]::IsNullOrEmpty($uniqueId)) {
+                                         $mappingEntry += ":$uniqueId"
+                                     }
+                                     $complexMapping += $mappingEntry
+              
+                                     Write-Host "Mapped with DS: $($r.id) $(if ($uniqueId) { "UniqueId=$uniqueId" })" -ForegroundColor Green
+                                 } elseif ($r.readFromPage -eq $true) {
+                                     # Read all properties from page layout without duplicating data source
+                                     $renderingIndex = if ($null -ne $r.index) { [int]$r.index } else { 0 }
+                                     $renderingInfo = Get-RenderingFromPage -PagePath "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel" -RenderingId $r.id -Index $renderingIndex
+                                     if ($null -ne $renderingInfo) {
+                                         $currentPh = $renderingInfo.Placeholder
+                                         $uniqueId = $renderingInfo.UniqueId
+                                         $extraParams = if (-not [string]::IsNullOrEmpty($renderingInfo.Parameters)) { $renderingInfo.Parameters } else { "" }
+                                         $pageDs = $renderingInfo.DataSource
+                                         if ([string]::IsNullOrEmpty($pageDs)) { $pageDs = "" }
+              
+                                         $pString = ConvertTo-Params -ds $pageDs -ph $currentPh -extraParams $extraParams
+                                         $mappingEntry = "$($r.id):$($r.id):$pString"
+                                         if ($dsRenderingIdCounts[$r.id] -gt 1 -and -not [string]::IsNullOrEmpty($uniqueId)) {
+                                             $mappingEntry += ":$uniqueId"
+                                         }
+                                         $complexMapping += $mappingEntry
+                                         Write-Host "Mapped from page: $($r.id) Index=$renderingIndex UniqueId=$uniqueId" -ForegroundColor Cyan
+                                     } else {
+                                         Write-Host "WARNING: Rendering $($r.id) index $renderingIndex not found on page!" -ForegroundColor Red
+                                     }
+                                 } else {
+                                     Write-Host "Skipped in mapping (no DS): $($r.id)" -ForegroundColor Gray
+                                 }
+                             }
+              
+                                     $item = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider"
+                                     $currentValue = $item["Pages"]
+              
+                                 return @(
+                                     @{
+                                     Path         = $PagePath
+                                     TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+                                     Fields       = @{
+                                         "RenderingReplacements" = @{ "en" = ($complexMapping -join "|") }
+                                         "AllowedRenderings"  = @{ "en" = ($simpleList -join "|") }
+                                     }
+                                 }
+                                 )
+                                 }
+              
+                         $updates = Get-PageConfiguration -PagePath "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Post Travel"
+                         ImportContent -itemsToCreate $updates
+              
+                         $content = @(
+                                                   @{
+                                                     Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Contact Us Banner F and H/Post travel"
+                                                     TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Popup Channel"
+                                                     Fields      = @{
+                                                          "Description" = @{
+                                                             "en" = "<p>If you need to speak to our team about your recent trip, please fill in {contactFormLink} with all the details we ask for and need. We&rsquo;ll do our best to respond to your message within 28 days.</p>"
+                                                             "fr-CH" = ""
+                                                             "de-CH" = ""
+                                                             "fr-FR" =""
+                                                             "de-DE" = ""
+                                                         }
+                                                     }
+                                                  }
+                                     )
+              
+                                 ImportContent -itemsToCreate $content
+Languages:
+    - Language: en
+      Versions:
+          - Version: 1
+            Fields:
+                - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+                  Hint: __Created
+                  Value: 20260601T100529Z
+                - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+                  Hint: __Created by
+                  Value: |
+                      sitecore\Admin

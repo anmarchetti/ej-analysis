@@ -1,0 +1,374 @@
+﻿---
+ID: "b1757f6e-cfbe-493a-93a9-9bf2bc061ae6"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/6 - SER-788 - Claim Expenses form"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form"
+                Fields      = @{
+                    "FormTitle" = @{
+                        "en" = "Expenses"
+                        "fr-CH" = "Dépenses"
+                        "de-CH" = "Ausgaben"
+                        "fr-FR" = "Dépenses"
+                        "de-DE" = "Ausgaben"
+                    }
+                    "FormIcon" = @{
+                        "en" = '<image mediaid="{43693C3A-DD64-4505-9E02-41983861BA43}" alt="cash" height="" width="" hspace="" vspace="" />'
+                    }
+                    "EligibleItemsSectionTitle" = @{
+                        "en" = 'May be able to claim for'
+                        "fr-CH" = 'Peut être en mesure de réclamer pour'
+                        "de-CH" = 'Möglicherweise kann ein Anspruch geltend gemacht werden für'
+                        "fr-FR" = 'Peut être en mesure de réclamer pour'
+                        "de-DE" = 'Möglicherweise kann ein Anspruch geltend gemacht werden für'
+                    }
+                    "EligibleItemsDescription" = @{
+                        "en" = "In the unlikely event we couldn't arrange a hotel, meal or transport for you on the day of your disrupted flight, provided you keep your receipts, you may be able to claim reasonable expenses for:"
+                        "fr-CH" = "Dans le cas improbable où nous ne pourrions pas vous trouver d'hôtel, de repas ou de transport le jour de votre vol perturbé, vous pourrez, à condition de conserver vos reçus, demander le remboursement des frais raisonnables engagés pour:"
+                        "de-CH" = "Für den unwahrscheinlichen Fall, dass wir am Tag Ihres gestörten Fluges kein Hotel, keine Mahlzeit und keinen Transport für Sie organisieren konnten, können Sie unter Vorlage Ihrer Belege möglicherweise angemessene Kosten geltend machen für:"
+                        "fr-FR" = "Dans le cas improbable où nous ne pourrions pas vous trouver d'hôtel, de repas ou de transport le jour de votre vol perturbé, vous pourrez, à condition de conserver vos reçus, demander le remboursement des frais raisonnables engagés pour:"
+                        "de-DE" = "Für den unwahrscheinlichen Fall, dass wir am Tag Ihres gestörten Fluges kein Hotel, keine Mahlzeit und keinen Transport für Sie organisieren konnten, können Sie unter Vorlage Ihrer Belege möglicherweise angemessene Kosten geltend machen für:"
+                    }
+                    "NotEligibleItemsSectionTitle" = @{
+                        "en" = "Can’t claim for"
+                        "fr-CH" = "Ne peut pas prétendre à"
+                        "de-CH" = "Kann nicht geltend machen für"
+                        "fr-FR" = "Ne peut pas prétendre à"
+                        "de-DE" = "Kann nicht geltend machen für"
+                    }
+                    "NotEligibleItemsDescription" = @{
+                        "en" = ''
+                        "fr-CH" = ''
+                        "de-CH" = ''
+                        "fr-FR" = ''
+                        "de-DE" = ''
+                    }
+                    "InstructionsSectionTitle" = @{
+                        "en" = 'Ready to claim?'
+                        "fr-CH" = "Prêt à faire valoir vos droits ?"
+                        "de-CH" = "Bereit zum Einlösen?"
+                        "fr-FR" = "Prêt à faire valoir vos droits ?"
+                        "de-DE" = "Bereit zum Einlösen?"
+                    }
+                    "InstructionsSectionDescription" = @{
+                        "en" = @'
+    If you’re eligible based on the above information, you'll need to complete this   
+    form. You must attach receipts, with date and currency shown, for the items   
+    you're claiming back. <a href="https://www.easyjet.com/en/terms-and-conditions/notice-of-rights-for-flight-delays-and-cancellations"><strong><span style="text-decoration: underline;">See your rights here</span></strong></a>
+    '@
+                        "fr-CH" = @'
+    Si vous êtes éligible sur la base des informations ci-dessus, vous devrez remplir ce   
+    formulaire. Vous devez joindre les reçus, avec la date et la devise indiquées, pour les articles   
+    que vous demandez à vous faire rembourser. <a href="https://www.easyjet.com/fr/terms-and-conditions/notice-of-rights-for-flight-delays-and-cancellations"><strong><span style="text-decoration: underline;">Consultez vos droits ici</span></strong></a>
+    '@
+                        "de-CH" = @'
+    Wenn Sie aufgrund der oben genannten Informationen anspruchsberechtigt sind, müssen Sie dieses   
+    Formular ausfüllen. Sie müssen Quittungen mit Datum und Währungsangabe für die Artikel beifügen,   
+    die Sie zurückfordern. <a href="https://www.easyjet.com/de/terms-and-conditions/notice-of-rights-for-flight-delays-and-cancellations"><strong><span style="text-decoration: underline;">Informieren Sie sich hier über Ihre Rechte</span></strong></a>
+    '@
+                        "fr-FR" = @'
+    Si vous êtes éligible sur la base des informations ci-dessus, vous devrez remplir ce   
+    formulaire. Vous devez joindre les reçus, avec la date et la devise indiquées, pour les articles   
+    que vous demandez à vous faire rembourser. <a href="https://www.easyjet.com/fr/terms-and-conditions/notice-of-rights-for-flight-delays-and-cancellations"><strong><span style="text-decoration: underline;">Consultez vos droits ici</span></strong></a>
+    '@
+                        "de-DE" = @'
+    Wenn Sie aufgrund der oben genannten Informationen anspruchsberechtigt sind, müssen Sie dieses   
+    Formular ausfüllen. Sie müssen Quittungen mit Datum und Währungsangabe für die Artikel beifügen,   
+    die Sie zurückfordern. <a href="https://www.easyjet.com/de/terms-and-conditions/notice-of-rights-for-flight-delays-and-cancellations"><strong><span style="text-decoration: underline;">Informieren Sie sich hier über Ihre Rechte</span></strong></a>
+    '@
+                    }
+                    "OpenFormButtonLabel" = @{
+                        "en" = 'Start your expenses claim'
+                        "fr-CH" = "Commencez votre demande de remboursement de frais"
+                        "de-CH" = "Beginnen Sie mit Ihrer Spesenabrechnung"
+                        "fr-FR" = "Commencez votre demande de remboursement de frais"
+                        "de-DE" = "Beginnen Sie mit Ihrer Spesenabrechnung"
+                    }
+                    "InstructionsSectionAdditionalDescription" = @{
+                        "en" = @'
+    <span style="font-family: 'easyjet_rounded_demi'; font-weight: 400; color: #6B6B6B;">Additional advice:</span><span style="font-family: 'easyjet_rounded_book'; color: #6B6B6B;"> Your insurance provider may cover costs that easyJet holidays cannot.</span>
+    '@
+                        "fr-CH" = @'
+    <span style="font-family: “easyjet_rounded_demi”; font-weight: 400; color: #6B6B6B;">Conseil supplémentaire :</span><span style="font-family: “easyjet_rounded_book”; color: #6B6B6B;"> Votre assureur peut couvrir les frais qui ne sont pas pris en charge par easyJet holidays. </span>
+    '@
+                        "de-CH" = @'
+    <span style="font-family: ‚easyjet_rounded_demi‘; font-weight: 400; color: #6B6B6B;">Zusätzlicher Hinweis:</span><span style="font-family: ‚easyjet_rounded_book‘; color: #6B6B6B;"> Ihr Versicherer übernimmt möglicherweise Kosten, die easyJet holidays nicht übernimmt. </span>
+    '@
+                        "fr-FR" = @'
+    <span style="font-family: “easyjet_rounded_demi”; font-weight: 400; color: #6B6B6B;">Conseil supplémentaire :</span><span style="font-family: “easyjet_rounded_book”; color: #6B6B6B;"> Votre assureur peut couvrir les frais qui ne sont pas pris en charge par easyJet holidays. </span>
+    '@
+                        "de-DE" = @'
+    <span style="font-family: ‚easyjet_rounded_demi‘; font-weight: 400; color: #6B6B6B;">Zusätzlicher Hinweis:</span><span style="font-family: ‚easyjet_rounded_book‘; color: #6B6B6B;"> Ihr Versicherer übernimmt möglicherweise Kosten, die easyJet holidays nicht übernimmt. </span>
+    '@
+                    }
+                    "OpenFormButtonLink" = @{
+                        "en" = "<link linktype=""external"" url=""https://www.easyjet.com/claim/en/welfare"" anchor="""" target=""_blank"" rel="""" />"
+                        "fr-CH" = "<link linktype=""external"" url=""https://www.easyjet.com/claim/fr/welfare"" anchor="""" target=""_blank"" rel="""" />"
+                        "de-CH" = "<link linktype=""external"" url=""https://www.easyjet.com/claim/de/welfare"" anchor="""" target=""_blank"" rel="""" />"
+                        "fr-FR" = "<link linktype=""external"" url=""https://www.easyjet.com/claim/fr/welfare"" anchor="""" target=""_blank"" rel="""" />"
+                        "de-DE" = "<link linktype=""external"" url=""https://www.easyjet.com/claim/de/welfare"" anchor="""" target=""_blank"" rel="""" />"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "800"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form/Eligible Items"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Eligible Items Folder"
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form/Eligible Items/Hotels"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "Hotels (3 stars or equivalent), reasonable food and soft drinks while waiting for your new flight"
+                        "fr-CH" = "Hôtels (3 étoiles ou équivalent), repas et boissons non alcoolisées raisonnables pendant l'attente de votre nouveau vol"
+                        "de-CH" = "Hotels (3 Sterne oder gleichwertig), angemessene Verpflegung und alkoholfreie Getränke während der Wartezeit auf Ihren neuen Flug"
+                        "fr-FR" = "Hôtels (3 étoiles ou équivalent), repas et boissons non alcoolisées raisonnables pendant l'attente de votre nouveau vol"
+                        "de-DE" = "Hotels (3 Sterne oder gleichwertig), angemessene Verpflegung und alkoholfreie Getränke während der Wartezeit auf Ihren neuen Flug"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form/Eligible Items/Transport"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "Standard class or shared transport home from a different UK airport to coincide with your revised travel plans"
+                        "fr-CH" = "Transport standard ou partagé depuis un autre aéroport britannique vers votre domicile, en fonction de vos nouveaux plans de voyage."
+                        "de-CH" = "Standardklasse oder Sammeltransfer von einem anderen britischen Flughafen nach Hause, passend zu Ihren geänderten Reiseplänen"
+                        "fr-FR" = "Transport standard ou partagé depuis un autre aéroport britannique vers votre domicile, en fonction de vos nouveaux plans de voyage."
+                        "de-DE" = "Standardklasse oder Sammeltransfer von einem anderen britischen Flughafen nach Hause, passend zu Ihren geänderten Reiseplänen"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form/Eligible Items/Missed Flights"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "Missed flight extras (e.g. selected seats or large cabin bags)"
+                        "fr-CH" = "Suppléments pour vol manqué (par exemple, sièges sélectionnés ou bagages à main volumineux)"
+                        "de-CH" = "Extras für verpasste Flüge (z. B. ausgewählte Sitzplätze oder großes Handgepäck)"
+                        "fr-FR" = "Suppléments pour vol manqué (par exemple, sièges sélectionnés ou bagages à main volumineux)"
+                        "de-DE" = "Extras für verpasste Flüge (z. B. ausgewählte Sitzplätze oder großes Handgepäck)"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "300"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form/Eligible Items/Booked activites"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "Booked activities through our partner Musement"
+                        "fr-CH" = "Activités réservées via notre partenaire Musement"
+                        "de-CH" = "Über unseren Partner Musement gebuchte Aktivitäten"
+                        "fr-FR" = "Activités réservées via notre partenaire Musement"
+                        "de-DE" = "Über unseren Partner Musement gebuchte Aktivitäten"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "400"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form/Not Eligible Items"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Not Eligible Items Folder"
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form/Not Eligible Items/Pre booked hotel"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "Pre-booked hotel stays"
+                        "fr-CH" = "Séjours hôteliers réservés à l'avance"
+                        "de-CH" = "Im Voraus gebuchte Hotelaufenthalte"
+                        "fr-FR" = "Séjours hôteliers réservés à l'avance"
+                        "de-DE" = "Im Voraus gebuchte Hotelaufenthalte"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form/Not Eligible Items/Airport parking"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "Airport parking"
+                        "fr-CH" = "Parking de l'aéroport"
+                        "de-CH" = "Flughafenparkplatz"
+                        "fr-FR" = "Parking de l'aéroport"
+                        "de-DE" = "Flughafenparkplatz"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form/Not Eligible Items/Car hire"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "Car hire"
+                        "fr-CH" = "Location de voitures"
+                        "de-CH" = "Autovermietung"
+                        "fr-FR" = "Location de voiture"
+                        "de-DE" = "Autovermietung"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "300"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form/Not Eligible Items/Missed activities"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "Missed activities, local tours or experiences"
+                        "fr-CH" = "Activités manquées, visites locales ou expériences"
+                        "de-CH" = "Verpasste Aktivitäten, lokale Touren oder Erlebnisse "
+                        "fr-FR" = "Activités manquées, visites locales ou expériences"
+                        "de-DE" = "Verpasste Aktivitäten, lokale Touren oder Erlebnisse "
+                    }
+                    "__Sortorder" = @{
+                        "en" = "400"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form/Not Eligible Items/Alcoholic drinks"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "Alcoholic drinks"
+                        "fr-CH" = "Boissons alcooliséess"
+                        "de-CH" = "Alkoholische Getränke"
+                        "fr-FR" = "Boissons alcoolisées"
+                        "de-DE" = "Alkoholische Getränke"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "500"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form/Not Eligible Items/Indirect costs"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "Indirect costs"
+                        "fr-CH" = "Coûts indirects"
+                        "de-CH" = "Indirekte Kostenr"
+                        "fr-FR" = "Coûts indirects"
+                        "de-DE" = "Indirekte Kosten"
+                    }
+                    "ItemTooltip" = @{
+                        "en" = "Missed days at work & missed appointments, medical bills, pet care"
+                        "fr-CH" = "Jours de travail manqués et rendez-vous manqués, frais médicaux, soins pour animaux domestiques"
+                        "de-CH" = "Fehltage bei der Arbeit und versäumte Termine, Arztrechnungen, Tierpflege"
+                        "fr-FR" = "Jours de travail manqués et rendez-vous manqués, frais médicaux, soins pour animaux domestiques"
+                        "de-DE" = "Fehltage bei der Arbeit und versäumte Termine, Arztrechnungen, Tierpflege"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "600"
+                    }
+                }
+            }
+        )
+        
+    ImportContent -itemsToCreate $updates
+    
+    $itemsNotEligible = Get-ChildItem -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form/Not Eligible Items" -Recurse
+    $idsNotEligible = ($itemsNotEligible | ForEach-Object { $_.ID }) -join "|"
+    
+    $itemsEligible = Get-ChildItem -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form/Eligible Items" -Recurse
+    $idsEligible = ($itemsEligible | ForEach-Object { $_.ID }) -join "|"
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form"
+                Fields      = @{
+                    "EligibleItems" = @{
+                        "en" = $idsEligible
+                        "fr-CH" = $idsEligible
+                        "de-CH" = $idsEligible
+                        "fr-FR" = $idsEligible
+                        "de-DE" = $idsEligible
+                    }
+                    "NotEligibleItems" = @{
+                        "en" = $idsNotEligible
+                        "fr-CH" = $idsNotEligible
+                        "de-CH" = $idsNotEligible
+                        "fr-FR" = $idsNotEligible
+                        "de-DE" = $idsNotEligible
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses - Section Title"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "CLAIM EXPENSES"
+                        "fr-CH" = "FRAIS DE RÉCLAMATION"
+                        "de-CH" = "AUSGABEN FÜR FORDERUNGEN"
+                        "fr-FR" = "FRAIS DE RÉCLAMATION"
+                        "de-DE" = "AUSGABEN FÜR FORDERUNGEN"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "700"
+                    }
+                }
+            }
+        )
+        
+    ImportContent -itemsToCreate $updates
+    
+    $page= Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption"
+    $componentWrapper = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper"
+    $renderingComponentWrapper = New-Rendering -Item $componentWrapper
+    
+    Add-Rendering -Item $page -PlaceHolder "/body" -Instance $renderingComponentWrapper -Index 10 -Parameter @{ "PaddingTop" = "Padding Top 32px"; "PaddingTopMobile" = "Padding Top Mobile 32px" }
+    $renderingComponentWrapper = Get-Rendering -Item $page -Rendering $componentWrapper
+    
+    $textBlock = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/Text Block"
+    $renderingTextBlock = New-Rendering -Item $textBlock
+    Add-Rendering -Item $page -PlaceHolder "/body/component-wrapper-inner-$($renderingComponentWrapper[3].UniqueId)-0" -Instance $renderingTextBlock -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses - Section Title" -Parameter @{ "TitleTag" = "h2"; "TitleFontStyle" = "rounded demi"; "TitleFontSize" = "Mobile - 20px Desktop - 32px"; "TitleWeight" = 400; "PaddingSize" = "0px"; "IsIconAboveTitle" = "0" } -Index 11 
+    
+    $Form = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/Claim Form"
+    $renderingForm = New-Rendering -Item $Form
+    Add-Rendering -Item $page -PlaceHolder "/body/component-wrapper-inner-$($renderingComponentWrapper[3].UniqueId)-0" -Instance $renderingForm -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form" -Index 12 
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

@@ -1,0 +1,305 @@
+﻿---
+ID: "c3870159-35b9-43bb-a7b1-2696af602055"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-1726 Footer Payment Icons"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $parentPath = "master:\sitecore\content\EasyJet\Holidays\Data\Images\Payments"
+    $itemName = "Apple Pay"
+    $itemId = "{D2009899-010F-431F-8B4A-8EA81013896A}"
+    $templateId = "{7E3ECDBA-C8C9-4E1C-8107-CDE554C0FD6D}"
+    $imageryTemplateId = "{985AABD0-2571-40DA-8EDC-88EA08127551}"
+    $imageFieldValue = '<image mediaid="{D7AE919A-C21B-47E4-A459-CEFB364CBB4B}" />'
+    $localizedLanguages = @("de-CH", "de-DE", "fr-CH", "fr-FR")
+    
+    function Set-ItemFieldValueSafe {
+        param (
+            [Parameter(Mandatory = $true)] $TargetItem,
+            [Parameter(Mandatory = $true)] [string] $FieldName,
+            [Parameter(Mandatory = $true)] [string] $FieldValue
+        )
+    
+        $TargetItem.Editing.BeginEdit()
+        try {
+            $TargetItem[$FieldName] = $FieldValue
+        }
+        finally {
+            $TargetItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    function Get-LocalizedImageFieldValue {
+        param (
+            [Parameter(Mandatory = $true)] [string] $BaseImageFieldValue,
+            [Parameter(Mandatory = $true)] [string] $LanguageName
+        )
+    
+        $mediaIdMatch = [regex]::Match($BaseImageFieldValue, 'mediaid="(\{[0-9A-Fa-f\-]+\})"')
+        if (-not $mediaIdMatch.Success) {
+            return $BaseImageFieldValue
+        }
+    
+        $mediaId = $mediaIdMatch.Groups[1].Value
+        $database = [Sitecore.Configuration.Factory]::GetDatabase("master")
+        $parsedMediaId = [Sitecore.Data.ID]::Parse($mediaId)
+        $targetLanguage = [Sitecore.Globalization.Language]::Parse($LanguageName)
+        $enLanguage = [Sitecore.Globalization.Language]::Parse("en")
+    
+        $mediaItem = $database.GetItem($parsedMediaId, $targetLanguage)
+        $altText = $null
+        if ($null -ne $mediaItem) {
+            $altText = $mediaItem["Alt"]
+        }
+    
+        if ([string]::IsNullOrWhiteSpace($altText)) {
+            $enMediaItem = $database.GetItem($parsedMediaId, $enLanguage)
+            if ($null -ne $enMediaItem) {
+                $altText = $enMediaItem["Alt"]
+            }
+        }
+    
+        if ([string]::IsNullOrWhiteSpace($altText)) {
+            return "<image mediaid=`"$mediaId`" />"
+        }
+    
+        $escapedAltText = [System.Security.SecurityElement]::Escape($altText)
+        return "<image mediaid=`"$mediaId`" alt=`"$escapedAltText`" />"
+    }
+    
+    function Set-LocalizedImageField {
+        param (
+            [string] $TargetItemPath,
+            [string] $TargetImageFieldValue,
+            [string[]] $Languages
+        )
+    
+        $enItem = Get-Item -Path $TargetItemPath -Language "en" -ErrorAction SilentlyContinue
+        if ($null -eq $enItem) {
+            Add-ItemVersion -Path $TargetItemPath -TargetLanguage "en" -IfExist Skip | Out-Null
+            $enItem = Get-Item -Path $TargetItemPath -Language "en" -ErrorAction SilentlyContinue
+        }
+    
+        if ($null -eq $enItem) {
+            Write-Host "Could not get 'en' version for '$TargetItemPath'. Skipping Image field update."
+            return
+        }
+    
+        Set-ItemFieldValueSafe -TargetItem $enItem -FieldName "Image" -FieldValue $TargetImageFieldValue
+    
+        foreach ($language in $Languages) {
+            Add-ItemVersion -Path $TargetItemPath -Language "en" -TargetLanguage $language -IfExist Skip | Out-Null
+            $localizedItem = Get-Item -Path $TargetItemPath -Language $language -ErrorAction SilentlyContinue
+    
+            if ($null -ne $localizedItem) {
+                $localizedImageFieldValue = Get-LocalizedImageFieldValue -BaseImageFieldValue $TargetImageFieldValue -LanguageName $language
+                Set-ItemFieldValueSafe -TargetItem $localizedItem -FieldName "Image" -FieldValue $localizedImageFieldValue
+            }
+        }
+    }
+    
+    $itemPath = "$parentPath\$itemName"
+    $item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+    
+    if ($null -eq $item) {
+        $item = New-Item `
+            -Path $parentPath `
+            -Name $itemName `
+            -ItemType $templateId `
+            -ForceId $itemId `
+            -Force
+    
+        Set-LocalizedImageField -TargetItemPath $itemPath -TargetImageFieldValue $imageFieldValue -Languages $localizedLanguages
+    
+        Write-Host "Created '$itemPath' and set Image field value: $imageFieldValue"
+    }
+    else {
+        Write-Host "Item already exists at '$itemPath'. Skipping create and Image field update."
+    }
+    
+    $existingPaymentImages = @(
+        @{ Name = "AXP"; MediaId = "{23D27718-C7F3-44BE-A0AB-0452323A6A65}" },
+        @{ Name = "Mastercard"; MediaId = "{A03142F5-ECA6-4627-BD36-9E0C29751777}" },
+        @{ Name = "Visa"; MediaId = "{D006EDDD-A05F-4B00-8073-AD1F792054B2}" },
+        @{ Name = "Maestro"; MediaId = "{18839287-E089-4420-A666-FEABB1CF5BAC}" }
+    )
+    
+    foreach ($paymentImage in $existingPaymentImages) {
+        $existingItemPath = "$parentPath\$($paymentImage.Name)"
+        $existingItem = Get-Item -Path $existingItemPath -ErrorAction SilentlyContinue
+    
+        if ($null -eq $existingItem) {
+            Write-Host "Item does not exist at '$existingItemPath'. Skipping Image field update."
+            continue
+        }
+    
+        $existingImageFieldValue = "<image mediaid=`"$($paymentImage.MediaId)`" />"
+        Set-LocalizedImageField -TargetItemPath $existingItemPath -TargetImageFieldValue $existingImageFieldValue -Languages $localizedLanguages
+    
+        Write-Host "Updated '$existingItemPath' Image field value to: $existingImageFieldValue"
+    }
+    
+    $imageItemsIds = @(
+        "{E59413C4-2FA1-4C65-A3FD-27FA6EB8AF23}",
+        "{D2009899-010F-431F-8B4A-8EA81013896A}",
+        "{DCCFC2B3-BC33-446D-A71B-4D0C4BE39925}",
+        "{12A3EFD9-BD0D-4C57-84D0-8DFF094837E2}",
+        "{68415C98-498F-4952-8F62-D3A93E9B8018}"
+    )
+    
+    $paymentsFolder = Get-Item -Path $parentPath -ErrorAction SilentlyContinue
+    if ($null -eq $paymentsFolder) {
+        Write-Host "Payments folder does not exist at '$parentPath'. Skipping Items field update."
+        return
+    }
+    
+    $desiredImageryTemplateId = [Sitecore.Data.ID]::Parse($imageryTemplateId)
+    if ($paymentsFolder.TemplateID -ne $desiredImageryTemplateId) {
+        $desiredPaymentsFolderTemplateItem = Get-Item -Path "master:" -ID $desiredImageryTemplateId -ErrorAction SilentlyContinue
+        if ($null -eq $desiredPaymentsFolderTemplateItem) {
+            Write-Host "Template not found: $imageryTemplateId. Skipping Payments item template update."
+        }
+        else {
+            $paymentsFolder.ChangeTemplate($desiredPaymentsFolderTemplateItem)
+            Write-Host "Changed template for '$parentPath' to: $imageryTemplateId"
+        }
+    }
+    else {
+        Write-Host "Template already set for '$parentPath'. Skipping Payments item template update."
+    }
+    
+    $existingChildIds = @($paymentsFolder.Children | ForEach-Object { $_.ID.ToString().ToUpperInvariant() })
+    $missingImageItemIds = @(
+        $imageItemsIds | Where-Object {
+            $existingChildIds -notcontains $_.ToUpperInvariant()
+        }
+    )
+    
+    if ($missingImageItemIds.Count -gt 0) {
+        Write-Host "Not all required items exist under '$parentPath'. Missing IDs: $($missingImageItemIds -join ', '). Skipping Items field update."
+        return
+    }
+    
+    $itemsFieldValue = $imageItemsIds -join "|"
+    
+    $paymentsFolderEn = Get-Item -Path $parentPath -Language "en" -ErrorAction SilentlyContinue
+    if ($null -eq $paymentsFolderEn) {
+        Add-ItemVersion -Path $parentPath -TargetLanguage "en" -IfExist Skip | Out-Null
+        $paymentsFolderEn = Get-Item -Path $parentPath -Language "en" -ErrorAction SilentlyContinue
+    }
+    
+    if ($null -eq $paymentsFolderEn) {
+        Write-Host "Could not get 'en' version for '$parentPath'. Skipping Items field update."
+        return
+    }
+    
+    Set-ItemFieldValueSafe -TargetItem $paymentsFolderEn -FieldName "Items" -FieldValue $itemsFieldValue
+    
+    foreach ($language in $localizedLanguages) {
+        Add-ItemVersion -Path $parentPath -Language "en" -TargetLanguage $language -IfExist Skip | Out-Null
+        $localizedPaymentsFolder = Get-Item -Path $parentPath -Language $language -ErrorAction SilentlyContinue
+    
+        if ($null -ne $localizedPaymentsFolder) {
+            Set-ItemFieldValueSafe -TargetItem $localizedPaymentsFolder -FieldName "Items" -FieldValue $itemsFieldValue
+        }
+    }
+    
+    Write-Host "Updated '$parentPath' Items field value to: $itemsFieldValue"
+    
+    $footerItemIds = @(
+        "{7F49CEF8-928F-4A3B-8AA2-429D28B2BB47}",
+        "{418569DB-8FDB-43E8-875B-97725D018C53}",
+        "{DD56FDD8-70A1-476D-B845-4CAA6D7A2C8B}",
+        "{44C4406C-5761-41DF-88EA-F22DAE6A006A}",
+        "{A10E609B-CB0D-4BF3-8F8A-1B08CE0D4FB2}",
+        "{BF3F5762-D298-4B7A-A28C-6DC1EC87215B}"
+    )
+    $imageryRenderingId = "{BC962612-BC42-4168-B796-60A80AC2B469}"
+    $insertBeforeRenderingItemId = "{B6732EB5-D407-4D55-B596-A0816C062804}"
+    $defaultRenderingPlaceholder = "/footer/footer-column-inner-{D96BF732-0300-46C9-9F4B-DB8691C4AA9A}-0"
+    $renderingPlaceholderByItemId = @{
+        "{BF3F5762-D298-4B7A-A28C-6DC1EC87215B}" = "/footer/footer-column-inner-{8066C0E3-AE40-4709-98F3-A17EEC0B808D}-0"
+    }
+    $paymentIconsDatasourceId = "{B2255883-A5D0-493A-A03C-DFB918E18865}"
+    
+    $renderingItem = Get-Item -Path "master:" -ID $imageryRenderingId -ErrorAction SilentlyContinue
+    $renderingDatasourceItem = Get-Item -Path "master:" -ID $paymentIconsDatasourceId -ErrorAction SilentlyContinue
+    
+    if ($null -eq $renderingItem) {
+        Write-Host "Rendering item not found: $imageryRenderingId. Skipping shared layout update."
+        return
+    }
+    
+    if ($null -eq $renderingDatasourceItem) {
+        Write-Host "Datasource item not found: $paymentIconsDatasourceId. Skipping shared layout update."
+        return
+    }
+    
+    foreach ($footerItemId in $footerItemIds) {
+        $footerItem = Get-Item -Path "master:" -ID $footerItemId -ErrorAction SilentlyContinue
+        if ($null -eq $footerItem) {
+            Write-Host "Target item not found: $footerItemId. Skipping shared layout update."
+            continue
+        }
+    
+        $renderingPlaceholder = if ($renderingPlaceholderByItemId.ContainsKey($footerItemId)) {
+            $renderingPlaceholderByItemId[$footerItemId]
+        }
+        else {
+            $defaultRenderingPlaceholder
+        }
+    
+        $existingSharedRendering = Get-Rendering -Item $footerItem | Where-Object {
+            $_.ItemID -eq $imageryRenderingId -and
+            $_.Placeholder -eq $renderingPlaceholder -and
+            $_.Datasource -eq $paymentIconsDatasourceId
+        } | Select-Object -First 1
+    
+        if ($null -eq $existingSharedRendering) {
+            $imageryRenderingInstance = New-Rendering -Item $renderingItem
+            $allRenderings = @(Get-Rendering -Item $footerItem)
+            $insertBeforeRendering = $allRenderings | Where-Object {
+                $_.Placeholder -eq $renderingPlaceholder -and
+                $_.ItemID -ieq $insertBeforeRenderingItemId
+            } | Select-Object -First 1
+    
+            if ($null -ne $insertBeforeRendering) {
+                $insertIndex = [array]::IndexOf($allRenderings, $insertBeforeRendering)
+                Add-Rendering `
+                    -Item $footerItem `
+                    -Instance $imageryRenderingInstance `
+                    -PlaceHolder $renderingPlaceholder `
+                    -DataSource $paymentIconsDatasourceId `
+                    -Index $insertIndex
+    
+                Write-Host "Added Imagery rendering $imageryRenderingId before rendering $insertBeforeRenderingItemId for item $footerItemId."
+            }
+            else {
+                Add-Rendering `
+                    -Item $footerItem `
+                    -Instance $imageryRenderingInstance `
+                    -PlaceHolder $renderingPlaceholder `
+                    -DataSource $paymentIconsDatasourceId
+    
+                Write-Host "Added Imagery rendering $imageryRenderingId to shared layout for item $footerItemId."
+            }
+        }
+        else {
+            Write-Host "Imagery rendering $imageryRenderingId already exists in shared layout for item $footerItemId. Skipping add."
+        }
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260324T132019Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,111 @@
+﻿---
+ID: "8a6e1da6-67a5-4bab-a463-b6c579d23632"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-15751 Set Seats Reservation Notification And Popup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # NOTIFICATIONS
+    function update-notification-fields ($item,$description) {
+    	if ($item -ne $null) {
+    		$item.Editing.BeginEdit();
+    		$item["SeatsReservationNotificationTitle"] = "Prices shown without seat reservations";
+    		$item["SeatsReservationNotificationDescription"] = $description;
+    		$item.Editing.EndEdit() | Out-Null;
+    		Write-Host $item.Name "is updated";
+    	}
+    }
+    
+    $alternativeFlights = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Hotel Details/Page Components/Alternative Flights" -ErrorAction SilentlyContinue;
+    $alternativeFlightsDescription = "The alternative flight prices shown below do not include the seats you have reserved at a value of {selectedSeatsPrice}. If you change your flights, you will have to pick new seats";
+    
+    update-notification-fields -Item $alternativeFlights -Description $alternativeFlightsDescription;
+    
+    $comparePriceModuleData = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Compare Price Modules/Price Graph and Calendar Module" -ErrorAction SilentlyContinue;
+    $comparePriceModuleDescription = "The alternative flight prices shown above do not include the seats you have reserved at a value of {selectedSeatsPrice}. If you change your flights, you will have to pick new seats";
+    
+    update-notification-fields -Item $comparePriceModuleData -Description $comparePriceModuleDescription;
+    
+    # POPUPS
+    function create-datasource-item ($name,$path,$templateId) {
+    	$item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue;
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $name -ItemType $templateId;
+    		return $item;
+    	}
+    
+    	return $item;
+    }
+    
+    $itemsToCreate = @(
+    	@{
+    		PagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking";
+    		Title = "There is a problem with your seats";
+    		Description = "One of more of the seats you have picked for your outbound flight are now unavailable.<br><br>" +
+    		"If you wish to reserve seats, you will have to pick new seats.";
+    		ReselectSeatsButtonText= "";
+    		ClearSeatsButtonText= "I understand";
+    	},
+    	@{
+    		PagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Guest Details";
+    		Title = "There is a problem with your seats";
+    		Description = "One of more of the seats you have picked for your outbound flight are now unavailable.<br><br>" +
+    		"You can continue with your booking without seats, and we will update the holiday price, or you can choose new seats.<br><br>" +
+    		"You can reverse seats after booking your holiday, up to 30 days before departure date.";
+    		ReselectSeatsButtonText= "Choose other seats";
+    		ClearSeatsButtonText= "Continue without seats";
+    	},
+    	@{
+    		PagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Payment";
+    		Title = "There is a problem with your seats";
+    		Description = "One of more of the seats you have picked for your outbound flight are now unavailable.<br><br>" +
+    		"You can continue with your booking without seats, and we will update the holiday price, or you can choose new seats.<br><br>" +
+    		"You can reverse seats after booking your holiday, up to 30 days before departure date.";
+    		ReselectSeatsButtonText= "Choose other seats";
+    		ClearSeatsButtonText= "Continue without seats";
+    	}
+    );
+    
+    foreach ($item in $itemsToCreate) {
+    	$page = Get-Item -Path $item.PagePath;
+    
+    	$datasourceName = "Seats Not Available Popup";
+    	$datasourceTemplateId = "{1F96DD24-930E-4314-8E10-BCFD27315288}";
+    	$datasourcePath = $item.PagePath + "/Page Components";
+    	$datasourceitem = create-datasource-item -Name $datasourceName -Path $datasourcePath -TemplateId $datasourceTemplateId;
+    
+    	if ($datasourceitem -ne $null) {
+    		$datasourceitem.Editing.BeginEdit();
+    		$datasourceitem["Title"] = $item.Title;
+    		$datasourceitem["Description"] = $item.Description;
+    		$datasourceitem["ReselectSeatsButtonText"] = $item.ReselectSeatsButtonText;
+    		$datasourceitem["ClearSeatsButtonText"] = $item.ClearSeatsButtonText;
+    		$datasourceitem.Editing.EndEdit() | Out-Null;
+    		Write-Host $datasourceitem.Name "is updated";
+    	}
+    
+    	$placeholder = "body";
+    	$renderingPath = "/sitecore/layout/Renderings/Feature/SeatMap/Seats Not Available Popup";
+    	$renderingId = "{8AE530B1-7702-48B7-A4B9-442E50845EFA}";
+    	$rendering = Get-Rendering -Item $page -PlaceHolder $renderigPlaceholder | Where-Object { $_.ItemId -eq $renderingId };
+    
+    	if ($rendering -eq $null) {
+    		$renderingItem = Get-Item -Database "master" -Path $renderingPath | New-Rendering -PlaceHolder $placeholder;
+    		Add-Rendering -Item $page -PlaceHolder $placeholder -Instance $renderingItem -DataSource $datasourceItem.ID;
+    		Write-Host "Seats Not Available Popup rendering successfully added to" $page.Name "page";
+    	}
+    } 
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1600
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200320T120848Z

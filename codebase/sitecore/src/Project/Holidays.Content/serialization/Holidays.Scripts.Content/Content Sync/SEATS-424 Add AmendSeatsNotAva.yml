@@ -1,0 +1,43 @@
+﻿---
+ID: "e11573e8-6975-498f-88ba-666ad5f5acdb"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SEATS-424 Add AmendSeatsNotAvailableMessage value to SeatsAndBags datasource"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    $holidaysSeatAndBags = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Data/Seat And Bags" -template "{27E19C52-90FB-44E3-BF71-9FAAC3FD7B0B}"
+    if ($holidaysSeatAndBags -ne $null){
+        $holidaysSeatAndBags.Editing.BeginEdit()
+        $holidaysSeatAndBags["AmendSeatsNotAvailableMessage"] = "Adding or changing seats is not currently available"
+        $holidaysSeatAndBags.Editing.EndEdit()
+    }
+    
+    $tradePortalSeatAndBags = Get-Or-Create-Item -path "/sitecore/content/EasyJet/TradePortal/Data/Seat And Bags" -template "{27E19C52-90FB-44E3-BF71-9FAAC3FD7B0B}"
+    if ($tradePortalSeatAndBags -ne $null){
+        $tradePortalSeatAndBags.Editing.BeginEdit()
+        $tradePortalSeatAndBags["AmendSeatsNotAvailableMessage"] = "Adding or changing seats is not currently available"
+        $tradePortalSeatAndBags.Editing.EndEdit()
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230322T111731Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

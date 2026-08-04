@@ -1,0 +1,905 @@
+﻿---
+ID: "8d5224a6-3d17-4f6a-84ac-120b1f89662b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-808 - Extras popup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extras Popup"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Make Your Trip Even Smoother"
+                        "fr-CH" = "Facilitez vos vacances"
+                        "de-CH" = "Mach deine Ferien noch entspannter"
+                        "fr-FR" = "Facilitez vos vacances"
+                        "de-DE" = "Mach deinen Urlaub noch entspannter"
+                    }
+                    "Subtitle" = @{
+                        "en" = "You can add extras now or anytime later in Manage My Booking"
+                        "fr-CH" = 'Vous pouvez ajouter des extras quand vous le souhaitez dans la section “Gérer ma réservation”'
+                        "de-CH" = 'Du kannst Extras jederzeit unter «Meine Buchung» hinzufügen'
+                        "fr-FR" = 'Vous pouvez ajouter des extras quand vous le souhaitez dans la section “Gérer ma réservation”'
+                        "de-DE" = 'Du kannst Extras jederzeit unter „Meine Buchung” hinzufügen'
+                    }
+                    "CloseButtonLabel" = @{
+                        "en" = "No, thanks"
+                        "fr-CH" = "Non, merci"
+                        "de-CH" = "Nein, danke"
+                        "fr-FR" = "Non, merci"
+                        "de-DE" = "Nein, danke"
+                    }
+                    "CloseButtonScreenReaderLabel" = @{
+                        "en" = "Close the popup"
+                        "fr-CH" = "Fermer la fenêtre contextuelle"
+                        "de-CH" = "Popup schließen"
+                        "fr-FR" = "Fermer la fenêtre contextuelle"
+                        "de-DE" = "Popup schließen"
+                    }
+                    "PopularTagLabel" = @{
+                        "en" = "Popular"
+                        "fr-CH" = "Populaire"
+                        "de-CH" = "Beliebt"
+                        "fr-FR" = "Populaire"
+                        "de-DE" = "Beliebt"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Airport Parking"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Item"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Airport Parking"
+                        "fr-CH" = "Parking à l’aéroport"
+                        "de-CH" = "Parkieren am Flughafen"
+                        "fr-FR" = "Parking à l’aéroport"
+                        "de-DE" = "Parken am Flughafen"
+                    }
+                    "Subtitle" = @{
+                        "en" = "Start relaxed"
+                        "fr-CH" = "Commencez vos vacances du bon pied"
+                        "de-CH" = "Entspannt starten"
+                        "fr-FR" = "Commencez vos vacances du bon pied"
+                        "de-DE" = "Entspannt starten"
+                    }
+                    "Description" = @{
+                        "en" = @'
+    Simply turn up to the airport without the additional stress.
+    '@
+                        "fr-CH" = @'
+    Arrivez à l’aéroport sans stress.
+    '@
+                        "de-CH" = @'
+    Einfach und stressfrei zum Flughafen.
+    '@
+                        "fr-FR" = @'
+    Arrivez à l’aéroport sans stress.
+    '@
+                        "de-DE" = @'
+    Einfach und stressfrei zum Flughafen.
+    '@
+                    }
+                    "ShowPopularTag" = @{
+                        "en" = "1"
+                        "fr-CH" = "1"
+                        "de-CH" = "1"
+                        "fr-FR" = "1"
+                        "de-DE" = "1"
+                    }
+                    "Logo" = @{
+                        "en" = "<image mediaid=""{CA9A9376-5375-40A9-BE4A-EB339CE0ADC9}"" alt=""Airport Parking"" height="""" width="""" hspace="""" vspace="""" />"
+                        "fr-CH" = "<image mediaid=""{CA9A9376-5375-40A9-BE4A-EB339CE0ADC9}"" alt=""Airport Parking"" height="""" width="""" hspace="""" vspace="""" />"
+                        "de-CH" = "<image mediaid=""{CA9A9376-5375-40A9-BE4A-EB339CE0ADC9}"" alt=""Airport Parking"" height="""" width="""" hspace="""" vspace="""" />"
+                        "fr-FR" = "<image mediaid=""{CA9A9376-5375-40A9-BE4A-EB339CE0ADC9}"" alt=""Airport Parking"" height="""" width="""" hspace="""" vspace="""" />"
+                        "de-DE" = "<image mediaid=""{CA9A9376-5375-40A9-BE4A-EB339CE0ADC9}"" alt=""Airport Parking"" height="""" width="""" hspace="""" vspace="""" />"
+                    }
+                    "CTA" = @{
+                        "en" = "<link text=""Explore parking options"" linktype=""external"" url=""https://park.easyjet.com/easyjetholidays-parking.html?agent=BH667"" anchor="""" target=""_blank"" rel="""" />"
+                        "fr-CH" = "<link text=""Découvrez nos options de parking"" linktype=""external"" url=""https://leparking.easyjet.com/easyjetholidays-parking.html?agent=BH667"" anchor="""" target=""_blank"" rel="""" />"
+                        "de-CH" = "<link text=""Parkmöglichkeiten anzeigen"" linktype=""external"" url=""https://parken.easyjet.com/easyjetholidays-parken.html?agent=BF619"" anchor="""" target=""_blank"" rel="""" />"
+                        "fr-FR" = "<link text=""Découvrez nos options de parking"" linktype=""external"" url=""https://leparking.easyjet.com/easyjetholidays-parking.html?agent=BF619"" anchor="""" target=""_blank"" rel="""" />"
+                        "de-DE" = "<link text=""Parkmöglichkeiten anzeigen"" linktype=""external"" url=""https://parken.easyjet.com/easyjetholidays-parken.html?agent=BF619"" anchor="""" target=""_blank"" rel="""" />"
+                    }
+                    "UniqueKey" = @{
+                        "en" = "airport-parking"
+                    }
+                    "TrackingLabel" = @{
+                        "en" = "Airport Parking"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                    "Highlights" = @{
+                        "en" = "{F7519091-19C7-4B9F-B7FB-3073DAFF2431}|{BFCEB034-542F-4ED2-9867-02E4CD5163B2}|{E9411561-AD9E-45A3-B906-7CCAFE98B382}"
+                        "fr-CH" = "{F7519091-19C7-4B9F-B7FB-3073DAFF2431}|{BFCEB034-542F-4ED2-9867-02E4CD5163B2}|{E9411561-AD9E-45A3-B906-7CCAFE98B382}"
+                        "de-CH" = "{F7519091-19C7-4B9F-B7FB-3073DAFF2431}|{BFCEB034-542F-4ED2-9867-02E4CD5163B2}|{E9411561-AD9E-45A3-B906-7CCAFE98B382}"
+                        "fr-FR" = "{F7519091-19C7-4B9F-B7FB-3073DAFF2431}|{BFCEB034-542F-4ED2-9867-02E4CD5163B2}|{E9411561-AD9E-45A3-B906-7CCAFE98B382}"
+                        "de-DE" = "{F7519091-19C7-4B9F-B7FB-3073DAFF2431}|{BFCEB034-542F-4ED2-9867-02E4CD5163B2}|{E9411561-AD9E-45A3-B906-7CCAFE98B382}"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Airport Parking/Discounted prices"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{f7519091-19c7-4b9f-b7fb-3073daff2431}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Discounted prices at all major UK airports"
+                        "fr-CH" = "Départ rapide"
+                        "de-CH" = "Vergünstigte Preise"
+                        "fr-FR" = "Départ rapide"
+                        "de-DE" = "Rabatt an allen großen deutschen Flughäfen"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Airport Parking/Place garantee"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{bfceb034-542f-4ed2-9867-02e4cd5163b2}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Choose from 100s on site and nearby"
+                        "fr-CH" = "Place garantie"
+                        "de-CH" = "Parkplätze am oder in der Nähe des Flughafens"
+                        "fr-FR" = "Place garantie"
+                        "de-DE" = "Parken direkt am Flughafen oder in der Nähe"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Airport Parking/Security"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{e9411561-ad9e-45a3-b906-7ccafe98b382}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Compare trusted park and ride providers"
+                        "fr-CH" = "Surveillance 24 h/24, 7 j/7"
+                        "de-CH" = "Vertrauenswürdige Park-and-Fly-Anbieter"
+                        "fr-FR" = "Surveillance 24 h/24, 7 j/7"
+                        "de-DE" = "Vertrauenswürdige Park-and-Fly-Anbieter"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "300"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Tours and Experiences"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Item"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Tours and Experiences"
+                        "fr-CH" = "Visites et expériences"
+                        "de-CH" = "Touren und Erlebnisse"
+                        "fr-FR" = "Visites et expériences"
+                        "de-DE" = "Touren und Ausflüge"
+                    }
+                    "Subtitle" = @{
+                        "en" = "Fun days out"
+                        "fr-CH" = "Journées inoubliables"
+                        "de-CH" = "Unvergessliche Reiseerlebnisse"
+                        "fr-FR" = "Journées inoubliables"
+                        "de-DE" = "Unvergessliche Reiseerlebnisse"
+                    }
+                    "Description" = @{
+                        "en" = @'
+    Explore cultural experiences to thrill-seeking adventures.
+    '@
+                        "fr-CH" = @'
+    Faites le plein d’expériences culturelles et d’aventures uniques.
+    '@
+                        "de-CH" = @'
+    Von kulturellen Highlights bis hin zu Abenteuern für Adrenalinjunkies.
+    '@
+                        "fr-FR" = @'
+    Faites le plein d’expériences culturelles et d’aventures uniques.
+    '@
+                        "de-DE" = @'
+    Von kulturellen Highlights bis hin zu Abenteuern für Adrenalinjunkies.
+    '@
+                    }
+                    "ShowPopularTag" = @{
+                        "en" = "1"
+                        "fr-CH" = "1"
+                        "de-CH" = "1"
+                        "fr-FR" = "1"
+                        "de-DE" = "1"
+                    }
+                    "Logo" = @{
+                        "en" = "<image mediaid=""{63FC694E-BA0A-408A-B06C-8B8F2F080DB1}"" alt=""Tours"" height="""" width="""" hspace="""" vspace="""" />"
+                        "fr-CH" = "<image mediaid=""{63FC694E-BA0A-408A-B06C-8B8F2F080DB1}"" alt=""Tours"" height="""" width="""" hspace="""" vspace="""" />"
+                        "de-CH" = "<image mediaid=""{63FC694E-BA0A-408A-B06C-8B8F2F080DB1}"" alt=""Tours"" height="""" width="""" hspace="""" vspace="""" />"
+                        "fr-FR" = "<image mediaid=""{63FC694E-BA0A-408A-B06C-8B8F2F080DB1}"" alt=""Tours"" height="""" width="""" hspace="""" vspace="""" />"
+                        "de-DE" = "<image mediaid=""{63FC694E-BA0A-408A-B06C-8B8F2F080DB1}"" alt=""Tours"" height="""" width="""" hspace="""" vspace="""" />"
+                    }
+                    "CTA" = @{
+                        "en" = "<link text=""View experiences"" linktype=""external"" url=""https://experiences.easyjet.com/uk?utm_source=UK-en-GB-Booking_Confirmation_Popup&amp;utm_campaign=generic&amp;utm_medium=web&amp;aid=easyJet&amp;cid=Booking_Confirmation_Popup_{referenceNumber}"" anchor="""" target=""_blank"" rel="""" />"
+                        "fr-CH" = "<link text=""Découvrir les activités"" linktype=""external"" url=""https://experiences.easyjet.com/uk?utm_source=UK-en-GB-Booking_Confirmation_Popup&amp;utm_campaign=generic&amp;utm_medium=web&amp;aid=easyJet&amp;cid=Booking_Confirmation_Popup_{referenceNumber}"" anchor="""" target=""_blank"" rel="""" />"
+                        "de-CH" = "<link text=""Erlebnisse anzeigen"" linktype=""external"" url=""https://experiences.easyjet.com/uk?utm_source=UK-en-GB-Booking_Confirmation_Popup&amp;utm_campaign=generic&amp;utm_medium=web&amp;aid=easyJet&amp;cid=Booking_Confirmation_Popup_{referenceNumber}"" anchor="""" target=""_blank"" rel="""" />"
+                        "fr-FR" = "<link text=""Découvrir les activités"" linktype=""external"" url=""https://experiences.easyjet.com/uk?utm_source=UK-en-GB-Booking_Confirmation_Popup&amp;utm_campaign=generic&amp;utm_medium=web&amp;aid=easyJet&amp;cid=Booking_Confirmation_Popup_{referenceNumber}"" anchor="""" target=""_blank"" rel="""" />"
+                        "de-DE" = "<link text=""Erlebnisse anzeigen"" linktype=""external"" url=""https://experiences.easyjet.com/uk?utm_source=UK-en-GB-Booking_Confirmation_Popup&amp;utm_campaign=generic&amp;utm_medium=web&amp;aid=easyJet&amp;cid=Booking_Confirmation_Popup_{referenceNumber}"" anchor="""" target=""_blank"" rel="""" />"
+                    }
+                    "UniqueKey" = @{
+                        "en" = "tours-and-experiences"
+                    }
+                    "TrackingLabel" = @{
+                        "en" = "Tours and Experiences"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                    "Highlights" = @{
+                        "en" = "{74728049-CC18-47FA-BEB9-708925476626}|{04BC2C53-09D5-4A66-A662-F52959623199}|{9CB7D67F-786B-454D-A0A8-B1506F952C30}"
+                        "fr-CH" = "{74728049-CC18-47FA-BEB9-708925476626}|{7A4F8D70-77C5-42A9-8B3D-A5FF1392A2AE}"
+                        "de-CH" = "{74728049-CC18-47FA-BEB9-708925476626}|{04BC2C53-09D5-4A66-A662-F52959623199}|{9CB7D67F-786B-454D-A0A8-B1506F952C30}"
+                        "fr-FR" = "{74728049-CC18-47FA-BEB9-708925476626}|{7A4F8D70-77C5-42A9-8B3D-A5FF1392A2AE}"
+                        "de-DE" = "{74728049-CC18-47FA-BEB9-708925476626}|{04BC2C53-09D5-4A66-A662-F52959623199}|{9CB7D67F-786B-454D-A0A8-B1506F952C30}"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Tours and Experiences/Experiences"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{74728049-cc18-47fa-beb9-708925476626}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Discover thousands of experiences"
+                        "fr-CH" = "Large choix d’activités"
+                        "de-CH" = "Entdecke ein breites Angebot an Erlebnissen"
+                        "fr-FR" = "Large choix d’activités"
+                        "de-DE" = "Breites Angebot an Erlebnissen"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Tours and Experiences/Secure Booking"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{04bc2c53-09d5-4a66-a662-f52959623199}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Quick and secure booking"
+                        "de-CH" = "Schnelle und sichere Buchung"
+                        "de-DE" = "Schnelle und sichere Buchung"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Tours and Experiences/Local guides"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{7a4f8d70-77c5-42a9-8b3d-a5ff1392a2ae}"
+                Fields      = @{
+                    "Title" = @{
+                        "fr-CH" = "Recommandations de guides locaux"
+                        "fr-FR" = "Recommandations de guides locaux"
+                    }
+                    "__Sortorder" = @{
+                        "fr-FR" = "300"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Tours and Experiences/Cancellation"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{9cb7d67f-786b-454d-a0a8-b1506f952c30}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Flexible, free cancellation on thousands of experiences"
+                        "de-CH" = "Flexible und kostenlose Stornierung für unzählige Erlebnisse"
+                        "de-DE" = "Flexible und kostenlose Stornierung für zahlreiche Erlebnisse"
+                    }
+                    "__Sortorder" = @{
+                        "de-DE" = "400"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Airport Lounges"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Item"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Airport Lounges"
+                        "fr-CH" = "Salons d’aéroport"
+                        "de-CH" = "Flughafen-Lounge"
+                        "fr-FR" = "Salons d’aéroport"
+                        "de-DE" = "Flughafen-Lounge"
+                    }
+                    "Subtitle" = @{
+                        "en" = "Unwind before"
+                        "fr-CH" = "Détendez-vous avant votre vol"
+                        "de-CH" = "Exklusive Entspannung"
+                        "fr-FR" = "Détendez-vous avant votre vol"
+                        "de-DE" = "Exklusive Entspannung"
+                    }
+                    "Description" = @{
+                        "en" = @'
+    Relax and enjoy your pre-flight time in comfort
+    '@
+                        "fr-CH" = @'
+    Profitez d’un maximum de confort en attendant votre vol
+    '@
+                        "de-CH" = @'
+    Verbringe die Zeit vor deinem Flug gemütlich und stressfrei.
+    '@
+                        "fr-FR" = @'
+    Profitez d’un maximum de confort en attendant votre vol
+    '@
+                        "de-DE" = @'
+    Verbringe die Zeit vor deinem Abflug entspannt und in aller Gemütlichkeit.
+    '@
+                    }
+                    "ShowPopularTag" = @{
+                        "en" = "1"
+                        "fr-CH" = "1"
+                        "de-CH" = "1"
+                        "fr-FR" = "1"
+                        "de-DE" = "1"
+                    }
+                    "Logo" = @{
+                        "en" = "<image mediaid=""{6DBA6A55-0460-435C-AE39-C0ED85A1B516}"" alt=""airport lounge"" height="""" width="""" hspace="""" vspace="""" />"
+                        "fr-CH" = "<image mediaid=""{6DBA6A55-0460-435C-AE39-C0ED85A1B516}"" alt=""airport lounge"" height="""" width="""" hspace="""" vspace="""" />"
+                        "de-CH" = "<image mediaid=""{6DBA6A55-0460-435C-AE39-C0ED85A1B516}"" alt=""airport lounge"" height="""" width="""" hspace="""" vspace="""" />"
+                        "fr-FR" = "<image mediaid=""{6DBA6A55-0460-435C-AE39-C0ED85A1B516}"" alt=""airport lounge"" height="""" width="""" hspace="""" vspace="""" />"
+                        "de-DE" = "<image mediaid=""{6DBA6A55-0460-435C-AE39-C0ED85A1B516}"" alt=""airport lounge"" height="""" width="""" hspace="""" vspace="""" />"
+                    }
+                    "CTA" = @{
+                        "en" = "<link text=""Book an airport lounge"" linktype=""external"" url=""https://park.easyjet.com/static/easyjetholidays-lounges.html?agent=BF619"" anchor="""" target=""_blank"" rel="""" />"
+                        "fr-CH" = "<link text=""Réservez votre place"" linktype=""external"" url=""https://leparking.easyjet.com/easyjetholidays-salons.html?agent=BF619"" anchor="""" target=""_blank"" rel="""" />"
+                        "de-CH" = "<link text=""Lounge buchen"" linktype=""external"" url=""https://parken.easyjet.com/easyjetholidays-lounges.html?agent=BF619"" anchor="""" target=""_blank"" rel="""" />"
+                        "fr-FR" = "<link text=""Réservez votre place"" linktype=""external"" url=""https://leparking.easyjet.com/easyjetholidays-salons.html?agent=BF619"" anchor="""" target=""_blank"" rel="""" />"
+                        "de-DE" = "<link text=""Lounge buchen"" linktype=""external"" url=""https://parken.easyjet.com/easyjetholidays-lounges.html?agent=BF619"" anchor="""" target=""_blank"" rel="""" />"
+                    }
+                    "UniqueKey" = @{
+                        "en" = "airport-lounge"
+                    }
+                    "TrackingLabel" = @{
+                        "en" = "Airport Lounge"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "300"
+                    }
+                    "Highlights" = @{
+                        "en" = "{8EB837BA-8836-4E6D-8639-F8CBD2756E34}|{B251C046-84D0-4E43-A60E-7DC5EC0FB34E}|{37F82B1B-711D-4941-9BDC-C00039E09BCB}"
+                        "fr-CH" = "{8EB837BA-8836-4E6D-8639-F8CBD2756E34}|{B251C046-84D0-4E43-A60E-7DC5EC0FB34E}|{37F82B1B-711D-4941-9BDC-C00039E09BCB}"
+                        "de-CH" = "{8EB837BA-8836-4E6D-8639-F8CBD2756E34}|{B251C046-84D0-4E43-A60E-7DC5EC0FB34E}|{37F82B1B-711D-4941-9BDC-C00039E09BCB}"
+                        "fr-FR" = "{8EB837BA-8836-4E6D-8639-F8CBD2756E34}|{B251C046-84D0-4E43-A60E-7DC5EC0FB34E}|{37F82B1B-711D-4941-9BDC-C00039E09BCB}"
+                        "de-DE" = "{8EB837BA-8836-4E6D-8639-F8CBD2756E34}|{B251C046-84D0-4E43-A60E-7DC5EC0FB34E}|{37F82B1B-711D-4941-9BDC-C00039E09BCB}"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Airport Lounges/Place"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{8eb837ba-8836-4e6d-8639-f8cbd2756e34}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Unwind before departure"
+                        "fr-CH" = "Place garantie"
+                        "de-CH" = "Entspanne vor dem Abflug"
+                        "fr-FR" = "Place garantie"
+                        "de-DE" = "Abschalten vor dem Abflug"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Airport Lounges/WiFi"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{b251c046-84d0-4e43-a60e-7dc5ec0fb34e}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Free Wi-Fi & entertainment facilities"
+                        "fr-CH" = "Espace calme et Wi-Fi rapide"
+                        "de-CH" = "WiFi und Unterhaltung"
+                        "fr-FR" = "Espace calme et Wi-Fi rapide"
+                        "de-DE" = "WLAN und Unterhaltungsangebote"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Airport Lounges/Food"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{37f82b1b-711d-4941-9bdc-c00039e09bcb}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Complimentary snacks and drinks"
+                        "fr-CH" = "Nourriture et boissons gratuites"
+                        "de-CH" = "Kostenlose Snacks und Getränke"
+                        "fr-FR" = "Nourriture et boissons gratuites"
+                        "de-DE" = "Kostenlose Snacks und Getränke"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "300"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Fast Track Security"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Item"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Fast Track Security"
+                    }
+                    "Subtitle" = @{
+                        "en" = "Breeze through security"
+                    }
+                    "Description" = @{
+                        "en" = @'
+    Begin your holiday sooner with a dedicated security line pass.
+    '@
+                    }
+                    "ShowPopularTag" = @{
+                        "en" = ""
+                    }
+                    "Logo" = @{
+                        "en" = "<image mediaid=""{EA3F8276-AD56-42C7-B299-4E8276ECBD68}"" alt=""fast track"" height="""" width="""" hspace="""" vspace="""" />"
+                    }
+                    "CTA" = @{
+                        "en" = "<link text=""Book fast track"" linktype=""external"" url=""https://park.easyjet.com/easyjetholidays-fast-track.html?agent=BI119"" anchor="""" target=""_blank"" rel="""" />"
+                    }
+                    "UniqueKey" = @{
+                        "en" = "fast-track"
+                    }
+                    "TrackingLabel" = @{
+                        "en" = "Fast Track Security"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "400"
+                    }
+                    "Highlights" = @{
+                        "en" = "{9EB731C3-B7B1-4BC7-B559-F2932FEC7CD6}|{F8D6D432-0B16-429E-805E-E1FE9E0B3AAD}|{85CD7B54-6D4B-49BF-93E1-7CBFCB81C862}"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Fast Track Security/Skip queues"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{9eb731c3-b7b1-4bc7-b559-f2932fec7cd6}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Skip security queues"
+                        "fr-CH" = "Passez en priorité"
+                        "de-CH" = "Verkürzte Wartezeit"
+                        "fr-FR" = "Passez en priorité"
+                        "de-DE" = "Verkürzte Wartezeit"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Fast Track Security/Save time"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{f8d6d432-0b16-429e-805e-e1fe9e0b3aad}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Get to where you need with minimum fuss"
+                        "fr-CH" = "Gagnez du temps à l’aéroport"
+                        "de-CH" = "Schneller durch den Flughafen"
+                        "fr-FR" = "Gagnez du temps à l’aéroport"
+                        "de-DE" = "Schnell und stressfrei zum Flug"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Fast Track Security/Deadlines"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{85cd7b54-6d4b-49bf-93e1-7cbfcb81c862}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Great for meeting strict travel deadlines"
+                        "fr-CH" = "Soyez plus sereins avant votre vol"
+                        "de-CH" = "Stressfrei zum Flug"
+                        "fr-FR" = "Soyez plus sereins avant votre vol"
+                        "de-DE" = "Ideal für Termindruck auf Reisen"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "300"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Travel Insurance"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Item"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Travel Insurance"
+                    }
+                    "Subtitle" = @{
+                        "en" = "Travel safe"
+                    }
+                    "Description" = @{
+                        "en" = @'
+    Protected before you go and while you're away in partnership with Collinsons with insurance from Columbus Direct.
+    '@
+                    }
+                    "ShowPopularTag" = @{
+                        "en" = ""
+                    }
+                    "Logo" = @{
+                        "en" = "<image mediaid=""{94A29AD8-D5A4-427C-B53D-BF1C72E944B0}"" alt=""travel insurance"" height="""" width="""" hspace="""" vspace="""" />"
+                    }
+                    "CTA" = @{
+                        "en" = "<link text=""Get a quote"" linktype=""external"" url=""https://travel.columbusdirect.com/?sourceCode=EZYHOL"" anchor="""" target=""_blank"" rel="""" />"
+                    }
+                    "UniqueKey" = @{
+                        "en" = "travel-insurance"
+                    }
+                    "TrackingLabel" = @{
+                        "en" = "Travel Insurance"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "500"
+                    }
+                    "Highlights" = @{
+                        "en" = "{4A7CDF4E-6E35-4A15-A2A8-63519EBA5E91}|{684314B0-B3EC-455D-933D-90FD74AE48FA}|{C12DA79F-7A65-4248-B660-2CAB339CE185}"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Travel Insurance/Services"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{4a7cdf4e-6e35-4a15-a2a8-63519eba5e91}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Award winning products and services"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Travel Insurance/Coverage"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{684314b0-b3ec-455d-933d-90fd74ae48fa}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Over 150 sports and activities covered free"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Travel Insurance/Customers"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{c12da79f-7a65-4248-b660-2cab339ce185}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Over 15 million customers since 1988"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "300"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Airport Hotel with Parking"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Item"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Airport Hotel with Parking"
+                        "de-CH" = "Flughafenhotel mit Parkplatz"
+                        "de-DE" = "Flughafenhotel mit Parkplatz"
+                    }
+                    "Subtitle" = @{
+                        "en" = "Sleep easy"
+                        "de-CH" = "Sorglos schlafen"
+                        "de-DE" = "Sorglos schlafen"
+                    }
+                    "Description" = @{
+                        "en" = @'
+    Book a hotel the night before you fly and leave your car there. Easy!
+    '@
+                        "de-CH" = @'
+    Übernachte vor deinem Abflug in einem Hotel und lass dein Auto dort stehen. Easy!
+    '@
+                        "de-DE" = @'
+    Schon am Vortag parken, entspannt im Flughafenhotel übernachten und gut erholt aufwachen. Easy!
+    '@
+                    }
+                    "ShowPopularTag" = @{
+                        "en" = ""
+                    }
+                    "Logo" = @{
+                        "en" = "<image mediaid=""{89A05946-2B82-4AE4-8355-84270FCEA6F5}"" alt=""hotel"" height="""" width="""" hspace="""" vspace="""" />"
+                        "de-CH" = "<image mediaid=""{89A05946-2B82-4AE4-8355-84270FCEA6F5}"" alt=""hotel"" height="""" width="""" hspace="""" vspace="""" />"
+                        "de-DE" = "<image mediaid=""{89A05946-2B82-4AE4-8355-84270FCEA6F5}"" alt=""hotel"" height="""" width="""" hspace="""" vspace="""" />"
+                    }
+                    "CTA" = @{
+                        "en" = "<link text=""Find hotels"" linktype=""external"" url=""https://park.easyjet.com/static/easyjetholidays-hotels-parking.html?agent=BF619"" anchor="""" target=""_blank"" rel="""" />"
+                        "de-CH" = "<link text=""Hotels anzeigen"" linktype=""external"" url=""https://parken.easyjet.com/easyjetholidays-hotels-parken.html?agent=BF619"" anchor="""" target=""_blank"" rel="""" />"
+                        "de-DE" = "<link text=""Hotels anzeigen"" linktype=""external"" url=""https://parken.easyjet.com/easyjetholidays-hotels-parken.html?agent=BF619"" anchor="""" target=""_blank"" rel="""" />"
+                    }
+                    "UniqueKey" = @{
+                        "en" = "airport-hotel"
+                    }
+                    "TrackingLabel" = @{
+                        "en" = "Airport Hotel with Parking"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "600"
+                    }
+                    "Highlights" = @{
+                        "en" = "{0F60B711-808A-46C3-A7DB-52721069EFEE}|{CA6F85F1-78C1-4F28-8D67-A7FFED92DB5D}|{D948FAAB-14B9-47D6-ABF2-C33ABCB4F44C}"
+                        "de-CH" = "{0F60B711-808A-46C3-A7DB-52721069EFEE}|{CA6F85F1-78C1-4F28-8D67-A7FFED92DB5D}|{D948FAAB-14B9-47D6-ABF2-C33ABCB4F44C}"
+                        "de-DE" = "{0F60B711-808A-46C3-A7DB-52721069EFEE}|{CA6F85F1-78C1-4F28-8D67-A7FFED92DB5D}|{D948FAAB-14B9-47D6-ABF2-C33ABCB4F44C}"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Airport Hotel with Parking/Extra Time"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{0f60b711-808a-46c3-a7db-52721069efee}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Extra time in bed"
+                        "de-CH" = "Vor dem Abflug länger schlafen"
+                        "de-DE" = "Vor dem Abflug länger schlafen"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Airport Hotel with Parking/Stress free"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{ca6f85f1-78c1-4f28-8d67-a7ffed92db5d}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Stress free mornings"
+                        "de-CH" = "Stressfrei zum Flug"
+                        "de-DE" = "Erfrischt am Flughafen aufwachen"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Airport Hotel with Parking/Check In"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{d948faab-14b9-47d6-abf2-c33abcb4f44c}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Walk to check-in"
+                        "de-CH" = "Kurzer Fussweg zum Check-in"
+                        "de-DE" = "Parken vor Ort"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "300"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Car Rental"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Item"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Car Rental"
+                        "de-CH" = "Mietwagen"
+                        "de-DE" = "Mietwagen"
+                        "fr-CH" = "Location de voiture"
+                        "fr-FR" = "Location de voiture"
+                    }
+                    "Subtitle" = @{
+                        "en" = "Freedom to explore"
+                        "de-CH" = "Maximale Freiheit"
+                        "de-DE" = "Maximale Freiheit"
+                        "fr-CH" = "Explorez à votre guise"
+                        "fr-FR" = "Explorez à votre guise"
+                    }
+                    "Description" = @{
+                        "en" = @'
+    <span>Explore freely with flexible, reliable car hire. See all our trusted partners.</span>
+    <div style="display: flex; flex-wrap: wrap; gap:9px; margin-top: 8px;">
+    <div style="display: flex; gap:9px;">
+    <img alt="avis" style="height:26px; width:70px;" src="-/jssmedia/c65a2b51060c48ccb28f6588eba63464.ashx" />
+    <img alt="budget" style="height:26px; width:70px;" src="-/jssmedia/c4d29b694ae64ef9a0b2a27de3816201.ashx" />
+    <img alt="europcar" style="height:26px; width:70px;" src="-/jssmedia/da3f2619c7304b44ae3b3342ab86b7df.ashx" />
+    </div>
+    <div style="display: flex; gap:9px;">
+    <img alt="hertz" style="height:26px; width:70px;" src="-/jssmedia/b243b738626148fe8f7ba4be6c7c8a08.ashx" />
+    <img alt="sixt" style="height:26px; width:70px;" src="-/jssmedia/6b563a951f9f4005adb275486b203a8b.ashx" />
+    <img alt="alamo" style="height:26px; width:70px;" src="-/jssmedia/33229cfde99948b19c82647565777375.ashx" />
+    </div>
+    </div>
+    '@
+                        "de-CH" = @'
+    <span>Erkunde deine Ferienregion mit einer flexiblen und zuverlässigen Autovermietung. Unsere vertrauenswürdigen Partner im Überblick:</span>
+    <div style="display: flex; flex-wrap: wrap; gap:9px; margin-top: 8px;">
+    <div style="display: flex; gap:9px;">
+    <img alt="avis" style="height:26px; width:70px;" src="-/jssmedia/c65a2b51060c48ccb28f6588eba63464.ashx" />
+    <img alt="budget" style="height:26px; width:70px;" src="-/jssmedia/c4d29b694ae64ef9a0b2a27de3816201.ashx" />
+    <img alt="europcar" style="height:26px; width:70px;" src="-/jssmedia/da3f2619c7304b44ae3b3342ab86b7df.ashx" />
+    </div>
+    <div style="display: flex; gap:9px;">
+    <img alt="hertz" style="height:26px; width:70px;" src="-/jssmedia/b243b738626148fe8f7ba4be6c7c8a08.ashx" />
+    <img alt="sixt" style="height:26px; width:70px;" src="-/jssmedia/6b563a951f9f4005adb275486b203a8b.ashx" />
+    <img alt="alamo" style="height:26px; width:70px;" src="-/jssmedia/33229cfde99948b19c82647565777375.ashx" />
+    </div>
+    </div>
+    '@
+                        "de-DE" = @'
+    <span>Erkunde deine Urlaubsregion mit einer flexiblen und zuverlässigen Autovermietung. Unsere vertrauenswürdigen Partner im Überblick:</span>
+    <div style="display: flex; flex-wrap: wrap; gap:9px; margin-top: 8px;">
+    <div style="display: flex; gap:9px;">
+    <img alt="avis" style="height:26px; width:70px;" src="-/jssmedia/c65a2b51060c48ccb28f6588eba63464.ashx" />
+    <img alt="budget" style="height:26px; width:70px;" src="-/jssmedia/c4d29b694ae64ef9a0b2a27de3816201.ashx" />
+    <img alt="europcar" style="height:26px; width:70px;" src="-/jssmedia/da3f2619c7304b44ae3b3342ab86b7df.ashx" />
+    </div>
+    <div style="display: flex; gap:9px;">
+    <img alt="hertz" style="height:26px; width:70px;" src="-/jssmedia/b243b738626148fe8f7ba4be6c7c8a08.ashx" />
+    <img alt="sixt" style="height:26px; width:70px;" src="-/jssmedia/6b563a951f9f4005adb275486b203a8b.ashx" />
+    <img alt="alamo" style="height:26px; width:70px;" src="-/jssmedia/33229cfde99948b19c82647565777375.ashx" />
+    </div>
+    </div>
+    '@
+                        "fr-CH" = @'
+    <span>Explorez librement votre destination en louant une voiture. Découvrez nos partenaires de confiance.</span>
+    <div style="display: flex; flex-wrap: wrap; gap:9px; margin-top: 8px;">
+    <div style="display: flex; gap:9px;">
+    <img alt="avis" style="height:26px; width:70px;" src="-/jssmedia/c65a2b51060c48ccb28f6588eba63464.ashx" />
+    <img alt="budget" style="height:26px; width:70px;" src="-/jssmedia/c4d29b694ae64ef9a0b2a27de3816201.ashx" />
+    <img alt="europcar" style="height:26px; width:70px;" src="-/jssmedia/da3f2619c7304b44ae3b3342ab86b7df.ashx" />
+    </div>
+    <div style="display: flex; gap:9px;">
+    <img alt="hertz" style="height:26px; width:70px;" src="-/jssmedia/b243b738626148fe8f7ba4be6c7c8a08.ashx" />
+    <img alt="sixt" style="height:26px; width:70px;" src="-/jssmedia/6b563a951f9f4005adb275486b203a8b.ashx" />
+    <img alt="alamo" style="height:26px; width:70px;" src="-/jssmedia/33229cfde99948b19c82647565777375.ashx" />
+    </div>
+    </div>
+    '@
+                        "fr-FR" = @'
+    <span>Explorez librement votre destination en louant une voiture. Découvrez nos partenaires de confiance.</span>
+    <div style="display: flex; flex-wrap: wrap; gap:9px; margin-top: 8px;">
+    <div style="display: flex; gap:9px;">
+    <img alt="avis" style="height:26px; width:70px;" src="-/jssmedia/c65a2b51060c48ccb28f6588eba63464.ashx" />
+    <img alt="budget" style="height:26px; width:70px;" src="-/jssmedia/c4d29b694ae64ef9a0b2a27de3816201.ashx" />
+    <img alt="europcar" style="height:26px; width:70px;" src="-/jssmedia/da3f2619c7304b44ae3b3342ab86b7df.ashx" />
+    </div>
+    <div style="display: flex; gap:9px;">
+    <img alt="hertz" style="height:26px; width:70px;" src="-/jssmedia/b243b738626148fe8f7ba4be6c7c8a08.ashx" />
+    <img alt="sixt" style="height:26px; width:70px;" src="-/jssmedia/6b563a951f9f4005adb275486b203a8b.ashx" />
+    <img alt="alamo" style="height:26px; width:70px;" src="-/jssmedia/33229cfde99948b19c82647565777375.ashx" />
+    </div>
+    </div>
+    '@
+                    }
+                    "ShowPopularTag" = @{
+                        "en" = ""
+                    }
+                    "Logo" = @{
+                        "en" = "<image mediaid=""{3CFC31AE-43A1-46DA-AA0D-2BE4CB427FB3}"" alt=""car rental"" height="""" width="""" hspace="""" vspace="""" />"
+                        "de-CH" = "<image mediaid=""{3CFC31AE-43A1-46DA-AA0D-2BE4CB427FB3}"" alt=""car rental"" height="""" width="""" hspace="""" vspace="""" />"
+                        "de-DE" = "<image mediaid=""{3CFC31AE-43A1-46DA-AA0D-2BE4CB427FB3}"" alt=""car rental"" height="""" width="""" hspace="""" vspace="""" />"
+                        "fr-CH" = "<image mediaid=""{3CFC31AE-43A1-46DA-AA0D-2BE4CB427FB3}"" alt=""car rental"" height="""" width="""" hspace="""" vspace="""" />"
+                        "fr-FR" = "<image mediaid=""{3CFC31AE-43A1-46DA-AA0D-2BE4CB427FB3}"" alt=""car rental"" height="""" width="""" hspace="""" vspace="""" />"
+                    }
+                    "CTA" = @{
+                        "en" = "<link text=""Get a quote"" linktype=""external"" url=""https://cars.easyjet.com/en?clientId=423633#/searchcars"" anchor="""" target=""_blank"" rel="""" />"
+                        "de-CH" = "<link text=""Mietwagen finden"" linktype=""external"" url=""https://cars.easyjet.com/de-ch/searchcars?clientId=423633"" anchor="""" target=""_blank"" rel="""" />"
+                        "de-DE" = "<link text=""Mietwagen finden"" linktype=""external"" url=""https://cars.easyjet.com/de/searchcars?clientId=423633"" anchor="""" target=""_blank"" rel="""" />"
+                        "fr-CH" = "<link text=""Obtenez un devis"" linktype=""external"" url=""https://cars.easyjet.com/fr-ch/searchcars?clientId=423633"" anchor="""" target=""_blank"" rel="""" />"
+                        "fr-FR" = "<link text=""Obtenez un devis"" linktype=""external"" url=""https://cars.easyjet.com/fr/searchcars?clientId=423633"" anchor="""" target=""_blank"" rel="""" />"
+                    }
+                    "UniqueKey" = @{
+                        "en" = "car-rental"
+                    }
+                    "TrackingLabel" = @{
+                        "en" = "Car Rental"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "700"
+                    }
+                    "Highlights" = @{
+                        "en" = "{F1EEFB28-1C7F-4D52-87E4-D042F50EDA04}|{864DACE0-85B7-4156-BCB5-36FBE7A451D3}|{E5B22DA8-68FA-462A-9680-C86B7E717B1B}"
+                        "fr-CH" = "{F1EEFB28-1C7F-4D52-87E4-D042F50EDA04}|{864DACE0-85B7-4156-BCB5-36FBE7A451D3}|{E5B22DA8-68FA-462A-9680-C86B7E717B1B}"
+                        "de-CH" = "{F1EEFB28-1C7F-4D52-87E4-D042F50EDA04}|{864DACE0-85B7-4156-BCB5-36FBE7A451D3}|{E5B22DA8-68FA-462A-9680-C86B7E717B1B}"
+                        "fr-FR" = "{F1EEFB28-1C7F-4D52-87E4-D042F50EDA04}|{864DACE0-85B7-4156-BCB5-36FBE7A451D3}|{E5B22DA8-68FA-462A-9680-C86B7E717B1B}"
+                        "de-DE" = "{F1EEFB28-1C7F-4D52-87E4-D042F50EDA04}|{864DACE0-85B7-4156-BCB5-36FBE7A451D3}|{E5B22DA8-68FA-462A-9680-C86B7E717B1B}"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Car Rental/Сancellation"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{f1eefb28-1c7f-4d52-87e4-d042f50eda04}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "Free cancellation up to 48hrs before pick-up"
+                        "fr-CH" = "Annulation gratuite jusqu'à 48 heures avant la prise en charge"
+                        "de-CH" = "Kostenlose Stornierung bis 48 Std. vor Abholung"
+                        "fr-FR" = "Annulation gratuite jusqu'à 48 heures avant la prise en charge"
+                        "de-DE" = "Kostenlose Stornierung bis 48 Std. vor Abholung"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Car Rental/No Fees"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{864dace0-85b7-4156-bcb5-36fbe7a451d3}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "No credit card fees"
+                        "fr-CH" = "Pas de frais de carte de crédit"
+                        "de-CH" = "Keine Kreditkartengebühren"
+                        "fr-FR" = "Pas de frais de carte de crédit"
+                        "de-DE" = "Keine Kreditkartengebühren"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup/Car Rental/Locations"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Extras Popup/Extra Highlight"
+                ID = "{e5b22da8-68fa-462a-9680-c86b7e717b1b}"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "28,000 pick-up locations worldwide"
+                        "fr-CH" = "28 000 points de retrait dans le monde entier"
+                        "de-CH" = "28'000 Standorte weltweit"
+                        "fr-FR" = "28 000 points de retrait dans le monde entier"
+                        "de-DE" = "28.000 Standorte weltweit"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "300"
+                    }
+                }
+            }
+        )
+        
+    ImportContent -itemsToCreate $updates
+    
+    $page= Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation"
+            
+    $renderingHeader  = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/Extras Popup"
+    $instanceHeader = New-Rendering -Item $renderingHeader
+    Add-Rendering -Item $page -Instance $instanceHeader -PlaceHolder "/body" -DataSource "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Extras Popup"
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

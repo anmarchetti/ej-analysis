@@ -1,0 +1,151 @@
+﻿---
+ID: "89f8a666-c314-4fd3-9935-e92e52941b77"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-528 Cabin bags full"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+            if($item -eq $null){
+                $item = New-Item -Path $path -ItemType $template
+            }
+        return $item
+    }
+    
+    function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+        }
+    
+    $template = '{63D3079B-9A85-4872-AC5E-34D19D8D972E}'
+    
+    $path = '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags/Cabin Bags Full Banner'
+    $banner = Get-Or-Create-Item -Path $path -Template $template
+    if($banner -ne $null) {
+        $banner.Editing.BeginEdit()
+        $banner['Title'] = 'Large cabin bag capacity is full'
+        $banner['Subtitle'] = 'These flights have reached their capacity for additional large cabin bags.'
+        $banner.Editing.EndEdit() | Out-Null
+    }
+    
+    $tradePath = '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Cabin Bags/Cabin Bags Full Banner'
+    $bannerTrade = Get-Or-Create-Item -Path $tradePath -Template $template
+    if($bannerTrade -ne $null) {
+        $bannerTrade.Editing.BeginEdit()
+        $bannerTrade['Title'] = 'Large cabin bag capacity is full'
+        $bannerTrade['Subtitle'] = 'These flights have reached their capacity for additional large cabin bags.'
+        $bannerTrade.Editing.EndEdit() | Out-Null
+    }
+    
+    $translations = @{
+            "fr-CH" = @{
+                "Title" = "La capacité de la grande valise cabine est pleine"
+                "Subtitle" = "Ces vols ont atteint leur capacité d'accueil pour les grands bagages de cabine supplémentaires."
+            }
+            "fr-FR" = @{
+                "Title" = "La capacité de la grande valise cabine est pleine"
+                "Subtitle" = "Ces vols ont atteint leur capacité d'accueil pour les grands bagages de cabine supplémentaires."
+            }
+            "de-CH" = @{
+                "Title" = "Große Kabinentasche ist voll"
+                "Subtitle" = "Diese Flüge haben ihre Kapazität für zusätzliches großes Handgepäck erreicht."
+            }
+            "de-DE" = @{
+                "Title" = "Große Kabinentasche ist voll"
+                "Subtitle" = "Diese Flüge haben ihre Kapazität für zusätzliches großes Handgepäck erreicht."
+            }
+        }
+    foreach ($lang in $translations.Keys) {
+        create-lang-version -item $banner -lang $lang -field "Title" -value $translations[$lang]["Title"]
+        create-lang-version -item $banner -lang $lang -field "Subtitle" -value $translations[$lang]["Subtitle"]
+    }  
+    
+    $pathWithHL = '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags/Cabin Bags Full with HL Banner'
+    $bannerWithHL = Get-Or-Create-Item -Path $pathWithHL -Template $template
+    if($bannerWithHL -ne $null) {
+        $bannerWithHL.Editing.BeginEdit()
+        $bannerWithHL['Title'] = 'Large cabin bag capacity is full'
+        $bannerWithHL['Subtitle'] = 'These flights have reached their capacity for additional large cabin bags. If you wish to bring more bags, please do so by adding hold luggage.'
+        $bannerWithHL['ButtonLabel'] = 'Add hold luggage'
+        $bannerWithHL.Editing.EndEdit() | Out-Null
+    }
+    
+    $tradePathWithHL = '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Cabin Bags/Cabin Bags Full with HL Banner'
+    $bannerTradeWithHL = Get-Or-Create-Item -Path $tradePathWithHL -Template $template
+    if($bannerTradeWithHL -ne $null) {
+        $bannerTradeWithHL.Editing.BeginEdit()
+        $bannerTradeWithHL['Title'] = 'Large cabin bag capacity is full'
+        $bannerTradeWithHL['Subtitle'] = 'These flights have reached their capacity for additional large cabin bags. If you wish to bring more bags, please do so by adding hold luggage.'
+        $bannerTradeWithHL['ButtonLabel'] = 'Add hold luggage'
+        $bannerTradeWithHL.Editing.EndEdit() | Out-Null
+    }
+    
+    $translationsWithHL = @{
+            "fr-CH" = @{
+                "Title" = "La capacité de la grande valise cabine est pleine"
+                "Subtitle" = "Ces vols ont atteint leur capacité d'accueil pour les grands bagages de cabine supplémentaires. Si vous souhaitez apporter plus de bagages, veuillez le faire en ajoutant un bagage en soute."
+                "ButtonLabel" = "Ajouter un bagage en soute"
+            }
+            "fr-FR" = @{
+                "Title" = "La capacité de la grande valise cabine est pleine"
+                "Subtitle" = "Ces vols ont atteint leur capacité d'accueil pour les grands bagages de cabine supplémentaires. Si vous souhaitez apporter plus de bagages, veuillez le faire en ajoutant un bagage en soute."
+                "ButtonLabel" = "Ajouter un bagage en soute"
+            }
+            "de-CH" = @{
+                "Title" = "Große Kabinentasche ist voll"
+                "Subtitle" = "Diese Flüge haben ihre Kapazität für zusätzliches großes Handgepäck erreicht. Wenn Sie mehr Gepäck mitnehmen möchten, tun Sie dies bitte durch zusätzliches aufgegebenes Gepäck."
+                "ButtonLabel" = "Gepäck hinzufügen"
+            }
+            "de-DE" = @{
+                "Title" = "Große Kabinentasche ist voll"
+                "Subtitle" = "Diese Flüge haben ihre Kapazität für zusätzliches großes Handgepäck erreicht. Wenn Sie mehr Gepäck mitnehmen möchten, tun Sie dies bitte durch zusätzliches aufgegebenes Gepäck."
+                "ButtonLabel" = "Gepäck hinzufügen"
+            }
+        }
+    foreach ($lang in $translationsWithHL.Keys) {
+        create-lang-version -item $bannerWithHL -lang $lang -field "Title" -value $translationsWithHL[$lang]["Title"]
+        create-lang-version -item $bannerWithHL -lang $lang -field "Subtitle" -value $translationsWithHL[$lang]["Subtitle"]
+        create-lang-version -item $bannerWithHL -lang $lang -field "ButtonLabel" -value $translationsWithHL[$lang]["ButtonLabel"]
+    }  
+    
+    $bagsItem =  Get-Item -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags' -ErrorAction SilentlyContinue
+    if($bagsItem -ne $null) {
+        $bagsItem.Editing.BeginEdit()
+        $bagsItem['CabinBagsFullBanner'] = $banner.ID
+        $bagsItem['CabinBagsFullWithHLBanner'] = $bannerWithHL.ID
+        $bagsItem.Editing.EndEdit() | Out-Null
+    }
+    
+    $tradeBagsItem =  Get-Item -Path '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Cabin Bags' -ErrorAction SilentlyContinue
+    if($tradeBagsItem -ne $null) {
+        $tradeBagsItem.Editing.BeginEdit()
+        $tradeBagsItem['CabinBagsFullBanner'] = $bannerTrade.ID
+        $tradeBagsItem['CabinBagsFullWithHLBanner'] = $bannerTradeWithHL.ID
+        $tradeBagsItem.Editing.EndEdit() | Out-Null
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2020
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240205T155233Z

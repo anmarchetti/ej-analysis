@@ -1,0 +1,162 @@
+﻿---
+ID: "51861ea8-8717-4ac3-bd01-de358a4edda7"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Confidence Block For Pages
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    
+    function Copy-Item-To-New($path, $destination){
+        $item = Get-Item -Path $destination -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            Copy-Item -Path $path -Destination $destination;
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        
+        return $item;
+    }
+    
+    $hotelDiteils = '/sitecore/content/EasyJet/Holidays/Home/Hotel Details';
+    $dataFolder = '/sitecore/content/EasyJet/Holidays/Data';
+    $icon = '<image mediaid="{A2E2BE1F-6A60-45C7-A699-D8BAEC8ACF7E}" />';
+    
+    #Create Holiday With Confidence data source
+    $HWC = Get-Or-Create-Item -path '/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence' -templateId "{4BC0FD8B-8E95-4740-9FBD-67F7AE2EEA92}";
+    
+    #Create Holiday With Confidence Modules
+    $beforeModule = Get-Or-Create-Item -path '/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before' -templateId "{E8BC5C03-9C76-4A29-A411-1DDC17DA63C0}";
+    $confidenceItem1 = Get-Or-Create-Item -path '/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before/Item 1' -templateId "{F6AB0C47-90AD-496B-80F4-6BFCA75147D9}";
+    
+    if ($confidenceItem1 -ne $null) {
+        $confidenceItem1.Editing.BeginEdit();
+        $confidenceItem1["Icon"] = $icon;
+        $confidenceItem1["Title"] = 'Safe and enjoyable holidays';
+        $confidenceItem1["Text"] = "<ul><li>Nothing is more important to us than being able to make sure you have a safe and enjoyable holiday. To do this, we have introduced enhanced safety measures at each stage of your journey.</li><li>While safety is front of mind, we’re also committed to only providing holidays we know you can enjoy. This means we will cancel any holidays where there is a requirement for routine quarantine, self-isolation or testing beyond temperature checks, either on arrival in the destination or when landing back home.</li></ul>";
+        $confidenceItem1.Editing.EndEdit() | Out-Null;
+    }
+    
+    $confidenceItem2 = Copy-Item-To-New -Path "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before/Item 1" -Destination "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before/Item 2";
+    $confidenceItem3 = Copy-Item-To-New -Path "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before/Item 1" -Destination "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before/Item 3";
+    $confidenceItem4 = Copy-Item-To-New -Path "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before/Item 1" -Destination "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before/Item 4";
+    $confidenceItem5 = Copy-Item-To-New -Path "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before/Item 1" -Destination "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before/Item 5";
+    
+    #Fill in Before module
+    if ($beforeModule -ne $null) {
+        $beforeModule.Editing.BeginEdit();
+        $beforeModule["ModuleIcon"] = $icon;
+        $beforeModule["ModuleTitle"] = 'Holiday with confidence BEFORE';
+        $beforeModule["ModuleText"] = "All our resources on keeping you and your family safe on holiday.";
+        $beforeModule["ModuleLinkLabel"] = "Read more";
+        $beforeModule["PopupTitle"] = "Holiday with confidence BEFORE";
+        $beforeModule["PopupSubtitle"] = "During these new and uncertain times we’re here to do all we can to give you peace of mind and comfort that your holiday can go ahead as you planned. We are introducing three key commitments to make sure you have a comfortable, enjoyable and safe holiday. ";
+        $beforeModule["PopupList"] = "";
+        $beforeModule["PopupEndText"] = "<p>Just like at home, in order to comply with local public health requirements, things are a bit different in our holiday destinations right now and some amenities may not be available.</p><p> We hope this video explains some of the changes you may see on your holiday to help ensure your safety and comfort.</p>";
+        $beforeModule["PopupLink"] = '<link linktype="internal" id="{0518D8C6-B7CA-4C73-86C2-A29D971EBEAB}" text="Read More" />';
+        $beforeModule.Editing.EndEdit() | Out-Null;
+    }
+    
+    if ($beforeModule -ne $null) {
+        [Sitecore.Data.Fields.MultilistField]$linksField = $beforeModule.Fields["PopupList"];
+        $beforeModule.Editing.BeginEdit();
+        $linksField.add($confidenceItem1.ID);
+        $linksField.add($confidenceItem2.ID);
+        $linksField.add($confidenceItem3.ID);
+        $linksField.add($confidenceItem4.ID);
+        $linksField.add($confidenceItem5.ID);
+        $beforeModule.Editing.EndEdit() | Out-Null;
+        Write-Host "Add items to list";
+    }
+    
+    #Create after module
+    
+    Copy-Item-To-New -Path '/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before' -Destination '/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/After';
+    $confidenceItem1 = Copy-Item-To-New -Path "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before/Item 1" -Destination "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/After/Item 1";
+    $confidenceItem2 = Copy-Item-To-New -Path "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before/Item 1" -Destination "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/After/Item 2";
+    $confidenceItem3 = Copy-Item-To-New -Path "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before/Item 1" -Destination "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/After/Item 3";
+    $confidenceItem4 = Copy-Item-To-New -Path "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before/Item 1" -Destination "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/After/Item 4";
+    $confidenceItem5 = Copy-Item-To-New -Path "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/Before/Item 1" -Destination "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/After/Item 5";
+    
+    $afterModule = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence/After' -ErrorAction SilentlyContinue;
+    
+    if ($afterModule -ne $null) {
+        $afterModule.Editing.BeginEdit();
+        $afterModule["ModuleTitle"] = 'Holiday with confidence AFTER';
+        $afterModule["PopupTitle"] = "Holiday with confidence AFTER";
+        $afterModule.Editing.EndEdit() | Out-Null;
+        Write-Host "Add items to list";
+    }
+    
+    if ($afterModule -ne $null) {
+        [Sitecore.Data.Fields.MultilistField]$linksField = $afterModule.Fields["PopupList"];
+        $afterModule.Editing.BeginEdit();
+        $linksField.add($confidenceItem1.ID);
+        $linksField.add($confidenceItem2.ID);
+        $linksField.add($confidenceItem3.ID);
+        $linksField.add($confidenceItem4.ID);
+        $linksField.add($confidenceItem5.ID);
+        $afterModule.Editing.EndEdit() | Out-Null;
+        Write-Host "Add items to list";
+    }
+    
+    #Fill in Holiday with confidence 
+    if ($HWC -ne $null) {
+        $HWC.Editing.BeginEdit();
+        $HWC["DaysSeparator"] = '5';
+        $HWC["Before"] = $beforeModule.ID;
+        $HWC["After"] = $afterModule.ID;
+        $HWC.Editing.EndEdit() | Out-Null;
+        Write-Host "Add items to list";
+    }
+    
+    #Add Holiday With Confidence rendering to Hotel details page
+    $hoteldetailsPage= Get-Item -Path $hotelDiteils;
+    $HWCRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Holiday With Confidence";
+    $componentWrapperRenderings = Get-Rendering -Item $hoteldetailsPage -Placeholder 'body';
+    if ($componentWrapperRenderings -is [array]) {
+        $componentWrapperRend = $componentWrapperRenderings[0];
+    } else { 
+        $componentWrapperRend = $componentWrapperRenderings;
+    }
+    $HWCPlaceholder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0';
+    $HWCItem = Get-Item -Database "master" -Path $HWCRenderingPath | New-Rendering -Placeholder $HWCPlaceholder;
+    Add-Rendering -Item $hoteldetailsPage -PlaceHolder $HWCPlaceholder -Instance $HWCItem  -Datasource "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence";
+    
+    
+    #Add Holiday With Confidence rendering to search result page
+    $searchResultsPage = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Home/MixedResultList';
+    $searchResultsRenderingItem = Get-Item -Path "master:" -Id "{76C32F3D-E1E3-4213-BD40-207B954EFF42}";
+    $searchResultRenderings = Get-Rendering -Item $searchResultsPage -Rendering   $searchResultsRenderingItem;
+    if ($searchResultRenderings -is [array]) {
+        $searchResultRendering = $searchResultRenderings[0];
+    } else { 
+        $searchResultRendering = $searchResultRenderings;
+    }
+    
+    $HWCPlaceholder = $searchResultRendering.Placeholder + '/holiday-with-confidence-' +  $searchResultRendering.UniqueId + '-0';
+    $HWCItem = Get-Item -Database "master" -Path $HWCRenderingPath | New-Rendering -Placeholder $HWCPlaceholder;
+    Add-Rendering -Item $searchResultsPage -PlaceHolder $HWCPlaceholder -Instance $HWCItem  -Datasource "/sitecore/content/EasyJet/Holidays/Data/Holiday With Confidence";
+    
+        
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4890
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200714T084139Z

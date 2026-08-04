@@ -1,0 +1,20 @@
+.phone-prefix {
+    position: absolute;
+    z-index: 1;
+    top: 11px;
+    left: 38px;
+    display: none;
+    font-size: 15px;
+}
+
+.form-field--error .phone-prefix {
+    color: $colorRed;
+}
+
+.code-2-digits,
+.code-3-digits,
+.code-4-digits {
+    .phone-prefix {
+        display: block;
+    }
+}

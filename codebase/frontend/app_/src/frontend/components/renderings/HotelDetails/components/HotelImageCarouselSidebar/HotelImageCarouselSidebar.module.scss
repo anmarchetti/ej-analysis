@@ -1,0 +1,93 @@
+.hotelPreviewSidebar {
+    @include media-breakpoint-up(lg) {
+        min-height: 600px;
+    }
+}
+
+.kspBoxPreview {
+    padding: 18px 23px;
+    @include media-breakpoint-down(lg) {
+        padding: 16px !important;
+    }
+}
+
+.kspListPreview {
+    margin: 0;
+}
+
+.priceWrapper {
+    width: 100%;
+
+    @include media-breakpoint-down(lg) {
+        width: auto;
+        margin-left: auto;
+    }
+}
+
+.submitButton {
+    height: 56px;
+    padding: 10px;
+
+    @include media-breakpoint-down(md) {
+        height: 52px;
+    }
+}
+
+.hotelPrice {
+    justify-content: flex-end;
+
+    .tooltipTrigger {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        align-self: center;
+        max-height: 45px;
+        margin-left: 0.5em;
+        padding: 0;
+
+        @include sizeSquare(16px);
+
+        svg {
+            @include sizeSquare(100%);
+        }
+    }
+
+    :global {
+        .hotel-price__pills {
+            gap: 5px;
+        }
+
+        .price-pill {
+            margin-bottom: 0;
+
+            svg {
+                @include sizeSquare(18px);
+
+                @include media-breakpoint-down(lg) {
+                    @include sizeSquare(16px);
+                }
+            }
+        }
+    }
+}
+
+.touristTaxWrapper {
+    display: flex;
+    align-self: flex-end;
+    justify-content: flex-end;
+    width: 65%;
+    margin-left: auto;
+    text-align: right;
+    overflow-wrap: break-word;
+    white-space: normal;
+
+    @include media-breakpoint-down(lg) {
+        width: auto;
+    }
+}
+
+.browseTaxLabel {
+    display: block;
+    font-size: 14px;
+    line-height: 1.286;
+}

@@ -1,0 +1,304 @@
+﻿---
+ID: "d0e851ed-1751-450a-be66-a4a741581f8e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/8 - SER-790 - Still have questions"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $updates = @(
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question and Answer Folder"
+            Fields      = @{
+                "__Sortorder" = @{
+                    "en" = "1200"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions/Q1"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+            Fields      = @{
+                "Question" = @{
+                    "en" = "How do I find my new flight details?"
+                    "fr-CH" = "Comment trouver les détails de mon nouveau vol?"
+                    "de-CH" = "Wie finde ich meine neuen Flugdaten?"
+                    "fr-FR" = "Comment trouver les détails de mon nouveau vol?"
+                    "de-DE" = "Wie finde ich meine neuen Flugdaten?"
+                }
+                "Answer"= @{
+                  "en" = @'
+    <p>We&rsquo;ll proactively contact you by email, and sometimes text, to the contact details provided when you booked your holiday, if there are any changes to your flight, so there&rsquo;s no need to call us for this information.<br />
+    <br />
+    You can also view the latest live details of your new flight by logging in to <a href="https://www.easyjet.com/"><strong><span style="text-decoration: underline;">easyJet.com</span></strong></a> and checking your booking. You&rsquo;ll need your flight details and flight reference number beginning with &lsquo;K&rsquo;, which you can find in the emails we&rsquo;ve previously sent. </p>
+    '@
+                    "fr-CH" = @'
+    <p>Nous vous contacterons de manière proactive par e-mail, et parfois par SMS, aux coordonnées fournies lors de la réservation de votre séjour, en cas de modification de votre vol. Vous n'avez donc pas besoin de nous appeler pour obtenir ces informations.<br />
+    <br />
+    Vous pouvez également consulter les dernières informations en direct concernant votre nouveau vol en vous connectant à <a href="https://www.easyjet.com/"><strong><span style="text-decoration: underline;">easyJet.com</span></strong></a> et en vérifiant votre réservation. Vous aurez besoin des détails de votre vol et du numéro de référence de votre vol commençant par « K », que vous trouverez dans les e-mails que nous vous avons précédemment envoyés. </p>
+    '@
+                    "de-CH" = @'
+    <p>Wir werden Sie proaktiv per E-Mail und manchmal auch per SMS unter den Kontaktdaten, die Sie bei der Buchung Ihres Urlaubs angegeben haben, kontaktieren, wenn es Änderungen zu Ihrem Flug gibt. Sie müssen uns also nicht anrufen, um diese Informationen zu erhalten.<br />
+    <br />
+    Sie können auch die aktuellen Live-Details Ihres neuen Fluges einsehen, indem Sie sich bei <a href="https://www.easyjet.com/"><strong><span style="text-decoration: underline;">easyJet.com</span></strong></a> anmelden und Ihre Buchung überprüfen. Sie benötigen dazu Ihre Flugdaten und die Flugnummer, die mit „K” beginnt und in den E-Mails zu finden ist, die wir Ihnen zuvor zugesandt haben. </p>
+    '@
+                    "fr-FR" = @'
+    <p>Nous vous contacterons de manière proactive par e-mail, et parfois par SMS, aux coordonnées fournies lors de la réservation de votre séjour, en cas de modification de votre vol. Vous n'avez donc pas besoin de nous appeler pour obtenir ces informations.<br />
+    <br />
+    Vous pouvez également consulter les dernières informations en direct concernant votre nouveau vol en vous connectant à <a href="https://www.easyjet.com/"><strong><span style="text-decoration: underline;">easyJet.com</span></strong></a> et en vérifiant votre réservation. Vous aurez besoin des détails de votre vol et du numéro de référence de votre vol commençant par « K », que vous trouverez dans les e-mails que nous vous avons précédemment envoyés. </p>
+    '@
+                    "de-DE" = @'
+    <p>Wir werden Sie proaktiv per E-Mail und manchmal auch per SMS unter den Kontaktdaten, die Sie bei der Buchung Ihres Urlaubs angegeben haben, kontaktieren, wenn es Änderungen zu Ihrem Flug gibt. Sie müssen uns also nicht anrufen, um diese Informationen zu erhalten.<br />
+    <br />
+    Sie können auch die aktuellen Live-Details Ihres neuen Fluges einsehen, indem Sie sich bei <a href="https://www.easyjet.com/"><strong><span style="text-decoration: underline;">easyJet.com</span></strong></a> anmelden und Ihre Buchung überprüfen. Sie benötigen dazu Ihre Flugdaten und die Flugnummer, die mit „K” beginnt und in den E-Mails zu finden ist, die wir Ihnen zuvor zugesandt haben. </p>
+    '@
+                }
+                "NavigationParameter" = @{
+                    "en" = "newflightdetails"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions/Q2"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+            Fields      = @{
+                "Question" = @{
+                    "en" = "What if my new flight leaves or arrives at a different UK airport?"
+                    "fr-CH" = "Que se passe-t-il si mon nouveau vol part ou arrive dans un autre aéroport britannique?"
+                    "de-CH" = "Was passiert, wenn mein neuer Flug von einem anderen Flughafen in Großbritannien abfliegt oder dort ankommt?"
+                    "fr-FR" = "Que se passe-t-il si mon nouveau vol part ou arrive dans un autre aéroport britannique?"
+                    "de-DE" = "Was passiert, wenn mein neuer Flug von einem anderen Flughafen in Großbritannien abfliegt oder dort ankommt?"
+                }
+                "Answer"= @{
+                   "en" = @'
+    <p>We&rsquo;ll usually organise transportation to take you to your new UK departure airport. If you have an overnight delay, we&rsquo;ll also do our best to find you somewhere to stay for the night. </p>
+    <p>Depending on circumstances, timing, and availability, your overnight hotel may be near your original departure airport or closer to your new one. </p>
+    <p>If we invite you to make your own arrangements, please keep hold of all receipts for reasonable expenses, which you can claim back later. </p>
+    <p>Unless we&rsquo;ve contacted you to say otherwise using the contact details provided when you booked your holiday if your return flight lands at a different UK airport, you should make your own way home and keep receipts to claim for reasonable transport expenses.</p>
+    '@
+                    "fr-CH" = @'
+    <p>Nous organisons généralement votre transport jusqu'à votre nouvel aéroport de départ au Royaume-Uni. Si votre vol est retardé d'une nuit, nous ferons également de notre mieux pour vous trouver un hébergement pour la nuit. </p>
+    <p>En fonction des circonstances, du timing et des disponibilités, votre hôtel pour la nuit pourra se trouver à proximité de votre aéroport de départ initial ou plus près de votre nouvel aéroport. </p>
+    <p>Si nous vous invitons à prendre vous-même vos dispositions, veuillez conserver tous les reçus des dépenses raisonnables, que vous pourrez nous réclamer ultérieurement. </p>
+    <p>À moins que nous ne vous ayons contacté pour vous informer du contraire en utilisant les coordonnées fournies lors de la réservation de votre séjour, si votre vol de retour atterrit dans un autre aéroport britannique, vous devrez rentrer chez vous par vos propres moyens et conserver les reçus afin de pouvoir nous réclamer le remboursement des frais de transport raisonnables. </p>
+    '@
+                    "de-CH" = @'
+    <p>In der Regel organisieren wir den Transport zu Ihrem neuen Abflughafen in Großbritannien. Bei einer Übernachtungsverzögerung bemühen wir uns außerdem, eine Unterkunft für Sie zu finden. </p>
+    <p>Je nach Umständen, Zeitpunkt und Verfügbarkeit kann sich Ihr Hotel in der Nähe Ihres ursprünglichen Abflughafens oder näher an Ihrem neuen Abflughafen befinden. </p>
+    <p>Wenn wir Sie bitten, Ihre Reise selbst zu organisieren, bewahren Sie bitte alle Belege für angemessene Ausgaben auf, die Sie später geltend machen können. </p>
+    <p>Sofern wir Sie nicht unter den bei der Buchung Ihres Urlaubs angegebenen Kontaktdaten anders informiert haben, sollten Sie bei einer Landung Ihres Rückflugs an einem anderen Flughafen in Großbritannien selbst für Ihre Heimreise sorgen und die Belege für angemessene Transportkosten aufbewahren, um diese geltend zu machen. </p>
+    '@
+                    "fr-FR" = @'
+    <p>Nous organisons généralement votre transport jusqu'à votre nouvel aéroport de départ au Royaume-Uni. Si votre vol est retardé d'une nuit, nous ferons également de notre mieux pour vous trouver un hébergement pour la nuit. </p>
+    <p>En fonction des circonstances, du timing et des disponibilités, votre hôtel pour la nuit pourra se trouver à proximité de votre aéroport de départ initial ou plus près de votre nouvel aéroport. </p>
+    <p>Si nous vous invitons à prendre vous-même vos dispositions, veuillez conserver tous les reçus des dépenses raisonnables, que vous pourrez nous réclamer ultérieurement. </p>
+    <p>À moins que nous ne vous ayons contacté pour vous informer du contraire en utilisant les coordonnées fournies lors de la réservation de votre séjour, si votre vol de retour atterrit dans un autre aéroport britannique, vous devrez rentrer chez vous par vos propres moyens et conserver les reçus afin de pouvoir nous réclamer le remboursement des frais de transport raisonnables. </p>
+    '@
+                    "de-DE" = @'
+    <p>In der Regel organisieren wir den Transport zu Ihrem neuen Abflughafen in Großbritannien. Bei einer Übernachtungsverzögerung bemühen wir uns außerdem, eine Unterkunft für Sie zu finden. </p>
+    <p>Je nach Umständen, Zeitpunkt und Verfügbarkeit kann sich Ihr Hotel in der Nähe Ihres ursprünglichen Abflughafens oder näher an Ihrem neuen Abflughafen befinden. </p>
+    <p>Wenn wir Sie bitten, Ihre Reise selbst zu organisieren, bewahren Sie bitte alle Belege für angemessene Ausgaben auf, die Sie später geltend machen können. </p>
+    <p>Sofern wir Sie nicht unter den bei der Buchung Ihres Urlaubs angegebenen Kontaktdaten anders informiert haben, sollten Sie bei einer Landung Ihres Rückflugs an einem anderen Flughafen in Großbritannien selbst für Ihre Heimreise sorgen und die Belege für angemessene Transportkosten aufbewahren, um diese geltend zu machen. </p>
+    '@
+                }
+                "NavigationParameter" = @{
+                    "en" = "differentairport"
+                }
+            }
+        },
+         @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions/Q3"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+            Fields      = @{
+                "Question" = @{
+                    "en" = "Can I book my own flight home?"
+                    "fr-CH" = "Puis-je réserver moi-même mon vol retour?"
+                    "de-CH" = "Kann ich meinen Rückflug selbst buchen?"
+                    "fr-FR" = "Puis-je réserver moi-même mon vol retour?"
+                    "de-DE" = "Kann ich meinen Rückflug selbst buchen?"
+                }
+                "Answer"= @{
+                    "en" = @'
+    <p>If your original return flight has been cancelled due to disruption, we&rsquo;ll book you on to an alternative easyJet flight back to the UK and do our best to minimise any inconvenience. </p>
+    <p>If the new flight we confirm isn&rsquo;t suitable, and you&rsquo;ve found alternative transport at least a day earlier than the flight we&rsquo;ve rebooked you on, you may book that transport and claim back reasonable expenses. </p>
+    <p>To submit a successful expense claim, please make sure you let us know that you&rsquo;ve booked an alternative option, for example, by <a href="~/link.aspx?_id=CE1EB23F27E2418B97906F508A4FC91F&amp;_z=z"><span style="text-decoration: underline;"><strong>launching a chat with us or calling our support team</strong></span></a>. This also allows us to free up space so that other customers can get home sooner.  </p>
+    '@
+                    "fr-CH" = @'
+    <p>Si votre vol retour initial a été annulé en raison d'une perturbation, nous vous réserverons un autre vol easyJet vers le Royaume-Uni et ferons tout notre possible pour minimiser les désagréments. </p>
+    <p>Si le nouveau vol que nous confirmons ne vous convient pas et que vous avez trouvé un autre moyen de transport au moins un jour avant le vol que nous avons réservé pour vous, vous pouvez réserver ce moyen de transport et demander le remboursement des frais raisonnables. </p>
+    <p>Pour que votre demande de remboursement soit acceptée, veuillez nous informer que vous avez réservé une autre option, par exemple en <a href="~/link.aspx?_id=CE1EB23F27E2418B97906F508A4FC91F&amp;_z=z"><span style="text-decoration: underline;" ><strong>lancant une discussion avec nous ou en appelant notre équipe d'assistance</strong></span></a>. Cela nous permet également de libérer de la place afin que d'autres clients puissent rentrer chez eux plus tôt.  </p>
+    '@
+                    "de-CH" = @'
+    <p>Wenn Ihr ursprünglicher Rückflug aufgrund von Störungen gestrichen wurde, buchen wir Sie auf einen alternativen easyJet-Flug zurück nach Großbritannien um und bemühen uns, die Unannehmlichkeiten so gering wie möglich zu halten. </p>
+    <p>Wenn der von uns bestätigte neue Flug für Sie nicht geeignet ist und Sie mindestens einen Tag vor dem von uns umgebuchten Flug eine alternative Beförderungsmöglichkeit gefunden haben, können Sie diese buchen und die angemessenen Kosten zurückfordern. </p>
+    <p>Um eine erfolgreiche Kostenrückerstattung zu beantragen, teilen Sie uns bitte mit, dass Sie eine alternative Option gebucht haben, beispielsweise indem Sie <a href="~/link.aspx?_id=CE1EB23F27E2418B97906F508A4FC91F&amp;_z=z"><span style="text-decoration: underline;" ><strong>uns im Chat kontaktieren oder unser Support-Team anrufen</strong></span></a>. Dadurch können wir auch Plätze freimachen, damit andere Kunden früher nach Hause kommen können.  </p>
+    '@
+                    "fr-FR" = @'
+    <p>Si votre vol retour initial a été annulé en raison d'une perturbation, nous vous réserverons un autre vol easyJet vers le Royaume-Uni et ferons tout notre possible pour minimiser les désagréments. </p>
+    <p>Si le nouveau vol que nous confirmons ne vous convient pas et que vous avez trouvé un autre moyen de transport au moins un jour avant le vol que nous avons réservé pour vous, vous pouvez réserver ce moyen de transport et demander le remboursement des frais raisonnables. </p>
+    <p>Pour que votre demande de remboursement soit acceptée, veuillez nous informer que vous avez réservé une autre option, par exemple en <a href="~/link.aspx?_id=CE1EB23F27E2418B97906F508A4FC91F&amp;_z=z"><span style="text-decoration: underline;" ><strong>lancant une discussion avec nous ou en appelant notre équipe d'assistance</strong></span></a>. Cela nous permet également de libérer de la place afin que d'autres clients puissent rentrer chez eux plus tôt.  </p>
+    '@
+                    "de-DE" = @'
+    <p>Wenn Ihr ursprünglicher Rückflug aufgrund von Störungen gestrichen wurde, buchen wir Sie auf einen alternativen easyJet-Flug zurück nach Großbritannien um und bemühen uns, die Unannehmlichkeiten so gering wie möglich zu halten. </p>
+    <p>Wenn der von uns bestätigte neue Flug für Sie nicht geeignet ist und Sie mindestens einen Tag vor dem von uns umgebuchten Flug eine alternative Beförderungsmöglichkeit gefunden haben, können Sie diese buchen und die angemessenen Kosten zurückfordern. </p>
+    <p>Um eine erfolgreiche Kostenrückerstattung zu beantragen, teilen Sie uns bitte mit, dass Sie eine alternative Option gebucht haben, beispielsweise indem Sie <a href="~/link.aspx?_id=CE1EB23F27E2418B97906F508A4FC91F&amp;_z=z"><span style="text-decoration: underline;" ><strong>uns im Chat kontaktieren oder unser Support-Team anrufen</strong></span></a>. Dadurch können wir auch Plätze freimachen, damit andere Kunden früher nach Hause kommen können.  </p>
+    '@
+                }
+                "NavigationParameter" = @{
+                    "en" = "ownflighthome"
+                }
+            }
+        },
+         @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions/Q4"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+            Fields      = @{
+                "Question" = @{
+                    "en" = "What expenses should I claim back from my travel insurance?"
+                    "fr-CH" = "Quelles dépenses dois-je demander à mon assurance voyage de me rembourser?"
+                    "de-CH" = "Welche Kosten kann ich von meiner Reiseversicherung zurückfordern?"
+                    "fr-FR" = "Quelles dépenses dois-je demander à mon assurance voyage de me rembourser?"
+                    "de-DE" = "Welche Kosten kann ich von meiner Reiseversicherung zurückfordern?"
+                }
+                "Answer"= @{
+                    "en" = @'
+    <p>If you&rsquo;ve incurred additional expenses, we strongly recommend contacting your travel insurance provider, especially for costs such as: </p>
+    <ul>
+        <li>Missed days at work </li>
+        <li>Missed appointments </li>
+        <li>Medical bills </li>
+        <li>Pet care
+        </li>
+    </ul>
+    <p>Your insurer may be able to cover expenses that easyJet holidays can&rsquo;t, such as those beyond your package or regulatory entitlements.  </p>
+    '@
+                    "fr-CH" = @'
+    <p>Si vous avez engagé des frais supplémentaires, nous vous recommandons vivement de contacter votre assureur voyage, en particulier pour les frais suivants : </p>
+    <ul>
+        <li>Jours de travail manqués </li>
+        <li>Rendez-vous manqués </li>
+        <li>Frais médicaux </li>
+        <li>Soins pour animaux de compagnie
+        </li>
+    </ul>
+    <p>Votre assureur peut être en mesure de couvrir les frais que easyJet holidays ne peut pas prendre en charge, tels que ceux qui dépassent votre forfait ou vos droits réglementaires.  </p>
+    '@
+                    "de-CH" = @'
+    <p>Wenn Ihnen zusätzliche Kosten entstanden sind, empfehlen wir Ihnen dringend, sich an Ihren Reiseversicherer zu wenden, insbesondere bei Kosten wie: </p>
+    <ul>
+        <li>Verpasste Arbeitstage </li>
+        <li>Verpasste Termine </li>
+        <li>Arztrechnungen </li>
+        <li>Haustierbetreuung
+        </li>
+    </ul>
+    <p>Ihr Versicherer kann möglicherweise Kosten übernehmen, die easyJet holidays nicht übernehmen kann, z. B. Kosten, die über Ihr Pauschalangebot oder Ihre gesetzlichen Ansprüche hinausgehen.  </p>
+    '@
+                    "fr-FR" = @'
+    <p>Si vous avez engagé des frais supplémentaires, nous vous recommandons vivement de contacter votre assureur voyage, en particulier pour les frais suivants : </p>
+    <ul>
+        <li>Jours de travail manqués </li>
+        <li>Rendez-vous manqués </li>
+        <li>Frais médicaux </li>
+        <li>Soins pour animaux de compagnie
+        </li>
+    </ul>
+    <p>Votre assureur peut être en mesure de couvrir les frais que easyJet holidays ne peut pas prendre en charge, tels que ceux qui dépassent votre forfait ou vos droits réglementaires.  </p>
+    '@
+                    "de-DE" = @'
+    <p>Wenn Ihnen zusätzliche Kosten entstanden sind, empfehlen wir Ihnen dringend, sich an Ihren Reiseversicherer zu wenden, insbesondere bei Kosten wie: </p>
+    <ul>
+        <li>Verpasste Arbeitstage </li>
+        <li>Verpasste Termine </li>
+        <li>Arztrechnungen </li>
+        <li>Haustierbetreuung
+        </li>
+    </ul>
+    <p>Ihr Versicherer kann möglicherweise Kosten übernehmen, die easyJet holidays nicht übernehmen kann, z. B. Kosten, die über Ihr Pauschalangebot oder Ihre gesetzlichen Ansprüche hinausgehen.  </p>
+    '@
+                }
+                "NavigationParameter" = @{
+                    "en" = "claimfrominsurance"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions - Section Title"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+            Fields      = @{
+                "Title" = @{
+                    "en" = "STILL HAVE QUESTIONS?"
+                    "fr-CH" = "VOUS AVEZ ENCORE DES QUESTIONS?"
+                    "de-CH" = "HABEN SIE NOCH FRAGEN?"
+                    "fr-FR" = "VOUS AVEZ ENCORE DES QUESTIONS?"
+                    "de-DE" = "HABEN SIE NOCH FRAGEN?"
+                }
+                "__Sortorder" = @{
+                    "en" = "1100"
+                }
+            }
+        }
+    )
+    
+    ImportContent -itemsToCreate $updates
+        
+    $textBlockDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions - Section Title"
+    $qaFolderDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions"
+                
+    $disruptionPagePath = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption"
+    $qaRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Question And Answer"
+    $componentWrapperRenderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+    $textBlockRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Text Block"
+    
+    
+    $page = Get-Item -Path $disruptionPagePath
+    $componentWrapperRendering = Get-Rendering -Item $page | Where-Object {$_.ItemId -eq $componentWrapperRenderingId}
+    $neededWrapper = $componentWrapperRendering[5]
+    
+    $textBlockRendering = Get-Item -Path $textBlockRenderingPath
+    $textBlockInstance = New-Rendering -Item $textBlockRendering 
+    
+    $qaRendering = Get-Item -Path $qaRenderingPath
+    $qaInstance = New-Rendering -Item $qaRendering 
+     
+    $placeholderToClear = "/body/component-wrapper-inner-$($neededWrapper.UniqueId)-0"
+     
+    $renderings = Get-Rendering -Item $page
+     
+    $toRemove = $renderings | Where-Object { $_.Placeholder -eq $placeholderToClear }
+     
+    if ($toRemove.Count -gt 0) {
+        foreach ($r in $toRemove) {
+            Write-Host "Remove rendering $($r.ItemId) из $($r.Placeholder)"
+            Remove-Rendering -Item $page -Instance $r
+        }
+        Write-Host "Removed $($toRemove.Count) renderings from $placeholderToClear."
+    } else {
+        Write-Host "No renderings"
+    }
+    
+    $componentWrapper = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper"
+    $renderingComponentWrapper = Get-Rendering -Item $page -Rendering $componentWrapper
+    
+    Set-Rendering -Item $page -Instance $neededWrapper -PlaceHolder "/body" -Index 16 -Parameter @{ "PaddingBottom" = "Padding Bottom 64px"; "PaddingTop" = "Padding Top 64px"; "PaddingBottomMobile" = "Padding Bottom Mobile 32px"; "PaddingTopMobile" = "Padding Top Mobile 32px"; "Anchor" = "still-have-questions-section" }
+    Add-Rendering -Item $page -Instance $textBlockInstance -Placeholder $placeholderToClear -DataSource $textBlockDatasourcePath -Index 17 -Parameter @{ "TitleTag" = "h2"; "TitleFontStyle" = "rounded demi"; "TitleFontSize" = "Mobile - 20px Desktop - 32px"; "TitleWeight" = 400; "PaddingSize" = "0px" }
+    Add-Rendering -Item $page -Instance $qaInstance -Placeholder $placeholderToClear -DataSource $qaFolderDatasourcePath -Index 18 -Parameter @{ "ZeroMargin" = "1" }
+    
+    
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim - Questions" -Permanently -Recurse |
+    ForEach-Object {   
+        $_ | Remove-Item -Recurse -Permanently
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20251114T082407Z

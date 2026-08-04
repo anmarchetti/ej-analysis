@@ -1,0 +1,75 @@
+.overlay {
+    position: fixed;
+    z-index: $zIndexSuperOverlay;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    background-color: $colorWhite;
+    inset: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+    text-align: center;
+}
+
+.iconContainer {
+    @include sizeSquare(104px);
+
+    position: relative;
+
+    svg {
+        @include sizeSquare(48px);
+
+        position: absolute;
+        margin: auto;
+        color: $colorOrange;
+        inset: 0;
+    }
+}
+
+.icon {
+    @include sizeSquare(100%);
+
+    border: 6px solid rgba($colorOrange, 0.2);
+    border-left-color: $colorOrange;
+    border-radius: $box_border-radius_round;
+    transform: translateZ(0);
+    animation: spin 1.1s infinite linear;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 390px;
+}
+
+.header {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 24px;
+    line-height: 32px;
+    text-transform: uppercase;
+}
+
+.description {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

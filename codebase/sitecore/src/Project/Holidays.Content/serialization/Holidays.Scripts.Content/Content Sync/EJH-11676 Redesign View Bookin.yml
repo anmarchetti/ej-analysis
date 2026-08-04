@@ -1,0 +1,185 @@
+﻿---
+ID: "dfa69240-f435-4501-9c8d-4fc040c23817"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-11676 Redesign View Booking"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $viewBookingPage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    $viewBookingComponentsPath = "$($viewBookingPage.FullPath)/Page Components"
+    
+    
+    function Get-Or-Create-Item ($path,$name,$templateId) {
+    	$item = Get-Item "$($path)/$name" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $name -ItemType $templateId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function Remove-ViewBooking-Rendering ($instance) {
+    	if ($instance -ne $null) {
+    		Remove-Rendering -Item $viewBookingPage -Instance $instance
+    		Write-Host "Rendering $($rendering.ID) removed"
+    	}
+    }
+    
+    function Update-View-Booking-Page () {
+    	# Remove Booking Background Rendering
+    	$bookingBackgroundRendering = Get-Rendering -Item $viewBookingPage | Where-Object { $_.ItemId -eq "{3695CE85-3DBD-490F-A31A-A26DB8E4772C}" } | Select -First 1
+    	Remove-ViewBooking-Rendering -Instance $bookingBackgroundRendering
+    
+    	# Remove Outdated Booking Disruption Rendering
+    	$bookingDisruptionRendering = Get-Rendering -Item $viewBookingPage | Where-Object { $_.ItemId -eq "{459C17C7-913F-4955-BD79-7F31290D9D62}" } | Select -First 1
+    	Remove-ViewBooking-Rendering -Instance $bookingDisruptionRendering
+    
+    	# Remove Outdated Call To Pay Remaining Balance 
+    	$remainingBalanceRendering = Get-Rendering -Item $viewBookingPage -PlaceHolder "*remaining-balance-contacts*" | Select -First 1
+    	Remove-ViewBooking-Rendering -Instance $remainingBalanceRendering
+    
+    
+    	# Move ViewBooking and its children Renderings form 'wrapper' to 'body'
+    	$viewBookingWrapperID = "{b256b26a-da9c-4195-b68a-bc4ed53685e3}"
+    	$oldViewBookingPlaceholder = "body/component-wrapper-inner-$($viewBookingWrapperID)-0"
+    	$newViewBookingPlaceholder = "body"
+    
+    	Get-Rendering -Item $viewBookingPage -PlaceHolder ('*' + $oldViewBookingPlaceholder + '*') | ForEach-Object {
+    		$_.Placeholder = $_.Placeholder -replace $oldViewBookingPlaceholder,$newViewBookingPlaceholder
+    		Set-Rendering -Item $viewBookingPage -Instance $_
+    	}
+    	Write-Host "Update View Booking Wrapper Placeholders"
+    
+    	# Remove Wrapper Rendering
+    	$viewBookingWrapperRendering = Get-Rendering -Item $viewBookingPage | Where-Object { $_.UniqueId -eq $viewBookingWrapperID } | Select -First 1
+    	Remove-ViewBooking-Rendering -Instance $viewBookingWrapperRendering
+    
+    	# Remove Old Contact us Rendering
+    	$contactUsPlaceholder = "/body/bookingContactUs-{5500ac44-5df4-4473-8e8c-ea635a187882}-0"
+    	$contactUsRendering = Get-Rendering -Item $viewBookingPage | Where-Object { $_.Placeholder -eq $contactUsPlaceholder } | Select -First 1
+    	Remove-ViewBooking-Rendering -Instance $contactUsRendering
+    
+    
+    	# Update current login block and create one more
+    	Update-LogInToManageHoliday-Block
+    	Create-LogInToMakeChanges-Block
+    
+    	# Create Help Links and Place it to 'contactUs" placeholder
+    	$helpLinks = Create-Help-Links
+    	$helpLinksPath = "/sitecore/layout/Renderings/Feature/PageContent/Help Links"
+    	$helpLinksRendering = Get-Item -Database "master" -Path $helpLinksPath | New-Rendering -PlaceHolder $contactUsPlaceholder
+    	Add-Rendering -Item $viewBookingPage -PlaceHolder $contactUsPlaceholder -Instance $helpLinksRendering -DataSource $helpLinks.ID
+    
+    }
+    
+    
+    function Create-Help-Links () {
+    	$linksFolderName = "Bottom Help Links";
+    	$linksFolder = Get-Item "$($viewBookingComponentsPath)/$($linksFolderName)" -ErrorAction SilentlyContinue
+    
+    	if ($linksFolder -eq $null) {
+    		$linksFolder = New-Item -Path $viewBookingComponentsPath -Name $linksFolderName -ItemType "{D8BCEFBC-7EB0-49EE-8136-466C8C691D67}"
+    
+    		$link1 = Get-Or-Create-Item -Path $linksFolder.FullPath -Name "Contact Us" -templateId "{71FE9E37-1343-4E71-8741-3B26E072F9D3}"
+    		if ($link1 -ne $null) {
+    			$link1.Editing.BeginEdit()
+    			$link1["Link"] = '<link text="Contact us" linktype="external" url="https://www.easyjet.com/en/help/contact" />';
+    			$link1["Title"] = 'Contact us';
+    			$link1["Description"] = 'Still need help? Get in touch with our team';
+    			$link1["Icon"] = '<image mediaid="{2DF5AC51-3AB9-4DAC-9AEE-563994DFF6CC}" />';
+    			$link1.Editing.EndEdit() | Out-Null
+    		}
+    
+    		$link2 = Get-Or-Create-Item -Path $linksFolder.FullPath -Name "Chat To Us" -templateId "{71FE9E37-1343-4E71-8741-3B26E072F9D3}"
+    		if ($link2 -ne $null) {
+    			$link2.Editing.BeginEdit()
+    			$link2["Link"] = '<link text="Chat to us" linktype="external" url="" anchor="" target=""  />';
+    			$link2["Title"] = 'Chat to us';
+    			$link2["OpenChatBot"] = '1';
+    			$link2["Description"] = 'Our easyJet holidays chatbot can help you with a range of questions';
+    			$link2["Icon"] = '<image mediaid="{595D4E2F-1FF1-4C90-8F0A-CB89C11BADD9}" />';
+    			$link2.Editing.EndEdit() | Out-Null
+    		}
+    
+    
+    		[Sitecore.Data.Fields.MultilistField]$linksField = $linksFolder.Fields["Links"];
+    		$linksFolder.Editing.BeginEdit()
+    		$linksFolder["Title"] = "Can't find what you're looking for?";
+    		$linksField.add($link1.ID);
+    		$linksField.add($link2.ID);
+    		$linksFolder.Editing.EndEdit() | Out-Null
+    	}
+    
+    	return $linksFolder;
+    
+    }
+    
+    function Update-LogInToManageHoliday-Block () {
+    	$loginBlock = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Log In For More Info' -ErrorAction SilentlyContinue
+    
+    	if ($loginBlock -ne $null) {
+    		$loginBlock.Editing.BeginEdit()
+    		$loginBlock["Title"] = 'Log in to manage your holiday';
+    		$loginBlock["Icon"] = '<image mediaid="{34690524-FB17-4976-9664-DF6B85F6C766}" />';
+    		$loginBlock.Editing.EndEdit() | Out-Null
+    		Write-Host $loginBlock.Name "updated";
+    
+    		$rendering = Get-Rendering -Item $viewBookingPage -DataSource $loginBlock.ID | Select -First 1
+    		if ($rendering -ne $null) {
+    			Set-Rendering -Item $viewBookingPage -Instance $rendering -Parameter @{ "Theme" = "One Row" }
+    			Write-Host "Login theme is updated";
+    		}
+    	}
+    }
+    
+    function Create-LogInToMakeChanges-Block () {
+    	$name = 'LogIn To Make Changes';
+    	$loginBlock = Get-Item "$($viewBookingComponentsPath)/$($name)" -ErrorAction SilentlyContinue
+    
+    	if ($loginBlock -eq $null) {
+    		$loginBlock = New-Item -Path $viewBookingComponentsPath -Name $name -ItemType "{4274027C-AF42-47ED-BAF0-5E8DBC6A8EB8}"
+    		$loginBlock.Editing.BeginEdit()
+    		$loginBlock["Title"] = 'Looking to make changes to your holiday?';
+    		$loginBlock["Description"] = "Log in using the email address you booked with to see more details. You’ll be able to download your travel documents and manage your booking from here.";
+    		$loginBlock["Icon"] = '<image mediaid="{34690524-FB17-4976-9664-DF6B85F6C766}" />';
+    		$loginBlock["Link"] = "<link text='Log In' linktype='internal' id='{39D2516D-E32A-4B54-B5B4-7FFB40F67EAA}' querystring='redirectUrl=/booking/my_bookings' />"
+    		$loginBlock.Editing.EndEdit() | Out-Null
+    		Write-Host $loginBlock.Name "created";
+    
+    		$rendering = Get-Item -Path "master:" -Id "{59660D4A-AEA2-4C41-A118-FF3C1382742A}" | New-Rendering
+    		$placeholder = '/body/login-{5500ac44-5df4-4473-8e8c-ea635a187882}-0'
+    		Add-Rendering -Item $viewBookingPage -PlaceHolder $placeholder -Instance $rendering -DataSource $loginBlock.ID -Parameter @{ "Theme" = "One Row" }
+    
+    		Write-Host $loginBlock.Name "rendering added";
+    	}
+    }
+    
+    function Set-CheckIn-Link () {
+    	$item = Get-Item -Path "master:/content/EasyJet/Holidays/Settings/Check In Date Settings" -ErrorAction SilentlyContinue
+    
+    	if ($item -ne $null) {
+    		$item.Editing.BeginEdit()
+    		$item["CheckInLink"] = 'https://www.easyjet.com/en?chkin=2&utm_source=easyjetholidays_en&utm_medium=holidays&utm_campaign=holidaysMegaNav'
+    		$item.Editing.EndEdit() | Out-Null;
+    
+    		Write-Host $item.Name "updated";
+    	}
+    }
+    
+    
+    Update-View-Booking-Page
+    Set-CheckIn-Link
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210112T150701Z

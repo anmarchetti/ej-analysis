@@ -1,0 +1,144 @@
+.input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.monthLabel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 63px;
+    padding: 16px 10px;
+    border: 1px solid $colorGeyser;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s ease-in-out;
+
+    .tickIcon,
+    .calendarIcon,
+    .monthName,
+    .year {
+        transition: color 0.2s ease-in-out;
+    }
+
+    .tickIcon {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 24px;
+        height: 24px;
+        color: transparent;
+    }
+
+    .calendarIcon {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 4px;
+        color: $colorSilver;
+    }
+
+    @include media-breakpoint-down(md) {
+        flex-shrink: 0;
+        padding: 16px;
+    }
+}
+
+.disabledMonthLabel {
+    background: $colorPorcelain;
+    cursor: not-allowed;
+
+    .calendarIcon {
+        color: $colorSilver;
+    }
+
+    .monthName {
+        color: $clrTxtLighter;
+    }
+
+    .year {
+        color: $clrTxtLighter;
+    }
+}
+
+.monthLabel.disabledMonthLabel:hover,
+.input:focus + .monthLabel.disabledMonthLabel {
+    border-color: $colorGeyser;
+
+    .calendarIcon {
+        color: $colorSilver;
+    }
+
+    .monthName {
+        color: $clrTxtLighter;
+    }
+
+    .year {
+        color: $clrTxtLighter;
+    }
+}
+
+.monthLabel:hover,
+.input:focus + .monthLabel {
+    border-color: $colorOrange;
+
+    .calendarIcon,
+    .year {
+        color: $clrTextMain;
+    }
+
+    .monthName {
+        color: $clrEjOrangeDarkShadow;
+    }
+}
+
+.selectedMonthLabel,
+.selectedMonthLabel:hover,
+.input:focus + .selectedMonthLabel {
+    background: $colorLinen;
+    border-color: $colorOrange;
+
+    .calendarIcon,
+    .monthName,
+    .year {
+        color: $clrTextMain;
+    }
+
+    .tickIcon {
+        color: $colorOrange;
+    }
+}
+
+.monthName {
+    margin-bottom: 4px;
+    font-family: $fontRoundedDemy;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1;
+    color: $colorOrange;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 3px;
+    }
+}
+
+.year {
+    font-family: $fontRoundedBook;
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.2;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(md) {
+        font-size: 0.875rem;
+    }
+}

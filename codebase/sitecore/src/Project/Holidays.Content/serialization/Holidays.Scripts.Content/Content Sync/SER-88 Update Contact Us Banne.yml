@@ -1,0 +1,267 @@
+﻿---
+ID: "23c5fd82-6145-493c-8e85-d206ddf0a918"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-88 Update Contact Us Banner"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $contactUsDatasourceTemplateId = "{FE9D33D7-3F07-4904-848E-5948285EACCE}"
+    $contactUsChannelItemTemplateId = "{E2309726-5469-4764-865B-D5AECE184A57}"
+    
+    function Create-Item ($path, $template) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+            $item = New-Item -Path $path -Name $itemName -ItemType $template
+            Write-Host "Item" $item.Name "successfully created"
+        } else {
+            Write-Host "Item" $item.Name "already exist"
+        }
+        return $item
+    }
+    
+    function Set-Translation-Value($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            $item = Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+            Write-Host "Created" $language "version for" $item.Name "item"
+        } else {
+            Write-Host $language "version for Item" $item.Name "already exist"
+        }
+    
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+            Write-Host "Field" $key "for" $item.Name "item updated with value" $translation
+        }
+    }
+    
+    function Create-Contact-Us-Banner-Datasource($datasourcePath) {
+        $contactUsBanner = Create-Item -Path $datasourcePath -Template $contactUsDatasourceTemplateId
+        $contactUsBanner.Editing.BeginEdit()
+        $contactUsBanner["CTATitle"] = "Need support? Get in touch"
+        $contactUsBanner["CTAOpenButtonLabel"] = "Contact us"
+        $contactUsBanner["CTAOpenButtonScreenReaderLabel"] = "Open contact us form"
+        $contactUsBanner["CTACloseButtonLabel"] = "Close"
+        $contactUsBanner["CTACloseButtonScreenReaderLabel"] = "Close contact us form"
+        $contactUsBanner["Title"] = "Contact us"
+        $contactUsBanner.Editing.EndEdit() | Out-Null
+        
+        @('de-CH', 'de-DE') | % {
+    		Set-Translation-Value -ItemPath $datasourcePath -Language $_ -Key 'CTATitle' -Translation "Brauchst du Unterstützung? Kontaktiere uns"
+    		Set-Translation-Value -ItemPath $datasourcePath -Language $_ -Key 'CTAOpenButtonLabel' -Translation "Kontakt"
+    		Set-Translation-Value -ItemPath $datasourcePath -Language $_ -Key 'CTAOpenButtonScreenReaderLabel' -Translation "Kontakt-Formular öffnen"
+    		Set-Translation-Value -ItemPath $datasourcePath -Language $_ -Key 'CTACloseButtonLabel' -Translation "Schliessen"
+    		Set-Translation-Value -ItemPath $datasourcePath -Language $_ -Key 'CTACloseButtonScreenReaderLabel' -Translation "Kontakt-Formular schliessen"
+    		Set-Translation-Value -ItemPath $datasourcePath -Language $_ -Key 'Title' -Translation "Kontaktiere uns"
+    	}
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Set-Translation-Value -ItemPath $datasourcePath -Language $_ -Key 'CTATitle' -Translation "Besoin d'aide?"
+    		Set-Translation-Value -ItemPath $datasourcePath -Language $_ -Key 'CTAOpenButtonLabel' -Translation "Contactez-nous"
+    		Set-Translation-Value -ItemPath $datasourcePath -Language $_ -Key 'CTAOpenButtonScreenReaderLabel' -Translation "Ouvrir le formulaire de contact"
+    		Set-Translation-Value -ItemPath $datasourcePath -Language $_ -Key 'CTACloseButtonLabel' -Translation "Fermer"
+    		Set-Translation-Value -ItemPath $datasourcePath -Language $_ -Key 'CTACloseButtonScreenReaderLabel' -Translation "Fermer le formulaire de contact"
+    		Set-Translation-Value -ItemPath $datasourcePath -Language $_ -Key 'Title' -Translation "Nous contacter"
+    	}
+    	
+    	Write-Host "Contact Us Banner data source created on $($datasourcePath) page";
+    }
+    
+    function Add-Channel-Items-To-Tree-List($datasourcePath, $contactChannels) {
+        $item = Get-Item -Path $datasourcePath -ErrorAction SilentlyContinue
+        $item.Editing.BeginEdit()
+        $item["ContactChannels"] = $contactChannels
+        $item.Editing.EndEdit() | Out-Null
+        
+        @('fr-CH', 'fr-FR', 'de-CH', 'de-DE') | % {
+    		Set-Translation-Value -ItemPath $datasourcePath -Language $_ -Key 'ContactChannels' -Translation $contactChannels;
+        }
+    }
+    
+    function Create-Channel-Items-In-Destination($datasourcePath) {
+        # Call Us
+        $callUsPath = $datasourcePath + '/Call us'
+        $callUs = Create-Item -Path $callUsPath -Template $contactUsChannelItemTemplateId
+        $callUs.Editing.BeginEdit()
+        $callUs["DisplayCountries"] = ""
+        $callUs["Title"] = "Call us"
+        $callUs["Description"] = 'If you have any issues while you&rsquo;re away, we&rsquo;re here for you 24/7 through our UK based On Holiday Support team. You can reach us on<p><a href="tel:+443301235025">+44 330 123 5025.</a></p><p>Please have your seven digit easyJet holidays booking reference ready. Make sure you check with your network provider for call charges while you''re away.</p>'
+        $callUs.Editing.EndEdit() | Out-Null
+        
+        @('de-CH', 'de-DE') | % {
+    		Set-Translation-Value -ItemPath $callUsPath -Language $_ -Key 'DisplayCountries' -Translation ""
+    		Set-Translation-Value -ItemPath $callUsPath -Language $_ -Key 'Title' -Translation "Rufen Sie uns an"
+    	}
+    	Set-Translation-Value -ItemPath $callUsPath -Language 'de-CH' -Key 'Description' -Translation "Wenn du w&auml;hrend deinen Ferien Unterst&uuml;rtzung brauchst, ist unser Service Team rund um die Uhr f&uuml;r dich da. Du kannst uns hier erreichen:<p><a href=""tel:+41225680449"">+41 22 568 0449</a></p><p>Bitte halte deine siebenstellige easyJet holidays Buchungsnummer bereit und erkundige dich bei deinem Netzbetreiber nach den Geb&uuml;hren f&uuml;r Anrufe aus dem Ausland.</p>"
+    	Set-Translation-Value -ItemPath $callUsPath -Language 'de-DE' -Key 'Description' -Translation "Wenn du w&auml;hrend deinen Ferien Unterst&uuml;rtzung brauchst, ist unser Service Team rund um die Uhr f&uuml;r dich da. Du kannst uns hier erreichen:<p><a href=""tel:+493022027350"">+49 3022 027 350</a></p><p>Bitte halte deine siebenstellige easyJet holidays Buchungsnummer bereit und erkundige dich bei deinem Netzbetreiber nach den Geb&uuml;hren f&uuml;r Anrufe aus dem Ausland.</p>"
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Set-Translation-Value -ItemPath $callUsPath -Language $_ -Key 'DisplayCountries' -Translation ""
+    		Set-Translation-Value -ItemPath $callUsPath -Language $_ -Key 'Title' -Translation "Appelez-nous"
+    	}
+    	Set-Translation-Value -ItemPath $callUsPath -Language 'fr-CH' -Key 'Description' -Translation "Si vous rencontrez des probl&egrave;mes pendant votre s&eacute;jour, notre &eacute;quipe d'assistance vacances est &agrave; votre disposition 24 h/24, 7 j/7. Vous pouvez la joindre au :<p><a href=""tel:+41225680449"">+33 1 87 21 63 76 ou au +41 22 568 04 49</a></p><p>Veuillez vous munir de votre num&eacute;ro de r&eacute;servation easyJet holidays &agrave; sept chiffres. N'oubliez pas de v&eacute;rifier aupr&egrave;s de votre op&eacute;rateur les frais d'appel sur place.</p>"
+    	Set-Translation-Value -ItemPath $callUsPath -Language 'fr-FR' -Key 'Description' -Translation "Si vous rencontrez des probl&egrave;mes pendant votre s&eacute;jour, notre &eacute;quipe d'assistance vacances est &agrave; votre disposition 24 h/24, 7 j/7. Vous pouvez la joindre au :<p><a href=""tel:+33187216376"">+33 1 87 21 63 76 ou au +41 22 568 04 49</a></p><p>Veuillez vous munir de votre num&eacute;ro de r&eacute;servation easyJet holidays &agrave; sept chiffres. N'oubliez pas de v&eacute;rifier aupr&egrave;s de votre op&eacute;rateur les frais d'appel sur place.</p>"
+    	
+    	# Email Us
+        $emailUsPath = $datasourcePath + '/Email us'
+        $emailUs = Create-Item -Path $emailUsPath -Template $contactUsChannelItemTemplateId
+        $emailUs.Editing.BeginEdit()
+        $emailUs["DisplayCountries"] = "MA, TN, IL, JO, ME, EG, TR"
+        $emailUs["Title"] = "Email us"
+        $emailUs["Description"] = 'Alternatively, you can reach our team by emailing <p><a href="mailto:holidays.customersupport@easyjet.com">holidays.customersupport@easyjet.com</a></p>'
+        $emailUs.Editing.EndEdit() | Out-Null
+        
+        @('de-CH', 'de-DE') | % {
+    		Set-Translation-Value -ItemPath $emailUsPath -Language $_ -Key 'DisplayCountries' -Translation "MA, TN, IL, JO, ME, EG, TR"
+    		Set-Translation-Value -ItemPath $emailUsPath -Language $_ -Key 'Title' -Translation "E-Mail an uns"
+    		Set-Translation-Value -ItemPath $emailUsPath -Language $_ -Key 'Description' -Translation 'Alternativ kannst du unserem Team auch eine E-Mail schreiben: <p><a href="mailto:serviceteam@easyjet.com">serviceteam@easyjet.com</a></p>'
+    	}
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Set-Translation-Value -ItemPath $emailUsPath -Language $_ -Key 'DisplayCountries' -Translation "MA, TN, IL, JO, ME, EG, TR"
+    		Set-Translation-Value -ItemPath $emailUsPath -Language $_ -Key 'Title' -Translation "Envoyez-nous un courriel"
+    		Set-Translation-Value -ItemPath $emailUsPath -Language $_ -Key 'Description' -Translation "Vous pouvez &eacute;galement contacter notre &eacute;quipe par e-mail &agrave;&nbsp;<p><a href=""mailto:assistance.vacances@easyjet.com"">assistance.vacances@easyjet.com</a></p>"
+    	}
+    	   
+    	$contactChannels = "$($callUs.ID)|$($emailUs.ID)"
+    	Add-Channel-Items-To-Tree-List -DatasourcePath $datasourcePath -ContactChannels $contactChannels;
+    	
+    	Write-Host "Contact us banner channel items created on $($datasourcePath) and added to contact us banner datasource";
+    }
+    
+    function Create-Channel-Items-Pre-Travel($datasourcePath) {
+        # Pre Travel
+        $helpCentreLinkPath = "/sitecore/content/EasyJet/Holidays/Home/Help"
+        $contactUsHelpCentrePath = "/sitecore/content/EasyJet/Holidays/Home/Help/Contact Us"
+        $faqEUPath = "/sitecore/content/EasyJet/Holidays/Home/Help/Page Components/FAQ EU"
+        $faqFRPath = "/sitecore/content/EasyJet/Holidays/Home/Help/Page Components/FAQ FR"
+        $helpCentreLinkItem = Get-Item -Path $helpCentreLinkPath -ErrorAction SilentlyContinue
+        $contactUsHelpCentre = Get-Item -Path $contactUsHelpCentrePath -ErrorAction SilentlyContinue
+        $faqEU = Get-Item -Path $faqEUPath -ErrorAction SilentlyContinue
+        $faqFR = Get-Item -Path $faqFRPath -ErrorAction SilentlyContinue
+        $preTravelPath = $datasourcePath + '/Pre travel'
+        $preTravel = Create-Item -Path $preTravelPath -Template $contactUsChannelItemTemplateId
+        $preTravel.Editing.BeginEdit()
+        $preTravel["DisplayCountries"] = ""
+        $preTravel["Title"] = ""
+        $preTravel["Description"] = "<p>If you have any questions about your holiday, check our <a href=""~/link.aspx?_id=$($helpCentreLinkItem.ID)&amp;_z=z"" target=""_blank"">help centre</a>&nbsp;to see if we have the answer for you. We also have our easyJet holidays chatbot in the bottom right corner of this page.<br />If you still can&rsquo;t find the information you&rsquo;re looking for, you can reach out to our team by visiting our <a href=""~/link.aspx?_id=$($contactUsHelpCentre.ID)&amp;_z=z"" target=""_blank"">contact us</a>&nbsp;page</p>"
+        $preTravel.Editing.EndEdit() | Out-Null
+        
+        @('de-CH', 'de-DE') | % {
+    		Set-Translation-Value -ItemPath $preTravelPath -Language $_ -Key 'DisplayCountries' -Translation ""
+    		Set-Translation-Value -ItemPath $preTravelPath -Language $_ -Key 'Title' -Translation ""
+    	}
+    	Set-Translation-Value -ItemPath $preTravelPath -Language 'de-CH' -Key 'Description' -Translation "<p>Wenn du Fragen zu deinen Ferien hast, schau bitte in unserem <a rel=""noopener noreferrer"" href=""https://www.easyjet.com/ch-de/ferien/hilfe"" target=""_blank"">Hilfe-Center</a>&nbsp;nach, ob wir die Antwort bereits f&uuml;r dich haben. Wenn du die gesuchten Informationen nicht finden kannst, <a href=""https://www.easyjet.com/ch-de/ferien/hilfe/kontakt"">kontaktiere bitte unser Team.</a></p>"
+    	Set-Translation-Value -ItemPath $preTravelPath -Language 'de-DE' -Key 'Description' -Translation "<p>Wenn du Fragen zu deinem Urlaub hast, schau bitte in unserem <a rel=""noopener noreferrer"" href=""https://www.easyjet.com/de/urlaub/hilfe"" target=""_blank"">Hilfe-Center</a>&nbsp;nach, ob wir die Antwort bereits f&uuml;r dich haben. Wenn du die gesuchten Informationen nicht finden kannst, <a href=""https://www.easyjet.com/de/urlaub/hilfe/kontakt"">kontaktiere bitte unser Team</a>.</p>"
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Set-Translation-Value -ItemPath $preTravelPath -Language $_ -Key 'DisplayCountries' -Translation ""
+    		Set-Translation-Value -ItemPath $preTravelPath -Language $_ -Key 'Title' -Translation ""
+    	}
+    	Set-Translation-Value -ItemPath $preTravelPath -Language 'fr-CH' -Key 'Description' -Translation "<p>Si vous avez des questions sur vos vacances, consultez notre <a href=""~/link.aspx?_id=$($faqEU.ID)&amp;_z=z"">centre d'aide</a>&nbsp;pour voir si nous avons la r&eacute;ponse &agrave; vos questions. Vous trouverez &eacute;galement notre chatbot easyJet holidays dans le coin inf&eacute;rieur droit de cette page.<br />Si vous ne trouvez toujours pas l'information que vous cherchez, vous pouvez <a href=""~/link.aspx?_id=$($contactUsHelpCentre.ID)&amp;_z=z"">contacter notre &eacute;quipe</a>.</p>"
+    	Set-Translation-Value -ItemPath $preTravelPath -Language 'fr-FR' -Key 'Description' -Translation "<p>Si vous avez des questions sur vos vacances, consultez notre&nbsp;<a href=""~/link.aspx?_id=$($faqFR.ID)&amp;_z=z"">centre d'aide</a>&nbsp;pour voir si nous avons la r&eacute;ponse &agrave; vos questions. Vous trouverez &eacute;galement notre chatbot easyJet holidays dans le coin inf&eacute;rieur droit de cette page.<br />Si vous ne trouvez toujours pas l'information que vous cherchez, vous pouvez&nbsp;<a href=""~/link.aspx?_id=$($contactUsHelpCentre.ID)&amp;_z=z"">contacter notre &eacute;quipe</a>.</p>"
+    	   
+    	$contactChannels = "$($preTravel.ID)"
+    	Add-Channel-Items-To-Tree-List -DatasourcePath $datasourcePath -ContactChannels $contactChannels;
+    	
+    	Write-Host "Contact us banner channel items created on $($datasourcePath) and added to contact us banner datasource";
+    }
+    
+    function Create-Channel-Items-Post-Travel($datasourcePath) {
+        # Post Travel
+        $postTravelPath = $datasourcePath + '/Post travel'
+        $postTravel = Create-Item -Path $postTravelPath -Template $contactUsChannelItemTemplateId
+        $postTravel.Editing.BeginEdit()
+        $postTravel["DisplayCountries"] = ""
+        $postTravel["Title"] = ""
+        $postTravel["Description"] = '<p>If you need to speak to our team about your recent holiday, please fill in {contactFormLink} with all the details we ask for and need. We&rsquo;ll do our best to respond to your message within 28 days.</p>'
+        $postTravel.Editing.EndEdit() | Out-Null
+        
+        @('de-CH', 'de-DE') | % {
+    		Set-Translation-Value -ItemPath $postTravelPath -Language $_ -Key 'DisplayCountries' -Translation ""
+    		Set-Translation-Value -ItemPath $postTravelPath -Language $_ -Key 'Title' -Translation ""
+    	}
+    	Set-Translation-Value -ItemPath $postTravelPath -Language 'de-CH' -Key 'Description' -Translation '<p>Wenn du mit unserem Team &uuml;ber deine letzten Ferien sprechen m&ouml;chtest, f&uuml;lle bitte {contactFormLink} mit allen Angaben aus, die wir ben&ouml;tigen. Wir werden unser Bestes tun, um deine Nachricht innerhalb von 28 Tagen zu beantworten.</p>'
+    	Set-Translation-Value -ItemPath $postTravelPath -Language 'de-DE' -Key 'Description' -Translation '<p>Wenn du mit unserem Team &uuml;ber deinen letzten Urlaub sprechen m&ouml;chtest, f&uuml;lle bitte {contactFormLink} mit allen Angaben aus, die wir ben&ouml;tigen. Wir werden unser Bestes tun, um deine Nachricht innerhalb von 28 Tagen zu beantworten.</p>'
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Set-Translation-Value -ItemPath $postTravelPath -Language $_ -Key 'DisplayCountries' -Translation ""
+    		Set-Translation-Value -ItemPath $postTravelPath -Language $_ -Key 'Title' -Translation ""
+    	}
+    	Set-Translation-Value -ItemPath $postTravelPath -Language 'fr-CH' -Key 'Description' -Translation "<p>Si vous souhaitez parler &agrave; notre &eacute;quipe au sujet de votre s&eacute;jour, veuillez remplir notre <a href=""https://www.easyjet.com/ch-fr/vacances/aide/formulaire-de-contact"">formulaire de contact</a> en indiquant tous les d&eacute;tails dont nous avons besoin. Nous ferons de notre mieux pour r&eacute;pondre &agrave; votre message sous 28 jours.</p>"
+    	Set-Translation-Value -ItemPath $postTravelPath -Language 'fr-FR' -Key 'Description' -Translation "<p>Si vous souhaitez parler &agrave; notre &eacute;quipe au sujet de votre s&eacute;jour, veuillez remplir notre <a href=""https://www.easyjet.com/fr/vacances/aide/formulaire-de-contact"">formulaire de contact</a> en indiquant tous les d&eacute;tails dont nous avons besoin. Nous ferons de notre mieux pour r&eacute;pondre &agrave; votre message sous 28 jours.</p>"
+    	   
+    	$contactChannels = "$($postTravel.ID)"
+    	Add-Channel-Items-To-Tree-List -DatasourcePath $datasourcePath -ContactChannels $contactChannels;
+    	
+    	Write-Host "Contact us banner channel items created on $($datasourcePath) and added to contact us banner datasource";
+    }
+    
+    function Update-Rendering($pagePath, $datasourcePath) {
+        $contactUsRenderingPath = '/sitecore/layout/Renderings/Feature/Booking/Contact Us Banner'
+        $page = Get-Item -Path $pagePath
+        $contactUsRendering = Get-Item -Path $contactUsRenderingPath
+        $datasource = Get-Item -Path $datasourcePath
+        $pageRendering = Get-Rendering -Item $page -Rendering $contactUsRendering
+        
+        if ($pageRendering -ne $null) {
+            Set-Rendering -Item $page -Instance $pageRendering -Datasource $datasource.ID
+            Write-Host "Contact Us Banner data source updated on [$($page)]'s rendering";
+        }
+    }
+    
+    function Remove-Old-Content($dataSourcePath) {
+        $item = Get-Item -Path $dataSourcePath -ErrorAction SilentlyContinue
+    
+        if ($item -ne $null) {
+            Remove-Item -Path $dataSourcePath -Permanently
+            Write-Host "Contact Us Banner data removed on $($dataSourcePath)"
+        } else {
+            Write-Host "Contact Us Banner data does not exist on $($dataSourcePath)"
+        }
+    }
+    
+    # Pre Travel
+    $preTravelDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel/Page Components/Contact Us Banner"
+    $preTravelPagePath = '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel'
+    Remove-Old-Content -DatasourcePath $preTravelDatasourcePath;
+    Create-Contact-Us-Banner-Datasource -DatasourcePath $preTravelDatasourcePath;
+    Create-Channel-Items-Pre-Travel -DatasourcePath $preTravelDatasourcePath;
+    Update-Rendering -PagePath $preTravelPagePath -DatasourcePath $preTravelDatasourcePath;
+    
+    # Post Travel
+    $postTravelDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Contact Us Banner"
+    $postTravelPagePath = '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel'
+    Remove-Old-Content -DatasourcePath $postTravelDatasourcePath;
+    Create-Contact-Us-Banner-Datasource -DatasourcePath $postTravelDatasourcePath;
+    Create-Channel-Items-Post-Travel -DatasourcePath $postTravelDatasourcePath;
+    Update-Rendering -PagePath $postTravelPagePath -DatasourcePath $postTravelDatasourcePath;
+    
+    # In Destination
+    $inDestinationDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination/Page Components/Contact Us Banner"
+    $inDestinationPagePath = '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination'
+    Remove-Old-Content -DatasourcePath $inDestinationDatasourcePath;
+    Create-Contact-Us-Banner-Datasource -DatasourcePath $inDestinationDatasourcePath;
+    Create-Channel-Items-In-Destination -DatasourcePath $inDestinationDatasourcePath;
+    Update-Rendering -PagePath $inDestinationPagePath -DatasourcePath $inDestinationDatasourcePath;
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230628T103556Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

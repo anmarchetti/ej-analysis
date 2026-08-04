@@ -1,0 +1,508 @@
+.holiday-summary-item__btn-amend {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: flex-end;
+    margin-left: 70px;
+    white-space: nowrap;
+
+    @include media-breakpoint-down(lg) {
+        margin-top: 24px;
+        margin-left: 0;
+    }
+
+    .btn {
+        @include media-breakpoint-down(lg) {
+            width: 100%;
+        }
+    }
+
+    .btn--outlined.btn--loading {
+        background-color: transparent;
+    }
+}
+
+.view-booking {
+    .btn--medium {
+        min-width: 220px;
+    }
+
+    .holiday-summary-item {
+        font-size: 16px;
+    }
+
+    .holiday-summary-item__subtitle {
+        margin-bottom: 5px;
+        font-size: 16px;
+    }
+
+    .holiday-summary-item__icon {
+        color: $clrEjOrange;
+
+        @include media-breakpoint-up(md) {
+            width: 32px;
+            height: 32px;
+        }
+    }
+
+    .holiday-summary-item__details {
+        @include media-breakpoint-up(md) {
+            padding-left: 55px;
+        }
+    }
+
+    .holiday-summary-item__text {
+        ul li::before {
+            background-color: $clrTextMain;
+        }
+    }
+
+    .holiday-summary-item__details + .holiday-summary-item__details,
+    .confirmed-transfer__item + .confirmed-transfer__item {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: $view-booking-card-border;
+    }
+
+    .holiday-summary-item__content {
+        display: flex;
+        justify-content: space-between;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+        }
+    }
+
+    .holiday-summary-item__details-list {
+        @include media-breakpoint-up(lg) {
+            display: grid;
+            gap: 30px;
+
+            .holiday-summary-item__details {
+                flex-basis: 0;
+                flex-grow: 1;
+                max-width: 100%;
+                margin-top: 0;
+                padding-top: 0;
+                border-top: 0;
+            }
+        }
+    }
+
+    .bags {
+        @include media-breakpoint-down(lg) {
+            padding-bottom: 20px;
+            border-bottom: $view-booking-card-border;
+        }
+    }
+
+    .grid-even {
+        grid-template-columns: 1fr 1fr;
+
+        .holiday-summary-item__details {
+            @include media-breakpoint-up(lg) {
+                &:not(:nth-child(even), :last-child) {
+                    padding-right: 30px;
+                    border-right: $view-booking-card-border;
+                }
+            }
+        }
+    }
+
+    .grid-odd-singular {
+        grid-template-columns: 1fr 1fr 1fr;
+
+        .holiday-summary-item__details {
+            @include media-breakpoint-up(lg) {
+                &:not(:nth-child(3n)) {
+                    padding-right: 30px;
+                    border-right: $view-booking-card-border;
+                }
+            }
+        }
+    }
+
+    .grid-odd-plural {
+        grid-template-columns: repeat(6, 1fr);
+
+        .grid-item {
+            grid-column: span 3;
+
+            @include media-breakpoint-up(lg) {
+                &:not(:nth-child(even)) {
+                    padding-right: 30px;
+                    border-right: $view-booking-card-border;
+                }
+            }
+        }
+
+        @include media-breakpoint-up(lg) {
+            .grid-item:nth-last-child(-n + 3) {
+                grid-column: span 2;
+                padding-right: 30px;
+                border-right: $view-booking-card-border;
+
+                &:last-child {
+                    border-right: 0;
+                }
+            }
+        }
+    }
+
+    .booking-protected-container {
+        padding: 24px;
+
+        @include media-breakpoint-down(md) {
+            padding: 16px;
+        }
+    }
+
+    .booking-protected {
+        @include media-breakpoint-up(md) {
+            display: flex;
+            align-items: center;
+
+            .booking-protected__button {
+                max-width: 300px;
+                margin-top: auto;
+                margin-left: 32px;
+            }
+        }
+
+        .booking-protected__title {
+            font-family: $fontRoundedDemy;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.375;
+
+            @include media-breakpoint-down(md) {
+                font-size: 16px;
+            }
+        }
+
+        .booking-protected__text {
+            margin-top: 8px;
+            margin-bottom: 0;
+            font-size: 16px;
+            line-height: 1.375;
+
+            @include media-breakpoint-down(md) {
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
+        }
+
+        .confirmation-button {
+            white-space: nowrap;
+
+            span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+
+    .booking-insurance {
+        @include media-breakpoint-up(md) {
+            margin-top: 70px;
+
+            .rounded-container {
+                position: relative;
+                min-height: 170px;
+                padding-right: 300px;
+            }
+
+            .booking-insurance__image,
+            .booking-insurance__button {
+                position: absolute;
+                right: $view-booking-card-padding;
+            }
+
+            .booking-insurance__image {
+                top: 10px;
+                max-width: 100%;
+                max-height: 70px;
+            }
+
+            .booking-insurance__button {
+                bottom: 30px;
+            }
+        }
+
+        .booking-insurance__subtitle {
+            margin: 0 0 15px;
+            font-family: $fontRoundedBook;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.3;
+            color: $clrTextMain;
+
+            @include media-breakpoint-down(md) {
+                margin-top: 15px;
+                font-size: 15px;
+            }
+        }
+
+        .list--bullet {
+            margin-left: 0;
+
+            li {
+                margin: 0;
+
+                &::before {
+                    top: 8px;
+                    width: 4px;
+                    height: 4px;
+                    background-color: $clrTextMain;
+                }
+            }
+        }
+    }
+}
+
+// Cards
+.view-booking-card,
+.view-booking .rounded-container,
+.view-booking .holiday-summary-item {
+    margin-top: 24px;
+    padding: 40px;
+    background-color: $colorWhite;
+    border: $view-booking-card-border;
+    border-radius: 4px;
+    box-shadow: none;
+
+    @include media-breakpoint-down(md) {
+        padding: 15px;
+    }
+}
+
+.view-booking .rounded-container.no-borders {
+    border: none;
+}
+
+.view-booking .rounded-container {
+    padding: 24px;
+
+    @include media-breakpoint-down(md) {
+        padding: 16px;
+    }
+}
+
+// Titles
+.view-booking__title,
+.booking-insurance__title,
+.booking-help__title,
+.view-booking .need-help-block__title,
+.view-booking .cta-block h2,
+.view-booking .health-entry-requirements__title {
+    margin: 0 0 12px;
+    font-family: $fontRoundedBook;
+    font-size: 25px;
+    line-height: 1.08;
+    color: $clrTextMain;
+    text-transform: uppercase;
+    break-inside: avoid;
+
+    @include media-breakpoint-down(md) {
+        font-size: 20px;
+    }
+}
+
+// Subtitles
+.passenger-details__title,
+.view-booking .holiday-summary-item__title,
+.view-booking .errata-message__title {
+    margin: 0 0 24px;
+    font-family: $fontRoundedBook;
+    font-size: 20px;
+    line-height: 1.3;
+    color: $clrTextMain;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 16px;
+        font-size: 18px;
+    }
+}
+
+.view-booking-holiday-details,
+.view-booking-health-entry-requirements {
+    margin: 40px 0;
+
+    @include media-breakpoint-down(md) {
+        margin: 20px 0;
+    }
+}
+
+.view-booking-holiday-details {
+    .holiday-summary-item {
+        padding: 30px 24px 20px 20px;
+
+        @include media-breakpoint-down(md) {
+            padding: 15px;
+        }
+    }
+
+    .special-assistance-content {
+        padding: 20px 24px 20px 20px;
+
+        @include media-breakpoint-down(md) {
+            padding: 15px;
+        }
+    }
+
+    .holiday-summary-item__title {
+        padding-top: 0;
+    }
+
+    .errata-message.view-booking-card {
+        min-height: 132px;
+        padding: 24px;
+
+        @include media-breakpoint-down(md) {
+            min-height: 100px;
+            padding: 16px;
+        }
+    }
+
+    .errata-message__title {
+        position: relative;
+    }
+
+    .errata-message__items {
+        margin-left: calc(32px + 16px);
+
+        @include media-breakpoint-down(md) {
+            margin-left: calc(32px + 16px);
+        }
+    }
+
+    .errata-message__icon {
+        top: calc(26px + 24px);
+        left: 0;
+        margin-right: 0;
+
+        @include media-breakpoint-down(md) {
+            top: calc(24px + 16px);
+        }
+    }
+
+    .holiday-summary-item__btn-amend {
+        @include media-breakpoint-down(md) {
+            width: 100%;
+        }
+    }
+}
+
+.view-booking-holiday-details .btn:not(.popup__close) {
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 48px !important;
+    max-height: 56px !important;
+    padding: 12px 24px !important;
+    font-family: $fontRoundedDemy;
+    font-size: 16px !important;
+    font-weight: 400;
+    white-space: nowrap;
+    border-width: 2px;
+    border-radius: 4px;
+
+    @include media-breakpoint-up(md) {
+        min-width: 220px !important;
+    }
+}
+
+.view-booking--canceled {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: $clrSiteBgWhite;
+        opacity: 0.5;
+    }
+}
+
+.login-form--drawer {
+    .wrapper-container {
+        padding: 30px;
+    }
+
+    .page-title {
+        font-size: 26px;
+        line-height: 1.4;
+    }
+
+    .login__description {
+        font-size: 16px;
+    }
+
+    .login-form__content {
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin: 20px 0 15px;
+    }
+
+    .btn-link {
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+}
+
+.login-popup.login-popup--view-booking {
+    @include media-breakpoint-up(sm) {
+        .login-form__title {
+            font-size: 32px;
+        }
+
+        .login-form__description {
+            margin: 0 60px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .sign-up__button button {
+            height: auto;
+        }
+    }
+}
+
+.cancel-booking {
+    .popup__body > div {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 25px;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+        }
+    }
+
+    .btn--outlined {
+        margin-right: 20px;
+        padding: 12px 27px;
+
+        @include media-breakpoint-down(md) {
+            order: 1;
+            margin: 15px 0 0;
+        }
+    }
+
+    [class~='popup__header'] {
+        margin: 0 20px;
+        padding: 20px 0 0;
+    }
+
+    [class~='popup__body'] {
+        padding: 0 20px 15px;
+    }
+}

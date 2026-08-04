@@ -1,0 +1,138 @@
+﻿---
+ID: "fe237d42-31b7-486a-87f6-de47d957f6d0"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/TRADE-338 - Add Our Work Section"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item $($item.Name) successfully created"
+        }
+        
+        return $item
+    }
+    
+    function Get-Rendering-Index{
+        param($item, $renderingUniqueId)
+        $i = 0
+        
+        Get-Rendering -Item $item | ForEach-Object{
+            if ($_.UniqueId -eq $renderingUniqueId) {
+                return $i
+            }
+            $i++
+        }
+        
+        return -1
+    }
+    
+    function Create-Banner-Data-Source($path, $templateId){
+        $item = Get-Or-Create-Item -Path $path -TemplateId $templateId
+    
+        if ($item -ne $null) {
+            $item.Editing.BeginEdit()
+    
+            $item["Title"] = "Our work";
+            $item["Subtitle"] = "When it comes to sustainability we want to raise the bar, positively shake things up and lead the industry. To make sustainability part of our everyday culture, enabling us, our partners, and our customers to reduce their footprint, and make a positive impact on the people and places that make our destinations so special.";
+            $item["Image"] = "<image mediaid='{4B489EC4-76BC-4F34-AC22-DD89C8BC1D5C}' />";
+    
+            $item.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Banner data source created"
+        }
+    
+        return $item
+    }
+    
+    function Create-Carousel-Card-Data-Source($path, $name){
+        $templateId = "{1CD7BA25-DD72-4429-BF56-DDD6B6502B6E}"
+        $item = Get-Or-Create-Item -Path $("$($path)/$($name)") -TemplateId $templateId
+    
+        if ($item -ne $null){
+            $item.Editing.BeginEdit()
+    
+            $item["Title"] = "Even more holidays for Summer 2022";
+            $item["Subtitle"] = "easyJet Holidays has today added even more choice for next summer, with new hotels, city breaks and beach holidays available to book right up to October 2022.";
+            $item["Image"] = "<image mediaid='{5B1774C4-7E6F-4105-B443-1C667C452D28}' alt='carousel-image' />";
+    
+            $item.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Carousel card $($name) data source created"
+        }
+    
+        return $item
+    }
+    
+    function Add-Cards-To-Carousel($carousel, $cards){
+        if($carousel -ne $null -And $cards -ne $null) {
+            $carousel.Editing.BeginEdit()
+            $carousel["Cards"] = $cards
+            $carousel.Editing.EndEdit()
+            
+            Write-Host "Cards were added to carousel"
+        }
+    }
+    
+    $ourWorkBannerTemplateId = "{C7077196-F8EC-40CA-A23D-2AE06D8EEB61}"
+    $ourWorkCarouselFolderTemplateId = "{28576DF7-DC2A-4902-B951-CCAC4C46A4FA}"
+    
+    $sustainabilityPagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Sustainability";
+    $pageComponentsPath = "$($sustainabilityPagePath)/Page Components"
+    $ourWorkBannerDataSourcePath = "$($pageComponentsPath)/Information Banners/Our Work"
+    $ourWorkCarouselFolderDataSourcePath = "$($pageComponentsPath)/Our Work Carousel"
+    
+    # Create Our work sliced banner data sources
+    $ourWorkBannerDataSource = Create-Banner-Data-Source -Path $ourWorkBannerDataSourcePath -TemplateId $ourWorkBannerTemplateId
+    
+    # Create Carousel and cards data sources
+    $carouselDataSource = Get-Or-Create-Item -Path $ourWorkCarouselFolderDataSourcePath -TemplateId $ourWorkCarouselFolderTemplateId
+    $card1 = Create-Carousel-Card-Data-Source -Path $ourWorkCarouselFolderDataSourcePath -Name "Card 1"
+    $card2 = Create-Carousel-Card-Data-Source -Path $ourWorkCarouselFolderDataSourcePath -Name "Card 2"
+    $card3 = Create-Carousel-Card-Data-Source -Path $ourWorkCarouselFolderDataSourcePath -Name "Card 3"
+    
+    Add-Cards-To-Carousel -Carousel $carouselDataSource -Cards $("$($card1.ID)|$($card2.ID)|$($card3.ID)")
+    
+    # Renderings
+    
+    # Sustainability Page
+    $page = Get-Item -path $sustainabilityPagePath -ErrorAction SilentlyContinue
+    
+    # Insert Our Work components renderings after OUR PARTNERSHIPS AND CERTIFICATIONS section
+    $insertAfterIndex = Get-Rendering-Index -Item $page -RenderingUniqueId "{0caf7cdc-e4e1-48ad-8397-c3d5cbed1377}" | Select -First 1
+    $bannerIndex = $insertAfterIndex + 1
+    
+    # Add Banner Rendering
+    $slicedBannerRendering = Get-Item -Path "master:/sitecore/layout/Renderings/Feature/PageContent/Sliced Banner" | New-Rendering -Placeholder "body"
+    Add-Rendering -Item $page -PlaceHolder "body" -Instance $slicedBannerRendering -DataSource $ourWorkBannerDataSource.FullPath -Index $bannerIndex
+    Get-Rendering -Item $page -PlaceHolder "body" | Set-RenderingParameter -Parameter @{ SliceDirection = "right" } | Set-Rendering -Item $page
+        
+    # Add Carousel Rendering
+    $wrapperIndex = $bannerIndex + 1
+    $wrapperItem = Get-Item -Path "master:/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper" | New-Rendering -Placeholder "body"
+    Add-Rendering -Item $page -PlaceHolder "body" -Instance $wrapperItem -Index $wrapperIndex;
+    $wrapperRendering = Get-Rendering -Item $page -Index $wrapperIndex;
+    
+    if($wrapperRendering -ne $null){
+        $carouselRenderingPlaceholder = "/body/component-wrapper-inner-$($wrapperRendering.UniqueId)-0";
+        $carouselRendering = Get-Item -Path "master:/sitecore/layout/Renderings/Feature/PageContent/Our Work Carousel" | New-Rendering -Placeholder $carouselRenderingPlaceholder
+        
+        Add-Rendering -Item $page -PlaceHolder $carouselRenderingPlaceholder -Instance $carouselRendering -DataSource $carouselDataSource.FullPath -Index $($wrapperIndex + 1)
+    
+        Write-Host "Sustainability Our Work Carousel Rendering was created"
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20221208T142719Z

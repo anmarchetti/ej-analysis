@@ -1,0 +1,106 @@
+﻿---
+ID: "dd704725-fd28-46ff-b429-5d0effac3d8e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/MAN-174 Luggage on change dates"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Write-Host "'CSS-174 Cabin bags on the date change' script execution started"
+    
+    function Create-LanguageVersion {
+        param (
+            [Parameter(Mandatory=$true)][psobject]$Item,
+            [Parameter(Mandatory=$true)][string]$Lang,
+            [Parameter(Mandatory=$false)][string]$Field,
+            [Parameter(Mandatory=$false)][string]$Value
+        )
+    
+        $targetLangItem = Get-Item -Path $Item.Paths.FullPath -Language $Lang -ErrorAction SilentlyContinue
+    
+        if ($null -eq $targetLangItem -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $Item -TargetLanguage $Lang -IfExist Skip
+        }
+    
+        if ($null -ne $Field) {
+            $targetLangItem = Get-Item -Path $Item.Paths.FullPath -Language $Lang -ErrorAction SilentlyContinue
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$Field] = $Value
+            $targetLangItem["IncludedIcon"] = '<image mediaid="{CB598726-D37F-4F61-8B1C-B7A9DEF9DEE9}" />'
+            $targetLangItem["OverheadAddedIcon"] = '<image mediaid="{D04439D4-A1E7-409F-B074-CBA5D1B14D5E}" />'
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    $amendPayment = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Amend Payment"
+    $amendDatesSummary = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary/Page Components/Amend Dates Summary Page"
+    
+    $translations = @{
+        "en" = @{
+            "IncludedBagsLabel" = '{count} x small under seat bags'
+            "OverheadBagAddedLabel" = '{count} x large overhead cabin bags with speedy boarding'
+            "IncludedWithInfantLabel" = '{count} x small under seat bags, {infantCount} x baby change bags'
+            "LuggageInfoTitle" = "Bags and Luggage"
+            "SportEquipmentsLabel" = "Sports equipment"
+            "PramName" = "Pram or Pushchair"
+        }
+        "fr-CH" = @{
+            "IncludedBagsLabel" = '{count} x petits sacs sous le siège'
+            "OverheadBagAddedLabel" = '{count} x grands sacs de cabine à placer en compartiment supérieur avec embarquement prioritaire'
+            "IncludedWithInfantLabel" = '{count} x petits sacs sous le siège, {infantCount} x sacs à langer pour bébé'
+            "LuggageInfoTitle" = "Sacs et bagages"
+            "SportEquipmentsLabel" = "Équipements sportifs"
+            "PramName" = "Landaus ou poussettes"
+        }
+        "fr-FR" = @{
+            "IncludedBagsLabel" = '{count} x petits sacs sous le siège'
+            "OverheadBagAddedLabel" = '{count} x grands sacs de cabine à placer en compartiment supérieur avec embarquement prioritaire'
+            "IncludedWithInfantLabel" = '{count} x petits sacs sous le siège, {infantCount} x sacs à langer pour bébé'
+            "LuggageInfoTitle" = "Sacs et bagages"
+            "SportEquipmentsLabel" = "Équipements sportifs"
+            "PramName" = "Landaus ou poussettes"
+        }
+        "de-CH" = @{
+            "IncludedBagsLabel" = '{count} x kleine Taschen unter dem Sitz'
+            "OverheadBagAddedLabel" = '{count} x große Kabinentaschen für die Gepäckablage mit bevorzugtem Boarding'
+            "IncludedWithInfantLabel" = '{count} x kleine Taschen unter dem Sitz, {infantCount} x Wickeltaschen für Babys'
+            "LuggageInfoTitle" = "Taschen und Reisegepäck"
+            "SportEquipmentsLabel" = "Sportgeräte"
+            "PramName" = "Kinderwagen oder Buggy"
+        }
+        "de-DE" = @{
+            "IncludedBagsLabel" = '{count} x kleine Taschen unter dem Sitz'
+            "OverheadBagAddedLabel" = '{count} x große Kabinentaschen für die Gepäckablage mit bevorzugtem Boarding'
+            "IncludedWithInfantLabel" = '{count} x kleine Taschen unter dem Sitz, {infantCount} x Wickeltaschen für Babys'
+            "CabinBagsPlural" = "Kleine Handgepäckstücke bis zu einer Größe von 45 x 36 x 20 cm (einschließlich Griffen und Rollen)"
+            "LuggageInfoTitle" = "Taschen und Reisegepäck"
+            "SportEquipmentsLabel" = "Sportgeräte"
+            "PramName" = "Kinderwagen oder Buggy"
+        }
+    }
+    
+    foreach ($lang in $translations.Keys) {
+        foreach ($field in $translations[$lang].Keys) {
+            Create-LanguageVersion -Item $amendPayment -Lang $lang -Field $field -Value $translations[$lang][$field]
+            Create-LanguageVersion -Item $amendDatesSummary -Lang $lang -Field $field -Value $translations[$lang][$field]
+        }
+    }
+    
+    Write-Host "CSS-174 finished"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240508T094201Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

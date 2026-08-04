@@ -1,0 +1,21 @@
+﻿---
+ID: "5acbc447-7d6c-4905-ab5a-04d7e6a5be56"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-225 amend trade portal bags"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $path = '/sitecore/content/EasyJet/TradePortal/Data/Hotel Themes/Package Icons/Bags/Bags'
+    
+    Get-Item -Path $path | Remove-Item
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240701T121746Z

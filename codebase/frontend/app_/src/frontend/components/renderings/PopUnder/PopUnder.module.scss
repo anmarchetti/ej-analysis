@@ -1,0 +1,117 @@
+.popUnderContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    max-height: 564px;
+    overflow-y: hidden;
+    transform: translate(-50%, -50%);
+}
+
+.popUnderDialog {
+    min-width: 70%;
+
+    @include media-breakpoint-down(lg) {
+        max-width: 700px;
+    }
+}
+
+.popUnderContent {
+    height: 100%;
+    background-color: transparent;
+
+    @include media-breakpoint-down(lg) {
+        min-width: 700px;
+    }
+}
+
+.popUnderBody:last-child, .popUnderBody:first-child {
+    padding: 0;
+}
+
+
+.popUnderBackground {
+    width: calc(100% - 4px);
+    height: 500px;
+    background-position: center center;
+    background-size: cover;
+    border-radius: 4px;
+
+    &::after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: 4px;
+        left: 4px;
+        width: calc(100% - 4px);
+        height: 500px;
+        background-color: $colorOrange;
+        border-radius: 4px;
+    }
+}
+
+.popUnderTextContent {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    width: 700px;
+    max-width: 80%;
+    max-height: 98%;
+    padding: 10px 0 5px;
+    text-align: center;
+    background-color: $colorWhite;
+    border-radius: 4px;
+    transform: translate(-50%, -50%);
+
+    @include media-breakpoint-down(lg) {
+        max-width: 90%;
+    }
+}
+
+.popUnderContentPadding {
+    padding-bottom: 25px;
+}
+
+.popUnderTitle {
+    width: 50%;
+    margin: 10px 25%;
+    font-family: $fontRoundedDemy;
+    font-size: 24px;
+    font-weight: 400;
+    color: $clrTextMain;
+    text-align: center;
+}
+
+.popUnderSubtitle {
+    width: 90%;
+    margin: 0 5%;
+    font-family: $fontRoundedBook;
+    font-size: 13px;
+    font-weight: 400;
+    color: $clrTextMain;
+    text-align: center;
+}
+
+.popUnderBottomMark {
+    font-family: $fontRoundedBook;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 13px;
+    color: $clrTextMain;
+}
+
+.popUnderButton {
+    width: 260px;
+    height: 50px;
+    padding: 16px 24px; 
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 18.4px;
+    background-color: $colorOrange; 
+}
+
+.popUnderOffers {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}

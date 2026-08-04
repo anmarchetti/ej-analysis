@@ -1,0 +1,259 @@
+$boxShadowColorGrey: rgba(178, 175, 175, 0.5);
+$boxShadowColorWhite: rgba(255, 255, 255, 1);
+
+.login-form {
+    .wrapper-container {
+        padding-top: 80px;
+
+        @include media-breakpoint-down(md) {
+            padding: 15px 0;
+        }
+
+        .page-title {
+            margin: 0 0 50px;
+            text-align: center;
+
+            @include media-breakpoint-down(md) {
+                margin-bottom: 20px;
+            }
+        }
+
+        .login__description {
+            margin: 0;
+            font-family: $fontRoundedBook;
+            font-size: 18px;
+            line-height: 23px;
+            text-align: center;
+
+            p {
+                margin: 5px 0;
+                font-size: 18px;
+                line-height: 22px;
+                text-align: center;
+            }
+
+            @include media-breakpoint-down(md) {
+                font-size: 14px;
+                line-height: 20px;
+                text-align: left;
+            }
+        }
+    }
+
+    .login-form__container {
+        max-width: 400px + 2 * $container-padding-x_mobile;
+        margin: 0 auto;
+        padding: 60px $container-padding-x_mobile 0;
+
+        #login-form__view-booking {
+            display: block;
+        }
+
+        .form-tabs {
+            display: flex;
+            box-shadow: 0 0 4px 0 $boxShadowColorGrey;
+
+            .btn {
+                width: 50%;
+                padding: 17px 15px;
+                font-family: $fontRoundedBook;
+                font-size: 14px;
+                line-height: 1.2;
+                color: $colorOrange;
+                background: $colorGrayLighter;
+                border-radius: 4px;
+                cursor: pointer;
+
+                @include media-breakpoint-down(md) {
+                    padding: 0;
+                    font-size: 13px;
+                    line-height: 16px;
+                }
+
+                &:focus {
+                    outline: none;
+                }
+
+                &--active {
+                    z-index: 1;
+                    overflow: hidden;
+                    color: $clrTextMain;
+                    background: $colorWhite;
+                    box-shadow: 0 5px 0 0 $boxShadowColorWhite,
+                        0 0 4px 0 $boxShadowColorGrey;
+                }
+            }
+        }
+
+        &.view-booking-container {
+            .login-form__content {
+                padding: 0;
+                box-shadow: none;
+            }
+        }
+
+        .login-form__content {
+            margin-bottom: 50px;
+            padding: 35px 15px 20px;
+            box-shadow: 0 0 4px 0 $boxShadowColorGrey;
+
+            @include media-breakpoint-down(md) {
+                padding: 10px;
+            }
+
+            .form-group {
+                margin: 28px 0;
+            }
+
+            .sign-up__button {
+                justify-content: space-between;
+                padding-top: 38px;
+
+                .checkbox {
+                    margin: 15px 0;
+                }
+
+                .btn {
+                    width: 100%;
+                    padding: 16px;
+                }
+            }
+
+            .view-booking__button {
+                justify-content: flex-end;
+                padding: 0 15px;
+
+                .btn {
+                    width: 197px;
+                    padding: 16px;
+
+                    @include media-breakpoint-down(md) {
+                        width: 100%;
+                    }
+                }
+            }
+
+            .form-group--with-tooltip {
+                display: flex;
+
+                .form-group {
+                    flex: 1;
+                    margin: 0;
+                }
+
+                .callout__container {
+                    height: 44px;
+                    margin-left: 14px;
+                }
+            }
+        }
+    }
+
+    .btn-link {
+        height: 30px;
+        padding: 0;
+        font-size: 16px;
+        color: $colorOrange;
+        text-decoration: underline;
+        background: $colorTransparent;
+    }
+
+    .btn {
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        border-radius: $box_border-radius_sm;
+    }
+
+    .bold-text {
+        margin: 0;
+        font-weight: bold;
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .login-form {
+        .wrapper-container {
+            padding: 15px;
+            padding-bottom: 15px;
+
+            .login__description {
+                font-size: 14px;
+            }
+        }
+
+        .login-form__container {
+            padding-top: 30px;
+
+            .form-tabs {
+                display: flex;
+                box-shadow: 0 0 4px 0 $boxShadowColorGrey;
+
+                .btn {
+                    padding: 13px 10px;
+                    font-size: 13px;
+                }
+            }
+
+            .login-form__content {
+                padding: 20px 10px;
+
+                .form-group {
+                    margin-bottom: 20px;
+                }
+
+                .form-group--with-tooltip {
+                    position: relative;
+                    margin-bottom: 20px;
+
+                    .form-group {
+                        margin-bottom: 0;
+                    }
+
+                    .callout__container {
+                        position: unset;
+                    }
+
+                    .callout__content {
+                        &.icon-left {
+                            right: -16px;
+                            left: auto;
+
+                            &::before,
+                            &::after {
+                                right: 1em;
+                                left: auto;
+                            }
+                        }
+                    }
+                }
+
+                .sign-up__button {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    padding-top: 30px;
+
+                    .checkbox {
+                        margin: 0 0 20px;
+                        font-size: 15px;
+                    }
+                }
+
+                .sign-up__button,
+                .view-booking__button {
+                    .btn {
+                        width: 100%;
+                    }
+                }
+            }
+
+            .create-account__container {
+                padding: 20px 10px;
+                font-size: 14px;
+            }
+        }
+
+        .btn-link {
+            font-size: 12px;
+        }
+    }
+}

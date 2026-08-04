@@ -1,0 +1,147 @@
+{
+  "Name": "BookingsCollection",
+  "Version": "1.0",
+  "References": [
+    {
+      "Name": "XConnect",
+      "Version": "1.0"
+    },
+    {
+      "Name": "Sitecore.XConnect.Collection.Model",
+      "Version": "10.4"
+    }
+  ],
+  "Types": {
+    "easyJet.Foundation.XConnect.Common.Facets.Booking.BookingsFacet": {
+      "Type": "Facet",
+      "BaseType": "Sitecore.XConnect.Facet",
+      "ClrType": "easyJet.Foundation.XConnect.Common.Facets.Booking.BookingsFacet, easyJet.Foundation.XConnect.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "Bookings": {
+          "Type": {
+            "String": "easyJet.Foundation.XConnect.Common.Facets.Booking.Booking"
+          }
+        }
+      }
+    },
+    "easyJet.Foundation.XConnect.Common.Facets.Booking.Booking": {
+      "Type": "Complex",
+      "ClrType": "easyJet.Foundation.XConnect.Common.Facets.Booking.Booking, easyJet.Foundation.XConnect.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "ReservationId": {
+          "Type": "String"
+        },
+        "Status": {
+          "Type": "String"
+        },
+        "VersionId": {
+          "Type": "Int32"
+        },
+        "CreatedDate": {
+          "Type": "DateTime"
+        },
+        "UpdatedDate": {
+          "Type": "DateTime"
+        },
+        "AdultsCount": {
+          "Type": "Int32"
+        },
+        "ChildrenCount": {
+          "Type": "Int32"
+        },
+        "InfantsCount": {
+          "Type": "Int32"
+        },
+        "Transfers": {
+          "Type": [
+            "String"
+          ]
+        },
+        "Theme": {
+          "Type": "String"
+        },
+        "Type": {
+          "Type": "String"
+        },
+        "Accommodation": {
+          "Type": "easyJet.Foundation.XConnect.Common.Facets.Booking.Accommodation"
+        },
+        "Flights": {
+          "Type": [
+            "easyJet.Foundation.XConnect.Common.Facets.Booking.Flight"
+          ]
+        },
+        "TotalAmount": {
+          "Type": "Decimal"
+        },
+        "BookingStartDate": {
+          "Type": "DateTime"
+        },
+        "BookingEndDate": {
+          "Type": "DateTime"
+        },
+        "MarketCode": {
+          "Type": "String"
+        },
+        "Currency": {
+          "Type": "String"
+        },
+        "Language": {
+          "Type": "String"
+        }
+      }
+    },
+    "easyJet.Foundation.XConnect.Common.Facets.Booking.Accommodation": {
+      "Type": "Complex",
+      "ClrType": "easyJet.Foundation.XConnect.Common.Facets.Booking.Accommodation, easyJet.Foundation.XConnect.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "Id": {
+          "Type": "String"
+        },
+        "Name": {
+          "Type": "String"
+        },
+        "Resort": {
+          "Type": "String"
+        },
+        "Region": {
+          "Type": "String"
+        },
+        "Country": {
+          "Type": "String"
+        }
+      }
+    },
+    "easyJet.Foundation.XConnect.Common.Facets.Booking.Flight": {
+      "Type": "Complex",
+      "ClrType": "easyJet.Foundation.XConnect.Common.Facets.Booking.Flight, easyJet.Foundation.XConnect.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "Number": {
+          "Type": "String"
+        },
+        "From": {
+          "Type": "String"
+        },
+        "To": {
+          "Type": "String"
+        },
+        "IsOutboundDirection": {
+          "Type": "Boolean"
+        },
+        "DepartureTime": {
+          "Type": "DateTime"
+        },
+        "ArrivalTime": {
+          "Type": "DateTime"
+        }
+      }
+    }
+  },
+  "Facets": [
+    {
+      "Target": "Contact",
+      "Name": "Bookings",
+      "Type": "easyJet.Foundation.XConnect.Common.Facets.Booking.BookingsFacet"
+    }
+  ]
+}

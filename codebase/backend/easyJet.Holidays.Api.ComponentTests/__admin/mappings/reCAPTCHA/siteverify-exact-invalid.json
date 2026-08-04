@@ -1,0 +1,36 @@
+{
+    "Title": "reCAPTCHA verify invalid",
+    "Priority": 99,
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/recaptcha/api/siteverify",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "response",
+                "Matchers": [
+                    {
+                        "Name": "ExactMatcher",
+                        "Pattern": "invalidcaptcha"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "success": false
+        },
+        "BodyAsFileIsCached": false,
+        "UseTransformer": false
+    }
+}

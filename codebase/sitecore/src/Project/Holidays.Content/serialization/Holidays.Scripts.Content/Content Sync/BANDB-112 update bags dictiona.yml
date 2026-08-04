@@ -1,0 +1,105 @@
+﻿---
+ID: "56190450-69db-4b61-8559-009118b7ba28"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/BANDB-112 update bags dictionary in forms"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version ($item,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+    
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value;
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    # 23kg dictionaries
+    $itemPath = "/sitecore/content/EasyJet/Holidays/Dictionary/Price Promise/Labels/Inclusive on 23kg bag"
+    $tradePath = "/sitecore/content/EasyJet/TradePortal/Dictionary/Price Promise/Labels/Inclusive on 23kg bag"
+    $enPhrase = "Includes the same baggage (whether that is 23kg checked-in hold luggage, a large cabin bag or small under seat bag)"
+    
+    
+    $item = Get-Item -path $itemPath -ErrorAction SilentlyContinue
+    
+    if ($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item["Phrase"] = $enPhrase 
+            $item.Editing.EndEdit() | Out-Null
+    
+          @( 'fr-CH','fr-FR') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Phrase" -Value "Inclus la même franchise à bagages (qu'il s'agisse d'un bagage en soute de 23 kg, d'un grand bagage à main ou d'un petit bagage à main)"
+    	}
+           @( 'de-DE') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Phrase" -Value "Inklusive desselben Gepäcks (egal ob 23 kg Aufgabegepäck, ein großes Handgepäckstück oder ein kleines Handgepäckstück)"
+    	}
+           @( 'de-CH') | % {
+    		Create-Lang-Version -Item $item -Lang $_ -Field "Phrase" -Value "Inklusive desselben Gepäcks (egal ob 23 kg Aufgabegepäck, ein grosses Handgepäckstück oder ein kleines Handgepäckstück)"
+    	}
+        
+        Write-Host "Item" $item.Name "successfully updated"
+    }
+    
+    $trade = Get-Item -path $tradePath -ErrorAction SilentlyContinue
+    
+    if ($trade -ne $null) {
+            $trade.Editing.BeginEdit()
+            $trade["Phrase"] = $phrase
+            $trade.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $trade.Name "successfully updated"
+    }
+    
+    # other dictionaries for FR
+    
+    $dictionaryItem = Get-Item -path "/sitecore/content/EasyJet/Holidays/Dictionary/Price Promise/Labels/Same dates of travel"
+    @( 'fr-CH','fr-FR') | % {
+    		Create-Lang-Version -Item $dictionaryItem -Lang $_ -Field "Phrase" -Value "Mêmes dates de séjour"
+    	}
+    
+    $dictionaryItem = Get-Item -path "/sitecore/content/EasyJet/Holidays/Dictionary/Price Promise/Labels/Same flights"
+    @( 'fr-CH','fr-FR') | % {
+    		Create-Lang-Version -Item $dictionaryItem -Lang $_ -Field "Phrase" -Value "Mêmes hôtel et vols easyJet (y compris les horaires de vol)"
+    	}
+    $dictionaryItem = Get-Item -path "/sitecore/content/EasyJet/Holidays/Dictionary/Price Promise/Labels/Same party composition"
+    @( 'fr-CH','fr-FR') | % {
+    		Create-Lang-Version -Item $dictionaryItem -Lang $_ -Field "Phrase" -Value "Même nombre de passagers (sur la même réservation)"
+    	}
+    $dictionaryItem = Get-Item -path "/sitecore/content/EasyJet/Holidays/Dictionary/Price Promise/Labels/Same room type and board basis"
+    @( 'fr-CH','fr-FR') | % {
+    		Create-Lang-Version -Item $dictionaryItem -Lang $_ -Field "Phrase" -Value "Même type de chambre (nom, description et installations) et de pension"
+    	}
+    $dictionaryItem = Get-Item -path "/sitecore/content/EasyJet/Holidays/Dictionary/Price Promise/Labels/Booked Within Last 24h"
+    @( 'fr-CH','fr-FR') | % {
+    		Create-Lang-Version -Item $dictionaryItem -Lang $_ -Field "Phrase" -Value "Vous avez réservé votre séjour easyJet holidays au cours des dernières 24 heures"
+    	}
+    $dictionaryItem = Get-Item -path "/sitecore/content/EasyJet/Holidays/Dictionary/Price Promise/Labels/Inclusive of transfers"
+    @( 'fr-CH','fr-FR') | % {
+    		Create-Lang-Version -Item $dictionaryItem -Lang $_ -Field "Phrase" -Value "Inclus les mêmes transferts partagés ou privés (valable pour les séjours à la mer et au bord d'un lac, non requis pour les escapades en ville)"
+    	}
+    
+    
+    $formItem = Get-Item -path "/sitecore/content/EasyJet/Holidays/Home/Price Promise/Page Components/Price Promise"
+    @( 'fr-CH','fr-FR') | % {
+    		Create-Lang-Version -Item $formItem -Lang $_ -Field "CheckboxGroupTitle" -Value "Le séjour que vous avez trouvé"
+                    Create-Lang-Version -Item $formItem -Lang $_ -Field "CheckboxGroupDescription" -Value "Cochez les cases ci-dessous pour confirmer que le séjour que vous avez trouvé inclus les mêmes avantages que votre séjour easyJet holidays et qu'il répond aux critères de notre Garantie du meilleur prix."
+    	}
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240219T142741Z

@@ -1,0 +1,41 @@
+.head {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 8px;
+
+    @include media-breakpoint-up(lg) {
+        margin-bottom: 16px;
+    }
+
+    .title {
+        font-size: 20px;
+        line-height: 1.2;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 24px;
+            line-height: 1.21;
+        }
+    }
+}
+
+.headPostBooking {
+    margin-bottom: 16px;
+
+    @include media-breakpoint-up(md) {
+        margin-top: 0;
+        margin-bottom: 24px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+}
+
+.title {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-weight: 400;
+    color: $clrTextMain;
+    text-transform: uppercase;
+}

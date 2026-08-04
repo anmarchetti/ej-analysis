@@ -1,0 +1,311 @@
+@import 'src/styles/configs/fonts.scss';
+@import 'src/styles/configs/colors.scss';
+
+.wrapper {
+    width: 100%;
+    background-color: $colorWhite;
+}
+
+.container {
+    width: 100%;
+    max-width: $container-max-width + 2 * $container-padding-x_mobile;
+    margin: 0 auto;
+    padding: 24px $container-padding-x_mobile;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    @include media-breakpoint-between(lg, xl) {
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 8px;
+    }
+
+    @include media-breakpoint-down(lg) {
+        flex-direction: column;
+        padding: 16px;
+        gap: 8px;
+    }
+}
+
+.title {
+    font-family: $fontUnboundedSans;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $colorBlackLight;
+    margin: 0;
+    font-size: 36px;
+    line-height: 0.94;
+    letter-spacing: 0.02em;
+    width: 240px;
+    min-width: 240px;
+    max-width: 320px;
+    flex-shrink: 0;
+
+    @include media-breakpoint-between(lg, xl) {
+        font-size: 28px;
+        line-height: 28px;
+        letter-spacing: 0.02em;
+        text-align: left;
+        width: 100%;
+        min-width: auto;
+        max-width: none;
+    }
+
+    @include media-breakpoint-down(lg) {
+        font-size: 28px;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: center;
+        width: 100%;
+        min-width: auto;
+        max-width: none;
+    }
+}
+
+.cardWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-width: 288px;
+
+    @include media-breakpoint-between(lg, xl) {
+        width: 100%;
+        flex: none;
+    }
+
+    @include media-breakpoint-down(lg) {
+        width: 100%;
+        flex: none;
+    }
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    background-color: $colorWhite;
+    border: 1px solid $colorGeyser;
+    border-radius: 8px;
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 78px;
+
+    @include media-breakpoint-down(lg) {
+        align-items: stretch;
+        min-width: 288px;
+        min-height: auto;
+    }
+}
+
+.imageContainer {
+    flex-shrink: 0;
+    width: 90px;
+    min-width: 90px;
+    max-width: 170px;
+    min-height: 78px;
+    align-self: stretch;
+    position: relative;
+    overflow: hidden;
+}
+
+.image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.imageFallback {
+    width: 100%;
+    height: 100%;
+    min-height: 78px;
+    background-color: #e5e5e5;
+    background-image: linear-gradient(135deg, #f0f0f0 25%, transparent 25%),
+                      linear-gradient(225deg, #f0f0f0 25%, transparent 25%),
+                      linear-gradient(45deg, #f0f0f0 25%, transparent 25%),
+                      linear-gradient(315deg, #f0f0f0 25%, #e5e5e5 25%);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 0, 10px -10px, 0 10px;
+}
+
+.content {
+    display: flex;
+    padding: 8px 12px;
+    flex: 1;
+    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: 8px;
+
+    @include media-breakpoint-down(lg) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+    }
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+
+    @include media-breakpoint-down(lg) {
+        width: 100%;
+    }
+}
+
+.hotelName {
+    font-family: $fontRoundedDemy;
+    font-size: 14px;
+    line-height: 1.29;
+    color: $colorBlack;
+    margin: 0;
+    word-wrap: break-word;
+}
+
+.locationRow,
+.dateRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    
+    path {
+        fill: $colorBlackLight;
+    }
+}
+
+.location {
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    line-height: 1.29;
+    color: $colorBlackLight;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-shrink: 1;
+}
+
+.dateInfo {
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    line-height: 1.29;
+    color: $colorBlackLight;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.desktopActions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+
+    @include media-breakpoint-between(lg, xl) {
+        flex-wrap: wrap;
+        flex-shrink: 1;
+        min-width: 0;
+        justify-content: flex-end;
+    }
+
+    @include media-breakpoint-down(lg) {
+        display: none;
+    }
+}
+
+.countdownBadge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 120px;
+    min-height: 24px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background-color: $colorGreenBadgeBg;
+    color: $colorGreenBadgeText;
+    font-family: $fontRoundedDemy;
+    font-size: 12px;
+    line-height: 16px;
+    align-self: stretch;
+
+    @include media-breakpoint-down(lg) {
+        width: 100%;
+        align-self: auto;
+    }
+}
+
+.countdownIcon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.countdownLabel {
+    flex: 1 1 0;
+    padding: 0 2px;
+}
+
+.checkInButton {
+    &:global(.btn--outlined) {
+        border: 2px solid $colorOrange;
+        padding: 8px 24px;
+        min-width: 100px;
+    }
+}
+
+.desktopManageButton {
+    min-width: 186px;
+    width: 186px;
+}
+
+.mobileBadgeWrapper,
+.mobileActions {
+    display: none;
+
+    @include media-breakpoint-down(lg) {
+        display: flex;
+        width: 100%;
+    }
+}
+
+.mobileActions {
+    @include media-breakpoint-down(lg) {
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 8px;
+
+        > * {
+            width: 100%;
+        }
+    }
+}
+
+.mobileManageButton {
+    display: none;
+
+    @include media-breakpoint-down(lg) {
+        display: block;
+    }
+}

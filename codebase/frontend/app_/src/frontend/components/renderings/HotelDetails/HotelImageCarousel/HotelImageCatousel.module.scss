@@ -1,0 +1,49 @@
+.placeholderBasket {
+    height: 110px;
+    border-radius: 10px;
+}
+
+.placeholderHotelDetails {
+    height: 500px;
+    border-radius: 10px;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 0;
+    }
+}
+
+.placeholderThumbnails {
+    height: 75px;
+    overflow: hidden;
+    margin-top: 25px;
+    margin-left: 4px;
+    margin-right: 4px;
+    display: block;
+
+    @include media-breakpoint-down(lg) {
+        display: none;
+    }
+}
+
+.placeholderHotelDetailsContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    @include media-breakpoint-down(lg) {
+        flex-direction: column;
+    }
+}
+
+.placeholderThumbnail {
+    display: inline-block;
+    width: 94px;
+    height: 100%;
+    margin-right: 20px;
+    border-radius: 6px;
+}
+
+.hotelMainSidebarShimmer {
+    flex: 1 0 100%;
+    max-width: 100%;
+}

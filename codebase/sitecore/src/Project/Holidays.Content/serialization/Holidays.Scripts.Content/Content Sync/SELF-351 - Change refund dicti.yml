@@ -1,0 +1,32 @@
+﻿---
+ID: "280a56c4-eee1-4b31-8907-80fd49121a5a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-351 - Change refund dictionary values"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $cashRefundItem = Get-Item -path "/sitecore/content/EasyJet/Holidays/Dictionary/Credit Confirm/Refund Cards/Cash Refund Amount"
+    $creditRefundItem = Get-Item -path "/sitecore/content/EasyJet/Holidays/Dictionary/Credit Confirm/Refund Cards/Credit Refund Amount"
+    
+    if ($cashRefundItem -ne $null) {
+        $cashRefundItem.Editing.BeginEdit()
+        $cashRefundItem["Phrase"] = "Amount refunded to original payment card";
+        $cashRefundItem.Editing.EndEdit() | Out-Null
+    }
+    
+    if ($creditRefundItem -ne $null) {
+        $creditRefundItem.Editing.BeginEdit()
+        $creditRefundItem["Phrase"] = "Amount returned as easyJet holidays credit";
+        $creditRefundItem.Editing.EndEdit() | Out-Null
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230125T130216Z

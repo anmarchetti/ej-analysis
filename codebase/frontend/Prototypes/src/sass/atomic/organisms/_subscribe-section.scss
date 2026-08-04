@@ -1,0 +1,44 @@
+.subscribe-section {
+    $triangle-height: 100px;
+    $triangle-height-mobile: 50px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+
+    > .row {
+        justify-content: space-between;
+    }
+
+    +.wrapper-triangle--absolute {
+        height: $triangle-height;
+        transform: translateY(-100%);
+
+        @include media-breakpoint-down(lg) {
+            height: $triangle-height-mobile;
+        }
+    }
+}
+
+.subscribe-section__title {
+    margin-bottom: 15px;
+    font-family: $fontRoundedHeadline;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #000;
+
+    @include media-breakpoint-down(md) {
+        font-size: 20px;
+    }
+}
+
+.subscribe-section__description {
+    font-family: $fontRoundedBook;
+    font-size: 18px;
+    line-height: 1.555;
+    color: $clrTextMainLight;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 30px;
+        font-size: 14px;
+    }
+}

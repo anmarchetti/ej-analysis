@@ -1,0 +1,43 @@
+.container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 24px auto;
+    padding: 16px 24px;
+    color: $colorBlackLight;
+    background: $colorPorcelain;
+    border-radius: 8px;
+
+    @include media-breakpoint-up(md) {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+    }
+
+    @include media-breakpoint-down(md) {
+        text-align: center;
+    }
+
+    :global(p) {
+        margin: 0;
+    }
+}
+
+.title,
+.link {
+    font-family: $fontRoundedDemy;
+}
+
+.link {
+    white-space: nowrap;
+}
+
+.content {
+    display: inline;
+    margin-right: 8px;
+}
+
+.footer {
+    @include media-breakpoint-down(md) {
+        text-align: center;
+    }
+}

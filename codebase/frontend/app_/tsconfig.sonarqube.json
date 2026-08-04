@@ -1,0 +1,42 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "assets/*": ["src/assets/*"]
+        },
+        "target": "es6",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "types": ["node", "applepayjs", "jest"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "strictFunctionTypes": false,
+        "forceConsistentCasingInFileNames": true,
+        "downlevelIteration": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "allowSyntheticDefaultImports": true,
+        "noImplicitReturns": true,
+        // "noUnusedLocals": true, // legacy, uncomment later
+        // "noUnusedParameters": true, // legacy, uncomment later
+        "experimentalDecorators": true,
+        "noImplicitAny": false, // legacy
+        "strictPropertyInitialization": false, // legacy,
+        "useUnknownInCatchVariables": false
+    },
+    "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx", "server.js"],
+    "exclude": [
+        "node_modules",
+        "src/**/*.test.ts",
+        "src/**/*.test.tsx",
+        "src/**/*.test.js",
+        "src/**/*.mocks.ts",
+        "src/temp/**",
+        "src/**/__mocks__/**"
+    ]
+}

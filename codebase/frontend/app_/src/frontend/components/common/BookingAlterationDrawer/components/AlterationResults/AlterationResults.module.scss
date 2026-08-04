@@ -1,0 +1,124 @@
+.alterationDescription {
+    margin: 24px 0 16px;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 16px;
+    }
+
+    .resultTitle {
+        display: flex;
+        margin-top: 24px;
+        margin-bottom: 8px;
+        font-family: $fontRoundedHeadline;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 16px;
+            padding: 0;
+        }
+
+        span {
+            margin: 0 0 0 16px;
+            font-size: 24px;
+            line-height: 1.17;
+            text-transform: uppercase;
+
+            @include media-breakpoint-down(md) {
+                margin-left: 12px;
+                font-size: 20px;
+            }
+        }
+    }
+
+    .descriptionTitle {
+        margin: 24px 0 16px;
+        font-family: $fontRoundedHeadline;
+        font-size: 18px;
+        line-height: 1;
+        text-transform: uppercase;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 16px;
+            font-size: 16px;
+        }
+    }
+
+    .descriptionText {
+        margin: 8px 0 16px;
+        font-size: 16px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 14px;
+        }
+    }
+}
+
+.alterationResults {
+    margin: 16px 0 56px;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 24px;
+    }
+}
+
+.resultsWithSeparator {
+    @include media-breakpoint-down(md) {
+        margin: 16px 0;
+        border-bottom: 1px solid $clrBorderGray;
+    }
+}
+
+.oldItem {
+    display: flex;
+    align-items: center;
+    margin: 16px 0;
+}
+
+.oldItemImg {
+    width: 123px;
+    height: 80px;
+    margin-right: 24px;
+
+    @include media-breakpoint-down(md) {
+        width: 72px;
+        height: 48px;
+        margin-right: 8px;
+    }
+}
+
+.oldItemIcon {
+    width: 32px;
+    height: 32px;
+    margin-right: 16px;
+
+    @include media-breakpoint-down(md) {
+        margin-right: 12px;
+    }
+}
+
+.oldImage {
+    @include sizeSquare(100%);
+
+    border-radius: $box-border-radius_md;
+}
+
+.oldItemInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.oldItemTitle {
+    font-size: 16px;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.oldItemName {
+    font-family: $fontRoundedDemy;
+    font-size: 18px;
+
+    @include media-breakpoint-down(md) {
+        font-size: 16px;
+    }
+}

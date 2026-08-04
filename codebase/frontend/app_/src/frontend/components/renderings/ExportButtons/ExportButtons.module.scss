@@ -1,0 +1,25 @@
+.itemsWrapper {
+    display: flex;
+    max-width: 1230px;
+    margin: auto;
+    margin-top: 42px;
+
+    > *:not(:last-child) {
+        margin-right: 32px;
+
+        &::after {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 24px;
+            margin-left: 32px;
+            background: $colorGeyser; 
+        }
+    }
+}
+
+.luxury {
+    width: 100%;
+    margin: 8px auto 0;
+    padding: 0 15px;
+}

@@ -1,0 +1,111 @@
+.tabAccordionContainer {
+    margin-top: 24px;
+    background-color: $colorWhite;
+}
+
+.tabToggle {
+    padding: 16px;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.333;
+    border-left: none;
+
+    svg {
+        display: block;
+    }
+}
+
+.tabToggleSelected {
+    font-family: $fontRoundedDemy;
+    font-size: 16px;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    padding: 16px 25px;
+    font-family: $fontRoundedBook;
+    border: none;
+
+    p {
+        margin: 0;
+    }
+
+    @include media-breakpoint-up(lg) {
+        padding: 23px 35px;
+        border-left: 2px solid $colorGrayLighter;
+    }
+
+    &.contentHidden {
+        display: none;
+    }
+}
+
+.section {
+    max-width: $container-max-width;
+    margin: auto;
+    padding: 70px 0;
+}
+
+.title,
+.subtitle {
+    margin: 0;
+    font-style: normal;
+    font-weight: 400;
+    color: $colorBlack;
+    text-align: center;
+}
+
+.title {
+    margin-bottom: 8px;
+    font-family: $fontRoundedHeadline;
+    font-size: 36px;
+    line-height: 48px;
+}
+
+.subtitle {
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.oneItemContainer {
+    position: relative;
+    margin-top: 24px;
+    padding: 15px 20px;
+    background: $colorWhite;
+    border-radius: 4px;
+    box-shadow: 0 0 12px 2px $colorAlto;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background-color: $clrEjOrangeLight;
+        border-radius: 3px 0 0 3px;
+    }
+}
+
+.oneItemTitle,
+.oneItemDescription {
+    margin: 0;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+}
+
+.oneItemTitle {
+    font-family: $fontRoundedDemy;
+}
+
+.oneItemDescription {
+    margin: 16px 0;
+    font-family: $fontRoundedBook;
+}

@@ -1,0 +1,109 @@
+﻿---
+ID: "4ec12c22-a362-4640-9a9e-4bb9ef121e5c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-12281 Fix Destination Hub"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+        $destinationFolderTemplateId = "{41831D30-A4BD-4AD0-B5F2-A3D0A6F7828A}"
+        $destinationHubPageTemplateId = "{1F52A7A6-1233-4FAA-9243-F90EB790035D}"
+        
+    function Get-Or-Create-Item ($path,$itemName,$templateId) {
+        	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        	if ($item -eq $null) {
+        		$item = New-Item -Path $path -Name $itemName -ItemType $templateId
+        		Write-Host "Item" $item.Name "successfully created";
+        	}
+        	return $item
+        }
+        
+        function Update-Rendering-DataSource ($item,$renderingId,$placeHolder,$newDataSource) {
+        	$rendering = Get-Rendering -Item $item -PlaceHolder $placeHolder | Where-Object { $_.ItemId -eq $renderingId } | Select -First 1
+        
+        	if ($rendering -ne $null) {
+        		Set-Rendering -Item $item -Instance $rendering -DataSource $newDataSource
+        		Write-Host $item.Name "Rendering successfully updated"
+        	}
+        }
+        
+        function Remove-Page-Design ($designPath,$pageTemplateId) {
+        	$designItem = Get-Item -Path "$($designPath)" -ErrorAction SilentlyContinue
+        	if ($designItem -ne $null) {
+    
+                [Sitecore.Data.Fields.MultilistField]$pageTemplates = $designItem.Fields["PageTemplates"];
+        		if ($pageTemplates.Contains($pageTemplateId)) {
+        		    
+        			$designItem.Editing.BeginEdit();
+        			$pageTemplates.remove($pageTemplateId);
+        			$pageTemplates.add($destinationFolderTemplateId);
+    
+        			$designItem.Editing.EndEdit() | Out-Null
+        			Write-Host $designItem.Name "Page Templates updated"
+        		} else {
+    	    		
+            		if (!$pageTemplates.Contains($destinationFolderTemplateId)) {
+            			$designItem.Editing.BeginEdit();
+            			$pageTemplates.add($destinationFolderTemplateId);
+            			$designItem.Editing.EndEdit() | Out-Null
+            			Write-Host $designItem.Name "Destination Page Templates updated"
+            		}
+        		}
+        	}
+        }
+        
+        # Add Page To PageDesigns
+        Remove-Page-Design -designPath "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Default Design" -pageTemplateId $destinationHubPageTemplateId
+        
+        # Create Page
+        $page = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home" -ItemName "Destinations"
+        $page.Editing.BeginEdit();
+        $page["Name"] = "Destination Hub"
+        $page["Title"] = "Our Destinations Hub"
+        $page["PageDescription"] = "Our Destinations Hub"
+        $page["PageTitle"] = "Destination Hub"
+        $page.Editing.EndEdit() | Out-Null
+        
+        
+        # Create Page Components
+        $pageComponents = Get-Or-Create-Item -Path $page.FullPath -ItemName "Page Components" -TemplateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+        $pageComponents.Editing.BeginEdit();
+        $pageComponents["Sortorder"] = "25"
+        $pageComponents.Editing.EndEdit() | Out-Null
+        
+        
+        
+        function Create-Text-Blocks () {
+        	# Create Text Blocks Folder
+        	$textBlocksFolder = Get-Or-Create-Item -Path $pageComponents.FullPath -ItemName "Text Blocks" -TemplateId "{AB8D608B-3B9D-4ECB-9BA3-8C61306D7A41}"
+        	$textBlockTemplateId = "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}"
+        	$textBlockRenderingId = "{43546A28-D231-4287-96D2-25DEF529F1A5}"
+        
+        
+        	# Create "Our Destinations Hub" Text Block
+        	$destinationsHubTextBlock = Get-Or-Create-Item -Path $textBlocksFolder.FullPath -ItemName "Our Destinations Hub" -TemplateId $textBlockTemplateId
+        	$destinationsHubTextBlock.Editing.BeginEdit();
+        	$destinationsHubTextBlock["Title"] = "Our Destinations Hub"
+        	$destinationsHubTextBlock["Description"] = "Our Destinations Hub"
+        	$destinationsHubTextBlock.Editing.EndEdit() | Out-Null
+        	# Set "Our Destinations Hub" DataSource
+        	Update-Rendering-DataSource -Item $page -RenderingId $textBlockRenderingId -PlaceHolder "/body/component-wrapper-inner-{67aff177-8f93-49f2-b26a-c0f46b564195}-0" -NewDataSource $destinationsHubTextBlock.ID
+        }
+        
+        Create-Text-Blocks
+        
+        Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Destination Hub" -ErrorAction SilentlyContinue | Remove-Item -Recurse
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 27850
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210311T140804Z

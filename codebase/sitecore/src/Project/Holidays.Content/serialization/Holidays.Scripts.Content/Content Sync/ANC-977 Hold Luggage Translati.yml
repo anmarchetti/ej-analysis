@@ -1,0 +1,111 @@
+﻿---
+ID: "55219d15-6cda-4489-bdc2-07156904ddfc"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-977 Hold Luggage Translations Fields"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+     function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    $holidaysHoldBaggagePath = "/sitecore/content/EasyJet/Holidays/Data/Hold Luggage"
+    $tradePortalHoldBaggagePath = "/sitecore/content/EasyJet/TradePortal/Data/Hold Luggage"
+    
+    $holidaysHoldBaggage = Get-Item -Path $holidaysHoldBaggagePath
+    $tradePortalHoldBaggage = Get-Item -Path $tradePortalHoldBaggagePath
+    
+    $translations = @{
+        "en" = @{
+            "HoldLuggageAndSportsSubtitle" = "Each passenger has a 23kg bag included, but can add up to 2 more pieces of luggage, or one piece of sports equipment per passenger.";
+            "HoldLuggageSubtitle" = "Each passenger has a 23kg bag included, but can add up to 2 more pieces of luggage equipment per passenger."
+        }
+        "fr-CH" = @{
+            "HoldLuggageAndSportsSubtitle" = "Chaque passager a droit à un bagage de 23 kg inclus, mais peut ajouter jusqu'à 2 bagages supplémentaires, ou un équipement sportif par passager.";
+            "HoldLuggageSubtitle" = "Chaque passager a droit à un bagage de 23 kg inclus, mais peut ajouter jusqu'à 2 bagages supplémentaires par passager."
+        }
+        "fr-FR" = @{
+            "HoldLuggageAndSportsSubtitle" = "Chaque passager a droit à un bagage de 23 kg inclus, mais peut ajouter jusqu'à 2 bagages supplémentaires, ou un équipement sportif par passager.";
+            "HoldLuggageSubtitle" = "Chaque passager a droit à un bagage de 23 kg inclus, mais peut ajouter jusqu'à 2 bagages supplémentaires par passager."
+        }
+        "de-CH" = @{
+            "HoldLuggageAndSportsSubtitle" = "Jeder Passagier hat ein 23 kg Gepäckstück inklusive, kann aber bis zu 2 weitere Gepäckstücke oder ein Sportgerät pro Passagier hinzufügen.";
+            "HoldLuggageSubtitle" = "Jeder Passagier hat ein 23 kg Gepäckstück inklusive, kann aber bis zu 2 weitere Gepäckstücke pro Passagier hinzufügen."
+        }
+        "de-DE" = @{
+            "HoldLuggageAndSportsSubtitle" = "Jeder Passagier hat ein 23 kg Gepäckstück inklusive, kann aber bis zu 2 weitere Gepäckstücke oder ein Sportgerät pro Passagier hinzufügen.";
+            "HoldLuggageSubtitle" = "Jeder Passagier hat ein 23 kg Gepäckstück inklusive, kann aber bis zu 2 weitere Gepäckstücke pro Passagier hinzufügen."
+        }
+    }
+    
+    foreach ($lang in $translations.Keys) {
+        create-lang-version -item $holidaysHoldBaggage  -lang $lang -field "HoldLuggageAndSportsSubtitle" -value $translations[$lang]["HoldLuggageAndSportsSubtitle"]
+        create-lang-version -item $tradePortalHoldBaggage -lang $lang -field "HoldLuggageAndSportsSubtitle" -value $translations[$lang]["HoldLuggageAndSportsSubtitle"]
+        
+        create-lang-version -item $holidaysHoldBaggage  -lang $lang -field "HoldLuggageSubtitle" -value $translations[$lang]["HoldLuggageSubtitle"]
+        create-lang-version -item $tradePortalHoldBaggage -lang $lang -field "HoldLuggageSubtitle" -value $translations[$lang]["HoldLuggageSubtitle"]
+    }
+    
+    $holidaysHoldBaggagePopupPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Hold Luggage Popup"
+    $tradePortalHoldBaggagePopupPath = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Hold Luggage Popup"
+    
+    $holidaysHoldBaggagePopup = Get-Item -Path $holidaysHoldBaggagePopupPath
+    $tradePortalHoldBaggagePopup = Get-Item -Path $tradePortalHoldBaggagePopupPath
+    
+    $translations = @{
+        "en" = @{
+            "DescriptionHoldLuggageAndSport" = "All items selected are included for the outbound and return flights. Add up to 2 additional and 1 piece of sports equipment per passenger.";
+            "DescriptionHoldLuggage" = "All items selected are included for the outbound and return flights. Add up to 2 additional pieces of luggage per passenger."
+        }
+        "fr-CH" = @{
+            "DescriptionHoldLuggageAndSport" = "Tous les articles sélectionnés sont inclus pour les vols aller et retour. Ajoutez jusqu'à 2 bagages supplémentaires et 1 équipement sportif par passager.";
+            "DescriptionHoldLuggage" = "Tous les articles sélectionnés sont inclus pour les vols aller et retour. Ajoutez jusqu'à 2 bagages supplémentaires par passager."
+        }
+        "fr-FR" = @{
+            "DescriptionHoldLuggageAndSport" = "Tous les articles sélectionnés sont inclus pour les vols aller et retour. Ajoutez jusqu'à 2 bagages supplémentaires et 1 équipement sportif par passager.";
+            "DescriptionHoldLuggage" = "Tous les articles sélectionnés sont inclus pour les vols aller et retour. Ajoutez jusqu'à 2 bagages supplémentaires par passager."
+        }
+        "de-CH" = @{
+            "DescriptionHoldLuggageAndSport" = "Alle ausgewählten Artikel sind für die Hin- und Rückflüge inbegriffen. Fügen Sie bis zu 2 zusätzliche Gepäckstücke und 1 Sportausrüstung pro Passagier hinzu.";
+            "DescriptionHoldLuggage" = "Alle ausgewählten Artikel sind für die Hin- und Rückflüge inbegriffen. Fügen Sie bis zu 2 zusätzliche Gepäckstücke pro Passagier hinzu."
+        }
+        "de-DE" = @{
+            "DescriptionHoldLuggageAndSport" = "Alle ausgewählten Artikel sind für die Hin- und Rückflüge inbegriffen. Fügen Sie bis zu 2 zusätzliche Gepäckstücke und 1 Sportausrüstung pro Passagier hinzu.";
+            "DescriptionHoldLuggage" = "Alle ausgewählten Artikel sind für die Hin- und Rückflüge inbegriffen. Fügen Sie bis zu 2 zusätzliche Gepäckstücke pro Passagier hinzu."
+        }
+    }
+    
+    
+    foreach ($lang in $translations.Keys) {
+        create-lang-version -item $holidaysHoldBaggagePopup  -lang $lang -field "DescriptionHoldLuggageAndSport" -value $translations[$lang]["DescriptionHoldLuggageAndSport"]
+        create-lang-version -item $tradePortalHoldBaggagePopup -lang $lang -field "DescriptionHoldLuggageAndSport" -value $translations[$lang]["DescriptionHoldLuggageAndSport"]
+        
+        create-lang-version -item $holidaysHoldBaggagePopup  -lang $lang -field "DescriptionHoldLuggage" -value $translations[$lang]["DescriptionHoldLuggage"]
+        create-lang-version -item $tradePortalHoldBaggagePopup -lang $lang -field "DescriptionHoldLuggage" -value $translations[$lang]["DescriptionHoldLuggage"]
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231205T144932Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

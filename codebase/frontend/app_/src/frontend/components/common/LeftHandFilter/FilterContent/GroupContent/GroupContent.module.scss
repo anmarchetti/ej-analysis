@@ -1,0 +1,91 @@
+.filterGroupContainer {
+    background-color: #fff;
+}
+
+.filterGroupScroll {
+    max-height: 300px;
+    overflow: hidden scroll;
+    margin: {
+        right: 19px;
+        bottom: 16px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: $colorGrayLight;
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar {
+        width: 8px;
+        height: 4px;
+        background-color: $colorGrayLight;
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $clrEjOrange;
+        border-radius: 4px;
+    }
+
+    @-moz-document url-prefix() {
+        scrollbar-color: $clrEjOrange $colorGrayLight;
+        scrollbar-width: thin;
+    }
+}
+
+.filterGroup {
+    position: relative;
+    padding: 3px 32px 16px;
+
+    &.filterGroup:global(.filter-group__values .checkbox-item .checkbox) {
+        align-items: flex-start;
+    }
+
+    &.filterGroup:global(.filter-group__values .checkbox-item .checkbox__control) {
+        margin-top: 2px;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 0;
+        }
+    }
+
+    &.filterGroup:global(.filter-group__values .checkbox-item .checkbox--label) {
+        display: inline;
+        line-height: 1.3;
+        white-space: normal;
+
+        > span {
+            margin-left: 8px;
+            font-size: 16px;
+        }
+    }
+}
+
+
+.isOpen {
+    animation: expand 0.4s linear;
+}
+
+@keyframes expand {
+    from {
+        grid-template-rows: 0fr;
+    }
+
+    to {
+        grid-template-rows: 1fr;
+    }
+}
+
+.isClosed {
+    animation: collapse 0.4s linear;
+}
+
+@keyframes collapse {
+    from {
+        grid-template-rows: 1fr;
+    }
+
+    to {
+        grid-template-rows: 0fr;
+    }
+}

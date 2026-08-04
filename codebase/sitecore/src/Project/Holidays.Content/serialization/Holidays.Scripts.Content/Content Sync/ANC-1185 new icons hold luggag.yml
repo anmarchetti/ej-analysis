@@ -1,0 +1,61 @@
+﻿---
+ID: "dbaeffc6-51dc-48bf-97bd-35122c9ebe15"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-1185 new icons hold luggage"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $luggagePath15kg = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Extra Hold Luggage/Hold Baggage 15kg'
+    $luggagePath23kg = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage/Hold Baggage 23kg'
+    $luggagePathTrade15kg = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Extra Hold Luggage/Hold Baggage 15kg'
+    $luggagePathTrade23kg = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Hold Baggage/Hold Baggage 23kg'
+    $holdLuggagePath = '/sitecore/content/EasyJet/Holidays/Data/Hold Luggage'
+    $holdLuggageTradePath = '/sitecore/content/EasyJet/TradePortal/Data/Hold Luggage'
+    $holdLuggagePopupPath = '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Hold Luggage Popup'
+    $holdLuggagePopupTradePath = '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Hold Luggage Popup'
+    
+    
+    function create-lang-version($itemPath, $field, $value) {
+    
+            $targetLangItem = Get-Item -Path $itemPath -ErrorAction SilentlyContinue;
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $itemPath -ErrorAction SilentlyContinue;
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+    }
+    
+    create-lang-version -ItemPath $luggagePath15kg -field 'Icon' -value '<image mediaid="{464888DB-56B8-4DFA-B6FB-182F7623CEF2}"/>'
+    create-lang-version -ItemPath $luggagePathTrade15kg -field 'Icon' -value '<image mediaid="{464888DB-56B8-4DFA-B6FB-182F7623CEF2}"/>'
+    
+    create-lang-version -ItemPath $luggagePath23kg -field 'Icon' -value '<image mediaid="{84AAE8B3-0139-4B87-BB0F-76EB2279CFD9}"/>'
+    create-lang-version -ItemPath $luggagePathTrade23kg -field 'Icon' -value '<image mediaid="{84AAE8B3-0139-4B87-BB0F-76EB2279CFD9}"/>'
+    
+    create-lang-version -ItemPath $holdLuggagePath -field 'BagCountIcon' -value '<image mediaid="{F5770F99-A7A5-465F-AB9D-CD9180E94B2D}"/>'
+    create-lang-version -ItemPath $holdLuggageTradePath -field 'BagCountIcon' -value '<image mediaid="{F5770F99-A7A5-465F-AB9D-CD9180E94B2D}"/>'
+    
+    create-lang-version -ItemPath $holdLuggagePath -field 'PramIcon' -value '<image mediaid="{5F449767-E078-4FEF-AF8B-9B1190898D1A}"/>'
+    create-lang-version -ItemPath $holdLuggageTradePath -field 'PramIcon' -value '<image mediaid="{5F449767-E078-4FEF-AF8B-9B1190898D1A}"/>'
+    
+    create-lang-version -ItemPath $holdLuggagePath -field 'SportEquipmentIcon' -value '<image mediaid="{FBB0DEFD-D45C-4951-8AF5-7CB1DC15F2C9}"/>'
+    create-lang-version -ItemPath $holdLuggageTradePath -field 'SportEquipmentIcon' -value '<image mediaid="{FBB0DEFD-D45C-4951-8AF5-7CB1DC15F2C9}"/>'
+    
+    create-lang-version -ItemPath $holdLuggagePopupPath -field 'PramIcon' -value '<image mediaid="{5F449767-E078-4FEF-AF8B-9B1190898D1A}"/>'
+    create-lang-version -ItemPath $holdLuggagePopupTradePath -field 'PramIcon' -value '<image mediaid="{5F449767-E078-4FEF-AF8B-9B1190898D1A}"/>'
+    
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240219T142741Z

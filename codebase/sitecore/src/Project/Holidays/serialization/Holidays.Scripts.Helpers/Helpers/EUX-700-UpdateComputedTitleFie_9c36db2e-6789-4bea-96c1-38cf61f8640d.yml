@@ -1,0 +1,456 @@
+﻿---
+ID: "9c36db2e-6789-4bea-96c1-38cf61f8640d"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/EUX-700-UpdateComputedTitleField-de-CH"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $dictionaries = @(
+    @{
+    		key = "Destinations/croatia";phrase = "Ferien in Kroatien";
+    	},
+    @{
+    		key = "Destinations/czech republic";phrase = "Feiertage in der Tschechischen Republik";
+    	},
+    @{
+    		key = "Destinations/denmark";phrase = "Ferien in Dänemark";
+    	},
+    @{
+    		key = "Destinations/egypt";phrase = 'Ferien in Ägypten';
+    	},
+    @{
+    		key = "Destinations/france";phrase = "Ferien in Frankreich";
+    	},
+    @{
+    		key = "Destinations/germany";phrase = "Feiertage in Deutschland";
+    	},
+    @{
+    		key = "Destinations/greece";phrase = "Ferien in Griechenland";
+    	},
+    @{
+    		key = "Destinations/hungary";phrase = "Ferien in Ungarn";
+    	},
+    @{
+    		key = "Destinations/israel";phrase = "Ferien in Israel";
+    	},
+    @{
+    		key = "Destinations/italy";phrase = "Ferien in Italien";
+    	},
+    @{
+    		key = "Destinations/malta";phrase = "Ferien in Malta";
+    	},
+    @{
+    		key = "Destinations/montenegro";phrase = "Feiertage in Montenegro";
+    	},
+    @{
+    		key = "Destinations/morocco";phrase = "Ferien in Morroco";
+    	},
+    @{
+    		key = "Destinations/netherlands";phrase = "Ferien in den Niederlanden";
+    	},
+    @{
+    		key = "Destinations/poland";phrase = "Ferien in Polen";
+    	},
+    @{
+    		key = "Destinations/portugal";phrase = "Ferien in Portugal";
+    	},
+    @{
+    		key = "Destinations/united kingdom/scotland";phrase = "Ferien in Schottland";
+    	},
+    @{
+    		key = "Destinations/spain";phrase = "Ferien in Spanien";
+    	},
+    @{
+    		key = "Destinations/united kingdom";phrase = "Ferien in Großbritannien";
+    	},
+    @{
+    		key = "Destinations/tunisia";phrase = "Ferien in Tunesien";
+    	},
+    @{
+    		key = "Destinations/turkey";phrase = "Ferien in der Türkei";
+    	},
+    @{
+    		key = "Destinations/morocco/agadir";phrase = "Ferien in Agadir";
+    	},
+    @{
+    		key = "Destinations/france/corsica/ajaccio";phrase = "Ferien in Ajaccio";
+    	},
+    @{
+    		key = "Destinations/italy/sardinia/alghero";phrase = "Ferien in Alghero";
+    	},
+    @{
+    		key = "Destinations/spain/costa blanca/alicante city";phrase = "Ferien in Alicante";
+    	},
+    @{
+    		key = "Destinations/netherlands/amsterdam";phrase = "Feiertage in Amsterdam";
+    	},
+    @{
+    		key = "Destinations/turkey/antalya";phrase = "Ferien in Antalya";
+    	},
+    @{
+    		key = "Destinations/greece/athens";phrase = "Feiertage in Athen";
+    	},
+    @{
+    		key = "Destinations/spain/barcelona";phrase = "Ferien in Barcelona";
+    	},
+    @{
+    		key = "Destinations/germany/berlin";phrase = "Ferien in Berlin";
+    	},
+    @{
+    		key = "Destinations/spain/bilbao";phrase = "Ferien in Bilbao";
+    	},
+    @{
+    		key = "Destinations/france/bordeaux";phrase = "Feiertage in Bordeaux";
+    	},
+    @{
+    		key = "Destinations/italy/brindisi";phrase = "Ferien in Brindisi";
+    	},
+    @{
+    		key = "Destinations/hungary/budapest";phrase = "Ferien in Budapest";
+    	},
+    @{
+    		key = "Destinations/italy/sicily/catania";phrase = "Ferien in Catania";
+    	},
+    @{
+    		key = "Destinations/denmark/copenhagen";phrase = "Ferien in Kopenhaghen";
+    	},
+    @{
+    		key = "Destinations/greece/corfu";phrase = "Ferien in Korfu";
+    	},
+    @{
+    		key = "Destinations/france/corsica";phrase = "Ferien in Korsika";
+    	},
+    @{
+    		key = "Destinations/greece/crete";phrase = "Ferien auf Kreta";
+    	},
+    @{
+    		key = "Destinations/france/paris/disneyland paris";phrase = "Feiertage in Disneyland Paris";
+    	},
+    @{
+    		key = "Destinations/croatia/dubrovnik";phrase = "Ferien in Dubrovnik";
+    	},
+    @{
+    		key = "Destinations/united kingdom/scotland/edinburgh city";phrase = "Feiertage in Edinburgh";
+    	},
+    @{
+    		key = "Destinations/portugal/algarve/faro";phrase = "Feiertage in Faro";
+    	},
+    @{
+    		key = "Destinations/spain/fuerteventura";phrase = "Ferien in Fuerteventura";
+    	},
+    @{
+    		key = "Destinations/spain/gran canaria";phrase = "Ferien in Gran Canaria";
+    	},
+    @{
+    		key = "Destinations/germany/hamburg";phrase = "Ferien in Hamburg";
+    	},
+    @{
+    		key = "Destinations/egypt/hurghada";phrase = "Ferien in Hurgada";
+    	},
+    @{
+    		key = "Destinations/spain/ibiza";phrase = "Ferien in Ibiza";
+    	},
+    @{
+    		key = "Destinations/greece/kos";phrase = "Feiertage in Kos";
+    	},
+    @{
+    		key = "Destinations/poland/krakow";phrase = "Ferien in Krakau";
+    	},
+    @{
+    		key = "Destinations/spain/lanzarote";phrase = "Ferien in Lanzarote";
+    	},
+    @{
+    		key = "Destinations/portugal/lisbon";phrase = "Ferien in Lissabon";
+    	},
+    @{
+    		key = "Destinations/united kingdom/england/london city";phrase = "Feiertage in London";
+    	},
+    @{
+    		key = "Destinations/spain/madrid";phrase = "Ferien in Madrid";
+    	},
+    @{
+    		key = "Destinations/spain/costa del sol/malaga city";phrase = "Ferien in Malaga";
+    	},
+    @{
+    		key = "Destinations/morocco/marrakech";phrase = "Feiertage in Marrakesch";
+    	},
+    @{
+    		key = "Destinations/spain/menorca";phrase = "Ferien in Menorca";
+    	},
+    @{
+    		key = "Destinations/france/montpellier";phrase = "Feiertage in Montpellier";
+    	},
+    @{
+    		key = "Destinations/greece/mykonos";phrase = "Ferien in Mykonos";
+    	},
+    @{
+    		key = "Destinations/france/nantes";phrase = "Ferien in Nantes";
+    	},
+    @{
+    		key = "Destinations/italy/naples";phrase = "Ferien in Napoli";
+    	},
+    @{
+    		key = "Destinations/france/nice";phrase = "Feiertage in schön";
+    	},
+    @{
+    		key = "Destinations/italy/sardinia/olbia";phrase = "Ferien in Olbia";
+    	},
+    @{
+    		key = "Destinations/portugal/porto";phrase = "Ferien in Porto";
+    	},
+    @{
+    		key = "Destinations/italy/sicily/palermo";phrase = "Ferien in Palermo";
+    	},
+    @{
+    		key = "Destinations/spain/majorca";phrase = "Ferien in Palma";
+    	},
+    @{
+    		key = "Destinations/france/paris";phrase = "Ferien in Paris";
+    	},
+    @{
+    		key = "Destinations/czech republic/prague";phrase = "Ferien in Prag";
+    	},
+    @{
+    		key = "Destinations/croatia/istrian riviera/pula";phrase = "Ferien in Pula";
+    	},
+    @{
+    		key = "Destinations/greece/rhodes";phrase = "Ferien in Rhodos";
+    	},
+    @{
+    		key = "Destinations/italy/rome";phrase = "Ferien in Roma";
+    	},
+    @{
+    		key = "Destinations/greece/santorini";phrase = "Ferien in Santorini";
+    	},
+    @{
+    		key = "Destinations/italy/sardinia";phrase = "Ferien in Sardinien";
+    	},
+    @{
+    		key = "Destinations/spain/seville";phrase = "Ferien in Sevilla";
+    	},
+    @{
+    		key = "Destinations/italy/sicily";phrase = "Ferien in Sizilien";
+    	},
+    @{
+    		key = "Destinations/croatia/split";phrase = "Ferien in Split";
+    	},
+    @{
+    		key = "Destinations/israel/tel aviv";phrase = "Ferien in Tel Aviv";
+    	},
+    @{
+    		key = "Destinations/spain/tenerife";phrase = "Ferien in Teneriffa";
+    	},
+    @{
+    		key = "Destinations/spain/balearic islands";phrase = "Feiertage auf den Balearinseln";
+    	},
+    @{
+    		key = "Destinations/spain/canary islands";phrase = "Ferien auf den Kanarischen Inseln";
+    	},
+    @{
+    		key = "Destinations/greece/thessaloniki";phrase = "Ferien in Thessaloniki";
+    	},
+    @{
+    		key = "Destinations/montenegro/tivat";phrase = "Feiertage in Tivat";
+    	},
+    @{
+    		key = "Destinations/france/toulouse";phrase = "Ferien in Toulouse";
+    	},
+    @{
+    		key = "Destinations/spain/valencia";phrase = "Feiertage in Valencia";
+    	},
+    @{
+    		key = "Destinations/italy/venice";phrase = "Ferien in Venedig";
+    	},
+    @{
+    		key = "Destinations/croatia/zadar";phrase = "Ferien in Zadar";
+    	},
+    @{
+    		key = "Root/deals/christmas holidays";phrase = "Weihnachtsferien";
+    	},
+    @{
+    		key = "Root/deals/easter deals";phrase = "Osterferien";
+    	},
+    @{
+    		key = "Root/deals/free child places";phrase = "Kostenlose Kinderplätze";
+    	},
+    @{
+    		key = "Root/deals/last minute beach holidays";phrase = "Last -Minute -Strandferien";
+    	},
+    @{
+    		key = "Root/deals/last minute city breaks";phrase = "Last -Minute -Stadtbrüche";
+    	},
+    @{
+    		key = "Root/deals/school holiday deals";phrase = "Schulfeiertage der Schule";
+    	},
+    @{
+    		key = "Root/deals/short beach breaks";phrase = "Kurze Strandbrüche";
+    	},
+    @{
+    		key = "Root/deals/sustainable holidays";phrase = "Nachhaltige Feiertage";
+    	},
+    @{
+    		key = "Root/deals/amsterdam deals";phrase = "Feriengeschäfte in Amsterdam";
+    	},
+    @{
+    		key = "Root/deals/egypt holiday deals";phrase = 'Feriengeschäfte in Ägypten';
+    	},
+    @{
+    		key = "Root/deals/greece deals";phrase = "Feiertagsangebote in Griechenland";
+    	},
+    @{
+    		key = "Root/deals/italy holiday deals";phrase = "Feiertagsangebote in Italien";
+    	},
+    @{
+    		key = "Root/deals/malta deals";phrase = "Feriengeschäfte in Malta";
+    	},
+    @{
+    		key = "Root/deals/paris deals";phrase = "Feriengeschäfte in Paris";
+    	},
+    @{
+    		key = "Root/deals/portugal deals";phrase = "Feiertagsangebote in Portugal";
+    	},
+    @{
+    		key = "Root/deals/spain deals";phrase = "Feriengeschäfte in Spanien";
+    	},
+    @{
+    		key = "Root/deals/balearic islands";phrase = "Feiertagsangebote auf den Balearen in den Inseln";
+    	},
+    @{
+    		key = "Root/deals/canary islands";phrase = "Feiertagsangebote auf den Kanarischen Inseln";
+    	},
+    @{
+    		key = "Root/deals/turkey deals";phrase = "Feriengeschäfte in der Türkei";
+    	},
+    @{
+    		key = "Holiday Types/adults holidays";phrase = "Ferien nur für Erwachsene";
+    	},
+    @{
+    		key = "Holiday Types/all inclusive holidays";phrase = "All -inclusive -Feiertage";
+    	},
+    @{
+    		key = "Holiday Types/beach holidays";phrase = "Strandferien";
+    	},
+    @{
+    		key = "Holiday Types/city breaks";phrase = "Städtereisen";
+    	},
+    @{
+    		key = "Holiday Types/family holidays";phrase = "Familienfeiertage";
+    	},
+    @{
+    		key = "Holiday Types/group holidays";phrase = "Gruppenferien";
+    	},
+    @{
+    		key = "Holiday Types/honeymoon holidays";phrase = "Flitterwochen";
+    	},
+    @{
+    		key = "Holiday Types/last minute holidays";phrase = "Last -Minute -Ferien";
+    	},
+    @{
+    		key = "Holiday Types/luxury holidays";phrase = "Luxusurlaub";
+    	},
+    @{
+    		key = "Holiday Types/self catering holidays";phrase = "Selbstversorger -Ferien";
+    	},
+    @{
+    		key = "Holiday Types/single parent families";phrase = "Alleinerziehende Eltern und ein erwachsene Familien";
+    	},
+    @{
+    		key = "Holiday Types/solo holidays";phrase = "Solo -Feiertage";
+    	},
+    @{
+    		key = "Root/deals/summer city breaks";phrase = "Sommerstädte bricht";
+    	},
+    @{
+    		key = "Root/deals/summer holidays";phrase = "Sommerferien";
+    	},
+    @{
+    		key = "Root/deals/winter city breaks";phrase = "Winterstädte bricht";
+    	},
+    @{
+    		key = "Root/deals/winter holidays";phrase = "Winterferien";
+    	},
+    @{
+    		key = "Root/holidays in april";phrase = "Ferien im April";
+    	},
+    @{
+    		key = "Root/holidays in august";phrase = "Ferien im August";
+    	},
+    @{
+    		key = "Root/holidays in december";phrase = "Ferien im Dezember";
+    	},
+    @{
+    		key = "Root/holidays in february";phrase = "Ferien im Februar";
+    	},
+    @{
+    		key = "Root/holidays in january";phrase = "Ferien im Januar";
+    	},
+    @{
+    		key = "Root/holidays in july";phrase = "Ferien im Juli";
+    	},
+    @{
+    		key = "Root/holidays in june";phrase = "Ferien im Juni";
+    	},
+    @{
+    		key = "Destinations/greece/kos";phrase = "Ferien im März";
+    	},
+    @{
+    		key = "Root/holidays in may";phrase = "Ferien im Mai";
+    	},
+    @{
+    		key = "Root/holidays in november";phrase = "Ferien im November";
+    	},
+    @{
+    		key = "Root/holidays in october";phrase = "Ferien im Oktober";
+    	},
+    @{
+    		key = "Root/holidays in september";phrase = "Ferien im September";
+    	}
+    )
+    
+    $langs = @(
+        "de-CH",
+        "de-DE"
+    )
+    
+    foreach ($lang in $langs){
+        foreach ($dictionary in $dictionaries) {
+            
+            $path ="master:/sitecore/content/EasyJet/Holidays/Home/$($dictionary.key)"
+        	$item = Get-Item -Path $path  -Language $lang -ErrorAction SilentlyContinue
+        
+        	if ($item -ne $null) {
+        	    
+                if($item["ComposedTitle"] -ne $null ){
+                    if(!$item["ComposedTitle"]){
+                        $item.Editing.BeginEdit()
+                		$item["ComposedTitle"] = $dictionary.phrase
+                		$item.Editing.EndEdit() | Out-Null
+                 		Write-Host "Item successfully updated:" $path "; "
+                    }else{
+                        Write-Host "Field Already Populated:" $path "; " $dictionary.Key "; " $dictionary.phrase
+                    }
+                }else{
+                   	Write-Host "Field Not Found:" $path "; " $dictionary.Key "; "
+                }
+                
+            }else{
+            	    Write-Host "Item not found:" $path "; " $dictionary.Key "; "
+            }
+        }
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230713T101025Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

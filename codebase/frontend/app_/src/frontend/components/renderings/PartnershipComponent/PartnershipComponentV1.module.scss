@@ -1,0 +1,211 @@
+.isBackground {
+    .partnershipComponent {
+        position: absolute;
+        z-index: $z-index-element;
+        top: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+
+        &::before {
+            content: "";
+            position: unset;
+            top: unset;
+            left: unset;
+            width: 100%;
+            height: 100%;
+            background: none;
+            transform: none;
+            transform-origin: unset;
+            display: none;
+        }
+
+    }
+
+    .info {
+        display: none;
+    }
+
+    .bg {
+        height: 100%;
+    }
+
+    .logoContainer {
+        top: 40px;
+    }
+
+    .logo {
+        max-width: 250px;
+    }
+
+    .logoTransparent {
+        padding: 0;
+    }
+
+    :global(.wrapper-component-container) {
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+
+    :global(.wrapper-component-container__inner) {
+        position: relative;
+    }
+}
+
+.partnershipComponent {
+    position: relative;
+    z-index: 0;
+    display: flex;
+    margin-top: 55px;
+    margin-bottom: 54px;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 0 12px 2px $colorAlto;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc(50% - 85px);
+        min-width: 480px;
+        height: 200%;
+        background: linear-gradient(
+            -102deg,
+            rgba(255, 255, 255, 1),
+            $clrSiteBgWhite 250px
+        );
+        transform: rotate(12deg);
+        transform-origin: 100% 0;
+
+        @include media-breakpoint-down(sm) {
+            content: unset;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        flex-direction: column-reverse;
+        margin-top: 40px;
+    }
+}
+
+.info {
+    z-index: $z-index-element;
+    flex: 1 0 auto;
+    width: 35%;
+    min-width: 400px;
+    padding: 38px 0 38px 46px;
+    background-color: $colorWhite;
+
+    @include media-breakpoint-down(sm) {
+        z-index: 0;
+
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: $z-index-negative;
+            top: 26px;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(
+                -174deg,
+                rgba(255, 255, 255, 0) 170px,
+                rgba(255, 255, 255, 1) 171px,
+                $clrSiteBgWhite 230px
+            );
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        width: auto;
+        min-width: unset;
+        padding: 19px 15px 27px;
+    }
+}
+
+.subtitle {
+    font-size: 18px;
+    line-height: 1.67;
+    text-transform: uppercase;
+}
+
+.title {
+    margin-top: 5px;
+    margin-bottom: 0;
+    font-family: $fontGenerationHeadline;
+    font-size: 40px;
+    line-height: 1;
+
+    @include media-breakpoint-down(sm) {
+        margin-top: 0;
+    }
+}
+
+.description {
+    margin-top: 5px;
+    font-size: 16px;
+    line-height: 1.5;
+
+    @include media-breakpoint-down(sm) {
+        font-size: 14px;
+        line-height: 1.3;
+    }
+}
+
+a.btn {
+    display: inline-block;
+    margin-top: 22px;
+    padding: 12px 46px;
+    font-size: 14px;
+    line-height: 1.3;
+    text-align: center;
+
+    @include media-breakpoint-down(sm) {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+a.btnOrangeTheme {
+    height: 44px;
+    @include media-breakpoint-down(sm) {
+        height: 40px;
+    }
+}
+
+.bg {
+    position: relative;
+    z-index: $z-index-negative;
+    width: 100%;
+
+    @include media-breakpoint-down(sm) {
+        height: 200px;
+    }
+}
+
+.imageWrapper {
+    display: flex;
+    width: 100%;
+    z-index: $z-index-negative;
+    outline-offset: -1px;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.itemPrice {
+    color: $colorOrange;
+}
+
+.pricePrefix {
+    font-size: 14px;
+    font-weight: 700;
+    color: $clrTextMain;
+}

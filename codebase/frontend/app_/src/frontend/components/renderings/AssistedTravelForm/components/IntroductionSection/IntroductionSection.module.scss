@@ -1,0 +1,67 @@
+.btnContainer {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 32px;
+    margin-right: -15px;
+    margin-left: -15px;
+    padding: 15px;
+    padding-top: 10px;
+
+    @include media-breakpoint-up(sm) {
+        flex-direction: row;
+        gap: 8px;
+        margin-right: 0;
+        margin-left: 0;
+        padding: 0;
+        padding-top: 0;
+        box-shadow: none;
+    }
+
+    .btn {
+        min-height: auto;
+        padding: 13px 24px;
+        font-family: $fontRoundedDemy;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.375;
+        text-align: center;
+    }
+}
+
+
+.introduction {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+
+    h2 {
+        margin: 0;
+        margin-bottom: 8px;
+        font-family: $fontRoundedDemy;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.333;
+        color: $clrTextMain;
+    }
+
+    p {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+    }
+
+    p:last-child {
+        margin-bottom: 0;
+    }
+
+    ul {
+        margin: 0;
+        padding-left: 25px;
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+    }
+}

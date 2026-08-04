@@ -1,0 +1,77 @@
+﻿---
+ID: "993ca5cd-798f-4de5-9e30-d0e4b8a77a41"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-17055 contact us new questions"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $contactUsQuestionsFolder = "/sitecore/content/EasyJet/Holidays/Home/Help/Contact Form/Page Components/Contact Us Questions Folder"
+    $contactUsFormPath = "/sitecore/content/EasyJet/Holidays/Home/Help/Contact Form/Page Components/Form"
+    $questionItemType = "{5E2EB6D4-B7BA-45A1-A5FE-9FE583874200}"
+    $accommodationId = "{9DD720CB-683D-4C36-A422-46854186FAE8}"
+    $airportId = "{C59BA4D8-EF2E-4E0F-B577-7CBB14B92268}"
+    $amendBookingId = "{55FA3A62-EF0E-4947-98FA-FF97E77FE23F}" #existing question
+    $baggageId = "{663B7C4F-610F-4356-988B-B65F5DA7AC9A}"
+    $bookingId = "{F12DDEBD-9DE7-4D6D-ACAE-3623946D0776}"
+    $cancelBookingId = "{904243BB-6117-41FE-9BC1-A8844A215954}" #existing question
+    $easyJetId = "{E2467E1E-FCD1-4A4C-BC10-93599766F23E}"
+    $excursionsId = "{365D13E8-8B7F-4CE9-AC48-843BA6DD4E80}"
+    $flightId = "{4FE14948-8DDC-47E1-930F-85D5DC6ED65E}"
+    $injuryId = "{2008B290-67EF-40E1-AFCF-506017A6915F}"
+    $prepaidId = "{DF7C6FC1-F86B-44D3-8273-D254F38C3636}"
+    $safetyId = "{78E0D827-82B8-429C-A603-EE68066604A6}"
+    $transferId = "{8AF72019-46F7-4FD0-922B-B686E176A668}"
+    $allQuestionIds = @($accommodationId, $airportId, $amendBookingId, $baggageId, $bookingId, $cancelBookingId, $easyJetId, $excursionsId, $flightId, $injuryId, $prepaidId, $safetyId, $transferId)
+    
+    function Create-Question($itemName, $title, $id){
+            $itemToCreateExist = Get-Item "$($contactUsQuestionsFolder)/$itemName" -ErrorAction SilentlyContinue
+    
+            if($itemToCreateExist -eq $null){
+                $createdItem = New-Item -Path $contactUsQuestionsFolder -Name $itemName -ItemType $questionItemType -ForceId $id
+        
+                if($createdItem -ne $null){
+                    $createdItem.Editing.BeginEdit()
+                    $createdItem.Fields["Title"].Value = $title
+                    $createdItem.Fields["State"].Value = "Past"
+                    $createdItem.Editing.EndEdit()
+    
+                    Write-Host "$($itemName) item is created"
+                }
+            }
+        }
+    
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Help/Contact Form/Page Components/Contact Us Questions Folder/Make a claim" -Permanently -Force -Recurse
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Help/Contact Form/Page Components/Contact Us Questions Folder/Make a complaint" -Permanently -Force -Recurse
+    
+    Create-Question -itemName "Accommodation" -title "Accommodation/Destination" -id $accommodationId
+    Create-Question -itemName "Airport" -title "Airport" -id $airportId
+    Create-Question -itemName "Baggage" -title "Baggage/Lost Property" -id $baggageId
+    Create-Question -itemName "Booking" -title "Booking/Pre-departure" -id $bookingId
+    Create-Question -itemName "easyJet" -title "easyJet Customer Service" -id $easyJetId
+    Create-Question -itemName "Excursions" -title "Excursions" -id $excursionsId
+    Create-Question -itemName "Flight" -title "Flight including cancellation and delays" -id $flightId
+    Create-Question -itemName "Injury" -title "Injury or Illness" -id $injuryId 
+    Create-Question -itemName "Prepaid" -title "Pre-paid extras including seating" -id $prepaidId
+    Create-Question -itemName "Safety" -title "Safety and security" -id $safetyId
+    Create-Question -itemName "Transfer" -title "Transfer" -id $transferId
+    
+    $selectAllQuestions = [string]::Join('|', $allQuestionIds)
+    $contactUsForm = Get-Item $contactUsFormPath -ErrorAction SilentlyContinue
+    $contactUsForm.Editing.BeginEdit()
+    $contactUsForm.Fields["QuestionList"].Value = $selectAllQuestions
+    $contactUsForm.Editing.EndEdit()
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230628T103556Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,144 @@
+.listButton,
+.crossButton {
+    height: 100%;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    svg {
+        box-sizing: content-box;
+        width: 20px;
+        height: 70%;
+        padding: 0 10px;
+        vertical-align: middle;
+        color: $clrEjOrangeLight;
+    }
+}
+
+.listButton {
+    svg {
+        border-left: 0.5px solid $colorGray;
+    }
+}
+
+.crossButton {
+    svg {
+        max-width: 15px;
+        padding: 0 13px 0 12px;
+    }
+}
+
+.buttonsContainer {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    height: $search-pod-form-control_height;
+
+    @include media-breakpoint-down(md) {
+        top: 10px;
+    }
+}
+
+.inputBox .label {
+    top: -7.5px;
+    left: 12px;
+    height: auto;
+    padding: 0 8px;
+    line-height: 1;
+    color: $clrTxtLight;
+    background: $colorWhite;
+}
+
+.placeholder {
+    position: absolute;
+    top: 0;
+    right: 35px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    color: $clrTxtLight;
+    pointer-events: none;
+
+    svg {
+        display: inline-block;
+        max-width: 20px;
+        height: 15px;
+        margin-right: 10px;
+        color: $clrEjOrange;
+    }
+
+    span {
+        overflow: hidden;
+        white-space: nowrap;
+    }
+}
+
+.withButtons {
+    .placeholder {
+        right: 0;
+        margin-right: 40px;
+
+        span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+
+    .valueBox {
+        padding-right: 75px;
+    }
+
+    .input {
+        padding-right: 75px;
+        text-overflow: ellipsis;
+    }
+}
+
+.valueBox {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 16px;
+    margin: 14px auto auto;
+    padding: 0 20px 0 21px;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.inputBox .input {
+    height: $search-pod-form-control_height;
+    font-size: 14px;
+    border-color: $clrTxtLight;
+    border-radius: $search-pod-form-control_border-radius;
+
+    &::-ms-clear {
+        display: none;
+    }
+
+    &.gap {
+        padding-left: 50px;
+    }
+}
+
+.inputBox {
+    position: relative;
+    flex: 2;
+    margin-right: 20px;
+    padding: {
+        top: 5px;
+        bottom: 5px;
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-right: 0;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}

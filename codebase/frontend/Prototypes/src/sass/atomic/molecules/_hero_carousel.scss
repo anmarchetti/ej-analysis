@@ -1,0 +1,59 @@
+.hero-carousel {
+    position: relative;
+    z-index: 10;
+
+    .image-gallery-bullets {
+        z-index: 1;
+        bottom: 40px;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            bottom: 20px;
+        }
+
+        .image-gallery-bullets-container {
+            display: inline-block;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50px;
+
+            @include media-breakpoint-down(md) {
+                padding: 6px 10px;
+            }
+        }
+
+        .image-gallery-bullet {
+            vertical-align: middle;
+            background: $colorGrayLighter;
+            border: none;
+
+            &.active {
+                background: $clrEjOrange;
+            }
+        }
+    }
+}
+
+.floating-searchpod {
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-width: $container-max-width;
+    margin: 0 auto;
+    padding-top: 42px;
+
+    .search-bar-box {
+        border-radius: 4px;
+
+        @include media-breakpoint-down(md) {
+            border-radius: 0;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        position: static;
+        padding: 0;
+    }
+}

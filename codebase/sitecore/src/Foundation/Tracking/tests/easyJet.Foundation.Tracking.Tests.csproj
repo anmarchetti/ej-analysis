@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Sitecore.Analytics" />
+        <PackageReference Include="Sitecore.Analytics.XConnect" />
+        <PackageReference Include="Sitecore.CES.GeoIp.Core" />
+        <PackageReference Include="Sitecore.XConnect" />
+        <PackageReference Include="Sitecore.XConnect.Core" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)TestProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Analytics\code\easyJet.Foundation.Analytics.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Destinations\code\easyJet.Foundation.Destinations.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\PushNotification\code\easyJet.Foundation.PushNotifications.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Tracking\code\easyJet.Foundation.Tracking.csproj" />
+    </ItemGroup>
+</Project>

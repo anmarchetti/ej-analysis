@@ -1,0 +1,76 @@
+﻿---
+ID: "a73ba88a-343b-483d-9475-cf2b63a2fdf2"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SEATS-362 Trade 16 - Confirm seat amendment"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $pagePath = 'master:/content/EasyJet/TradePortal/Home/Booking/Amend Payment';
+    $page = Get-Item -Path $pagePath;
+    
+    $amendPaymentHeaderPath = "master:/content/EasyJet/TradePortal/Home/Booking/Amend Payment/Page Components/Amend Payment Header Trade Portal";
+    $amendPaymentHeaderTemplateId = "{23E89B5A-9015-4098-931D-FB70F9AF061B}";
+    $amendPaymentHeader = Get-Item -path $amendPaymentHeaderPath -ErrorAction SilentlyContinue;
+    if ($amendPaymentHeader -eq $null) {
+        $amendPaymentHeader = New-Item -Path $amendPaymentHeaderPath -ItemType $amendPaymentHeaderTemplateId;
+        Write-Host "Item" $amendPaymentHeader.Name "successfully created";
+    }
+    
+        $amendPaymentHeader.Editing.BeginEdit();
+        $amendPaymentHeader["PayTitle"] = "Confirm & pay";
+        $amendPaymentHeader["RefundTitle"] = "Confirm refund";
+        $amendPaymentHeader["SpinnerTitle"] = "We're searching for your booking";
+        $amendPaymentHeader["SpinnerDescription"] = "This may take a few seconds";
+        $amendPaymentHeader.Editing.EndEdit();
+        Write-Host "Item" $amendPaymentHeader.Name "successfully updated";
+    
+    
+    # Set datasources for renderings
+    function Update-Rendering-DataSource ($item,$renderingId,$placeHolder,$newDataSource) {
+    	$rendering = Get-Rendering -Item $item -PlaceHolder $placeHolder | Where-Object { $_.ItemId -eq $renderingId } | Select -First 1
+    
+    	if ($rendering -ne $null) {
+    		Set-Rendering -Item $item -Instance $rendering -DataSource $newDataSource.ID
+    	}
+    }
+    
+    Update-Rendering-DataSource -Item $page -RenderingId "{491706BB-AF33-46EA-84CE-70FC10F99653}" -PlaceHolder "/body/component-wrapper-inner-{ccc913b8-b294-4339-a5cb-447bf58d8ad1}-0" -NewDataSource $amendPaymentHeader
+    
+    Get-Item -Path "master:/content/EasyJet/TradePortal/Home/Booking/Amend Payment/Page Components/Amend Payment Header" -ErrorAction SilentlyContinue | Remove-Item -Force -Permanently -ErrorAction SilentlyContinue 
+    
+    
+    $datasourceTemplateId= '{02CCFF8B-01E9-4F6F-B706-AA4326819D13}';
+    $tradePortalPageComponentItem= Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Amend Payment/Page Components";
+    if ($tradePortalPageComponentItem -ne $null) {
+        $tradeItem = New-Item -Path $tradePortalPageComponentItem.Paths.Path -Name "Seats Not Available Popup Trade" -ItemType $datasourceTemplateId
+    
+    if ($tradeItem -ne $null) {
+        	$tradeItem.Editing.BeginEdit();
+        	$tradeItem["Title"] = "There is a problem with your seats";
+        	$tradeItem["Description"] = "One of more of the seats you have picked for your flights are now unavailable.<br><br>" +
+        		"You can choose other seats, or go back and view your holiday booking.<br><br>" +
+        		"You can reserve seats up to 30 days before departure date.";
+        	$tradeItem["ReselectSeatsButtonText"] = "Choose other seats"
+        	$tradeItem["ClearSeatsButtonText"] = "Back to view booking";
+                $tradeItem["ConfirmationCheckboxLabel"] = "I have read and explained this message to the customer, and they have agreed they understand.";
+        	$tradeItem.Editing.EndEdit() | Out-Null;
+        	Write-Host $tradeItem.Name "is updated";
+    }
+    
+    
+    Update-Rendering-DataSource -Item $page -RenderingId "{8AE530B1-7702-48B7-A4B9-442E50845EFA}" -NewDataSource $tradeItem
+    
+    Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Amend Payment/Page Components/Seats Not Available Popup" -ErrorAction SilentlyContinue | Remove-Item -Force -Permanently -ErrorAction SilentlyContinue 
+    
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20221208T142719Z

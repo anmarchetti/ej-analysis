@@ -1,0 +1,11 @@
+.wrapper {
+    position: sticky;
+    z-index: $z-index-fixed + 1;
+    top: 0;
+    transition: height $animationDuration ease-in;
+
+    @include media-breakpoint-down(md) {
+        position: relative;
+        z-index: auto;
+    }
+}

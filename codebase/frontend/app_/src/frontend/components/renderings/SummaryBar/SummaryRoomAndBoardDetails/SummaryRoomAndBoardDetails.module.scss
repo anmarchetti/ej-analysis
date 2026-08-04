@@ -1,0 +1,53 @@
+@import '../SummaryDetails/SummaryDetails.variables.modules';
+@import 'src/styles/configs/fonts';
+
+.categoryRoomAndBoard {
+    .itemsContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        
+        .item {
+            color: $item;
+        }
+    }
+
+    p {
+        margin: 0;
+        font-family: $fontRoundedBook;
+        font-size: 14px;
+        line-height: 18px;
+        white-space: normal;
+    }
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    h3 {
+        margin: 0;
+        font-family: $fontRoundedDemy;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 22px;
+        color: $title;
+        text-transform: none;
+        letter-spacing: 0;
+    }
+}
+
+.extra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    white-space: normal;
+}

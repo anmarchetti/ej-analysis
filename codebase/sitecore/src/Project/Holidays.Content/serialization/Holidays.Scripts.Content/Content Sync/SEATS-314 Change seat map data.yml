@@ -1,0 +1,91 @@
+﻿---
+ID: "1affbe82-06af-4c16-b450-5662bd01fcfc"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SEATS-314 Change seat map data source for trade"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+        $item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+         if ($item -eq $null) {
+                $item = New-Item -Path $path -ItemType $templateId
+                Write-Host "Item" $item.Name "successfully created";
+         }
+         return $item
+    }
+    
+    # add datasource to seat map on extras
+    $page = Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking"
+    
+    $dataSourcePath = "/sitecore/content/EasyJet/TradePortal/Data/Seats Map Trade"
+    $rendering = $page | Get-Rendering -Placeholder "*seat-map*" -Device (Get-LayoutDevice "Default")
+    
+    if($rendering -ne $null)
+    {
+        Set-Rendering -Item $page -Instance $rendering -DataSource $dataSourcePath
+    }
+    
+    # add datasource to seat map on view booking
+    $page = Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking"
+    $dataSourcePath = "/sitecore/content/EasyJet/TradePortal/Data/Seats Map Trade"
+    $rendering = $page | Get-Rendering -Placeholder "*seat-map*" -Device (Get-LayoutDevice "Default")
+            
+    if($rendering -ne $null)
+    {
+     Set-Rendering -Item $page -Instance $rendering -DataSource $dataSourcePath
+    }
+    
+    #delete previous datasource for seat map
+    Remove-Item -Path "/sitecore/content/EasyJet/TradePortal/Data/SeatsMap" -Permanently -Recurse -Force
+    
+    #set fields to seat map
+    #add seat types to seat map
+    function Create-Benefits-Value($paths){
+        $result = '';
+        foreach($path in $paths){
+            $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+            if($item -ne $null){
+                if (![string]::IsNullOrEmpty($result)) {
+                    $result += "|";
+                }
+                $result += $item.ID.ToString()
+            }
+        }
+        
+        return $result;
+    }
+    
+    $seatTypesPaths = '/sitecore/content/EasyJet/TradePortal/Data/Seat Types/Standard seat',
+    '/sitecore/content/EasyJet/TradePortal/Data/Seat Types/Up front seat',
+    '/sitecore/content/EasyJet/TradePortal/Data/Seat Types/Extra legroom'
+    
+    $seatMap = Get-Item -Path '/sitecore/content/EasyJet/TradePortal/Data/Seats Map Trade' -ErrorAction SilentlyContinue
+    $seatMap.Editing.BeginEdit()
+    $seatMap["BenefitsTable"] = Create-Benefits-Value -Paths $seatTypesPaths
+    $seatMap.Editing.EndEdit()
+    
+    #add benefits order
+    $extraLegroomBenefits = '/sitecore/content/EasyJet/TradePortal/Data/Seat Type Benefits/Select your seat',
+    '/sitecore/content/EasyJet/TradePortal/Data/Seat Type Benefits/Dedicated Bag drop',
+    '/sitecore/content/EasyJet/TradePortal/Data/Seat Type Benefits/Large cabin bag added to your booking',
+    '/sitecore/content/EasyJet/TradePortal/Data/Seat Type Benefits/Extra legroom',
+    '/sitecore/content/EasyJet/TradePortal/Data/Seat Type Benefits/Be first on the aircraft with Speedy Boarding'
+    
+    $seatMap = Get-Item -Path '/sitecore/content/EasyJet/TradePortal/Data/Seats Map Trade' -ErrorAction SilentlyContinue
+    $seatMap.Editing.BeginEdit()
+    $seatMap["BenefitsOrderInTable"] = Create-Benefits-Value -Paths $extraLegroomBenefits
+    $seatMap.Editing.EndEdit()
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 200
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

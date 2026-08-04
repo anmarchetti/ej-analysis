@@ -1,0 +1,34 @@
+{
+    "Title": "Locked account settings: /api/content/bypath",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/content/bypath",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "path",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "{site}/Settings/Allowed Trade Agent Names Settings"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "ConsultantNames": "Ute Heinemann\r\nBenat Haradze\tOliver Svensson",
+            "Enabled": "1"
+        }
+    }
+}

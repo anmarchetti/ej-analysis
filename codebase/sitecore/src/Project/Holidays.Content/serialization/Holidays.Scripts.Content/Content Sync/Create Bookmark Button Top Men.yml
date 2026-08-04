@@ -1,0 +1,108 @@
+﻿---
+ID: "b82893e1-d1f5-468c-94a0-be21809d2e00"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Bookmark Button Top Menu
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $shortlistLinkTemplateId = "{9199B3BC-4E4F-4226-8D81-5BE345ECD811}";
+    
+    function update-item($link, $hasShortlistImage, $noShortlistImage){
+        $item.Editing.BeginEdit()
+        if ($hasShortlistImage -ne $null) {
+            $item["ShortlistImage"] = $hasShortlistImage;
+        }
+        if ($noShortlistImage -ne $null) {
+            $item["NoShortlistImage"] = $noShortlistImage;
+        }
+        if ($link -ne $null) {
+            $item["Link"] = $link;
+        }
+        $item.Editing.EndEdit() | Out-Null;
+    
+        Write-Host "Item" $item.Name "successfully updated";
+    }
+    
+    function create-or-update-item($item, $path, $templateId, $link, $hasShortlistImage, $noShortlistImage){
+        if ($item -eq $null) {
+            # Create Item
+            $item = New-Item -Path $path -ItemType $templateId;
+            Write-Host "Item" $item.Name "successfully created";
+            # Update Item
+            update-item   -Link $link -HasShortlistImage $hasShortlistImage -NoShortlistImage $noShortlistImage
+        } else {
+            Write-Host "Item" $path "already exists";
+            # Update Item
+            update-item -Link $link  -HasShortlistImage $hasShortlistImage -NoShortlistImage $noShortlistImage
+        }
+    }
+    
+    $shortlistPage = Get-Item -path "master:/content/EasyJet/Holidays/Home/Shortlists" -ErrorAction SilentlyContinue
+    $itemPathShortlistButton = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Shortlist"
+    $shortlistButton = Get-Item -path $itemPathShortlistButton -ErrorAction SilentlyContinue
+    create-or-update-item -Item $shortlistButton -Path $itemPathShortlistButton -TemplateId $shortlistLinkTemplateId  -Link "<link  anchor='' linktype='internal' class='' title=''  querystring='' id='$($shortlistPage.ID)' />" -HasShortlistImage '<image mediaid="{BBEC567B-C2F9-49D2-881E-8D113053F18F}" />' -NoShortlistImage '<image mediaid="{C0937DED-8918-42F5-895A-44D57FF45C8D}" />' 
+    
+    
+     # Get Button Link
+    $loggedInPath = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Profile Logged In";
+    $loggedInLink = Get-Item -path $loggedInPath -ErrorAction SilentlyContinue
+    $navigationImageLinkPath = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Profile Not Logged In";
+    $navigationImageLink = Get-Item -path $navigationImageLinkPath -ErrorAction SilentlyContinue
+    $helpPath = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Help";
+    $helpLink = Get-Item -path $helpPath -ErrorAction SilentlyContinue
+    $loginPath = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Login";
+    $loginLink = Get-Item -path $loginPath -ErrorAction SilentlyContinue
+    $logoutPath = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Logout";
+    $logoutLink = Get-Item -path $logoutPath -ErrorAction SilentlyContinue
+    $shortlistPath = "master:/content/EasyJet/Holidays/Data/Navigations/Button/Shortlist";
+    $shortlistLink = Get-Item -path $shortlistPath -ErrorAction SilentlyContinue
+    
+    #Update Full Header
+    $templateId = "{FD0CEA6B-FE05-4106-A496-E8F1C75F9445}";
+    $fullHeaderPath = "master:/content/EasyJet/Holidays/Data/Navigations/Headers/Full Header"
+    
+    $fullHeader = Get-Item -path $fullHeaderPath -ErrorAction SilentlyContinue
+    
+    function update-item(){
+        $fullHeader.Editing.BeginEdit()
+        $fullHeader["SecondaryNav"] = "$($loggedInLink.ID)|$($navigationImageLink.ID)|$($shortlistLink.ID)|$($helpLink.ID)|$($loginLink.ID)|$($logoutLink.ID)";
+        [Sitecore.Data.Fields.MultilistField]$field = $fullHeader.Fields["MainNav"];
+        $field.add($shortlistLink.ID);
+        $fullHeader.Editing.EndEdit() | Out-Null;
+                            
+        Write-Host "Item" $fullHeader.Name "successfully updated";
+    }
+    
+     if ($fullHeader -eq $null) {
+        # Create Item
+        $fullHeader = New-Item -Path $fullHeaderPath -ItemType $templateId;
+        Write-Host "Item" $fullHeader.Name "successfully created";
+        # Update Item
+        update-item
+    } else {
+        Write-Host "Item" $fullHeaderPath "already exists";
+        # Update Item
+        update-item
+    }
+    
+    
+    
+    
+    
+    
+               
+                        
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191226T143505Z

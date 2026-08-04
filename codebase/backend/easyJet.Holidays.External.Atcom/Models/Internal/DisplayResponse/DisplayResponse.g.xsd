@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 sp1 (http://www.altova.com) by Kim Howells (Anite Business Systems) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="AtComRes/DisplayResponse" xmlns:p2="AtComRes/Common" targetNamespace="AtComRes/DisplayResponse" elementFormDefault="qualified">
+  <xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+  <xs:element name="DisplayResponse">
+    <xs:annotation>
+      <xs:documentation>Response of search for an existing booking in @ComRes</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="p2:AtcomresBookingBaseResponse">
+          <xs:sequence>
+            <xs:element name="DisplayOnly" type="xs:boolean" default="false" minOccurs="0"/>
+            <xs:element ref="ns1:Amendments" minOccurs="0"/>
+          </xs:sequence>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Amendments">
+    <xs:annotation>
+      <xs:documentation>Which amendments are allowed</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ns1:Bkg"/>
+        <xs:element ref="ns1:Route"/>
+        <xs:element ref="ns1:Accom"/>
+        <xs:element ref="ns1:Item"/>
+        <xs:element ref="ns1:Flight_Extra"/>
+        <xs:element ref="ns1:Car_Rental"/>
+        <xs:element ref="ns1:Cruise"/>
+        <xs:element ref="ns1:Pax"/>
+        <xs:element ref="ns1:Memo"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="Entity_Amend_Type">
+    <xs:annotation>
+      <xs:documentation>Entity amendment type</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Add" type="xs:boolean" default="true">
+      <xs:annotation>
+        <xs:documentation>Can add new entity</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Amend" type="xs:boolean" default="true">
+      <xs:annotation>
+        <xs:documentation>Can amend entity</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Cancel" type="xs:boolean" default="true">
+      <xs:annotation>
+        <xs:documentation>Can cancel the entity</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:element name="Bkg" type="ns1:Entity_Amend_Type">
+    <xs:annotation>
+      <xs:documentation>Booking-level amendments</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="Route" type="ns1:Entity_Amend_Type">
+    <xs:annotation>
+      <xs:documentation>Route amendments</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="Accom" type="ns1:Entity_Amend_Type">
+    <xs:annotation>
+      <xs:documentation>Accom amendments</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="Item" type="ns1:Entity_Amend_Type">
+    <xs:annotation>
+      <xs:documentation>Item amendments</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="Flight_Extra" type="ns1:Entity_Amend_Type">
+    <xs:annotation>
+      <xs:documentation>Flight Extra amendments</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="Car_Rental" type="ns1:Entity_Amend_Type">
+    <xs:annotation>
+      <xs:documentation>Car rental amendments</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="Cruise" type="ns1:Entity_Amend_Type">
+    <xs:annotation>
+      <xs:documentation>Cruise amendments</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="Pax" type="ns1:Entity_Amend_Type">
+    <xs:annotation>
+      <xs:documentation>Pax amendments</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="Memo" type="ns1:Entity_Amend_Type">
+    <xs:annotation>
+      <xs:documentation>Memo amendments</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,242 @@
+.create-account {
+    padding-bottom: 50px;
+
+    fieldset {
+        margin-top: 40px;
+        padding: 0;
+        border: 0;
+    }
+}
+
+.create-account-details {
+    position: relative;
+}
+
+.create-account--disabled {
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: $clrSiteBgWhite;
+        opacity: 0.5;
+    }
+}
+
+.create-account__fieldset-title {
+    margin: 0 0 25px;
+    font-family: $fontRoundedHeadline;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+}
+
+.create-account__fieldset-description {
+    padding-bottom: 17px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.33;
+    color: $colorDimGray;
+    border-bottom: 1px solid $colorGrayDark;
+}
+
+.create-account__sign-in-block {
+    padding-top: 35px;
+
+    .btn-link {
+        margin-top: 8px;
+        font-size: 14px;
+    }
+
+    .error-message {
+        margin: 25px 0 40px;
+    }
+}
+
+.create-account__submit {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 40px;
+
+    .btn {
+        min-width: 350px;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            min-width: 0;
+        }
+    }
+}
+
+.create-account-success-popup {
+    .popup__header {
+        padding: 40px 0 20px;
+
+        @include media-breakpoint-down(md) {
+            padding-top: 30px;
+        }
+    }
+
+    p {
+        margin: 0;
+
+        + p {
+            margin-top: 15px;
+        }
+    }
+
+    .popup__footer {
+        @include media-breakpoint-down(md) {
+            flex-direction: column-reverse;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            .btn + .btn {
+                margin-bottom: 10px;
+                margin-left: 0;
+            }
+        }
+    }
+}
+
+.create-account-success-popup__note {
+    font-size: 15px;
+    color: $clrTxtLight;
+}
+
+.create-account-popup {
+    @include media-breakpoint-down(md) {
+        padding-bottom: 90px;
+    }
+
+    .popup__body {
+        position: relative;
+        padding: 45px 20px 0 45px;
+    }
+
+    .popup__footer {
+        padding: 20px 40px;
+
+        .back-btn {
+            font-weight: 600;
+        }
+    }
+
+    .create-account-popup__title {
+        margin: 0 0 30px;
+        font-family: $fontRoundedBook;
+        font-size: 30px;
+        line-height: 40px;
+
+        @include media-breakpoint-down(md) {
+            margin: 0 0 25px;
+            font-size: 20px;
+            line-height: 25px;
+        }
+    }
+
+    .create-account-popup__subtitle {
+        margin: 0 0 10px;
+        font-family: $fontRoundedDemy;
+        font-size: 18px;
+        line-height: 24px;
+
+        @include media-breakpoint-down(md) {
+            margin: 24px 0 0;
+            font-family: $fontRoundedDemy;
+            font-size: 16px;
+            line-height: 26px;
+        }
+    }
+
+    .create-account-popup__description {
+        margin-bottom: 65px;
+
+        @include media-breakpoint-down(md) {
+            margin: 5px 0 25px;
+            font-size: 16px;
+            line-height: 24px;
+        }
+    }
+
+    .special-offers__options {
+        margin: 20px 0 25px;
+    }
+
+    .create-account__fieldset-title {
+        margin: 0 0 12px;
+        font-size: 20px;
+        line-height: 25px;
+
+        &--delimiter {
+            width: 100%;
+            padding-bottom: 30px;
+            border-bottom: 1px solid $colorGrayDark;
+        }
+    }
+
+    .create-account__fieldset-description {
+        padding-bottom: 30px;
+        font-family: $fontRoundedBook;
+        font-size: 14px;
+        font-weight: 100;
+        line-height: 18px;
+        color: $clrTxtLight;
+    }
+
+    .form-group {
+        margin: 25px 0;
+    }
+
+    .create-account-popup__content {
+        height: 700px;
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        .create-account {
+            padding: 0;
+        }
+
+        &::-webkit-scrollbar {
+            width: 8px;
+            height: 3px;
+            background-color: $clrSiteBgWhite;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: $clrEjOrange;
+            border-radius: 40px;
+        }
+    }
+}
+
+.form-control__phone-label .form-control__label {
+    opacity: 0
+}
+
+.form-control__phone-label .form-control__label--active {
+    opacity: 1;
+    transition: all .1s
+}
+
+.code-2-digits .form-control__input {
+    padding-left: 64px
+}
+
+.code-3-digits .form-control__input {
+    padding-left: 70px
+}
+
+.code-4-digits .form-control__input {
+    padding-left: 76px
+}

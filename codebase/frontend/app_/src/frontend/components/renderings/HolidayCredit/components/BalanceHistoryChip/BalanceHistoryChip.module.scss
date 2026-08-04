@@ -1,0 +1,38 @@
+.status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: $clrTextMain;
+    font-size: 12px;
+    font-weight: 600;
+
+    & svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.expireSoonCredit {
+    background: #ffefb0;
+}
+.activeCredit {
+    background: #cadea6;
+}
+
+.expiredCredit {
+    background: $clrSiteBgWhite;
+    color: #616161;
+}
+
+.expiredIcon {
+    path {
+        transform: scaleX(0.92) scaleY(0.953);
+    }
+}
+
+.usedCredit {
+    background: $clrSiteBgWhite;
+}

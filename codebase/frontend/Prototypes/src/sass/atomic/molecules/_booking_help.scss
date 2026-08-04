@@ -1,0 +1,47 @@
+.booking-help-container {
+    .need-help-block {
+        margin: 0;
+        text-align: left;
+    }
+
+    .need-help-block__call-link {
+        font-size: 40px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 30px;
+        }
+    }
+
+    .need-help-block__note {
+        margin-top: 10px;
+        font-size: 16px;
+        color: $clrTextMain;
+
+        @include media-breakpoint-down(md) {
+            font-size: 14px;
+        }
+    }
+}
+
+.booking-help__text {
+    line-height: 1.5;
+
+    &--orange {
+        color: $clrEjOrange;
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.booking-help__tel {
+    font-family: $fontRoundedBook;
+    font-size: 40px;
+    line-height: 30px;
+    color: $clrEjOrange;
+
+    @include media-breakpoint-down(md) {
+        font-size: 30px;
+    }
+}

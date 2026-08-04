@@ -1,0 +1,100 @@
+﻿---
+ID: "ec0d8d8a-9f65-448f-97a8-10f029b8471a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-396 - Move to Ancillaries Folder"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $sourceFolder = "/sitecore/content/EasyJet/TradePortal/Data/"
+    
+    $destination = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/"
+    
+    $benefitsFolders = Get-ChildItem -Path $sourceFolder | Where-Object { $_.Name -eq "Benefits" }
+    
+    foreach ($folder in $benefitsFolders) 
+    {
+            if ($folder.ID -eq "{3300D970-A16E-40EA-B2F0-E7B71CC1B74F}") 
+            {
+                Write-Host "Moving folder '$($folder.Name)' with ID $($folder.ID) to $destination"
+                try 
+                {
+                    Move-Item -Path $folder.ID -Destination $destination -ErrorAction Stop -Force
+                } 
+                catch 
+                {
+                    Write-Host "Error: $_ Could not move '$($folder.Name)' due to duplicate name or another issue."
+                }
+            } 
+            else 
+            {
+                Write-Host "Deleting folder '$($folder.Name)' with ID $($folder.ID)"
+                $folder | Remove-Item -Recurse
+            }
+    }
+    
+    $sourceDestinations = @(
+        @{source = "/sitecore/content/EasyJet/Holidays/Settings/Seat Map Settings/";                    destination = "/sitecore/content/EasyJet/Holidays/Settings/Ancillaries/"},
+        @{source = "/sitecore/content/EasyJet/Holidays/Settings/Luggage Settings/";                     destination = "/sitecore/content/EasyJet/Holidays/Settings/Ancillaries/"},
+    	@{source = "/sitecore/content/EasyJet/Holidays/Settings/Bags by Promotion Upsell Settings/";    destination = "/sitecore/content/EasyJet/Holidays/Settings/Ancillaries/"}
+    	@{source = "/sitecore/content/EasyJet/Holidays/Data/Benefits/";                                 destination = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/"},
+    	
+        @{source = "/sitecore/content/EasyJet/TradePortal/Settings/Seat Map Settings/";                 destination = "/sitecore/content/EasyJet/TradePortal/Settings/Ancillaries/"},
+        @{source = "/sitecore/content/EasyJet/TradePortal/Settings/Luggage Settings/";                  destination = "/sitecore/content/EasyJet/TradePortal/Settings/Ancillaries/"},
+        @{source = "/sitecore/content/EasyJet/TradePortal/Settings/Bags by Promotion Upsell Settings/"; destination = "/sitecore/content/EasyJet/TradePortal/Settings/Ancillaries/"}
+    
+    )
+    
+    foreach ($entry in $sourceDestinations) 
+    {
+        $source = $entry.source
+        $destination = $entry.destination
+        $sourceName = Split-Path $source -Leaf
+        $destinationTarget = Join-Path $destination $sourceName
+        Write-Host "Moving '$source' to $destinationTarget"
+        if(Test-Path $source)
+        {
+    		try 
+    		{
+    			if(Test-Path $destinationTarget)
+    			{
+    				Write-Host "Source has already been moved... but the source item still exists, do you have a duplicated item?"
+    			}
+    			else
+    			{
+    				Move-Item -Path $source -Destination $destination -ErrorAction Stop -Force
+    			}
+    		} 
+    		catch 
+    		{
+    			Write-Host $_ "Error: Could not move '$source' due to duplicate name or another issue."
+    		}
+        }
+       else
+       {
+    		if(Test-Path $destinationTarget)
+    		{
+    			Write-Host "Source has already been moved..."
+    		}
+    		else
+    		{
+    			Write-Host "Source does not exists..."
+    		}
+        }
+        Write-Host ""
+    }
+    Write-Host "Finished!"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230302T083838Z

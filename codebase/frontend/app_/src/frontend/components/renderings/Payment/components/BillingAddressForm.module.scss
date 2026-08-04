@@ -1,0 +1,40 @@
+.fieldError {
+    &:global(.form-field.form-field) {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    // Scoped override passed via ValidatableField's `fieldClass` prop so the global
+    // `.form-field--error` rule (Prototypes' _field.scss, shared with other components like
+    // ValidatableFieldNew and select-group) is left untouched. Repeating `.form-field--error`
+    // raises specificity above the global rule (which also matches on 3 classes) so this one
+    // reliably wins regardless of stylesheet load order.
+    &:global(.form-field.form-field--error.form-field--error) {
+        :global(.form-control__input) {
+            color: $colorSystemError;
+            border-color: $colorSystemError;
+
+            &::placeholder {
+                color: $colorSystemError;
+            }
+
+            &:focus {
+                border-color: $colorSystemError;
+            }
+
+            &:-webkit-autofill {
+                color: $colorSystemError;
+                border-color: $colorSystemError;
+                -webkit-text-fill-color: $colorSystemError;
+            }
+        }
+
+        :global(.form-control__error) {
+            color: $colorSystemError;
+        }
+
+        :global(.form-control__label) {
+            color: $colorSystemError;
+        }
+    }
+}

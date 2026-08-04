@@ -1,0 +1,357 @@
+﻿---
+ID: "4e3b1727-8799-4527-92f6-fc1b717dcfef"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-231 Series Flight across Book flow"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    #create content for luxury series flight component
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Luggage For Luxury Series Flight Post Book"
+    $datasourcePathTrade = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Luggage For Luxury Series Flight Post Book"
+        
+        $updates = @(
+           @{
+                Path         = $datasourcePath
+                TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage For Series Flight"
+            },
+            @{
+                Path         = $datasourcePathTrade
+                TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage For Series Flight"
+            },
+             @{
+                Path         = $datasourcePath + '/Cabin bags'
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+                Fields      = @{
+                    "Title" = @{
+                        "en"    = "Cabin bags"
+                        "fr-CH" = "Bagages à main"
+                        "fr-FR" = "Bagages à main"
+                        "de-CH" = "Handgepäck"
+                        "de-DE" = "Handgepäck"
+                    }
+                    "Description" = @{
+                        "en"    = "<p>Each passenger can bring a small under seat cabin bag, and a large overhead cabin bag (15kg).</p><p>Outbound and return.</p>"
+                        "fr-CH" = "<p>Chaque passager peut apporter un petit bagage de cabine sous le siège, et un grand bagage de cabine au-dessus de la tête (15 kg).</p><p>A l'aller et au retour.</p>"
+                        "fr-FR" = "<p>Chaque passager peut apporter un petit bagage de cabine sous le siège, et un grand bagage de cabine au-dessus de la tête (15 kg).</p><p>A l'aller et au retour.</p>"
+                        "de-CH" = "<p>Jeder Passagier kann ein kleines Handgepäckstück unter dem Sitz und ein großes Handgepäckstück über dem Kopf (15 kg) mitnehmen.</p><p>Hin- und Rückflug.</p>"
+                        "de-DE" = "<p>Jeder Passagier kann ein kleines Handgepäckstück unter dem Sitz und ein großes Handgepäckstück über dem Kopf (15 kg) mitnehmen.</p><p>Hin- und Rückflug.</p>"
+                    }
+                    "Icon" = @{
+                        "en"    = '<image mediaid="{3728897E-B8B2-4707-8229-EF213B2465A7}" alt="Extra cabin bag icon" height="" width="" hspace="" vspace="" />'
+                        "fr-CH" = '<image mediaid="{3728897E-B8B2-4707-8229-EF213B2465A7}" alt="Icône de sac de cabine supplémentaire" height="" width="" hspace="" vspace="" />'
+                        "fr-FR" = '<image mediaid="{3728897E-B8B2-4707-8229-EF213B2465A7}" alt="Icône de sac de cabine supplémentaire" height="" width="" hspace="" vspace="" />'
+                        "de-CH" = '<image mediaid="{3728897E-B8B2-4707-8229-EF213B2465A7}" alt="Symbol für zusätzliche Handgepäckstücke" height="" width="" hspace="" vspace="" />'
+                        "de-DE" = '<image mediaid="{3728897E-B8B2-4707-8229-EF213B2465A7}" alt="Symbol für zusätzliche Handgepäckstücke" height="" width="" hspace="" vspace="" />'
+                    }
+                    "__Sortorder" = @{
+                    "en"    = '100'
+                }
+                }
+            },
+            @{
+                Path         = $datasourcePath + '/Hold luggage'
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+                Fields      = @{
+                    "Title" = @{
+                        "en"    = "Hold luggage"
+                        "fr-CH" = "Bagages enregistrés"
+                        "fr-FR" = "Bagages enregistrés"
+                        "de-CH" = "Aufgegebenes Gepäck"
+                        "de-DE" = "Aufgegebenes Gepäck"
+                    }
+                    "Description" = @{
+                        "en"    = "<p>Each passenger can bring a 26kg bag, to be stored in the plane hold.</p><p>Outbound and return</p>"
+                        "fr-CH" = "<p>Chaque passager peut apporter un sac de 26 kg, qui sera stocké dans la soute de l'avion.</p><p>Aller et retour</p>"
+                        "fr-FR" = "<p>Chaque passager peut apporter un sac de 26 kg, qui sera stocké dans la soute de l'avion.</p><p>Aller et retour</p>"
+                        "de-CH" = "<p>Jeder Passagier kann eine 26 kg schwere Tasche mitbringen, die im Frachtraum des Flugzeugs aufbewahrt wird.</p><p>Hin- und Rückflug</p>"
+                        "de-DE" = "<p>Jeder Passagier kann eine 26 kg schwere Tasche mitbringen, die im Frachtraum des Flugzeugs aufbewahrt wird.</p><p>Hin- und Rückflug</p>"
+                    }
+                    "Icon" = @{
+                        "en"    = '<image mediaid="{61664385-9FE6-43EE-A183-8207CA8B69B2}" alt="26 kg hold bag" height="" width="" hspace="" vspace="" />'
+                        "fr-CH" = '<image mediaid="{61664385-9FE6-43EE-A183-8207CA8B69B2}" alt="Sac de rétention de 26 kg" height="" width="" hspace="" vspace="" />'
+                        "fr-FR" = '<image mediaid="{61664385-9FE6-43EE-A183-8207CA8B69B2}" alt="Sac de rétention de 26 kg" height="" width="" hspace="" vspace="" />'
+                        "de-CH" = '<image mediaid="{61664385-9FE6-43EE-A183-8207CA8B69B2}" alt="26 kg Gepäck" height="" width="" hspace="" vspace="" />'
+                        "de-DE" = '<image mediaid="{61664385-9FE6-43EE-A183-8207CA8B69B2}" alt="26 kg Gepäck" height="" width="" hspace="" vspace="" />'
+                    }
+                    "__Sortorder" = @{
+                    "en"    = '200'
+                }
+                }
+            },
+            @{
+                Path         = $datasourcePath + '/Cabin bags with infant'
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+                Fields      = @{
+                    "Title" = @{
+                        "en"    = "Cabin bags"
+                        "fr-CH" = "Bagages à main"
+                        "fr-FR" = "Bagages à main"
+                        "de-CH" = "Handgepäck"
+                        "de-DE" = "Handgepäck"
+                    }
+                    "Description" = @{
+                        "en"    = "<p>Each customer can bring a small under seat cabin bag and a large cabin bag (15kg) for both flights, including a baby change bag for each infant.</p>"
+                        "fr-CH" = "<p>Chaque client peut emporter un petit bagage cabine à placer sous le siège ainsi qu’un grand bagage cabine (15 kg) pour les deux vols, avec un sac à langer inclus pour chaque bébé.</p>"
+                        "fr-FR" = "<p>Chaque client peut emporter un petit bagage cabine à placer sous le siège ainsi qu’un grand bagage cabine (15 kg) pour les deux vols, avec un sac à langer inclus pour chaque bébé.</p>"
+                        "de-CH" = "<p>Jeder Kunde darf ein kleines Kabinengepäckstück für unter den Sitz und ein großes Kabinengepäckstück (15 kg) für beide Flüge mitnehmen. Eine Wickeltasche ist für jedes Kleinkind inbegriffen.</p>"
+                        "de-DE" = "<p>Jeder Kunde darf ein kleines Kabinengepäckstück für unter den Sitz und ein großes Kabinengepäckstück (15 kg) für beide Flüge mitnehmen. Eine Wickeltasche ist für jedes Kleinkind inbegriffen.</p>"
+                    }
+                    "Icon" = @{
+                        "en"    = '<image mediaid="{3728897E-B8B2-4707-8229-EF213B2465A7}" alt="Extra cabin bag icon" height="" width="" hspace="" vspace="" />'
+                        "fr-CH" = '<image mediaid="{3728897E-B8B2-4707-8229-EF213B2465A7}" alt="Icône de sac de cabine supplémentaire" height="" width="" hspace="" vspace="" />'
+                        "fr-FR" = '<image mediaid="{3728897E-B8B2-4707-8229-EF213B2465A7}" alt="Icône de sac de cabine supplémentaire" height="" width="" hspace="" vspace="" />'
+                        "de-CH" = '<image mediaid="{3728897E-B8B2-4707-8229-EF213B2465A7}" alt="Symbol für zusätzliche Handgepäckstücke" height="" width="" hspace="" vspace="" />'
+                        "de-DE" = '<image mediaid="{3728897E-B8B2-4707-8229-EF213B2465A7}" alt="Symbol für zusätzliche Handgepäckstücke" height="" width="" hspace="" vspace="" />'
+                    }
+                }
+            },
+            @{
+                Path         = $datasourcePath + '/Hold luggage with infant'
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+                Fields      = @{
+                    "Title" = @{
+                        "en"    = "Hold luggage"
+                        "fr-CH" = "Bagages enregistrés"
+                        "fr-FR" = "Bagages enregistrés"
+                        "de-CH" = "Aufgegebenes Gepäck"
+                        "de-DE" = "Aufgegebenes Gepäck"
+                    }
+                    "Description" = @{
+                        "en"    = "<p>Each passenger can bring a 26kg bag, to be stored in the plane hold for both flights, with a pram included for each infant.</p>"
+                        "fr-CH" = "<p>Chaque passager peut emporter un bagage de 26 kg, placé en soute pour les deux vols, avec une poussette incluse pour chaque bébé.</p>"
+                        "fr-FR" = "<p>Chaque passager peut emporter un bagage de 26 kg, placé en soute pour les deux vols, avec une poussette incluse pour chaque bébé.</p>"
+                        "de-CH" = "<p>Jeder Passagier kann ein 26-kg-Gepäckstück mitnehmen, das für beide Flüge im Frachtraum verstaut wird. Ein Kinderwagen ist für jedes Kleinkind inbegriffen.</p>"
+                        "de-DE" = "<p>Jeder Passagier kann ein 26-kg-Gepäckstück mitnehmen, das für beide Flüge im Frachtraum verstaut wird. Ein Kinderwagen ist für jedes Kleinkind inbegriffen.</p>"
+                    }
+                    "Icon" = @{
+                        "en"    = '<image mediaid="{61664385-9FE6-43EE-A183-8207CA8B69B2}" alt="26 kg hold bag" height="" width="" hspace="" vspace="" />'
+                        "fr-CH" = '<image mediaid="{61664385-9FE6-43EE-A183-8207CA8B69B2}" alt="Sac de rétention de 26 kg" height="" width="" hspace="" vspace="" />'
+                        "fr-FR" = '<image mediaid="{61664385-9FE6-43EE-A183-8207CA8B69B2}" alt="Sac de rétention de 26 kg" height="" width="" hspace="" vspace="" />'
+                        "de-CH" = '<image mediaid="{61664385-9FE6-43EE-A183-8207CA8B69B2}" alt="26 kg Gepäck" height="" width="" hspace="" vspace="" />'
+                        "de-DE" = '<image mediaid="{61664385-9FE6-43EE-A183-8207CA8B69B2}" alt="26 kg Gepäck" height="" width="" hspace="" vspace="" />'
+                    }
+                }
+            },
+            @{
+                Path         = $datasourcePathTrade + '/Cabin bags'
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+                Fields      = @{
+                    "Title" = @{
+                        "en"    = "Cabin bags"
+                    }
+                    "Description" = @{
+                        "en"    = "<p>Each passenger can bring a small under seat cabin bag, and a large overhead cabin bag (15kg).</p><p>Outbound and return.</p>"
+                    }
+                    "Icon" = @{
+                        "en"    = '<image mediaid="{3728897E-B8B2-4707-8229-EF213B2465A7}" alt="Extra cabin bag icon" height="" width="" hspace="" vspace="" />'
+                    }
+                }
+                "__Sortorder" = @{
+                    "en"    = '100'
+                }
+            },
+            @{
+                Path         = $datasourcePathTrade + '/Hold luggage'
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+                Fields      = @{
+                    "Title" = @{
+                        "en"    = "Hold luggage"
+                    }
+                    "Description" = @{
+                        "en"    = "<p>Each passenger can bring a 26kg bag, to be stored in the plane hold.</p><p>Outbound and return</p>"
+                    }
+                    "Icon" = @{
+                        "en"    = '<image mediaid="{61664385-9FE6-43EE-A183-8207CA8B69B2}" alt="26 kg hold bag" height="" width="" hspace="" vspace="" />'
+                    }
+                }
+                "__Sortorder" = @{
+                    "en"    = '200'
+                }
+            },
+            @{
+                Path         = $datasourcePathTrade + '/Cabin bags with infant'
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+                Fields      = @{
+                    "Title" = @{
+                        "en"    = "Cabin bags"
+                    }
+                    "Description" = @{
+                        "en"    = "<p>Each customer can bring a small under seat cabin bag and a large cabin bag (15kg) for both flights, including a baby change bag for each infant.</p>"
+                    }
+                    "Icon" = @{
+                        "en"    = '<image mediaid="{3728897E-B8B2-4707-8229-EF213B2465A7}" alt="Extra cabin bag icon" height="" width="" hspace="" vspace="" />'
+                    }
+                }
+            },
+            @{
+                Path         = $datasourcePathTrade + '/Hold luggage with infant'
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+                Fields      = @{
+                    "Title" = @{
+                        "en"    = "Hold luggage"
+                    }
+                    "Description" = @{
+                        "en"    = "<p>Each passenger can bring a 26kg bag, to be stored in the plane hold for both flights, with a pram included for each infant.</p>"
+                    }
+                    "Icon" = @{
+                        "en"    = '<image mediaid="{61664385-9FE6-43EE-A183-8207CA8B69B2}" alt="26 kg hold bag" height="" width="" hspace="" vspace="" />'
+                    }
+                }
+            }
+        )
+    ImportContent -itemsToCreate $updates
+    
+     $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Seat And Bags" 
+                TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage/Seat And Bags"
+                Fields      = @{
+                    "LuxurySeriesSeatFlightsTitlePostBook" = @{
+                        "de-CH" = 'Ihre Sitze'
+                        "en" = 'Your Seats'
+                        "fr-FR" = 'Vos Sièges'
+                        "de-DE" = 'Ihre Sitze'
+                        "fr-CH" = 'Vos Sièges'
+                        }
+                    
+                }
+            },
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Seat And Bags" 
+                TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage/Seat And Bags"
+                Fields      = @{
+                    "LuxurySeriesSeatFlightsTitlePostBook" = @{
+                        "en" = 'Your Seats'
+                        }
+                    
+                }
+            }
+            
+        )
+    ImportContent -itemsToCreate $updates
+    
+    Add-ItemLanguage -Path $datasourcePath -TargetLanguage 'fr-CH' -IfExist Skip -DoNotCopyFields;
+    Add-ItemLanguage -Path $datasourcePath -TargetLanguage 'fr-FR' -IfExist Skip -DoNotCopyFields;
+    Add-ItemLanguage -Path $datasourcePath -TargetLanguage 'de-CH' -IfExist Skip -DoNotCopyFields;
+    Add-ItemLanguage -Path $datasourcePath -TargetLanguage 'de-DE' -IfExist Skip -DoNotCopyFields;
+    
+    $cabinBagItem = Get-Item -Path "$($datasourcePath)/Cabin bags" -ErrorAction SilentlyContinue;
+    $holdLuggageItem = Get-Item -Path "$($datasourcePath)/Hold luggage"  -ErrorAction SilentlyContinue;
+    $cabinBagInfantItem = Get-Item -Path "$($datasourcePath)/Cabin bags with infant" -ErrorAction SilentlyContinue;
+    $holdLuggageInfantItem = Get-Item -Path "$($datasourcePath)/Hold luggage with infant"  -ErrorAction SilentlyContinue;
+    
+    $cabinBagItemTrade = Get-Item -Path "$($datasourcePathTrade)/Cabin bags" -ErrorAction SilentlyContinue;
+    $holdLuggageItemTrade = Get-Item -Path "$($datasourcePathTrade)/Hold luggage"  -ErrorAction SilentlyContinue;
+    $cabinBagInfantItemTrade = Get-Item -Path "$($datasourcePathTrade)/Cabin bags with infant" -ErrorAction SilentlyContinue;
+    $holdLuggageInfantItemTrade = Get-Item -Path "$($datasourcePathTrade)/Hold luggage with infant"  -ErrorAction SilentlyContinue;
+    
+    
+    $updates = @(
+        @{
+            Path         = $datasourcePath
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage For Series Flight"
+            Fields      = @{
+                "CabinBagContent" = @{
+                    "en"    = $cabinBagItem.ID
+                }
+                "HoldLuggageContent" = @{
+                    "en"    = $holdLuggageItem.ID
+                }
+                "CabinBagWithInfantContent" = @{
+                    "en"    = $cabinBagInfantItem.ID
+                } 
+                "HoldLuggageWithInfantContent" = @{
+                    "en"    = $holdLuggageInfantItem.ID
+                } 
+            }
+        },
+        @{
+            Path         = $datasourcePathTrade
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage For Series Flight"
+            Fields      = @{
+                "CabinBagContent" = @{
+                    "en"    = $cabinBagItemTrade.ID
+                }
+                "HoldLuggageContent" = @{
+                    "en"    = $holdLuggageItemTrade.ID
+                }
+                "CabinBagWithInfantContent" = @{
+                    "en"    = $cabinBagInfantItemTrade.ID
+                } 
+                "HoldLuggageWithInfantContent" = @{
+                    "en"    = $holdLuggageInfantItemTrade.ID
+                } 
+            }
+        }
+    )
+    ImportContent -itemsToCreate $updates
+        
+    $defaultItem = Get-Item -Path $datasourcePath -ErrorAction SilentlyContinue;
+    $defaultItemTrade = Get-Item -Path $datasourcePathTrade -ErrorAction SilentlyContinue;
+    
+    #insert rendering
+    Import-Function "Import Renderings"
+        
+        $myRenderings = @(
+            @{ 
+                Title          = "Luggage For Luxury Series Flight"
+                PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation"
+                RenderingPath  = "/sitecore/layout/Renderings/Feature/Ancillaries/Luggage For Luxury Series Flight"
+                Placeholder    = "/body/bags-{5D228E7E-0347-4E8E-AC47-D911EBA730D7}-0"
+                PlaceBeforeRenderingPath = "/sitecore/layout/Renderings/Feature/Ancillaries/Luggage/Cabin Bags"
+                DataSourcePath = $datasourcePath
+                UpdateFinalLayoutAsWell = "1"
+            },
+        @{ 
+                Title          = "Luggage For Luxury Series Flight"
+                PagePath       = "/sitecore/content/EasyJet/Tradeportal/Home/Booking/Confirmation"
+                RenderingPath  = "/sitecore/layout/Renderings/Feature/Ancillaries/Luggage For Luxury Series Flight"
+                Placeholder    = "/body/bags-{69E811F9-4582-4C53-9317-7E983D66EF29}-0"
+                PlaceBeforeRenderingPath = "/sitecore/layout/Renderings/Feature/Ancillaries/Luggage/Cabin Bags"
+                DataSourcePath = $datasourcePathTrade
+                UpdateFinalLayoutAsWell = "1"
+            }
+        )
+        ImportRenderings -renderingsToAttach $myRenderings;
+        
+        
+        $myRenderings = @(
+            @{ 
+                Title          = "Luggage For Luxury Series Flight"
+                PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+                RenderingPath  = "/sitecore/layout/Renderings/Feature/Ancillaries/Luggage For Luxury Series Flight"
+                Placeholder    = "/body/seats-and-bags-{5500AC44-5DF4-4473-8E8C-EA635A187882}-0"
+                PlaceBeforeRenderingPath = "/sitecore/layout/Renderings/Feature/Ancillaries/Luggage/Cabin Bags"
+                DataSourcePath = $datasourcePath
+                UpdateFinalLayoutAsWell = "1"
+            },
+        @{ 
+                Title          = "Luggage For Luxury Series Flight"
+                PagePath       = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking"
+                RenderingPath  = "/sitecore/layout/Renderings/Feature/Ancillaries/Luggage For Luxury Series Flight"
+                Placeholder    = "/body/seats-and-bags-{A0C9D3D6-CE99-4D98-B482-DF23906098AC}-0"
+                PlaceBeforeRenderingPath = "/sitecore/layout/Renderings/Feature/Ancillaries/Luggage/Cabin Bags"
+                DataSourcePath = $datasourcePathTrade
+                UpdateFinalLayoutAsWell = "1"
+            }
+        )
+        ImportRenderings -renderingsToAttach $myRenderings
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250618T102129Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

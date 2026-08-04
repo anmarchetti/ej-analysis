@@ -1,0 +1,33 @@
+﻿---
+ID: "8d32f834-967d-4683-9163-2ce418365faf"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-678_fix-description"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    #Update Amend Passengers Attention Item
+    $amendPassengersAttentionMessagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Passenger Details/Page Components/Attention Passengers Count Change Message";
+    $amendPassengersAttentionMessageItem =  Get-Item -Path $amendPassengersAttentionMessagePath;
+    if ($amendPassengersAttentionMessageItem -ne $null) {
+    	$amendPassengersAttentionMessageItem.Editing.BeginEdit();
+    	
+        $amendPassengersAttentionMessageItem["Description"]="On this page, you can make one free of charge change of up to three characters to the full names of anyone on your booking (excluding the lead passenger). If you need to change more than {amount} characters, or want to add or remove anyone from your booking, please get in touch with our team.";
+    	
+    	Write-Host $amendPassengersAttentionMessageItem.Name "Updated";
+        $amendPassengersAttentionMessageItem.Editing.EndEdit() | Out-Null;
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230419T123519Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

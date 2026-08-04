@@ -1,0 +1,362 @@
+﻿---
+ID: "adb9a8a7-1c8e-4f94-8f3f-4dcbc399cce2"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Redesign Footer
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $dataPath = "master:/sitecore/content/EasyJet/Holidays/Data"
+    $imagesPath = "$($dataPath)/Images"
+    $imageTemplateId = "{7E3ECDBA-C8C9-4E1C-8107-CDE554C0FD6D}"
+    $presentationPath = "master:/sitecore/content/EasyJet/Holidays/Presentation"
+    $partialDesignsPath = "$($presentationPath)/Partial Designs"
+    $pageDesignsPath = "$($presentationPath)/Page Designs"
+    
+    # Pages
+    $pricePromisePageTemplateId = "{D3387F64-3182-419F-A6EF-E472985F2D25}"
+    $homePageTemplateId = "{5CB2E852-45B1-47C9-A315-4038EB539CDC}"
+    
+    # Renderings
+    $footerRenderingId = "{1BE9E86B-46EE-4D90-AA80-9873341F1324}"
+    $footerColumnRenderingId = "{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}"
+    $footerRowRenderingId = "{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}"
+    $footerNavigationRenderingId = "{70DEBC3A-51E1-42E7-A0B9-124DB446B811}"
+    $footerContentBlockRenderingId = "{C9500B31-1890-47FC-8DBB-87AEE89397D6}"
+    $footerProtectionBlockRenderingId = "{0FBD800F-A6C5-4A6F-BE50-9E402E2789D3}"
+    $footerCopyrightRenderingId = "{D40C1427-9E42-45F4-9302-DD063A4F8F24}"
+    $footerTileRenderingId = "{98D6518D-053C-4A0B-9CCE-262B51E43F22}"
+    $imageRenderingId = "{BF0D518B-282B-4ABC-A499-47AD5B0A0A87}"
+    $imageryRenderingId = "{BC962612-BC42-4168-B796-60A80AC2B469}"
+    $socialIconsRenderingId = "{B6732EB5-D407-4D55-B596-A0816C062804}"
+    
+    # Footer Tiles
+    $travelAwareUrl = "https://www.gov.uk/foreign-travel-advice"
+    $atolUrl = "https://www.caa.co.uk/home/"
+    $footerTiles = @(
+    	@{
+    		ID = "{F26ABFEE-BF2F-4359-803C-8EA0358019EA}";
+    		Name = "Travel Aware";
+    		Title = "TRAVEL ADVICE & SAFETY";
+    		Description = 'To prepare your trip abroad and find useful information and alerts about safety, health, local laws, natural disasters, political situation, passport and visa requirements visit the <a href="' + $travelAwareUrl + '" target="_blank" rel="noopener noreferrer">FCO Travel Aware website</a>. The advice can change so check regularly for the latest updates.';
+    		Images = @( @{ ID = "{FD4CD0AA-8132-436F-822B-18BF38068A14}"; Name = "Travel aware"; Folder = $imagesPath; MediaId = "{D34C153A-DAE9-4E02-8D9F-57FC1F22FED2}" })
+    	},
+    	@{
+    		ID = "{1AD42362-CDA4-44C4-AC66-32F52049B707}";
+    		Name = "ABTA";
+    		Title = "TRAVEL ADVICE & SAFETY";
+    		Description = 'We know it is very important to feel protected when booking your holidays. Feel completely secure on your easyJet holiday with the ATOL protection scheme. All the holidays sold in UK on this website are financially protected by the ATOL scheme. Find out more about fully ATOL protected holidays <a href="' + $atolUrl + '" target="_blank" rel="noopener noreferrer">here.</a>';
+    		Images = @(
+    			@{ ID = "{BDF3C1FF-DDE8-415E-B16D-296231A2B16A}"; Name = "ABTA Logo"; Folder = "$($imagesPath)/ABTA and ATOS"; MediaId = "{56E62A7E-8DCC-463C-BCC7-D646744D40FA}" },
+    			@{ ID = "{B1944258-9717-41F8-82E9-D6F90AE3A8F5}"; Name = "ATOL Logo"; Folder = "$($imagesPath)/ABTA and ATOS"; MediaId = "{3F7F989F-994E-436E-9003-96562CD6BEE8}" }
+    		)
+    	},
+    	@{
+    		ID = "{1060102F-B56D-4560-A706-E719A8BC9112}";
+    		Name = "Protection Promise";
+    		Title = "PROTECTION PROMISE";
+    		Description = 'We know it is very important to feel protected when booking your holidays. Feel completely secure on your easyJet holiday with the ATOL protection scheme. All the holidays sold in UK on this website are financially protected by the ATOL scheme. Find out more about fully ATOL protected holidays <a href="' + $atolUrl + '" target="_blank" rel="noopener noreferrer">here.</a>';
+    		Images = @( @{ ID = "{7D4FD676-498F-4124-A5D0-E5A34E69B807}"; Name = "Protection Promise Logo"; Folder = $imagesPath; MediaId = "{E0299269-1A51-4F11-8A3D-FC056497DC08}" })
+    	}
+    )
+    
+    function Get-Or-Create-Item ($path,$itemName,$templateId,$forceId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $forceId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function Get-Rendering-Index ($item,$renderingItemId) {
+    	$i = 0
+    	Get-Rendering -Item $item | ForEach-Object {
+    		if ($_.ItemID -eq $renderingItemId) {
+    			return $i
+    		}
+    		$i++
+    	}
+    }
+    
+    function Remove-Rendering-With-Subitems ($item,$renderingId,$placeholderName) {
+    	$rendering = Get-Rendering -Item $item | Where-Object { $_.ItemID -eq $renderingId } | Select -First 1
+    
+    	if ($rendering -ne $null) {
+    		$placeholder = "*" + $placeholderName + "-" + $rendering.UniqueId + "-0*"
+    		Remove-Rendering -Item $item -Instance $rendering
+    		Remove-Rendering -Item $item -PlaceHolder $placeholder
+    	}
+    }
+    
+    function Add-Page-Design ($designItem,$pageId) {
+    	[Sitecore.Data.Fields.MultilistField]$field = $designItem.Fields["PageTemplates"];
+    
+    	if (!$field.Contains($pageId)) {
+    		$designItem.Editing.BeginEdit();
+    		$field.add($pageId);
+    		$designItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    function Remove-Page-Design ($designItem,$pageId) {
+    	[Sitecore.Data.Fields.MultilistField]$field = $designItem.Fields["PageTemplates"];
+    
+    	if ($field.Contains($pageId)) {
+    		$designItem.Editing.BeginEdit();
+    		$field.remove($pageId);
+    		$designItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    function Remove-Outdated-Items () {
+    	# Remove outdated DataSources and design items #
+    	Remove-Item -Path "$($dataPath)/Footer Content Blocks" -Recurse -Force -ErrorAction SilentlyContinue
+    	Remove-Item -Path "$($dataPath)/HTML Blocks/Footer ABTA" -ErrorAction SilentlyContinue
+    	Remove-Item -Path "$($partialDesignsPath)/Footer Without Travel Aware" -ErrorAction SilentlyContinue
+    	Remove-Item -Path "$($pageDesignsPath)/Full Header and Footer Without Travel Aware Design" -ErrorAction SilentlyContinue
+    
+    	$defaultDesign = Get-Item "$($pageDesignsPath)/Default Design" -ErrorAction SilentlyContinue
+    	if ($defaultDesign -ne $null) {
+    		Remove-Page-Design -DesignItem $defaultDesign -PageId $homePageTemplateId
+    		Add-Page-Design -DesignItem $defaultDesign -PageId $pricePromisePageTemplateId
+    	}
+    }
+    
+    function Update-Image ($path,$mediaId) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if ($item -ne $null) {
+    		$item.Editing.BeginEdit()
+    		$item["Image"] = '<image mediaid="' + $mediaId + '" />'
+    		$item.Editing.EndEdit() | Out-Null
+    
+    		Write-Host "Image" $item.Name "updated"
+    	}
+    }
+    
+    function Update-Footer-Images () {
+    	# Update Social Icons
+    	$socialIcons = @(
+    		@{ Name = "Facebook"; MediaId = "{9F553D62-9B2D-49B4-9A5A-84BBCF540FAB}" },
+    		@{ Name = "Instagram"; MediaId = "{068D5655-661E-4760-A7DF-DC78FE43BE7A}" },
+    		@{ Name = "LinkedIn"; MediaId = "{6B99C153-494A-4FCB-BA34-53C500ED4AB8}" },
+    		@{ Name = "Twitter"; MediaId = "{C30651A7-7955-4BC7-956F-B6B5636A1ADF}" },
+    		@{ Name = "YouTube"; MediaId = "{1B89C288-7BA9-467B-BFC6-2DDA12689F58}" }
+    	)
+    	foreach ($icon in $socialIcons) {
+    		Update-Image -Path "$($dataPath)/Navigations/Social Icons/$($icon.Name)" -MediaId $icon.MediaId
+    	}
+    
+    	# Update Payment Icons
+    	$paymentIcons = @(
+    		@{ Name = "AXP"; MediaId = "{1046E25C-DBE0-4891-B9AF-A59C1C4C17A6}" },
+    		@{ Name = "Mastercard"; MediaId = "{9929A2B1-F5D3-4EC0-9040-D0F69A1C5401}" },
+    		@{ Name = "Visa"; MediaId = "{34A49CF2-43CD-4A7B-99FC-1584AF4239C3}" },
+    		@{ Name = "Maestro"; MediaId = "{4BC619B9-4B95-407A-8ED3-91A194267484}" }
+    	)
+    	foreach ($icon in $paymentIcons) {
+    		Update-Image -Path "$($imagesPath)/Payments/$($icon.Name)" -MediaId $icon.MediaId
+    	}
+    }
+    
+    function Create-Footer-Tiles () {
+    	$tilesFolderTemplateId = "{170A3142-DB8A-49F6-9ABF-B239EB89248F}"
+    	$tilesTemplateId = "{D16C697D-B159-42DA-AB16-7D103A624FFA}"
+    
+    	$tilesFolder = Get-Or-Create-Item -Path $dataPath -ItemName "Footer Tiles" -TemplateId $tilesFolderTemplateId -ForceId "{D5875409-F0B7-42D9-B595-203E64306815}"
+    
+    	foreach ($tile in $footerTiles) {
+    		$tileItem = Get-Or-Create-Item -Path $tilesFolder.FullPath -ItemName $tile.Name -TemplateId $tilesTemplateId -ForceId $tile.ID
+    
+    		$tileItem.Editing.BeginEdit()
+    		$tileItem["Title"] = $tile.Title
+    		$tileItem["Description"] = $tile.Description
+    		$tileItem.Editing.EndEdit() | Out-Null
+    
+    		Write-Host "Tile" $tile.Name "created and updated"
+    
+    		# Update tiles images
+    		foreach ($image in $tile.Images) {
+    			$imageItem = Get-Or-Create-Item -Path $image.Folder -ItemName $image.Name -TemplateId $imageTemplateId -ForceId $image.ID
+    			Update-Image -Path $imageItem.FullPath -MediaId $image.MediaId
+    
+    			if ($imageItem.Name -eq "Protection Promise Logo") {
+    				$imageItem.Editing.BeginEdit()
+    				$imageItem["Url"] = '<link text="Protection Promise" linktype="external" url="https://www.easyjet.com/en/holidays/info/protection-promise" target="_blank" />'
+    				$imageItem.Editing.EndEdit() | Out-Null
+    			}
+    		}
+    	}
+    }
+    
+    function Create-Footer-Tiles-Renderings ($item,$footerRendering,$index) {
+    	$rowRendering = Get-Item -Path "master:" -Id $footerRowRenderingId | New-Rendering
+    	$rowPlaceholder = "/footer/footer-row-" + $footerRendering.UniqueId + "-0"
+    	Add-Rendering -Item $item -Instance $rowRendering -PlaceHolder $rowPlaceholder -Index $index -Parameter @{ "Theme" = "Protection" }
+    	$rowUniqueId = (Get-Rendering -Item $item -Index $index).UniqueId
+    	$index++
+    
+    	$columnPlaceholder = $rowPlaceholder + "/footer-column-" + $rowUniqueId + "-0"
+    	foreach ($tile in $footerTiles) {
+    		$columnRendering = Get-Item -Path "master:" -Id $footerColumnRenderingId | New-Rendering
+    		Add-Rendering -Item $item -Instance $columnRendering -PlaceHolder $columnPlaceholder -Index $index
+    		$columnUniqueId = (Get-Rendering -Item $item -Index $index).UniqueId
+    		$index++
+    
+    		$tilePlaceholder = $columnPlaceholder + "/footer-column-inner-" + $columnUniqueId + "-0"
+    		$tileRendering = Get-Item -Path "master:" -Id $footerTileRenderingId | New-Rendering
+    		Add-Rendering -Item $item -Instance $tileRendering -PlaceHolder $tilePlaceholder -DataSource $tile.ID -Index $index
+    		$tileUniqueId = (Get-Rendering -Item $item -Index $index).UniqueId
+    		$index++
+    
+    		$imagePlaceholder = $tilePlaceholder + "/image-" + $tileUniqueId + "-0"
+    		foreach ($image in $tile.Images) {
+    			$imageRendering = Get-Item -Path "master:" -Id $imageRenderingId | New-Rendering
+    			Add-Rendering -Item $item -Instance $imageRendering -PlaceHolder $imagePlaceholder -Index $index -DataSource $image.ID
+    			$index++
+    		}
+    	}
+    }
+    
+    function Move-Rendering-To-Footer-Copyright ($item,$renderingId) {
+    	$copyrightRendering = Get-Rendering -Item $item | Where-Object { $_.ItemID -eq $footerCopyrightRenderingId } | Select -First 1
+    	$rendering = Get-Rendering -Item $item | Where-Object { $_.ItemID -eq $renderingId } | Select -First 1
+    
+    	if ($copyrightRendering -ne $null -and $rendering -ne $null) {
+    		$placeholder = "/footer/footer-column-inner-" + $copyrightRendering.UniqueId + "-0"
+    		$index = Get-Rendering-Index -Item $item -RenderingItemId $footerCopyrightRenderingId
+    		Set-Rendering -Item $item -Instance $rendering -PlaceHolder $placeholder -Index $index
+    	}
+    }
+    
+    function Update-Slim-Footer () {
+    	$slimFooter = Get-Item -Path "$($partialDesignsPath)/Slim Footer" -ErrorAction SilentlyContinue
+    
+    	if ($slimFooter -ne $null) {
+    		# Update navigation placeholder
+    		$navigationRendering = Get-Rendering -Item $slimFooter | Where-Object { $_.ItemID -eq $footerNavigationRenderingId } | Select -First 1
+    		if ($navigationRendering -ne $null) {
+    			Set-Rendering -Item $slimFooter -Instance $navigationRendering -PlaceHolder "/footer/footer-row-{01caf00b-3eca-46e1-9a9a-840c861f94ec}-0/footer-column-{041064c6-9c58-480a-a860-e0f5dfc1f6ce}-0/footer-column-inner-{ae51e10a-81cd-4156-8c91-9b922110c461}-0"
+    		}
+    
+    		# Remove footer last column
+    		$footerColumnRendering = Get-Rendering -Item $slimFooter -Index 4 | Where-Object { $_.ItemID -eq $footerColumnRenderingId } | Select -First 1
+    		if ($footerColumnRendering -ne $null) {
+    			Remove-Rendering -Item $slimFooter -Instance $footerColumnRendering
+    		}
+    
+    		# Move Imagery to Footer Copyright
+    		Move-Rendering-To-Footer-Copyright -Item $slimFooter -RenderingId $imageryRenderingId
+    
+    		Write-Host "Slim Footer updated"
+    	}
+    }
+    
+    function Update-Base-Footer ($footer) {
+    	if ($footer -ne $null) {
+    		# Remove FooterProtection Rendering and all SubRenderings
+    		Remove-Rendering-With-Subitems -Item $footer -RenderingId $footerProtectionBlockRenderingId -PlaceholderName 'footer-row'
+    
+    		# Remove FooterContentBlock Rendering
+    		$contetnBlockRendering = Get-Rendering -Item $footer | Where-Object { $_.ItemID -eq $footerContentBlockRenderingId } | Select -First 1
+    		if ($contetnBlockRendering -ne $null) {
+    			Remove-Rendering -Item $fullFooter -Instance $contetnBlockRendering
+    		}
+    
+    		# Set Grey Background To Bootom Footer
+    		$bootomFooterRendering = Get-Rendering -Item $footer | Where-Object { $_.ItemID -eq $footerRenderingId } | Select -First 1
+    		if ($bootomFooterRendering -ne $null) {
+    			Set-Rendering -Item $footer -Instance $bootomFooterRendering -Parameter @{ "IsGreyBackground" = "1"; "IsTriangleStart" = "0" }
+    		}
+    
+    		# Set Dropdowns Theme to Footer Row
+    		$dropdownsRowRendering = Get-Rendering -Item $footer | Where-Object { $_.UniqueId -eq "{e2276111-5783-4462-8321-61d1fbcc6567}" } | Select -First 1
+    		if ($dropdownsRowRendering -ne $null) {
+    		    $dropdownsRowRendering.Parameters = "Theme=Dropdowns"
+    	        Set-Rendering -Item $footer -Instance $dropdownsRowRendering
+    		}
+    
+    		# Create Top Footer
+    		$footerIndex = Get-Rendering-Index -Item $footer -RenderingItemId $footerRenderingId
+    		$topFooterRendering = Get-Item -Path "master:" -Id $footerRenderingId | New-Rendering
+    		Add-Rendering -Item $footer -Instance $topFooterRendering -PlaceHolder "/footer" -Index $footerIndex -Parameter @{ "IsTriangleStart" = "1" }
+    		$topFooterRendering = Get-Rendering -Item $footer -Index $footerIndex
+    
+    		# Create Footer Tiles on Top Footer
+    		Create-Footer-Tiles-Renderings -Item $footer -FooterRendering $topFooterRendering -Index ($footerIndex + 1)
+    
+    		# Move Need Help Footer Row and its SubRenderings to Top Footer
+    		$helpRowRendering = Get-Rendering -Item $footer | Where-Object { $_.UniqueId -eq "{A71D01E3-4429-430B-B256-D06F55B9656C}" } | Select -First 1
+    
+    		if ($helpRowRendering -ne $null) {
+    			$index = $footerIndex + 1;
+    			$oldRowPlaceholder = "/footer/footer-row-{1cb3648b-572b-4ead-a67b-0ffdc5886393}-0"
+    			$newRowPlaceholder = "/footer/footer-row-" + $topFooterRendering.UniqueId + "-0"
+    
+    			Set-Rendering -Item $footer -Instance $helpRowRendering -PlaceHolder $newRowPlaceholder -Index $index
+    
+    			$oldChildPlaceholder = $oldRowPlaceholder + "/footer-column-{a71d01e3-4429-430b-b256-d06f55b9656c}-0"
+    			$newChildPlaceholder = $newRowPlaceholder + "/footer-column-{a71d01e3-4429-430b-b256-d06f55b9656c}-0"
+    
+    			Get-Rendering -Item $footer -PlaceHolder ($oldChildPlaceholder + '*') | ForEach-Object {
+    				$_.Placeholder = $_.Placeholder -replace $oldChildPlaceholder,$newChildPlaceholder
+    				$index++
+    				Set-Rendering -Item $footer -Instance $_ -Index $index
+    			}
+    		}
+    
+    		# Move Social Icons to Footer Copyright
+    		Move-Rendering-To-Footer-Copyright -Item $footer -RenderingId $socialIconsRenderingId
+    
+    		Write-Host $footer.Name "updated"
+    	}
+    }
+    
+    function Update-Full-Footers ($fullFooter) {
+    	# Update Media Center Full Footer
+    	$mediaFooter = Get-Item -Path "$($partialDesignsPath)/Media Center Footer" -ErrorAction SilentlyContinue
+    	Update-Base-Footer -Footer $mediaFooter
+    
+    	$fullFooter = Get-Item -Path "$($partialDesignsPath)/Full Footer" -ErrorAction SilentlyContinue
+    	if ($fullFooter -ne $null) {
+    		# Update current full footer
+    		Update-Base-Footer -Footer $fullFooter
+    
+    		# Create full footer with phone
+    		$footerWithPhonePath = "$($partialDesignsPath)/Full Footer - Phone Number"
+    		Copy-Item -Path $fullFooter.FullPath -Destination $footerWithPhonePath
+    		$footerWithPhone = Get-Item -Path $footerWithPhonePath -ErrorAction SilentlyContinue
+    
+    		# Remove Phone form Default Full Footer
+    		$helpRowRendering = Get-Rendering -Item $fullFooter | Where-Object { $_.UniqueId -eq "{A71D01E3-4429-430B-B256-D06F55B9656C}" } | Select -First 1
+    		if ($helpRowRendering -ne $null) {
+    			$childPlaceholder = $helpRowRendering.Placeholder + "/footer-column-{a71d01e3-4429-430b-b256-d06f55b9656c}-0"
+    			Remove-Rendering -Item $fullFooter -Instance $helpRowRendering
+    			Remove-Rendering -Item $fullFooter -PlaceHolder ($childPlaceholder + "*")
+    		}
+    
+    		# Create new Page Design with Footer Phone Number For Home Page
+    		$pageDesignItem = New-Item -Path $pageDesignsPath -Name "Full Header And Footer With Phone Number" -ItemType "{4B960AA8-24C3-4A4E-A27F-F4718D189EF6}"
+    		$pageDesignItem.Editing.BeginEdit();
+    		$pageDesignItem["PartialDesigns"] = "{B628B4D0-99B4-4E94-ABA6-F5596D6E4E57}|$($footerWithPhone.ID)"
+    		$pageDesignItem["PageTemplates"] = $homePageTemplateId
+    		$pageDesignItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    Remove-Outdated-Items
+    Update-Footer-Images
+    Create-Footer-Tiles
+    Update-Slim-Footer
+    Update-Full-Footers
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201015T100319Z

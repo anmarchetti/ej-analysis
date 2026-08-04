@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <PackageReference Include="Configy" />
+    <PackageReference Include="Kamsar.WebConsole" />
+    <PackageReference Include="MicroCHAP" />
+    <PackageReference Include="Rainbow" />
+    <PackageReference Include="Rainbow.Core" />
+    <PackageReference Include="Rainbow.Storage.Sc" />
+    <PackageReference Include="Rainbow.Storage.Yaml" />
+    <PackageReference Include="Unicorn" />
+    <PackageReference Include="Unicorn.Core" />
+    <PackageReference Include="Unicorn.Roles" />
+    <PackageReference Include="Unicorn.Roles.Core" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)SitecoreProject.props" />
+  <PropertyGroup>
+    <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratedAssemblyInfoFile>Properties\Assemblyinfo.cs</GeneratedAssemblyInfoFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="App_Config\Include\Unicorn\Unicorn.AutoPublish.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <None Include="App_Config\Include\Unicorn\Unicorn.AutoPublish.CI.config">
+      <DependentUpon>Unicorn.AutoPublish.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Unicorn\Unicorn.AutoPublish.Debug.config">
+      <DependentUpon>Unicorn.AutoPublish.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Unicorn\Unicorn.AutoPublish.Release.config">
+      <DependentUpon>Unicorn.AutoPublish.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+  </ItemGroup>
+</Project>

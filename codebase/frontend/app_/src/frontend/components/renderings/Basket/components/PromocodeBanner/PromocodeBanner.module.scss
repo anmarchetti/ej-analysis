@@ -1,0 +1,48 @@
+.container {
+    position: absolute;
+    top: -62px;
+    right: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 62px;
+    padding: 10px 0 10px 14px;
+    font-size: 16px;
+    font-weight: 400;
+    vertical-align: middle;
+    color: $colorBlack;
+    background-color: $colorWhite;
+    box-shadow: 0 -10px 10px -5px rgba(152, 148, 148, 0.5);
+
+}
+
+.text {
+    line-height: 1.25;
+    white-space: normal;
+}
+
+.button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 36px;
+    padding: 14px;
+    font-family: $fontRoundedDemy;
+    font-size: 14px;
+    line-height: 1;
+    color: $clrEjOrange;
+    background: none;
+    border: 0;
+    cursor: pointer;
+
+    &::before {
+        content: '';
+        position: absolute;
+        right: 14px;
+        bottom: 8px;
+        left: 14px;
+        height: 2px;
+        border-bottom: 2px dotted $clrEjOrange;
+    }
+}

@@ -1,0 +1,140 @@
+﻿---
+ID: "2cca03ae-d0da-45d9-8176-f6b3feb2919d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SEATS-198 Seat Map - Make the Benefits Config in Sitecore for each product type"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    #create benefits
+    $benefits = @(
+        @{
+          'Name' = "Select your seat"
+           },
+        @{
+            'Name' = "Dedicated Bag drop"
+        },
+        @{
+            'Name' = "Large cabin bag added to your booking"
+        },
+        @{
+            'Name' = "Extra legroom"
+        },
+        @{
+            'Name' = "Be first on the aircraft with Speedy Boarding"
+        }
+    )
+    
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    $benefitFolder = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Data/Seat Type Benefits" -template "{5A587179-C148-4150-B265-D5A2F24AEA08}"
+    
+    foreach($benefit in $benefits){
+        $name = $benefit.Name
+        $validName = [Sitecore.Data.Items.ItemUtil]::ProposeValidItemName($name)
+        $path = "$($benefitFolder.Paths.FullPath)/$($validName)"
+        $item = Get-Or-Create-Item -path $path -template "{496C0D6F-55A3-4394-96B9-869E10C638E3}"
+        $item.Editing.BeginEdit()
+    	$item["Name"] = $benefit.Name
+    	$item.Editing.EndEdit()
+    }
+    
+    #create seat types
+    function Create-Benefits-Value($paths){
+        $result = '';
+        foreach($path in $paths){
+            $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+            if($item -ne $null){
+                if (![string]::IsNullOrEmpty($result)) {
+                    $result += "|";
+                }
+                $result += $item.ID.ToString()
+            }
+        }
+        
+        return $result;
+    }
+    
+    $standardBenefits = '/sitecore/content/EasyJet/Holidays/Data/Seat Type Benefits/Select your seat';
+    
+    $upFrontBenefits = '/sitecore/content/EasyJet/Holidays/Data/Seat Type Benefits/Select your seat',
+    '/sitecore/content/EasyJet/Holidays/Data/Seat Type Benefits/Dedicated Bag drop',
+    '/sitecore/content/EasyJet/Holidays/Data/Seat Type Benefits/Large cabin bag added to your booking'
+    
+    $extraLegroomBenefits = '/sitecore/content/EasyJet/Holidays/Data/Seat Type Benefits/Select your seat',
+    '/sitecore/content/EasyJet/Holidays/Data/Seat Type Benefits/Dedicated Bag drop',
+    '/sitecore/content/EasyJet/Holidays/Data/Seat Type Benefits/Large cabin bag added to your booking',
+    '/sitecore/content/EasyJet/Holidays/Data/Seat Type Benefits/Extra legroom',
+    '/sitecore/content/EasyJet/Holidays/Data/Seat Type Benefits/Be first on the aircraft with Speedy Boarding'
+    
+    $seatTypes = @(
+        @{
+          'SeatTypeName' = "Standard seat"
+          'IncludedIcon' = '<image mediaid="{B9CA2C15-B38F-4039-912D-D359504FE329}" />'
+          'NotIncludedIcon' = '<image mediaid="{1273C1D6-8FBA-4C2A-BFE6-88610805405A}" />'
+          'SeatBenefits' = Create-Benefits-Value -Paths $standardBenefits
+           },
+        @{
+            'SeatTypeName' = "Up front seat"
+            'IncludedIcon' = '<image mediaid="{C689D0CE-DFF1-4B74-AE36-CEE0345B4AE6}" />'
+            'NotIncludedIcon' = '<image mediaid="{1273C1D6-8FBA-4C2A-BFE6-88610805405A}" />'
+            'SeatBenefits' = Create-Benefits-Value -Paths $upFrontBenefits
+        },
+        @{
+            'SeatTypeName' = "Extra legroom"
+            'IncludedIcon' = '<image mediaid="{6F8884DB-FC52-4864-9FCD-295F2DDB6A4B}" />'
+            'NotIncludedIcon' = '<image mediaid="{1273C1D6-8FBA-4C2A-BFE6-88610805405A}" />'
+            'SeatBenefits' = Create-Benefits-Value -Paths $extraLegroomBenefits
+        }
+    )
+    
+    $seatTypesFolder = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Data/Seat Types" -template "{34DC5CFC-397C-46E3-83EB-4DDF4E8279E1}"
+    
+    foreach($seatType in $seatTypes){
+        $name = $seatType.SeatTypeName
+        $validName = [Sitecore.Data.Items.ItemUtil]::ProposeValidItemName($name)
+        $path = "$($seatTypesFolder.Paths.FullPath)/$($validName)"
+        $item = Get-Or-Create-Item -path $path -template "{8ED30C97-B83D-435A-BCE2-CC1E91C8073F}"
+        $item.Editing.BeginEdit()
+    	$item["SeatTypeName"] = $seatType.SeatTypeName
+    	$item["IncludedIcon"] = $seatType.IncludedIcon
+    	$item["NotIncludedIcon"] = $seatType.NotIncludedIcon
+    	$item["SeatBenefits"] = $seatType.SeatBenefits
+    	$item.Editing.EndEdit()
+    }
+    
+    #add seat types to seat map
+    $seatTypesPaths = '/sitecore/content/EasyJet/Holidays/Data/Seat Types/Standard seat',
+    '/sitecore/content/EasyJet/Holidays/Data/Seat Types/Up front seat',
+    '/sitecore/content/EasyJet/Holidays/Data/Seat Types/Extra legroom'
+    
+    $seatMap = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Data/SeatsMap' -ErrorAction SilentlyContinue
+    $seatMap.Editing.BeginEdit()
+    $seatMap["BenefitsTable"] = Create-Benefits-Value -Paths $seatTypesPaths
+    $seatMap.Editing.EndEdit()
+    
+    #add benefits order
+    $seatMap = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Data/SeatsMap' -ErrorAction SilentlyContinue
+    $seatMap.Editing.BeginEdit()
+    $seatMap["BenefitsOrderInTable"] = Create-Benefits-Value -Paths $extraLegroomBenefits
+    $seatMap.Editing.EndEdit()
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 200
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

@@ -1,0 +1,467 @@
+﻿---
+ID: "26a29786-749d-41e8-b4eb-0038d523c96c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-508 Summary Bar Basket DatasourceMerge"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    Import-Function "Update Rendering DataSource"
+    
+    Remove-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Destinations/Summary Bar" -Permanently  -ErrorAction SilentlyContinue
+    Remove-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Destinations/Summary Bar Data Source" -Permanently  -ErrorAction SilentlyContinue
+    $oldItem=Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Hotel Details/Page Components/Basket Datasource"  -ErrorAction SilentlyContinue 
+    if($olditem)
+    {
+        $oldItem | Move-Item -Destination "master:/sitecore/content/EasyJet/Holidays/Data/Destinations/Summary Bar Data Source"  -ErrorAction SilentlyContinue
+    }
+    
+    
+    
+    
+    
+    $holidaysdatadestinationssummarybar_Id = [GUID]"{4F768162-C990-49C8-BE63-D793164CB62A}"
+    $summarybar_flightsectiontodestination_4f768162c99049c8be63d793164cb62a_dede_v1 = @"
+    {departure} bis {return}
+    "@
+    $summarybar_flightsectiontodestination_4f768162c99049c8be63d793164cb62a_frfr_v1 = @"
+    {departure} à {return}
+    "@
+    $summarybar_flightsectiontodestination_4f768162c99049c8be63d793164cb62a_en_v1 = @"
+    {departure} to {return}
+    "@
+    $summarybar_transferandparkingtitle_4f768162c99049c8be63d793164cb62a_frch_v1 = @"
+    Transfert & Parking
+    "@
+    $summarybar_transferandparkingtitle_4f768162c99049c8be63d793164cb62a_dede_v1 = @"
+    Transfer & Parken
+    "@
+    $summarybar_transferandparkingtitle_4f768162c99049c8be63d793164cb62a_frfr_v1 = @"
+    Transfert & Parking
+    "@
+    $summarybar_flightsectiontodestination_4f768162c99049c8be63d793164cb62a_frch_v1 = @"
+    {departure} à {return}
+    "@
+    $summarybar_transferandparkingtitle_4f768162c99049c8be63d793164cb62a_dech_v1 = @"
+    Transfer & Parken
+    "@
+    $summarybar_flightsectiontodestination_4f768162c99049c8be63d793164cb62a_dech_v1 = @"
+    {departure} bis {return}
+    "@
+    $summarybar_transferandparkingtitle_4f768162c99049c8be63d793164cb62a_en_v1 = @"
+    Transfer & Parking
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Destinations/Summary Bar Data Source"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Basket Datasource"
+            Fields      = @{
+                "FlightSectionSeatTypeUpFront" = @{
+                    "de-CH" = "Sitzplatz Up Front"
+                    "en" = "Up Front"
+                    "fr-FR" = "Up Front"
+                    "de-DE" = "Sitzplatz Up Front"
+                    "fr-CH" = "Up Front"
+                }
+                "TransferAndParkingNoTransfer" = @{
+                    "de-CH" = "Keine Umsteigeverbindung"
+                    "en" = "No transfer"
+                    "fr-FR" = "Pas de correspondance"
+                    "de-DE" = "Keine Umsteigeverbindung"
+                    "fr-CH" = "Pas de correspondance"
+                }
+                "FlightSectionTitle" = @{
+                    "de-CH" = "Flüge"
+                    "en" = "Flights"
+                    "fr-FR" = "Vols"
+                    "de-DE" = "Flüge"
+                    "fr-CH" = "Vols"
+                }
+                "PriceSectionTotal" = @{
+                    "de-CH" = "Gesamt"
+                    "en" = "Total"
+                    "fr-FR" = "Total"
+                    "de-DE" = "Gesamt"
+                    "fr-CH" = "Total"
+                }
+                "FlightSectionSeatTypeStandard" = @{
+                    "de-CH" = "Standard"
+                    "en" = "Standard"
+                    "fr-FR" = "Standard"
+                    "de-DE" = "Standard"
+                    "fr-CH" = "Standard"
+                }
+                "CommonFieldsItemIncluded" = @{
+                    "de-CH" = "Inklusive"
+                    "en" = "Included"
+                    "fr-FR" = "Inclus"
+                    "de-DE" = "Inklusive"
+                    "fr-CH" = "Inclus"
+                }
+                "RoomAndBoardSectionTitle" = @{
+                    "de-CH" = "Unterkunft und Verpflegung"
+                    "en" = "Room and board"
+                    "fr-FR" = "Hébergement et pension"
+                    "de-DE" = "Unterkunft und Verpflegung"
+                    "fr-CH" = "Hébergement et pension"
+                }
+                "FlightSectionToDestination" = @{
+                    "de-CH" = $summarybar_flightsectiontodestination_4f768162c99049c8be63d793164cb62a_dech_v1
+                    "en" = $summarybar_flightsectiontodestination_4f768162c99049c8be63d793164cb62a_en_v1
+                    "fr-FR" = $summarybar_flightsectiontodestination_4f768162c99049c8be63d793164cb62a_frfr_v1
+                    "de-DE" = $summarybar_flightsectiontodestination_4f768162c99049c8be63d793164cb62a_dede_v1
+                    "fr-CH" = $summarybar_flightsectiontodestination_4f768162c99049c8be63d793164cb62a_frch_v1
+                }
+                "SummaryBarTitle" = @{
+                    "de-CH" = "Ihre Urlaubsübersicht"
+                    "en" = "Your Holiday Summary"
+                    "fr-FR" = "Résumé de vos vacances"
+                    "de-DE" = "Ihre Urlaubsübersicht"
+                    "fr-CH" = "Résumé de vos vacances"
+                }
+                "CommonFieldsItemSelected" = @{
+                    "de-CH" = "Ausgewählt"
+                    "en" = "Selected"
+                    "fr-FR" = "Sélectionné"
+                    "de-DE" = "Ausgewählt"
+                    "fr-CH" = "Sélectionné"
+                }
+                "TransferAndParkingTitle" = @{
+                    "de-CH" = $summarybar_transferandparkingtitle_4f768162c99049c8be63d793164cb62a_dech_v1
+                    "en" = $summarybar_transferandparkingtitle_4f768162c99049c8be63d793164cb62a_en_v1
+                    "fr-FR" = $summarybar_transferandparkingtitle_4f768162c99049c8be63d793164cb62a_frfr_v1
+                    "de-DE" = $summarybar_transferandparkingtitle_4f768162c99049c8be63d793164cb62a_dede_v1
+                    "fr-CH" = $summarybar_transferandparkingtitle_4f768162c99049c8be63d793164cb62a_frch_v1
+                }
+                "SummaryBarExpanderTitle" = @{
+                    "de-CH" = "Ferienübersicht"
+                    "en" = "Holiday Summary"
+                    "fr-FR" = "Résumé des vacances"
+                    "de-DE" = "Urlaubsübersicht"
+                    "fr-CH" = "Résumé des vacances"
+                }
+                "FlightSectionSeatTypeRearStandard" = @{
+                    "de-CH" = "Standard hinten"
+                    "en" = "Rear Standard"
+                    "fr-FR" = "Siège à l’arrière standard"
+                    "de-DE" = "Standard hinten"
+                    "fr-CH" = "Siège à l’arrière standard"
+                }
+                "FlightSectionSeatTypeExtraLegroom" = @{
+                    "de-CH" = "Sitzplatz Extra Legroom"
+                    "en" = "Extra Legroom"
+                    "fr-FR" = "Extra Legroom"
+                    "de-DE" = "Sitzplatz Extra Legroom"
+                    "fr-CH" = "Extra Legroom"
+                }
+                "FlightSectionExtrasDropdown" = @{
+                    "de-CH" = "Extras"
+                    "en" = "Extras"
+                    "fr-FR" = "Extras"
+                    "de-DE" = "Extras"
+                    "fr-CH" = "Extras"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    Remove-Item -Path "master:/sitecore/content/EasyJet/TradePortal/Data/Destinations/Summary Bar" -Permanently  -ErrorAction SilentlyContinue
+    Remove-Item -Path "master:/sitecore/content/EasyJet/TradePortal/Data/Destinations/Summary Bar Data Source" -Permanently  -ErrorAction SilentlyContinue
+    $oldItem=Get-Item -Path "master:/sitecore/content/EasyJet/TradePortal/Home/Hotel Details/Page Components/Basket Datasource"  -ErrorAction SilentlyContinue 
+    if($olditem)
+    {
+        $oldItem | Move-Item -Destination "master:/sitecore/content/EasyJet/TradePortal/Data/Destinations/Summary Bar Data Source"  -ErrorAction SilentlyContinue
+    }
+    
+    
+    $tradeportaldatadestinationssummarybar_Id = [GUID]"{5F768162-C990-49C8-BE63-D793164CB62B}"
+    $summarybar_flightsectiontodestination_5f768162c99049c8be63d793164cb62b_frch_v1 = @"
+    {departure} à {return}
+    "@
+    $summarybar_transferandparkingtitle_5f768162c99049c8be63d793164cb62b_frfr_v1 = @"
+    Transfert & Parking
+    "@
+    $summarybar_transferandparkingtitle_5f768162c99049c8be63d793164cb62b_frch_v1 = @"
+    Transfert & Parking
+    "@
+    $summarybar_transferandparkingtitle_5f768162c99049c8be63d793164cb62b_dech_v1 = @"
+    Transfer & Parken
+    "@
+    $summarybar_flightsectiontodestination_5f768162c99049c8be63d793164cb62b_frfr_v1 = @"
+    {departure} à {return}
+    "@
+    $summarybar_flightsectiontodestination_5f768162c99049c8be63d793164cb62b_en_v1 = @"
+    {departure} to {return}
+    "@
+    $summarybar_transferandparkingtitle_5f768162c99049c8be63d793164cb62b_en_v1 = @"
+    Transfer & Parking
+    "@
+    $summarybar_flightsectiontodestination_5f768162c99049c8be63d793164cb62b_dede_v1 = @"
+    {departure} bis {return}
+    "@
+    $summarybar_transferandparkingtitle_5f768162c99049c8be63d793164cb62b_dede_v1 = @"
+    Transfer & Parken
+    "@
+    $summarybar_flightsectiontodestination_5f768162c99049c8be63d793164cb62b_dech_v1 = @"
+    {departure} bis {return}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Destinations/Summary Bar Data Source"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Basket Datasource"
+            Fields      = @{
+                "FlightSectionSeatTypeUpFront" = @{
+                    "de-CH" = "Sitzplatz Up Front"
+                    "en" = "Up Front"
+                    "fr-FR" = "Up Front"
+                    "de-DE" = "Sitzplatz Up Front"
+                    "fr-CH" = "Up Front"
+                }
+                "TransferAndParkingNoTransfer" = @{
+                    "de-CH" = "Keine Umsteigeverbindung"
+                    "en" = "No transfer"
+                    "fr-FR" = "Pas de correspondance"
+                    "de-DE" = "Keine Umsteigeverbindung"
+                    "fr-CH" = "Pas de correspondance"
+                }
+                "FlightSectionTitle" = @{
+                    "de-CH" = "Flüge"
+                    "en" = "Flights"
+                    "fr-FR" = "Vols"
+                    "de-DE" = "Flüge"
+                    "fr-CH" = "Vols"
+                }
+                "PriceSectionTotal" = @{
+                    "de-CH" = "Gesamt"
+                    "en" = "Total"
+                    "fr-FR" = "Total"
+                    "de-DE" = "Gesamt"
+                    "fr-CH" = "Total"
+                }
+                "FlightSectionSeatTypeStandard" = @{
+                    "de-CH" = "Standard"
+                    "en" = "Standard"
+                    "fr-FR" = "Standard"
+                    "de-DE" = "Standard"
+                    "fr-CH" = "Standard"
+                }
+                "CommonFieldsItemIncluded" = @{
+                    "de-CH" = "Inklusive"
+                    "en" = "Included"
+                    "fr-FR" = "Inclus"
+                    "de-DE" = "Inklusive"
+                    "fr-CH" = "Inclus"
+                }
+                "RoomAndBoardSectionTitle" = @{
+                    "de-CH" = "Unterkunft und Verpflegung"
+                    "en" = "Room and board"
+                    "fr-FR" = "Hébergement et pension"
+                    "de-DE" = "Unterkunft und Verpflegung"
+                    "fr-CH" = "Hébergement et pension"
+                }
+                "FlightSectionToDestination" = @{
+                    "de-CH" = $summarybar_flightsectiontodestination_5f768162c99049c8be63d793164cb62b_dech_v1
+                    "en" = $summarybar_flightsectiontodestination_5f768162c99049c8be63d793164cb62b_en_v1
+                    "fr-FR" = $summarybar_flightsectiontodestination_5f768162c99049c8be63d793164cb62b_frfr_v1
+                    "de-DE" = $summarybar_flightsectiontodestination_5f768162c99049c8be63d793164cb62b_dede_v1
+                    "fr-CH" = $summarybar_flightsectiontodestination_5f768162c99049c8be63d793164cb62b_frch_v1
+                }
+                "SummaryBarTitle" = @{
+                    "de-CH" = "Ihre Urlaubsübersicht"
+                    "en" = "Your Holiday Summary"
+                    "fr-FR" = "Résumé de vos vacances"
+                    "de-DE" = "Ihre Urlaubsübersicht"
+                    "fr-CH" = "Résumé de vos vacances"
+                }
+                "CommonFieldsItemSelected" = @{
+                    "de-CH" = "Ausgewählt"
+                    "en" = "Selected"
+                    "fr-FR" = "Sélectionné"
+                    "de-DE" = "Ausgewählt"
+                    "fr-CH" = "Sélectionné"
+                }
+                "TransferAndParkingTitle" = @{
+                    "de-CH" = $summarybar_transferandparkingtitle_5f768162c99049c8be63d793164cb62b_dech_v1
+                    "en" = $summarybar_transferandparkingtitle_5f768162c99049c8be63d793164cb62b_en_v1
+                    "fr-FR" = $summarybar_transferandparkingtitle_5f768162c99049c8be63d793164cb62b_frfr_v1
+                    "de-DE" = $summarybar_transferandparkingtitle_5f768162c99049c8be63d793164cb62b_dede_v1
+                    "fr-CH" = $summarybar_transferandparkingtitle_5f768162c99049c8be63d793164cb62b_frch_v1
+                }
+                "SummaryBarExpanderTitle" = @{
+                    "de-CH" = "Ferienübersicht"
+                    "en" = "Holiday Summary"
+                    "fr-FR" = "Résumé des vacances"
+                    "de-DE" = "Urlaubsübersicht"
+                    "fr-CH" = "Résumé des vacances"
+                }
+                "FlightSectionSeatTypeRearStandard" = @{
+                    "de-CH" = "Standard hinten"
+                    "en" = "Rear Standard"
+                    "fr-FR" = "Siège à l’arrière standard"
+                    "de-DE" = "Standard hinten"
+                    "fr-CH" = "Siège à l’arrière standard"
+                }
+                "FlightSectionSeatTypeExtraLegroom" = @{
+                    "de-CH" = "Sitzplatz Extra Legroom"
+                    "en" = "Extra Legroom"
+                    "fr-FR" = "Extra Legroom"
+                    "de-DE" = "Sitzplatz Extra Legroom"
+                    "fr-CH" = "Extra Legroom"
+                }
+                "FlightSectionExtrasDropdown" = @{
+                    "de-CH" = "Extras"
+                    "en" = "Extras"
+                    "fr-FR" = "Extras"
+                    "de-DE" = "Extras"
+                    "fr-CH" = "Extras"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    
+    # This is just an Example for ContentSync 
+    
+    Import-Function "Import Renderings"
+    $myRenderings = @(
+        @{ 
+            Title          = "Basket"
+            PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Booking"
+            RenderingId  = "{F3BEFB97-4213-4C6B-9336-9FC2C2A3624B}"
+    
+            Placeholder    = "header"
+    
+            PlaceBeforeRenderingId = "{E4FE4D55-9934-4792-8420-FC277F35E30F}"
+    
+            UpdateFinalLayoutAsWell = 1#optional 
+            DataSourcePath ="/sitecore/content/EasyJet/Holidays/Data/Destinations/Summary Bar Data Source"
+    
+        }
+    )
+    ImportRenderings -renderingsToAttach $myRenderings
+    
+    # This is just an Example for ContentSync 
+    
+    Import-Function "Import Renderings"
+    $myRenderings = @(
+        @{ 
+            Title          = "Basket"
+            PagePath       = "/sitecore/content/EasyJet/TradePortal/Home/Booking"
+            RenderingId  = "{F3BEFB97-4213-4C6B-9336-9FC2C2A3624B}"
+    
+            Placeholder    = "header"
+    
+            PlaceBeforeRenderingId = "{E4FE4D55-9934-4792-8420-FC277F35E30F}"
+    
+            UpdateFinalLayoutAsWell = 1#optional 
+            DataSourcePath ="/sitecore/content/EasyJet/TradePortal/Data/Destinations/Summary Bar Data Source"
+    
+        }
+    )
+    ImportRenderings -renderingsToAttach $myRenderings
+    
+    # This is just an Example for ContentSync 
+    
+    Import-Function "Import Renderings"
+    
+    $myRenderings = @(
+        @{ 
+            Title          = "Basket"
+            PagePath       = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Guest Details"
+            RenderingId  = "{F3BEFB97-4213-4C6B-9336-9FC2C2A3624B}"
+    
+            Placeholder    = "header"
+    
+            UpdateFinalLayoutAsWell = 1#optional 
+            DataSourcePath ="/sitecore/content/EasyJet/TradePortal/Data/Destinations/Summary Bar Data Source"
+    
+        }
+    )
+    ImportRenderings -renderingsToAttach $myRenderings
+    
+    $myRenderings = @(
+        @{ 
+            Title          = "Basket"
+            PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Booking/Guest Details"
+            RenderingId  = "{F3BEFB97-4213-4C6B-9336-9FC2C2A3624B}"
+    
+            Placeholder    = "header"
+    
+            UpdateFinalLayoutAsWell = 1#optional 
+            DataSourcePath ="/sitecore/content/EasyJet/Holidays/Data/Destinations/Summary Bar Data Source"
+    
+        }
+    )
+    ImportRenderings -renderingsToAttach $myRenderings
+    
+    $myRenderings = @(
+        @{ 
+            Title          = "Basket"
+            PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Hotel Details"
+            RenderingId  = "{F3BEFB97-4213-4C6B-9336-9FC2C2A3624B}"
+    
+            Placeholder    = "header"
+    
+            UpdateFinalLayoutAsWell = 1#optional 
+            DataSourcePath ="/sitecore/content/EasyJet/Holidays/Data/Destinations/Summary Bar Data Source"
+    
+        }
+    )
+    ImportRenderings -renderingsToAttach $myRenderings
+    
+    $myRenderings = @(
+        @{ 
+            Title          = "Basket"
+            PagePath       = "/sitecore/content/EasyJet/TradePortal/Home/Hotel Details"
+            RenderingId  = "{F3BEFB97-4213-4C6B-9336-9FC2C2A3624B}"
+    
+            Placeholder    = "header"
+    
+            UpdateFinalLayoutAsWell = 1#optional 
+            DataSourcePath ="/sitecore/content/EasyJet/TradePortal/Data/Destinations/Summary Bar Data Source"
+    
+        }
+    )
+    ImportRenderings -renderingsToAttach $myRenderings
+        $myRenderings = 
+        @(
+            @{ 
+        
+                PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Booking"
+                TargetRenderingId="{E4FE4D55-9934-4792-8420-FC277F35E30F}"
+                RenderingId="{E4FE4D55-9934-4792-8420-FC277F35E30F}"
+                DataSource    = "/sitecore/content/EasyJet/Holidays/Data/Destinations/Summary Bar Data Source"
+                UpdateFinalLayoutAsWell = 1
+            }
+        )
+        UpdateRenderingDataSource -renderingInfo $myRenderings
+        
+            $myRenderings =  
+        @(
+            @{ 
+        
+                PagePath       = "/sitecore/content/EasyJet/TradePortal/Home/Booking"
+                TargetRenderingId="{E4FE4D55-9934-4792-8420-FC277F35E30F}"
+                RenderingId="{E4FE4D55-9934-4792-8420-FC277F35E30F}"
+                DataSource    = "/sitecore/content/EasyJet/TradePortal/Data/Destinations/Summary Bar Data Source"
+                UpdateFinalLayoutAsWell = 1
+            }
+        )
+        UpdateRenderingDataSource -renderingInfo $myRenderings
+        
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 100000045
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250909T153828Z

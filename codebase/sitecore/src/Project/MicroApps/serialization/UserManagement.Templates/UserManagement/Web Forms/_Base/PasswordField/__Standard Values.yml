@@ -1,0 +1,80 @@
+﻿---
+ID: "e62b42c0-9a13-4465-9163-ad0c5a4ad849"
+Parent: "2887b261-0021-4400-9e5c-83c4124dc97e"
+Template: "2887b261-0021-4400-9e5c-83c4124dc97e"
+Path: /sitecore/templates/Project/MicroApps/UserManagement/Web Forms/_Base/PasswordField/__Standard Values
+DB: master
+SharedFields:
+- ID: "0fe26f04-30d2-4bc0-a858-8b2c4f4ec11f"
+  Hint: PasswordProhibitedWords
+  Value: password,Password,pa55word,Pa55word,EasyJet,easyJet,easyjet,Easyjet,Qwert,qwert,7uGd5HIp2J,PolniyPizdec0211,Sojdlg123aljg,Soso123aljg,Usuckballz1,vSjasnel12,Aa1234567.,BvtTest123,Good123654,Mailcreated5240
+- ID: "5736e9cc-753a-4727-9c60-5f4cfbac1a57"
+  Hint: AtLeastOneUppercaseLetterRequirementRegexPattern
+  Value: "([A-Z]+)"
+- ID: "6c07acea-5de6-4ebc-9ab8-4e6c8aac099e"
+  Hint: NotStartWithZeroRequirementRegexPattern
+  Value: "^([^0])"
+- ID: "8288ede8-d1e6-46b5-85ac-dd9c15aac894"
+  Hint: AtLeastOneNumberRequirementRegexPattern
+  Value: "([0-9]+)"
+- ID: "b76b9070-a170-4bb0-bbe8-b1218bc6f31b"
+  Hint: LengthRequirementRegexPattern
+  Value: "(^.{10,20}$)"
+- ID: "bf657db4-c97c-4437-838a-bb304514aaa7"
+  Hint: NotContainSpecialCharactersOrSpaceRequirementRegexPattern
+  Value: |
+    ^[^\#&=+ ]*$
+- ID: "f40ae111-e6c4-464a-97b8-c1d033058d1e"
+  Hint: AtLeastOneLowercaseLetterRequirementRegexPattern
+  Value: "([a-z]+)"
+- ID: "f9e9c7b6-2a47-49dd-9323-b0e35f9cbde3"
+  Hint: StrongPasswordRegexPattern
+  Value: |
+    ^(?=[^0])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[`!@$%^*()_\-[\]{};':"|,.<>\/?~])[^#&=+]{12,20}$
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "203e9a41-8f33-4836-ac1f-2cc8631c2733"
+      Hint: NoPasswordIndicatorText
+      Value: Please enter a password
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220810T094020Z
+    - ID: "38935216-b996-409d-b1d1-e47c59f86ad1"
+      Hint: PasswordMinimumRequirementsTitle
+      Value: "Our minimum requirements:"
+    - ID: "415707e6-9308-4dfd-a4eb-3afa36fde95a"
+      Hint: ValidPasswordMessageForScreenReader
+      Value: "Password is valid and has a {indicator} security strength"
+    - ID: "619ff7ab-4186-40c0-9fcc-eaa62a58ed06"
+      Hint: MediumPasswordIndicatorText
+      Value: Medium
+    - ID: "6bcd7960-682a-436e-b765-daaceeaa2108"
+      Hint: NotContainSpecialCharactersOrSpaceRequirementText
+      Value: Not contain # & + = or space
+    - ID: "6e71940f-f32d-4220-823d-6026dcde38c0"
+      Hint: InvalidPasswordMessageForScreenReader
+      Value: "Password is invalid. The password only meets {validRequirementsNumber} out of {allRequiremenetsNumber} minimum rules; Missing rules:"
+    - ID: "959513c3-1335-4da7-97d9-842255270014"
+      Hint: LengthRequirementText
+      Value: "Be between 10-20 characters"
+    - ID: "9dfdb3e6-86fb-4852-816f-4ed7e42980c0"
+      Hint: InvalidPasswordIndicatorText
+      Value: Invalid
+    - ID: "a7b97b9a-b787-46ad-bebb-7831d2df17ef"
+      Hint: NotStartWithZeroRequirementText
+      Value: Not start with 0
+    - ID: "b179db46-3605-4149-854b-f34655e892fa"
+      Hint: StrongPasswordIndicatorText
+      Value: Strong
+    - ID: "d8ad312a-53ca-4fa3-a84e-8dcecbe61bc0"
+      Hint: AtLeastOneLowercaseLetterRequirementText
+      Value: Contain at least 1 lowercase letter
+    - ID: "de6eae4c-ddca-4203-94a8-9b30dc93fb95"
+      Hint: AtLeastOneUppercaseLetterRequirementText
+      Value: Contain at least 1 uppercase letter
+    - ID: "f6357cef-2759-48d9-a428-8529e8e242b9"
+      Hint: AtLeastOneNumberRequirementText
+      Value: Contain at least 1 number

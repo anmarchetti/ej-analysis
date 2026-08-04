@@ -1,0 +1,91 @@
+.container {
+    display: flex;
+
+    @include media-breakpoint-down(sm) {
+        flex-direction: column;
+    }
+}
+
+.gallery {
+    width: 100%;
+    max-width: 450px;
+    margin-right: 32px;
+    overflow: hidden;
+    border-radius: 4px;
+    aspect-ratio: 1.24;
+
+    @include media-breakpoint-down(sm) {
+        margin-right: 0;
+    }
+}
+
+.content {
+    :global(.view-booking-hotel__rating) {
+        margin-top: 8px;
+        margin-bottom: 16px;
+    }
+
+    :global(.view-booking-hotel__rating .eco-certified) {
+        display: flex;
+        width: 100%;
+        margin-top: 8px;
+        margin-left: 0;
+        padding-left: 0;
+
+        &::before {
+            display: none;
+        }
+
+        @include media-breakpoint-down(sm) {
+            margin: 0;
+        }
+    }
+}
+
+.hotel {
+    margin-bottom: 32px;
+}
+
+.dates {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+    svg {
+        @include sizeSquare(24px);
+
+        margin-right: 8px;
+    }
+}
+
+.popup {
+    :global(.popup__dialog) {
+        width: calc(100% - 32px); // paddings horizontal are 16px
+        max-width: 1000px;
+    }
+
+    :global(.popup__body) {
+        padding: 40px 48px 40px 32px;
+
+        @include media-breakpoint-down(sm) {
+            padding: 48px 16px 32px;
+        }
+    }
+}
+
+.title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+
+    @include media-breakpoint-down(sm) {
+        margin-top: 16px;
+        font-size: 18px;
+    }
+}
+
+.location {
+    margin-top: 4px;
+    margin-bottom: 8px;
+    font-size: 14px;
+}

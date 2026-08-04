@@ -1,0 +1,56 @@
+﻿---
+ID: "3777f3da-7249-4621-b86c-e7155dd2df7d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-597_Hold-luggage-popup-pram-update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+            $item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+             if ($item -eq $null) {
+                    $item = New-Item -Path $path -ItemType $templateId
+                    Write-Host "Item" $item.Name "successfully created";
+             }
+             return $item
+        }
+        
+        function Add-Datasource ($path){
+            $holdLuggagePopupData =  Get-Or-Create-Item -path $path -templateId "{6EF73B24-21E2-4091-9CBD-BEBC57953B66}"
+            if ($holdLuggagePopupData -ne $null) {
+                $holdLuggagePopupData.Editing.BeginEdit()
+                $holdLuggagePopupData["PramTitle"] =  'Pram or pushchair';
+                $holdLuggagePopupData["PramDescription"] =  '{number} included with holiday package';
+                $holdLuggagePopupData["PramIcon"] =  '<image mediaid="{B7DFB1A3-F9E4-48D0-868F-53AE33B3B347}" />';
+                $holdLuggagePopupData.Editing.EndEdit() | Out-Null
+            }
+        }
+        
+        # Holidays
+        
+        $pagePath = '/sitecore/content/EasyJet/Holidays/Home/Booking';
+            
+        Add-Datasource -path $pagePath
+        
+        # Trade
+        
+        $pagePath = '/sitecore/content/EasyJet/TradePortal/Home/Booking'
+            
+        Add-Datasource -path $pagePath
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 135
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230807T124623Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

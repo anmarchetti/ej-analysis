@@ -1,0 +1,87 @@
+﻿---
+ID: "62ed3b8b-d3be-44c6-87a2-5d4ad50e2b59"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/5 - SER-312 - Refund breakdown"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $refundBreakdownDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Refund Breakdown"
+    $refundBreakdownTemplateItemPath = "/sitecore/templates/Feature/Booking/Cancelled Booking/Refund Breakdown"
+    
+    $updates = @(
+            @{
+                Path         = $refundBreakdownDatasourcePath
+                TemplatePath = $refundBreakdownTemplateItemPath
+                Fields      = @{
+                    "PriceBreakdownTitle" = @{
+                        "en" = "Refund breakdown"
+                        "fr-CH" = "Détail du remboursement"
+                        "de-CH" = "Rückerstattungsübersicht"
+                        "fr-FR" = "Détail du remboursement"
+                        "de-DE" = "Rückerstattungsübersicht"
+                    }
+                    "RefundAmount" = @{
+                        "en" = "Total refund"
+                        "fr-CH" = "Remboursement total"
+                        "de-CH" = "Gesamtrückerstattung"
+                        "fr-FR" = "Remboursement total"
+                        "de-DE" = "Gesamtrückerstattung"
+                    }
+                    "OriginalMethodRefundLabel" = @{
+                        "en" = "Refunded to original payment card"
+                        "fr-CH" = "Remboursé sur la carte de paiement d'origine"
+                        "de-CH" = "Auf die ursprüngliche Zahlungskarte erstattet"
+                        "fr-FR" = "Remboursé sur la carte de paiement d'origine"
+                        "de-DE" = "Auf die ursprüngliche Zahlungskarte erstattet"
+                    }
+                    "CreditRefundLabel" = @{
+                        "en" = "Amount refunded as easyJet holidays credit"
+                        "fr-CH" = "Montant remboursé sous forme de crédit easyJet holidays"
+                        "de-CH" = "Betrag als easyJet holidays Gutschrift erstattet"
+                        "fr-FR" = "Montant remboursé sous forme de crédit easyJet holidays"
+                        "de-DE" = "Betrag als easyJet holidays Gutschrift erstattet"
+                    }
+                }
+            }
+        )
+    ImportContent -itemsToCreate $updates
+    
+    $page = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled" -ErrorAction SilentlyContinue
+    $bookingContextRenderingId = "{C30624AB-A71F-492A-ADFF-73A1952FF024}"
+    $wrapperRenderingId = "{6615BDBE-E40B-4166-972A-5754B34A1F0E}"
+    $wrapperItemRenderingId = "{630D2676-483E-420D-8F04-4C15212F3EFF}"
+    $renderings = Get-Rendering -Item $page
+    $bookingContextRenderings = $renderings | Where-Object { $_.ItemId -eq $bookingContextRenderingId }
+    $wrapperRenderings = $renderings | Where-Object { $_.ItemId -eq $wrapperRenderingId }
+    
+    $bookingContextUniqueId = $bookingContextRenderings[0].UniqueId
+    $wrapperUniqueId = $wrapperRenderings[0].UniqueId
+    
+    $placeholder = "/body/booking-context-$($bookingContextUniqueId)-0/masonry-aside-$($wrapperUniqueId)-0"
+    
+    # Add Masonry Wrapper Item
+    $masonryRenderingPath = "/sitecore/layout/Renderings/Feature/Page Structure/Masonry/Masonry Wrapper Item"
+    $masonryRendering = Get-Item -Database "master" -Path $masonryRenderingPath | New-Rendering -Placeholder $placeholder 
+    Add-Rendering -Item $page -Instance $masonryRendering -PlaceHolder $placeholder -Parameter @{ "ItemOrderOnMobile" = "2" } -Index 8 
+    
+    $renderings = Get-Rendering -Item $page
+    $placeholder = "/body/booking-context-$($bookingContextUniqueId)-0/masonry-aside-$($wrapperUniqueId)-0/masonry-item-$($renderings[8].UniqueId)-0"
+    
+    # Add Breakdown component
+    $breakdownRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/Cancelled Booking/Refund Breakdown"
+    $breakdownRendering = Get-Item -Database "master" -Path $breakdownRenderingPath | New-Rendering -Placeholder $placeholder 
+    Add-Rendering -Item $page -Instance $breakdownRendering -PlaceHolder $placeholder -Index 9 -Datasource $refundBreakdownDatasourcePath
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

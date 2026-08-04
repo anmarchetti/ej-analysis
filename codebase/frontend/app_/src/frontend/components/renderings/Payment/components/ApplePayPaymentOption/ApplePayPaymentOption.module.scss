@@ -1,0 +1,40 @@
+.applePayLogo {
+    height: 2.5rem;
+    }
+
+.radioLabel {
+    padding-left: 2.5rem;
+    font-family: $fontRoundedBook;
+    font-size: 1rem;
+
+    &::before {
+        @include sizeSquare(1.25rem);
+
+        @include media-breakpoint-down(lg) {
+            @include sizeSquare(0.75rem)
+        }
+    }
+
+    &::after {
+        left: 0.375rem;
+    }
+}
+
+@include media-breakpoint-down(lg) {
+    .applePayLogo {
+        height: 2rem;
+    }
+
+    .radioLabel {
+        padding-left: 1.875rem;
+        font-size: 0.875rem;
+
+        &::after {
+            top: 0;
+            left: 0.188rem;
+            @include sizeSquare(0.5rem)
+        }
+    }
+}
+
+

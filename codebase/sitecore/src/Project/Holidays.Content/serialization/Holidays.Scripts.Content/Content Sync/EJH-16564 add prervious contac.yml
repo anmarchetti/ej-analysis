@@ -1,0 +1,65 @@
+﻿---
+ID: "1098226a-0f9c-497a-b421-8f79d62c1675"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-16564 add prervious contact us form"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Rendering-Index
+        {
+        	param($item, $renderingUniqueId)
+        	$i = 0
+        	Get-Rendering -Item $item | ForEach-Object {
+        		if ($_.UniqueId -eq $renderingUniqueId) {
+        		    return $i
+        		}
+        		$i++
+        	}
+        	return -1
+        }
+    
+    $contactUsSettings = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Settings/Contact Us Settings" -ErrorAction SilentlyContinue
+    if($contactUsSettings -ne $null){
+        $contactUsSettings.Editing.BeginEdit()
+    	$contactUsSettings["IsFormEnabled"] = "0"
+    	$contactUsSettings.Editing.EndEdit() | Out-Null;
+    }
+    
+    $htmlBlockValue = "<style>`niframe{`nheight: 1100px;`n}`n@media(max-width: 1100px){`niframe{height:1110px;} }`n@media(max-width: 768px){`niframe{height:1130px;} }`n@media(max-width: 640px){`niframe{height:1350px;} }`n</style><p><strong>&nbsp;</strong></p><p><strong>Our contact form (i</strong><strong>f your query is about a flight only booking with easyJet, please visit <a href=""https://www.easyjet.com/en/help/contact""><span style=""text-decoration: underline;"">here</span></a>).</strong></p><p><strong><span style=""color: #ff6600;"">Still on holiday?</span>&nbsp;Please don't fill in this form. See the 'I'm on an easyJet holiday or I'm travelling today' option above and contact our On Holiday Support team directly so we can help you resolve your issue.</strong></p><p><strong>&nbsp;</strong><strong></strong><iframe src=""https://www.easyjet.com/easyjet-webform/holiday_webform.jsp?language=en"" style=""width: 100%; border-width: initial; border-style: none;""></iframe></p>"
+    $htmlBlockTemplateId = "{C4A47ADF-2552-40E2-99F6-CA660419C835}"
+    $htmlBlockFolderTemplateId = "{F92CE230-926E-4141-82B5-DEB94A33BED6}"
+    $datasourceFolderPath = "master:/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components"
+    $datasourcePath = "master:/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Html Blocks"
+    $datasource = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us/Page Components/Html Blocks/Contact Us iFrame" -ErrorAction SilentlyContinue
+    $contactUsPage = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us"
+    $htmlBlockRendering = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/Html Block"| New-Rendering
+    $contactUsRendering = Get-Rendering -Item $contactUsPage | Where-Object {  $_.ItemID -eq "{5C71B391-B96A-4F96-B6A8-CFF10D4FF9DF}" }
+    $placeholder = $contactUsRendering.Placeholder
+    $index = Get-Rendering-Index $contactUsPage $contactUsRendering.UniqueID | Select -First 1
+    $insertIndex = $index + 1
+    
+    if($datasource -ne $null){
+        Add-Rendering -Item $contactUsPage -Instance $htmlBlockRendering -Index $insertIndex -Placeholder "$placeholder" -DataSource $datasource.Paths.Path
+    }else{
+        $folder = New-Item -Path $datasourceFolderPath -Name "Html Blocks" -ItemType $htmlBlockFolderTemplateId -ErrorAction SilentlyContinue
+        $item = New-Item -Path $datasourcePath -Name "Contact Us iFrame" -ItemType $htmlBlockTemplateId -ErrorAction SilentlyContinue
+        $item.Editing.BeginEdit()
+    	$item["Html"] = $htmlBlockValue
+    	$item.Editing.EndEdit();
+    	
+    	Add-Rendering -Item $contactUsPage -Instance $htmlBlockRendering -Index $insertIndex -Placeholder "$placeholder" -DataSource $item.Paths.Path
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1900
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230115T224610Z

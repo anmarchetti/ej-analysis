@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Owin" />
+        <PackageReference Include="Microsoft.Owin.Host.SystemWeb" />
+        <PackageReference Include="Microsoft.Owin.Security.ActiveDirectory" />
+        <PackageReference Include="Microsoft.Owin.Security.Cookies" />
+        <PackageReference Include="Microsoft.Owin.Security" />
+        <PackageReference Include="Microsoft.Owin.Security.Jwt" />
+        <PackageReference Include="Microsoft.Owin.Security.OAuth" />
+        <PackageReference Include="Microsoft.Owin.Security.OpenIdConnect" />
+        <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" />
+        <PackageReference Include="Microsoft.IdentityModel.Logging" />
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" />
+        <PackageReference Include="Microsoft.IdentityModel.Tokens.Saml" />
+        <PackageReference Include="Microsoft.IdentityModel.Xml" />
+        <PackageReference Include="Microsoft.IdentityModel.Protocols" />
+        <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" />
+        <PackageReference Include="Microsoft.IdentityModel.Protocols.WsFederation" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)SitecoreProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="App_Config\Include\Project\easyJet.Project.Holidays.JavaScriptServices.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <Content Include="App_Config\Include\Project\easyJet.Project.Holidays.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <Content Include="App_Config\Include\zDevSettings.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <None Include="App_Config\Include\Project\easyJet.Project.Holidays.CI.config">
+            <DependentUpon>easyJet.Project.Holidays.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\easyJet.Project.Holidays.Debug.config">
+            <DependentUpon>easyJet.Project.Holidays.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\easyJet.Project.Holidays.JavaScriptServices.CI.config">
+            <DependentUpon>easyJet.Project.Holidays.JavaScriptServices.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\easyJet.Project.Holidays.JavaScriptServices.Debug.config">
+            <DependentUpon>easyJet.Project.Holidays.JavaScriptServices.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\easyJet.Project.Holidays.JavaScriptServices.Release.config">
+            <DependentUpon>easyJet.Project.Holidays.JavaScriptServices.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\easyJet.Project.Holidays.Release.config">
+            <DependentUpon>easyJet.Project.Holidays.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\zDevSettings.CI.config">
+            <DependentUpon>zDevSettings.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\zDevSettings.Debug.config">
+            <DependentUpon>zDevSettings.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\zDevSettings.Release.config">
+            <DependentUpon>zDevSettings.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+    </ItemGroup>
+    <Target Name="UpdateFiles" AfterTargets="MoveFilesToBin" BeforeTargets="CopyFilesToBin">
+        <ItemGroup>
+            <FilesToUpdate Include="$(PublishDir)**\*.dll" />
+        </ItemGroup>
+        <Touch Files="@(FilesToUpdate)" ContinueOnError="WarnAndContinue" />
+    </Target>
+</Project>

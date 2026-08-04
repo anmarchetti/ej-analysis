@@ -1,0 +1,192 @@
+﻿---
+ID: "7d549060-7ae3-459b-adca-510c1d60bea4"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-778_view-booking-page-new-datasource"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+     function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem["LuggageIcon"] = '<image mediaid="{61F715D2-C819-4B98-A4CC-54A622A0D705}" />'
+            $targetLangItem["SportsEquipmentIcon"] = '<image mediaid="{FB9C15E9-B880-42DA-928B-ACB7157E90B7}" />'
+            $targetLangItem["Icon"] = '<image mediaid="{4489AC5E-4B62-42B3-A106-C2327ED26356}" />'
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    function Set-ItemFieldValue($item, $fieldName, $value) {
+        $item.Editing.BeginEdit()
+        $item[$fieldName] = $value
+        $item.Editing.EndEdit()
+    }
+    
+    function Create-NewLuggageConfigItem($path, $itemName, $itemType) {
+        $itemToCreateExist = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue;
+        if($itemToCreateExist -eq $null){
+            $createdItem = New-Item -Path $path -Name $itemName -ItemType $itemType
+    
+            if($createdItem -ne $null){
+                Write-Host "$($itemName) item is created"
+                return $createdItem
+            }
+        }
+        return $itemToCreateExist
+    }
+    
+    function Update-ViewItemDataSource($itemPath, $renderingIdentifier, $newDataSourcePath) {
+        $item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue;
+        if ($item -ne $null) {
+            $viewBooking = Get-Rendering -Item $item | Where-Object { $_.ItemId -eq $renderingIdentifier } -ErrorAction SilentlyContinue;
+            $dataSource = Get-Item -Path $newDataSourcePath
+            
+            if ($viewBooking -ne $null) {
+                Set-Rendering -Item $item -Instance $viewBooking -DataSource $dataSource.ID
+                Write-Host "Updated rendering datasource to: $newDataSourcePath"
+            } else {
+                Write-Host "Rendering with $renderingIdentifier not found in $itemPath"
+            }
+        } else {
+            Write-Host "Item not found at path: $itemPath"
+        }
+    }
+    
+    # Configuration
+    $templateId = "{AB8AB94B-EFED-4F2F-96A8-78D830933228}"
+    $renderingIdentifierHolidays = "{B932CD1B-05BD-4F1D-947F-1E6F48C4F649}"
+    $renderingIdentifierTrade = "{9DD5E883-9307-49FB-82F8-D8D778A828E0}"
+    
+    # Paths
+    $holidaysMyBookingPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    $tradePortalBookingPath = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking"
+    
+    $holidaysMyBookingComponentsPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components"
+    $tradePortalBookingComponentsPath = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking/Page Components"
+    
+    # Create new Luggage Configuration items
+    $newLuggageConfigHolidaysItem = Create-NewLuggageConfigItem -path $holidaysMyBookingComponentsPath -itemName "View Booking" -itemType $templateId
+    $newLuggageConfigTradePortalItem = Create-NewLuggageConfigItem -path $tradePortalBookingComponentsPath -itemName "View Booking" -itemType $templateId
+    
+    $infants = "Infants"
+    $adults = "Adults"
+    $children = "Children"
+    
+    # For Holidays 
+    $largeSportPath = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Large Sports Equipment';
+    $largeSport = Get-ChildItem -Path $largeSportPath;
+    $largeSportItems = ($largeSport | select -ExpandProperty Id) -join "|"
+            
+    $smallSportPath = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Small Sports Equipment';
+    $smallSport = Get-ChildItem -Path $smallSportPath;
+    $smallSportItems = ($smallSport | select -ExpandProperty Id) -join "|"
+            
+    $holdBagsPath = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage';
+    $holdBags = Get-ChildItem -Path $holdBagsPath;
+    $holdBagsItems = ($holdBags | select -ExpandProperty Id) -join "|"
+    
+    if($newLuggageConfigHolidaysItem -ne $null){
+        $sportsEquipmentValue = $largeSportItems + '|' + $smallSportItems;
+        $holdItemsValue = $holdBagsItems;
+        
+        Set-ItemFieldValue -item $newLuggageConfigHolidaysItem -fieldName $infants -value "1"
+        Set-ItemFieldValue -item $newLuggageConfigHolidaysItem -fieldName $adults -value "1"
+        Set-ItemFieldValue -item $newLuggageConfigHolidaysItem -fieldName $children -value "1"
+        Set-ItemFieldValue -item $newLuggageConfigHolidaysItem -fieldName "HoldLuggageItems"  -value $holdItemsValue;
+        Set-ItemFieldValue -item $newLuggageConfigHolidaysItem -fieldName "SportsEquipmentItems" -value $sportsEquipmentValue;
+    }
+    
+    # For Trade Portal 
+    $largeSportPath = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Large Sports Equipment';
+    $largeSport = Get-ChildItem -Path $largeSportPath;
+    $largeSportItems = ($largeSport | select -ExpandProperty Id) -join "|"
+            
+    $smallSportPath = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Small Sports Equipment';
+    $smallSport = Get-ChildItem -Path $smallSportPath;
+    $smallSportItems = ($smallSport | select -ExpandProperty Id) -join "|"
+            
+    $holdBagsPath = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Hold Baggage';
+    $holdBags = Get-ChildItem -Path $holdBagsPath;
+    $holdBagsItems = ($holdBags | select -ExpandProperty Id) -join "|"
+    
+    if($newLuggageConfigTradePortalItem -ne $null){
+        $sportsEquipmentValue = $largeSportItems + '|' + $smallSportItems;
+        $holdItemsValue = $holdBagsItems;
+        
+        Set-ItemFieldValue -item $newLuggageConfigTradePortalItem -fieldName $infants -value "1"
+        Set-ItemFieldValue -item $newLuggageConfigTradePortalItem -fieldName $adults -value "1"
+        Set-ItemFieldValue -item $newLuggageConfigTradePortalItem -fieldName $children -value "1"
+        Set-ItemFieldValue -item $newLuggageConfigTradePortalItem -fieldName "HoldLuggageItems" -value $holdItemsValue;
+        Set-ItemFieldValue -item $newLuggageConfigTradePortalItem -fieldName "SportsEquipmentItems" -value $sportsEquipmentValue;
+    }
+    
+    $newLuggageConfigHolidaysItemPath = $newLuggageConfigHolidaysItem.Paths.FullPath
+    $newLuggageConfigTradePortalItemPath = $newLuggageConfigTradePortalItem.Paths.FullPath
+    
+    # Create datasources with New Luggage Configuration
+    Update-ViewItemDataSource -itemPath $holidaysMyBookingPath -renderingIdentifier $renderingIdentifierHolidays -newDataSourcePath $newLuggageConfigHolidaysItemPath
+    Update-ViewItemDataSource -itemPath $tradePortalBookingPath -renderingIdentifier $renderingIdentifierTrade -newDataSourcePath $newLuggageConfigTradePortalItemPath
+    
+    $translations = @{
+        "en" = @{
+            "Limit" = "Up to {number} kg.";
+            "Storage" = "Stored in the plane hold.";
+            "Name" = "Pram or pushchair";
+        }
+        "fr-CH" = @{
+            "Limit" = "Jusqu'à {number} kg.";
+            "Storage" = "Stocké dans la soute de l'avion.";
+            "Name" = "Poussette";
+        }
+        "fr-FR" = @{
+            "Limit" = "Jusqu'à {number} kg.";
+            "Storage" = "Stocké en soute.";
+            "Name" = "Poussette ou landau";
+        }
+        "de-CH" = @{
+            "Limit" = "Bis zu {number} kg.";
+            "Storage" = "Im Flugzeugfrachtraum gelagert.";
+            "Name" = "Kinderwagen";
+        }
+        "de-DE" = @{
+            "Limit" = "Bis zu {number} kg.";
+            "Storage" = "Im Frachtraum des Flugzeugs gelagert.";
+            "Name" = "Kinderwagen oder Buggy";
+        }
+    }
+        
+    foreach ($lang in $translations.Keys) {
+        create-lang-version -item $newLuggageConfigHolidaysItem -lang $lang -field "Limit" -value $translations[$lang]["Limit"]
+        create-lang-version -item $newLuggageConfigHolidaysItem -lang $lang -field "Storage" -value $translations[$lang]["Storage"]
+        create-lang-version -item $newLuggageConfigHolidaysItem -lang $lang -field "Name" -value $translations[$lang]["Name"]
+                
+        create-lang-version -item $newLuggageConfigTradePortalItem -lang $lang -field "Limit" -value $translations[$lang]["Limit"]
+        create-lang-version -item $newLuggageConfigTradePortalItem -lang $lang -field "Storage" -value $translations[$lang]["Storage"]
+        create-lang-version -item $newLuggageConfigTradePortalItem -lang $lang -field "Name" -value $translations[$lang]["Name"]
+    }
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 510
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231102T083431Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

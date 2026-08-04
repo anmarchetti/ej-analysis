@@ -1,0 +1,120 @@
+.direction {
+    display: flex;
+    flex-direction: column;
+
+    :global(.seat-confirmation__bag-icon) {
+        width: 18px;
+        height: 18px;
+    }
+
+    :global(.seat-confirmation__credentials) {
+        margin-right: 16px;
+        margin-bottom: 8px;
+    }
+}
+
+.header {
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.title {
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 700;
+
+    @include media-breakpoint-up(sm) {
+        margin-bottom: 0;
+        font-size: 16px;
+    }
+}
+
+.subtitle {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+
+    @include media-breakpoint-up(sm) {
+        font-size: 16px;
+    }
+}
+
+.flight {
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.noneSelectedLabel {
+    margin-top: 16px;
+    margin-bottom: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: $colorBlackMedium;
+}
+
+.fallbackProducts {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+
+    :global(.seat-confirmation__bag) {
+        font-size: 14px;
+    }
+
+    :global(.seat-confirmation__bag):not(:last-child) {
+        margin-bottom: 8px;
+    }
+}
+
+.selectedSeats {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 16px;
+
+    :global(.seat-confirmation__seat-number) {
+        margin-right: 8px;
+        font-size: 14px;
+
+        @include media-breakpoint-down(md) {
+            margin-left: 0;
+        }
+    }
+
+    :global(.seat-confirmation__place) {
+        font-size: 12px;
+    }
+}
+
+.additionalProducts {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    opacity: 0.5;
+
+    :global(.seat-confirmation__bag-text) {
+        text-decoration: line-through;
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-top: 16px;
+    }
+}
+
+.cabinBags {
+    img {
+        @include sizeSquare(16px);
+
+        margin-right: 8px;
+    }
+
+    font-weight: 400;
+    line-height: 22px;
+}
+
+.cabinBagsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}

@@ -1,0 +1,38 @@
+.container {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: $colorGrayLighter;
+}
+
+.title,
+.description {
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    line-height: 1.5;
+    color: $clrTextMain;
+}
+
+.title {
+    margin: 0 0 20px;
+    font-weight: 700;
+}
+
+.description {
+    margin-bottom: 12px;
+}
+
+.container .btn {
+    margin-top: 10px;
+    line-height: 1.2;
+    background-color: $colorWhite;
+    border-width: 1px;
+
+    &:hover {
+        color: $colorOrange;
+        background-color: $colorWhite;
+    }
+
+    @include media-breakpoint-down(sm) {
+        padding: 15px 25px;
+    }
+}

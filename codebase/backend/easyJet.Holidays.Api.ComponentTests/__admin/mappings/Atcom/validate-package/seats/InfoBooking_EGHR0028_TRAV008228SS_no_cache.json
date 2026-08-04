@@ -1,0 +1,28 @@
+{
+    "Guid": "2ed4AAAc-d4ee-AA54-b88c-a82f6f117df3",
+    "UpdatedAt": "2023-11-07T13:15:29.8810665Z",
+    "Title": "InfoBookingRequest response for EGHR0028 with transfer=TRAV008228SS",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/EZYDMO/VRPWebservice/AniteGateway/AniteGateway.aspx",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "XPathMatcher",
+                "Pattern": "/*:InfoBookingRequest//*:Acc_Cd/text()='EGHR0028'"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/validate-package/seats/InfoBooking_EGHR0028_TRAV008228SS_no_cache.xml"
+    }
+}

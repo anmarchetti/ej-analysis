@@ -1,0 +1,151 @@
+﻿---
+ID: "1fcbce76-e1d5-48e3-a459-4170d3b77b1e"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/EUX-677 - Populate new TrackingPageTitle Field"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $basePageTemplateID = [Sitecore.Data.ID]::Parse("{168F65DC-9ECD-4A6E-AD93-A46464E45F79}");
+    
+    $holidaysHomeTemplateID = [Sitecore.Data.ID]::Parse("{5CB2E852-45B1-47C9-A315-4038EB539CDC}");
+    $countryTemplateID = [Sitecore.Data.ID]::Parse("{5F03C6EF-EF52-4F2E-BC5A-B1F065A1E745}");
+    $regionTemplateID = [Sitecore.Data.ID]::Parse("{2F42EC14-7E56-467A-B300-AB9723C74546}");
+    $virtualRegionTemplateID = [Sitecore.Data.ID]::Parse("{799ECB20-C605-4A6C-A32B-27222BDBB91E}");
+    $resortTemplateID = [Sitecore.Data.ID]::Parse("{538939B3-07EC-4C23-BF8C-3A68DE0FDC93}");
+    $promoPageTemplateID = [Sitecore.Data.ID]::Parse("{C0CB2F05-AFD2-41CE-B53F-6F15A1033740}");
+    $tradePortalHomeTemplateID = [Sitecore.Data.ID]::Parse("{3036FB7A-D5FE-4582-8C48-2514D1CD8F1B}")
+    $amendPaymentTemplateID = [Sitecore.Data.ID]::Parse("{370185FE-F7FB-4E3C-8C9F-12986570F74F}");
+    
+    function Get-ItemBasedOnTemplate {
+        param(
+            [string]$TemplateId
+        )
+    
+        $queue = New-Object System.Collections.Queue
+        $processedLookup = New-Object System.Collections.Generic.HashSet[string]
+        if(-not(Test-Path -Path "master:$($TemplateId)")) { return }
+        $processedLookup.Add($TemplateId) > $null  
+        Get-ItemReferrer -Id $TemplateId -ItemLink | 
+            Where-Object { $_.SourceItemID } | 
+            ForEach-Object { $queue.Enqueue($_.SourceItemID) }
+    
+        $database = Get-Database -Name "master"
+        while($queue.Count -and ($referrerId = $queue.Dequeue())) {
+            if($processedLookup.Contains($referrerId)) { continue }
+            $processedLookup.Add($referrerId) > $null
+            $referrer = $database.GetItem($referrerId)
+            if(!$referrer) { continue }
+            if($referrer.Paths.FullPath.StartsWith("/sitecore/templates")) { 
+                if($referrer.Name -eq "__Standard values") { continue }
+                foreach($referrerItemLink in Get-ItemReferrer -Id $referrerId -ItemLink | Where-Object { $_.SourceItemID }) {
+                    $queue.Enqueue($referrerItemLink.SourceItemID)
+                }
+                $itemTemplate = [Sitecore.Data.Managers.TemplateManager]::GetTemplate($referrerId, $database)
+            } else {
+                $itemTemplate = [Sitecore.Data.Managers.TemplateManager]::GetTemplate($referrer)
+            }
+            
+            if ($itemTemplate -and $itemTemplate.DescendsFromOrEquals($TemplateId)) {
+                $referrer
+            }
+        }
+    }
+    
+    function Set-PageNameOfItem{
+        param (
+            [Sitecore.Data.Items.Item]$item    
+        )
+        if($item -ne $null){
+            $itemTemplate = [Sitecore.Data.Managers.TemplateManager]::GetTemplate($item);
+            $nameToSet = [string]::Empty;
+            
+            if( $itemTemplate.DescendsFromOrEquals($holidaysHomeTemplateID) -or
+                $itemTemplate.DescendsFromOrEquals($tradePortalHomeTemplateID)){
+                    #Home
+                    $nameToSet = "Home";
+                }
+            elseif($itemTemplate.DescendsFromOrEquals($countryTemplateID) -or 
+                $itemTemplate.DescendsFromOrEquals($regionTemplateID) -or 
+                $itemTemplate.DescendsFromOrEquals($virtualRegionTemplateID) -or 
+                $itemTemplate.DescendsFromOrEquals($resortTemplateID)){
+                    # Destination Guide
+                    $nameToSet = "Destination Guide: $($item.Name)";
+                }
+            elseif($itemTemplate.DescendsFromOrEquals($promoPageTemplateID)){
+                    # Promo
+                    $nameToSet = "Promo: $($item.Name)"
+            }
+            else{
+                if($item.Fields["PageTitle"] -ne $null){
+                    $nameToSet = $item.Fields["PageTitle"].Value;
+                }
+                
+                if([string]::IsNullOrEmpty($nameToSet)){
+                    # everything passed here is Base Page, if it is a Base Page, it's got a ["Name"]
+                    $nameToSet = $item.Fields["Name"].Value
+                }
+            }
+            
+            $item.Editing.BeginEdit();
+            $item.Fields["TrackingPageTitle"].Value = $nameToSet;
+            $item.Editing.EndEdit();
+        }
+        
+        $item
+    }
+    
+    $timer = [Diagnostics.Stopwatch]::StartNew();
+    
+    echo "Rebuilding LinkDatabase."
+    $database = Get-Database -Name "master"
+    [Sitecore.Globals]::LinkDatabase.Rebuild($database)
+    echo "Done rebuilding."
+    $timer.Elapsed.TotalSeconds;
+    
+    
+    echo "Processing Holidays"
+    $holidaysElements = Get-ItemBasedOnTemplate -TemplateId $basePageTemplateID | Where-Object -FilterScript {$_.Paths.FullPath.StartsWith("/sitecore/content/EasyJet/Holidays/Home")}
+    
+    foreach($element in $holidaysElements){
+        Set-PageNameOfItem -item $element
+    }
+    
+    echo "Done with Holidays"
+    $timer.Elapsed.TotalSeconds;
+    
+    echo "Processing TradePortal"
+    $tradeportalElements = Get-ItemBasedOnTemplate -TemplateId $basePageTemplateID | Where-Object -FilterScript {$_.Paths.FullPath.StartsWith("/sitecore/content/EasyJet/TradePortal/Home")}
+    
+    foreach($element in $tradeportalElements){
+        Set-PageNameOfItem -item $element
+    }
+    
+    echo "Done with TradePortal"
+    $timer.Stop();
+    $timer.Elapsed.TotalSeconds;
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230531T111956Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\admin
+- Language: "fr-CH"
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230531T104808Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\admin

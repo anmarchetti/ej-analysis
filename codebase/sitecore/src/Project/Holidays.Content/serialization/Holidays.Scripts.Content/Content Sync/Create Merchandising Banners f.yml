@@ -1,0 +1,57 @@
+﻿---
+ID: "2133dea8-f10d-4bf8-9fff-3f93762cfe36"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Merchandising Banners for Home Page
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $itemName, $templateId){
+        $item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $itemName -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created";
+        }
+        return $item
+    } 
+    
+    function Get-Rendering-Index ($item, $renderingItemId) {
+    	$i = 0
+    	Get-Rendering -Item $item | ForEach-Object {
+    		if ($_.ItemID -eq $renderingItemId) {
+    			return $i
+    		}
+    		$i++
+    	}
+    }
+    
+    $homeItem = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home"
+    
+    # Create Merchandising Banners Folder
+    $bannersFolder = Get-Or-Create-Item -path "$($homeItem.FullPath)/Page Components" -itemName "Merchandising Banners" -templateId "{549B0AB9-47C0-4484-BC39-93F3D2880D74}"
+    
+    
+    # Add Merchandising Banner Rendering to Home Page
+    $renderingId = "{0814CE5E-A2FC-4929-A91E-FBDF385CA707}"
+    $renderingItem = Get-Rendering -Item $homeItem | Where-Object {$_.ItemId -eq $renderingId}
+    
+    # Cet index of Hero Carousel Rendering and place Merchandising Banner on this index
+    $heroCarouselRenderingId = "{36F8D2A1-FFD4-4FA9-A8F3-1104F486AF04}"
+    $renderingIndex = Get-Rendering-Index -Item $homeItem -renderingItemId $heroCarouselRenderingId
+    
+    if($renderingItem -eq $null -and $renderingIndex -ne $null) {
+        $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder "body"
+        Add-Rendering -Item $homeItem -Instance $renderingItem -Placeholder "body" -Index $renderingIndex
+        Write-Host "Merchandising Banner Rendering is added on" $renderingIndex;
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200810T125815Z

@@ -1,0 +1,174 @@
+$paymentBookingPaddingX: 30px;
+$paymentBookingBorderColor: #d8d8d8;
+
+.itemHead {
+    font-family: $fontRoundedBook;
+    font-size: 18px;
+    letter-spacing: 0.3px;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.errata {
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 104px;
+    padding: 25px $paymentBookingPaddingX;
+
+    @include media-breakpoint-down(lg) {
+        flex-direction: column;
+        align-items: stretch;
+        min-height: 0;
+        padding: 0;
+    }
+}
+
+.title {
+    margin: 0;
+    font-size: 24px;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+}
+
+.list {
+    padding-right: $paymentBookingPaddingX;
+    padding-left: $paymentBookingPaddingX;
+
+    @include media-breakpoint-down(lg) {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px 0;
+    font-size: 18px;
+    border-top: 1px solid $paymentBookingBorderColor;
+
+    &:first-child {
+        @include media-breakpoint-down(lg) {
+            border-top: none;
+        }
+    }
+
+    @include media-breakpoint-down(lg) {
+        padding: 10px 0;
+        border-top: 1px solid $paymentBookingBorderColor;
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.bookingDetailsItem {
+    flex: 0 0 50%;
+    max-width: 50%;
+    margin: 10px 0;
+
+    @include media-breakpoint-down(lg) {
+        flex-basis: 100%;
+        max-width: 100%;
+        padding-top: 0;
+        padding-bottom: 0;
+        line-height: 22px;
+    }
+}
+
+.noTopBorder {
+    border-top: none;
+}
+
+.blockItem {
+    position: relative;
+    flex: 0 0 50%;
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 50%;
+    height: 100%;
+    margin: 10px 0;
+    padding-right: 10px;
+    padding-left: 55px;
+    font-size: 16px;
+    line-height: 1.56;
+
+    @include media-breakpoint-down(lg) {
+        flex-basis: 100%;
+        max-width: 100%;
+        margin: 10px 0;
+        padding: 0 0 0 35px;
+        line-height: 1.375;
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.bgIcon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    @include media-breakpoint-down(lg) {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.svgIcon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 28px;
+    height: 28px;
+
+    @include media-breakpoint-down(lg) {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.head {
+    font-family: $fontRoundedBook;
+    font-size: 18px;
+    letter-spacing: 0.3px;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.link {
+    align-self: flex-start;
+    width: auto;
+    padding: 0;
+    border-top: 1px solid #d8d8d8;
+
+    @include media-breakpoint-up(lg) {
+        position: absolute;
+        top: 40px;
+        right: $paymentBookingPaddingX;
+        max-width: 200px;
+        border: 0;
+        border-top: none;
+    }
+}

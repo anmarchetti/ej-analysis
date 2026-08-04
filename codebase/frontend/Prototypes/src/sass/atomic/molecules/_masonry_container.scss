@@ -1,0 +1,213 @@
+/* stylelint-disable selector-max-compound-selectors */
+
+.masonry-carousel {
+    position: relative;
+    margin: 30px 0 40px;
+
+    @include media-breakpoint-down(md) {
+        margin: 20px 0 34px;
+    }
+
+    .image-gallery-slides {
+        white-space: normal;
+        border-radius: $masonry-item_border-radius;
+
+        .image-gallery-slide {
+            min-height: 0;
+            background: $colorTransparent;
+            border-radius: $masonry-item_border-radius;
+        }
+    }
+
+    .image-gallery-bullets {
+        z-index: 0;
+        bottom: -21px;
+        width: 100%;
+
+        .image-gallery-bullet {
+            margin: 0 2px;
+            padding: 4px;
+            background: $colorGray;
+            border: 0;
+            box-shadow: none;
+
+            &.active {
+                padding: 5px;
+                background: $clrEjOrange;
+            }
+        }
+    }
+
+    .slider-nav {
+        box-shadow: 0 0 6px 0 rgba(178, 175, 175, 0.5);
+    }
+
+    .slider-nav--prev {
+        left: -10px;
+    }
+
+    .slider-nav--next {
+        right: -10px;
+    }
+
+    .masonry-container {
+        display: flex;
+
+        &.x3-items {
+            .masonry-row {
+                > :nth-child(1) {
+                    flex-grow: 3;
+                }
+
+                > :nth-child(2) {
+                    flex-grow: 5;
+                }
+
+                > :nth-child(3) {
+                    flex-grow: 2;
+                }
+            }
+        }
+
+        &.x4-items {
+            flex-direction: column;
+
+            .masonry-row:nth-child(1) {
+                height: $masonry-row_height;
+
+                > :nth-child(1) {
+                    flex-grow: 3;
+                }
+
+                > :nth-child(2) {
+                    flex-grow: 5;
+                }
+            }
+
+            .masonry-row:nth-child(2) {
+                height: $masonry-row_height;
+
+                > :nth-child(1) {
+                    flex-grow: 5;
+                }
+
+                > :nth-child(2) {
+                    flex-grow: 3;
+                }
+            }
+        }
+
+        &.x5-items {
+            .left {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 2;
+
+                .masonry-row:nth-child(1) {
+                    > :nth-child(1) {
+                        flex-grow: 1;
+                    }
+
+                    > :nth-child(2) {
+                        flex-grow: 2;
+                    }
+                }
+
+                .masonry-row:nth-child(2) {
+                    > :nth-child(1) {
+                        flex-grow: 2;
+                    }
+
+                    > :nth-child(2) {
+                        flex-grow: 1;
+                    }
+                }
+            }
+
+            .right {
+                display: flex;
+                flex-grow: 1;
+
+                .masonry-row {
+                    height: auto;
+                }
+            }
+        }
+
+        &.x6-items {
+            flex-direction: column;
+
+            .masonry-row:nth-child(1) {
+                > :nth-child(1) {
+                    flex-grow: 3;
+                }
+
+                > :nth-child(2) {
+                    flex-grow: 4;
+                }
+
+                > :nth-child(3) {
+                    flex-grow: 2;
+                }
+            }
+
+            .masonry-row:nth-child(2) {
+                > :nth-child(1) {
+                    flex-grow: 2;
+                }
+
+                > :nth-child(2) {
+                    flex-grow: 3;
+                }
+
+                > :nth-child(3) {
+                    flex-grow: 4;
+                }
+            }
+        }
+
+        &.x7-items {
+            .left {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 5;
+
+                .masonry-row:nth-child(1) {
+                    > :nth-child(1) {
+                        flex-grow: 3;
+                    }
+
+                    > :nth-child(2) {
+                        flex-grow: 4;
+                    }
+                }
+            }
+
+            .right {
+                display: flex;
+                flex-grow: 2;
+
+                .masonry-row {
+                    flex-direction: column;
+                    height: auto;
+
+                    > :nth-child(1) {
+                        flex-grow: 2;
+                    }
+
+                    > :nth-child(2) {
+                        flex-grow: 1;
+                    }
+                }
+            }
+        }
+
+        &.large-row-template {
+            .masonry-row {
+                height: $masonry-row_height * 2;
+            }
+        }
+    }
+}
+
+/* stylelint-enable selector-max-compound-selectors */

@@ -1,0 +1,188 @@
+﻿---
+ID: "5386e012-26aa-4593-98da-9ce8bc2ab93b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/MAN-746 Change Fee Included Messaging"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+        function Get-Or-Create-Item ($path,$templateId) {
+        	$item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+        	if ($item -eq $null) {
+        		$item = New-Item -Path $path -ItemType $templateId
+        		Write-Host "Item" $item.Name "successfully created";
+        	}
+        	return $item
+        }
+        function create-lang-version ($item,$lang,$field,$value) {
+        	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+        		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        	}
+        
+        	if ($null -ne $field) {
+        		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        		$targetLangItem.Editing.BeginEdit()
+        		$targetLangItem[$field] = $value
+        		$targetLangItem.Editing.EndEdit() | Out-Null
+        	}
+        }
+        function createSocialBannerDataSourceLanguageVersions () {
+        	$itemPath = '/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary/Page Components/Change Fee Info'
+        	$item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+        
+        	if ($item -eq $null) {
+        		Write-Host "Missing iten in EN language."
+        		return;
+        	}
+        
+        	@( 'en') | % {
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "All change fees included!"
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Description" -Value "<p>All prices include a {price} change fee and any adjustments to promotional codes.</p><p> Rest assured, if the new price is higher than the original, the change fee will not apply to your new hotel!</p>"
+        		Create-Lang-Version -Item $item -Lang $_ -Field "BucketTwoDescription" -Value ""
+        		Create-Lang-Version -Item $item -Lang $_ -Field "ViewMoreCTA" -Value "View more"
+        		Create-Lang-Version -Item $item -Lang $_ -Field "ViewLessCTA" -Value "View less"
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Icon" -Value '<image mediaid="{A7CE409F-E932-4F36-93F1-7C8628CA666E}" alt="Wallet with coins" height="" width="" hspace="" vspace="" />'
+        		Create-Lang-Version -Item $item -Lang $_ -Field "FeeValue" -Value ""
+        		Create-Lang-Version -Item $item -Lang $_ -Field "TooltipIconAriaLabelMobile" -Value "Change fee info button"
+        		
+        	}
+        
+        	@( 'de-CH','de-DE') | % {
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Finden Sie uns auf Social"
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Description" -Value '<p>Alle Preise beinhalten eine {price} Änderungsgebühr sowie alle Anpassungen von Aktionscodes.</p><p> Seien Sie versichert, dass die Änderungsgebühr nicht auf Ihr neues Hotel angewendet wird, wenn der neue Preis höher ist als der ursprüngliche!</p>'
+        		Create-Lang-Version -Item $item -Lang $_ -Field "BucketTwoDescription" -Value ""
+        		Create-Lang-Version -Item $item -Lang $_ -Field "ViewMoreCTA" -Value "Mehr anzeigen"
+        		Create-Lang-Version -Item $item -Lang $_ -Field "ViewLessCTA" -Value "Weniger anzeigen"
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Icon" -Value '<image mediaid="{A7CE409F-E932-4F36-93F1-7C8628CA666E}" alt="Brieftasche mit Münzen" height="" width="" hspace="" vspace="" />'
+        		Create-Lang-Version -Item $item -Lang $_ -Field "FeeValue" -Value ""
+        		Create-Lang-Version -Item $item -Lang $_ -Field "TooltipIconAriaLabelMobile" -Value 'Schaltfläche Gebühreninfo ändern'
+        	}
+        
+        	@( 'fr-CH','fr-FR') | % {
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Title" -Value "Tous les frais de modification inclus!"
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Description" -Value "<p>Tous les prix incluent des frais de modification de {price} ainsi que toute modification des codes promotionnels.</p><p> Soyez assuré que si le nouveau prix est plus élevé que l'original, les frais de modification ne s'appliqueront pas à votre nouvel hôtel!</p>"
+        		Create-Lang-Version -Item $item -Lang $_ -Field "BucketTwoDescription" -Value ""
+        		Create-Lang-Version -Item $item -Lang $_ -Field "ViewMoreCTA" -Value "Voir plus"
+        		Create-Lang-Version -Item $item -Lang $_ -Field "ViewLessCTA" -Value "Voir moins"
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Icon" -Value '<image mediaid="{A7CE409F-E932-4F36-93F1-7C8628CA666E}" alt="" height="" width="" hspace="" vspace="" />'
+        		Create-Lang-Version -Item $item -Lang $_ -Field "FeeValue" -Value ""
+        		Create-Lang-Version -Item $item -Lang $_ -Field "TooltipIconAriaLabelMobile" -Value "Bouton de modification de l'information sur les frais"
+        	}
+        
+        	Write-Host "Created language versions"
+        }
+        function updateBasketData () {
+        	$itemPath = '/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary/Page Components/Amend Hotel Summary'
+        	$item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+        
+        	if ($item -eq $null) {
+        		Write-Host "Missing iten in EN language."
+        		return;
+        	}
+        
+        	@( 'en') | % {
+        		Create-Lang-Version -Item $item -Lang $_ -Field "PriceTooltip" -Value "<p>All change fees included! All prices include a {price} change fee and any adjustments to promotional codes.</p><p>Rest assured, if the new price is higher than the original, the change fee will not apply to your new hotel!</p>"
+        	}
+        
+        	@( 'de-CH','de-DE') | % {
+        		Create-Lang-Version -Item $item -Lang $_ -Field "PriceTooltip" -Value '<p>Finden Sie uns auf Social! Alle Preise beinhalten eine {price} Änderungsgebühr sowie alle Anpassungen von Aktionscodes.</p><p>Seien Sie versichert, dass die Änderungsgebühr nicht auf Ihr neues Hotel angewendet wird, wenn der neue Preis höher ist als der ursprüngliche!</p>'
+        	}
+        
+        	@( 'fr-CH','fr-FR') | % {
+        		Create-Lang-Version -Item $item -Lang $_ -Field "PriceTooltip" -Value "<p>Tous les frais de modification inclus! Tous les prix incluent des frais de modification de {price} ainsi que toute modification des codes promotionnels.</p><p>Soyez assuré que si le nouveau prix est plus élevé que l'original, les frais de modification ne s'appliqueront pas à votre nouvel hôtel!</p>"
+        	}
+        
+        	Write-Host "Created language versions"
+        }
+        
+        function updateText1 () {
+        	$itemPath = '/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Page Components/Change Fee Info'
+        	$item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+        
+        	if ($item -eq $null) {
+        		Write-Host "Missing iten in EN language."
+        		return;
+        	}
+        
+        	@( 'en') | % {
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Description" -Value "Prices exclude any change fees or adjustments to promotional codes. <br /><span>Based on your selection, a {price} change fee might be applied.</span><span> Rest assured, if the new price is higher than the original, the change fee will not apply to your new hotel!</span>"
+        	}
+        
+        	@( 'de-CH','de-DE') | % {
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Description" -Value "Les prix ne comprennent pas les frais de modification ou d'ajustement des codes promotionnels. <br /><span>Je nach Auswahl kann eine Umbuchungsgebühr von {price} erhoben werden.</span><span> Wenn der neue Preis höher ist als der ursprüngliche, entfällt die Änderungsgebühr für Ihr neues Hotel!</span>"
+        	}
+        
+        	@( 'fr-CH','fr-FR') | % {
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Description" -Value "Die Preise verstehen sich zuzüglich etwaiger Änderungsgebühren oder Anpassungen von Aktionscodes. <br /><span>En fonction de votre sélection, des frais de changement de {price} peuvent être appliqués.</span><span> Rassurez-vous, si le nouveau prix est plus élevé que l'original, les frais de changement ne s'appliqueront pas à votre nouvel hôtel!</span>"
+        	}
+        
+        	Write-Host "Created language versions"
+        }
+        function updateText2 () {
+        	$itemPath = '/sitecore/content/EasyJet/Holidays/Data/Change Fee Info'
+        	$item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+        
+        	if ($item -eq $null) {
+        		Write-Host "Missing iten in EN language."
+        		return;
+        	}
+        
+        	@( 'en') | % {
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Description" -Value "All prices include a {price} change fee and any adjustments to promotional codes."
+        	}
+        
+        	@( 'de-CH','de-DE') | % {
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Description" -Value "Alle Preise enthalten eine Änderungsgebühr von {price} und eventuelle Anpassungen an Aktionscodes."
+        	}
+        
+        	@( 'fr-CH','fr-FR') | % {
+        		Create-Lang-Version -Item $item -Lang $_ -Field "Description" -Value "Tous les prix incluent des frais de modification de {price} et tout ajustement des codes promotionnels."
+        	}
+        
+        	Write-Host "Created language versions"
+        }
+        
+        function addMobileTooltip ($data) {
+        	$page = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary'
+        	$renderings = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq '{B221E0AC-38AD-4145-A08D-46BAC3634054}' }
+        	$lastRendering = $renderings[-1]
+        
+        	$tooltipRendering = Get-Item -Database "master" -Path '/sitecore/layout/Renderings/Feature/Destinations/Amend/Change Fee Tooltip Mobile' | New-Rendering -PlaceHolder "$($lastRendering.Placeholder)/change-fee-info-$($lastRendering.UniqueId)-0"
+        
+        	Add-Rendering -Item $page -Instance $tooltipRendering -PlaceHolder "$($lastRendering.Placeholder)/change-fee-info-$($lastRendering.UniqueId)-0" -DataSource $data
+        }
+        
+        $dataToCopy = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Page Components/Change Fee Info';
+        $copyDestination = '/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary/Page Components/Change Fee Info'
+        $dataToCopy | Copy-Item -Destination $copyDestination
+        
+        $page = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary'
+        $renderings = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq '{87265033-8DAA-4548-8FE4-E55E7DE99998}' }
+        $lastRendering = $renderings[-1]
+        
+        $changeFeeRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Change Fee Info"
+        $changeFeeRendering = Get-Item -Database "master" -Path $changeFeeRenderingPath | New-Rendering -PlaceHolder "body/change-fee-info-$($lastRendering.UniqueId)-0"
+        
+        Add-Rendering -Item $page -Instance $changeFeeRendering -PlaceHolder "/body/change-fee-info-$($lastRendering.UniqueId)-0" -DataSource $copyDestination;
+        
+        
+        createSocialBannerDataSourceLanguageVersions;
+        updateText1;
+        updateText2;
+        addMobileTooltip -Data $copyDestination;
+        updateBasketData; 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250221T105944Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

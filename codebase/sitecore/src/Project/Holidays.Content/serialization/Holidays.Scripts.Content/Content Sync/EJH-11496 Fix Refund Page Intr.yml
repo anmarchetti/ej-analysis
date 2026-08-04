@@ -1,0 +1,33 @@
+﻿---
+ID: "1a7184b6-75ef-484a-8b29-ad36aa5eb072"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-11496 Fix Refund Page Intro Fields"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $creditConfirmPath = '/sitecore/content/EasyJet/Holidays/Home/Booking/Confirm Holiday Credit/Page Components/Credit Confirm'
+    $creditConfirmItem = Get-Item -Path $creditConfirmPath -ErrorAction SilentlyContinue
+    
+    # Update Credit Confirm Content
+    if ($creditConfirmItem -ne $null) {
+    	$creditConfirmItem.Editing.BeginEdit();
+    	$creditConfirmItem["CreditIntro"] = "<h1>Credit your holidays</h1><p>If you change your mind, our industry leading easyJet holidays <a rel='noopener noreferrer' rel='noopener noreferrer' href='https://www.easyjet.com/en/holidays/info/protection-promise' target='_blank'>Protection Promise</a> makes it possible for you to cancel your holiday and receive easyJet holidays credit to your online account.</p><h2>How it works:</h2><ul class='circle-list'> <li>If you want to cancel your holiday and get easyJet holidays credit, check the details below carefully.</li><li>Click `"confirm`" and this will cancel your old holiday. The total amount you've paid will be returned to you as easyJet holidays credit and you'll receive an email confirming this. You can use the credit to book your next holiday or use it to make a payment towards another holiday. Just make sure you're logged in and select the `"credit`" option at the checkout.</li><li>You can view your credit by logging in to your easyJet holidays account. Please note that your credit will have a 12 month expiry date.</li></ul>"
+    	$creditConfirmItem["RefundIntro"] = "<h1>Refund your holidays</h1><p>If you change your mind, our industry leading easyJet holidays <a rel='noopener noreferrer' rel='noopener noreferrer' href='https://www.easyjet.com/en/holidays/info/protection-promise' target='_blank'>Protection Promise</a> makes it possible for you to cancel your holiday and receive easyJet holidays credit to your online account.</p><h2>How it works:</h2><ul class='circle-list'> <li>If you want to cancel your holiday and get easyJet holidays credit, check the details below carefully.</li><li>Click `"confirm`" and this will cancel your old holiday. The total amount you've paid will be returned to you as easyJet holidays credit and you'll receive an email confirming this. You can use the credit to book your next holiday or use it to make a payment towards another holiday. Just make sure you're logged in and select the `"credit`" option at the checkout.</li><li>You can view your credit by logging in to your easyJet holidays account. Please note that your credit will have a 12 month expiry date.</li></ul>"
+        $creditConfirmItem.Editing.EndEdit() | Out-Null
+    
+    	Write-Host $creditConfirmItem.Name "updated";
+    }
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210112T085505Z

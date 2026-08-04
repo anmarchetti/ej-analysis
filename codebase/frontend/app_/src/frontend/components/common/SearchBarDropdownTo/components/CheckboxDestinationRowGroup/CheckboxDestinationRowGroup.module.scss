@@ -1,0 +1,68 @@
+.checkboxRow {
+    position: relative;
+}
+
+.hasMargin {
+    margin-top: 25px;
+}
+
+.btnDisabled {
+    &,
+    svg {
+        color: $colorGrayMiddle !important;
+    }
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: left;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+    }
+
+    &:focus {
+        text-decoration: underline;
+        outline: none;
+    }
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &:active {
+        background: none;
+    }
+}
+
+.markerIcon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    color: $colorBlackLight;
+}
+
+.checkboxRowDropdown {
+    position: absolute;
+    right: 0;
+    padding: 0;
+    background: none;
+    border: none;
+
+    svg {
+        width: 15px;
+        height: 25px;
+        color: $clrEjOrangeLight;
+        cursor: pointer;
+    }
+
+    &.open {
+        svg {
+            transform: rotate(180deg);
+        }
+    }
+}

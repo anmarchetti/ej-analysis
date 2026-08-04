@@ -1,0 +1,18 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgPromo = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='0 0 24 24'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'promo-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <path d='M22.85 12.04l-9.89-9.89c-.41-.4-.96-.65-1.56-.65H3.7c-1.22 0-2.2.98-2.2 2.2v7.7c0 .61.25 1.16.65 1.56l9.9 9.9c.4.4.95.64 1.55.64s1.16-.25 1.56-.64l7.7-7.7c.4-.4.64-.95.64-1.56a2.2 2.2 0 00-.65-1.56zM5.35 7C4.44 7 3.7 6.26 3.7 5.35S4.44 3.7 5.35 3.7 7 4.44 7 5.35 6.26 7 5.35 7z' />
+    </svg>
+);
+
+export default SvgPromo;

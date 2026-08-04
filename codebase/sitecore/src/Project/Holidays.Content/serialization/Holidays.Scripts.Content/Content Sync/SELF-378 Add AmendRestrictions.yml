@@ -1,0 +1,76 @@
+﻿---
+ID: "5f1aaf2b-1655-4235-bbdd-392f86812cbf"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-378 Add AmendRestrictions"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $name, $templateId){
+        $item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue
+    
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $name -ItemType $templateId
+        }
+    
+        return $item
+    }
+    
+    # Create Datasource
+    $amendRestrictionsTemplateId = "{29576CF5-AD86-4451-AE2A-3D788DCBEF89}"
+    $amendRestrictionsTitle = "Amend Restrictions"
+    
+    $amendRestrictions = Get-Or-Create-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components" -Name $amendRestrictionsTitle -TemplateId $amendRestrictionsTemplateId
+    
+    $amendRestrictionsItem = "{A712513A-3D87-4D0E-A4F7-34042B3BAD96}";
+    
+    $noRestrictionItem = Get-Or-Create-Item -Path $amendRestrictions.FullPath -Name "Restrictions Support" -TemplateId $amendRestrictionsItem
+    $noRestrictionItem.Editing.BeginEdit()
+    $noRestrictionItem["Title"] = "Unable to make a change?"
+    $noRestrictionItem["Description"] = "<p>If you can’t see an option to make a particular change for your holiday below, or need a bit of support, visit our help centre for more information on amending your booking</p>"
+    $noRestrictionItem["Icon"] = '<image mediaid="{51A15C31-80B0-4286-9522-30165F61C780}" />'
+    $noRestrictionItem["Link"] = '<link text="Get Help" linktype="external" url="https://www.easyjet.com/en/holidays/help?helpCategory=changes&amp;helpQuestion=amend" anchor="" target="_blank" rel="" />'
+    $noRestrictionItem.Editing.EndEdit()
+    
+    $48hRestrictionItem = Get-Or-Create-Item -Path $amendRestrictions.FullPath -Name "Time Warning" -TemplateId $amendRestrictionsItem
+    $48hRestrictionItem.Editing.BeginEdit()
+    $48hRestrictionItem["Title"] = "You’re just hours away from your holiday!"
+    $48hRestrictionItem["Description"] = "<p>As you’re so close to your trip, you’re no longer able to make any changes to your holiday online. If you have any questions, visit our help centre to see if we have the answer for you</p>"
+    $48hRestrictionItem["Icon"] = '<image mediaid="{51A15C31-80B0-4286-9522-30165F61C780}" />'
+    $48hRestrictionItem["Link"] = '<link text="Get Help" linktype="external" url="https://www.easyjet.com/en/holidays/help" anchor="" target="_blank" rel="" />'
+    $48hRestrictionItem["TimeRestriction"] = "48"
+    $48hRestrictionItem.Editing.EndEdit()
+    
+    # Update rendering
+    $page = Get-Item -Path master:/content/EasyJet/Holidays/Home/Booking/My_Booking
+    $renderingId = "{72540812-D4CA-4539-A79E-B52F56F06927}"
+    $oldRenderingId = "{59660D4A-AEA2-4C41-A118-FF3C1382742A}"
+    $renderigPlaceholder = "/body/amend-restrictions-{5500AC44-5DF4-4473-8E8C-EA635A187882}-0";
+    $oldRenderigPlaceholder = "/body/cant-make-changes-{5500AC44-5DF4-4473-8E8C-EA635A187882}-0";
+    $oldRenderingInstance = Get-Rendering -Item $page -PlaceHolder $oldRenderigPlaceholder
+    
+    if($oldRenderingInstance -ne $null){
+        $oldRenderingInstance.ItemID = $renderingId
+        $oldRenderingInstance.Placeholder = $renderigPlaceholder
+        $oldRenderingInstance.Datasource = $amendRestrictions.FullPath
+        Set-Rendering -Item $page -Instance $oldRenderingInstance -DataSource $amendRestrictions.FullPath
+        Write-Host  "Rendering was updated"
+    }
+    
+    # Remove old data source
+     Get-Item -Path 'master:/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Cant Make Changes' -ErrorAction SilentlyContinue | Remove-Item -Force -Permanently
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20221223T152155Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

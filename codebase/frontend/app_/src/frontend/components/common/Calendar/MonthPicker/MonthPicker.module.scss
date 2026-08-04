@@ -1,0 +1,174 @@
+.monthPicker {
+    display: flex;
+    flex-direction: column;
+    height: 42px;
+
+    @include media-breakpoint-down(lg) {
+        width: 100vw;
+        background-color: $colorPorcelain;
+    }
+
+    @include media-breakpoint-up(md) {
+        align-items: flex-end;
+    }
+
+    .monthPickerButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        font-size: 14px;
+        font-weight: 400;
+
+        svg {
+            width: 16px;
+            height: 10px;
+        }
+
+        @include media-breakpoint-up(md) {
+            width: 170px;
+            min-height: 50px;
+        }
+    }
+}
+
+.monthPickerContent {
+    z-index: $z-index-dropdown;
+    width: 100vw;
+    background-color: $colorWhite;
+
+    @include media-breakpoint-up(md) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 320px;
+        margin-top: 3px;
+        background: $colorWhite;
+        border: 1px solid $colorGeyser;
+        border-radius: 2px;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+    }
+}
+
+.monthPickerControls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px;
+
+    .monthsGridContainer {
+        width: 100%;
+        padding: 24px 0;
+    }
+
+    .monthsGrid {
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        width: 100%;
+        height: 144px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-up(md) {
+            min-width: 296px;
+        }
+
+        li {
+            padding: 4px;
+
+            @include media-breakpoint-down(lg) {
+                flex-basis: 25%;
+            }
+        }
+
+        button {
+            width: 100%;
+            padding: 11px 0;
+            color: $colorBlackLight;
+            background: $colorWhite;
+            border: 1px solid $colorWhite;
+            border-radius: 4px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+            @include media-breakpoint-up(md) {
+                width: 66px;
+                height: 40px;
+            }
+        }
+
+        .active {
+            button {
+                border-color: $clrEjOrange;
+            }
+        }
+
+        .unavailable {
+            button {
+                color: $colorSilverDark;
+                text-decoration: line-through;
+                box-shadow: none;
+            }
+        }
+    }
+}
+
+.yearChange {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 24px 0;
+    border-bottom: 1px solid $colorGeyser;
+
+    @include media-breakpoint-up(md) {
+        width: 288px;
+    }
+
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+        margin: 0;
+        -webkit-appearance: none;
+    }
+
+    .yearChangeButton {
+        height: 26px;
+        padding: 0 16px;
+        color: $clrEjOrange;
+        background: none;
+        border: none;
+    }
+
+    .minYear {
+        padding-left: 48px;
+    }
+
+    .maxYear {
+        padding-right: 48px;
+    }
+
+    .yearChangeInput {
+        max-height: 26px;
+        font-family: $fontRoundedBook;
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 1;
+    }
+}
+
+.monthPickerActions {
+    width: 100%;
+    padding: 16px;
+    background: $colorWhite;
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.16);
+}
+
+.pageGreyOverlay {
+    position: absolute;
+    z-index: $z-index-over-element;
+    top: 42px;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+}

@@ -1,0 +1,34 @@
+.sliderContainer {
+    padding-bottom: 40px;
+
+    :global(.react-multi-carousel-dot-list) {
+        align-items: center;
+    }
+
+    :global(.react-multi-carousel-dot) {
+        button {
+            display: block;
+            width: 8px;
+            height: 8px;
+            margin-right: 10px;
+            background: $colorGray;
+            border: none;
+        }
+    }
+
+    :global(.react-multi-carousel-dot--active) {
+        button {
+            width: 10px;
+            height: 10px;
+            background: $clrEjOrange;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        padding-bottom: 20px;
+
+        :global(.carousel-button-group) {
+            display: none;
+        }
+    }
+}

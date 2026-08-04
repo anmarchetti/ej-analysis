@@ -1,0 +1,65 @@
+.priceWrapper:hover {
+    opacity: 1;
+}
+
+.priceContainer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 15px 15px;
+    font-family: $fontRoundedBook;
+    background: $clrSiteBgWhite;
+
+    @include media-breakpoint-down(md) {
+        top: 0;
+        right: auto;
+        bottom: auto;
+        left: 0;
+        padding: 15px 15px 10px;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: -20px;
+        right: 0;
+        display: block;
+        width: 100%;
+        height: 20px;
+        background-image: linear-gradient(-6.1deg, $clrSiteBgWhite 49%, rgba(255, 255, 255, 0) 51%);
+
+        @include media-breakpoint-down(md) {
+            top: auto;
+            right: auto;
+            bottom: -19px;
+            left: 0;
+            background-image: linear-gradient(-183.9deg, $clrSiteBgWhite 49%, rgba(255, 255, 255, 0) 51%);
+        }
+    }
+}
+
+.priceContainerAlt {
+    padding: 10px 15px 5px;
+}
+
+.priceContainerPrefix {
+    font-size: 14px;
+    font-weight: 700;
+    color: $clrTextMain;
+}
+
+.priceContainerPrice {
+    font-size: 24px;
+    color: $clrEjOrange;
+}
+
+.priceContainerSuffix {
+    font-size: 18px;
+    color: $clrEjOrange;
+}
+
+.alignRight {
+    text-align: right;
+}

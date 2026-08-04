@@ -1,0 +1,59 @@
+﻿---
+ID: "429516c6-f1b6-43f6-9074-4211de2d8a11"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14276 search filters"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $timePath = "/sitecore/system/Settings/Foundation/Destinations/Filters/Time Filters"
+    
+    $searchFiltersTemplateId = "{2743018F-E73C-437F-BE33-FF0EA923C9FA}"
+    $flightsFiltersTemplateId = "{1814B832-3501-4BF1-834C-60962AFC02B3}"
+    $timeFilterTemplateId = "{8F0C90D9-15F7-4200-86D8-A59D03E54AD3}"
+    
+    $inboundFilterPath = "/sitecore/system/Settings/Foundation/Destinations/Filters/Flights Filters Sort Order Settings/Inbound Departure Time"
+    $outboundFilterPath = "/sitecore/system/Settings/Foundation/Destinations/Filters/Flights Filters Sort Order Settings/Outbound Departure Time"
+    
+    $searchFiltersPath = "/sitecore/content/EasyJet/Holidays/Data/Search Filters"
+    $flightsFiltersPath = "/sitecore/content/EasyJet/Holidays/Data/Search Filters/Flights Filters"
+    $inboundTimeFilterPath = "/sitecore/content/EasyJet/Holidays/Data/Search Filters/Flights Filters/Inbound Departure Time"
+    $outboundTimeFilterPath = "/sitecore/content/EasyJet/Holidays/Data/Search Filters/Flights Filters/Outbound Departure Time"
+    
+    
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $templateId
+        }
+        return $item
+    }
+    
+    function Update-Time-Filter-Item($item, $filterTypeId, $timeIds){
+        $item.Editing.BeginEdit()
+        $item.Fields["FilterType"].Value = $filterTypeId
+        $item.Fields["Time"].Value = $timeIds
+        $item.Editing.EndEdit()
+    }
+    
+    $ids = [string]::Join("|", ((Get-Item -Path $timePath).Children | Select-Object -ExpandProperty Id))
+    
+    $inboundTime = Get-Item -Path $inboundFilterPath
+    $outboundTime = Get-Item -Path $outboundFilterPath
+    
+    Get-Or-Create-Item -Path $searchFiltersPath -TemplateId $searchFiltersTemplateId
+    Get-Or-Create-Item -Path $flightsFiltersPath -TemplateId $flightsFiltersTemplateId
+    $inboundItem = Get-Or-Create-Item -Path $inboundTimeFilterPath -TemplateId $timeFilterTemplateId
+    $outboundItem = Get-Or-Create-Item -Path $outboundTimeFilterPath -TemplateId $timeFilterTemplateId
+    Update-Time-Filter-Item -Item $inboundItem -FilterTypeId $inboundTime.Id -TimeIds $ids
+    Update-Time-Filter-Item -Item $outboundItem -FilterTypeId $outboundTime.Id -TimeIds $ids
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20211102T121332Z

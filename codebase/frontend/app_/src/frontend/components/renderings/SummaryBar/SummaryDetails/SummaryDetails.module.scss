@@ -1,0 +1,30 @@
+@import '../SummaryDetails/SummaryDetails.variables.modules';
+@import 'src/styles/configs/colors';
+
+.container {
+    padding: 0;
+
+    @include media-breakpoint-down(lg) {
+        padding: 0 16px;
+    }
+}
+
+.category {
+    margin-top: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid $borderColorGray;
+}
+
+.titleWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    svg {
+        flex-shrink: 0;
+    }
+
+    h3 {
+        white-space: normal;
+    }
+}

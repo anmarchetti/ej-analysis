@@ -1,0 +1,67 @@
+.item {
+    position: relative;
+    margin: 0;
+    padding-left: 35px;
+
+    :global {
+        .checkbox {
+            justify-content: flex-start;
+        }
+
+        svg {
+            flex: 0 0 auto;
+            max-width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+
+        .checkbox__control {
+            margin-right: 15px;
+        }
+
+        .checkbox--disabled {
+            .icon-geolocation {
+                opacity: 0.4;
+            }
+        }
+    }
+}
+
+.error {
+    margin-left: 36px;
+
+    :global {
+        .error-message {
+            margin-bottom: 0;
+
+            @include media-breakpoint-down(md) {
+                margin-top: 0 !important;
+                margin-right: 0 !important;
+                margin-left: 0 !important;
+            }
+        }
+
+        .error-message__icon svg {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+        }
+
+        .error-message__container {
+            display: flex;
+            justify-content: center;
+            font-size: 12px;
+            line-height: 1.33;
+
+            .error-message__label,
+            .error-message__description {
+                font-size: 12px;
+                line-height: 1.33;
+            }
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-left: 0;
+    }
+}

@@ -1,0 +1,86 @@
+﻿---
+ID: "d1759033-dccd-4c10-831a-b4e712cbee9c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-7279-Media-Center-Topic"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $topicTilesTemplateId = "{CA444CE8-C12C-4378-B14E-BD9DE6D977DE}"
+    $topicTileTemplateId = "{36087EFF-A4C3-4749-A0FB-E2D310138FC1}"
+    $topicTemplateId = "{BA13D0EE-2A1A-493B-A047-9D149D5D43B9}"
+    
+    function Get-Or-Create-Item($path, $name, $templateId){
+        $item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $name -ItemType $templateId
+        }
+        
+        return $item
+    }
+    
+    
+    function Create-TopicTile($name, $title, $topicId){
+        $item = Get-Or-Create-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Media Center/Topics Tiles" -Name $name -TemplateId $topicTileTemplateId
+        $item.Editing.BeginEdit()
+        $item.Fields["Title"].Value = $title
+        $item.Fields["Topic"].Value = $topicId
+        $item.Editing.EndEdit() > $null
+    }
+    
+    function Create-Topic($name, $title){
+        $item = Get-Or-Create-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Media Center/Topics" -Name $name -TemplateId $topicTemplateId
+        $item.Editing.BeginEdit()
+        $item.Fields["Name"].Value = $name
+        $item.Editing.EndEdit() > $null
+        return $item
+    }
+    
+    
+    function Create-TopicTiles(){
+        $topicTiles = Get-Or-Create-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Media Center" -Name "Topics Tiles" -TemplateId $topicTilesTemplateId
+        
+        $topicTiles.Editing.BeginEdit()
+        $topicTiles.Fields["Title"].Value = "Topics"
+        $topicTiles.Editing.EndEdit() > $null
+        
+        Create-TopicTile -name "All Press Release" -title "All Press Release" 
+        
+        $corporate = Create-Topic -name "Corporate and Finance"
+        Create-TopicTile -name "Corporate and Finance" -title "Corporate & Finance" -topicId $corporate.ID
+        
+        $innovation = Create-Topic -name "Innovation"
+        Create-TopicTile -name "Innovation" -title "Innovation" -topicId $innovation.ID
+        
+        $routes = Create-Topic -name "New Routes"
+        Create-TopicTile -name "New Routes" -title "New Routes" -topicId $routes.ID
+        
+        $people = Create-Topic -name "Our People"
+        Create-TopicTile -name "Our People" -title "Our People" -topicId $people.ID
+        
+        $sustainability = Create-Topic -name "Sustainability"
+        Create-TopicTile -name "Sustainability" -title "Sustainability" -topicId $sustainability.ID
+        
+        $mediaCenter = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Media Center"
+        
+        Get-Rendering -Placeholder "/body/component-wrapper-inner-{77D3DB25-43FA-4C9A-BE1B-865B701E8126}-0" -Item $mediaCenter |
+        Foreach-Object { 
+            if($_.ItemId -eq "{7B51D7FC-C940-4381-A8AA-3A5B82ABF071}"){
+                $_.DataSource = $topicTiles.Id
+                Set-Rendering -Item $mediaCenter -Instance $_
+            }
+    
+        }
+    }
+    
+    Create-TopicTiles
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201116T123411Z

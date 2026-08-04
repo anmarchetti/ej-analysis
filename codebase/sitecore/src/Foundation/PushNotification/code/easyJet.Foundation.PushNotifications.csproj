@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <ItemGroup>
+        <PackageReference Include="Sitecore.Framework.Conditions" />
+        <PackageReference Include="Sitecore.Framework.Configuration.Extensions" />
+        <PackageReference Include="Sitecore.Framework.Rules" />
+        <PackageReference Include="Sitecore.Framework.Rules.Abstractions" />
+        <PackageReference Include="Sitecore.XConnect" />
+        <PackageReference Include="Sitecore.XConnect.Client" />
+        <PackageReference Include="Sitecore.XConnect.Client.Configuration" />
+        <PackageReference Include="Sitecore.XConnect.Collection.Model" />
+        <PackageReference Include="Sitecore.XConnect.Core" />
+        <PackageReference Include="Sitecore.XConnect.Segmentation.Predicates" />
+        <PackageReference Include="Sitecore.XConnect.Service" />
+        <PackageReference Include="Sitecore.Xdb.MarketingAutomation.Core" />
+    </ItemGroup>
+    <ItemGroup>
+        <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)SitecoreProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GeneratedAssemblyInfoFile>Properties\Assemblyinfo.cs</GeneratedAssemblyInfoFile>
+    </PropertyGroup>
+</Project>

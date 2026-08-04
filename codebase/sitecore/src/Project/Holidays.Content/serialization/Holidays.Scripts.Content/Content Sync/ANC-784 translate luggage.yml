@@ -1,0 +1,207 @@
+﻿---
+ID: "4f22aeef-8310-4b17-957d-c7f382af2d08"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-784 translate luggage"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $holdLuggagePath = "master:/sitecore/content/EasyJet/Holidays/Data/Hold Luggage"
+    $luggagePath15kg = "master:/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage/Hold Baggage 15kg"
+    $luggagePath23kg = "master:/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage/Hold Baggage 23kg"
+    $bicyclePath = "master:/sitecore/content/EasyJet/Holidays/Data/Luggage/Large Sports Equipment/Bicycle"
+    $boatPath = "master:/sitecore/content/EasyJet/Holidays/Data/Luggage/Large Sports Equipment/CanoeKayak"
+    $prepaidPath = "master:/sitecore/content/EasyJet/Holidays/Data/Luggage/Pre Paid Excess Weight/Pre Paid Excess Weight 3kg"
+    $gbagPath = "master:/sitecore/content/EasyJet/Holidays/Data/Luggage/Small Sports Equipment/Golf Bag"
+    
+    function updateLuggageText($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+        }
+       
+    
+        
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+        }
+       
+    }
+    
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'Title' -Translation "VOS BAGAGES DE SOUTE"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'HoldLuggageAndSportsSubtitle' -Translation "Chaque passager dispose d'un sac de 23 kg, mais peut ajouter jusqu'à 3 bagages supplémentaires ou un équipement sportif par passager."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'HoldLuggageSubtitle' -Translation "Chaque passager dispose d'un sac de 23 kg, mais peut ajouter jusqu'à 3 bagages supplémentaires par passager."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'SportsSubtitle' -Translation "Chaque passager dispose d'un sac de 23 kg, mais peut ajouter un équipement sportif par passager."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'OutboundAndReturnTextMultiple' -Translation "Postes <strong>{count}</strong> - Aller et retour"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'OutboundAndReturnTextSingular' -Translation "1 poste - aller et retour"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'IncludedForFreeText' -Translation "Inclus gratuitement"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'BagCountHeading' -Translation "<strong>{count}</strong> x 23kg sacs de rétention"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'BagCountDescription' -Translation "Maximum 23 kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'PramHeading' -Translation "Landau"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'PramDescription' -Translation "1 landau ou poussette par enfant. Aller et retour."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'BagExtraPrice' -Translation "Bagages supplémentaires à partir de <strong>{price}</strong> par article"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'AddButtonText' -Translation "Ajouter un bagage en soute supplémentaire"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'SportsExtraPrice' -Translation "Équipement sportif à partir de <strong>{price}</strong> par article"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'BagExtraDescription' -Translation "<p>Ajouter un article de {nombre}kg au bagage en soute pour seulement <strong>{price}</strong> par article, par vol</p><p>Tous les bagages en soute sont applicables aux vols aller et retour.</p>"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'BagExtraSportDescription' -Translation "</p>Tous les bagages en soute sont applicables aux vols aller et retour.<p>"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'HoldLuggageAndSportHeading' -Translation "Ajouter des bagages de soute supplémentaires ou des équipements sportifs"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'HoldLuggageHeading' -Translation "Ajouter un bagage de soute supplémentaire"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'SportsHeading' -Translation "Ajouter un équipement sportif"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'EditButtonText' -Translation "Modifier les bagages de soute"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'RequestFailureHeader' -Translation "L'ajout de bagages en soute n'est pas disponible pour le moment."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'RequestFailureDescription' -Translation "Nous sommes désolés, la possibilité d'ajouter des bagages en soute n'est actuellement pas disponible pour ces vols. Vous pouvez toujours réserver vos vacances et ajouter des bagages ultérieurement."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'RequestFailureAltSubtitle' -Translation "Chaque passager dispose d'un sac de 23 kg. Des bagages de soute supplémentaires peuvent être ajoutés ultérieurement."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'SportTitle' -Translation "{count} x Matériel de sport"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'SportDescription' -Translation "Stockés dans la soute de l'avion. Aller et retour."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'EditLabel' -Translation "Editer"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'UnavailableMessageHeader' -Translation "L'ajout de bagages en soute est actuellement indisponible"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'UnavailableMessageDescription' -Translation "Nous sommes désolés, l'ajout de bagages en soute n'est actuellement pas disponible pour ce vol. Vous pouvez toujours sélectionner votre vol et ajouter vos bagages ultérieurement."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'InternalFlightHeader' -Translation " Vous souhaitez ajouter des sacs ?"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'InternalFlightDescription' -Translation "Les bagages en soute pourront être achetés 30 jours avant le départ du vol. Veuillez revenir pour ajouter d'autres bagages de soute."
+    
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'Title' -Translation "VOS BAGAGES DE SOUTE"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'HoldLuggageAndSportsEquipmentSubtitle' -Translation "Chaque passager dispose d'un sac de 23 kg, mais peut ajouter jusqu'à 3 bagages supplémentaires ou un équipement sportif par passager."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'HoldLuggageSubtitle' -Translation "Chaque passager dispose d'un sac de 23 kg, mais peut ajouter jusqu'à 3 bagages supplémentaires par passager."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'SportsSubtitle' -Translation "Chaque passager dispose d'un sac de 23 kg, mais peut ajouter un équipement sportif par passager."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'OutboundAndReturnTextMultiple' -Translation "Postes <strong>{count}</strong> - Aller et retour"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'OutboundAndReturnTextSingular' -Translation "1 poste - aller et retour"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'IncludedForFreeText' -Translation "Inclus gratuitement"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'BagCountHeading' -Translation "<strong>{count}</strong> x 23kg sacs de rétention"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'BagCountDescription' -Translation "Maximum 23 kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'PramHeading' -Translation "Landau"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'PramDescription' -Translation "1 landau ou poussette par enfant. Aller et retour."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'BagExtraPrice' -Translation "Bagages supplémentaires à partir de <strong>{price}</strong> par article"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'AddButtonText' -Translation "Ajouter un bagage en soute supplémentaire"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'SportsExtraPrice' -Translation "Équipement sportif à partir de <strong>{price}</strong> par article"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'BagExtraDescription' -Translation "<p>Ajouter un article de {nombre}kg au bagage en soute pour seulement <strong>{price}</strong> par article, par vol</p><p>Tous les bagages en soute sont applicables aux vols aller et retour.</p>"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'BagExtraSportDescription' -Translation "</p>Tous les bagages en soute sont applicables aux vols aller et retour.<p>"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'HoldLuggageAndSportHeading' -Translation "Ajouter des bagages de soute supplémentaires ou des équipements sportifs"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'HoldLuggageHeading' -Translation "Ajouter un bagage de soute supplémentaire"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'SportsHeading' -Translation "Ajouter un équipement sportif"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'EditButtonText' -Translation "Modifier les bagages de soute"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'RequestFailureHeader' -Translation "L'ajout de bagages en soute n'est pas disponible pour le moment."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'RequestFailureDescription' -Translation "Nous sommes désolés, la possibilité d'ajouter des bagages en soute n'est actuellement pas disponible pour ces vols. Vous pouvez toujours réserver vos vacances et ajouter des bagages ultérieurement."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'RequestFailureAltSubtitle' -Translation "Chaque passager dispose d'un sac de 23 kg. Des bagages de soute supplémentaires peuvent être ajoutés ultérieurement."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'SportTitle' -Translation "{count} x Matériel de sport"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'SportDescription' -Translation "Stockés dans la soute de l'avion. Aller et retour."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'EditLabel' -Translation "Editer"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'Unavailable Message Header' -Translation "L'ajout de bagages en soute est actuellement indisponible"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'Unavailable Message Description' -Translation "Nous sommes désolés, l'ajout de bagages en soute n'est actuellement pas disponible pour ce vol. Vous pouvez toujours sélectionner votre vol et ajouter vos bagages ultérieurement."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'InternalFlightHeader' -Translation " Vous souhaitez ajouter des sacs ?"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'InternalFlightDescription' -Translation "Les bagages en soute pourront être achetés 30 jours avant le départ du vol. Veuillez revenir pour ajouter d'autres bagages de soute."
+    
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'Title' -Translation "IHR AUFGEGEBENES GEPÄCK"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'HoldLuggageAndSportsEquipmentSubtitle' -Translation "Jeder Passagier hat ein Gepäckstück von 23 kg dabei, kann aber bis zu 3 weitere Gepäckstücke oder ein Sportgerät pro Passagier hinzufügen."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'HoldLuggageSubtitle' -Translation "Jeder Passagier hat ein Gepäckstück von 23 kg dabei, kann aber bis zu 3 weitere Gepäckstücke pro Passagier hinzufügen."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'SportsSubtitle' -Translation "Für jeden Passagier ist eine 23 kg schwere Tasche inbegriffen, aber jeder Passagier kann eine Sportausrüstung hinzufügen."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'OutboundAndReturnTextMultiple' -Translation "<strong>{count}</strong> Positionen - Ausgehend und zurück"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'OutboundAndReturnTextSingular' -Translation "1 Posten - Ausreise und Rückreise"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'IncludedForFreeText' -Translation "Kostenlos inbegriffen"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'BagCountHeading' -Translation "<strong>{count}</strong> x 23kg-Säcke"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'BagCountDescription' -Translation "Maximal 23 kg pro Tasche, Lagerung im Frachtraum des Flugzeugs. Hin- und Rückflug."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'PramHeading' -Translation "Kinderwagen"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'PramDescription' -Translation "1 Kinderwagen oder Buggy pro Kind. Hin- und Rückflug."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'BagExtraPrice' -Translation "Zusätzliches Gepäck ab <strong>{price}</strong> pro Stück"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'AddButtonText' -Translation "Zusätzliches aufgegebenes Gepäck hinzufügen"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'SportsExtraPrice' -Translation "Sportgeräte ab <strong>{price}</strong> pro Stück"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'BagExtraDescription' -Translation "<p>Fügen Sie dem aufgegebenen Gepäck ein {Anzahl}kg Stück für nur <strong>{price}</strong> pro Stück, pro Flug hinzu</p><p>Alle aufgegebenen Gepäckstücke sind sowohl für Hin- als auch für Rückflüge gültig.</p>"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'BagExtraSportDescription' -Translation "<p>Das gesamte aufgegebene Gepäck gilt sowohl für Hin- als auch für Rückflüge.</p>"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'HoldLuggageAndSportHeading' -Translation "Zusätzliches Handgepäck oder Sportausrüstung hinzufügen"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'HoldLuggageHeading' -Translation "Zusätzliches Handgepäck hinzufügen"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'SportsHeading' -Translation "Sportgeräte hinzufügen"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'EditButtonText' -Translation "Laderaumgepäck bearbeiten"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'RequestFailureHeader' -Translation "Das Hinzufügen von aufgegebenem Gepäck ist zur Zeit nicht möglich."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'RequestFailureDescription' -Translation "Es tut uns leid, aber die Möglichkeit, aufgegebenes Gepäck hinzuzufügen, ist für diese Flüge derzeit nicht verfügbar. Sie können Ihren Urlaub trotzdem buchen und zu einem späteren Zeitpunkt Gepäck hinzufügen."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'RequestFailureAltSubtitle' -Translation "Jeder Passagier hat ein Gepäckstück von 23 kg dabei. Zusätzliches Gepäck kann zu einem späteren Zeitpunkt hinzugefügt werden"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'SportTitle' -Translation "{count} x Sportgeräte"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'SportDescription' -Translation "Wird im Frachtraum des Flugzeugs aufbewahrt. Hin- und Rückflug"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'EditLabel' -Translation "Bearbeiten"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'UnavailableMessageHeader' -Translation "Das Hinzufügen von aufgegebenem Gepäck ist derzeit nicht möglich"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'UnavailableMessageDescription' -Translation "Es tut uns leid, das Hinzufügen von aufgegebenem Gepäck ist für diesen Flug derzeit nicht möglich. Sie können Ihren Flug immer noch auswählen und Ihr Gepäck zu einem späteren Zeitpunkt hinzufügen."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'InternalFlightHeader' -Translation " Möchten Sie weitere Taschen hinzufügen?"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-DE" -Key 'InternalFlightDescription' -Translation "Aufgegebenes Gepäck kann 30 Tage vor dem Abflug erworben werden. Bitte schauen Sie wieder vorbei, um weiteres Gepäck hinzuzufügen."
+    
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'Title' -Translation "IHR AUFGEGEBENES GEPÄCK"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'HoldLuggageAndSportsEquipmentSubtitle' -Translation "Jeder Passagier hat ein Gepäckstück von 23 kg dabei, kann aber bis zu 3 weitere Gepäckstücke oder ein Sportgerät pro Passagier hinzufügen."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'HoldLuggageSubtitle' -Translation "Jeder Passagier hat ein Gepäckstück von 23 kg dabei, kann aber bis zu 3 weitere Gepäckstücke pro Passagier hinzufügen."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'SportsSubtitle' -Translation "Für jeden Passagier ist eine 23 kg schwere Tasche inbegriffen, aber jeder Passagier kann eine Sportausrüstung hinzufügen."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'OutboundAndReturnTextMultiple' -Translation "<strong>{count}</strong> Positionen - Ausgehend und zurück"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'OutboundAndReturnTextSingular' -Translation "1 Posten - Ausreise und Rückreise"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'IncludedForFreeText' -Translation "Kostenlos inbegriffen"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'BagCountHeading' -Translation "<strong>{count}</strong> x 23kg-Säcke"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'BagCountDescription' -Translation "Maximal 23 kg pro Tasche, Lagerung im Frachtraum des Flugzeugs. Hin- und Rückflug."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'PramHeading' -Translation "Kinderwagen"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'PramDescription' -Translation "1 Kinderwagen oder Buggy pro Kind. Hin- und Rückflug."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'BagExtraPrice' -Translation "Zusätzliches Gepäck ab <strong>{price}</strong> pro Stück"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'AddButtonText' -Translation "Zusätzliches aufgegebenes Gepäck hinzufügen"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'SportsExtraPrice' -Translation "Sportgeräte ab <strong>{price}</strong> pro Stück"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'BagExtraDescription' -Translation "<p>Fügen Sie dem aufgegebenen Gepäck ein {Anzahl}kg Stück für nur <strong>{price}</strong> pro Stück, pro Flug hinzu</p><p>Alle aufgegebenen Gepäckstücke sind sowohl für Hin- als auch für Rückflüge gültig.</p>"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'BagExtraSportDescription' -Translation "<p>Das gesamte aufgegebene Gepäck gilt sowohl für Hin- als auch für Rückflüge.</p>"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'HoldLuggageAndSportHeading' -Translation "Zusätzliches Handgepäck oder Sportausrüstung hinzufügen"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'HoldLuggageHeading' -Translation "Zusätzliches Handgepäck hinzufügen"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'SportsHeading' -Translation "Sportgeräte hinzufügen"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'EditButtonText' -Translation "Laderaumgepäck bearbeiten"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'RequestFailureHeader' -Translation "Das Hinzufügen von aufgegebenem Gepäck ist zur Zeit nicht möglich."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'RequestFailureDescription' -Translation "Es tut uns leid, aber die Möglichkeit, aufgegebenes Gepäck hinzuzufügen, ist für diese Flüge derzeit nicht verfügbar. Sie können Ihren Urlaub trotzdem buchen und zu einem späteren Zeitpunkt Gepäck hinzufügen."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'RequestFailureAltSubtitle' -Translation "Jeder Passagier hat ein Gepäckstück von 23 kg dabei. Zusätzliches Gepäck kann zu einem späteren Zeitpunkt hinzugefügt werden"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'SportTitle' -Translation "{count} x Sportgeräte"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'SportDescription' -Translation "Wird im Frachtraum des Flugzeugs aufbewahrt. Hin- und Rückflug"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'EditLabel' -Translation "Bearbeiten"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'UnavailableMessageHeader' -Translation "Das Hinzufügen von aufgegebenem Gepäck ist derzeit nicht möglich"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'UnavailableMessageDescription' -Translation "Es tut uns leid, das Hinzufügen von aufgegebenem Gepäck ist für diesen Flug derzeit nicht möglich. Sie können Ihren Flug immer noch auswählen und Ihr Gepäck zu einem späteren Zeitpunkt hinzufügen."
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'InternalFlightHeader' -Translation " Möchten Sie weitere Taschen hinzufügen?"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "de-CH" -Key 'InternalFlightDescription' -Translation "Aufgegebenes Gepäck kann 30 Tage vor dem Abflug erworben werden. Bitte schauen Sie wieder vorbei, um weiteres Gepäck hinzuzufügen."
+    
+    updateLuggageText -ItemPath $luggagePath15kg -Language 'fr-FR' -Key 'Name' -Translation "Bagages en soute 15kg"
+    updateLuggageText -ItemPath $luggagePath15kg -Language 'fr-FR' -Key 'Description' -Translation "Maximum 15 kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+    updateLuggageText -ItemPath $luggagePath15kg -Language 'fr-CH' -Key 'Name' -Translation "Bagages en soute 15kg"
+    updateLuggageText -ItemPath $luggagePath15kg -Language 'fr-CH' -Key 'Description' -Translation "Maximum 15kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+    updateLuggageText -ItemPath $luggagePath15kg -Language 'de-DE' -Key 'Name' -Translation "Aufgegebenes Gepäck 15kg"
+    updateLuggageText -ItemPath $luggagePath15kg -Language 'de-DE' -Key 'Description' -Translation "Maximal 15kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+    updateLuggageText -ItemPath $luggagePath15kg -Language 'de-CH' -Key 'Name' -Translation "Aufgegebenes Gepäck 15kg"
+    updateLuggageText -ItemPath $luggagePath15kg -Language 'de-CH' -Key 'Description' -Translation "Maximal 15kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+    
+    updateLuggageText -ItemPath $luggagePath23kg -Language 'fr-FR' -Key 'Name' -Translation "Bagages en soute 23kg"
+    updateLuggageText -ItemPath $luggagePath23kg -Language 'fr-FR' -Key 'Description' -Translation "Maximum 23kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+    updateLuggageText -ItemPath $luggagePath23kg -Language 'fr-CH' -Key 'Name' -Translation "Bagages en soute 23kg"
+    updateLuggageText -ItemPath $luggagePath23kg -Language 'fr-CH' -Key 'Description' -Translation "Maximum 23kg par sac, stocké dans la soute de l'avion. A l'aller et au retour."
+    updateLuggageText -ItemPath $luggagePath23kg -Language 'de-DE' -Key 'Name' -Translation "Aufgegebenes Gepäck 23kg"
+    updateLuggageText -ItemPath $luggagePath23kg -Language 'de-DE' -Key 'Description' -Translation "Maximal 23kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+    updateLuggageText -ItemPath $luggagePath23kg -Language 'de-CH' -Key 'Name' -Translation "Aufgegebenes Gepäck 23kg"
+    updateLuggageText -ItemPath $luggagePath23kg -Language 'de-CH' -Key 'Description' -Translation "Maximal 23kg pro Tasche, die im Frachtraum des Flugzeugs aufbewahrt wird. Hin- und Rückflug."
+    
+    updateLuggageText -ItemPath $bicyclePath -Language 'fr-FR' -Key 'Name' -Translation "Bicyclette"
+    updateLuggageText -ItemPath $bicyclePath -Language 'fr-CH' -Key 'Name' -Translation "Bicyclette"
+    updateLuggageText -ItemPath $bicyclePath -Language 'de-DE' -Key 'Name' -Translation "Fahrrad"
+    updateLuggageText -ItemPath $bicyclePath -Language 'de-CH' -Key 'Name' -Translation "Fahrrad"
+    
+    updateLuggageText -ItemPath $boatPath -Language 'fr-FR' -Key 'Name' -Translation "Canoë/Kayak"
+    updateLuggageText -ItemPath $boatPath -Language 'fr-CH' -Key 'Name' -Translation "Canoë/Kayak"
+    updateLuggageText -ItemPath $boatPath -Language 'de-DE' -Key 'Name' -Translation "Kanu/Kajak"
+    updateLuggageText -ItemPath $boatPath -Language 'de-CH' -Key 'Name' -Translation "Kanu/Kajak"
+    
+    updateLuggageText -ItemPath $prepaidPath -Language 'fr-FR' -Key 'Name' -Translation "Poids excédentaire prépayé 3kg"
+    updateLuggageText -ItemPath $prepaidPath -Language 'fr-CH' -Key 'Name' -Translation "Poids excédentaire prépayé 3kg"
+    updateLuggageText -ItemPath $prepaidPath -Language 'de-DE' -Key 'Name' -Translation "Vorausbezahltes Übergewicht 3kg"
+    updateLuggageText -ItemPath $prepaidPath -Language 'de-CH' -Key 'Name' -Translation "Vorausbezahltes Übergewicht 3kg"
+    
+    updateLuggageText -ItemPath $gbagPath -Language 'fr-FR' -Key 'Name' -Translation "Sac de golf"
+    updateLuggageText -ItemPath $gbagPath -Language 'fr-CH' -Key 'Name' -Translation "Sac de golf"
+    updateLuggageText -ItemPath $gbagPath -Language 'de-DE' -Key 'Name' -Translation "Golftasche"
+    updateLuggageText -ItemPath $gbagPath -Language 'de-CH' -Key 'Name' -Translation "Golftasche"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 410
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231228T093505Z

@@ -1,0 +1,42 @@
+.holdLuggageInfoBanner {
+    a.button {
+        flex-shrink: 0;
+        margin-left: 24px;
+        padding-right: 16px;
+        padding-left: 16px;
+        white-space: nowrap;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 10px;
+            margin-left: 31px;
+            white-space: normal;
+        }
+    }
+
+    a.button.confirmationButton {
+        white-space: nowrap;
+        @include media-breakpoint-up(md) {
+            min-width: 220px;
+            max-width: 300px;
+        }
+
+        span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .infoBlock {
+        justify-content: space-between;
+        margin-top: 24px;
+        font-size: 14px;
+        border: 1px solid $colorMercury;
+        box-shadow: none;
+        padding: 16px 24px !important;
+
+        @include media-breakpoint-down(md) {
+            align-items: flex-start;
+            padding: 16px !important;
+        }
+    }
+}

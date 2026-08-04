@@ -1,0 +1,369 @@
+﻿---
+ID: "957c601e-8aad-4ac5-a761-7b311d801efc"
+Parent: "b8c56fd2-1e24-4961-884b-de21791ff5c5"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/Manual/WP-559 Contact us - Activate New Entries final"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $parentItemPath = "/sitecore/content/EasyJet/Holidays/Home/Help/Contact Form/Page Components/Contact Us Questions Folder"
+    $formItemPath = "/sitecore/content/EasyJet/Holidays/Home/Help/Contact Form/Page Components/Form"
+    $selectedQuestionsFieldName = "QuestionList"
+    $templateId = "{5E2EB6D4-B7BA-45A1-A5FE-9FE583874200}"
+    function Add-ToSitecoreMultilist {
+        param(
+            [Parameter(Mandatory=$true)]
+            [string]$path,
+            [Parameter(Mandatory=$true)]
+            [string]$language,
+        
+            [Parameter(Mandatory=$true)]
+            [string]$fieldName,
+            [Parameter(Mandatory=$true)]
+            [string[]]$idsToAdd
+        )
+     $item = Get-Item -Path $path -Language $language
+    
+        $item.Editing.BeginEdit()
+        try {
+            $existingIds=$item[$fieldName]
+            $currentIds =  $existingIds -split '\|'
+            foreach ($idToAdd in $idsToAdd) {
+                if ($currentIds -notcontains $idToAdd) {
+                    $currentIds += $idToAdd
+                    Write-Host "ID added: $idToAdd"
+                }
+            }
+    
+            $item[$fieldName] = $currentIds -join "|"
+            $item.Editing.EndEdit()
+        } catch {
+            $item.Editing.CancelEdit()
+            Write-Host "Error adding IDs"
+        }
+    }
+    
+    
+    $data = @{
+        ContactUs = @{
+            CaseTypes = @{
+                Transfer = @{
+                    IsPastHoliday = $true
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Transfer"
+                    Questions = @(
+                        @{ Text = "Transfer"; Language = "en" },
+                        @{ Text = "Transfert"; Language = "fr-CH" },
+                        @{ Text = "Transfer"; Language = "de-CH" },
+                        @{ Text = "Transfert"; Language = "fr-FR" },
+                        @{ Text = "Transfer"; Language = "de-DE" }
+                    )
+                }
+                Safety = @{
+                    IsPastHoliday = $true
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Safety and security"
+                    Questions = @(
+                        @{ Text = "Safety and security"; Language = "en" },
+                        @{ Text = "Sécurité"; Language = "fr-CH" },
+                        @{ Text = "Sicherheit und Schutz"; Language = "de-CH" },
+                        @{ Text = "Sécurité"; Language = "fr-FR" },
+                        @{ Text = "Sicherheit und Schutz"; Language = "de-DE" }
+                    )
+                }
+                Prepaid = @{
+                    IsPastHoliday = $true
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Pre-paid extras including seating"
+                    Questions = @(
+                        @{ Text = "Pre-paid extras including seating"; Language = "en" },
+                        @{ Text = "Extras prépayés, y compris les sièges"; Language = "fr-CH" },
+                        @{ Text = "Vorausbezahlte Extras inklusive Sitzplätze"; Language = "de-CH" },
+                        @{ Text = "Extras prépayés, y compris les sièges"; Language = "fr-FR" },
+                        @{ Text = "Vorausbezahlte Extras inklusive Sitzplätze"; Language = "de-DE" }
+                    )
+                }
+                Injury = @{
+                    IsPastHoliday = $true
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Injury or Illness"
+                    Questions = @(
+                        @{ Text = "Injury or Illness"; Language = "en" },
+                        @{ Text = "Blessure ou maladie"; Language = "fr-CH" },
+                        @{ Text = "Verletzung oder Krankheit"; Language = "de-CH" },
+                        @{ Text = "Blessure ou maladie"; Language = "fr-FR" },
+                        @{ Text = "Verletzung oder Krankheit"; Language = "de-DE" }
+                    )
+                }
+                Flight = @{
+                    IsPastHoliday = $true
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Flight including cancellation and delays"
+                    Questions = @(
+                        @{ Text = "Flight including cancellation and delays"; Language = "en" },
+                        @{ Text = "Vol incluant l’annulation et les retards"; Language = "fr-CH" },
+                        @{ Text = "Flug inkl. Annullierung und Verspätungen"; Language = "de-CH" },
+                        @{ Text = "Vol incluant l’annulation et les retards"; Language = "fr-FR" },
+                        @{ Text = "Flug inkl. Annullierung und Verspätungen"; Language = "de-DE" }
+                    )
+                }
+                Excursions = @{
+                    IsPastHoliday = $true
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Excursions"
+                    Questions = @(
+                        @{ Text = "Excursions"; Language = "en" },
+                        @{ Text = "Excursions"; Language = "fr-CH" },
+                        @{ Text = "Ausflüge"; Language = "de-CH" },
+                        @{ Text = "Excursions"; Language = "fr-FR" },
+                        @{ Text = "Ausflüge"; Language = "de-DE" }
+                    )
+                }
+                easyJet = @{
+                    IsPastHoliday = $true
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "easyJet Customer Service"
+                    Questions = @(
+                        @{ Text = "easyJet Customer Service"; Language = "en" },
+                        @{ Text = "Service client easyJet"; Language = "fr-CH" },
+                        @{ Text = "easyJet-Kundenservice"; Language = "de-CH" },
+                        @{ Text = "Service client easyJet"; Language = "fr-FR" },
+                        @{ Text = "easyJet-Kundenservice"; Language = "de-DE" }
+                    )
+                }
+                Booking = @{
+                    IsPastHoliday = $true
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Booking/Pre-departure"
+                    Questions = @(
+                        @{ Text = "Booking/Pre-departure"; Language = "en" },
+                        @{ Text = "Réservation/Pré-départ"; Language = "fr-CH" },
+                        @{ Text = "Buchung/Abreise"; Language = "de-CH" },
+                        @{ Text = "Réservation/Pré-départ"; Language = "fr-FR" },
+                        @{ Text = "Buchung/Abreise"; Language = "de-DE" }
+                    )
+                }
+                Baggage = @{
+                    IsPastHoliday = $true
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Baggage/Lost Property"
+                    Questions = @(
+                        @{ Text = "Baggage/Lost Property"; Language = "en" },
+                        @{ Text = "Bagages/objets perdus"; Language = "fr-CH" },
+                        @{ Text = "Gepäck/Fundsachen"; Language = "de-CH" },
+                        @{ Text = "Bagages/objets perdus"; Language = "fr-FR" },
+                        @{ Text = "Gepäck/Fundsachen"; Language = "de-DE" }
+                    )
+                }
+                Airport = @{
+                    IsPastHoliday = $true
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Airport"
+                    Questions = @(
+                        @{ Text = "Airport"; Language = "en" },
+                        @{ Text = "Aéroport"; Language = "fr-CH" },
+                        @{ Text = "Flughafen"; Language = "de-CH" },
+                        @{ Text = "Aéroport"; Language = "fr-FR" },
+                        @{ Text = "Flughafen"; Language = "de-DE" }
+                    )
+                }
+                Accommodation = @{
+                    IsPastHoliday = $true
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Accommodation/Destination"
+                    Questions = @(
+                        @{ Text = "Accommodation/Destination"; Language = "en" },
+                        @{ Text = "Hébergement"; Language = "fr-CH" },
+                        @{ Text = "Unterkunft/Reiseziel"; Language = "de-CH" },
+                        @{ Text = "Hébergement"; Language = "fr-FR" },
+                        @{ Text = "Unterkunft/Reiseziel"; Language = "de-DE" }
+                    )
+                }
+                AmendBooking = @{
+                    IsPastHoliday = $false
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Amend Booking"
+                    Questions = @(
+                        @{ Text = "Amend booking"; Language = "en" },
+                        @{ Text = "Modifier une réservation"; Language = "fr-CH" },
+                        @{ Text = "Buchung ändern"; Language = "de-CH" },
+                        @{ Text = "Modifier une réservation"; Language = "fr-FR" },
+                        @{ Text = "Buchung ändern"; Language = "de-DE" }
+                    )
+                }
+                CancelBooking = @{
+                    IsPastHoliday = $false
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Cancel Booking"
+                    Questions = @(
+                        @{ Text = "Cancel booking"; Language = "en" },
+                        @{ Text = "Annuler une réservation"; Language = "fr-CH" },
+                        @{ Text = "Buchung stornieren"; Language = "de-CH" },
+                        @{ Text = "Annuler une réservation"; Language = "fr-FR" },
+                        @{ Text = "Buchung stornieren"; Language = "de-DE" }
+                    )
+                }
+                Complaints = @{
+                    IsPastHoliday = $false
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Complaints"
+                    Questions = @(
+                        @{ Text = "Complaint"; Language = "en" },
+                        @{ Text = "Une Plainte"; Language = "fr-CH" },
+                        @{ Text = "Eine Beschwerde"; Language = "de-CH" },
+                        @{ Text = "Une Plainte"; Language = "fr-FR" },
+                        @{ Text = "Eine Beschwerde"; Language = "de-DE" }
+                    )
+                }
+                SeriousIllness = @{
+                    IsPastHoliday = $false
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Serious Illness/Bereavement"
+                    Questions = @(
+                        @{ Text = "Serious Illness"; Language = "en" },
+                        @{ Text = "Une Maladie Grave"; Language = "fr-CH" },
+                        @{ Text = "Eine schwere Krankheit"; Language = "de-CH" },
+                        @{ Text = "Une Maladie Grave"; Language = "fr-FR" },
+                        @{ Text = "Eine schwere Krankheit"; Language = "de-DE" }
+                    )
+                }
+                Bereavement = @{
+                    IsPastHoliday = $false
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Serious Illness/Bereavement"
+                    Questions = @(
+                        @{ Text = "Bereavement"; Language = "en" },
+                        @{ Text = "Un Deuil"; Language = "fr-CH" },
+                        @{ Text = "Eine Beerdigung"; Language = "de-CH" },
+                        @{ Text = "Un deuil"; Language = "fr-FR" },
+                        @{ Text = "Eine Beerdigung"; Language = "de-DE" }
+                    )
+                }
+                SpecialAssistance = @{
+                    IsPastHoliday = $false
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Special Assistance"
+                    Questions = @(
+                        @{ Text = "Assisted Travel"; Language = "en" },
+                        @{ Text = "Un Voyage Assisté"; Language = "fr-CH" },
+                        @{ Text = "Eine Sonderhilfe Reise"; Language = "de-CH" },
+                        @{ Text = "Un Voyage Assisté"; Language = "fr-FR" },
+                        @{ Text = "Eine Sonderhilfe Reise"; Language = "de-DE" }
+                    )
+                }
+                InsuranceLetter = @{
+                    IsPastHoliday = $false
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Insurance Letter"
+                    Questions = @(
+                        @{ Text = "Insurance Letter"; Language = "en" },
+                        @{ Text = "Une Lettre d'assurance"; Language = "fr-CH" },
+                        @{ Text = "Eine Versicherungsbescheinigung"; Language = "de-CH" },
+                        @{ Text = "Une Lettre d'assurance"; Language = "fr-FR" },
+                        @{ Text = "Eine Versicherungsbescheinigung"; Language = "de-DE" }
+                    )
+                }
+                PaymentCredit = @{
+                    IsPastHoliday = $false
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Payment/Credit/Refunds"
+                    Questions = @(
+                        @{ Text = "Payment/Credit"; Language = "en" },
+                        @{ Text = "le Paiement/le Crédit"; Language = "fr-CH" },
+                        @{ Text = "Zahlung/Kredit"; Language = "de-CH" },
+                        @{ Text = "le Paiement/le Crédit"; Language = "fr-FR" },
+                        @{ Text = "Zahlung/Kredit"; Language = "de-DE" }
+                    )
+                }
+                WebsiteIssue = @{
+                    IsPastHoliday = $false
+                    SendTo = "Salesforce"
+                    SalesforceCategory = "Website/ App"
+                    Questions = @(
+                        @{ Text = "Website Issue"; Language = "en" },
+                        @{ Text = "Un Problème de Site Web"; Language = "fr-CH" },
+                        @{ Text = "Ein Websiteproblem"; Language = "de-CH" },
+                        @{ Text = "Un Problème de Site Web"; Language = "fr-FR" },
+                        @{ Text = "Ein Websiteproblem"; Language = "de-DE" }
+                    )
+                }
+            }
+        }
+    }
+    
+    
+    $parentItem = Get-Item -Path "master:$parentItemPath"
+    
+    $formItem = Get-Item -Path "master:$formItemPath"
+    
+    
+    $selectedIDs = @()
+    
+    $data.ContactUs.CaseTypes.GetEnumerator() | ForEach-Object {
+        $itemName = $_.Key
+        
+        $caseTypeDetails = $_.Value
+        $alternativeItemName = $caseTypeDetails.Questions[0].Text
+        $IsPastHoliday = $caseTypeDetails.IsPastHoliday
+        $SendTo = $caseTypeDetails.SendTo
+        $SalesforceCategory = $caseTypeDetails.SalesforceCategory
+        
+        if(!($caseTypeItem = Get-Item -Path "master:$parentItemPath/$alternativeItemName" -ErrorAction SilentlyContinue)){
+            if (!($caseTypeItem = Get-Item -Path "master:$parentItemPath/$itemName" -ErrorAction SilentlyContinue)) {
+                $caseTypeItem = New-Item -Parent $parentItem -Name $itemName -ItemType $templateId
+            }
+        }
+    
+        if ($selectedIDs -notcontains $caseTypeItem.ID) {
+            $selectedIDs += $caseTypeItem.ID
+        }
+    
+        $caseTypeDetails.Questions | ForEach-Object {
+        
+            $languageVersion = Get-Item -Path "master:$($caseTypeItem.Paths.Path)" -Language $_.Language
+            if (-not $languageVersion) {
+                $languageVersion = Add-ItemLanguage -Item $caseTypeItem -Language $caseTypeItem.Language -TargetLanguage $_.Language
+                $languageVersion = Get-Item -Path "master:$($caseTypeItem.Paths.Path)" -Language $_.Language
+            }
+            $languageVersion
+            $languageVersion.Editing.BeginEdit()
+            $languageVersion["Title"] = $_.Text
+            $languageVersion["SendTo"] = $SendTo
+            $languageVersion["SalesforceCategory"] = $SalesforceCategory
+            $languageVersion["EmailSubject"] = $_.EmailSubject
+            if ($IsPastHoliday) {
+                $languageVersion["State"] = "Past"
+            } else {
+                $languageVersion["State"] = "Future"
+            }
+            $languageVersion.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    foreach($language in $formItem.Languages) {
+    
+        $langItem = Get-Item -Path "master:$formItemPath" -Language $language.Name
+    
+    
+        if($langItem.Versions.Count -gt 0) {
+            Write-Host "Adjust QuestionList for $($language.Name)."
+            Add-ToSitecoreMultilist -path "master:$formItemPath" -Language $language.Name -fieldName "QuestionList" -idsToAdd $selectedIDs
+            
+            
+        }
+    }
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230302T083838Z

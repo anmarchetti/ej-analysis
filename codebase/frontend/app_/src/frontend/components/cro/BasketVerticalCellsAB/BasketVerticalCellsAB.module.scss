@@ -1,0 +1,123 @@
+/* stylelint-disable selector-max-compound-selectors */
+
+$cellMainBgColour: $colorWhite;
+$cellAltBgColour: $colorGrayLight;
+
+.basketVerticalCellsAB:global(.vertical-cells) {
+    :global(.vertical-cell-separator--m2a) {
+        background-image: linear-gradient(100deg, $cellAltBgColour 50%, $cellMainBgColour 50%);
+    }
+
+    .showBtn {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 48px;
+        margin: 0;
+        font-size: 13px;
+        background-color: $cellMainBgColour;
+        opacity: 1;
+
+        svg {
+            width: 15px;
+            height: 12px;
+            margin-right: 10px;
+        }
+    }
+
+    .btnOpened {
+        box-shadow: none;
+    }
+
+    .btnClosed {
+        box-shadow: $generalBoxShadow;
+    }
+
+    .btnContainer {
+        display: flex;
+        flex: 0.2 1;
+        align-items: center;
+        padding: 0 2.19%;
+        background-color: $cellMainBgColour;
+    }
+
+    :global(.vertical-cell--alt) {
+        :global(.vertical-cell__inner).innerInline {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+
+            div + div {
+                margin-left: 8px;
+            }
+        }
+
+        :global(.vertical-cell__inner).innerBlock {
+            padding: 16px;
+            text-align: left;
+
+            div + div {
+                margin-top: 4px;
+            }
+        }
+
+        :global(.vertical-cell__inner) {
+            :global(.basket__price) {
+                min-width: auto;
+                font-family: $fontRoundedDemy;
+            }
+
+            :global(.basket__price-pp) {
+                font-size: 14px;
+            }
+        }
+    }
+
+    :global(.basket-summary-box--details) {
+        padding: 0 15px;
+
+        :global(.list.list--icon) {
+            margin: 0;
+
+            li {
+                align-items: center;
+                margin-top: 0;
+            }
+        }
+
+        :global(.vertical-cell) {
+            margin-top: 0;
+        }
+
+        :global(.basket__price-pills) {
+            margin-top: 0;
+        }
+    }
+
+    :global(.basket-summary-box--details__title) {
+        margin-bottom: 24px;
+        font-size: 20px;
+        line-height: 25px;
+    }
+
+    .swipe {
+        display: flex;
+        justify-content: center;
+
+        .btnSwipe {
+            width: 120px;
+            height: 5px;
+            margin: 8px auto 16px;
+            background-color: $cellAltBgColour;
+            border: none;
+            border-radius: 2px;
+        }
+    }
+
+    .iconBoldText {
+        font-family: $fontRoundedDemy;
+        font-weight: 400;
+    }
+}

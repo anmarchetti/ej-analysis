@@ -1,0 +1,514 @@
+/* stylelint-disable selector-max-compound-selectors */
+
+$cellMainBgColour: $colorWhite;
+$cellAltBgColour: $colorGrayLight;
+$hideSidesOnWidth: 1248px;
+
+.basket {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    font-size: 13px;
+    white-space: nowrap;
+
+    &.basket--shadow {
+        box-shadow: 0 0 12px 2px $colorAlto;
+    }
+
+    .basket__side-left,
+    .basket__side-right {
+        flex-grow: 1;
+        background-color: $cellMainBgColour;
+        @media (max-width: $hideSidesOnWidth) {
+            display: none;
+        }
+    }
+
+    .basket__side-right {
+        margin-left: -1px;
+    }
+
+    .basket-cells {
+        width: 100%;
+        max-width: calc(#{$container-max-width} + 2 * #{$container-padding-x_mobile});
+        padding-left: $container-padding-x_mobile;
+    }
+
+    .list {
+        overflow: hidden;
+    }
+
+    .list.list--icon {
+        margin: 10px 0;
+
+        li {
+            padding-left: 22px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            > div {
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            svg,
+            .icon--bg-image {
+                width: 14px;
+                height: 14px;
+            }
+
+            &.list-item--no-icon {
+                padding-left: 0;
+            }
+        }
+    }
+
+    .basket__price {
+        display: flex;
+        align-items: baseline;
+        justify-content: flex-end;
+        min-width: 120px;
+        font-size: 21px;
+        font-weight: bold;
+
+        span:not(.currency-symbol) {
+            font-size: 14px;
+
+            &.basket__price__whole {
+                font-size: inherit;
+            }
+        }
+    }
+
+    .basket__price-pp {
+        display: flex;
+        justify-content: flex-end;
+        font-size: 13px;
+        color: $clrTxtLight;
+    }
+
+    .basket__price-pills {
+        margin-top: 8px;
+        overflow: hidden;
+        white-space: nowrap;
+
+        .price-pill {
+            + .price-pill {
+                margin-left: 5px;
+            }
+        }
+    }
+
+    .text-crossed {
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: block;
+            width: 105%;
+            height: 1px;
+            margin: auto;
+            background-color: $cellAltBgColour;
+            transform: rotate(-15deg);
+        }
+    }
+
+    .btn {
+        margin: 15px 0;
+    }
+
+    .book-btn-basket {
+        padding: 11.5px 36px;
+        font-size: 14px;
+        border-radius: 4px;
+    }
+
+    .book-btn-basket-mobile {
+        border-radius: 4px;
+    }
+
+    .basket__show-popup {
+        margin: 0;
+        margin-left: 7px;
+        font-size: 13px;
+        line-height: 18px;
+
+        svg {
+            width: 14px;
+            height: 14px;
+            margin-right: 8px;
+        }
+    }
+
+    .diagonal-cells {
+        display: flex;
+        flex-wrap: nowrap;
+        align-content: stretch;
+        justify-content: space-between;
+        margin: auto;
+        background-color: $cellMainBgColour;
+
+        .reverse {
+            .list {
+                display: flex;
+                flex-direction: column-reverse;
+                gap: 8px;
+                margin: 8px 0;
+            }
+
+            .list-item--icon {
+                margin: 0;
+            }
+        }
+
+        .diagonal-cell {
+            display: grid;
+            align-items: center;
+            max-width: 30%;
+            overflow: hidden;
+        }
+
+        .diagonal-cell--alt {
+            display: flex;
+            align-content: stretch;
+            justify-content: center;
+
+            .diagonal-cell__inner {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 10px 15px;
+                text-align: right;
+                max-width: 250px;
+            }
+        }
+
+        .diagonal-cell--btn {
+            display: flex;
+            align-items: center;
+            margin-left: 7px;
+        }
+        
+        @include media-breakpoint-up(xs) {
+            .diagonal-cell--btn {
+                margin-right: $container-padding-x_mobile;
+            }
+        }
+
+        @include media-breakpoint-down(lg) {
+            .diagonal-cell {
+                max-width: 15%;
+            }
+
+            .diagonal-cell--alt {
+                .diagonal-cell__inner {
+                    padding: 10px 0;
+                }
+            }
+        }
+
+        .diagonal-cell-separator {
+            flex-shrink: 0;
+            width: 30px;
+        }
+
+        .diagonal-cell-separator--m2m {
+            position: relative;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                display: block;
+                width: 1px;
+                height: 65%;
+                margin: auto;
+                background-color: $cellAltBgColour;
+                transform: rotate(15deg);
+            }
+        }
+
+        .diagonal-cell-separator--a2m {
+            width: 22px;
+            background-color: $cellMainBgColour;
+            background-image: linear-gradient(-77deg, $cellMainBgColour 50%, $cellAltBgColour 50%);
+        }
+
+        .diagonal-cell-separator--m2a {
+            width: 25px;
+            background-color: $cellAltBgColour;
+            background-image: linear-gradient(-75deg, $cellAltBgColour 50%, $cellMainBgColour 50%);
+        }
+    }
+
+    &.basket--booked {
+        .diagonal-cell--alt .diagonal-cell__inner {
+            padding-right: 15px;
+        }
+
+        .diagonal-cell-separator--a2m,
+        .diagonal-cell--btn {
+            display: none;
+        }
+    }
+
+    .vertical-cells {
+        display: none;
+    }
+
+    @include media-breakpoint-down(md) {
+        position: fixed;
+        z-index: 200;
+        bottom: 0;
+        width: 100%;
+
+        .basket-cells {
+            max-width: $container-max-width;
+            padding-left: 0;
+        }
+
+        .diagonal-cells {
+            display: none;
+        }
+
+        .vertical-cells {
+            display: block;
+
+            .basket-summary-box {
+                position: relative;
+                display: flex;
+                background-color: $cellMainBgColour;
+                box-shadow: 0 0 10px 0 rgba(152, 148, 148, 0.5);
+            }
+
+            .basket-summary-box--details {
+                position: relative;
+                padding: 30px 10px 24px;
+                background-color: $cellMainBgColour;
+                box-shadow: 0 -6px 10px -5px rgba(152, 148, 148, 0.5);
+            }
+
+            .basket-summary-box--details__title {
+                margin-top: 0;
+                margin-bottom: 17px;
+                font-size: 16px;
+                line-height: 21px;
+                text-transform: uppercase;
+            }
+
+            .basket-summary-box--details .vertical-cell {
+                margin-top: 30px;
+
+                &:first-child {
+                    margin-top: 0;
+                }
+
+                .list {
+                    li {
+                        display: flex;
+                        margin: 15px 0;
+                        padding-left: 0;
+                        font-size: 16px;
+                        line-height: 19px;
+                        overflow-wrap: break-word;
+                        white-space: normal;
+
+                        .text-bold--destination {
+                            display: block;
+                        }
+
+                        .basket-icon {
+                            display: flex;
+                            justify-content: center;
+                            width: 20px;
+                            height: 100%;
+                            margin-right: 10px;
+
+                            .inbound {
+                                transform: scaleX(-1);
+                            }
+                        }
+
+                        svg {
+                            position: relative;
+                            height: 17px;
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+
+            .basket-summary-box--details .basket__price-pills {
+                margin-top: 15px;
+            }
+
+            .basket-summary-box--details .btn--close {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                margin: 0;
+                padding: 5px;
+                font-size: 14px;
+                line-height: 1;
+
+                svg {
+                    width: 1em;
+                    height: 1em;
+                }
+
+                &:focus {
+                    outline: none;
+                }
+            }
+
+            .basket-summary-box .vertical-cell--btn {
+                display: flex;
+                flex: 0.3;
+                align-items: center;
+
+                .btn {
+                    width: 100px;
+                    height: 40px;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                .btn--open {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    height: 100%;
+                    margin: 0;
+                    font-size: 10px;
+                    line-height: 14px;
+                    white-space: pre-line;
+                    font-family: $fontRoundedDemy;
+                    font-weight: 400;
+
+                    &:focus {
+                        outline: none;
+                    }
+
+                    svg {
+                        width: 15px;
+                        height: 15px;
+                    }
+                }
+            }
+
+            .vertical-cell--alt {
+                display: flex;
+                flex: 1;
+                align-content: stretch;
+                justify-content: center;
+
+                .vertical-cell__inner {
+                    display: grid;
+                    grid-template-areas:
+                        'pills'
+                        'price'
+                        'pricePP'
+                        'tt';
+                    width: 100%;
+                    text-align: right;
+
+                    .basket__price {
+                        display: flex;
+                        flex-wrap: wrap;
+                        align-items: baseline;
+                        justify-content: flex-end;
+                        grid-area: price;
+                        font-size: 20px;
+                        line-height: 18px;
+
+                        span {
+                            font-size: 12px;
+
+                            &:not(.basket__price__whole, .currency-symbol) {
+                                margin-right: 3px;
+                            }
+
+                            &.basket__price__whole,
+                            &.currency-symbol {
+                                font-size: inherit;
+                            }
+                        }
+                    }
+
+                    .basket__price-pp {
+                        grid-area: pricePP;
+                    }
+
+                    .basket__price-pills {
+                        grid-area: pills;
+                        margin-top: 0;
+                        margin-bottom: 5px;
+                    }
+                }
+            }
+
+            .vertical-cell-separator--m2a {
+                width: 22px;
+                margin-right: -1px;
+                background-color: $cellAltBgColour;
+                background-image: linear-gradient(-75deg, $cellAltBgColour 50%, $cellMainBgColour 50%);
+            }
+        }
+
+        &.basket--booked {
+            .vertical-cells {
+                .basket-summary-box--details {
+                    .vertical-cell:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+
+                .vertical-cell--btn {
+                    width: 25%;
+
+                    &:last-child {
+                        display: none;
+                    }
+                }
+
+                .vertical-cell--alt {
+                    justify-content: flex-start;
+                    width: 100%;
+
+                    .basket__price-pills {
+                        top: 5px;
+                        right: 14px;
+                        left: auto;
+                        display: block;
+                    }
+
+                    .vertical-cell__inner {
+                        width: 100%;
+                        padding: 5px 14px;
+
+                        .basket__price-pills {
+                            padding: 5px 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        .basket__airport {
+            flex: 0 0 50%;
+            max-width: 200px;
+        }
+    }
+}
+
+/* stylelint-enable selector-max-compound-selectors */

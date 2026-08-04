@@ -1,0 +1,79 @@
+.sizeContainer {
+    width: 100%;
+    container-name: refunds-options-container;
+    container-type: inline-size;
+}
+
+@container refunds-options-container (max-width: 650px) {
+    .paymentMethods {
+        flex-direction: column;
+    }
+}
+
+.paymentMethods {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+    
+    @include media-breakpoint-up(sm) {
+        margin-top: 32px;
+    }
+}
+
+.breakdowns {
+    width: 100%;
+    margin-top: 32px;
+
+    @include media-breakpoint-up(sm) {
+        margin-top: 20px;
+    }
+}
+
+.breakdowns > .option:not(:first-child) {
+    margin-top: 8px;
+}
+
+.breakdowns > .option:last-child {
+    margin-bottom: 18px;
+}
+
+.balanceRefund {
+    :global(.balance-option-description) {
+        @include media-breakpoint-up(sm) {
+            margin-bottom: 24px;
+        }
+    }
+
+    :global(.balance-option-breakdowns) {
+        width: 100%;
+        margin: 0;
+
+        @include media-breakpoint-up(sm) {
+            margin-bottom: 14px;
+        }
+    }
+
+    :global(.refund-option-breakdown) {
+        margin-top: 0;
+        margin-bottom: 16px;
+
+        @include media-breakpoint-up(sm) {
+            margin-bottom: 4px;
+        }
+    }
+
+    &:global(.payment-card.selected) {
+        :global(.payment-card-body) {
+            flex-basis: 110px;
+        }
+    }
+
+    :global(.refund-option-breakdown__value::before) {
+        content: '';
+        display: block;
+        flex-grow: 1;
+        height: 20px;
+        margin: 0 5px;
+        border-bottom: 2px dotted $colorTiara;
+    }
+}

@@ -1,0 +1,53 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 15px 30px 15px 17px;
+    background-color: $clrSiteBgWhite;
+    border-radius: 4px;
+    box-shadow: 0 0 12px 2px $colorAlto;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        padding: 15px 15px 20px;
+    }
+
+    svg {
+        min-width: 20px;
+        min-height: 20px;
+        margin-right: 10px;
+        color: $colorRed;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 3px;
+        }
+    }
+}
+
+.text {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    font-family: $fontRoundedDemy;
+    font-size: 16px;
+    line-height: 26px;
+
+    @include media-breakpoint-down(md) {
+        align-items: flex-start;
+        font-size: 14px;
+        line-height: 22px;
+    }
+}
+
+.button {
+    min-width: 145px;
+    margin-left: 25px;
+    border-radius: 4px;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        margin-top: 10px;
+        margin-left: 0;
+    }
+}

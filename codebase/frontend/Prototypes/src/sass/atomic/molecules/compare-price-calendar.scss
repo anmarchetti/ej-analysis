@@ -1,0 +1,530 @@
+.compare-price-calendar {
+    .compare-price-calendar__notes {
+        margin-top: 32px;
+        padding-bottom: 20px;
+
+        .symbol {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            padding: 2px 3px 0;
+            font-size: 15px;
+            vertical-align: middle;
+            color: $clrSiteBgWhite;
+            background-color: $colorGreenDark;
+            border-radius: 2px;
+        }
+
+        .symbol-description {
+            margin-left: 10px;
+            font-size: 14px;
+            color: $clrTextMainLight;
+        }
+    }
+
+    .compare-price-calendar__wrapper {
+        position: relative;
+        margin-top: 34px;
+
+        @include media-breakpoint-up(lg) {
+            margin-right: 25px;
+            margin-left: 25px;
+        }
+
+        @include media-breakpoint-up(xl) {
+            margin-right: 42px;
+            margin-left: 42px;
+        }
+    }
+
+    .flat-picker {
+        .flatpickr-input {
+            display: none;
+        }
+
+        .flatpickr-calendar {
+            z-index: 10;
+            width: 100% !important;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .flatpickr-rContainer {
+            width: 100%;
+        }
+
+        .flatpickr-current-month {
+            font-family: $fontRoundedBook;
+            font-size: 14px;
+            line-height: 18px;
+            color: $clrEjOrange;
+            text-transform: capitalize;
+
+            span.cur-month {
+                font-weight: 400;
+            }
+        }
+
+        .flatpickr-months {
+            justify-content: space-between;
+
+            .flatpickr-month {
+                flex: none;
+                width: 47%;
+                pointer-events: none;
+
+                @include media-breakpoint-down(xl) {
+                    width: 48%;
+                }
+
+                @include media-breakpoint-down(lg) {
+                    width: 49%;
+                }
+            }
+
+            .flatpickr-prev-month,
+            .flatpickr-next-month {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+                padding: 0;
+                background: $colorWhite;
+                border: none;
+                border-radius: 50%;
+                box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.25);
+                opacity: 1;
+
+                svg {
+                    width: 12px;
+                    height: 12px;
+                    color: $clrEjOrange;
+                }
+            }
+
+            &:focus {
+                outline: 1px solid $colorBlack;
+            }
+        }
+
+        .flatpickr-weekdays {
+            justify-content: space-between;
+            margin-top: 20px;
+
+            .flatpickr-weekdaycontainer {
+                flex: none;
+                width: 46.5%;
+                max-width: none;
+                height: auto;
+                margin-top: 0;
+            }
+        }
+
+        .span.flatpickr-weekday {
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 18px;
+            color: $colorBoulder;
+        }
+
+        .rangeMode .flatpickr-day {
+            margin-top: 4px;
+        }
+
+        .dayContainer {
+            width: 46.5%;
+            max-width: none;
+            height: auto;
+            margin-top: 0;
+            margin-bottom: 20px;
+
+            @include media-breakpoint-down(lg) {
+                width: 49%;
+            }
+
+            + .dayContainer {
+                box-shadow: none;
+            }
+        }
+
+        .flatpickr-day {
+            --day-margin-y: 3px;
+            --day-margin-x: 3px;
+
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: calc(100% / 7 - 2 * var(--day-margin-x));
+            height: 76px;
+            margin: var(--day-margin-y) var(--day-margin-x);
+            padding: 0;
+            font-size: 14px;
+            line-height: normal;
+            border: 1px solid $colorGeyser;
+            border-radius: 4px;
+            box-sizing: border-box;
+
+            @media (width <= 1024px) {
+                .price-wrapper {
+                    line-height: 14px;
+                }
+            }
+
+            &:focus {
+                outline: 1px solid $colorBlack;
+                background-color: inherit;
+            }
+
+            img {
+                display: block;
+                width: 18px;
+                height: 18px;
+                margin: 0 auto;
+
+                @include media-breakpoint-up(lg) {
+                    width: 21px;
+                    height: 21px;
+                }
+            }
+
+            span {
+                display: block;
+                color: $clrEjOrangeDarkShadow;
+            }
+
+            &.available {
+                color: $clrTextMain;
+            }
+
+            &.not-available {
+                color: $clrTxtLighter;
+
+                img {
+                    opacity: 0.8;
+                }
+
+                @media (hover: hover) {
+                    &:hover,
+                    &:focus {
+                        color: $clrTxtLighter;
+                        background: $clrSiteBgWhite;
+                        border-color: $colorGeyser;
+                        cursor: default;
+                    }
+
+                    &.in-range:hover {
+                        background-color: $colorGrayLighter;
+                        border-color: $colorGrayLighter;
+                        box-shadow: none;
+                    }
+                }
+            }
+
+            &.selected,
+            &.arrival-date {
+                color: $clrTextMain;
+                background-color: $clrSiteBgWhite;
+                border: $clrEjOrangeDarkShadow 2px solid;
+
+                span {
+                    top: -2px;
+                    right: -2px;
+                    color: $clrEjOrangeDarkShadow;
+                }
+
+                span.changes {
+                    color: $clrSiteBgWhite;
+                    background-color: $colorBlueDark;
+                }
+
+                span.best-price {
+                    color: $clrSiteBgWhite;
+                    background-color: $colorGreen;
+                    left: -2px;
+                }
+
+                span.free-kids {
+                    top: unset;
+                    left: -2px;
+                    bottom: -2px;
+                }
+            }
+
+            @media (hover: hover) {
+                &.selected:hover,
+                &.arrival-date:hover {
+                    color: $clrSiteBgWhite;
+                    background: $clrEjOrangeDarkShadow;
+                    border-color: $clrEjOrangeDarkShadow;
+
+                    &.not-available:hover,
+                    &.not-available:focus {
+                        color: $clrTextMain;
+                        background: $clrSiteBgWhite;
+                        border-color: $clrEjOrangeDarkShadow;
+                    }
+                }
+            }
+
+            &.in-range {
+                background-color: $colorGeyserLight;
+                border-color: $colorGeyserLight;
+                box-shadow: none;
+
+                &::before,
+                &::after {
+                    content: "";
+                    position: absolute;
+                    z-index: -1;
+                    top: -1px;
+                    display: block;
+                    width: 6px;
+                    height: 100%;
+                    background-color: $colorGeyserLight;
+                    border: 1px solid $colorGeyserLight;
+                }
+            }
+
+            &:nth-child(7n - 6) {
+                &.in-range {
+                    &::after {
+                        right: -6px;
+                    }
+                }
+            }
+
+            &:not(:nth-child(7n - 6)) {
+                &.arrival-date {
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        z-index: -1;
+                        top: -1px;
+                        left: -6px;
+                        display: block;
+                        width: 6px;
+                        height: 100%;
+                        background-color: $colorGrayLighter;
+                        border: 1px solid $colorGrayLighter;
+                    }
+                }
+
+                &.in-range {
+                    &::after {
+                        right: -6px;
+                    }
+
+                    &::before {
+                        left: -6px;
+                    }
+                }
+            }
+
+            &:nth-child(7n) {
+                &.in-range {
+                    &::before {
+                        left: -6px;
+                    }
+
+                    &::after {
+                        display: none;
+                    }
+                }
+            }
+
+            &:not(:nth-child(7n)) {
+                &.selected {
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        z-index: -1;
+                        top: -1px;
+                        right: -6px;
+                        display: block;
+                        width: 6px;
+                        height: 100%;
+                        background-color: $colorGrayLighter;
+                        border: 1px solid $colorGrayLighter;
+                    }
+                }
+            }
+
+            .best-price {
+                left: -1px;
+                background-color: $colorGreenDark;
+                border-radius: 4px 0;
+            }
+
+            .changes {
+                right: -1px;
+                background-color: $colorBlueDark;
+                border-radius: 0 4px;
+            }
+
+            .best-price,
+            .changes {
+                position: absolute;
+                top: -1px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: fit-content;
+                padding: 2px;
+                color: $clrSiteBgWhite;
+
+                svg {
+                    width: 10px;
+                    height: 10px;
+                }
+            }
+
+            .free-kids {
+                position: absolute;
+                bottom: -1px;
+                left: -1px;
+                width: 14px;
+                height: 14px;
+                background-color: $colorYellow3;
+                border-radius: 0 4px;
+
+                svg {
+                    margin-top: 2px;
+                    color: $colorBlackLight;
+                    width: 10px;
+                    height: 10px;
+                }
+            }
+
+            @media (hover: hover) {
+                &:hover {
+                    color: $clrSiteBgWhite;
+                    background: $clrEjOrangeDarkShadow;
+                    border-color: $clrEjOrangeDarkShadow;
+
+                    span {
+                        color: $clrSiteBgWhite;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Don't use bootstrap 'sm' breakpoint to set mobile styles,
+// because price calendar has own breakpoint (EUX-765)
+.compare-price-calendar--mobile {
+    .custom-month__container {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 0 10px;
+
+        .custom-month {
+            text-transform: capitalize;
+
+            p {
+                margin: 0;
+                padding: 12px 0;
+                font-size: 14px;
+                color: $clrEjOrange;
+                text-align: center;
+                border-bottom: 1px solid rgba($colorGrayMiddle, 0.9);
+            }
+        }
+    }
+
+    .compare-price-calendar__notes {
+        display: none;
+    }
+
+    .compare-price-calendar__wrapper {
+        margin: 0;
+        padding: 0 10px;
+    }
+
+    .flat-picker {
+        .flatpickr-months {
+            margin-top: 10px;
+
+            .flatpickr-month {
+                display: none;
+            }
+        }
+
+        .flatpickr-weekdays {
+            display: none;
+        }
+
+        .flatpickr-days {
+            flex-direction: column;
+            align-items: center;
+            width: 100% !important;
+        }
+
+        .dayContainer {
+            display: grid;
+            box-sizing: content-box;
+            justify-content: flex-start;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px 4px;
+            width: 100%;
+            min-width: unset;
+            padding-top: 60px;
+            margin-bottom: unset;
+        }
+
+        .dayContainer:last-child {
+            margin-bottom: 20px;
+        }
+
+        .flatpickr-day {
+            max-height: 62px;
+            min-width: 40px;
+            max-width: unset;
+            margin: 0;
+            font-size: 12px;
+
+            --day-margin-y: 0;
+            --day-margin-x: 0;
+
+            @media (width < 576px) {
+                .price-wrapper {
+                    line-height: 12px;
+                }
+
+                .changes, .best-price {
+                    svg {
+                        width: 8px;
+                        height: 8px;
+                    }
+                }
+
+                .free-kids {
+                    width: 12px;
+                    height: 12px;
+
+                    svg {
+                        margin-top: 0;
+                        width: 8px;
+                    }
+                }
+            }
+        }
+
+        @media (width <= 400px) {
+            .flatpickr-day {
+                padding: 0;
+            }
+        }
+
+        @media (width <= 360px) {
+            .dayContainer {
+                gap: 8px 0;
+            }
+        }
+    }
+}

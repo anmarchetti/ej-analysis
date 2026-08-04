@@ -1,0 +1,102 @@
+﻿---
+ID: "e43c42de-d3e9-4bad-b736-038bc16eba82"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/MAN-445 Fix missing translations for change dates"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value
+                $targetLangItem.Editing.EndEdit() | Out-Null
+             }
+        }
+        
+        function updateTranslation($path) {
+        	
+        	$amendDateSummary  = Get-Item -Path $path -ErrorAction SilentlyContinue
+        
+        	if ($amendDateSummary -eq $null) {
+        		Write-Host "Missing AmendDateSummary item in EN language. Missing item: $($path)"
+        		return;
+        	}
+    
+        	@('de-CH', 'de-DE') | % {
+        		Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "Title" -Value "Überprüfung und Bestätigung"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "Subtitle" -Value "Gute Nachrichten, wir können Ihren Urlaub umplanen! Bitte überprüfen Sie die Änderungen an Ihrem Urlaub unten sorgfältig und wir werden Ihre Buchung aktualisieren, nachdem Sie bestätigt haben. Wenn wir nicht in der Lage waren, Ihren ursprünglichen Urlaub genau zu finden, haben wir die nächstbeste Möglichkeit zur Überprüfung und Bestätigung für Sie bereitgestellt."
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "FlightTitle" -Value "Flüge / Termine"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "SeatsTitle" -Value "Sitze & Taschen"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "OutboundLabel" -Value "Ausgehend von"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "InboundLabel" -Value "Rückkehr"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "BagsLabel" -Value "Anwendbar für Hin- und Rückreise"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "TransferTitle" -Value "Übertragung"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "RoomTitle" -Value "Unterkunft und Verpflegung"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "RoomSingleLabel" -Value "{rooms} Zimmer"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "RoomPluralLabel" -Value "{rooms} Zimmer"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "ChangeFeeLabel" -Value "{amount} Gebühr ändern"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "NewCostLabel" -Value "Neue Urlaubskosten" 
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "PreviousCostLabel" -Value "Frühere Urlaubskosten"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "AdditionalCostLabel" -Value "Zusätzliche Kosten"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "RefundLabel" -Value "Erstattungsbetrag"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "CostTooltipContent" -Value "Preisänderungen und Verfügbarkeit aufgrund täglicher Systemaktualisierungen vorbehalten.<br /><br />Der hier angezeigte Preis berücksichtigt alle gültigen Aktionscodes."
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "LinkHotelLabel" -Value "Details zum Hotel anzeigen"	
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "ShowCostTooltip" -Value "1"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "IsStickySummaryEnabled" -Value "1"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "IsAttentionMessageEnabled" -Value "1"
+    			
+        	}
+        
+        	@('fr-CH', 'fr-FR') | % {
+        		Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "Title" -Value "Examiner et confirmer"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "Subtitle" -Value "Bonne nouvelle, nous pouvons reprogrammer vos vacances ! Veuillez lire attentivement les modifications apportées à votre séjour ci-dessous et nous mettrons à jour votre réservation après que vous l'aurez confirmée. Si nous n'avons pas été en mesure de faire correspondre exactement votre séjour à celui que vous aviez prévu, nous vous proposons la meilleure solution possible, que vous pouvez consulter et confirmer."
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "FlightTitle" -Value "Vols / Dates"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "SeatsTitle" -Value "Sièges et sacs"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "OutboundLabel" -Value "Départ"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "InboundLabel" -Value "Retour"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "BagsLabel" -Value "Applicable à l'aller et au retour"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "TransferTitle" -Value "Transfert"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "RoomTitle" -Value "Chambre et pension"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "RoomSingleLabel" -Value "{rooms} chambre"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "RoomPluralLabel" -Value "{rooms} chambres"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "ChangeFeeLabel" -Value "{amount} Frais de changement"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "NewCostLabel" -Value "Nouveau coût des vacances"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "PreviousCostLabel" -Value "Coût des vacances précédentes"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "AdditionalCostLabel" -Value "Coût supplémentaire"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "RefundLabel" -Value "Montant du remboursement"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "CostTooltipContent" -Value "Prix sujets à modification et disponibilité en raison des mises à jour quotidiennes du système.<br /><br />Le prix affiché ici tient compte de tous les codes promotionnels valables."
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "LinkHotelLabel" -Value "Voir les détails de l'hôtel"	
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "ShowCostTooltip" -Value "1"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "IsStickySummaryEnabled" -Value "1"
+    			Create-Lang-Version -Item $amendDateSummary -Lang $_ -Field "IsAttentionMessageEnabled" -Value "1"
+        	}
+    
+        	Write-Host "Updated translation"
+        }
+    
+        updateTranslation -path '/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary/Page Components/Amend Dates Summary Page'
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1001
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240508T094201Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

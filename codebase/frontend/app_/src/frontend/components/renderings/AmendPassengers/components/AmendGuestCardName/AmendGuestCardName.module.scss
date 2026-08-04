@@ -1,0 +1,51 @@
+.guestNamesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+    }
+}
+
+.guestDescription {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    > div,
+    > span {
+        margin: 4px 0;
+        @include media-breakpoint-down(md) {
+            margin: 1px 0;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        align-items: center;
+    }
+}
+
+.guestName {
+    font-family: $fontRoundedDemy;
+    font-size: 18px;
+    line-height: 23px;
+    color: $clrTextMain;
+    text-transform: capitalize;
+}
+
+.guestNamePrevious {
+    margin-left: 16px;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    line-height: 22px;
+    color: $colorBlackLight;
+    text-decoration: line-through;
+}
+
+.guestIsLead {
+    padding: 4px 8px;
+    color: $clrEjOrange;
+    background-color: #ff7d0026;
+    border-radius: 4px;
+}

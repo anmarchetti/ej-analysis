@@ -1,0 +1,43 @@
+﻿---
+ID: "1d777737-4b49-4881-a842-39f3c32da886"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-687_Change-passengers-page-subtitle"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $passengerDetailsItem = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Passenger Details" -ErrorAction SilentlyContinue;
+    $siteSettingsItem = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Settings/Amend Booking Settings" -ErrorAction SilentlyContinue;
+    
+    
+    if ($passengerDetailsItem -ne $null) {
+    	$passengerDetailsItem.Editing.BeginEdit();
+    	
+    	$passengerDetailsItem["PageDescription"]="change the passenger details for this trip. Edit your passenger names for your upcoming trip."
+    	
+    	Write-Host $passengerDetailsItem.Name "Updated";
+        $passengerDetailsItem.Editing.EndEdit() | Out-Null;
+    }
+    
+    if ($siteSettingsItem -ne $null) {
+    	$siteSettingsItem.Editing.BeginEdit();
+    	
+    	$siteSettingsItem["IsAmendPassengerChangeCountEnabled"]="0"
+    	
+    	Write-Host $siteSettingsItem.Name "Updated";
+        $siteSettingsItem.Editing.EndEdit() | Out-Null;
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230405T124601Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

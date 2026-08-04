@@ -1,0 +1,80 @@
+﻿---
+ID: "f58ad939-d49a-4c0d-b853-cd81e6f54365"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUXE-1143 - Add Final Tab"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$itemName,$templateId,$itemId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $itemId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    
+    function Get-Images-Ids {
+    	$items = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Holiday Inspiration/Page Components/Final Tab" -ErrorAction SilentlyContinue
+    	if ($items -eq $null) {
+    		return ""
+    	}
+    
+    	$separated = $items.Children | % { $_.ID }
+    	return $separated -join '|'
+    }
+    
+    
+    function Create-Image ($name,$imageSrc) {
+    	$image = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Holiday Inspiration/Page Components/Final Tab" -ItemName $name -TemplateId "{7E3ECDBA-C8C9-4E1C-8107-CDE554C0FD6D}"
+    	$image.Editing.BeginEdit()
+    	$image["Image"] = $imageSrc
+    	$image.Editing.EndEdit() | Out-Null
+    }
+    
+    $final = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Holiday Inspiration/Page Components" -ItemName "Final Tab" -TemplateId "{599B8314-689A-4767-B722-7BE4C9DFE73D}"
+    $final.Editing.BeginEdit()
+    $final["Title"] = "Great Job!"
+    $final["Description"] = "Your personalised destination is on its way.<br />Get ready for an unforgettable adventure!"
+    $final.Editing.EndEdit() | Out-Null
+    
+    #Images
+    Create-Image -Name "Amsterdam" -imageSrc '<image mediaid="{4FA52D3E-0752-448E-B577-10077483519C}" />'
+    Create-Image -Name "Rome" -imageSrc '<image mediaid="{67F22F0B-0D6D-4801-A30A-86D15D6C1D0F}" />'
+    Create-Image -Name "Egypt" -imageSrc '<image mediaid="{4A12B0FC-F874-4310-A310-D27BFF6716DD}" />'
+    Create-Image -Name "Lakes" -imageSrc '<image mediaid="{1B3DB7CA-2D5C-4D07-A7AC-7944C6EFFD64}" />'
+    Create-Image -Name "City Beach" -imageSrc '<image mediaid="{AF777167-49BA-41E3-A7C2-684A84A5F8AC}" />'
+    Create-Image -Name "Italy" -imageSrc '<image mediaid="{50AA7875-7347-4024-BBD4-1D14B95F612E}" />'
+    Create-Image -Name "Beach" -imageSrc '<image mediaid="{BE2C4C61-0C17-4A0B-8748-DEDEBCA9280C}" />'
+    
+    $final.Editing.BeginEdit()
+    $final["HeaderImageLoader"] = Get-Images-Ids
+    $final.Editing.EndEdit() | Out-Null
+    Get-Options-Ids
+    
+    # Update Rendering
+    $page = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Holiday Inspiration"
+    $finalRenderingItem = Get-Item -Path "master:" -Id "{35A52048-189B-4426-B54E-CDCD31DC43C6}"
+    $finalRendering = Get-Rendering -Item $page -PlaceHolder "*body*" -Rendering $finalRenderingItem
+    if ($finalRendering -ne $null) {
+    	Set-Rendering -Item $page -Instance $finalRendering -DataSource $final.ID
+    	Write-Host $page.Name "Final Tabs Rendering successfully updated"
+    }
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240417T101859Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

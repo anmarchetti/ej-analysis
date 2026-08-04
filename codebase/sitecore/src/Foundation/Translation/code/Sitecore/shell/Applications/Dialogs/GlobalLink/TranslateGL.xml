@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--  Adaptor version 20.0.8.3 -->
+<control xmlns:def="Definition" xmlns="http://schemas.sitecore.net/Visual-Studio-Intellisense" xmlns:content="http://www.sitecore.net/content">
+    <TranslateGL>
+        <FormDialog Icon="Control/32x32/edit_b.png" Header="Export Translatable Content (20.0.8)" Text="Use this form to export content. Check 'Recursive Translation' to include all items under current item." OKButton="Translate">
+            <Stylesheet Key="Warning">
+                .left {float:left;}
+                #ui-datepicker-div {
+                z-index:6!important;
+                width:21em;
+                }
+                fieldset#TranslateCustom_Options {
+                display: block!important;
+                float: left!important;
+                }
+                #datepicker{
+                background-color: #fff;
+                }
+                #TranslateCustom_WarningBox_Literal ul{
+                list-style: disc;
+                margin-left: 20px;
+                }
+
+            </Stylesheet>
+            <Stylesheet Src="Content Manager.css" DeviceDependant="true"/>
+            <Script Src="/sitecore/shell/Applications/Content Manager/Content Editor.js"/>
+            <!-- CUSTOM: overrides code -->
+            <CodeBeside Type="easyJet.Foundation.Translation.Adaptor.Forms.ExportSupportForm, easyJet.Foundation.Translation" />
+            <!-- <CodeBeside Type="Sitecore.Starterkit.customcode.ExportItemSupportForm, Globallink.Adaptor" />-->
+
+            <Border GridPanel.NoWrap="true" width="100%" class="left">
+                <Literal ID="TranslateCustom_SubName_Literal"/>
+            </Border>
+
+            <Border GridPanel.NoWrap="true" width="100%" class="left">
+                <Literal ID="TranslateCustom_DueDate_Literal"/>
+            </Border>
+            
+            <!--CUSTOM: Warning-->
+            <Border GridPanel.NoWrap="true" width="100%" class="left">
+                <Literal ID="TranslateCustom_WarningBox_Literal"/>
+            </Border>
+
+            <Border GridPanel.NoWrap="true" width="100%" class="left">
+                <Groupbox ID="TranslateCustom_Project">
+                    <Literal ID="TranslateCustom_Project_Literal"/>
+                </Groupbox>
+            </Border>
+
+            <Border GridPanel.NoWrap="true" width="100%" class="left">
+                <br/>
+                <Literal ID="TranslateCustom_SrcLang_Literal"/>
+            </Border>
+
+            <!-- Checkbox - Language - textbox for reviewer email adress if WF is enabled-->
+            <Border GridPanel.NoWrap="true" width="100%" class="left">
+                <Groupbox ID="TranslateCustom_Reviewer">
+                    <Literal ID="TranslateCustom_Reviewer_Literal"/>
+                </Groupbox>
+            </Border>
+
+            <Groupbox ID="TranslateCustom_Options">
+                <Border GridPanel.NoWrap="true" width="100%" class="left">
+                    <Literal ID="TranslateCustom_Recursive_Literal"/>
+                </Border>
+
+                <Border GridPanel.NoWrap="true" width="100%" class="left">
+                    <Literal ID="TranslateCustom_Presentation_Literal"/>
+                </Border>
+
+                <Border GridPanel.NoWrap="true" width="100%" class="left">
+                    <Literal ID="TranslateCustom_SubmitNewOrChanged_Literal"/>
+                </Border>
+
+                <Border GridPanel.NoWrap="true" width="100%" class="left">
+                    <Literal ID="TranslateCustom_OneFile_Literal"/>
+                </Border>
+
+                <Border GridPanel.NoWrap="true" width="100%" class="left">
+                    <Literal ID="TranslateCustom_Priority_Literal"/>
+                </Border>
+
+                <Border GridPanel.NoWrap="true" width="100%" class="left">
+                    <Literal ID="TranslateCustom_UpdateNonTranslatable_Literal"/>
+                </Border>
+
+                <Border GridPanel.NoWrap="true" width="100%" class="left">
+                    <Literal ID="TranslateCustom_PreviewUrlReferrer_Literal"/>
+                </Border>
+
+                <!-- CUSTOM: checkbox for hotels overrides -->
+                <Border GridPanel.NoWrap="true" width="100%" class="left">
+                    <Literal ID="TranslateCustom_HotelsOnly_Literal"/>
+                </Border>
+
+            </Groupbox>
+
+            <Border GridPanel.NoWrap="true" width="100%" class="left">
+                <Literal ID="TranslateCustom_Instructions_Literal"/>
+            </Border>
+
+        </FormDialog>
+    </TranslateGL>
+</control>

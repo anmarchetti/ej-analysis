@@ -1,0 +1,403 @@
+.information-tiles {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 35px 0 70px;
+
+    @include media-breakpoint-down(lg) {
+        flex-wrap: wrap;
+    }
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+
+    &.information-tiles--transparent {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 24px;
+
+        // fix for 992px screen size that doesn't count as a Tablet by useTabletViewport
+        @media (width <= 991px) {
+            display: flex;
+        }
+
+        .information-tiles-item {
+            .item-title {
+                font-size: 18px;
+            }
+
+            .item-icon {
+                img {
+                    width: 86px;
+                    height: 86px;
+                }
+            }
+
+            .item-description {
+                font-size: 16px;
+                color: $clrTextMain;
+            }
+
+            @include media-breakpoint-down(lg) {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.information-tiles--title {
+    font-family: $fontRoundedBook;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1.28;
+    color: $clrTextMain;
+    word-wrap: break-word;
+
+    @include media-breakpoint-down(md) {
+        font-size: 18px;
+        line-height: 1.333;
+    }
+}
+
+.information-tiles-item {
+    flex-basis: 0;
+    flex-grow: 1;
+    margin-right: 3%;
+
+    @include media-breakpoint-down(lg) {
+        flex: none;
+        width: 30%;
+        margin-right: 0;
+        margin-bottom: 40px;
+    }
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        padding: 0 20px;
+    }
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+    .item-icon {
+        margin-right: 12px;
+    }
+
+    .item-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 5px;
+        }
+    }
+
+    .item-header--title-under-icon {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 15px;
+
+        .item-icon {
+            margin-right: 0;
+            margin-bottom: 12px;
+
+            @include media-breakpoint-down(md) {
+                align-self: center;
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .item-title {
+        margin: 0;
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.25;
+        color: $clrTextMain;
+    }
+
+    .item-description {
+        font-family: $fontRoundedBook;
+        font-size: 14px;
+        line-height: 1.45;
+        color: $clrTxtLight;
+    }
+}
+
+.information-tiles--center {
+    .item-header {
+        align-items: center;
+        justify-content: center;
+    }
+
+    .item-description {
+        text-align: center;
+    }
+}
+
+.information-tiles--page {
+    .information-tiles-item {
+        padding: 0;
+
+        @include media-breakpoint-up(lg) {
+            flex-basis: auto;
+            max-width: 300px;
+
+            &:not(:last-child) {
+                margin-right: 25px;
+            }
+        }
+
+        .item-description {
+            color: $clrTextMain;
+
+            @include media-breakpoint-up(md) {
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+.information-tiles--carousel {
+    align-items: normal;
+    width: 100%;
+    margin-bottom: 40px;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: row;
+        align-items: center;
+        margin: 15px 0 30px;
+    }
+
+    .react-multiple-carousel__arrow {
+        z-index: 2;
+        top: calc(50% - 5px);
+        width: 30px;
+        min-width: 30px;
+        height: 30px;
+        min-height: 30px;
+        padding: 0;
+        background: $clrSiteBgWhite;
+        box-shadow: 0 0 6px 0 rgba(135, 135, 135, 0.39);
+        transform: translateY(-50%);
+
+        &::before {
+            font-size: 16px;
+            color: $clrEjOrange;
+        }
+    }
+
+    .react-multiple-carousel__arrow--left {
+        left: 5px;
+    }
+
+    .react-multiple-carousel__arrow--right {
+        right: 5px;
+    }
+
+    .react-multi-carousel-dot {
+        margin-top: 20px;
+
+        button {
+            width: 8px;
+            height: 8px;
+            background-color: $colorGray;
+            border: none;
+        }
+
+        &--active {
+            button {
+                width: 10px;
+                height: 10px;
+                background-color: $colorOrange;
+            }
+        }
+    }
+
+    .react-multi-carousel-item {
+        margin-bottom: 25px;
+        padding: 10px;
+
+        .information-tiles-item {
+            height: 100%;
+            margin: 0;
+            padding: 20px 35px;
+            background: $clrSiteBgWhite;
+            border-radius: 6px;
+            box-shadow: 0 0 13px 0 rgba(175, 175, 175, 0.39);
+        }
+
+        .item-header {
+            flex-direction: row;
+            gap: 16px;
+        }
+
+        .item-title {
+            font-size: 20px;
+        }
+
+        .item-description {
+            text-align: left;
+        }
+    }
+
+    &.information-tiles--transparent .react-multi-carousel-item .information-tiles-item {
+        padding: 0;
+        background: transparent;
+        box-shadow: none;
+
+        .item-header {
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .item-title {
+            font-size: 18px;
+
+            @include media-breakpoint-down(md) {
+                font-size: 16px;
+                line-height: 1.375;
+            }
+        }
+
+        .item-icon {
+            align-self: flex-start;
+
+            img {
+                width: 86px;
+                height: 86px;
+            }
+        }
+
+        .item-description {
+            font-size: 16px;
+            line-height: 1.375;
+        }
+    }
+}
+
+.default-theme {
+    &.confidence-transformer {
+        align-items: inherit;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding-top: 45px;
+
+        @include media-breakpoint-down(md) {
+            align-items: center;
+            padding: 30px 0 0;
+        }
+    }
+
+    &.confidence-transformer .desktop-container-view .confidence-transformer__title {
+        font-family: $fontRoundedHeadline;
+        font-size: 40px;
+        font-weight: 400;
+        line-height: 42px;
+    }
+
+    &.confidence-transformer--mobile-carousel .confidence-transformer__title {
+        @include media-breakpoint-down(md) {
+            padding: 0 15px;
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 26px;
+            text-align: center;
+        }
+    }
+
+    &.confidence-transformer .desktop-container-view > div {
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    &.confidence-transformer .btn {
+        width: 100%;
+        max-width: 200px;
+        margin-bottom: 0;
+        border-width: 1px;
+
+        @include media-breakpoint-down(md) {
+            max-width: 290px;
+            margin-bottom: 30px;
+        }
+    }
+
+    .information-tiles-item {
+        display: flex;
+        align-items: flex-start;
+
+        @include media-breakpoint-down(md) {
+            margin: 0;
+            padding: 0;
+        }
+
+        .item-icon {
+            margin-right: 18px;
+
+            @include media-breakpoint-down(md) {
+                margin-right: 15px;
+            }
+        }
+
+        .item-description {
+            margin-top: 10px;
+            line-height: 18px;
+        }
+
+        .content {
+            max-width: 185px;
+        }
+    }
+
+    .information-tiles--carousel {
+        margin: 0;
+        overflow: hidden;
+
+        @include media-breakpoint-down(md) {
+            margin: 0 0 15px;
+        }
+
+        .react-multi-carousel-item {
+            max-width: 240px;
+            margin: 0 30px 25px;
+
+            @include media-breakpoint-down(md) {
+                max-width: inherit;
+                margin: 0;
+                padding: 10px 10px 30px;
+            }
+
+            .information-tiles-item {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                background: none;
+                box-shadow: inherit;
+            }
+
+            .item-title {
+                font-family: $fontRoundedDemy;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 22px;
+            }
+        }
+    }
+
+    .information--centered {
+        margin-top: 15px;
+        margin-bottom: 40px;
+
+        .content {
+            max-width: inherit;
+        }
+    }
+}

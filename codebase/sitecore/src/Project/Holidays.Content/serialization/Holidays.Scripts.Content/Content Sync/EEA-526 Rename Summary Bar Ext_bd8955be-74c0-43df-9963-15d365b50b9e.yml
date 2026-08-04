@@ -1,0 +1,40 @@
+﻿---
+ID: "bd8955be-74c0-43df-9963-15d365b50b9e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-526 Rename Summary Bar Extras to Luggage TP"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $tradeportaldatadestinationssummarybardatasource_Id = [GUID]"{AE6320DE-1383-425C-B6B0-81A72E058DCA}"
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Destinations/Summary Bar Data Source"
+            TemplatePath = "Feature/PageContent/Basket Datasource"
+            Id          = $tradeportaldatadestinationssummarybardatasource_Id
+            Fields      = @{
+                "FlightSectionExtrasDropdown" = @{
+                    "de-CH" = "Gepäck"
+                    "en" = "Luggage"
+                    "fr-FR" = "Bagages"
+                    "de-DE" = "Gepäck"
+                    "fr-CH" = "Bagages"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 100000047
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250917T102357Z

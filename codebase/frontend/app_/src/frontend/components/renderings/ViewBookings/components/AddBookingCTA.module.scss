@@ -1,0 +1,63 @@
+.container {
+    margin-bottom: 3rem;
+
+    @include media-breakpoint-down(md) {
+        position: relative;
+        top: -93px;
+        margin-bottom: -80px !important;
+        padding-top: 93px;
+    }
+}
+
+.row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-0.5 * var(--bs-gutter-x));
+    margin-left: calc(-0.5 * var(--bs-gutter-x));
+
+    padding-bottom: 1.5rem;
+    align-items: center;
+
+    & > * {
+        flex-shrink: 0;
+        width: 100%;
+        max-width: 100%;
+        padding-right: calc(var(--bs-gutter-x) * 0.5);
+        padding-left: calc(var(--bs-gutter-x) * 0.5);
+        margin-top: var(--bs-gutter-y);
+    }
+}
+
+.addBookingCTAText {
+    position: relative;
+    margin: 0;
+    font-family: $fontRoundedHeadline;
+    font-size: 34px;
+    font-weight: bold;
+    color: inherit;
+
+    flex: 0 0 auto;
+    width: 100%;
+
+    @include media-breakpoint-up(md) {
+        flex: 0 0 auto;
+        width: 75%;
+    }
+}
+
+.addBookingCTA {
+    position: relative;
+    flex: 0 0 auto;
+    width: 100%;
+    margin-left: auto;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    @include media-breakpoint-up(md) {
+        flex: 0 0 auto;
+        width: auto;
+    }
+}

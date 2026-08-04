@@ -1,0 +1,36 @@
+﻿---
+ID: "c4bb21d1-e888-4b60-acc0-7379730f4be2"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Rename Cancel And Credit To Cancel And Cash Refund
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $cancelAndCreditRulesSettingsFolderPath = "/sitecore/content/EasyJet/Holidays/Settings/Cancel And Credit Settings"
+    $cancelAndCreditRulesFolderPath = "/sitecore/content/EasyJet/Holidays/Settings/Cancel And Credit Settings/Cancel And Credit Rules"
+    
+    $cancelAndCreditRulesSettingsFolderName = "Credit and Cash Refund Settings"
+    $cancelAndCreditRulesFolderName = "Credit and Cash Refund"
+    
+    function Rename-Item($path, $newName){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -ne $null){
+            $item.Editing.Beginedit()
+            $item.Name = $newName
+            $item.Editing.EndEdit()
+        }
+    }
+    
+    Rename-Item -Path $cancelAndCreditRulesFolderPath -NewName $cancelAndCreditRulesFolderName
+    Rename-Item -Path $cancelAndCreditRulesSettingsFolderPath -NewName $cancelAndCreditRulesSettingsFolderName
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201218T071646Z

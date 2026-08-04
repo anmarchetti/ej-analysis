@@ -1,0 +1,27 @@
+﻿---
+ID: "cd6f6874-f80e-4c0c-906f-74638932c1da"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-751 Amend Payment Page amend types missing"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $rbcAmendTypeDataSourceData = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Amend Item Info";
+    if ($rbcAmendTypeDataSourceData -ne $null) {
+    	$rbcAmendTypeDataSourceData.Editing.BeginEdit();
+    
+    	$rbcAmendTypeDataSourceData["AmendTypes"] = "{C68CA9F2-FF00-4C9A-BFF7-E7DAFCDCB2A0}|{5E39B0AB-1835-42FE-AFBA-9DBD583DE4AE}|{08DCF372-9D72-4C19-A763-61BEBBB80FC7}|{B4875758-9E37-4F20-BC7D-DACA79C541D1}|{D2850371-891A-44E7-8D4B-5C8B59EA1689}";
+    	Write-Host "AmendTypes updated"
+    
+    	$rbcAmendTypeDataSourceData.Editing.EndEdit();
+    } 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240117T100510Z

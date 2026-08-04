@@ -1,0 +1,24 @@
+.methods {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    margin-top: 20px;
+
+    @include media-breakpoint-up(sm) {
+        flex-direction: row;
+        margin-top: 32px;
+    }
+
+    &.disabled {
+        opacity: 0.4;
+        pointer-events: none;
+    }
+}
+
+.methods > * {
+    @include media-breakpoint-down(sm) {
+        margin: 0;
+    }
+}

@@ -1,0 +1,40 @@
+﻿---
+ID: "157b47fd-e898-4b25-a9c0-3ea15f717502"
+Parent: "e5157d49-3e23-4c15-b997-e2d3d4e82eda"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Examples/Import Renderings
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # This is just an Example for ContentSync
+    
+    Import-Function "Import Renderings"
+    $myRenderings = @(
+        @{ 
+            Title          = "Horizontal Component Wrapper"
+            PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Booking"
+            RenderingId  = "{1B6F8CC5-F07C-40E8-AAE4-2E70409FB3B6}"
+            RenderingIndex  = 0#optional, How many renderings with the RenderingId we want to skip
+            Placeholder    = "body"
+            PlaceBeforeRenderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}"
+            PlaceBeforeRenderingIndex = 1#optional How many renderings with the PlaceBeforeRenderingId we want to skip
+            UpdateFinalLayoutAsWell = 1#optional 
+            DataSourcePath ="/sitecore/content/EasyJet/Holidays/Data/Destinations/Summary Bar"
+            Parameters= @{ #optional
+                IsGreyBackground = 1
+                IsTriangleStart = 1
+                IsTriangleEnd = 1
+            }
+        }
+    )
+    ImportRenderings -renderingsToAttach $myRenderings
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191118T132901Z

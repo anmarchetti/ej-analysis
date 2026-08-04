@@ -1,0 +1,50 @@
+.container {
+    display: flex;
+}
+
+.subtitleWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+
+    @include media-breakpoint-down(md) {
+        display: block;
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+    line-height: 1.4;
+
+    @include media-breakpoint-down(md) {
+        display: block;
+    }
+}
+
+.extNumber {
+    color: $colorBlackMedium;
+}
+
+.flightsDetails {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    margin-top: 16px;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 8px;
+    }
+}
+
+.flightsDetailsItem {
+    display: flex;
+    flex-direction: column;
+}
+
+.separator {
+    width: 54px;
+    margin-top: 10px;
+    border-top: 2px dotted $colorBlack;
+}

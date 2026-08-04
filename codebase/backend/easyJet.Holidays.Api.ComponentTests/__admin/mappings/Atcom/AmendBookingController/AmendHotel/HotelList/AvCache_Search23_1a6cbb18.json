@@ -1,0 +1,44 @@
+﻿{
+    "Title": "WireMock mapping for specified URI parameters",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/fcgi-bin/ezydmouk/avcache3_g",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "s_tp",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "23"
+                    }
+                ]
+            },
+            {
+                "Name": "cur_accom",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "1a6cbb18/2024-10-16/7"
+                    }
+                ]
+            }
+        ],
+        "Methods": [
+            "Get"
+        ]
+    },
+    "Response": {
+        "Headers": {
+            "Content-Type": "text/xml; charset=utf-8"
+        },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/AmendController/AmendHotel/HotelList/AvCache_Search23_1a6cbb18.xml"
+    }
+}

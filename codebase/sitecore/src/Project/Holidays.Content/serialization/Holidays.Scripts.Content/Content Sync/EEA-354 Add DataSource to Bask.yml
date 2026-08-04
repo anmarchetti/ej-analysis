@@ -1,0 +1,44 @@
+﻿---
+ID: "4bf2ab3b-0a57-429c-b8fe-5d5a1572a124"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-354 Add DataSource to Basket"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # This is just an Example for ContentSync
+    
+    Import-Function "Import Renderings"
+    $myRenderings = @(
+        @{ 
+            Title          = "Basket"
+            PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Booking"
+            RenderingId  = "{F3BEFB97-4213-4C6B-9336-9FC2C2A3624B}"
+    
+            Placeholder    = "header"
+    
+            PlaceBeforeRenderingId = "{E4FE4D55-9934-4792-8420-FC277F35E30F}"
+    
+            UpdateFinalLayoutAsWell = 1#optional 
+            DataSourcePath ="/sitecore/content/EasyJet/Holidays/Data/Destinations/Summary Bar"
+    
+        }
+    )
+    ImportRenderings -renderingsToAttach $myRenderings
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 100000040
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250709T103304Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

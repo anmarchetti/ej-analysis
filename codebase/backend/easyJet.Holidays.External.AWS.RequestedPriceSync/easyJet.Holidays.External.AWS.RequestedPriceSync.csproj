@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Nullable>warnings</Nullable>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <AWSProjectType>Lambda</AWSProjectType>
+    <!-- This property makes the build directory similar to a publish directory and helps the AWS .NET Lambda Mock Test Tool find project dependencies. -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <AssemblyName>RequestedPriceSync</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWarn>CA1515</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.Annotations" />
+    <PackageReference Include="Amazon.Lambda.CloudWatchEvents" />
+    <PackageReference Include="Amazon.Lambda.Core" />
+    <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" />
+    <PackageReference Include="Amazon.Lambda.SQSEvents" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" />
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\easyJet.Holidays.External.AWS.Domain\appsettings.shared.json" Link="appsettings.shared.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\easyJet.Holidays.External.Atcom\easyJet.Holidays.External.Atcom.csproj" />
+    <ProjectReference Include="..\easyJet.Holidays.External.AWS.Domain\easyJet.Holidays.External.AWS.Domain.csproj" />
+    <ProjectReference Include="..\easyJet.Holidays.External.AWS\easyJet.Holidays.External.AWS.csproj" />
+    <ProjectReference Include="..\easyJet.Holidays.External.Cms\easyJet.Holidays.External.Cms.csproj" />
+    <ProjectReference Include="..\easyJet.Holidays.External.Domain\easyJet.Holidays.External.Domain.csproj" />
+  </ItemGroup>
+</Project>

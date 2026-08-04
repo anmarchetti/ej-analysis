@@ -1,0 +1,54 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 32px 0 16px;
+
+    @include media-breakpoint-down(lg) {
+        padding: 20px 0;
+    }
+}
+
+.title {
+    margin: 0 0 0 8px;
+    font-family: $fontRoundedBook;
+    font-size: 20px;
+    font-weight: 400;
+    text-transform: uppercase;
+
+    @include media-breakpoint-down(lg) {
+        font-size: 14px;
+    }
+}
+
+.icon {
+    width: 56px;
+    height: 56px;
+
+    @include media-breakpoint-down(lg) {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.cta {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 32px;
+
+    @include media-breakpoint-down(lg) {
+        margin-top: 20px;
+    }
+
+    button {
+        @include media-breakpoint-down(lg) {
+            width: 100%;
+        }
+    }
+}

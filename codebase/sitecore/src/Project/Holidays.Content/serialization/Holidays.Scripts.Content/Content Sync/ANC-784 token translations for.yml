@@ -1,0 +1,42 @@
+﻿---
+ID: "763c563e-06bc-46de-98fb-a92c8938bcdc"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-784 token translations for hold luggage"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $holdLuggagePath = "master:/sitecore/content/EasyJet/Holidays/Data/Hold Luggage"
+    
+    function updateLuggageText($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+        }
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+        }
+       
+    }
+    
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-FR" -Key 'BagExtraDescription' -Translation "<p>Ajouter un article de {number}kg au bagage en soute pour seulement <strong>{price}</strong> par article, par vol</p><p>Tous les bagages en soute sont applicables aux vols aller et retour.</p>"
+    updateLuggageText -ItemPath $holdLuggagePath -Language "fr-CH" -Key 'BagExtraDescription' -Translation "<p>Ajouter un article de {number}kg au bagage en soute pour seulement <strong>{price}</strong> par article, par vol</p><p>Tous les bagages en soute sont applicables aux vols aller et retour.</p>"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 430
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240102T110517Z

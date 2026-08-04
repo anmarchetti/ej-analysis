@@ -1,0 +1,76 @@
+.booking-privacy {
+    padding: 70px 0;
+    border-bottom: 1px solid $colorGrayMiddle;
+
+    @include media-breakpoint-down(md) {
+        margin: 50px 0;
+        padding: 0;
+        border-bottom: none;
+    }
+
+    .error-message {
+        margin: 25px 0 0;
+    }
+}
+
+.booking-privacy__heading {
+    margin: 0 0 20px;
+    font-family: $fontRoundedBook;
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 1.08;
+    color: $clrTextMain;
+    text-transform: uppercase;
+
+    @include media-breakpoint-down(md) {
+        font-size: 20px;
+        line-height: 1.3;
+    }
+}
+
+.booking-privacy__info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .toggle {
+        margin-left: -17px;
+    }
+}
+
+.booking-privacy__title {
+    margin-top: 0;
+    margin-bottom: 24px;
+    font-family: $fontRoundedBook;
+    font-size: 20px;
+    line-height: 1.3;
+    color: $clrTextMain;
+    text-transform: uppercase;
+
+    @include media-breakpoint-down(md) {
+        font-size: 18px;
+        line-height: 1.333;
+        margin-bottom: 16px;
+    }
+}
+
+.booking-privacy__desc {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    line-height: 1.375;
+
+    p {
+        margin: 12px 0;
+        line-height: inherit;
+    }
+
+    a {
+        text-decoration: underline;
+        text-decoration-color: $clrEjOrange;
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 20px;
+    }
+}

@@ -1,0 +1,31 @@
+.includedBag {
+    padding-bottom: 8px;
+    font-weight: 700;
+
+    @include media-breakpoint-down(lg) {
+        padding-bottom: 0;
+    }
+}
+
+.extraBag {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    line-height: 1.4;
+
+    @include media-breakpoint-down(lg) {
+        margin-bottom: 8px;
+        font-size: 14px;
+
+    }
+}
+
+.icon {
+    flex-shrink: 0;
+    margin-right: 8px;
+}
+
+.label {
+    margin-left: 4px;
+    color: $colorBlackMedium;
+}

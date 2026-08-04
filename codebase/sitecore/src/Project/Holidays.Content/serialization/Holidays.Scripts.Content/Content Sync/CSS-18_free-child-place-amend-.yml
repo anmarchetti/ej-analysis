@@ -1,0 +1,160 @@
+﻿---
+ID: "21a89340-5dab-4241-abbd-a8b39c102575"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSS-18_free-child-place-amend-room-and-board"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    ## GET OR CREATE ITEM
+    function Get-Or-Create-Item($path, $template){
+         Write-Host $template.Path
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    ###
+    
+    ## UPDATE FILEDS WITH LANGS
+    function update-item-with-lang($data, $item) {
+        function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+    };
+    
+        if ($item -ne $null) {
+            $data | ForEach-Object {
+            $fieldName = $_.fieldName;
+            $values = $_.values;
+        
+            if ($values -ne $null) {
+              
+                if ($values.en -ne $null) {
+                    $item.Editing.BeginEdit();
+                    $item[$fieldName] = $values.en;
+                    $item.Editing.EndEdit() | Out-Null
+                }
+                 if ($values.fr -ne $null) {
+                     @('fr-CH', 'fr-FR') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.fr;
+                    }
+                }
+                 if ($values.de -ne $null) {
+                     @('de-CH', 'de-DE') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.de;
+                    }
+                }
+                
+                Write-Host $fieldName "Updated"
+            }
+        }
+        }
+    };
+    ##
+    
+    ## GET OR CREATE ITEM AND POPULATE IT
+    function Get-Or-Create-Item-And-Populate($itemPath, $template, $data) {
+       
+        $item = Get-Or-Create-Item -Path $itemPath -Template $template;
+        
+        if ($item -ne $null) {
+            Write-Host $item.Name "Has been created/find";
+            
+            update-item-with-lang -Data $data -Item $item;
+        }
+        
+        return $item;
+    }
+    ##
+    
+    
+    ## UPDATE PAGE RENDERING
+    function Add-Or-Update-Page-Rendering ($pagePath, $renderingPath, $renderingPlaceholder, $dataSourcePath, $parameters = @{}) {
+        $page = Get-Item -Path $pagePath;
+    	$renderingItem = Get-Item -Database "master" -Path $renderingPath;
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+    
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -Parameter $parameters -DataSource $dataSourcePath;
+    		Write-Host $renderingItem "Rendering instance added";
+    	}
+    	else {
+    		Write-Host $pageRenderingInstance "Already exists";
+    	}
+    }
+    ##
+    
+    
+    $freeChildPlaceMessagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Room And Board/Page Components/Free Child Place Lose Message";
+    $messageRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Attention Message";
+    $roomAndBoardPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Room And Board";
+    
+    $roomAndBoardRenderingItem = Get-Item -Path "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Room And Board/Amend Room And Board Page";
+    $roomAndBoardPageItem = Get-Item -Path $roomAndBoardPagePath;
+    $RoomAndBoardRenderingInstance = Get-Rendering -Item $roomAndBoardPageItem -Render $roomAndBoardRenderingItem;
+    
+    $messageRenderingPlaceholder = "/body/attention-message-" + $RoomAndBoardRenderingInstance.UniqueId + "-0";
+    
+    $freeChildPlaceMessageData = @(
+        @{
+            fieldName = "Title";
+            values = @{
+                en = 'Free child place not available';
+                de = 'Freier Kinderplatz nicht verfügbar';
+                fr = "La place gratuite pour les enfants n'est pas disponible";
+            }
+        },
+        @{
+            fieldName = "Description";
+            values = @{
+                en = 'If you had a free child place on your original booking, by choosing any of the alternative room/board options below it will no longer be applied to your booking.';
+                de = 'Wenn Sie bei Ihrer ursprünglichen Buchung einen freien Platz für ein Kind hatten, wird dieser nicht mehr auf Ihre Buchung angerechnet, wenn Sie eine der unten aufgeführten alternativen Zimmer-/Verpflegungsoptionen wählen.';
+                fr = "Si vous aviez une place gratuite pour un enfant lors de votre réservation initiale, elle ne sera plus appliquée à votre réservation si vous choisissez l'une des options de chambre/pension alternatives ci-dessous.";
+            }
+        },
+        @{
+            fieldName = "Icon";
+            values = @{
+                en = '<image mediaid="{1EBDF15C-E5BC-4CDD-A0DE-6D90473C4E1F}" />';
+            }
+        },
+        @{
+            fieldName = "Type";
+            values = @{
+                en = 'free-child-place';
+            }
+        } 
+    );
+    $messageTemplate = Get-Item -Path "/sitecore/templates/Feature/Destinations/Attention Message" -ErrorAction SilentlyContinue;
+    
+    
+    $freeChildPlaceMessageItem = Get-Or-Create-Item-And-Populate -ItemPath $freeChildPlaceMessagePath -Template $messageTemplate.ID -Data $freeChildPlaceMessageData;
+    
+    Add-Or-Update-Page-Rendering -PagePath "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Room And Board" -RenderingPath $messageRenderingPath -RenderingPlaceholder $messageRenderingPlaceholder -DataSourcePath $freeChildPlaceMessagePath;
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240605T140331Z

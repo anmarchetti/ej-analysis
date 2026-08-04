@@ -1,0 +1,144 @@
+﻿---
+ID: "8f630f2c-3611-4aff-8099-7c0ab427b100"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/9 - SER-955 - B2C trade bookings"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components/Cancellation Breakdown/Email"
+                TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Cancellation Breakdown Folder/Cancellation Breakdown Item"
+                Fields      = @{
+                    "UniqueId" = @{
+                        "en" = "trade-booking-email"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components/Cancellation Breakdown/Date"
+                TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Cancellation Breakdown Folder/Cancellation Breakdown Item"
+                Fields      = @{
+                    "UniqueId" = @{
+                        "en" = "trade-booking-date"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Cancelled Booking/Page Components/Cancellation Breakdown"
+                TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Cancellation Breakdown Folder/Cancellation Breakdown"
+                Fields      = @{
+                    "Subtext" = @{
+                        "en" = ""
+                    }
+                    "BottomText" = @{
+                        "en" = ""
+                    }
+                    "TradeBookingsSubtext" = @{
+                        "en" = "The holiday you booked on {date} has been cancelled, we’ve sent you an email to confirm."
+                    }
+                    "TradeBookingsBottomText" = @{
+                        "en" = "Have a problem with your cancellation or refund? <a href=""~/link.aspx?_id=2B6CE68AD26248B8B69A9280687170ED&amp;_z=z"">Get in touch</a> with our support team."
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Cancelation Breakdown"
+                TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Cancellation Breakdown Folder/Cancellation Breakdown"
+                Fields      = @{
+                    "TradeBookingsSubtext" = @{
+                        "en" = "The holiday you booked on {date} has been cancelled, we’ve sent the lead passenger an email to confirm."
+                    }
+                    "TradeBookingsBottomText" = @{
+                        "en" = "Have a problem with your cancellation or refund? Get in touch with your travel agents for details."
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Cancelation Breakdown/Trade Bookings Date Item"
+                TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Cancellation Breakdown Folder/Cancellation Breakdown Item"
+                Fields      = @{
+                    "UniqueId" = @{
+                        "en" = "trade-booking-date"
+                    }
+                    "Title" = @{
+                        "en" = "Holiday cancelled"
+                        "fr-CH" = "Vacances annulées"
+                        "fr-FR" = "Vacances annulées"
+                        "de-DE" = "Urlaub storniert"
+                        "de-CH" = "Urlaub storniert"
+                    }
+                    "Description" = @{
+                        "en" = ""
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Cancelation Breakdown/Trade Bookings Email Item"
+                TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Cancellation Breakdown Folder/Cancellation Breakdown Item"
+                Fields      = @{
+                    "UniqueId" = @{
+                        "en" = "trade-booking-email"
+                    }
+                    "Title" = @{
+                        "en" = "Cancellation email sent"
+                        "fr-CH" = "E-mail d'annulation envoyé"
+                        "fr-FR" = "E-mail d'annulation envoyé"
+                        "de-DE" = "Stornierungs-E-Mail gesendet"
+                        "de-CH" = "Stornierungs-E-Mail gesendet"
+                    }
+                    "Description" = @{
+                        "en" = ""
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Contact Us Banner"
+                TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Banner"
+                Fields      = @{
+                    "CTATitle" = @{
+                        "en" = "Need support? Get in touch with your travel agent"
+                        "fr-CH" = "Besoin d'aide ? Contactez votre agent de voyages."
+                        "fr-FR" = "Besoin d'aide ? Contactez votre agent de voyages."
+                        "de-DE" = "Benötigen Sie Unterstützung? Wenden Sie sich an Ihr Reisebüro."
+                        "de-CH" = "Benötigen Sie Unterstützung? Wenden Sie sich an Ihr Reisebüro."
+                    }
+                }
+            }
+        )
+        
+    ImportContent -itemsToCreate $updates
+    
+    $page= Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled"
+    
+    $renderingBookingContextProvider  = Get-Item -Path "/sitecore/layout/Renderings/Feature/Booking/BookingContextProvider"
+    $pageRenderingBookingContextProvider = Get-Rendering -Item $page -Rendering $renderingBookingContextProvider
+    $uniqueID_BookingContextProvider = $pageRenderingBookingContextProvider.UniqueId
+    
+    $renderingMasonryWrapper  = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Masonry/Masonry Wrapper"
+    $pageRenderingMasonryWrapper = Get-Rendering -Item $page -Rendering $renderingMasonryWrapper
+    $uniqueID_MasonryWrapper = $pageRenderingMasonryWrapper.UniqueId
+    
+    $renderingMasonryWrapperItem  = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Masonry/Masonry Wrapper Item"
+    $instanceComponentWrapperItem = New-Rendering -Item $renderingMasonryWrapperItem
+    Add-Rendering -Item $page -Instance $instanceComponentWrapperItem -PlaceHolder "/body/booking-context-$($uniqueID_BookingContextProvider)-0/masonry-aside-$($uniqueID_MasonryWrapper)-0" -Index 10
+    $pageRenderingMasonryWrapperItem = Get-Rendering -Item $page -Rendering $renderingMasonryWrapperItem
+    $uniqueID_MasonryWrapperItem = $pageRenderingMasonryWrapperItem[2].UniqueId
+    
+    $rendering  = Get-Item -Path "/sitecore/layout/Renderings/Feature/Booking/Contact Us Banner"
+    $instance = New-Rendering -Item $rendering
+    Add-Rendering -Item $page -Instance $instance -PlaceHolder "/body/booking-context-$($uniqueID_BookingContextProvider)-0/masonry-aside-$($uniqueID_MasonryWrapper)-0/masonry-item-$($uniqueID_MasonryWrapperItem)-0" -DataSource "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Contact Us Banner" -Index 11
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

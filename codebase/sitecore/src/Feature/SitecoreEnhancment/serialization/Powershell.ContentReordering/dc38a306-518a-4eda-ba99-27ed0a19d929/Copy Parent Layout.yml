@@ -1,0 +1,57 @@
+﻿---
+ID: "e4928ba6-bd87-4a99-ab4a-08c82ff77e88"
+Parent: "dc38a306-518a-4eda-ba99-27ed0a19d929"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/SPE/Content Reordering/Export Content Ordering/Content Editor/Context Menu/Order/Copy Parent Layout
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $prompt = "You will be copying parent layout to your current item! Click OK to proceed."
+    $response = Show-Confirm -Title $prompt
+    
+    if ($response -ne 'yes') {
+        Write-Host "⏹ Operation cancelled by user."
+        return
+    }
+    
+    $item  = $SitecoreContextItem
+    
+    if($item.templateId -ne '{CA779A9B-F7BB-4006-BD80-33FADE15AE66}' -and $item.templateId -ne '{93A5B9DC-DAD5-4326-9C74-B5FE2948DEBD}'){
+       Write-Host "You are using incorrect item for copying parent layout!"
+       return
+    }
+    
+    $parent = $item.Parent
+    if (-not $parent) {
+        Write-Warning "Item '$($item.Paths.FullPath)' has no parent. Nothing to copy."
+        return
+    }
+    
+    $parentSharedLayout = $parent.Fields["__Renderings"].Value
+    $parentLayout = $parent.Fields["__Final Renderings"].Value
+    if ([string]::IsNullOrEmpty($parentLayout)) {
+        Write-Warning "Parent '$($parent.Paths.FullPath)' has an empty __Final Renderings field. Nothing to copy."
+        return
+    }
+    
+    $item.Editing.BeginEdit()
+    $item.Fields["__Renderings"].Value = $parentSharedLayout
+    $item.Fields["__Final Renderings"].Value = $parentLayout
+    $item.Editing.EndEdit()
+    
+    Write-Host "✅ Copied __Final Renderings from '$($parent.Paths.FullPath)' to '$($item.Paths.FullPath)'."
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250505T181019Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

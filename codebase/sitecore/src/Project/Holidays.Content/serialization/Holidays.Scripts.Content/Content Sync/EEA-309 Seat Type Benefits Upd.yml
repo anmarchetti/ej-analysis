@@ -1,0 +1,178 @@
+﻿---
+ID: "9682d258-335a-46ae-8752-f2f5cf13e1b7"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-309 Seat Type Benefits Update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $icon_28e155fda72c4ce2b6e1bd8c1b2086d4_dech_v1 = @"
+    {BD0FE680-03D5-477E-9B85-F24438A0378D}
+    "@
+    $icon_0872e07215764afebc10aae6ebdc2233_en_v1 = @"
+    {B1A2E561-D409-4D65-A1FF-B53BE6B75B2C}
+    "@
+    $icon_59392b42debf48c38f1d5861de05222b_frch_v1 = @"
+    {7C2BE2C0-B427-452D-B1C3-E48DD913E52D}
+    "@
+    $icon_59392b42debf48c38f1d5861de05222b_dede_v1 = @"
+    {7C2BE2C0-B427-452D-B1C3-E48DD913E52D}
+    "@
+    $icon_59392b42debf48c38f1d5861de05222b_frfr_v1 = @"
+    {7C2BE2C0-B427-452D-B1C3-E48DD913E52D}
+    "@
+    $icon_0872e07215764afebc10aae6ebdc2233_dede_v1 = @"
+    {B1A2E561-D409-4D65-A1FF-B53BE6B75B2C}
+    "@
+    $icon_f558d7ba479f41b983336c7f16d77356_dech_v1 = @"
+    {1A19ADF3-ADA0-4CB2-93F7-C0745B5D4009}
+    "@
+    $icon_f558d7ba479f41b983336c7f16d77356_frfr_v1 = @"
+    {1A19ADF3-ADA0-4CB2-93F7-C0745B5D4009}
+    "@
+    $icon_28e155fda72c4ce2b6e1bd8c1b2086d4_frch_v1 = @"
+    {BD0FE680-03D5-477E-9B85-F24438A0378D}
+    "@
+    $icon_0872e07215764afebc10aae6ebdc2233_frfr_v1 = @"
+    {B1A2E561-D409-4D65-A1FF-B53BE6B75B2C}
+    "@
+    $icon_f558d7ba479f41b983336c7f16d77356_en_v1 = @"
+    {1A19ADF3-ADA0-4CB2-93F7-C0745B5D4009}
+    "@
+    $icon_59392b42debf48c38f1d5861de05222b_en_v1 = @"
+    {7C2BE2C0-B427-452D-B1C3-E48DD913E52D}
+    "@
+    $icon_28e155fda72c4ce2b6e1bd8c1b2086d4_frfr_v1 = @"
+    {BD0FE680-03D5-477E-9B85-F24438A0378D}
+    "@
+    $icon_f558d7ba479f41b983336c7f16d77356_dede_v1 = @"
+    {1A19ADF3-ADA0-4CB2-93F7-C0745B5D4009}
+    "@
+    $icon_59392b42debf48c38f1d5861de05222b_dech_v1 = @"
+    {7C2BE2C0-B427-452D-B1C3-E48DD913E52D}
+    "@
+    $icon_f558d7ba479f41b983336c7f16d77356_frch_v1 = @"
+    {1A19ADF3-ADA0-4CB2-93F7-C0745B5D4009}
+    "@
+    $icon_0872e07215764afebc10aae6ebdc2233_frch_v1 = @"
+    {B1A2E561-D409-4D65-A1FF-B53BE6B75B2C}
+    "@
+    $icon_28e155fda72c4ce2b6e1bd8c1b2086d4_en_v1 = @"
+    {BD0FE680-03D5-477E-9B85-F24438A0378D}
+    "@
+    $icon_28e155fda72c4ce2b6e1bd8c1b2086d4_dede_v1 = @"
+    {BD0FE680-03D5-477E-9B85-F24438A0378D}
+    "@
+    $icon_0872e07215764afebc10aae6ebdc2233_dech_v1 = @"
+    {B1A2E561-D409-4D65-A1FF-B53BE6B75B2C}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Seat Type Benefits"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Type Benefits Folder"
+            Id          = [GUID]"{2C1C4F27-FB5C-46E2-B85A-B0E9B7C2E23D}"
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Seat Type Benefits/Be first off the aircraft"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Type Benefit"
+            Id          = [GUID]"{28E155FD-A72C-4CE2-B6E1-BD8C1B2086D4}"
+            Fields      = @{
+                "Icon" = @{
+                    "de-CH" = $icon_28e155fda72c4ce2b6e1bd8c1b2086d4_dech_v1
+                    "en" = $icon_28e155fda72c4ce2b6e1bd8c1b2086d4_en_v1
+                    "fr-FR" = $icon_28e155fda72c4ce2b6e1bd8c1b2086d4_frfr_v1
+                    "de-DE" = $icon_28e155fda72c4ce2b6e1bd8c1b2086d4_dede_v1
+                    "fr-CH" = $icon_28e155fda72c4ce2b6e1bd8c1b2086d4_frch_v1
+                }
+                "Name" = @{
+                    "de-CH" = "Gehöre zu den Ersten, die das Flugzeug verlassen"
+                    "en" = "Be first off the plane"
+                    "fr-FR" = "Sortez en premier de l'avion"
+                    "de-DE" = "Gehöre zu den Ersten, die das Flugzeug verlassen"
+                    "fr-CH" = "Sortez en premier de l'avion"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Seat Type Benefits/Extra legroom"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Type Benefit"
+            Id          = [GUID]"{0872E072-1576-4AFE-BC10-AAE6EBDC2233}"
+            Fields      = @{
+                "Icon" = @{
+                    "de-CH" = $icon_0872e07215764afebc10aae6ebdc2233_dech_v1
+                    "en" = $icon_0872e07215764afebc10aae6ebdc2233_en_v1
+                    "fr-FR" = $icon_0872e07215764afebc10aae6ebdc2233_frfr_v1
+                    "de-DE" = $icon_0872e07215764afebc10aae6ebdc2233_dede_v1
+                    "fr-CH" = $icon_0872e07215764afebc10aae6ebdc2233_frch_v1
+                }
+                "Name" = @{
+                    "de-CH" = "Mehr Platz an Bord"
+                    "en" = "More legroom"
+                    "fr-FR" = "Plus de place pour vos jambes"
+                    "de-DE" = "Mehr Platz an Bord"
+                    "fr-CH" = "Plus de place pour vos jambes"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Seat Type Benefits/Select your seat"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Type Benefit"
+            Id          = [GUID]"{F558D7BA-479F-41B9-8333-6C7F16D77356}"
+            Fields      = @{
+                "Icon" = @{
+                    "de-CH" = $icon_f558d7ba479f41b983336c7f16d77356_dech_v1
+                    "en" = $icon_f558d7ba479f41b983336c7f16d77356_en_v1
+                    "fr-FR" = $icon_f558d7ba479f41b983336c7f16d77356_frfr_v1
+                    "de-DE" = $icon_f558d7ba479f41b983336c7f16d77356_dede_v1
+                    "fr-CH" = $icon_f558d7ba479f41b983336c7f16d77356_frch_v1
+                }
+                "Name" = @{
+                    "de-CH" = "Wähle zwischen Fensterplatz, Mitte oder Gang"
+                    "en" = "Choose window, middle or aisle"
+                    "fr-FR" = "Choisissez la fenêtre, le milieu ou le couloir"
+                    "de-DE" = "Wähle zwischen Fensterplatz, Mitte oder Gang"
+                    "fr-CH" = "Choisissez la fenêtre, le milieu ou le couloir"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Seat Type Benefits/Small under seat cabin bag"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat Type Benefit"
+            Id          = [GUID]"{59392B42-DEBF-48C3-8F1D-5861DE05222B}"
+            Fields      = @{
+                "Icon" = @{
+                    "de-CH" = $icon_59392b42debf48c38f1d5861de05222b_dech_v1
+                    "en" = $icon_59392b42debf48c38f1d5861de05222b_en_v1
+                    "fr-FR" = $icon_59392b42debf48c38f1d5861de05222b_frfr_v1
+                    "de-DE" = $icon_59392b42debf48c38f1d5861de05222b_dede_v1
+                    "fr-CH" = $icon_59392b42debf48c38f1d5861de05222b_frch_v1
+                }
+                "Name" = @{
+                    "de-CH" = "Ein kleines Handgepäckstück"
+                    "en" = "Take a small cabin bag"
+                    "fr-FR" = "Voyagez avec un petit bagage à main"
+                    "de-DE" = "Ein kleines Handgepäckstück"
+                    "fr-CH" = "Voyagez avec un petit bagage à main"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999941
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250710T110909Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

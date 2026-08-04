@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" 
+		targetNamespace="AtComRes/DisplayMemoRequest" xmlns:ns1="AtComRes/DisplayMemoRequest" 
+		xmlns:p2="AtComRes/Common"> 
+		<xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+
+  <xs:element name="DisplayMemoRequest">
+    <xs:annotation>
+        <xs:documentation>Request to modify the booking memos of a packagetour booking.</xs:documentation>
+    </xs:annotation>
+	    <xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="p2:AtcomresBaseRequest">
+ 					<xs:sequence>
+ 					    <xs:element ref="p2:BkgNum" minOccurs="1" maxOccurs="1">
+			  				<xs:annotation>
+			     				<xs:documentation>Booking to which the memos belong</xs:documentation>
+			  				</xs:annotation>
+						</xs:element>
+						<xs:element name="Memo_Filter" minOccurs="1" maxOccurs="1">
+							<xs:annotation>
+								<xs:documentation>all codes for memos which are required for this request, if no filter is set, all memos are requiered</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="p2:Memo_Cd" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+    	</xs:complexType>
+  </xs:element>
+</xs:schema>
+
+
+

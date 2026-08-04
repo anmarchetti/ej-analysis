@@ -1,0 +1,130 @@
+﻿---
+ID: "ccefee38-246a-421a-b9e9-c0c4d3b13521"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/Revert changes by script EJH-14986"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $facilityGroupCode = 60;
+    $facilityTypesPath = "/sitecore/content/EasyJet/Holidays/Data/Facility Types"
+    $hotelFacilitiesFolderTempalteId = "{5C397782-6810-460A-AB57-84E9AB67514C}"
+    $roomsFolderTemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+    $roomFacilitiesFolderTempalteId = "{EA39971C-094D-4BEC-A479-9171279553C0}"
+    $roomFacilityTempalteId = "{1EC134E4-4753-498E-9D1A-6DC67A8975BE}"
+    $hotelRoomTemplateId = "{BA1EC5C3-14C7-40B3-8B69-D020590DA1F3}"
+    
+    
+    function Get-Or-Create-Item ($path,$templateId)
+    {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null)
+    	{
+    		$item = New-Item -Path $path -ItemType $templateId
+    	}
+    
+    	return $item
+    }
+    
+    function Find-Hotels-Items {
+    	$criteria = @(
+    		@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    		@{ Filter = "Equals"; Field = "_template"; Value = "28e5e1698f724f90a277280a8302b607"; }
+    		@{ Filter = "StartsWith"; Field = "_fullpath"; Value = "/sitecore/content/EasyJet/Holidays/Home/Destinations"; }
+    		@{ Filter = "Equals"; Field = "_name"; Value = "__Standard Values"; "Invert" = $true }
+    	)
+    
+    	$props = @{
+    		Index = "sitecore_destinations_master_index"
+    		Criteria = $criteria
+    	}
+    
+    	$items = Find-Item @props
+    
+    	Write-Host "$($items.Count) Hotels have been found."
+    
+    	return $items
+    }
+    
+    function Revert-Room-Facilities ($roomsFolder, $hotelItem) {
+    	$facilityFolder =Get-Item -Path "$($roomsFolder.Paths.FullPath)/Facilities" -ErrorAction SilentlyContinue
+    
+    	$hotelFacilitiesFolder = Get-Item -Path "$($hotelItem.Paths.FullPath)/Facilities"
+    	foreach ($roomFacility in $facilityFolder.Children) {
+    		$hotelFacility = Get-Or-Create-Item -Path "$($hotelFacilitiesFolder.Paths.FullPath)/$($roomFacility.Name)" -TemplateId "{803E75ED-804E-4900-97D6-7BCC046C8385}"
+    		$hotelFacility.Editing.BeginEdit()
+    		$hotelFacility["FacilityType"] = $roomFacility["FacilityType"]
+    		$hotelFacility["Number"] = $roomFacility["Number"]
+    		$hotelFacility["Order"] = $roomFacility["Order"]
+    		$hotelFacility["IndYesOrNo"] = $roomFacility["IndYesOrNo"]
+    		$hotelFacility["IndLogic"] = $roomFacility["IndLogic"]
+    		$hotelFacility["IndFee"] = $roomFacility["IndFee"]
+    		$hotelFacility["Voucher"] = $roomFacility["Voucher"]
+    		$hotelFacility["Amount"] = $roomFacility["Amount"]
+    		$hotelFacility["Currency"] = $roomFacility["Currency"]
+    		$hotelFacility["ApplicationType"] = $roomFacility["ApplicationType"]
+    		$hotelFacility.Editing.EndEdit($true,$true)
+    	}
+    }
+    
+    New-UsingBlock (New-Object Sitecore.Data.BulkUpdateContext) {
+    	New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+    		New-UsingBlock (New-Object Sitecore.Data.DatabaseCacheDisabler) {
+    			New-UsingBlock (New-Object Sitecore.Data.Events.EventDisabler) {
+    				$facilityTypes = Get-Item -Path $facilityTypesPath -ErrorAction SilentlyContinue
+    				$facilitiesIds = [System.Collections.Generic.HashSet[string]]@()
+    				($facilityTypes.Children | Where-Object { $_["Code"] -eq $facilityGroupCode } | Select-Object -First 1).Children | ForEach-Object { $facilitiesIds += $_.Id.ToString() }
+    
+    				if ($facilitiesIds.Count -ne 0) {
+    
+    					$hotels = Find-Hotels-Items
+    
+    					foreach ($hotel in $hotels) {
+    						$hotelItem = $hotel.GetItem()
+    						if (![string]::IsNullOrWhiteSpace($hotelItem["HotelBedsCode"])) {
+    							$stopwatch = [system.diagnostics.stopwatch]::StartNew()
+    
+    								#remove room code facilities to room folders
+    								$roomsFolder = $hotelItem.Children | Where-Object { $_.TemplateId -eq $roomsFolderTemplateId } | Select-Object -First 1
+                                    $firstRoomFolder = $roomsFolder.Children | Select-Object -First 1
+    								Revert-Room-Facilities -roomsFolder $firstRoomFolder -hotelItem $hotelItem
+    								foreach ($room in $roomsFolder.Children) {
+    									$roomFacilitiesFolder = Get-Item -Path "$($room.Paths.FullPath)/Facilities" -ErrorAction SilentlyContinue
+    									if ($roomFacilitiesFolder -ne $null) {
+    										foreach ($roomFacility in $roomFacilitiesFolder.Children) {
+    											if ($facilitiesIds.Contains($roomFacility["FacilityType"])) {
+    												$roomFacility | Remove-Item 
+    											}
+    										}
+    									}
+    									$roomFacilitiesFolder = Get-Item -Path "$($room.Paths.FullPath)/Facilities" -ErrorAction SilentlyContinue
+    									if($roomFacilitiesFolder.Children.Count -eq 0){
+    								        $roomFacilitiesFolder | Remove-Item
+    								    }
+    								}
+    							$stopwatch.Stop()
+    							Write-Host "The $($hotelItem.Name) has been updated in: $($stopwatch.Elapsed.TotalMinutes) min."
+    						}
+    						else {
+    							Write-Host "The hotel $($hotelItem.Name) has been skipped"
+    						}
+    					}
+    				}
+    			}
+    		}
+    	}
+    } 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220428T121435Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

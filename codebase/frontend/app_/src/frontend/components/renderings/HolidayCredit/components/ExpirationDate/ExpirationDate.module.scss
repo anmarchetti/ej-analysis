@@ -1,0 +1,45 @@
+.expireDate {
+    display: flex;
+    flex-basis: 100%;
+    align-items: baseline;
+    order: 3;
+    gap: 4px;
+    font-size: 16px;
+    line-height: 1.375;
+    color: $clrTextMain;
+
+    @include media-breakpoint-up(md) {
+        flex-basis: unset;
+        order: 2;
+    }
+
+    @include media-breakpoint-up(lg) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        color: #616161;
+        order: unset;
+
+        font-size: 14px;
+        line-height: 1.285;
+    }
+
+    .expireSoon {
+        font-size: 14px;
+        line-height: 1.285;
+        color: #616161;
+    }
+}
+
+.date {
+    display: flex;
+    color: $clrTextMain;
+    font-size: 16px;
+    line-height: 1.375;
+    gap: 4px;
+
+    @include media-breakpoint-up(lg) {
+        flex-direction: column;
+    }
+}

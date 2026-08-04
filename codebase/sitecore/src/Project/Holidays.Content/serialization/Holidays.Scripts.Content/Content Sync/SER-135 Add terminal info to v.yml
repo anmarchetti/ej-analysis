@@ -1,0 +1,100 @@
+﻿---
+ID: "63a182a9-b78f-4cd6-b7ef-20b0b81f30a6"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-135 Add terminal info to view booking"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Set-Translation-Value($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            $item = Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+            Write-Host "Created" $language "version for" $item.Name "item"
+        } else {
+            Write-Host $language "version for Item" $item.Name "already exist"
+        }
+    
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+            Write-Host "Field" $key "for" $item.Name "item updated with value" $translation
+        }
+    }
+    
+    function Create-Item($path, $template) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+            $item = New-Item -Path $path -Name $itemName -ItemType $template
+            Write-Host "Item" $item.Name "successfully created"
+        } else {
+            Write-Host "Item" $item.Name "already exist"
+        }
+        return $item
+    }
+    
+    # Holidays
+    # add terminal labels to view booking datasource
+    $viewBookingPath = '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/View Booking'
+    
+    Set-Translation-Value -ItemPath $viewBookingPath -Language 'en' -Key 'TerminalLabel' -Translation 'Terminal info'
+    Set-Translation-Value -ItemPath $viewBookingPath -Language 'en' -Key 'TerminalTooltipText' -Translation "Terminal information isn't available online. Please check at the airport for the latest details!"
+    
+    @('de-CH', 'de-DE') | % {
+    	Set-Translation-Value -ItemPath $viewBookingPath -Language $_ -Key 'TerminalLabel' -Translation "Terminal-Informationen"
+    	Set-Translation-Value -ItemPath $viewBookingPath -Language $_ -Key 'TerminalTooltipText' -Translation "Die Terminalinformationen sind nicht online verfügbar. Bitte erkundigen Sie sich am Flughafen nach den neuesten Informationen!"
+    }
+    
+    @('fr-CH', 'fr-FR') | % {
+    	Set-Translation-Value -ItemPath $viewBookingPath -Language $_ -Key 'TerminalLabel' -Translation "Infos sur le terminal"
+    	Set-Translation-Value -ItemPath $viewBookingPath -Language $_ -Key 'TerminalTooltipText' -Translation "Les informations sur les terminaux ne sont pas disponibles en ligne. Veuillez vous rendre à l'aéroport pour obtenir les dernières informations !"
+    }
+    
+    # turn on terminal info settings
+    $terminalSettingPath = '/sitecore/content/EasyJet/Holidays/Settings/Terminal Information Settings'
+    Set-Translation-Value -ItemPath $terminalSettingPath -Language 'en' -Key 'IsTerminalInformationEnabled' -Translation '1'
+    
+    # TradePortal
+    # add terminal labels to view booking datasource
+    $viewBookingPathTP = '/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking/Page Components/View Booking'
+    
+    Set-Translation-Value -ItemPath $viewBookingPathTP -Language 'en' -Key 'TerminalLabel' -Translation 'Terminal info'
+    Set-Translation-Value -ItemPath $viewBookingPathTP -Language 'en' -Key 'TerminalTooltipText' -Translation "Terminal information isn't available online. Please check at the airport for the latest details!"
+    
+    @('de-CH', 'de-DE') | % {
+    	Set-Translation-Value -ItemPath $viewBookingPathTP -Language $_ -Key 'TerminalLabel' -Translation "Terminal-Informationen"
+    	Set-Translation-Value -ItemPath $viewBookingPathTP -Language $_ -Key 'TerminalTooltipText' -Translation "Die Terminalinformationen sind nicht online verfügbar. Bitte erkundigen Sie sich am Flughafen nach den neuesten Informationen!"
+    }
+    
+    @('fr-CH', 'fr-FR') | % {
+    	Set-Translation-Value -ItemPath $viewBookingPathTP -Language $_ -Key 'TerminalLabel' -Translation "Infos sur le terminal"
+    	Set-Translation-Value -ItemPath $viewBookingPathTP -Language $_ -Key 'TerminalTooltipText' -Translation "Les informations sur les terminaux ne sont pas disponibles en ligne. Veuillez vous rendre à l'aéroport pour obtenir les dernières informations !"
+    }
+    
+    # create terminal info settings
+    $terminalSettingTemplateId = '{F349CFCC-94C2-4364-8EDB-AB3346ABC0C4}'
+    $terminalSettingPathTP = '/sitecore/content/EasyJet/TradePortal/Settings/Terminal Information Settings'
+    $contactUsBanner = Create-Item -Path $terminalSettingPathTP -Template $terminalSettingTemplateId
+    
+    @('en', 'de-CH', 'de-DE', 'fr-CH', 'fr-FR') | % {
+        Set-Translation-Value -ItemPath $terminalSettingPathTP -Language $_ -Key 'IsTerminalInformationEnabled' -Translation '1'
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230628T103556Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,81 @@
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+
+    @include media-breakpoint-up(md) {
+       flex-direction: row;
+    }
+
+    .icon {
+        box-sizing: content-box;
+        width: 100%;
+        height: 42px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid $colorGrayMiddle;
+
+        @include media-breakpoint-up(md) {
+            @include sizeSquare(42px);
+
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+    }
+
+    .title {
+        align-self: flex-start;
+        margin: 0;
+        font-family: $fontRoundedDemy;
+        font-size: 18px;
+        line-height: 1.333;
+
+        @include media-breakpoint-up(md) {
+            align-self: center;
+            font-size: 25px;
+            line-height: 1.28;
+        }
+    }
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @include media-breakpoint-up(md) {
+       gap: 24px;
+    }
+}
+
+.popupContent {
+    max-height: 60%;
+}
+
+.closeButton {
+    width: 100%;
+    border-width: 2px;
+
+    @include media-breakpoint-up(md) {
+        width: auto;
+    }
+}
+
+.content {
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    line-height: 1.5;
+
+    @include media-breakpoint-up(md) {
+        font-size: 16px;
+    }
+
+    ul {
+        margin: 0;
+        padding-left: 16px;
+
+        @include media-breakpoint-up(md) {
+            padding-left: 24px;
+        }
+    }
+}

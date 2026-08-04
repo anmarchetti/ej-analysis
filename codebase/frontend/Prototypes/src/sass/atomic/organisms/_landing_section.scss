@@ -1,0 +1,69 @@
+.landing-section {
+    margin: 0 auto;
+    padding: 180px 0 90px;
+    font-family: $fontRoundedBook;
+    color: $clrTextMain;
+    text-align: center;
+
+    .rounded-container {
+        padding: 100px 150px;
+    }
+
+    &__title {
+        font-family: $fontRoundedHeadline;
+        font-weight: 700;
+        line-height: 1.3;
+        letter-spacing: 1px;
+    }
+
+    &__subtitle {
+        margin-top: 35px;
+        font-family: $fontRoundedHeadline;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.4;
+        letter-spacing: 1px;
+    }
+
+    &__content {
+        margin-bottom: 35px;
+        font-size: 24px;
+        line-height: 1.4;
+    }
+
+    &__help-text {
+        margin: 10px 0;
+    }
+
+    .btn {
+        display: inline-block;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: 50px 0 30px;
+
+        .rounded-container {
+            padding: $booking-card-padding_sm $booking-card-padding_sm 40px;
+        }
+
+        &__title {
+            font-size: 26px;
+        }
+
+        &__subtitle {
+            font-size: 21px;
+        }
+
+        &__content {
+            font-size: 21px;
+        }
+
+        &__help-text {
+            font-size: 17px;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+}

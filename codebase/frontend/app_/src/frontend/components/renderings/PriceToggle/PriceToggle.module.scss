@@ -1,0 +1,66 @@
+.priceToggle {
+    position: fixed;
+    z-index: 10000;
+    top: 375px;
+    right: 0;
+    display: flex;
+    height: 110px;
+    overflow: hidden;
+    background: $colorWhite;
+    border-radius: 6px 0 0 6px;
+    box-shadow: 0 0 12px 2px $colorAlto;
+}
+
+.control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    color: $colorWhite;
+    background: $clrEjOrange;
+    cursor: pointer;
+}
+
+.arrow {
+    flex-shrink: 0;
+}
+
+.wrapper {
+    display: block;
+    width: 150px;
+    text-align: center;
+    background: $colorWhite;
+}
+
+.title {
+    margin: 10px 12px 8px;
+    font-family: $fontRoundedDemy;
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+}
+
+.description {
+    display: flex;
+    margin: 18px 15px 10px;
+}
+
+.icon {
+    flex-shrink: 0;
+    margin-right: 6px;
+}
+
+.label {
+    font-size: 12px;
+    line-height: 15px;
+}
+
+.priceToggle.collapsed {
+    .arrow {
+        transform: rotate(180deg);
+    }
+
+    .wrapper {
+        display: none;
+    }
+}

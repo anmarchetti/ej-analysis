@@ -1,0 +1,188 @@
+<!-- RenderingMappingEditor Row Template (Scriban) -->
+<div id="{{ row_id }}" class="scAdditionalParameters scRmRow" data-key-icon="{{ key_icon_url }}" data-value-icon="{{ value_icon_url }}" data-standard-fields="{{ standard_field_names }}">
+    <!-- Dropdowns Row -->
+    <div class="scRmDropdownsRow">
+        <div class="scRmDropdownsRowInner">
+            <!-- Key Dropdown -->
+            <div class="scRmDropdownCell">
+                {{ key_dropdown_html }}
+            </div>
+            <!-- Value Dropdown -->
+            <div class="scRmDropdownCell">
+                {{ value_dropdown_html }}
+            </div>
+            <!-- UID Dropdown -->
+            <div class="scRmDropdownCell">
+                {{ uid_dropdown_html }}
+            </div>
+            <!-- Actions -->
+            <div class="scRmActionsCell">
+                <input type="hidden" id="{{ params_hidden_id }}" name="{{ params_hidden_id }}" value="{{ params_value }}" />
+                <button type="button" id="{{ edit_btn_id }}" class="scContentButton scEditParamsBtn scRmEditBtn" onclick="{{ client_event }}; return false;" {{ if !has_value }} disabled="disabled" {{ end }}>{{ edit_params_text }}</button>
+                <button type="button" class="scContentButton scRmToggleSummaryBtn" data-toggle-summary="true" onclick="scRmToggleSummary('{{ row_id }}'); return false;" {{ if !has_key && !has_value }}style="display:none;"{{ end }}>View Details</button>
+                {{ if has_delete_button }}
+                <button type="button" class="scContentButton scRmDeleteBtn" onclick="scRmDeleteRow('{{ row_id }}'); return false;">{{ delete_text }}</button>
+                {{ end }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Section (hidden by default, toggled by View/Hide Details button) -->
+    <div id="{{ summary_id }}" data-summary="true" class="scEditorFieldMarker scRmSummary scRmSummaryHidden">
+        <table class="scEditorFieldMarker scRmSummaryTable">
+            <thead class="scRmVisuallyHidden">
+                <tr>
+                    <th scope="col">Key</th>
+                    <th scope="col">Value</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <!-- Mapping label row -->
+            <tr>
+                <td colspan="3" class="scEditorFieldMarkerInputCell scRmSummaryHeader">
+                    Mapping
+                </td>
+            </tr>
+            <!-- Mapping values row -->
+            <tr>
+                <td class="scEditorFieldMarkerInputCell scRmSummaryValueCell">
+                    <span data-key-name="true" data-key-id="{{ key_id }}">{{ key_display_html }}</span>
+                </td>
+                <td class="scEditorFieldMarkerInputCell scRmSummaryValueCell">
+                    <span data-value-name="true" data-value-id="{{ value_id }}">{{ value_display_html }}</span>
+                </td>
+                <td class="scEditorFieldMarkerInputCell scRmSummaryValueCell"></td>
+            </tr>
+
+            {{ if uid_value != "" }}
+            <tr>
+                <td colspan="3" class="scEditorFieldMarkerInputCell scRmSummaryHeader">
+                    Rendering Instance UID
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="scEditorFieldMarkerInputCell scRmSummaryValueCellSecondary">
+                    {{ uid_value }}
+                </td>
+                <td class="scEditorFieldMarkerInputCell scRmSummaryValueCellSecondary"></td>
+            </tr>
+            {{ end }}
+
+            {{ if has_component_row }}
+            <!-- Component label row -->
+            <tr>
+                <td colspan="3" class="scEditorFieldMarkerInputCell scRmSummaryHeader">
+                    Component
+                </td>
+            </tr>
+            <!-- Component values row -->
+            <tr>
+                <td class="scEditorFieldMarkerInputCell scRmSummaryValueCellSecondary">
+                    {{ if key_component_name }}{{ key_component_name }}{{ else }}<span class="scRmSummaryEmptyValue">—</span>{{ end }}
+                </td>
+                <td class="scEditorFieldMarkerInputCell scRmSummaryValueCellSecondary">
+                    {{ if value_component_name }}{{ value_component_name }}{{ else }}<span class="scRmSummaryEmptyValue">—</span>{{ end }}
+                </td>
+                <td class="scEditorFieldMarkerInputCell scRmSummaryValueCellSecondary"></td>
+            </tr>
+            {{ end }}
+
+            {{ if has_type_row }}
+            <!-- Type label row -->
+            <tr>
+                <td colspan="3" class="scEditorFieldMarkerInputCell scRmSummaryHeader">
+                    Type
+                </td>
+            </tr>
+            <!-- Type values row -->
+            <tr>
+                <td class="scEditorFieldMarkerInputCell scRmSummaryValueCellSecondary">
+                    {{ if key_type_name }}{{ key_type_name }}{{ else }}<span class="scRmSummaryEmptyValue">—</span>{{ end }}
+                </td>
+                <td class="scEditorFieldMarkerInputCell scRmSummaryValueCellSecondary">
+                    {{ if value_type_name }}{{ value_type_name }}{{ else }}<span class="scRmSummaryEmptyValue">—</span>{{ end }}
+                </td>
+                <td class="scEditorFieldMarkerInputCell scRmSummaryValueCellSecondary"></td>
+            </tr>
+            {{ end }}
+
+            <!-- Parameters Section Header (always present) -->
+            <tr data-params-header="true" style="display:{{ if has_parameters }}table-row{{ else }}none{{ end }};">
+                <td colspan="3" class="scEditorFieldMarkerInputCell scRmSummaryHeader">
+                    Parameters
+                </td>
+            </tr>
+            <!-- Parameters row (always present, hidden when no params - allows JS to show it) -->
+            <tr data-params-row="true" style="display:{{ if has_parameters }}table-row{{ else }}none{{ end }};">
+                <td colspan="3" class="scEditorFieldMarkerInputCell scRmParamsDetailsCell">
+                    <div data-params-details="true" class="scRmParamsDetails">
+                        <table class="scRmParamsDetailsTable">
+                            <thead class="scRmVisuallyHidden">
+                                <tr><th scope="col">Parameters</th></tr>
+                            </thead>
+                            <tr>
+                                <!-- Standard Parameters -->
+                                <td class="scEditorFieldMarkerInputCell scRmParamsColumnStandard">
+                                    <table class="scEditorQuickInfo scRmParamsInnerTable" data-params-standard="true">
+                                        <thead class="scRmVisuallyHidden">
+                                            <tr>
+                                                <th scope="col">Parameter</th>
+                                                <th scope="col">Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tr>
+                                            <td colspan="2" class="scRmParamsHeader">
+                                                Standard
+                                            </td>
+                                        </tr>
+                                        {{ if standard_params.size > 0 }}
+                                        {{ for param in standard_params }}
+                                        <tr>
+                                            <td class="scRmParamsKey">{{ param.key }}</td>
+                                            <td class="scRmParamsValue" data-param-key="{{ param.key }}">{{ param.display_value }}</td>
+                                        </tr>
+                                        {{ end }}
+                                        {{ else }}
+                                        <tr>
+                                            <td colspan="2" class="scRmParamsEmpty">—</td>
+                                        </tr>
+                                        {{ end }}
+                                    </table>
+                                </td>
+
+                                <!-- Custom Parameters -->
+                                <td class="scEditorFieldMarkerInputCell scRmParamsColumn">
+                                    <table class="scEditorQuickInfo scRmParamsInnerTable" data-params-custom="true">
+                                        <thead class="scRmVisuallyHidden">
+                                            <tr>
+                                                <th scope="col">Parameter</th>
+                                                <th scope="col">Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tr>
+                                            <td colspan="2" class="scRmParamsHeader">
+                                                Custom
+                                            </td>
+                                        </tr>
+                                        {{ if custom_params.size > 0 }}
+                                        {{ for param in custom_params }}
+                                        <tr>
+                                            <td class="scRmParamsKey">{{ param.key }}</td>
+                                            <td class="scRmParamsValue" data-param-key="{{ param.key }}">{{ param.display_value }}</td>
+                                        </tr>
+                                        {{ end }}
+                                        {{ else }}
+                                        <tr>
+                                            <td colspan="2" class="scRmParamsEmpty">—</td>
+                                        </tr>
+                                        {{ end }}
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

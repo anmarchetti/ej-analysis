@@ -1,0 +1,98 @@
+$title-line-clamp: 3;
+$subtitle-line-clamp: 8;
+
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.06), 0 0 15px 0 rgba(23, 24, 24, 0.12);
+}
+
+.imageContainer {
+    height: 180px;
+
+    @include media-breakpoint-up(md) {
+        height: 214px;
+    }
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 24px;
+
+    @include media-breakpoint-up(md) {
+        gap: 26px;
+    }
+}
+
+.title {
+    display: -webkit-box;
+    align-self: stretch;
+    margin: 0;
+    overflow: hidden;
+    font-family: $fontRoundedBook;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+    -webkit-line-clamp: $title-line-clamp;
+    -webkit-box-orient: vertical;
+
+    @include media-breakpoint-up(md) {
+        font-size: 24px;
+    }
+}
+
+.titleWrapper {
+    position: relative;
+    padding-bottom: 10px;
+
+    @include media-breakpoint-up(md) {
+        padding-bottom: 30px;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 1px;
+        background-color: $colorGrayMiddle;
+    }
+}
+
+.subtitle {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    font-size: 16px;
+    line-height: 1.3;
+    -webkit-line-clamp: $subtitle-line-clamp;
+    -webkit-box-orient: vertical;
+
+    @include media-breakpoint-up(md) {
+        line-height: 1.4;
+    }
+}
+
+.link {
+    align-self: center;
+    margin-top: auto;
+}
+
+.linkArrow {
+    margin-left: 16px;
+}

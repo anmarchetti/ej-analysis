@@ -1,0 +1,18 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgXlSeat = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'xl-seat-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <path d='M18.6 16.25H5.39a2 2 0 000 4H18.6a2 2 0 000-4zm-12.8-.5h12.4a1.3 1.3 0 001.3-1.3v-9.4a1.3 1.3 0 00-1.3-1.3H5.8a1.3 1.3 0 00-1.3 1.3v9.4a1.3 1.3 0 001.3 1.3zM13 7.8a.5.5 0 111 0v3.43c0 .06 0 .1.09.1h2a.42.42 0 01.45.43.43.43 0 01-.45.44h-2.57a.49.49 0 01-.5-.5zm-4.83.29a.47.47 0 01.08-.68.45.45 0 01.67.08l1.13 1.45a.07.07 0 00.12 0l1.14-1.45a.45.45 0 01.69-.08.48.48 0 01.08.68L10.8 9.65a.09.09 0 000 .12l1.34 1.64a.48.48 0 01-.08.68.47.47 0 01-.68-.08L10.2 10.5c0-.05-.1-.06-.13 0L8.88 12a.48.48 0 11-.75-.6l1.33-1.64a.07.07 0 000-.1zM4 14.91V6.38a1 1 0 00-2 0v8.53a1 1 0 002 0zm17-9.62a1 1 0 00-1 1v8.53a1 1 0 102 0V6.29a1 1 0 00-1-1z' />
+    </svg>
+);
+
+export default SvgXlSeat;

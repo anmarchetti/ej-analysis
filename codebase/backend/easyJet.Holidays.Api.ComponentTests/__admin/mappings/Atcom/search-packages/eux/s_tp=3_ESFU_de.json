@@ -1,0 +1,40 @@
+﻿{
+    "Title": "Offers for s_tp=3, ESFU",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/fcgi-bin/ezydmode/avcache3_g",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "s_tp",
+                "Matchers": [
+                    {
+                        "Name": "ExactMatcher",
+                        "Pattern": "3"
+                    }
+                ]
+            },
+            {
+                "Name": "geog",
+                "Matchers": [
+                    {
+                        "Name": "ExactMatcher",
+                        "Pattern": "ES,ESFU"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/search/eux/s_tp=3_ESFU_de.xml"
+    }
+}

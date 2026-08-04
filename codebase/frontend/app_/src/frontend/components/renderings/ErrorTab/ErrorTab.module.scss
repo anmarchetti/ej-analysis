@@ -1,0 +1,87 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 100px 80px;
+    background-repeat: no-repeat;
+    background-position: bottom -10px left;
+    background-size: 44% 54%;
+
+    @include media-breakpoint-down(md) {
+        justify-content: flex-start;
+        padding: 16px 15px;
+        background-size: 90% 47%;
+    }
+}
+
+.icon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 16px;
+}
+
+.title {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding: 0;
+    font-family: $fontRoundedBook;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 0.83;
+    color: $clrTextHeading;
+    text-align: center;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        font-size: 16px;
+        line-height: 0.739;
+
+        &::before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 1px;
+            margin-bottom: 16px;
+            background: $colorGrayMiddle;
+        }
+    }
+}
+
+.description {
+    margin: 0 0 40px;
+    padding: 0;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.375;
+    color: $clrTextHeading;
+    text-align: center;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+        line-height: 1.285;
+    }
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+    }
+
+    button {
+        min-width: 220px;
+        min-height: 48px;
+        padding: 12px 24px;
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 0.83;
+    }
+}
+

@@ -1,0 +1,86 @@
+﻿---
+ID: "20830191-36ea-4990-a5ca-844a5ded2aa0"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-430 - Grey bar Post travel page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $pathToInsert = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel"
+    
+    $componentWrapperRenderingPath = "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper"
+    $bookingToolbarRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/Booking Toolbar"
+    
+    $bookingToolbarDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Booking Toolbar"
+    $bookingToolbarTemplateItemPath = "/sitecore/templates/Feature/Booking/Booking Toolbar"
+    
+    
+    $hotelSummaryRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/HotelSummary"
+    $hotelSummaryDatasourcePath = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Hotel Summary"
+    
+    function New-Toolbar-Content() {
+        $updates = @(
+            @{
+                Path         = $bookingToolbarDatasourcePath
+                TemplatePath = $bookingToolbarTemplateItemPath
+                Fields      = @{
+                    "RebookButtonLabel" = @{
+                        "en" = "Rebook This Holiday"
+                        "fr-CH" = "Réserver à nouveau ces vacances"
+                        "de-CH" = "Buchen Sie diesen Urlaub erneut"
+                        "fr-FR" = "Réserver à nouveau ces vacances"
+                        "de-DE" = "Buchen Sie diesen Urlaub erneut"
+                    }
+                }
+            }
+        )
+        ImportContent -itemsToCreate $updates
+    }
+    
+    
+    function Create-Rendering() {
+        $pageItem = Get-Item -Path $pathToInsert
+        $componentWrapperRendering = Get-Item -Path $componentWrapperRenderingPath
+        $placeholderPath = "/body/booking-context-{0b3a1889-94df-4381-aaef-272a10e79e98}-0"
+        if ($componentWrapperRendering -ne $null) {
+            $componentWrapperRenderingInstance = New-Rendering -Item $componentWrapperRendering
+            Add-Rendering -Item $pageItem -Instance $componentWrapperRenderingInstance -Index 3 -Placeholder $placeholderPath -Parameter @{ "IsGreyBackground"='1' }
+            Write-Host "Added component wrapper rendering on Post Travel page"
+            
+            $componentWrapperUID = Get-Rendering -Item $pageItem -Index 3
+        }
+        
+        $bookingToolbarPlaceholderPath = "/body/booking-context-{0b3a1889-94df-4381-aaef-272a10e79e98}-0/component-wrapper-inner-$($componentWrapperUID.UniqueId)-0"
+        $bookingToolbarRendering = Get-Item -Path $bookingToolbarRenderingPath
+        if ($bookingToolbarRendering -ne $null) {
+            $bookingToolbarRenderingInstance = New-Rendering -Item $bookingToolbarRendering
+            Add-Rendering -Item $pageItem -Instance $bookingToolbarRenderingInstance -DataSource $bookingToolbarDatasourcePath -Index 4 -Placeholder $bookingToolbarPlaceholderPath
+            Write-Host "Added Booking Toolbar rendering on Post Travel page"
+            
+            $bookingToolbar = Get-Rendering -Item $pageItem -Index 4
+        }
+        
+        $hotelSummaryPlaceholderPath = "/body/booking-context-{0b3a1889-94df-4381-aaef-272a10e79e98}-0/component-wrapper-inner-$($componentWrapperUID.UniqueId)-0/hotel-summary-$($bookingToolbar.UniqueId)-0"
+        $holidaySummaryRendering = Get-Item -Path $hotelSummaryRenderingPath
+        if ($holidaySummaryRendering -ne $null) {
+            $holidaySummaryRenderingInstance = New-Rendering -Item $holidaySummaryRendering
+            Add-Rendering -Item $pageItem -Instance $holidaySummaryRenderingInstance -DataSource $hotelSummaryDatasourcePath -Index 5 -Placeholder $hotelSummaryPlaceholderPath -Parameter @{ "ShowButtonOnly"='1' }
+            Write-Host "Added Hotel Summary rendering on Post Travel page"
+        }
+    }
+    
+    New-Toolbar-Content;
+    Create-Rendering;
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

@@ -1,0 +1,73 @@
+﻿---
+ID: "42c4062c-cca6-4dff-bc72-9645b6d17156"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/BANDB-3 - small under seat bag name update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes/Package Icons/Bags/Small under seat bag"
+    $datasourcePathTradePortal = "/sitecore/content/EasyJet/TradePortal/Data/Hotel Themes/Package Icons/Bags/Small under seat bag"
+    $datasource = Get-Item -Database "master" -path $datasourcePath -ErrorAction SilentlyContinue
+    $datasourceTradePortal = Get-Item -Database "master" -path $datasourcePathTradePortal -ErrorAction SilentlyContinue
+    
+    function updateLuggageText($itemPath, $language, $name) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item["Name"] = $name
+            $item["Icon"] = "<image mediaid='{CBA625DA-9F5C-4BA4-90C1-DED4F01978DE}'/>"
+            $item.Editing.EndEdit() | Out-Null
+            Write-Host $item $language "updated"
+        }
+    }
+    
+    function addLanguageVersion($item, $language) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $language
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $language -IfExist Skip -DoNotCopyFields
+        }
+    }
+    
+    if ($datasource -ne $null) {
+        addLanguageVersion -Item $datasource -Language "fr-FR"
+        addLanguageVersion -Item $datasource -Language "fr-CH"
+        addLanguageVersion -Item $datasource -Language "de-DE"
+        addLanguageVersion -Item $datasource -Language "de-CH"
+        addLanguageVersion -Item $datasourceTradePortal -Language "fr-FR"
+        addLanguageVersion -Item $datasourceTradePortal -Language "fr-CH"
+        addLanguageVersion -Item $datasourceTradePortal -Language "de-DE"
+        addLanguageVersion -Item $datasourceTradePortal -Language "de-CH"
+    }
+    
+    updateLuggageText -ItemPath $datasourcePath -Language "en" -Name "Small under seat bag"
+    updateLuggageText -ItemPath $datasourcePath -Language "fr-FR" -Name "Petit sac sous le siège"
+    updateLuggageText -ItemPath $datasourcePath -Language "fr-CH" -Name "Petit sac sous le siège"
+    updateLuggageText -ItemPath $datasourcePath -Language "de-DE" -Name "Kleine Tasche unter dem Sitz"
+    updateLuggageText -ItemPath $datasourcePath -Language "de-CH" -Name "Kleine Tasche unter dem Sitz"
+    
+    updateLuggageText -ItemPath $datasourcePathTradePortal -Language "en" -Name "Small under seat bag"
+    updateLuggageText -ItemPath $datasourcePathTradePortal -Language "fr-FR" -Name "Petit sac sous le siège"
+    updateLuggageText -ItemPath $datasourcePathTradePortal -Language "fr-CH" -Name "Petit sac sous le siège"
+    updateLuggageText -ItemPath $datasourcePathTradePortal -Language "de-DE" -Name "Kleine Tasche unter dem Sitz"
+    updateLuggageText -ItemPath $datasourcePathTradePortal -Language "de-CH" -Name "Kleine Tasche unter dem Sitz"
+    
+    Write-Host "Finished"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2010
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240612T090453Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

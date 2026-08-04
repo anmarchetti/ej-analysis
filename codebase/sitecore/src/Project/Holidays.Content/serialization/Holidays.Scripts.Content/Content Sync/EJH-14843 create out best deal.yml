@@ -1,0 +1,68 @@
+﻿---
+ID: "e84a5ee3-6f63-4b94-8216-f6de30be5625"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14843 create out best deals promo tiles"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $dealsPromoTilesRenderingId = "{75713BA0-C32C-4FDC-966B-820BAE3B0BD3}"
+    
+    $dealsPromoTilesFolderTemplateId = "{CEDAB440-A60B-4517-83AC-EF50C584D3B9}"
+    $dealsPromoTileTemplateId = "{820065FB-C219-4F0A-9972-3150E393D0F2}"
+    
+    $dealsItemPath = "/sitecore/content/EasyJet/Holidays/Home/Deals"
+    $dealsPromoTilesItemPath = "/sitecore/content/EasyJet/Holidays/Home/Deals/Page Components/Our Best Deals"
+    $sourceBestDealsItemPath = "/sitecore/content/EasyJet/Holidays/Home/Deals/Page Components/Promo Blocks/Our Best Deals"
+    
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $templateId
+        }
+        
+        return $item
+    }
+    
+    function Update-OurBeastDeals($promoDealsFolder, $promoBlocksFolder){
+        $promoBlocks = $promoBlocksFolder.Children
+        foreach($promoBlock in $promoBlocks){
+            $promoDealTile = Get-Or-Create-Item -Path "$($promoDealsFolder.Paths.FullPath)/$($promoBlock.Name)" -TemplateId $dealsPromoTileTemplateId
+            $promoDealTile.Editing.BeginEdit()
+            $promoDealTile["Title"] = $promoBlock["Title"]
+            $promoDealTile["Image"] = $promoBlock["Image"]
+            $promoDealTile["Link"] = $promoBlock["Link"]
+            $promoDealTile.Editing.EndEdit()
+        }
+    }
+    
+    function Update-Rendering-Datasource($datasource, $item, $renderingId){
+        Get-Rendering -Item $item | 
+        Foreach-Object { 
+            if($_.itemId -eq $renderingId){
+                $_.DataSource = $datasource.Id
+                Set-Rendering -Item $item -Instance $_
+            }
+        }
+    }
+    
+    $dealsPromoTiles = Get-Or-Create-Item -Path $dealsPromoTilesItemPath -TemplateId $dealsPromoTilesFolderTemplateId
+    $outBestDealsPromoBlocks = Get-Item -Path $sourceBestDealsItemPath -ErrorAction SilentlyContinue
+    
+    if ($outBestDealsPromoBlocks -ne $null){
+        Update-OurBeastDeals -PromoDealsFolder $dealsPromoTiles -PromoBlocksFolder $outBestDealsPromoBlocks
+    
+        $dealsItem = Get-Item -Path $dealsItemPath
+        Update-Rendering-Datasource -Datasource $dealsPromoTiles -Item $dealsItem -RenderingId $dealsPromoTilesRenderingId
+        $outBestDealsPromoBlocks | Remove-Item -Recurse
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20211124T091248Z

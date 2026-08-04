@@ -1,0 +1,77 @@
+﻿---
+ID: "2590c87d-2cfb-4c6d-a2b9-44d1d5447571"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/1 - SER-1164 - Set up post book pages"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    Set-ItemTemplate -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel" -Template "/sitecore/templates/Project/Holidays/Pages/View Booking Pages/Pre-Travel Page"
+    Set-ItemTemplate -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination" -Template "/sitecore/templates/Project/Holidays/Pages/View Booking Pages/In Destination Page"
+    Set-ItemTemplate -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel" -Template "/sitecore/templates/Project/Holidays/Pages/View Booking Pages/Post-Travel Page"
+    
+    $updates = @(
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/View Booking"
+            Id           = "{2dd6f9cf-305c-43e3-b437-cba5606bb4c4}"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+            Fields       = @{ Page = "{089BDF45-B601-48EF-8515-7E5DFC659E5F}" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Pre Travel"
+            Id           = "{529066C9-8159-4F14-89B9-E65A4B9FA8FD}"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+            Fields       = @{ Page = "{3476CA76-43F9-44F3-BD4D-63BBFE83257F}" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/In Destination"
+            Id           = "{71FF7484-D991-42C5-A56F-F46DADC3BEFA}"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+            Fields       = @{ Page = "{D8FA231E-8E5A-4AFA-9D31-963B527931AC}" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Post Travel"
+            Id           = "{98E6F83A-EF42-4D8B-BC01-1F9D898EBA72}"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+            Fields       = @{ Page = "{A29EFE45-F93A-45E1-9587-3D30661E6BE4}" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/My Bookings"
+            Id           = "{1086BA6F-12D0-41A9-8C00-528758D84736}"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+            Fields       = @{ Page = "{DE24620D-0E4B-42AA-9206-0F0EEEA76BB6}" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Cancel Booking"
+            Id           = "{83887C99-9E8B-43E0-AED3-55975BCB77A9}"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+            Fields       = @{ Page = "{E9544BE7-0494-410B-9E66-E0EC96B44ED6}" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Cancelled Booking"
+            Id           = "{3C9F6A35-CFAF-4BBD-AD59-E7B3FC7F91D1}"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+            Fields       = @{ Page = "{A93C4899-6582-49EC-9481-C5FDC7863D18}" }
+        }
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Assisted Travel"
+            Id           = "{E9BB3931-8317-46BE-B87D-15C25E9D2E42}"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+            Fields       = @{ Page = "{7A0C50BD-B018-44AD-A9CF-AD61E017C6BD}" }
+        }
+    )
+    
+    ImportContent $updates
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

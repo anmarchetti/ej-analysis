@@ -1,0 +1,108 @@
+﻿---
+ID: "fde4657f-a265-48b1-beff-3faf06db2ab9"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-698 Add BoardTypes rendering to Room and Board"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$template) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $template
+    	}
+    	return $item
+    }
+    
+    function Add-Or-Update-Page-Rendering ($page,$renderingPath,$renderingPlaceholder,$dataSourcePath,$parameters = @{}) {
+    	$renderingItem = Get-Item -Database "master" -Path $renderingPath;
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+    
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -DataSource $dataSourcePath
+    		Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath | Set-RenderingParameter -Parameter $parameters | Set-Rendering -Item $page;
+    		Write-Host $renderingItem "Rendering instance added";
+    	}
+    	else {
+    		Write-Host $pageRenderingInstance "Already exists";
+    	}
+    }
+    
+    function create-lang-version ($item,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path "master:" -Id $item.ID -Language $lang -ErrorAction SilentlyContinue
+    
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path "master:" -Id $item.ID -Language $lang
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value;
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    # Page
+    $amendRoomAndBoardPath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Change Room And Board"
+    $amendRoomAndBoardPage = Get-Or-Create-Item -Path $amendRoomAndBoardPath
+    
+    # Update page rendering by board-types placeholder
+    $amendRoomAndBoardRendering = Get-Item -Path "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Room And Board/Amend Room And Board Page" -ErrorAction SilentlyContinue;
+    if ($amendRoomAndBoardRendering -ne $null) {
+        $amendRoomAndBoardRendering.Editing.BeginEdit();
+        $amendRoomAndBoardRendering["Placeholders"] = "{499B6BAB-B635-4E53-B001-713FDF1FF5AC}";
+        
+        $amendRoomAndBoardRendering.Editing.EndEdit() | Out-Null;
+    }
+    
+    #Create New BoardTypes component in Amend Room And Board Page
+    $boardTypesPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Room And Board/Page Components/Board Types";
+    $boardTypesItem = Get-Or-Create-Item -Path $boardTypesPath -Template "{635B2103-34B9-4D3B-840D-6BBEABC08A98}"
+    
+    if ($boardTypesItem -ne $null) {
+    	$boardTypesItem.Editing.BeginEdit();
+    
+    	$boardTypesItem["Title"] = "Your Board";
+    
+    	@( 'fr-CH','fr-FR') | % {
+    		Create-Lang-Version -Item $boardTypesItem -Lang $_ -Field "Title" -Value "Votre pension"
+    	}
+    	@( 'de-CH','de-DE') | % {
+    		Create-Lang-Version -Item $boardTypesItem -Lang $_ -Field "Title" -Value "Ihr Verpflegung"
+    	}
+    
+    	Write-Host $boardTypesItem.Name "Updated";
+    	$boardTypesItem.Editing.EndEdit() | Out-Null;
+    }
+    
+    # Add BoardTypes rendering to component wrapper rendering
+    $boardTypesRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Board Types";
+    
+    # $componentWrapperRendering = Get-Item -Path $componentWrapperRenderingPath;
+    $renderedComponentWrapper = Get-Rendering -Item $amendRoomAndBoardPage -Render $amendRoomAndBoardRendering;
+    $boardTypesRenderingPlaceholder = "/body/board-types-" + $renderedComponentWrapper.UniqueId + "-0";
+    
+    if ($boardTypesItem -ne $null) {
+    	Add-Or-Update-Page-Rendering -page $amendRoomAndBoardPage -renderingPath $boardTypesRenderingPath -renderingPlaceholder $boardTypesRenderingPlaceholder -dataSourcePath $boardTypesItem.ID -Parameters @{ "isPostBooking" = "1" };
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230628T103556Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

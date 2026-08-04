@@ -1,0 +1,79 @@
+﻿---
+ID: "1291b208-5343-4370-bc2e-f7a0cde6b7cb"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SEATS-355 Trade 8 - Return to HD Page Booking Flow"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Set datasource for Seats Not Available Popup
+    $renderingId = "{8AE530B1-7702-48B7-A4B9-442E50845EFA}"
+    $renderigPlaceholder = "body"
+    $seatsNotAvailablePopupRendering = Get-Item -Database "master" -Path $renderingId | New-Rendering
+    $oldRenderingItem = Get-Item -Path "master:" -Id $renderingId -ErrorAction SilentlyContinue
+    
+    # on extrasPage
+    $extrasPage = Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking"
+    $extrasDataSource = Get-Item -Path  "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Seats Availability Error Popup Trade"
+    Remove-Rendering -Item $extrasPage -Rendering $oldRenderingItem -ErrorAction SilentlyContinue
+    Add-Rendering -Item $extrasPage -Instance $seatsNotAvailablePopupRendering -PlaceHolder $renderigPlaceholder -DataSource $extrasDataSource.ID
+    Write-Host "Seats Not Available Popup rendering successfully added to" $extrasPage.Name "page";
+    
+    # on guestDetailsPage
+    $guestDetailsPage = Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Guest Details"
+    $guestDetailsDataSource = Get-Item -Path  "/sitecore/content/EasyJet/TradePortal/Home/Booking/Guest Details/Page Components/Seats Availability Error Popup Trade"
+    Remove-Rendering -Item $guestDetailsPage -Rendering $oldRenderingItem -ErrorAction SilentlyContinue
+    Add-Rendering -Item $guestDetailsPage -Instance $seatsNotAvailablePopupRendering -PlaceHolder $renderigPlaceholder -DataSource $guestDetailsDataSource.ID
+    Write-Host "Seats Not Available Popup rendering successfully added to" $guestDetailsPage.Name "page";
+    
+    # on confirmPage
+    $confirmPage = Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirm"
+    $confirmDataSource = Get-Item -Path  "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirm/Page Components/Seats Availability Error Popup Trade"
+    Remove-Rendering -Item $confirmPage -Rendering $oldRenderingItem -ErrorAction SilentlyContinue
+    Add-Rendering -Item $confirmPage -Instance $seatsNotAvailablePopupRendering -PlaceHolder $renderigPlaceholder -DataSource $confirmDataSource.ID
+    Write-Host "Seats Not Available Popup rendering successfully added to" $confirmPage.Name "page";
+    
+    # remove old dataSources
+    Get-Item -path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Seats Not Available Popup" -ErrorAction SilentlyContinue | Remove-Item -Recurse -ErrorAction SilentlyContinue
+    Get-Item -Path  "/sitecore/content/EasyJet/TradePortal/Home/Booking/Guest Details/Page Components/Seats Not Available Popup" -ErrorAction SilentlyContinue | Remove-Item -Recurse -ErrorAction SilentlyContinue
+    Get-Item -Path  "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirm/Page Components/Seats Not Available Popup" -ErrorAction SilentlyContinue | Remove-Item -Recurse -ErrorAction SilentlyContinue
+    Write-Host "Seats Not Available Popup old data sources successfully removed";
+    
+    # Update datasource for Price Graph and Calendar Module
+    $priceGraph = Get-Item -path "/sitecore/content/EasyJet/TradePortal/Data/Compare Price Modules/Price Graph and Calendar Module" -ErrorAction SilentlyContinue
+    
+    if ($priceGraph -ne $null) {
+        $priceGraph.Editing.BeginEdit()
+        $priceGraph["SeatsReservationNotificationTitle"] = "Prices shown without seat reservations";
+    	$priceGraph["SeatsReservationNotificationDescription"] = "The alternative flight prices shown above do not include the seats you have reserved at a value of {selectedSeatsPrice}. If you change your flights, you will have to pick new seats";
+        $priceGraph.Editing.EndEdit() | Out-Null
+        Write-Host $priceGraph.Name "is updated";
+    }
+    
+    # Update datasource for Alternative Flights on Hotel Details Page
+    $altFlights = Get-Item -path "/sitecore/content/EasyJet/TradePortal/Home/Hotel Details/Page Components/Alternative Flights" -ErrorAction SilentlyContinue
+    
+    if ($altFlights -ne $null) {
+        $altFlights.Editing.BeginEdit()
+        $altFlights["SeatsReservationNotificationTitle"] = "Prices shown without seat reservations";
+    	$altFlights["SeatsReservationNotificationDescription"] = "The alternative flight prices shown below do not include the seats you have reserved at a value of {selectedSeatsPrice}. If you change your flights, you will have to pick new seats";
+        $altFlights.Editing.EndEdit() | Out-Null
+        Write-Host $altFlights.Name "is updated";
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230316T184243Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,67 @@
+﻿---
+ID: "c19bdef7-7087-4dc1-9221-e726fdaaa412"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-1526 Update date changes seats message"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$template) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $template
+    	}
+    	return $item
+    }
+    
+    function create-lang-version ($item,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+    
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value;
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    $amendDatesSeatsMessagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary/Page Components/Loss Seats Message";
+    $amendDatesSeatsMessageItem = Get-Or-Create-Item -Path $amendDatesSeatsMessagePath
+    
+    if ($amendDatesSeatsMessageItem -ne $null) {
+    	$amendDatesSeatsMessageItem.Editing.BeginEdit();
+    
+    	$amendDatesSeatsMessageItem["Title"] = "Please read carefully";
+    	$amendDatesSeatsMessageItem["Description"] = "When you change your dates, any seat and additionally purchased hold bags are not transferred to your new flights. New seats can be purchased below, and bags can be added on the easyJet app. Seat selection is subject to availability and cannot be guaranteed.";
+    	$amendDatesSeatsMessageItem["Icon"] = '<image mediaid="{51A15C31-80B0-4286-9522-30165F61C780}" />';
+    
+    	@( 'fr-CH','fr-FR') | % {
+    		Create-Lang-Version -Item $amendDatesSeatsMessageItem -Lang $_ -Field "Title" -Value "Veuillez lire attentivement"
+    		Create-Lang-Version -Item $amendDatesSeatsMessageItem -Lang $_ -Field "Description" -Value "Lorsque vous changez vos dates, les sièges et les bagages en soute achetés en plus ne sont pas transférés sur vos nouveaux vols. De nouveaux sièges peuvent être achetés ci-dessous, et les bagages peuvent être ajoutés sur l'appli easyJet. La sélection des sièges est soumise à disponibilité et ne peut être garantie."
+    		Create-Lang-Version -Item $amendDatesSeatsMessageItem -Lang $_ -Field "Icon" -Value '<image mediaid="{51A15C31-80B0-4286-9522-30165F61C780}" />'
+    	}
+    	@( 'de-CH','de-DE') | % {
+    		Create-Lang-Version -Item $amendDatesSeatsMessageItem -Lang $_ -Field "Title" -Value "Bitte sorgfältig lesen"
+    		Create-Lang-Version -Item $amendDatesSeatsMessageItem -Lang $_ -Field "Description" -Value "Wenn Sie Ihre Daten ändern, werden Sitzplätze und zusätzlich gekaufte Gepäckstücke nicht auf Ihre neuen Flüge übertragen. Neue Sitzplätze können unten gekauft werden und Gepäckstücke können über die easyJet-App hinzugefügt werden. Die Sitzplatzauswahl hängt von der Verfügbarkeit ab und kann nicht garantiert werden."
+    		Create-Lang-Version -Item $amendDatesSeatsMessageItem -Lang $_ -Field "CTA" -Value '<image mediaid="{51A15C31-80B0-4286-9522-30165F61C780}" />'
+    	}
+    
+    	Write-Host $amendDatesAttentionMessageItem.Name "Updated";
+    	$amendDatesSeatsMessageItem.Editing.EndEdit() | Out-Null;
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240312T100041Z

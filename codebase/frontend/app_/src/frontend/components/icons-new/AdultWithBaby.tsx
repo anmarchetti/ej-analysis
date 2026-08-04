@@ -1,0 +1,18 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgAdultWithBaby = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'adult-with-baby-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <path d='M12 8a3 3 0 10-3-3 3 3 0 003 3zm4.76 2.58A2.83 2.83 0 0013.92 9H10c-1.93-.11-2.7 1-2.82 1.53 0 0-1.3 4.15-1.07 5.12.13.59 1.17 1.32 2.27 1.87V22h7.46v-4.63c1-.52 1.85-1.17 2-1.71.24-.98-1.08-5.08-1.08-5.08zm-4.14 5.66h-.68c-1-.11-1.27-.48-1.28-.86a1.47 1.47 0 11-.59-2.83A1.49 1.49 0 0111.54 14a1.78 1.78 0 01.7-.3 1.43 1.43 0 01.51 0 26.17 26.17 0 013.12 1.17 4.34 4.34 0 01-3.25 1.37z' />
+    </svg>
+);
+
+export default SvgAdultWithBaby;

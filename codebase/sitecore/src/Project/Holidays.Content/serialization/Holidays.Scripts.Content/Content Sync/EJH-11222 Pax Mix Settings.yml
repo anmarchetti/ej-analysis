@@ -1,0 +1,44 @@
+﻿---
+ID: "bc342656-0234-4b59-95e4-4b10173cf1f4"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-11222 Pax Mix Settings"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$itemName,$templateId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function Create-Settings () {
+    	$item = Get-Or-Create-Item -Path "/sitecore/content/EasyJet/Holidays/Settings" -ItemName "Pax Mix Settings" -TemplateId "{788582FD-8470-4D63-B42F-D7B03848D5DD}"
+    
+    	$item.Editing.BeginEdit()
+    	$item["IsPaxMixPopupEnabled"] = "1"
+    	$item["PaxMixPopupTitle"] = "Tell us more about who's traveling"
+    	$item["PaxMixPopupSubtitle"] = "To make sure we can show you the most relevant holidays, we need a few more details."
+    	$item["PaxMixAdultsIcon"] = '<image mediaid="{BED40AA7-DDAE-413C-9632-E88A4E124BA9}" />'
+    	$item["PaxMixChildrenIcon"] = '<image mediaid="{C4438D39-6DF3-4330-8173-7B3928E49B8A}" />'
+    	$item["PaxMixInfantsIcon"] = '<image mediaid="{92D20CA4-59D5-4FA7-BF0F-824EA9398488}" />'
+    	$item.Editing.EndEdit() | Out-Null
+    	
+    	Write-Host "Pax Mix Pop Up Settings created";
+    }
+    
+    
+    Create-Settings
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210408T094857Z

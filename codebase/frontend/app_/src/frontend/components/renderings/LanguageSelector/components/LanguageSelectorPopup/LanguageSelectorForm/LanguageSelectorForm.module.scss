@@ -1,0 +1,90 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.header {
+    padding: 24px 30px 16px;
+
+    @include media-breakpoint-down(lg) {
+        padding: 22px 15px 14px;
+    }
+}
+
+.title {
+    margin: 0;
+    font-family: $fontRoundedHeadline;
+    font-size: 32px;
+    line-height: 1.16;
+    text-align: center;
+
+    @include media-breakpoint-down(lg) {
+        font-size: 20px;
+        line-height: 1.1;
+    }
+}
+
+.subtitle {
+    margin: 40px 0 0;
+    font-family: $fontRoundedDemy;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.33;
+
+    @include media-breakpoint-down(lg) {
+        margin-top: 20px;
+        font-size: 16px;
+        line-height: 1.2;
+    }
+}
+
+.options {
+    flex-shrink: 1;
+    overflow: auto;
+    border-top: 1px solid $colorIron;
+    border-bottom: 1px solid $colorIron;
+
+    &::-webkit-scrollbar {
+        width: 16px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #fff;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $clrEjOrange;
+        border: 6px solid #fff;
+        border-radius: 8px;
+    }
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    margin-top: auto;
+    padding: 30px 24px 18px;
+
+    @include media-breakpoint-down(lg) {
+        gap: 16px;
+        padding: 10px 15px;
+        box-shadow: $generalBoxShadow;
+    }
+}
+
+.button {
+    min-width: 150px;
+    padding: 16px 24px;
+    font-size: 16px;
+    line-height: 1.125;
+
+    @include media-breakpoint-down(lg) {
+        flex: 1 0 0%;
+        padding: 11px 24px;
+    }
+}

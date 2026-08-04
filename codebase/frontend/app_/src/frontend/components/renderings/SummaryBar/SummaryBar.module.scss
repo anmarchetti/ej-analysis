@@ -1,0 +1,42 @@
+.stickyContainer {
+    height: 100%;
+    padding: 0 15px 25px 0;
+}
+
+.positionedContainer {
+    position: sticky;
+    height: fit-content;
+    margin-bottom: 40px;
+    transition: top 150ms ease-out;
+}
+
+.summaryBarContainer {
+    width: 330px;
+    padding: 16px;
+    background-color: $clrSiteBgWhite;
+    border: 2px solid rgba(255, 255, 255, 0);
+    border-radius: 4px;
+    outline: 1px $colorGeyser solid;
+    outline-offset: -1px;
+    box-shadow: 0 0 4px 0 rgba(184, 184, 184, 0.5);
+}
+
+.summaryBarContainerExtras {
+    margin-bottom: 25px;
+}
+
+.title {
+    margin-top: 24.01px;
+    margin-bottom: 16px;
+    font-family: $fontRoundedBook;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.25;
+    color: #333;
+    text-transform: uppercase;
+}
+
+// This is for A/B testing and should be removed after go live
+.isHidden {
+    display: none;
+}

@@ -1,0 +1,36 @@
+.add-booking-popup {
+    .popup__dialog {
+        max-width: 680px;
+    }
+
+    .popup__content {
+        padding: 30px 120px;
+    }
+
+    .popup__header {
+        margin-bottom: -10px;
+        padding-bottom: 0;
+        text-align: center;
+        border-bottom: none;
+    }
+
+    .form-group {
+        margin: 20px 0;
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .add-booking-popup {
+        .popup__dialog {
+            max-width: calc(100% - #{2 * $container-padding-x_mobile});
+        }
+
+        .popup__content {
+            padding: initial;
+        }
+
+        .popup__header {
+            margin-bottom: 5px;
+        }
+    }
+}

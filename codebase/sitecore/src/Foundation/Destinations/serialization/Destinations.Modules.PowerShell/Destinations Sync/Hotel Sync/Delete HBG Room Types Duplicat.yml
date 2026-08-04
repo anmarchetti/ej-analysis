@@ -1,0 +1,95 @@
+﻿---
+ID: "260edb46-07c5-4b79-be96-5875fd35e235"
+Parent: "4c10d78f-07b6-469e-929f-cb4b460bb11e"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Destinations Sync/Hotel Sync/Delete HBG Room Types Duplicates
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    #before run this script make sure that database is relinked
+    $turnOffEvents = $false
+    
+    $hashTable = @{}
+    
+    function Find-Room-Types {
+    	$criteria = @(
+    		@{ Filter = "Equals"; Field = "_latestversion"; Value = "true"; }
+    		@{ Filter = "Equals"; Field = "_template"; Value = "{85911381-FCEA-453C-89A7-D8B86532EBE0}"; }
+    		@{ Filter = "StartsWith"; Field = "_fullpath"; Value = "/sitecore/content/EasyJet/Holidays/Data/Room Types/HotelBeds"; }
+    		@{ Filter = "Equals"; Field = "_name"; Value = "__Standard Values"; "Invert" = $true}
+    	)
+    
+    	$props = @{
+    		Index = "sitecore_destinations_master_index"
+    		Criteria = $criteria
+    	}
+    
+    	$items = Find-Item @props
+    
+    	Write-Host "$($items.Count) Room Types were found"
+    
+    	return $items
+    }
+    
+    function DeleteDuplicateRoomTypes ($items){
+        foreach ($item in $items) {
+            $item = $item.GetItem()
+            if($item -eq $null){
+                continue
+            }
+        	if ($hashTable[$item["Code"]] -ne $null) {
+        		$newItem = $hashTable[$item["Code"]]
+        		$duplicates++
+        		$links = Get-ItemReferrer -Item $item -ItemLink
+        		foreach ($link in $links)
+        		{
+        			$linkedItem = Get-Item -Path master:\ -Id $link.SourceItemID
+        			if($linkedItem -ne $null){
+        			$itemField = $linkedItem.Fields[$link.SourceFieldID]
+        			$field = [Sitecore.Data.Fields.FieldTypeManager]::GetField($itemField)
+        
+        			    #change link
+        			    $linkedItem.Editing.BeginEdit()
+        			    $field.Relink($link,$newItem)
+        			    $linkedItem.Editing.EndEdit() | Out-Null
+        			    Write-Host "Item with ID: $($linkedItem.ID) is relinked"
+        			}
+        		}
+        		#remove duplicate
+        		$path = $item.Paths.FullPath
+        		Write-Host $path "Deleted"
+        	    $item | Remove-Item 
+        	} else {
+        		$hashTable[$item["Code"]] = $item
+        		$validName = "$($item["Name"])  $([Sitecore.Data.Items.ItemUtil]::ProposeValidItemName($item["Code"]))"
+        		if($item.Name -ne $validName){
+        		    $item.Editing.BeginEdit()
+        		    $item.Name = $validName
+        		    $item.Editing.EndEdit() > $null
+        		}
+        	}
+        } 
+    }
+    
+    $roomTypes = Find-Room-Types
+        if ($turnOffEvents) {
+            New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+                New-UsingBlock (New-Object Sitecore.Data.Events.EventDisabler) {
+                    New-UsingBlock (New-Object Sitecore.Data.BulkUpdateContext) {
+                        DeleteDuplicateRoomTypes -Item $roomTypes
+                    }
+                }
+            }
+        } else {
+            DeleteDuplicateRoomTypes  -Item $roomTypes
+        }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210927T082456Z

@@ -1,0 +1,62 @@
+.confirmed-luggage__type {
+    .confirmed-luggage__sizes {
+        font-size: 16px;
+        line-height: 24px;
+        color: $clrTextMain;
+    }
+
+    .confirmed-luggage__alert {
+        display: flex;
+        flex-direction: row;
+        margin-top: 10px;
+        padding: 7px 10px;
+        border: 1px solid rgba(#000, 0.13);
+        border-radius: 5px;
+
+        a {
+            text-decoration: underline;
+        }
+
+        svg {
+            display: block;
+            flex: 0 0 auto;
+            width: 14px;
+            height: 14px;
+            margin-top: 3px;
+            margin-right: 10px;
+            color: $colorOrange;
+        }
+
+        div {
+            font-size: 14px;
+            color: $clrTextMainLight;
+        }
+    }
+
+    + .confirmed-luggage__type {
+        margin-top: 20px;
+    }
+}
+
+.confirmed-luggage__read-more {
+    margin-top: 25px;
+    font-size: 14px;
+    grid-column: 1 / -1;
+
+    a {
+        display: inline-flex;
+        text-decoration: underline;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    svg {
+        width: .85em;
+        height: .85em;
+        margin-left: .3em;
+        margin-top: 5px;
+        flex-shrink: 0;
+    }
+}

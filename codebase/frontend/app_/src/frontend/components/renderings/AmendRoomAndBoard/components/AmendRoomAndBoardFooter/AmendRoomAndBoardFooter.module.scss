@@ -1,0 +1,48 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    @include media-breakpoint-down(lg) {
+        position: fixed;
+        z-index: $z-index-element;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 16px;
+        background: $colorWhite;
+        box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.13);
+    }
+}
+
+.priceDesc {
+    flex-grow: 1;
+
+    :global(.callout-price) {
+        font-size: 16px;
+    }
+}
+
+.priceLabel {
+    margin: 0;
+    font-size: 14px;
+}
+
+.price {
+    margin: 0;
+    font-size: 16px;
+}
+
+.confirm {
+    margin-left: 10px;
+}
+
+.priceAmount {
+    display: flex;
+}
+
+.backButton {
+    @include media-breakpoint-down(lg) {
+        flex-grow: 1;
+    }
+}

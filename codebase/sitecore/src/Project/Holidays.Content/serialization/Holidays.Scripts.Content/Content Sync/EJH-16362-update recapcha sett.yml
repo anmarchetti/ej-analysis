@@ -1,0 +1,38 @@
+﻿---
+ID: "7a9dc4c9-6fef-4207-bb77-52f56f475a1e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-16362-update recapcha settings and remove broken datasource from renderings"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $renderingId = "{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}" #Component Wrapper
+    $contactUsPagePath = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us"
+    
+    $contactUsPageItem = Get-Item -Path "master:" -Query $contactUsPagePath
+    $renderings = Get-Rendering -Item $contactUsPageItem | Where-Object { $_.ItemID -eq $renderingId }
+    
+    foreach($rendering in $renderings){
+          $rendering.DataSource = $null
+          Set-Rendering -Item $contactUsPageItem -Instance $rendering
+    }
+    
+    $reCapchaSettingsPath = "/sitecore/content/EasyJet/Holidays/Settings/reCAPTCHA Settings"
+    $reCapchaSettingsItem = Get-Item -Path "master:" -Query $reCapchaSettingsPath
+    $reCapchaSettingsItem.Editing.BeginEdit()
+    $reCapchaSettingsItem.Fields["IsRecaptchaEnabledContactUs"].Value = "1";
+    $reCapchaSettingsItem.Editing.EndEdit()
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230110T145308Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

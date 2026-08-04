@@ -1,0 +1,123 @@
+﻿---
+ID: "b690d369-2f68-442d-a09d-012ff487a257"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-159 rebook banner"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $subtitle_dcff0b323b744f0792b4d1535e3cf817_dech_v1 = @"
+    Ihre Reise hat Ihnen gefallen?
+    "@
+    $title_dcff0b323b744f0792b4d1535e3cf817_en_v1 = @"
+    Ready to go back?
+    "@
+    $title_dcff0b323b744f0792b4d1535e3cf817_frch_v1 = @"
+    Prêt à repartir ?
+    "@
+    $title_dcff0b323b744f0792b4d1535e3cf817_dede_v1 = @"
+    Bereit zur Rückkehr?
+    "@
+    $actiontext_dcff0b323b744f0792b4d1535e3cf817_en_v1 = @"
+    Rebook the same holiday in just a few clicks.
+    "@
+    $actiontext_dcff0b323b744f0792b4d1535e3cf817_frfr_v1 = @"
+    Reprenez le même séjour en quelques clics.
+    "@
+    $subtitle_dcff0b323b744f0792b4d1535e3cf817_dede_v1 = @"
+    Ihre Reise hat Ihnen gefallen?
+    "@
+    $actiontext_dcff0b323b744f0792b4d1535e3cf817_dede_v1 = @"
+    Buchen Sie denselben Urlaub mit nur wenigen Klicks erneut.
+    "@
+    $actiontext_dcff0b323b744f0792b4d1535e3cf817_dech_v1 = @"
+    Buchen Sie denselben Urlaub mit nur wenigen Klicks erneut.
+    "@
+    $subtitle_dcff0b323b744f0792b4d1535e3cf817_frch_v1 = @"
+    Vous avez aimé votre voyage ?
+    "@
+    $title_dcff0b323b744f0792b4d1535e3cf817_dech_v1 = @"
+    Bereit zur Rückkehr?
+    "@
+    $subtitle_dcff0b323b744f0792b4d1535e3cf817_frfr_v1 = @"
+    Vous avez aimé votre voyage ?
+    "@
+    $title_dcff0b323b744f0792b4d1535e3cf817_frfr_v1 = @"
+    Prêt à repartir ?
+    "@
+    $actiontext_dcff0b323b744f0792b4d1535e3cf817_frch_v1 = @"
+    Reprenez le même séjour en quelques clics.
+    "@
+    $subtitle_dcff0b323b744f0792b4d1535e3cf817_en_v1 = @"
+    Loved your trip?
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Rebook Card"
+            TemplatePath = "Feature/PageContent/Rebook Card"
+            Id          = [GUID]"{DCFF0B32-3B74-4F07-92B4-D1535E3CF817}"
+            Fields      = @{
+                "Title" = @{
+                    "de-CH" = $title_dcff0b323b744f0792b4d1535e3cf817_dech_v1
+                    "en" = $title_dcff0b323b744f0792b4d1535e3cf817_en_v1
+                    "fr-FR" = $title_dcff0b323b744f0792b4d1535e3cf817_frfr_v1
+                    "de-DE" = $title_dcff0b323b744f0792b4d1535e3cf817_dede_v1
+                    "fr-CH" = $title_dcff0b323b744f0792b4d1535e3cf817_frch_v1
+                }
+                "RebookButtonLabel" = @{
+                    "de-CH" = "Diese Reise erneut buchen"
+                    "en" = "Rebook this holiday"
+                    "fr-FR" = "Réinscrire ces vacances"
+                    "de-DE" = "Diese Reise erneut buchen"
+                    "fr-CH" = "Réinscrire ces vacances"
+                }
+                "Subtitle" = @{
+                    "de-CH" = $subtitle_dcff0b323b744f0792b4d1535e3cf817_dech_v1
+                    "en" = $subtitle_dcff0b323b744f0792b4d1535e3cf817_en_v1
+                    "fr-FR" = $subtitle_dcff0b323b744f0792b4d1535e3cf817_frfr_v1
+                    "de-DE" = $subtitle_dcff0b323b744f0792b4d1535e3cf817_dede_v1
+                    "fr-CH" = $subtitle_dcff0b323b744f0792b4d1535e3cf817_frch_v1
+                }
+                "ActionText" = @{
+                    "de-CH" = $actiontext_dcff0b323b744f0792b4d1535e3cf817_dech_v1
+                    "en" = $actiontext_dcff0b323b744f0792b4d1535e3cf817_en_v1
+                    "fr-FR" = $actiontext_dcff0b323b744f0792b4d1535e3cf817_frfr_v1
+                    "de-DE" = $actiontext_dcff0b323b744f0792b4d1535e3cf817_dede_v1
+                    "fr-CH" = $actiontext_dcff0b323b744f0792b4d1535e3cf817_frch_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    Import-Function "Import Renderings"
+    $myRenderings = @(
+        @{ 
+            Title          = "Full Width Banner"
+            PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel"
+            RenderingPath  = "/sitecore/layout/Renderings/Feature/PageContent/Rebook Card"
+            Placeholder    = "/body/booking-context-{0b3a1889-94df-4381-aaef-272a10e79e98}-0/masonry-section-{b93f1826-b25c-47d5-8fe3-dffe24e63a17}-0/masonry-item"
+            DataSourcePath     = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Rebook Card"
+            PlaceBeforeRenderingId  = "{630D2676-483E-420D-8F04-4C15212F3EFF}"
+            PlaceBeforeRenderingIndex = "4"
+            PlaceholderTargetRenderingId = "{630D2676-483E-420D-8F04-4C15212F3EFF}"
+            PlaceholderTargetRenderingIndex = "4"
+            UpdateFinalLayoutAsWell = "0"
+        }
+    )
+    
+    ImportRenderings -renderingsToAttach $myRenderings
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999990
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250717T124649Z

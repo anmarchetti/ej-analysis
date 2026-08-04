@@ -1,0 +1,120 @@
+.wrapper {
+    position: relative;
+    padding: 25px 25px 9px;
+    background: $clrSiteBgWhite;
+    border: 1px solid $borderColorGray;
+    border-radius: 4px;
+
+    @include media-breakpoint-down(md) {
+        padding: 15px 15px 7px;
+
+        &::after {
+            content: '';
+            position: absolute;
+            z-index: 1;
+            top: 15px;
+            right: 0;
+            display: block;
+            width: 30px;
+            height: 29px;
+            background: linear-gradient(90deg, rgba($colorWhite, 0) 0%, $colorWhite 100%);
+        }
+    }
+}
+
+.header {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 60px;
+    margin-bottom: 28px;
+    overflow: auto hidden;
+    border-bottom: 1px solid $colorGrayMiddle;
+
+    @include media-breakpoint-down(md) {
+        top: 0;
+        left: 0;
+        gap: 35px;
+        width: calc(100% + 15px);
+        margin-bottom: 18px;
+    }
+}
+
+.slider {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: $clrEjOrange;
+    transition: left 0.3s;
+}
+
+.button {
+    position: relative;
+    padding: 0 0 13px;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: $clrEjOrangeLight;
+    text-align: left;
+    white-space: nowrap;
+    background: transparent;
+    border: none;
+
+    &:hover {
+        color: $clrTextMain;
+        cursor: pointer;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: 0 0 8px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+}
+
+.activeButton {
+    color: $clrTextMain;
+
+    &:last-child::after {
+        width: 100%;
+    }
+}
+
+.list {
+    display: none;
+    column-count: 3;
+    column-gap: 28px;
+
+    a {
+        display: block;
+        margin-bottom: 16px;
+        color: $clrEjOrangeLight;
+    }
+
+    @include media-breakpoint-down(md) {
+        columns: 2;
+        column-gap: 20px;
+
+        a {
+            margin-bottom: 8px;
+        }
+    }
+}
+
+.activeList {
+    display: block;
+}
+
+.activeFirstTab::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: $clrEjOrange;
+}

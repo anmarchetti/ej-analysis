@@ -1,0 +1,57 @@
+﻿---
+ID: "26008100-0494-4c9d-8dd7-b11e845093b0"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14697 remove personalization from slim and full headers"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $loginToShortListPopup = "{6BD6250D-C741-40AD-B0B0-95E29085ACEC}"
+    
+    $fullHeaderPath = "/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Full Header"
+    $slimHeaderPath = "/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Slim Header"
+    
+    function Get-Or-Create-Item($path){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        return $item
+    }
+    
+    function Delete-RenderingRules {
+    	[CmdletBinding()]
+    	param(
+    		[Parameter(Mandatory = $true,Position = 0)]
+    		[Sitecore.Data.Items.Item]$TargetItem,
+    		[Parameter(Mandatory = $true,Position = 1)]
+    		$TargetRenderingGUID
+    	)
+    	$targetItemSharedLayoutField = $TargetItem.Fields[[Sitecore.FieldIDs]::LayoutField]
+        $targetSharedLayoutXml = [Sitecore.Data.Fields.LayoutField]::GetFieldValue($targetItemSharedLayoutField)
+    	
+    	[xml]$targetRenderingsXML = New-Object -TypeName XML
+    	$targetRenderingsXML.LoadXml($targetSharedLayoutXml)
+    	$targetXpathQ = "r/d/r[@id='$($TargetRenderingGUID)']"
+    	$TargetRendering = $targetRenderingsXML.SelectSingleNode($targetXpathQ)
+        foreach($childNode in $TargetRendering.rls){
+            $TargetRendering.RemoveChild($childNode) > $null
+        }
+    
+    	$TargetItem.Editing.BeginEdit()
+    	$TargetItem["__Renderings"] = $targetRenderingsXML.OuterXML
+    	$TargetItem.Editing.EndEdit() > $null
+    }
+    
+    $fullHeader = Get-Or-Create-Item -Path $fullHeaderPath
+    $slimHeader = Get-Or-Create-Item -Path $slimHeaderPath
+    
+    Delete-RenderingRules -TargetItem $fullHeader -TargetRenderingGUID $loginToShortListPopup
+    Delete-RenderingRules -TargetItem $slimHeader -TargetRenderingGUID $loginToShortListPopup
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20211019T090601Z

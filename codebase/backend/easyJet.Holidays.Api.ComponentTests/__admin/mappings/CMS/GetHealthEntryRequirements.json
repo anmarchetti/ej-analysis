@@ -1,0 +1,78 @@
+{
+    "Title": "CMS Destination ",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/PageContent/GetHealthEntryRequirements",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "airportCode",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "DLM"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": [
+            {
+                "Title": "The latest entry requirements for your holiday and return journey",
+                "Description": "\u003cp\u003eIt\u0026rsquo;s your responsibility to ensure that you meet entry requirements for your holiday destination and for your return to the UK,\u0026nbsp;which may change between booking and travel. Make sure you keep checking the FCDO page for your destination to find out the steps you need to follow - you\u0027ll also be able to sign up for email alerts should anything change.\u003c/p\u003e",
+                "Image": "/-/jssmedia/f161d6500a0043aa96e16030c7c2d2ae.ashx",
+                "Icon": null,
+                "CTA": null
+            },
+            {
+                "Title": "Discounted Covid-19 testing",
+                "Description": "If you need a Covid-19 test to travel to your destination, we\u0026rsquo;ve been working with service providers to give you a couple of options. Typically you\u0026rsquo;ll need to have had the test carried out.",
+                "Image": "/-/jssmedia/af92337d13504194b5ee5778680b6754.ashx",
+                "Icon": null,
+                "CTA": {
+                    "Anchor": "",
+                    "LinkType": "external",
+                    "Text": "Find out more",
+                    "Target": "_blank",
+                    "Url": "https://www.easyjet.com/en/holidays/info/covid-19-testing"
+                }
+            },
+            {
+                "Title": "Travel insurance to cover you for this trip",
+                "Description": "\u003cp\u003e\u0026bull;\u0026nbsp; COVID-19 cover included for medical emergencies \u0026amp; cancellations\u003cbr /\u003e\r\n\u0026bull;\u0026nbsp; Personal property cover up to \u0026pound;2,500 with gadget cover available\u003cbr /\u003e\r\n\u0026bull;\u0026nbsp; Free cover for over 150 sports \u0026amp; activities\u003c/p\u003e",
+                "Image": "/-/jssmedia/f161d6500a0043aa96e16030c7c2d2ae.ashx",
+                "Icon": null,
+                "CTA": {
+                    "Anchor": "",
+                    "LinkType": "external",
+                    "Text": "Get  a free quote",
+                    "Target": "_blank",
+                    "Url": "https://travelinsurance.easyjet.com/?sourceCode=EZYHOL "
+                }
+            },
+            {
+                "Title": "Passenger location form",
+                "Description": "\u003cp\u003eLorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultrices, urna et placerat sodales, velit erat auctor magna, ac ultrices sapien nibh quis lacus. Etiam lectus tellus, facilisis sed leo non, rutrum malesuada leo.\u003c/p\u003e",
+                "Image": "/-/jssmedia/35a40c54d7f94700ad7184f1d0b2ae39.ashx",
+                "Icon": "/-/jssmedia/ab1d9c6e9d22478499f1619eebb826b9.ashx",
+                "CTA": {
+                    "Anchor": "",
+                    "LinkType": "external",
+                    "Text": "Fill out passenger location form",
+                    "Target": "_blank",
+                    "Url": "https://www.easyjet.com/en/holidays/info/customer-safety-and-wellbeing "
+                }
+            }
+        ]
+    }
+}

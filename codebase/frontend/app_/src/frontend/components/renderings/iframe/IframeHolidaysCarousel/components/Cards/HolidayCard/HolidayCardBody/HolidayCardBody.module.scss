@@ -1,0 +1,55 @@
+.cardBody {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.priceAndIconsBlock {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 var(--iframe-card-padding) 16px;
+
+    :global {
+        .hotel-card__icons-summ {
+            justify-content: center;
+        }
+    }
+}
+
+.packageIcons {
+    display: flex;
+    gap: 4px;
+    line-height: normal;
+
+    img {
+        filter: brightness(0);
+    }
+}
+
+.price {
+    display: flex;
+    flex-direction: column;
+    width: 55%;
+    margin-top: 14px;
+}
+
+.flightDetails {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    padding: 8px 16px;
+    background-color: $colorGrayLighter;
+
+    .divider {
+        width: 1px;
+        height: auto;
+        margin: 0;
+        background-color: $colorBlackLight;
+    }
+}
+
+.ctaContainer {
+    padding: var(--iframe-card-padding);
+}

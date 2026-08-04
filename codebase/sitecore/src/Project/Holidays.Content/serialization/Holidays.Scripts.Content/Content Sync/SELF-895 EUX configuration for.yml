@@ -1,0 +1,129 @@
+﻿---
+ID: "ecb4cd65-c5fb-4e6d-9535-abaeef9b9136"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-895 EUX configuration for post travel page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    function updatePostTravel() {
+    	
+    	$postTravelPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel"
+    	$postTravelPage = Get-Item -Path $postTravelPagePath -ErrorAction SilentlyContinue
+    	
+    	$postTravelPagePageComponentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components"
+    	$postTravelPageComponent = Get-Item -Path $postTravelPagePageComponentPath -ErrorAction SilentlyContinue
+    	
+    	@('en') | % {
+    		Create-Lang-Version -Item $postTravelPage -Lang $_ -Field "Name" -Value "Post Travel"
+    	}
+    		
+    	@('de-CH', 'de-DE') | % {
+    		Create-Lang-Version -Item $postTravelPage -Lang $_ -Field "Name" -Value "Post Reisen"
+    		Create-Lang-Version -Item $postTravelPageComponent -Lang $_
+    	}
+    	
+    	@('fr-CH', 'fr-FR') | % {
+    		Create-Lang-Version -Item $postTravelPage -Lang $_ -Field "Name" -Value "Voyages Postaux"
+    		Create-Lang-Version -Item $postTravelPageComponent -Lang $_
+    	}
+    
+    	Write-Host "Created language version for item $($postTravelPagePath)"
+    }
+    
+    function updatePostTravelContactUsBanner() {
+    	
+    	$postTravelContactUsBannerPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Contact Us Banner"
+    	$postTravelContactUsBanner = Get-Item -Path $postTravelContactUsBannerPath -ErrorAction SilentlyContinue
+    
+    	if ($postTravelContactUsBanner -eq $null) {
+    		Write-Host "Missing ContactuUsBanner in EN language. Missing item: /sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Contact Us Banner"
+    		return;
+    	}
+    
+    	@('de-CH', 'de-DE') | % {
+    		Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "CTATitle" -Value "Brauchen Sie Unterstützung? Kontaktieren Sie uns"
+    		Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "CTAOpenButtonLabel" -Value "Kontakt"
+    		Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "CTAOpenButtonScreenReaderLabel" -Value "Kontakt-Formular öffnen"
+    		Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "CTACloseButtonLabel" -Value "Schließen Sie"
+    		Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "CTACloseButtonScreenReaderLabel" -Value "Kontakt-Formular schließen"
+    		Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "Title" -Value "Kontakt"
+    		Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "InfoText" -Value "<p>Wenn Sie mit unserem Team über Ihren letzten Urlaub sprechen möchten, füllen Sie bitte <a href='~/link.aspx?_id=EAEF2E00F36A4FF8A1B1C54B0096E415&amp;_z=z' target='_blank'>unser Kontaktformular</a>&nbsp;mit allen Angaben, die wir verlangen und benötigen. Wir werden unser Bestes tun, um Ihre Nachricht innerhalb von 28 Tagen zu beantworten.</p>"	
+    	}
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "CTATitle" -Value "Besoin d'aide ? Prenez contact avec nous"
+    		Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "CTAOpenButtonLabel" -Value "Contactez nous"
+    		Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "CTAOpenButtonScreenReaderLabel" -Value "Ouvrir le formulaire de contact"
+    		Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "CTACloseButtonLabel" -Value "Fermer"
+    		Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "CTACloseButtonScreenReaderLabel" -Value "Fermer le formulaire de contact"
+    		Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "Title" -Value "Contactez nous"
+    		Create-Lang-Version -Item $postTravelContactUsBanner -Lang $_ -Field "InfoText" -Value "</p> <p>Si vous souhaitez parler à notre équipe au sujet de vos récentes vacances, veuillez remplir <a href='~/link.aspx?_id=EAEF2E00F36A4FF8A1B1C54B0096E415&amp;_z=z' target='_blank'>notre formulaire de contact</a>&nbsp;avec tous les détails que nous demandons et dont nous avons besoin. Nous ferons de notre mieux pour répondre à votre message dans les 28 jours."	
+    	}
+    	
+    	Write-Host "Created language version for item $($postTravelContactUsBannerPath)"
+    }
+    
+    function updatePostTravepBreadcrumbs() {
+    	
+    	$postTravelBreadcrumbsPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Breadcrumbs"
+    	$postTravelMyBookingsBreadcrumbsPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Breadcrumbs/My Bookings"
+    	$postTravelPostTravelBreadcrumbsPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/post-travel/Page Components/Breadcrumbs/Post Travel"
+    	
+    	$postTravelBreadcrumbs = Get-Item -Path $postTravelBreadcrumbsPath -ErrorAction SilentlyContinue
+    	$postTravelMyBookingsBreadcrumbs = Get-Item -Path $postTravelMyBookingsBreadcrumbsPath -ErrorAction SilentlyContinue
+    	$postTravelPostTravelBreadcrumbs = Get-Item -Path $postTravelPostTravelBreadcrumbsPath -ErrorAction SilentlyContinue
+    	
+    	if ($postTravelMyBookingsBreadcrumbs -eq $null) {
+    		Write-Host "Missing EN language version for $($postTravelMyBookingsBreadcrumbsPath)"
+    		return;
+    	}
+    	
+    	if ($postTravelPostTravelBreadcrumbs -eq $null) {
+    		Write-Host "Missing EN language version for $($postTravelPostTravelBreadcrumbsPath)"
+    		return;
+    	}
+    
+    	@('de-CH', 'de-DE') | % {
+    		Create-Lang-Version -Item $postTravelBreadcrumbs -Lang $_ 
+    		Create-Lang-Version -Item $postTravelMyBookingsBreadcrumbs -Lang $_ -Field "Text" -Value "Meine Buchungen"
+    		Create-Lang-Version -Item $postTravelPostTravelBreadcrumbs -Lang $_ -Field "Text" -Value "Post Reisen"
+    		
+    	}
+    
+    	@('fr-CH', 'fr-FR') | % {
+    		Create-Lang-Version -Item $postTravelBreadcrumbs -Lang $_
+    		Create-Lang-Version -Item $postTravelMyBookingsBreadcrumbs -Lang $_ -Field "Text" -Value "Mes réservations"
+    		Create-Lang-Version -Item $postTravelPostTravelBreadcrumbs -Lang $_ -Field "Text" -Value "Voyages Postaux"
+    	}
+    	
+    	Write-Host "Created language version for item $($postTravelMyBookingsBreadcrumbsPath)"
+    	Write-Host "Created language version for item $($postTravelPostTravelBreadcrumbsPath))"
+    }
+    
+    updatePostTravel
+    updatePostTravelContactUsBanner
+    updatePostTravepBreadcrumbs
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Value: "20240521T131351:638518940311521174Z"

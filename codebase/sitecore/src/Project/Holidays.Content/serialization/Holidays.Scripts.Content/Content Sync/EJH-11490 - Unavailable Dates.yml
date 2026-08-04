@@ -1,0 +1,32 @@
+﻿---
+ID: "e48ca485-3e94-4eaa-8497-c10a0405d65a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-11490 - Unavailable Dates"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $searchOptions = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Search Pod Settings"
+    if ($searchOptions -ne $null) {
+        
+        $searchOptions.Editing.BeginEdit()
+        $searchOptions["DateUnavailableMessage"] = "Sorry, no available dates on this month"
+        $searchOptions["DateUnavailableImage"] = '<image mediaid="{F2E2DF3B-B9AE-4BEA-9BA4-C6C7C717F6E3}" />'
+        $searchOptions.Editing.EndEdit()
+        
+        Write-Host "No Dates Content added"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230208T140219Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

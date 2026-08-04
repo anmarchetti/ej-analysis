@@ -1,0 +1,68 @@
+.booking-insurance {
+    font-size: 16px;
+    line-height: 1.5;
+    color: $clrTextMain;
+
+    p, .list--bullet li {
+        font-size: inherit;
+        line-height: inherit;
+    }
+
+    .rounded-container {
+        &::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+    }
+
+    .booking-insurance__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .booking-insurance__image {
+        max-width: 150px;
+        margin-left: 30px;
+    }
+
+    .list--bullet {
+        margin: 14px 0 45px 20px;
+    }
+
+    .booking-insurance__button {
+        float: right;
+    }
+
+    .booking-insurance__call {
+        p {
+            line-height: 24px;
+            color: $clrEjOrange;
+        }
+
+        a {
+            font-family: $fontRoundedBook;
+            font-size: 40px;
+            line-height: 30px;
+            color: $clrEjOrange;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+
+        .booking-insurance__image {
+            max-width: 90px;
+        }
+
+        .list {
+            margin-bottom: 20px;
+        }
+
+        .booking-insurance__button {
+            float: none;
+            width: 100%;
+        }
+    }
+}

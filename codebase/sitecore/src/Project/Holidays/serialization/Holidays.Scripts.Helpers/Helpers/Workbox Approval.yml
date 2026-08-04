@@ -1,0 +1,78 @@
+﻿---
+ID: "afba0f5d-bd45-40a6-ad6b-f0a3e8a90232"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/Workbox Approval
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Define the start item
+    $startItem = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Destinations"
+    
+    $draft = "{8048C461-28DC-4299-BB4D-7EBE4C2696DF}" # Draft state ID
+    $pending = "{DD32B040-668C-431C-943C-F53DB3373E86}" # Pending state ID
+    
+    $newState = "{A47E8B4F-A0EE-40F2-B1A1-B3CE91C0F79A}" # Approved
+    
+    $oldState = $draft # SELECT HERE WHAT STATE TO UPDATE FROM: $draft or $pending
+    
+    $languages = @("en") # @("en", "fr-FR", "de-DE")
+    $counter = 0
+    
+    function ChangeWorkflowState {
+      param($item, $oldState, $newState, $lang, $counter)
+            $currentState = $item["__Workflow state"]
+    
+            if ($item -ne $null -and $currentState.ToLower() -eq $oldState.ToLower()) {
+               $item.Editing.BeginEdit()
+               $item["__Workflow state"] = $newState
+               $item.Editing.EndEdit() | Out-Null
+               
+               $global:counter++
+               
+               "($($global:counter)): $($lang): $($item.Paths.FullPath)"
+            }
+    }
+    
+    # Loop through all items
+    
+    $languages | % {
+        $lang = $_
+        "Start scanning destination items for $($lang)..."
+        $countryItems = Get-ChildItem -Path $startItem.ProviderPath -Language $_ | Where-Object { $_.TemplateName -eq "Country" -or $_.TemplateName -eq "VirtualCountry" }
+        foreach ($countryItem in $countryItems) {
+            "Checking country $($countryItem.Name)..."
+            ChangeWorkflowState -item $countryItem -oldState $oldState -newState $newState -lang $lang
+        
+            $regions = Get-ChildItem -Path $countryItem.ProviderPath -Language $_ | Where-Object { $_.TemplateName -eq "Region" -or $_.TemplateName -eq "VirtualRegion" -or "Region - City" }
+            foreach ($region in $regions) {
+                ChangeWorkflowState -item $region -oldState $oldState -newState $newState -lang $lang
+                
+                $resorts = Get-ChildItem -Path $region.ProviderPath -Language $_ | Where-Object { $_.TemplateName -eq "Resort"}
+                foreach ($resort in $resorts) {
+                    ChangeWorkflowState -item $resort -oldState $oldState -newState $newState -lang $lang
+                    
+                    $hotels = Get-ChildItem -Path $resort.ProviderPath -Language $_ | Where-Object { $_.TemplateName -eq "Hotel"}
+                    foreach ($hotel in $hotels) {
+                        ChangeWorkflowState -item $hotel -oldState $oldState -newState $newState -lang $lang
+                    }
+                }
+            }
+        }
+    
+    }
+    
+    "Finished with total items $($counter)"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 200
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200408T100643Z

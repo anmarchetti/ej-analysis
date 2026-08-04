@@ -1,0 +1,44 @@
+﻿---
+ID: "b7932c9b-9853-4d10-b225-b544c7b9fbd8"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-1307 cabin bags content fix"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $itemTradePath = '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Cabin Bags'
+    
+    function create-lang-version ($itemPath,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $itemPath -Language $lang
+    
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Path $itemPath -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    			$targetLangItem = Get-Item -Path $itemPath -Language $lang
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $itemPath -Language $lang
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value;
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    create-lang-version -itemPath $itemTradePath -lang 'en' -field 'IncludedBagsLabel' -value '{count} x small under seat bags'
+    create-lang-version -itemPath $itemTradePath -lang 'en' -field 'IncludedWithInfantLabel' -value '{count} x small under seat bags, {infantCount} x baby change bags'
+    create-lang-version -itemPath $itemTradePath -lang 'en' -field 'OverheadBagAddedLabel' -value '{count} x large overhead cabin bags with speedy boarding'
+    create-lang-version -itemPath $itemTradePath -lang 'en' -field 'IncludedIcon' -value '<image mediaid="{CB598726-D37F-4F61-8B1C-B7A9DEF9DEE9}" />'
+    create-lang-version -itemPath $itemTradePath -lang 'en' -field 'OverheadAddedIcon' -value '<image mediaid="{D04439D4-A1E7-409F-B074-CBA5D1B14D5E}" />'
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2080
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240319T133308Z

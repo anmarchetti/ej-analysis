@@ -1,0 +1,58 @@
+{
+    "Title": "Payment for booking commit request",
+    "Priority": 10,
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/core/E2E/finance/payments/v1/make-payment-request",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "WildcardMatcher",
+                "Pattern": "*50028683*",
+                "IgnoreCase": true
+            }
+        },
+        "Methods": [
+            "Post"
+        ]
+    },
+    "Response": {
+        "Headers": {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "message": "Success",
+            "amount": {
+                "currencyCode": "GBP",
+                "value": 180.0
+            },
+            "paymentId": "655055157",
+            "paymentMethod": "Card",
+            "paymentMethodTypeCode": "DL",
+            "resultCode": "Success",
+            "transactionDetail": {
+                "authCode": "057432",
+                "card": {
+                    "cardNumber": "XXXXXXXXXXXX1111",
+                    "expiryMonth": 3,
+                    "expiryYear": 2030,
+                    "issueNumber": "",
+                    "nameOnCard": "Peter"
+                },
+                "transactionTime": "2023-11-27T17:42:41.92751Z",
+                "transactionId": "W2PVT3277NK2WN82",
+                "provider": "ADYEN",
+                "providerId": 100,
+                "issuerCountry": "GB"
+            },
+            "transactionStatus": "SentForSettlement"
+        }
+    }
+}

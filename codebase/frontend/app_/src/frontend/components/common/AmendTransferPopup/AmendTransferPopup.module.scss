@@ -1,0 +1,27 @@
+.content {
+    --content-padding: 24px;
+    padding-left: var(--content-padding);
+    padding-right: var(--content-padding);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @include media-breakpoint-down(sm) {
+        max-height: unset;
+        --content-padding: 16px;
+    }
+}
+
+.titleChosen {
+    text-transform: uppercase;
+    font-size: 24px;
+    line-height: 32px;
+    margin: 0;
+}
+
+.titleAltOptions {
+    font-size: 18px;
+    line-height: 24px;
+    margin: 0;
+    text-transform: uppercase;
+}

@@ -1,0 +1,18 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgCross = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        className={classNames('icon-svg', props.className)}
+        data-tid='cross-icon'
+    >
+        <path d='M13.41 12l8.29-8.29a1 1 0 00-1.41-1.41L12 10.59 3.71 2.3A1 1 0 002.3 3.71L10.59 12 2.3 20.29a1 1 0 001.41 1.41L12 13.41l8.29 8.29a1 1 0 001.41-1.41z' />
+    </svg>
+);
+
+export default SvgCross;

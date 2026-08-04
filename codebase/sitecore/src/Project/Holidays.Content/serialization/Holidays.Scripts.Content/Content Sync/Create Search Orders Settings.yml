@@ -1,0 +1,93 @@
+﻿---
+ID: "4976a8c5-77e6-419b-b571-f44b44c82658"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Search Orders Settings
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $settingsFolderPath = "/sitecore/content/EasyJet/Holidays/Settings"
+    $dataFolderPath = "/sitecore/content/EasyJet/Holidays/Data"
+    
+    $sortOrderItemsFolderTemplateId = "{2B9F5A29-7B13-4D8E-87BF-93F40B37477B}"
+    $sortOrderSettingsItemTemplateId = "{F1A11D93-990A-4932-9DFC-F19C3E98BE3A}"
+    $sortOrderSettingItemFolderTemplateId = "{1ECB6B2F-ECDE-4274-8A0C-A21C4FEE84D6}"
+    $sortOrderSettingItemTemplateId = "{62EBD387-4076-4E05-84A8-01631EB72544}"
+    
+    $sortOrderItemsFolderItemName = "Sort Order Items Folder"
+    $sortOrderSettingsItemName = "Default"
+    
+    $sortOrderSettingFolderItemName = "Sort Order Setting Folder"
+    
+    $sortOrderNamesDisplayNames = [ordered]@{"Recommended" = "Recommended"; "Price Low to high" = "Price: low to high"; "Price High to low" = "Price: high to low" }
+    
+    
+    $settingsFolder = Get-Item -Path $settingsFolderPath
+    $settingsChildren = $settingsFolder.Children
+    
+    $dataFolder = Get-Item -Path $dataFolderPath
+    $dataChildren = $dataFolder.Children
+    
+    New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+        # Find or create SortOrdersSettings Item
+        $sortOrderItemsFolder = $settingsChildren | Where-Object {$_.TemplateId -eq $sortOrderItemsFolderTemplateId}
+    
+        if ($sortOrderItemsFolder.Count -eq 0){
+            $sortOrderItemsFolderPath = Join-Path $settingsFolderPath $sortOrderItemsFolderItemName
+            $sortOrderItemsFolder = New-Item -Path $sortOrderItemsFolderPath -ItemType $sortOrderItemsFolderTemplateId
+        }
+    
+        $sortOrderSettingsPath = Join-Path $sortOrderItemsFolder.Paths.FullPath $sortOrderSettingsItemName
+    
+        $sortOrderSettingsItem = $null
+    
+        if ((Test-Path -Path $sortOrderSettingsPath) -ne $true){
+            $sortOrderSettingsItem = New-Item -Path $sortOrderSettingsPath -ItemType $sortOrderSettingsItemTemplateId
+        }else{
+            $sortOrderSettingsItem = Get-Item -Path $sortOrderSettingsPath
+        }
+    
+        # Find or create sortOrderSettingItemFolder Item
+        $sortOrderSettingItemFolder = $dataChildren | Where-Object { $_.TemplateId -eq $sortOrderSettingItemFolderTemplateId}
+    
+        if ($sortOrderSettingItemFolder.Count -eq 0){
+            $sortOrderSettingItemFolderPath = Join-Path $dataFolderPath $sortOrderSettingFolderItemName
+            $sortOrderSettingItemFolder = New-Item -Path $sortOrderSettingItemFolderPath  -ItemType $sortOrderSettingItemFolderTemplateId
+        }
+    
+        # Find or create searchSortOrders setting
+        $settingIds = @()
+        foreach($sortOrderNameDisplayName in $sortOrderNamesDisplayNames.GetEnumerator()){
+            $sortOrdersSettingItemPath = Join-Path $sortOrderSettingItemFolder.Paths.FullPath $sortOrderNameDisplayName.Name
+    
+            if ((Test-Path -Path $sortOrdersSettingItemPath) -ne $true){
+                $settingItem = New-Item -Path $sortOrdersSettingItemPath -ItemType $sortOrderSettingItemTemplateId
+                $settingItem.Editing.BeginEdit()
+                $settingItem.Fields['__Display Name'].Value = $sortOrderNameDisplayName.Value
+                $settingItem.Fields['Title'].Value = $sortOrderNameDisplayName.Value
+                $settingItem.Editing.EndEdit()
+    
+                $settingIds += $settingItem.ID.ToString()
+            }
+        }
+    
+        if ($settingIds.Count -ne 0){
+            $sortOrderSettingsItem.Editing.BeginEdit()
+            $sortOrderSettingsItem.Fields['SortOrders'].Value = [system.String]::Join("|", $settingIds)
+            $sortOrderSettingsItem.Editing.EndEdit()
+        }
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4690
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200326T105750Z

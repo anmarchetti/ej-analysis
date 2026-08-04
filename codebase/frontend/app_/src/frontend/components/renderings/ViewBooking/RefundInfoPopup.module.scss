@@ -1,0 +1,83 @@
+.titleContainer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        gap: 0;
+        margin-bottom: 16px;
+    }
+}
+
+.icon {
+    color: $colorOrange;
+    @include sizeSquare(33px);
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 8px;
+    }
+
+    path {
+        stroke-width: 1px;
+    }
+}
+
+.title {
+    margin: 0;
+    font-family: $fontRoundedDemy;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.33;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        padding-top: 16px;
+        font-size: 18px;
+        border-top: 1px solid $colorGrayMiddle;
+    }
+}
+
+.subtitle {
+    margin: 0 0 4px;
+    font-family: $fontRoundedDemy;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.33;
+
+    @include media-breakpoint-down(md) {
+        font-size: 16px;
+    }
+}
+
+.text {
+    font-size: 16px;
+    line-height: 1.375;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+        line-height: 1.285;
+    }
+}
+
+.body {
+    .footer {
+        padding-top: 16px;
+        box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.14);
+    }
+}
+
+.buttons {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+        margin-left: unset;
+    }
+}

@@ -1,0 +1,189 @@
+﻿---
+ID: "69576994-b4ce-4a68-90e5-4b2de6daf53f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/6 - SER-271 - About your cancellation content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $cancelationBreakdownDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Cancelation Breakdown"
+    $cancelationBreakdownTemplateItemPath = "/sitecore/templates/Feature/Booking/View Booking/Cancellation Breakdown Folder/Cancellation Breakdown"
+    $cancelationBreakdownItemTemplateItemPath = "/sitecore/templates/Feature/Booking/View Booking/Cancellation Breakdown Folder/Cancellation Breakdown Item"
+    
+    $updates = @(
+            @{
+                Path         = $cancelationBreakdownDatasourcePath
+                TemplatePath = $cancelationBreakdownTemplateItemPath
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "About your cancellation"
+                        "fr-CH" = "À propos de votre annulation"
+                        "de-CH" = "Über Ihre Stornierung"
+                        "fr-FR" = "À propos de votre annulation"
+                        "de-DE" = "Über Ihre Stornierung"
+                    }
+                    "Subtext" = @{
+                        "en" = "The holiday you booked on {date} has been cancelled, we’ve sent you an email to confirm."
+                        "fr-CH" = "Les vacances que vous avez réservées le {date} ont été annulées, nous vous avons envoyé un e-mail pour confirmation."
+                        "de-CH" = "Der Urlaub, den Sie am {date} gebucht haben, wurde storniert. Wir haben Ihnen eine E-Mail zur Bestätigung gesendet."
+                        "fr-FR" = "Les vacances que vous avez réservées le {date} ont été annulées, nous vous avons envoyé un e-mail pour confirmation."
+                        "de-DE" = "Der Urlaub, den Sie am {date} gebucht haben, wurde storniert. Wir haben Ihnen eine E-Mail zur Bestätigung gesendet."
+                    }
+                    "BottomText" = @{
+                        "en" = "Have a problem with your cancellation or refund? <a href='~/link.aspx?_id=EAEF2E00F36A4FF8A1B1C54B0096E415&amp;_z=z'>Get in touch</a> with our support team."
+                        "fr-CH" = "Vous avez un problème avec votre annulation ou votre remboursement ? <a href='~/link.aspx?_id=EAEF2E00F36A4FF8A1B1C54B0096E415&amp;_z=z'>Contactez-nous</a> pour joindre notre équipe d'assistance."
+                        "de-CH" = "Haben Sie ein Problem mit Ihrer Stornierung oder Rückerstattung? <a href='~/link.aspx?_id=EAEF2E00F36A4FF8A1B1C54B0096E415&amp;_z=z'>Kontaktieren Sie uns</a>, um unser Support-Team zu erreichen."
+                        "fr-FR" = "Vous avez un problème avec votre annulation ou votre remboursement ? <a href='~/link.aspx?_id=EAEF2E00F36A4FF8A1B1C54B0096E415&amp;_z=z'>Contactez-nous</a> pour joindre notre équipe d'assistance."
+                        "de-DE" = "Haben Sie ein Problem mit Ihrer Stornierung oder Rückerstattung? <a href='~/link.aspx?_id=EAEF2E00F36A4FF8A1B1C54B0096E415&amp;_z=z'>Kontaktieren Sie uns</a>, um unser Support-Team zu erreichen."
+                    }
+                }
+            }
+            @{
+                Path         = $cancelationBreakdownDatasourcePath + "/Date Item"
+                TemplatePath = $cancelationBreakdownItemTemplateItemPath
+                Fields      = @{
+                    "UniqueId" = @{
+                        "en" = "date"
+                        "fr-CH" = "date"
+                        "de-CH" = "date"
+                        "fr-FR" = "date"
+                        "de-DE" = "date"
+                    }
+                    "Title" = @{
+                        "en" = "Holiday cancelled"
+                        "fr-CH" = "Vacances annulées"
+                        "de-CH" = "Urlaub storniert"
+                        "fr-FR" = "Vacances annulées"
+                        "de-DE" = "Urlaub storniert"
+                    }
+                    "Description" = @{
+                        "en" = "On {date}"
+                        "fr-CH" = "Le {date}"
+                        "de-CH" = "Am {date}"
+                        "fr-FR" = "Le {date}"
+                        "de-DE" = "Am {date}"
+                    }
+                }
+            }
+            @{
+                Path         = $cancelationBreakdownDatasourcePath + "/Email Item"
+                TemplatePath = $cancelationBreakdownItemTemplateItemPath
+                Fields      = @{
+                    "UniqueId" = @{
+                        "en" = "email"
+                        "fr-CH" = "email"
+                        "de-CH" = "email"
+                        "fr-FR" = "email"
+                        "de-DE" = "email"
+                    }
+                    "Title" = @{
+                        "en" = "Confirmation email"
+                        "fr-CH" = "E-mail de confirmation"
+                        "de-CH" = "Bestätigungs-E-Mail"
+                        "fr-FR" = "E-mail de confirmation"
+                        "de-DE" = "Bestätigungs-E-Mail"
+                    }
+                    "Description" = @{
+                        "en" = "Sent to {email}"
+                        "fr-CH" = "Envoyé à {email}"
+                        "de-CH" = "Gesendet an {email}"
+                        "fr-FR" = "Envoyé à {email}"
+                        "de-DE" = "Gesendet an {email}"
+                    }
+                }
+            }
+            @{
+                Path         = $cancelationBreakdownDatasourcePath + "/Credit Refund"
+                TemplatePath = $cancelationBreakdownItemTemplateItemPath
+                Fields      = @{
+                    "UniqueId" = @{
+                        "en" = "credit-refund"
+                        "fr-CH" = "credit-refund"
+                        "de-CH" = "credit-refund"
+                        "fr-FR" = "credit-refund"
+                        "de-DE" = "credit-refund"
+                    }
+                    "Title" = @{
+                        "en" = "Credit refund"
+                        "fr-CH" = "Remboursement par crédit"
+                        "de-CH" = "Gutschrift-Rückerstattung"
+                        "fr-FR" = "Remboursement par crédit"
+                        "de-DE" = "Gutschrift-Rückerstattung"
+                    }
+                    "Description" = @{
+                        "en" = "{price} has been refunded into your easyJet holidays <a href='~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z'>credit wallet</a>"
+                        "fr-CH" = "{price} a été remboursé dans votre <a href='~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z'>portefeuille de crédits</a> easyJet holidays."
+                        "de-CH" = "{price} wurde in Ihre easyJet holidays <a href='~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z'>Gutschriften-Wallet</a> zurückerstattet."
+                        "fr-FR" = "{price} a été remboursé dans votre <a href='~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z'>portefeuille de crédits</a> easyJet holidays."
+                        "de-DE" = "{price} wurde in Ihre easyJet holidays <a href='~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z'>Gutschriften-Wallet</a> zurückerstattet."
+                    }
+                }
+            }
+            @{
+                Path         = $cancelationBreakdownDatasourcePath + "/Original Refund"
+                TemplatePath = $cancelationBreakdownItemTemplateItemPath
+                Fields      = @{
+                    "UniqueId" = @{
+                        "en" = "original-refund"
+                        "fr-CH" = "original-refund"
+                        "de-CH" = "original-refund"
+                        "fr-FR" = "original-refund"
+                        "de-DE" = "original-refund"
+                    }
+                    "Title" = @{
+                        "en" = "Refund being processed"
+                        "fr-CH" = "Remboursement en cours de traitement"
+                        "de-CH" = "Rückerstattung wird bearbeitet"
+                        "fr-FR" = "Remboursement en cours de traitement"
+                        "de-DE" = "Rückerstattung wird bearbeitet"
+                    }
+                    "Description" = @{
+                        "en" = "Depending on your bank, this can take between 5-8 working days"
+                        "fr-CH" = "En fonction de votre banque, cela peut prendre entre 5 et 8 jours ouvrables"
+                        "de-CH" = "Je nach Bank kann dies zwischen 5 und 8 Werktagen dauern"
+                        "fr-FR" = "En fonction de votre banque, cela peut prendre entre 5 et 8 jours ouvrables"
+                        "de-DE" = "Je nach Bank kann dies zwischen 5 und 8 Werktagen dauern"
+                    }
+                }
+            }
+        )
+    ImportContent -itemsToCreate $updates
+    
+    $page = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled" -ErrorAction SilentlyContinue
+    $bookingContextRenderingId = "{C30624AB-A71F-492A-ADFF-73A1952FF024}"
+    $wrapperRenderingId = "{6615BDBE-E40B-4166-972A-5754B34A1F0E}"
+    $wrapperItemRenderingId = "{630D2676-483E-420D-8F04-4C15212F3EFF}"
+    $renderings = Get-Rendering -Item $page
+    $bookingContextRenderings = $renderings | Where-Object { $_.ItemId -eq $bookingContextRenderingId }
+    $wrapperRenderings = $renderings | Where-Object { $_.ItemId -eq $wrapperRenderingId }
+    
+    $bookingContextUniqueId = $bookingContextRenderings[0].UniqueId
+    $wrapperUniqueId = $wrapperRenderings[0].UniqueId
+    
+    $placeholder = "/body/booking-context-$($bookingContextUniqueId)-0/masonry-section-$($wrapperUniqueId)-0"
+    
+    # Add Masonry Wrapper Item
+    $masonryRenderingPath = "/sitecore/layout/Renderings/Feature/Page Structure/Masonry/Masonry Wrapper Item"
+    $masonryRendering = Get-Item -Database "master" -Path $masonryRenderingPath | New-Rendering -Placeholder $placeholder 
+    Add-Rendering -Item $page -Instance $masonryRendering -PlaceHolder $placeholder -Parameter @{ "ItemOrderOnMobile" = "1" } -Index 10
+    
+    $renderings = Get-Rendering -Item $page
+    $placeholder = "/body/booking-context-$($bookingContextUniqueId)-0/masonry-section-$($wrapperUniqueId)-0/masonry-item-$($renderings[10].UniqueId)-0"
+    
+    # Add Breakdown component
+    $breakdownRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/Cancellation Breakdown"
+    $breakdownRendering = Get-Item -Database "master" -Path $breakdownRenderingPath | New-Rendering -Placeholder $placeholder 
+    Add-Rendering -Item $page -Instance $breakdownRendering -PlaceHolder $placeholder -Index 11 -Datasource $cancelationBreakdownDatasourcePath
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

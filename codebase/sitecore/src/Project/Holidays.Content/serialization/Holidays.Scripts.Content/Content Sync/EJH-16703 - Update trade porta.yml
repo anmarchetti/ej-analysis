@@ -1,0 +1,45 @@
+﻿---
+ID: "85b5f441-c9be-444b-bdd7-7fdc4250b1d1"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-16703 - Update trade portal group booking fields"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $item = Get-Item -path "/sitecore/content/EasyJet/TradePortal/Home/Group Booking/Page Components/Group Booking"
+    if ($item -ne $null) {
+        $item.Editing.BeginEdit()
+        $item["IsFlexibleLabel"] = "I'm flexible";
+        $item["IsFlexibleTooltipContent"] = "In case you'd like to see more options from different airports.";
+        $item["DepartureDateLabel"] = "Departure Date (DD/MM/YYYY)";
+        $item["DurationOfHolidayLabel"] = "Duration of holiday (in nights)";
+        $item["DurationOfHolidayNote"] = "The maximum number of nights is 28";
+        $item["DestinationLabel"] = "Destination hotel or region";
+        $item["DestinationNote"] = "For e.g. Malaga, Spain";
+        $item["AdditionalDetailsLabel"] = "Additional details (optional)";
+        $item["AdditionalDetailsPlaceholder"] = "For e.g. I want a room with a sea view with a crib";
+        $item["DepartureAirportLabel"] = "Departure airport";
+        $item["DepartureAirportsList"] = "{C3355187-488E-4AB0-8EC8-6E34A7ACD31E}|{3DAB8F95-C384-499F-B4E4-2E2694E6C17E}|{CB578A24-A817-41ED-85AE-DBDC32C84C16}|{5398DB33-F143-4676-8F6F-DCB37840BD40}|{A4C77D5D-4502-4C48-8ED3-6E96BB87A075}|{A16AE0C7-8EE2-4A2C-8FDC-27EC18617C00}|{72753690-AE9B-4E69-A073-DA70B4A121D1}|{D34D0703-D71B-499B-AF00-F09C08928432}|{8AD8F5E6-AF06-4CA7-B375-AD5BCB8A7DC9}|{6D9C1140-6B03-448D-A761-12F94567E723}|{6AE8698C-DE23-4C03-B6C2-89438B4BBCFE}|{594C04CA-53E5-40E7-8DAF-97E3B5B3DD84}|{455B9E99-6497-4B47-A570-593B8A78E127}|{F9DF22F6-3A77-42E5-B082-5E3081AE8B21}|{19EFC01F-749A-4896-9754-A60AF87FBA43}|{56E72110-638F-4FD7-9AB5-92476F8BC392}|{BFE65B4E-7E00-44D3-9392-70925E5FBB2F}|{159EBF53-5FA1-411E-B0C6-82E723D5EB63}|{FDEB82F7-2334-4EE3-94E3-11488EE73815}|{776A7C70-EAD1-421B-94F8-60139709D9EF}";
+        $item["BoardsLabel"] = "Board basis";
+        $item["BoardsNote"] = "Please, select at least one option";
+        $item["BoardsList"] = "{9DD9800E-7F71-4708-B54F-6900C6DA89CC}|{1D9B5C49-FFD2-46CB-B1EE-B76B4CA747D8}|{696F53D0-4F31-4F9F-952B-8AB9B7B94655}|{C9B59C87-18D8-490E-80ED-CD0BD5A1B6F5}";
+        $item["DepartureDateError"] = "Date not valid, please enter your departure date";
+        $item["DurationOfHolidayError"] = "Please enter relevant number of nights";
+        $item["DestinationError"] = "Please select destination or hotel";
+        $item["DepartureAirportError"] = "Please select departure airport";
+        $item["BoardsError"] = "Please select board basis option";
+        
+        $item.Editing.EndEdit() | Out-Null
+        Write-Host 'Item updated'
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230320T102938Z

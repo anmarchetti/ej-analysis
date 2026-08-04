@@ -1,0 +1,65 @@
+﻿---
+ID: "c325e8c2-c5b6-4b72-9f9a-205f8b9761ab"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-92 - Hold luggage luxury content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Fast Track And Speedy Boarding Banner"
+    $updates = @(
+            @{
+                Path         = '/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Hold Luggage'
+                TemplatePath = '/sitecore/templates/Feature/Ancillaries/Luggage/Hold Luggage'
+                Fields      = @{
+                    "HoldLuggageLuxurySubtitle" = @{
+                        "en" = "Each passenger has a {number}kg bag included, as part of our luxury package, but can add up to 2 more pieces of luggage, or one piece of sports equipment per passenger."
+                        "fr-CH" = "Chaque passager bénéficie d’un bagage de {number} kg inclus dans l’offre de luxe, mais peut ajouter jusqu’à 2 bagages supplémentaires, ou un équipement sportif par passager."
+                        "de-CH" = "Jeder Passagier hat ein {number}-kg-Gepäckstück im Luxuspaket inbegriffen, kann jedoch bis zu 2 weitere Gepäckstücke oder ein Sportgerät pro Person hinzufügen."
+                        "fr-FR" = "Chaque passager dispose d’un bagage de {number} kg inclus dans votre forfait de luxe, mais peut ajouter jusqu’à 2 bagages supplémentaires, ou un article d’équipement sportif par passager."
+                        "de-DE" = "Jeder Passagier hat ein Gepäckstück mit {number} kg im Luxuspaket enthalten, kann jedoch bis zu 2 weitere Gepäckstücke oder ein Sportgerät pro Passagier hinzufügen."
+                    }
+                    "ExtraBagsAndSportsNotAvailable" = @{
+                        "en" = "If you want to take more bags, or sport equipment, you can arrange this by calling our prioritised phone line after making your booking."
+                        "fr-CH" = "Si vous souhaitez emporter des bagages supplémentaires ou du matériel sportif, vous pouvez organiser cela en appelant notre ligne prioritaire après avoir effectué votre réservation."
+                        "de-CH" = "Wenn Sie zusätzliches Gepäck oder Sportausrüstung mitnehmen möchten, können Sie dies nach der Buchung über unsere Priority-Telefonleitung organisieren."
+                        "fr-FR" = "Si vous souhaitez emporter plus de bagages ou du matériel sportif, vous pouvez organiser cela en appelant notre ligne téléphonique prioritaire après avoir effectué votre réservation."
+                        "de-DE" = "Wenn Sie mehr Gepäck oder Sportausrüstung mitnehmen möchten, können Sie dies nach Ihrer Buchung über unsere Prioritäts-Hotline arrangieren."
+                    }
+                }
+            }
+            @{
+                Path         = '/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Hold Luggage'
+                TemplatePath = '/sitecore/templates/Feature/Ancillaries/Luggage/Hold Luggage Trade Portal'
+                Fields      = @{
+                    "HoldLuggageLuxurySubtitle" = @{
+                        "en" = "Each passenger has a {number}kg bag included, as part of our luxury package, but can add up to 2 more pieces of luggage, or one piece of sports equipment per passenger."
+                        "fr-CH" = "Chaque passager bénéficie d’un bagage de {number} kg inclus dans l’offre de luxe, mais peut ajouter jusqu’à 2 bagages supplémentaires, ou un équipement sportif par passager."
+                        "de-CH" = "Jeder Passagier hat ein {number}-kg-Gepäckstück im Luxuspaket inbegriffen, kann jedoch bis zu 2 weitere Gepäckstücke oder ein Sportgerät pro Person hinzufügen."
+                        "fr-FR" = "Chaque passager dispose d’un bagage de {number} kg inclus dans votre forfait de luxe, mais peut ajouter jusqu’à 2 bagages supplémentaires, ou un article d’équipement sportif par passager."
+                        "de-DE" = "Jeder Passagier hat ein Gepäckstück mit {number} kg im Luxuspaket enthalten, kann jedoch bis zu 2 weitere Gepäckstücke oder ein Sportgerät pro Passagier hinzufügen."
+                    }
+                    "ExtraBagsAndSportsNotAvailable" = @{
+                        "en" = "If you want to take more bags, or sport equipment, you can arrange this by calling our prioritised phone line after making your booking."
+                        "fr-CH" = "Si vous souhaitez emporter des bagages supplémentaires ou du matériel sportif, vous pouvez organiser cela en appelant notre ligne prioritaire après avoir effectué votre réservation."
+                        "de-CH" = "Wenn Sie zusätzliches Gepäck oder Sportausrüstung mitnehmen möchten, können Sie dies nach der Buchung über unsere Priority-Telefonleitung organisieren."
+                        "fr-FR" = "Si vous souhaitez emporter plus de bagages ou du matériel sportif, vous pouvez organiser cela en appelant notre ligne téléphonique prioritaire après avoir effectué votre réservation."
+                        "de-DE" = "Wenn Sie mehr Gepäck oder Sportausrüstung mitnehmen möchten, können Sie dies nach Ihrer Buchung über unsere Prioritäts-Hotline arrangieren."
+                    }
+                }
+            }
+        )
+    
+    ImportContent -itemsToCreate $updates
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

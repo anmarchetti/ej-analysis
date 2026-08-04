@@ -1,0 +1,63 @@
+.recommended-hotels-grid {
+    .recommended-hotels-grid__title {
+        text-align: center;
+    }
+
+    .recommended-hotels-grid__offers {
+        display: grid;
+        justify-content: center;
+        grid-template-columns: repeat(auto-fit, minmax(20%, 24%));
+        gap: 16px;
+        margin: 0 0 45px;
+        padding: 0;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(auto-fit, minmax(50%, 50%));
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(auto-fit, 100%);
+            margin: 0 0 24px;
+        }
+
+        .card {
+            width: 23%;
+            max-width: 23%;
+            margin: 1%;
+
+            @include media-breakpoint-down(lg) {
+                width: 48%;
+                max-width: 48%;
+            }
+
+            @include media-breakpoint-down(md) {
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+            }
+        }
+    }
+
+    .recommended-hotels-grid__offers--one-row {
+        .card {
+            flex: 1;
+            width: auto;
+            max-width: none;
+        }
+    }
+
+    .recommended-hotels-grid__btn {
+        display: block;
+        width: 280px;
+        margin: 0 auto 115px;
+        font-size: 16px;
+        line-height: 36px;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            margin-bottom: 50px;
+            font-size: 14px;
+            line-height: 26px;
+        }
+    }
+}

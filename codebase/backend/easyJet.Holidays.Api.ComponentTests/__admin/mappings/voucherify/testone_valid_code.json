@@ -1,0 +1,45 @@
+{
+    "Title": "valid code testone",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "ExactMatcher",
+                    "Pattern": "/v1/vouchers/{12345678-1234-1234-1234-1234}/validate",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        //"BodyAsJson": {
+        //    "Matcher": {
+        //        "Name": "ExactMatcher",
+        //        "Pattern": "/api/v1.0/mediacenter/topics",
+        //        "IgnoreCase": true
+        //    }
+        //},
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "code": "testone",
+            "discount": {
+                "type": "PERCENT",
+                "percent_off": 10.0
+            },
+            "tracking_id": "track_mgLRfjSzAZjVW21EJnqkY/AUiuFL1kWAAMCZDCt9llpNoAEHRwzNoA==",
+            "metadata": {
+                "ATCOMpromocode": "SUN50"
+            },
+            "order": {
+                "metadata": {},
+                "items": [],
+                "amount": 0,
+                "object": "order",
+                "discount_amount": 0
+            },
+            "valid": true
+        }
+    }
+}

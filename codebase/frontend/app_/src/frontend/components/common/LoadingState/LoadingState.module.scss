@@ -1,0 +1,81 @@
+.sizeContainer {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    container-name: refund-info-container;
+    container-type: inline-size;
+
+    @include media-breakpoint-up(md) {
+        margin-top: 25px;
+    }
+}
+
+.sizeContainer.masonry {
+    margin: 0;
+}
+
+.masonry .container {
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 3px 9px 3px rgba(51, 51, 51, 0.15);
+}
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    font-size: 16px;
+    line-height: 1.5;
+    background-color: $clrSiteBgWhite;
+    border: 1px solid $colorMercury;
+    border-radius: 3px;
+    box-shadow: none;
+
+    @include media-breakpoint-up(md) {
+        flex-direction: row;
+        gap: 20px;
+        padding: 24px;
+    }
+
+    .contentContainer {
+        display: flex;
+        flex: 1 0 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+}
+
+
+@container refund-info-container (max-width: 657px) {
+    .container {
+        flex-direction: column;
+    }
+}
+
+.shimmer {
+    height: 28px;
+    border-radius: 20px;
+}
+
+.shimmerTitle {
+    width: 427px;
+    height: 40px;
+    border-radius: 20px;
+}
+
+.shimmerLine2 {
+    width: 50%;
+}
+
+.shimmerLine {
+    width: 100%;
+}
+
+.shimmerButton {
+    align-self: flex-end;
+    width: 246px;
+    height: 48px;
+    border-radius: 20px;
+}

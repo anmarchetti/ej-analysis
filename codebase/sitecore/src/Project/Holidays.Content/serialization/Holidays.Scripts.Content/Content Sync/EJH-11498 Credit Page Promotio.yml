@@ -1,0 +1,65 @@
+---
+ID: "29958def-1126-4847-bdad-a37ddc186396"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-11498 Credit Page Promotional Component"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # move MosaicPromoBlocks data source from Home page to Data
+    $mosaicPromoBlocksPath = "/sitecore/content/EasyJet/Holidays/Home/Page Components/Mosaic Promo Blocks";
+    $dataFolderPath = "/sitecore/content/EasyJet/Holidays/Data";
+    
+    #move DataSource to Data 
+    $mosaicPromoBlocksItem = Get-Item -Path $mosaicPromoBlocksPath -ErrorAction SilentlyContinue
+    if ($mosaicPromoBlocksItem -ne $null) {
+        Move-Item -Path $mosaicPromoBlocksPath -Destination $dataFolderPath   
+    }
+    
+    # -----------------------------------------------------------------
+    
+    # Add Promotional Carousel Blocks rendering to Credit Page
+    $creditPagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit"
+    $creditPage = Get-Item -path $creditPagePath -ErrorAction SilentlyContinue
+    
+    # Data source
+    $dataSourcePath = "/sitecore/content/EasyJet/Holidays/Data/Mosaic Promo Blocks"
+    $dataSource = Get-Item -Database "master" -path $dataSourcePath -ErrorAction SilentlyContinue
+    
+    if ($dataSource -ne $null) {
+        $renderingId = "{2BB48D49-22EB-4A9E-94B8-9E5B00F8C9B1}"
+        $renderigPlaceholder = "/body/component-wrapper-inner-{C2CA0E6D-ECA1-4BA6-B87C-68BBF477621E}-0/credit-links-card-{4F38D74C-BE70-45EF-AE6B-BE8166E73159}-0";
+        $rendering = Get-Rendering -Item $creditPage -PlaceHolder $renderigPlaceholder | Where-Object {$_.ItemId -eq $renderingId}
+        
+        if($rendering -eq $null){
+            $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $renderigPlaceholder
+            Add-Rendering -Item $creditPage -PlaceHolder $renderigPlaceholder -DataSource $dataSourcePath -Instance $renderingItem -index 4
+            Write-Host  "Promotional Carousel Blocks Rendering was created"
+        }  
+    }
+    
+    # Remove Links Card rendering and it's data source
+    $linksCardRenderingId = '{EC2DF595-ED72-469C-B499-B8C228CF686C}';
+    $linksCardRendering = Get-Rendering -Item $creditPage -PlaceHolder $renderigPlaceholder | Where-Object {$_.ItemId -eq $linksCardRenderingId}
+    
+    if ($linksCardRendering -ne $null){
+        Remove-Rendering -Item $creditPage -Instance $linksCardRendering
+    }
+    
+    $linksCardDataSource = Get-Item -Path 'master:/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/How To Spend Links' -ErrorAction SilentlyContinue
+    if ($linksCardDataSource -ne $null) {
+        Remove-Item -Item $linksCardDataSource -Path 'master:/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/How To Spend Links' -Force -Permanently -Recurse
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4790
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

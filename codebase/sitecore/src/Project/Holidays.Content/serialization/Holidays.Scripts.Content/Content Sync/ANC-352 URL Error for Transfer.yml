@@ -1,0 +1,126 @@
+﻿---
+ID: "46f44e4e-a508-477a-b605-241a87f7facd"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-352 URL Error for Transfer not accommodating Sport Equipment"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        
+        return $item
+    }
+    
+    # Transfer Not Accommodating SE Popup DS creating
+    function Create-SE-Remove-Popup($path){
+        $popupTemplateId = '{4683D757-E5BC-46C3-B734-B5735C11A675}'
+        $banner = Get-Or-Create-Item -Path $path -Template $popupTemplateId
+        
+        if($banner -ne $null) {
+            $banner.Editing.BeginEdit()
+            $banner['Title'] = "Your transfer doesn't accommodate sports equipment"
+            $banner['Description'] = "<p>The transfer provider on your holiday package is not able to accommodate sports equipment, so we recommend changing to a private transfer. Alternatively, you could remove your sports equipment.</p>"
+            $banner['ConfirmButtonLabel'] = 'Keep my sports equipment'
+            $banner['CancelButtonLabel'] = 'Remove my sports equipment'
+            $banner.Editing.EndEdit() | Out-Null
+        }
+        
+        Write-Host "SE Remove Transfer Popup DS created on" $path
+        
+        return $banner
+    }
+    
+    # holidays popups translations
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+            
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+        
+    $fields = @('Title','Description','ConfirmButtonLabel','CancelButtonLabel')
+    $translationsSE = @{
+            "fr-CH" = @{
+                "Title" = "Votre transfert n'est pas adapté à l'équipement sportif"
+                "Description" = "<p>Le prestataire de transfert de votre forfait de vacances n'est pas en mesure de prendre en charge les équipements sportifs, nous vous recommandons donc de changer pour un transfert privé. Vous pouvez également retirer votre équipement sportif.</p>"
+                "ConfirmButtonLabel" = "Garder mon équipement sportif"
+                "CancelButtonLabel" = "Retirer mon équipement sportif"
+            }
+            "fr-FR" = @{
+                "Title" = "Votre transfert n'est pas adapté à l'équipement sportif"
+                "Description" = "<p>Le prestataire de transfert de votre forfait de vacances n'est pas en mesure de prendre en charge les équipements sportifs, nous vous recommandons donc de changer pour un transfert privé. Vous pouvez également retirer votre équipement sportif.</p>"
+                "ConfirmButtonLabel" = "Garder mon équipement sportif"
+                "CancelButtonLabel" = "Retirer mon équipement sportif"
+            }
+            "de-CH" = @{
+                "Title" = "Ihr Transfer bietet keinen Platz für Sportgeräte"
+                "Description" = "<p>Der Transferanbieter Ihres Urlaubspakets ist nicht in der Lage, Sportgeräte aufzunehmen, daher empfehlen wir Ihnen, auf einen privaten Transfer umzusteigen. Alternativ können Sie Ihre Sportausrüstung auch entfernen.</p>"
+                "ConfirmButtonLabel" = "Meine Sportausrüstung aufbewahren"
+                "CancelButtonLabel" = "Meine Sportausrüstung entfernen"
+            }
+            "de-DE" = @{
+                "Title" = "Ihr Transfer bietet keinen Platz für Sportgeräte"
+                "Description" = "<p>Der Transferanbieter Ihres Urlaubspakets ist nicht in der Lage, Sportgeräte aufzunehmen, daher empfehlen wir Ihnen, auf einen privaten Transfer umzusteigen. Alternativ können Sie Ihre Sportausrüstung auch entfernen.</p>"
+                "ConfirmButtonLabel" = "Meine Sportausrüstung aufbewahren"
+                "CancelButtonLabel" = "Meine Sportausrüstung entfernen"
+            }
+    }
+    
+    function Create-Error-Popup($project, $parent){
+        $template = '{75964261-DCE6-4C41-8518-95450240EA45}'
+        $parentPath = "/sitecore/content/EasyJet/$project/Home/Booking/Page Components/$parent"
+        $bannerSERemoveTransfer = Create-SE-Remove-Popup -Path "$parentPath/Transfer Not Accommodating SE"
+        
+        # set popups to transfer DS
+        $transferItem =  Get-Item -Path $parentPath -ErrorAction SilentlyContinue
+        
+        if($transferItem -ne $null) {
+            $transferItem.Editing.BeginEdit()
+            $transferItem['TransferNotAccommodatingSEPopup'] = $bannerSERemoveTransfer.ID
+            $transferItem.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Transfer not accomodating SE from URL popup set on $project"
+        }
+        
+        if($project -eq 'Holidays') {
+            foreach ($lang in $translationsSE.Keys) {
+                foreach ($fieldName in $fields) {
+                    create-lang-version -item $bannerSERemoveTransfer -lang $lang -field $fieldName -value $translationsSE[$lang][$fieldName]
+                }
+                
+                Write-Host "$bannerSERemoveTransfer Transfer Not Accommodating SE Translated on" $lang
+            }        
+        }
+    }
+    
+    Create-Error-Popup -Project 'Holidays' -Parent 'Transfer Section'
+    Create-Error-Popup -Project 'TradePortal' -Parent 'Transfer Section Trade'
+    
+    Write-Host "Script ANC-352 URL Error for Transfer not accommodating Sport Equipment is completed"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 2000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240205T155233Z

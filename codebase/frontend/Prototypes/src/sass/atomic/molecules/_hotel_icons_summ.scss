@@ -1,0 +1,65 @@
+.hotel-card__icons-summ {
+    display: flex;
+
+    &.hotel-details {
+        align-items: flex-start;
+
+        @include media-breakpoint-down(lg) {
+            justify-content: left;
+
+            .icons-summ__icon-item {
+                max-width: 56px;
+            }
+        }
+    }
+
+    .icons-summ__icon-item {
+        min-width: 25px;
+        text-align: center;
+
+        .title {
+            max-width: 64px;
+            margin-top: 6px;
+            font-size: 10px;
+            word-wrap: normal;
+            overflow-wrap: normal;
+            
+            @include media-breakpoint-down(md) {
+                font-size: 9px;
+            }
+        }
+    }
+
+    .icons-summ__icon-item > svg,
+    > svg,
+    .icon--bg-image {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        vertical-align: text-top;
+        color: $clrEjOrange;
+        text-align: center;
+    }
+
+    .icons-summ__plus-box {
+        display: inline-block;
+        margin: 8px 8px 0;
+        text-align: center;
+
+        svg {
+            display: block;
+            width: 20px;
+            height: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 8px;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        justify-content: center;
+    }
+}

@@ -1,0 +1,148 @@
+﻿---
+ID: "ecad7792-1db2-4068-ba59-f8f8f507ba00"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-720 Multiple references"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+            $bookingToolbarTemplatePath = "/sitecore/templates/Feature/Booking/Booking Toolbar"
+            $preTravelPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel"
+            $preTravelDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel/Page Components/Booking Toolbar"
+            $inDestPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination"
+            $inDestDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination/Page Components/Booking Toolbar"
+            $bookingToolbarRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/Booking Toolbar"
+            $bookingContextRenderingId = "{C30624AB-A71F-492A-ADFF-73A1952FF024}"
+            $viewBookingDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/View Booking"
+            $viewBookingTemplatePath = "/sitecore/templates/Feature/Destinations/View Booking"
+            
+            $dictFlightRefTItle = "/sitecore/content/EasyJet/Holidays/Dictionary/Booking Header/Labels/Flight Ref Title"
+            $dictHolidayRefTItle = "/sitecore/content/EasyJet/Holidays/Dictionary/Booking Header/Labels/Holiday Ref Title"
+            
+            $dictFlightRefTitleTrade = "/sitecore/content/EasyJet/TradePortal/Dictionary/Booking Header/Labels/Flight Ref Title"
+            $dictHolidayRefTitleTrade = "/sitecore/content/EasyJet/TradePortal/Dictionary/Booking Header/Labels/Holiday Ref Title"
+            
+            $dictTemplatePath = "/sitecore/templates/System/Dictionary/Dictionary entry"
+    
+            function New-Toolbar-Content() {
+                    $updates = @(
+                         @{
+                            Path         = $dictFlightRefTItle
+                            TemplatePath = $dictTemplatePath
+                            Fields      = @{
+                                 "Phrase" = @{
+                                    "en" = "Use it for viewing your flights on <a href='https://www.easyjet.com/en'>easyJet's website.</a>"
+                                    "fr-CH" = "Utilisez-la pour consulter vos vols sur le <a href='https://www.easyjet.com/ch-fr'>site easyJet</a>."
+                                    "de-CH" = "Verwenden Sie diese, um Ihre Flüge auf der <a href='https://www.easyjet.com/ch-de'>Website von easyJet</a> anzusehen."
+                                    "fr-FR" = "Utilisez-la pour consulter vos vols sur le <a href='https://www.easyjet.com/fr'>site easyJet</a>."
+                                    "de-DE" = "Verwenden Sie diese, um Ihre Flüge auf der <a href='https://www.easyjet.com/de'>Website von easyJet</a> anzusehen."
+                                 }
+                            }
+                         },
+                           @{
+                            Path         = $dictHolidayRefTItle
+                            TemplatePath = $dictTemplatePath
+                            Fields      = @{
+                                 "Phrase" = @{
+                                    "en" = "Use it for viewing you holiday or check-in."
+                                    "fr-CH" = "Utilisez-la pour consulter votre séjour ou effectuer votre enregistrement."
+                                    "de-CH" = "Verwenden Sie diese, um Ihre Reise anzusehen oder einzuchecken."
+                                    "fr-FR" = "Utilisez-la pour consulter votre séjour ou effectuer votre enregistrement."
+                                    "de-DE" = "Verwenden Sie diese, um Ihre Reise anzusehen oder einzuchecken."
+                                }
+                            }
+                         },
+                         
+                          @{
+                            Path         = $dictFlightRefTitleTrade
+                            TemplatePath = $dictTemplatePath
+                            Fields      = @{
+                                 "Phrase" = @{
+                                    "en" = "Use it for viewing your flights on <a href='https://www.easyjet.com/en'>easyJet's website.</a>"
+                                }
+                            }
+                         },
+                           @{
+                            Path         = $dictHolidayRefTitleTrade
+                            TemplatePath = $dictTemplatePath
+                            Fields      = @{
+                                 "Phrase" = @{
+                                    "en" = "Use it for viewing you holiday or check-in."
+                                }
+                            }
+                         },
+                         
+                         @{
+                            Path         = $preTravelDatasourcePath
+                            TemplatePath = $bookingToolbarTemplatePath
+                            Fields      = @{
+                                 "CheckInNowLabel" = @{
+                                    "en" = "<strong>Check in now!</strong> You can now check in for your flights. You will be redirected to easyJet.com."
+                                    "fr-CH" = "<strong>Check in maintenant!</strong> Vous pouvez maintenant vous enregistrer pour vos vols. Vous serez redirigé vers easyJet.com."
+                                    "de-CH" = "<strong>Jetzt einchecken!</strong> Sie können sich jetzt für Ihre Flüge einchecken. Sie werden zu easyJet.com weitergeleitet."
+                                    "fr-FR" = "<strong>Check in maintenant!</strong> Vous pouvez maintenant vous enregistrer pour vos vols. Vous serez redirigé vers easyJet.com."
+                                    "de-DE" = "<strong>Jetzt einchecken!</strong> Sie können sich jetzt für Ihre Flüge einchecken. Sie werden zu easyJet.com weitergeleitet."
+                                }
+                            }
+                         },
+                         @{
+                            Path         = $viewBookingDatasourcePath
+                            TemplatePath = $viewBookingTemplatePath
+                            Fields      = @{
+                                 "ScrollToSeeFullReferences" = @{
+                                    "en" = "Scroll down to see full <a href='#booking-passengers'>passenger details and references</a>"
+                                    "fr-CH" = "Faites défiler vers le bas pour voir les <a href='#booking-passengers'>coordonnées complètes des passagers et références</a>."
+                                    "de-CH" = "Scrollen Sie nach unten, um die <a href='#booking-passengers'>vollständigen Passagierdetails und Referenzen</a> zu sehen."
+                                    "fr-FR" = "Faites défiler vers le bas pour voir les <a href='#booking-passengers'>coordonnées complètes des passagers et références</a>."
+                                    "de-DE" = "Scrollen Sie nach unten, um die <a href='#booking-passengers'>vollständigen Passagierdetails und Referenzen</a> zu sehen."
+                                }
+                            }
+                         },
+                          @{
+                            Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking/Page Components/View Booking"
+                            TemplatePath = $viewBookingTemplatePath
+                            Fields      = @{
+                                 "ScrollToSeeFullReferences" = @{
+                                    "en" = "Scroll down to see full <a href='#booking-passengers'>passenger details and references</a>"
+                                }
+                            }
+                         },
+                         @{
+                            Path         = "/sitecore/content/EasyJet/Holidays/Dictionary/Booking Passengers/Labels/Multiple Flights Text HTML"
+                            TemplatePath = $dictTemplatePath
+                            Fields      = @{
+                                 "Phrase" = @{
+                                    "en" = "As you’ve added one or more extra customers to your holiday after you’ve booked you now have multiple flight booking references. Please choose the relevant one from below when checking in."
+                                    "fr-CH" = "Comme vous avez ajouté un ou plusieurs voyageurs à votre séjour après la réservation, vous disposez désormais de plusieurs références de réservation de vol. Veuillez sélectionner celle qui correspond ci-dessous lors de l’enregistrement."
+                                    "de-CH" = "Da Sie nach der Buchung einen oder mehrere zusätzliche Reisende zu Ihrer Reise hinzugefügt haben, verfügen Sie nun über mehrere Flugbuchungsreferenzen. Bitte wählen Sie beim Check-in unten die entsprechende Referenz aus."
+                                    "fr-FR" = "Comme vous avez ajouté un ou plusieurs voyageurs à votre séjour après la réservation, vous disposez désormais de plusieurs références de réservation de vol. Veuillez sélectionner celle qui correspond ci-dessous lors de l’enregistrement."
+                                    "de-DE" = "Da Sie nach der Buchung einen oder mehrere zusätzliche Reisende zu Ihrer Reise hinzugefügt haben, verfügen Sie nun über mehrere Flugbuchungsreferenzen. Bitte wählen Sie beim Check-in unten die entsprechende Referenz aus."
+                                }
+                            }
+                         }
+                         
+                    )
+                    ImportContent -itemsToCreate $updates
+                }
+                 function Add-Booking-Toolbar-Renderings($pagePath, $datasourcePath) {
+                    $page = Get-Item -Path $pagePath
+                    $bookingContextRendering = Get-Rendering -Item $page | Where-Object {$_.ItemId -eq $bookingContextRenderingId}
+                    $bookingToolbarRendering = Get-Item -Path $bookingToolbarRenderingPath
+                    $bookingToolbarInstance = New-Rendering -Item $bookingToolbarRendering 
+                    Add-Rendering -Item $page -Instance $bookingToolbarInstance -Index 4 -Placeholder "/body/booking-context-$($bookingContextRendering.UniqueId)-0" -DataSource $datasourcePath
+                    New-Toolbar-Content -PagePath $pagePath -DatasoursePath $datasoursePath;
+                 }
+    
+                Add-Booking-Toolbar-Renderings -PagePath $preTravelPagePath -DatasourcePath $preTravelDatasourcePath
+                Add-Booking-Toolbar-Renderings -PagePath $inDestPagePath -DatasourcePath $inDestDatasourcePath
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260213T123753Z

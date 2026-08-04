@@ -1,0 +1,80 @@
+﻿---
+ID: "8eebb965-e563-43a3-8332-24b55e94dea0"
+Parent: "b1e3c34e-a209-4730-a266-ecc77072d88c"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/SPE/Extensions/EasyJet/Functions/Get Rendering Placeholders
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-RenderingPlaceholders {
+        param(
+    
+            [Parameter(Mandatory = $true)]
+            [string]$RenderingId,
+            
+            [Parameter(Mandatory = $false)]
+            [int]$RenderingIndex = 0,
+            
+            [Parameter(Mandatory = $true)]
+            [string]$PagePath ,
+            
+            [Parameter(Mandatory = $false)]
+            [bool]$FinalLayout = $false
+        )
+    
+        $PagePath = "master:/$($PagePath)"
+        $page = Get-Item -Path $PagePath -ErrorAction SilentlyContinue
+        if ($null -eq $page) 
+        {
+            Write-Host "`tPage '$PagePath' not found" -ForegroundColor Red
+            return
+        }
+        $result= Get-RenderingAndIndexByRenderingId -Page $page -ItemId $RenderingId -Index $RenderingIndex -FinalLayout $FinalLayout
+        $targetRendering=$result.Rendering;
+        
+        $Uid=$targetRendering.UniqueId
+        if ($null -eq $Uid) 
+        {
+            Write-Host "`tUniqueId not found" -ForegroundColor Red
+            return
+        }
+        
+        $placeholderPaths = Get-Item $PagePath |
+                            Get-Rendering |
+                            Select-Object -ExpandProperty Placeholder -Unique
+    
+        $regex = '^(?<Placeholder>.*?)-(?<Guid>\{[0-9A-Fa-f-]{36}\})-(?<Index>\d+)$'
+        $uidNorm = $Uid.Trim().ToLowerInvariant()
+    
+        $matches = foreach ($path in $placeholderPaths) {
+            foreach ($seg in ($path -split '/')) {
+                if ($seg -match $regex) {
+                    if ($Matches.Guid.ToLowerInvariant() -eq $uidNorm) {
+                        [pscustomobject]@{
+                            Placeholder = $Matches.Placeholder
+                            Uid         = $Matches.Guid
+                        }
+                    }
+                }
+            }
+        }
+    
+      return  $matches | Select-Object -ExpandProperty Placeholder -Unique
+    }
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240125T082214Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

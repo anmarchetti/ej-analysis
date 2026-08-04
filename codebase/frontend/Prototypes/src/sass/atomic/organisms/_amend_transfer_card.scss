@@ -1,0 +1,159 @@
+$amendTransferCardIconSize: 30px;
+$amendTransferCardIconMargin: 15px;
+
+.amend-transfer-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    background-color: $clrSiteBgWhite;
+    border: 1px solid $clrBorderGray;
+    border-radius: 4px;
+    width: 100%;
+
+    .amend-transfer-card__heading {
+        display: flex;
+        align-items: center;
+    }
+
+    .card-container {
+        width: 100%;
+    }
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 24px;
+
+        .amend-transfer-card__content li {
+            margin-bottom: 16px;
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+.amend-transfer-card__info {
+    display: flex;
+    flex-direction: row;
+
+    .card__icon {
+        width: $amendTransferCardIconSize;
+        max-width: $amendTransferCardIconSize;
+        height: $amendTransferCardIconSize;
+        margin-right: $amendTransferCardIconMargin;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .card__title {
+        margin: 0;
+        font-family: $fontRoundedDemy;
+    }
+
+    .card__content {
+        max-width: 75%;
+        margin-right: 20px;
+        padding-left: calc(
+            $amendTransferCardIconSize + $amendTransferCardIconMargin
+        );
+
+        @include media-breakpoint-down(md) {
+            max-width: 100%;
+            margin-top: 6px;
+        }
+
+        ul {
+            margin: 5px 0;
+            padding: 0 0 0 20px;
+        }
+    }
+}
+
+.amend-transfer-card__action {
+    display: flex;
+    align-self: flex-end;
+    justify-content: flex-end;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+
+        .amend-transfer-card__price-container {
+            width: 100%;
+        }
+    }
+
+    .block-selected {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 135px;
+
+        svg {
+            margin-left: 10px;
+        }
+
+        @include media-breakpoint-down(md) {
+            display: flex;
+            justify-content: center;
+            margin: 8px auto 0 auto;
+            font-size: 14px;
+        }
+    }
+
+    .select-transfer {
+        width: 200px;
+        margin-top: 10px;
+        font-size: 16px;
+        line-height: 26px;
+        border-radius: 4px;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+        }
+    }
+
+    .price-block {
+        margin: 0;
+        font-size: 24px;
+        text-align: right;
+
+        @include media-breakpoint-down(md) {
+            font-size: 28px;
+            margin-top: 16px;
+        }
+
+        .price-block__label-postfix {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 30px;
+        }
+    }
+}
+
+.amend-transfer-card--selected {
+    border: 2px solid $clrEjOrange;
+}
+
+.amend-transfer-card__duration {
+    margin-top: 16px;
+    @include media-breakpoint-down(md) {
+        margin-top: 8px;
+    }
+
+    .transfer-duration {
+        display: flex;
+        align-items: center;
+
+        > svg {
+            flex-shrink: 0;
+            margin-right: 8px;
+        }
+
+        > span {
+            margin-right: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 18px;
+        }
+    }
+}

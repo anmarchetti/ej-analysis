@@ -1,0 +1,202 @@
+<Project>
+    <Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.0.41" />
+    <Import Project="$(SolutionDir)CommonWebProject.props" />
+    <PropertyGroup>
+        <CentralPackagesFile>$(SolutionDir)PackageVersions.props</CentralPackagesFile>
+        <EnableDefaultContentItems>false</EnableDefaultContentItems>
+        <OutputType>Library</OutputType>
+        <IsPublishable>true</IsPublishable>
+        <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNet.Mvc"/>
+        <PackageReference Include="Microsoft.AspNet.Razor" />
+        <PackageReference Include="Microsoft.AspNet.WebPages" />
+        <PackageReference Include="Microsoft.AspNet.WebApi" />
+        <PackageReference Include="Microsoft.Web.Infrastructure" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions"/>
+        <PackageReference Include="Microsoft.Extensions.Logging"/>
+        <PackageReference Include="System.Memory" />
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
+        <PackageReference Include="System.Buffers" />
+        <PackageReference Include="System.ValueTuple" />
+        <PackageReference Include="System.Text.Encodings.Web" />
+        <PackageReference Include="SharpZipLib" />
+        <PackageReference Include="System.Text.Json" />
+        <PackageReference Include="System.Linq.Async" />
+        <PackageReference Include="System.Linq.Async.Queryable" />
+        <PackageReference Include="System.Collections.Immutable" />
+        <PackageReference Include="System.Data.SqlClient" />
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="Sitecore.Mvc" />
+        <PackageReference Include="Sitecore.Kernel" />
+        <PackageReference Include="Sitecore.Logging" />
+        <PackageReference Include="System.Security.Permissions" />
+        <PackageReference Include="System.Security.Principal.Windows" />
+        <PackageReference Include="System.Security.Cryptography.Xml" />
+        <PackageReference Include="System.Security.AccessControl" />
+        <PackageReference Include="StyleCop.Analyzers" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.VisualStudio.SlowCheetah" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" PrivateAssets="all" />
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Sitecore.JavaScriptServices.Forms.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.JavaScriptServices.Forms.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.JavaScriptServices.Tracker.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.JavaScriptServices.Tracker.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.JavaScriptServices.ViewEngine.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.JavaScriptServices.ViewEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.LayoutService.Analytics.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.LayoutService.Analytics.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.LayoutService.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.LayoutService.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.LayoutService.GraphQL.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.LayoutService.GraphQL.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.LayoutService.Mvc.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.LayoutService.Mvc.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.Services.GraphQL.Content.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.Services.GraphQL.Content.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.Services.GraphQL.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.Services.GraphQL.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.Services.GraphQL.EdgeSchema.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.Services.GraphQL.EdgeSchema.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup Condition=" '$(ProjectName)' != 'easyJet.Foundation.DependencyInjection' ">
+        <ProjectReference Include="$(SolutionDir)src\Foundation\DependencyInjection\code\EasyJet.Foundation.DependencyInjection.csproj" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(ProjectName)' != 'easyJet.Foundation.SitecoreExtensions' And '$(ProjectName)' != 'easyJet.Foundation.DependencyInjection'">
+        <ProjectReference Include="$(SolutionDir)src\Foundation\SitecoreExtensions\code\EasyJet.Foundation.SitecoreExtensions.csproj" />
+    </ItemGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <NoWarn>1701;1702;NU1603</NoWarn>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'true'">$(SolutionDir)stylecop-dev.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'false' Or '$(StyleCopEnabled)' == ''">$(SolutionDir)stylecop-prod.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'CI|AnyCPU' ">
+        <NoWarn>1701;1702;NU1603</NoWarn>
+        <DebugSymbols>true</DebugSymbols>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'true'">$(SolutionDir)stylecop-dev.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'false' Or '$(StyleCopEnabled)' == ''">$(SolutionDir)stylecop-prod.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'CI|x64' ">
+        <NoWarn>1701;1702;NU1603</NoWarn>
+        <DebugSymbols>true</DebugSymbols>
+        <PlatformTarget>x64</PlatformTarget>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'true'">$(SolutionDir)stylecop-dev.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'false' Or '$(StyleCopEnabled)' == ''">$(SolutionDir)stylecop-prod.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+        <NoWarn>1701;1702;NU1603</NoWarn>
+        <DebugSymbols>true</DebugSymbols>
+        <PlatformTarget>x64</PlatformTarget>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'true'">$(SolutionDir)stylecop-dev.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'false' Or '$(StyleCopEnabled)' == ''">$(SolutionDir)stylecop-prod.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <NoWarn>1701;1702;NU1603</NoWarn>
+        <DebugSymbols>true</DebugSymbols>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'true'">$(SolutionDir)stylecop-dev.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'false' Or '$(StyleCopEnabled)' == ''">$(SolutionDir)stylecop-prod.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+        <NoWarn>1701;1702;NU1603</NoWarn>
+        <DebugSymbols>true</DebugSymbols>
+        <PlatformTarget>x64</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'true'">$(SolutionDir)stylecop-dev.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'false' Or '$(StyleCopEnabled)' == ''">$(SolutionDir)stylecop-prod.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <Target Name="MoveFilesToBin" AfterTargets="Publish">
+        <ItemGroup>
+            <FilesToMove Include="$(PublishDir)**\*.dll" />
+            <FilesToMove Include="$(PublishDir)*.pdb" />
+        </ItemGroup>
+        <MakeDir Directories="$(PublishDir)bin" Condition="!Exists('$(PublishDir)bin')" ContinueOnError="WarnAndContinue"/>
+        <Move SourceFiles="@(FilesToMove)" DestinationFolder="$(PublishDir)bin\%(RecursiveDir)" ContinueOnError="WarnAndContinue"/>
+    </Target>
+    <Target Name="DeleteTransformationConfigs" AfterTargets="Publish">
+        <ItemGroup>
+            <FilesToDelete Include="$(PublishDir)**\*.Release.config" />
+            <FilesToDelete Include="$(PublishDir)**\*.Release.xml" />
+            <FilesToDelete Include="$(PublishDir)**\*.CI.config" />
+            <FilesToDelete Include="$(PublishDir)**\*.CI.xml" />
+            <FilesToDelete Include="$(PublishDir)**\*.Debug.config" />
+            <FilesToDelete Include="$(PublishDir)**\*.Debug.xml" />
+            <FilesToDelete Include="$(PublishDir)**\*.deps.json" />
+            <FilesToDelete Include="$(PublishDir)**\*.dll.config" />
+        </ItemGroup>
+        <Delete Files="@(FilesToDelete)" ContinueOnError="WarnAndContinue"/>
+    </Target>
+    <ItemGroup>
+        <None Include="App_Config\**\*.CI.config">
+            <IsTransformFile>true</IsTransformFile>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </None>
+        <None Include="App_Config\**\*.Debug.config">
+            <IsTransformFile>true</IsTransformFile>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </None>
+        <None Include="App_Config\**\*.Release.config">
+            <IsTransformFile>true</IsTransformFile>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </None>
+        <Content Include="App_Config\**\*.config">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="App_Config\**\*.config.disabled">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="App_Config\**\*.config.example">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+</Project>

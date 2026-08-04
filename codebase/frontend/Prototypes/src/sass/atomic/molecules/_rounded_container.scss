@@ -1,0 +1,21 @@
+$rounded-container_border-radius: $box_border-radius_bg;
+
+.rounded-container {
+    position: relative;
+    margin-bottom: 20px;
+    padding: $booking-card-padding;
+    background-color: #fff;
+    border-radius: $rounded-container_border-radius;
+    box-shadow: -2px 2px 13px 0 rgba(0, 0, 0, 0.07);
+
+    @include media-breakpoint-down(md) {
+        padding: $booking-card-padding_sm;
+    }
+}
+
+.rounded-container--bordered {
+    padding: $view-booking-card-padding;
+    border: $view-booking-card-border;
+    border-radius: $view-booking-card-border-radius;
+    box-shadow: none;
+}

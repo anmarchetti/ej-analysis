@@ -1,0 +1,68 @@
+---
+ID: "fe526304-69c8-4609-95bf-47391feffded"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EEA-42 - Alter Cabin Bags Texts"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $itemsToCreate = @(
+        @{
+            Id           = "{91DFF812-A530-40C7-836A-0A1D4E4A6A02}" # Id is optional
+            Path         = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Cabin Bags"
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage/Cabin Bags"
+            Fields       = @{
+                "Description" = @{
+                    "en"    = "Get an extra 15kg cabin bag, and Speedy Boarding for just {price} per person, per flight"
+                    "fr-CH" = "Emmenez un bagage à main supplémentaire de 15 kg et profitez du Speedy Boarding pour seulement {price} par personne et par vol"
+                    "fr-FR" = "Emmenez un bagage à main supplémentaire de 15 kg et profitez du Speedy Boarding pour seulement {price} par personne et par vol"
+                    "de-CH" = "Erhalte ein zusätzliches 15 kg Handgepäckstück und Speedy Boarding für nur {price} pro Person und Flug"
+                    "de-DE" = "Erhalte ein zusätzliches 15 kg Handgepäckstück und Speedy Boarding für nur {price} pro Person und Flug"
+                }
+                "CabinBagPriceLabel" = @{
+                    "en"    = "Add for <strong>{price}</strong><br><small>per person, per flight</small>"
+                    "fr-CH" = "Bénéficiez-en pour <strong>{price}</strong><br><small>par personne, par vol</small>"
+                    "fr-FR" = "Bénéficiez-en pour <strong>{price}</strong><br><small>par personne, par vol</small>"
+                    "de-CH" = "Für <strong>{price}</strong><br><small>pro Person und Flug hinzufügen</small> hinzu"
+                    "de-DE" = "Für <strong>{price}</strong><br><small>pro Person und Flug hinzufügen</small> hinzu"
+                }
+                "AddButtonLabel" = @{
+                    "en"    = "Add"
+                    "fr-FR" = "Ajouter"
+                    "fr-CH" = "Ajouter"
+                    "de-CH" = "Hinzufügen"
+                    "de-DE" = "Hinzufügen"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    $itemsToCreate = @(
+        @{
+            Path         = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Cabin Bags"
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage/Cabin Bags"
+            Fields       = @{
+              "Description" = @{
+                  "en"    = "Get an extra 15kg cabin bag, and Speedy Boarding for just {price} per person, per flight"
+              }
+              "CabinBagPriceLabel" = @{
+                  "en"    = "Add for <strong>{price}</strong><br><small>per person, per flight</small>"
+              }
+            }
+          }
+        )
+            ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: "-100"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20230717T114454:638251910942781958Z"

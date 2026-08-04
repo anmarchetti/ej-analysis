@@ -1,0 +1,236 @@
+﻿---
+ID: "c2826955-8647-4294-8abe-cb04f66a9dc8"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-958 - Credit expires soon banner"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Credit Expires Banner"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Credit Expires Banner Folder/Credit Expires Banner"
+                Fields      = @{
+                    "BookHolidayCTA" = @{
+                        "en" = "<link text=""Book your holiday"" anchor="""" linktype=""internal"" class="""" title=""""  target=""_blank"" querystring="""" id=""{0518D8C6-B7CA-4C73-86C2-A29D971EBEAB}"" />"
+                        "fr-CH" = "<link text=""Réservez vos vacances"" anchor="""" linktype=""internal"" class="""" title=""""  target=""_blank"" querystring="""" id=""{0518D8C6-B7CA-4C73-86C2-A29D971EBEAB}"" />"
+                        "de-CH" = "<link text=""Buchen Sie Ihren Urlaub"" anchor="""" linktype=""internal"" class="""" title=""""  target=""_blank"" querystring="""" id=""{0518D8C6-B7CA-4C73-86C2-A29D971EBEAB}"" />"
+                        "fr-FR" = "<link text=""Réservez vos vacances"" anchor="""" linktype=""internal"" class="""" title=""""  target=""_blank"" querystring="""" id=""{0518D8C6-B7CA-4C73-86C2-A29D971EBEAB}"" />"
+                        "de-DE" = "<link text=""Buchen Sie Ihren Urlaub"" anchor="""" linktype=""internal"" class="""" title=""""  target=""_blank"" querystring="""" id=""{0518D8C6-B7CA-4C73-86C2-A29D971EBEAB}"" />"
+                    }
+                    "Icon" = @{
+                        "en" = "<image mediaid=""{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}"" alt=""bell"" height="""" width="""" hspace="""" vspace="""" />"
+                        "fr-CH" = "<image mediaid=""{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}"" alt=""bell"" height="""" width="""" hspace="""" vspace="""" />"
+                        "de-CH" = "<image mediaid=""{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}"" alt=""bell"" height="""" width="""" hspace="""" vspace="""" />"
+                        "fr-FR" = "<image mediaid=""{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}"" alt=""bell"" height="""" width="""" hspace="""" vspace="""" />"
+                        "de-DE" = "<image mediaid=""{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}"" alt=""bell"" height="""" width="""" hspace="""" vspace="""" />"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/Page Components/Credit Expires Banner"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Credit Expires Banner Folder/Credit Expires Banner"
+                Fields      = @{
+                    "BookHolidayCTA" = @{
+                        "en" = ""
+                        "fr-CH" = ""
+                        "de-CH" = ""
+                        "fr-FR" = ""
+                        "de-DE" = ""
+                    }
+                    "Icon" = @{
+                        "en" = "<image mediaid=""{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}"" alt=""bell"" height="" width="" hspace="" vspace="" />"
+                        "fr-CH" = "<image mediaid=""{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}"" alt=""bell"" height="" width="" hspace="" vspace="" />"
+                        "de-CH" = "<image mediaid=""{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}"" alt=""bell"" height="" width="" hspace="" vspace="" />"
+                        "fr-FR" = "<image mediaid=""{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}"" alt=""bell"" height="" width="" hspace="" vspace="" />"
+                        "de-DE" = "<image mediaid=""{3C9D0D0C-73A4-4DF8-A7A0-37D111873865}"" alt=""bell"" height="" width="" hspace="" vspace="" />"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Credit Expires Banner/Credit Expires Current Market"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Credit Expires Banner Folder/Credit Expires Banner Type"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "{amount} of your credit expires soon."
+                        "fr-CH" = "{amount} de votre crédit expire bientôt."
+                        "de-CH" = "{amount} Ihres Guthabens läuft bald ab."
+                        "fr-FR" = "{amount} de votre crédit expire bientôt."
+                        "de-DE" = "{amount} Ihres Guthabens läuft bald ab."
+                    }
+                    "Subtitle" = @{
+                        "en" = "Don’t lose your credit – book your next holiday today or pay towards an existing booking."
+                        "fr-CH" = "Ne perdez pas votre crédit : réservez dès aujourd'hui vos prochaines vacances ou effectuez un paiement pour une réservation existante."
+                        "de-CH" = "Verlieren Sie nicht Ihre Gutschrift – buchen Sie noch heute Ihren nächsten Urlaub oder leisten Sie eine Anzahlung für eine bestehende Buchung."
+                        "fr-FR" = "Ne perdez pas votre crédit : réservez dès aujourd'hui vos prochaines vacances ou effectuez un paiement pour une réservation existante."
+                        "de-DE" = "Verlieren Sie nicht Ihre Gutschrift – buchen Sie noch heute Ihren nächsten Urlaub oder leisten Sie eine Anzahlung für eine bestehende Buchung."
+                    }
+                    "ContentType" = @{
+                        "en" = "Credit Expires Current Market"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/Page Components/Credit Expires Banner/Credit Expires Current Market"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Credit Expires Banner Folder/Credit Expires Banner Type"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "{amount} of your credit expires soon."
+                        "fr-CH" = "{amount} de votre crédit expire bientôt."
+                        "de-CH" = "{amount} Ihres Guthabens läuft bald ab."
+                        "fr-FR" = "{amount} de votre crédit expire bientôt."
+                        "de-DE" = "{amount} Ihres Guthabens läuft bald ab."
+                    }
+                    "Subtitle" = @{
+                        "en" = "Use it when you can, else it'll be gone. You can check more details on<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">your credit page</a></strong>."
+                        "fr-CH" = "Utilisez-le quand vous le pouvez, sinon il disparaîtra. Vous pouvez consulter plus de détails sur<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">votre page de crédit</a></strong>."
+                        "de-CH" = "Nutzen Sie es, solange Sie können – sonst verfällt es. Weitere Details finden Sie auf<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">Ihrer Kreditseite</a></strong>."
+                        "fr-FR" = "Utilisez-le quand vous le pouvez, sinon il disparaîtra. Vous pouvez consulter plus de détails sur<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">votre page de crédit</a></strong>."
+                        "de-DE" = "Nutzen Sie es, solange Sie können – sonst verfällt es. Weitere Details finden Sie auf<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">Ihrer Kreditseite</a></strong>."
+                    }
+                    "ContentType" = @{
+                        "en" = "Credit Expires Current Market"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Credit Expires Banner/Credit Expires On Multiple Markets"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Credit Expires Banner Folder/Credit Expires Banner Type"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "{amount} of your credit expires soon. You also have credit in other currencies expiring soon."
+                        "fr-CH" = "{amount} de votre crédit expire bientôt. Vous disposez également d'un crédit dans d'autres devises qui expire bientôt."
+                        "de-CH" = "Ihr Guthaben in Höhe von {amount} läuft bald ab. Sie haben auch Guthaben in anderen Währungen, das bald abläuft."
+                        "fr-FR" = "{amount} de votre crédit expire bientôt. Vous disposez également d'un crédit dans d'autres devises qui expire bientôt."
+                        "de-DE" = "Ihr Guthaben in Höhe von {amount} läuft bald ab. Sie haben auch Guthaben in anderen Währungen, das bald abläuft."
+                    }
+                    "Subtitle" = @{
+                        "en" = "Don’t lose your credit – book your next holiday today or pay towards an existing booking."
+                        "fr-CH" = "Ne perdez pas votre crédit : réservez dès aujourd'hui vos prochaines vacances ou effectuez un paiement pour une réservation existante."
+                        "de-CH" = "Verlieren Sie nicht Ihre Gutschrift – buchen Sie noch heute Ihren nächsten Urlaub oder leisten Sie eine Anzahlung für eine bestehende Buchung."
+                        "fr-FR" = "Ne perdez pas votre crédit : réservez dès aujourd'hui vos prochaines vacances ou effectuez un paiement pour une réservation existante."
+                        "de-DE" = "Verlieren Sie nicht Ihre Gutschrift – buchen Sie noch heute Ihren nächsten Urlaub oder leisten Sie eine Anzahlung für eine bestehende Buchung."
+                    }
+                    "ContentType" = @{
+                        "en" = "Credit Expires On Multiple Markets"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/Page Components/Credit Expires Banner/Credit Expires On Multiple Markets"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Credit Expires Banner Folder/Credit Expires Banner Type"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "{amount} of your credit expires soon. You also have credit in other currencies expiring soon."
+                        "fr-CH" = "{amount} de votre crédit expire bientôt. Vous disposez également d'un crédit dans d'autres devises qui expire bientôt."
+                        "de-CH" = "Ihr Guthaben in Höhe von {amount} läuft bald ab. Sie haben auch Guthaben in anderen Währungen, das bald abläuft."
+                        "fr-FR" = "{amount} de votre crédit expire bientôt. Vous disposez également d'un crédit dans d'autres devises qui expire bientôt."
+                        "de-DE" = "Ihr Guthaben in Höhe von {amount} läuft bald ab. Sie haben auch Guthaben in anderen Währungen, das bald abläuft."
+                    }
+                    "Subtitle" = @{
+                        "en" = "Use it when you can, else it'll be gone. You can check more details on<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">your credit page</a></strong>."
+                        "fr-CH" = "Utilisez-le quand vous le pouvez, sinon il disparaîtra. Vous pouvez consulter plus de détails sur<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">votre page de crédit</a></strong>."
+                        "de-CH" = "Nutzen Sie es, solange Sie können – sonst verfällt es. Weitere Details finden Sie auf<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">Ihrer Kreditseite</a></strong>."
+                        "fr-FR" = "Utilisez-le quand vous le pouvez, sinon il disparaîtra. Vous pouvez consulter plus de détails sur<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">votre page de crédit</a></strong>."
+                        "de-DE" = "Nutzen Sie es, solange Sie können – sonst verfällt es. Weitere Details finden Sie auf<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">Ihrer Kreditseite</a></strong>."
+                    }
+                    "ContentType" = @{
+                        "en" = "Credit Expires On Multiple Markets"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Credit Expires Banner/Credit Expires On Other Markets"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Credit Expires Banner Folder/Credit Expires Banner Type"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "You have credit expiring in another currency soon."
+                        "fr-CH" = "Vous avez bientôt un crédit qui expire dans une autre devise."
+                        "de-CH" = "Sie haben bald Guthaben in einer anderen Währung, das bald verfällt."
+                        "fr-FR" = "Vous avez bientôt un crédit qui expire dans une autre devise."
+                        "de-DE" = "Sie haben bald Guthaben in einer anderen Währung, das bald verfällt."
+                    }
+                    "Subtitle" = @{
+                        "en" = "Don’t lose your credit – book your next holiday today or pay towards an existing booking."
+                        "fr-CH" = "Ne perdez pas votre crédit : réservez dès aujourd'hui vos prochaines vacances ou effectuez un paiement pour une réservation existante."
+                        "de-CH" = "Verlieren Sie nicht Ihre Gutschrift – buchen Sie noch heute Ihren nächsten Urlaub oder leisten Sie eine Anzahlung für eine bestehende Buchung."
+                        "fr-FR" = "Ne perdez pas votre crédit : réservez dès aujourd'hui vos prochaines vacances ou effectuez un paiement pour une réservation existante."
+                        "de-DE" = "Verlieren Sie nicht Ihre Gutschrift – buchen Sie noch heute Ihren nächsten Urlaub oder leisten Sie eine Anzahlung für eine bestehende Buchung."
+                    }
+                    "ContentType" = @{
+                        "en" = "Credit Expires On Other Markets"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/Page Components/Credit Expires Banner/Credit Expires On Other Markets"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Credit Expires Banner Folder/Credit Expires Banner Type"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "You have credit expiring in another currency soon."
+                        "fr-CH" = "Vous avez bientôt un crédit qui expire dans une autre devise."
+                        "de-CH" = "Sie haben bald Guthaben in einer anderen Währung, das bald verfällt."
+                        "fr-FR" = "Vous avez bientôt un crédit qui expire dans une autre devise."
+                        "de-DE" = "Sie haben bald Guthaben in einer anderen Währung, das bald verfällt."
+                    }
+                    "Subtitle" = @{
+                        "en" = "Use it when you can, else it'll be gone. You can check more details on<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">your credit page</a></strong>."
+                        "fr-CH" = "Utilisez-le quand vous le pouvez, sinon il disparaîtra. Vous pouvez consulter plus de détails sur<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">votre page de crédit</a></strong>."
+                        "de-CH" = "Nutzen Sie es, solange Sie können – sonst verfällt es. Weitere Details finden Sie auf<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">Ihrer Kreditseite</a></strong>."
+                        "fr-FR" = "Utilisez-le quand vous le pouvez, sinon il disparaîtra. Vous pouvez consulter plus de détails sur<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">votre page de crédit</a></strong>."
+                        "de-DE" = "Nutzen Sie es, solange Sie können – sonst verfällt es. Weitere Details finden Sie auf<strong> <a href=""~/link.aspx?_id=91F275D86305429A89EAB19D5A2DAE38&amp;_z=z"">Ihrer Kreditseite</a></strong>."
+                    }
+                    "ContentType" = @{
+                        "en" = "Credit Expires On Other Markets"
+                    }
+                }
+            }
+        )
+        
+    ImportContent -itemsToCreate $updates
+    
+    Copy-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/Page Components/Credit Expires Banner" -Destination "/sitecore/content/EasyJet/Holidays/Home/Booking/Pay Balance/Page Components" -Recurse
+    
+    $page= Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit"
+    
+    $renderingCredit  = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/Holiday Credit"
+    $pageRenderingCredit = Get-Rendering -Item $page -Rendering $renderingCredit
+    
+    $renderingCreditExpiresBanner  = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/CreditExpiresBanner"
+    $pageRenderingCreditExpiresBanner = New-Rendering -Item $renderingCreditExpiresBanner
+    Add-Rendering -Item $page -Instance $pageRenderingCreditExpiresBanner -PlaceHolder "$($pageRenderingCredit.Placeholder)/credit-expires-banner-$($pageRenderingCredit.UniqueID)-0" -Index 5 -DataSource "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Credit Expires Banner"
+    
+    
+    
+    $page= Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings"
+    
+    $renderingBookings  = Get-Item -Path "/sitecore/layout/Renderings/Feature/Destinations/View Bookings"
+    $pageRenderingBookings = Get-Rendering -Item $page -Rendering $renderingBookings
+    $uniqueID = $pageRenderingBookings.UniqueId
+    
+    $renderingCreditExpiresBanner  = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/CreditExpiresBanner"
+    $pageRenderingCreditExpiresBanner = New-Rendering -Item $renderingCreditExpiresBanner
+    Add-Rendering -Item $page -Instance $pageRenderingCreditExpiresBanner -PlaceHolder "/body/credit-expires-banner-$($uniqueID)-0" -Index 1 -DataSource "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/Page Components/Credit Expires Banner"
+    
+    
+    $page= Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Pay Balance"
+    
+    $renderingCredit  = Get-Item -Path "/sitecore/layout/Renderings/Feature/Destinations/Pay Balance"
+    $pageRenderingCredit = Get-Rendering -Item $page -Rendering $renderingCredit
+    
+    $renderingCreditExpiresBanner  = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/CreditExpiresBanner"
+    $pageRenderingCreditExpiresBanner = New-Rendering -Item $renderingCreditExpiresBanner
+    Add-Rendering -Item $page -Instance $pageRenderingCreditExpiresBanner -PlaceHolder "$($pageRenderingCredit.Placeholder)/credit-expires-banner-$($pageRenderingCredit.UniqueID)-0" -Index 2 -DataSource "/sitecore/content/EasyJet/Holidays/Home/Booking/Pay Balance/Page Components/Credit Expires Banner"
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

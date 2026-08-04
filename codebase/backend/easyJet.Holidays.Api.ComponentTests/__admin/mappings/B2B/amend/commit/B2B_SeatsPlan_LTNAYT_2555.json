@@ -1,0 +1,37 @@
+{
+    "Title": "OFTFlightSeatPlanRequest flight LTNAYT 2555",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/BasicService.asmx",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Headers": [
+            {
+                "Name": "Authorization",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "Basic *"
+                    }
+                ]
+            }
+        ],
+        "Body": {
+            "Matcher": {
+                "Name": "XPathMatcher",
+                "Pattern": "//OFTFlightSeatPlanRequest[@B2BAPIUserEmailAddress='easyjetb2b@ejholidaysweb.com' and @DepAirportCode='LTN' and @ArrAirportCode='AYT' and @FlightNumber='2555']"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "Content-Type: text/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/B2B/amend/commit/B2B_SeatsPlan_LTNAYT_2555.xml"
+    }
+}

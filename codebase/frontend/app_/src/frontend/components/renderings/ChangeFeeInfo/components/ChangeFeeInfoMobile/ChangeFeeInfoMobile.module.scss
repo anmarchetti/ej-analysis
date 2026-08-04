@@ -1,0 +1,100 @@
+.container {
+    position: sticky;
+    z-index: $z-index-fixed;
+    top: -1px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-right: auto;
+    margin-bottom: 16px;
+    margin-left: auto;
+    background: $clrSiteBgWhite;
+    border-radius: 4px;
+    box-shadow: $panelShadow;
+
+    .expandableTitle {
+        h3 {
+            margin: 0;
+            font-family: $fontRoundedDemy;
+            font-weight: 400;
+            text-transform: none;
+        }
+
+    }
+}
+
+.hasBackgroud {
+    z-index: $z-index-fixed + 2;
+
+    &::after {
+        content: "";
+        position: absolute;
+        z-index: $z-index-fixed + 1;
+        top:100%;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: $colorBlack;
+        opacity: 0.5;
+    }
+}
+
+// To increase the weight of the rule
+.expandableItemContainer.expandableItem {
+    padding: 8px;
+    border-bottom: 0;
+}
+
+.expandableArrow {
+    margin: 5px;
+}
+
+.expandableContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+
+    button {
+        align-self: flex-end;
+    }
+}
+
+.stuck {
+    left: 50%;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    border-radius: 0;
+    box-shadow: $generalBoxShadow;
+
+    .expandableItem {
+        padding: 8px 16px;
+        border-bottom: 0;
+    }
+
+    .expandableContent {
+        padding: 0;
+        padding-top: 8px;
+    }
+}
+
+.shouldStickUnderFilters {
+    top: 48px
+}
+
+.expandableIcon {
+    position: relative;
+
+    @include sizeSquare(40px);
+}
+
+.content {
+    p {
+        margin: 0;
+    }
+
+    p:not(:first-child) {
+        margin: 5px 0 0 ;
+    }
+}

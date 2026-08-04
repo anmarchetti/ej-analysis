@@ -1,0 +1,64 @@
+﻿---
+ID: "daa9afe7-2711-4a10-a47f-c898367a6a6b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-1039 Multiple currencies"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+        Import-Function "Import Content"
+    
+                
+                $holidayCreditTemplatePath = "/sitecore/templates/Feature/PageContent/Holiday Credit"
+                $viewBookingTemplatePath = "/sitecore/templates/Feature/Destinations/View Bookings"
+                
+                $holidayCreditDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Holiday Credit"
+                $viewBookingDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/Page Components/View Bookings"
+        
+                function New-Content() { 
+                        $updates = @(
+                              @{
+                                Path         = $holidayCreditDatasourcePath
+                                TemplatePath = $holidayCreditTemplatePath
+                                Fields      = @{
+                                     "MultipleCreditsInfo" = @{
+                                        "en" = "Check the tabs to see all currencies that you have credit in."
+                                        "fr-CH" = "Vous avez des avoirs dans plusieurs devises. Veuillez consulter chaque onglet pour en savoir plus."
+                                        "de-CH" = "Du hast Guthaben in anderen Währungen. Mehr dazu erfährst du auf den jeweiligen Tabs."
+                                        "fr-FR" = "Vous avez des avoirs dans plusieurs devises. Veuillez consulter chaque onglet pour en savoir plus."
+                                        "de-DE" = "Du hast Guthaben in anderen Währungen. Mehr dazu erfährst du auf den jeweiligen Tabs."
+                                     }
+                                }
+                             },
+                               @{
+                                Path         = $viewBookingDatasourcePath
+                                TemplatePath = $viewBookingTemplatePath
+                                Fields      = @{
+                                     "MultipleCreditsInfo" = @{
+                                        "en" = "You have credit in another currency. Check your credit page for more info."
+                                        "fr-CH" = "Vous avez un avoir dans une autre devise. Consultez la page relative aux avoirs pour en savoir plus."
+                                        "de-CH" = " Du hast Guthaben in einer anderen Währung. Infos dazu findest du auf der Seite Ferienguthaben."
+                                        "fr-FR" = "Vous avez un avoir dans une autre devise. Consultez la page relative aux avoirs pour en savoir plus."
+                                        "de-DE" = "Du hast Guthaben in einer anderen Währung. Infos dazu findest du auf der Seite Urlaubsguthaben."
+                                    }
+                                }
+                             }
+                             
+                        )
+                        ImportContent -itemsToCreate $updates
+                    }
+                    
+                    
+                    New-Content
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260224T120910Z

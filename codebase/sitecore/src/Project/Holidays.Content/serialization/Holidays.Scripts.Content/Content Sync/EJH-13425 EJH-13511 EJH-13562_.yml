@@ -1,0 +1,39 @@
+﻿---
+ID: "5105b06f-17ef-46e2-a326-7fa3a687b78f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-13425 EJH-13511 EJH-13562 Create amend booking settings"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $templateId = "{C47B4FF0-0099-4A93-A64C-AA683A554D15}"
+    $pathToItem = "/sitecore/content/EasyJet/Holidays/Settings/Amend Booking Settings"
+    $item = Get-Item -Path $pathToItem -ErrorAction SilentlyContinue;
+    
+    if ($item -eq $null){
+        $item = New-Item -Path $pathToItem -ItemType $templateId;
+        Write-Host "Item created";
+        
+        $item.Editing.BeginEdit()
+        $item["IsAmendTransfersEnabled"] = "1";
+        $item["IsAmendFlightsEnabled"] = "1";
+        $item["IsAmendPriceEnabledOnViewBookingPage"] = "1";
+        $item["IsAmendPriceEnabledOnChangeTransferPage"] = "1";
+        $item["AmendTransfersRedirectPage"] = '<link text="" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{E3A5DDD5-CA70-4419-B5C4-E7F72564F4F3}" />';
+        $item["AmendFlightsRedirectPage"] = '<link text="" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{E3A5DDD5-CA70-4419-B5C4-E7F72564F4F3}" />';
+        $item["AmendTransfersThresholdHours"] = "72";
+        $item["AmendFlightsThresholdHours"] = "72";
+        $item.Editing.EndEdit() | Out-Null
+    }
+    
+    Write-Host "Script ended";
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200611T095641Z

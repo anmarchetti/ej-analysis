@@ -1,0 +1,42 @@
+$primary-text-color: #535353;
+$background-color: #f1f5f6;
+
+$sectionHeaderBorderRadius: $box_border-radius_bg;
+
+$text-line-height: 26px;
+$header-height: 55px;
+
+.section-header {
+    padding: 20px;
+    border-bottom: 1px solid #cbd5d8;
+
+    @include media-breakpoint-down(md) {
+        padding: 10px 0;
+    }
+
+    &__icon {
+        display: inline-block;
+        margin-right: 10px;
+
+        svg {
+            width: 18px;
+            height: 18px;
+            vertical-align: bottom;
+        }
+    }
+
+    &__title {
+        display: inline-block;
+        margin-right: 10px;
+        font-size: 18px;
+        font-weight: 700;
+        color: $primary-text-color;
+        letter-spacing: 0.27px;
+    }
+
+    &__description {
+        display: inline-block;
+        font-size: 14px;
+        color: $primary-text-color;
+    }
+}

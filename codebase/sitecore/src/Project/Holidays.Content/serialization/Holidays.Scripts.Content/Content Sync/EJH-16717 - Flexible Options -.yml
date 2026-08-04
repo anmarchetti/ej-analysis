@@ -1,0 +1,72 @@
+﻿---
+ID: "e5f99249-8b70-4a71-9c67-42d3974cf448"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-16717 - Flexible Options - Holidays"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $dataFolderPath = "master:/sitecore/content/EasyJet/Holidays/Data";
+    $folderPath = "master:/sitecore/content/EasyJet/Holidays/Data/Flexibility Options";
+    $folderTemplateId = '{CDEF20AE-AD55-4500-BDAC-6158DC94EEF4}';
+    
+    $folder = Get-Item -Path $folderPath -ErrorAction SilentlyContinue
+    if ($folder -eq $null) {
+        $folder = New-Item -Path $dataFolderPath -ItemType $folderTemplateId -Name "Flexibility Options"
+        Write-Host "Item" $folder.Name "successfully created"
+    } else {
+        Write-Host "Folder Flexibility Options already exists"
+    }
+    
+    $items = @(
+        [pscustomobject]@{path="master:/sitecore/content/EasyJet/Holidays/Data/Flexibility Options/Exact Date";days=0;label="Exact dates"},
+        [pscustomobject]@{path="master:/sitecore/content/EasyJet/Holidays/Data/Flexibility Options/1 Day";days=1;label="+/- 1 day"},
+        [pscustomobject]@{path="master:/sitecore/content/EasyJet/Holidays/Data/Flexibility Options/2 Day";days=2;label="+/- 2 day"},
+        [pscustomobject]@{path="master:/sitecore/content/EasyJet/Holidays/Data/Flexibility Options/3 Day";days=3;label="+/- 3 day"}
+    )
+    $itemTemplateId = "{F90CAA56-CE07-4361-AEFC-5B644B55DF2C}"
+    
+    $items | ForEach-Object {
+        $item = Get-Item -path $_.path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+            
+            # create item
+            $item = New-Item -Path $_.path -ItemType $itemTemplateId
+            Write-Host "Item" $item.Name "successfully created"
+            
+            $item.Editing.BeginEdit()
+            $item["Days"] = $_.days
+            $item["Label"] = $_.label
+            $item.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Item" $item.Name "successfully updated"
+        }
+    }
+    
+    $searchOptions = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Search Pod Settings"
+    if ($searchOptions -ne $null) {
+        $option1 = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Flexibility Options/Exact Date"
+        $option2 = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Flexibility Options/1 Day"
+        $option3 = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Flexibility Options/2 Day"
+        $option4 = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Flexibility Options/3 Day"
+    
+        $searchOptions.Editing.BeginEdit()
+        $searchOptions["FlexibilityOptions"] = "$($option1.ID)|$($option2.ID)|$($option3.ID)|$($option4.ID)"
+        $searchOptions.Editing.EndEdit()
+        
+        Write-Host "FlexibilityOptions Updated"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230208T140219Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

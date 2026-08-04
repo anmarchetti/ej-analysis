@@ -1,0 +1,73 @@
+#flights {
+    .card {
+        margin-bottom: 15px;
+    }
+}
+
+.flight-card {
+    display: flex;
+    width: 100%;
+    padding: 24px;
+    font-size: 16px;
+
+    @include media-breakpoint-down(lg) {
+        flex-direction: column;
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+
+    button {
+        padding: 12px 27px;
+        font-size: 100%;
+    }
+}
+
+.flight-card__flight-errata-info-container {
+    display: inline-block;
+    width: 100%;
+    padding: 0 24px;
+    background-color: $colorPorcelain;
+    border-radius: inherit;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.flight-card__price {
+    font-size: 150%;
+}
+
+.flight-card__price-postfix {
+    font-size: 18px;
+    line-height: 30px;
+    @include media-breakpoint-down(sm) {
+        font-size: 14px;
+        line-height: 18px;
+    }
+}
+
+.flight-card__price-tooltip {
+    position: relative;
+    top: 2px;
+}
+
+.flight-card__action {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 24px;
+
+    @include media-breakpoint-up(md) {
+        width: 205px;
+        margin-left: 15px;
+    }
+
+    .block-selected {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

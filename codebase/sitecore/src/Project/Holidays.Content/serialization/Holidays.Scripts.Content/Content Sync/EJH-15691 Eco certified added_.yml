@@ -1,0 +1,82 @@
+﻿---
+ID: "73ad3b59-9b6f-472e-aead-09f3b2097cc5"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-15691 Eco certified added settings datasource data"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Data source
+    $ecoCertifiedPath = "/sitecore/content/EasyJet/Holidays/Data/Eco Certified"
+    $ecoCertifiedTemplateId = "{4D51CEC1-0FD8-4ED1-B9CE-25BDF3C45F2C}"
+    
+    $ecoCertified = Get-Item -Database "master" -path $ecoCertifiedPath -ErrorAction SilentlyContinue
+    
+    if ($ecoCertified -eq $null) {
+        # create item
+        $ecoCertified = New-Item -Path $ecoCertifiedPath -ItemType $ecoCertifiedTemplateId
+        Write-Host "Item" $ecoCertified.Name "successfully created"
+    
+    
+    $ecoCertified.Editing.BeginEdit()
+    $ecoCertified["Image"] =  '<image mediaid="{F0596658-1993-45DF-B505-C4EE4063C155}" />';
+    $ecoCertified["Title"] = "Eco-certified";
+    $ecoCertified["Description"] = "<p>This hotel exceeds our easyJet Holidays sustainability guidelines.</p>";
+    $ecoCertified["Link"] = "Find out more";
+    $ecoCertified.Editing.EndEdit() | Out-Null
+    }
+    
+    # Settings
+    $ecoPath = "master:/sitecore/content/EasyJet/Holidays/Settings/Eco Certified Settings";
+    $itemPath = "master:/sitecore/content/EasyJet/Holidays/Settings";
+    $itemTemplateId = '{A54717DE-E55D-4F67-8FF7-A7532C61AC56}';
+    
+    $item = Get-Item -Database "master" -path $ecoPath -ErrorAction SilentlyContinue
+    
+    if ($item -eq $null) {
+        #create item
+        $item = New-Item -Path $itemPath -ItemType $itemTemplateId -Name "Eco Certified Settings"
+        Write-Host "Item" $item.Name "successfully created"
+        
+        $item.Editing.BeginEdit()
+        $item["IsEcoCertifiedEnabledOnSearchPage"] = "1";
+        $item["IsEcoCertifiedEnabledOnHotelDetailsPage"] = "1";
+        $item["IsEcoCertifiedEnabledOnBookingListPage "] = "1";
+        $item["IsEcoCertifiedEnabledOnHotelSummaryInViewBookingPage"] = "1";
+        $item["IsEcoCertifiedEnabledInFacilitiesTabs"] = "1";
+    
+        $item.Editing.EndEdit() | Out-Null
+    }
+    
+    # Add Eco Certified rendering and Datasource for rendering
+    $pagePath = Get-Item -Path "master://sitecore/content/EasyJet/Holidays/Home/Hotel Details"
+    $dataSourcePath = "/sitecore/content/EasyJet/Holidays/Data/Eco Certified" 
+    $placeholderPath = '/body/component-wrapper-inner-{5755a37a-907a-4126-bf29-5bdf4fba241d}-0/eco-certified-{98342cb2-d093-4ff1-8255-1ca2dfe2c3f1}-0'
+    $renderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Eco Certified"
+    $rendering = Get-Item -Database "master" -Path $renderingPath | New-Rendering -Placeholder $placeholderPath
+    	
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    	  
+    Add-Rendering -Item $pagePath -Instance $rendering -DataSource $dataSourcePath -Placeholder $placeholderPath
+    	  
+    Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Hotel Details/Page Components" -templateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 100
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

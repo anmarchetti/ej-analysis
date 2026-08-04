@@ -1,0 +1,59 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+}
+
+.tile {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 8px 16px;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px 2px rgba($colorBlackLight, 0.15);
+
+    @include media-breakpoint-up(md) {
+        align-self: stretch;
+        gap: 16px;
+        height: auto;
+        padding: 16px 24px 24px;
+    }
+}
+
+.textContent {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 8px;
+    padding-left: 8px;
+
+    @include media-breakpoint-up(md) {
+        gap: 16px;
+    }
+}
+
+.title {
+    margin: 0;
+    font-family: $fontGenerationHeadline;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 20px;
+
+    @include media-breakpoint-up(md) {
+        font-size: 32px;
+        line-height: 27px;
+    }
+}
+
+.icon {
+    @include sizeSquare(40px);
+
+    @include media-breakpoint-up(md) {
+        @include sizeSquare(80px);
+    }
+}
+
+.description {
+    font-size: 16px;
+    color: $clrTextMain;
+}

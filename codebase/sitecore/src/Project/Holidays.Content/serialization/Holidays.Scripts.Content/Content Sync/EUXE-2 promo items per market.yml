@@ -1,0 +1,59 @@
+﻿---
+ID: "6150aa62-dc23-4f36-9519-eccbfb3f59d1"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUXE-2 promo items per market"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = gi -Path "master:$($path)" -ErrorAction SilentlyContinue
+        
+        if ($item -ne $null) {
+           return $item
+        }
+           
+        return New-Item -Path $path -ItemType $template
+    }
+    
+    function Create-Promo-Market-Folder($path, $market) {
+        $marketFolder = Get-Or-Create-Item -path $path -template "{931C2E00-6C7B-4F50-AB4E-37D91E573C95}"
+        
+        $marketFolder.Editing.BeginEdit()
+        $marketFolder["Market"] = $market
+        $marketFolder.Editing.EndEdit() | Out-Null
+        
+        return $marketFolder
+    }
+    
+    $ukMarketId = (gi -Path "/sitecore/content/EasyJet/Holidays/Settings/Market Settings/United Kingdom").ID
+    $swissMarketId = (gi -Path "/sitecore/content/EasyJet/Holidays/Settings/Market Settings/Switzerland").ID
+    
+    $promotionsFolderPath = "/sitecore/content/EasyJet/Holidays/Data/Promotions"
+    
+    # 1. create UK promo folder
+    $ukPromosFolder = Create-Promo-Market-Folder -path "$($promotionsFolderPath)/Promotions - UK" -market $ukMarketId
+    
+    # 2. move all existing promos under UK
+    gci -path $promotionsFolderPath | ? { 
+        $_.TemplateID -eq "{A79ECCA5-FA9B-4B8C-A1D5-4487E041CBB3}" } | % {
+        $_ | Move-Item -Destination "master:$($ukPromosFolder.ID)"
+        }
+    
+    # 3. create Swiss folder
+    Create-Promo-Market-Folder -path "$($promotionsFolderPath)/Promotions - Swiss" -market $swissMarketId
+    
+    # 5. create France and Germany folder
+    Create-Promo-Market-Folder -path "$($promotionsFolderPath)/Promotions - France" -market $null
+    Create-Promo-Market-Folder -path "$($promotionsFolderPath)/Promotions - Germany" -market $null
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230817T065750Z

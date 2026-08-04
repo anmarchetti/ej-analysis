@@ -1,0 +1,72 @@
+﻿---
+ID: "5f27e82e-4d8f-4bb6-b19c-17d066115613"
+Parent: "4c10d78f-07b6-469e-929f-cb4b460bb11e"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Destinations Sync/Hotel Sync/Delete Conference Images from Hotels
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function GetHotels
+    {
+        param([String]$indexName)
+    
+        $criteria = @(
+            @{Filter = "Equals"; Field ="_templatename"; Value = "Hotel"}
+        )
+    
+        $props = @{
+            Index = $indexName
+            Criteria = $criteria
+        }
+    
+        return Find-Item @props
+    }
+    
+    $indexName = "sitecore_destinations_master_index"
+    $forbiddenImagePrefix = "CON"
+    
+    $hotels = GetHotels -IndexName $indexName
+    
+    New-UsingBlock (New-Object Sitecore.SecurityModel.SecurityDisabler) {
+        New-UsingBlock (New-Object Sitecore.Data.DatabaseCacheDisabler) {
+            New-UsingBlock (New-Object Sitecore.Data.Events.EventDisabler) {
+                New-UsingBlock (New-Object Sitecore.Data.BulkUpdateContext) {
+                    foreach($hotel in $hotels) 
+                    {
+                    	$hotelItem = $hotel.GetItem()
+                    	if ([string]::IsNullOrEmpty($hotelItem.Fields["HotelBedsCode"].Value))
+                        {
+                    		continue;
+                    	}
+    
+                    	$imagesFolder = $hotelItem.Children | Where-Object { $_.TemplateName -eq "Images Folder" }
+                    	
+                    	if ($imagesFolder -ne $null)
+                    	{
+                    	    foreach($imageItem in $imagesFolder.Children) 
+                            {
+                        		if ($imageItem.TemplateName -eq "External Image" -and $imageItem["Code"] -eq $forbiddenImagePrefix)
+                                {
+                                    Write-Host "$($imageItem.Paths.FullPath) image item has been removed"
+                        			$imageItem | Remove-Item
+                        		}
+                        	}
+                    	}
+                    	
+                    }
+                }
+            }
+        }   
+    }
+    
+    Write-Host "Script is completed"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191021T150815Z

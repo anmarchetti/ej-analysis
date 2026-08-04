@@ -1,0 +1,40 @@
+﻿---
+ID: "991a9b58-35ed-4522-af8b-6cacafe772b5"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUXE-432-Apply-Redirect-Url-For-Invalid-Urls"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Add settings
+    
+    $settingsFolderPath = "/sitecore/content/EasyJet/Holidays/Settings/Redirect Map Grouping"
+    
+    $templateId = "{866F48C6-3EE9-495F-80F0-15D94A74DBB4}"
+    $itemName = "Invalid Url Redirects - 301"
+    
+    $item = Get-Item -Path "$($settingsFolderPath)/$($itemName)" -ErrorAction SilentlyContinue
+    
+    if ($item -eq $null) {
+    	$item = New-Item -Path $settingsFolderPath -Name $itemName -ItemType $templateId
+    
+    	$item.Editing.BeginEdit()
+    	$item["RedirectType"] = "301"
+    	$item["UrlMapping"] = "/deutschland/ferien-in-mnchen(.*)$=%2Fdeutschland%2Fmuenchen%241&/marokko/marrakesch/stdtereisen-nach-marrakesch(.*)$=%2Fmarokko%2Fmarrakesch%2Fstaedtereisen-nach-marrakesch%241&/spanien/ferien-in-cdiz(.*)$=%2Fspanien%2Fcadiz%241&/spanien/mallorca/ferien-in-puerto-sller(.*)$=%2Fspanien%2Fmallorca%2Fpuerto-soller%241&/spanien/teneriffa/ferien-in-gua-de-isora(.*)$=%2Fspanien%2Fteneriffa%2Fguia-de-isora%241&/spanien/teneriffa/ferien-in-playa-de-las-amricas(.*)$=%2Fspanien%2Fteneriffa%2Fplaya-de-las-americas%241&/spanien/ferien-in-valencia/stdtereisen-nach-valencia(.*)$=%2Fspanien%2Fvalencia%2Fstaedtereisen-nach-valencia%241&/espagne/vacances-sur-la-costa-de-almera(.*)$=%2Fespagne%2Fcosta-de-almera%241&/espagne/tenerife/vacances-gua-de-isora(.*)$=%2Fespagne%2Ftenerife%2Fguia-de-isora%241&/espagne/valencia/escapades-en-ville-valence(.*)$=%2Fespagne%2Fvalencia%2Fville-de-valence%241&/grce/vacances-dans-la-grce-centrale(.*)$=%2Fgrece%2Fgrece-centrale%241%241&/grce/crte(.*)$=%2Fgrece%2Fcrete%241&/grce(/vacances-)*(.*)$=%2Fgrece%2F%242&/maroc/marrakech/escapades-en-ville-marrakech(.*)$=%2Fmaroc%2Fmarrakech%2Fville-de-marrakech%241&/croatie/riviera-istrienne(.*)$=%2Fcroatie%2Friviera-d-istrie%241&/isral/jrusalem(.*)$=%2Fisrael%2Fjerusalem%241&/isral(.*)$=%2Fisrael%241&/croatie/split/le-de-bracile-de-brac(.*)$=%2Fcroatie%2Fsplit%2File-de-brac%241&/montngro(.*)$=%2Fmontenegro%241&/croatie/split/le-de-brac(.*)$=%2Fcroatie%2Fsplit%2File-de-brac%241&/croatie/split/le-hvar(.*)$=%2Fcroatie%2Fsplit%2File-de-hvar%241&/france/cte-dazur/frjus(.*)$=%2Ffrance%2Fcote-d-azur%2Ffrejus%241&/france/cte-dazur(.*)$=%2Ffrance%2Fcote-d-azur%241&/portugal/cte-destoril(.*)$=%2Fportugal%2Fcote-d-estoril%241&/portugal/madre(.*)$=%2Fportugal%2Fmadere%241&/rpublique-tchque(.*)$=%2Frepublique-tcheque%241&/tunisie/rgion-tunisie(.*)$=%2Ftunisie%2Fregion-tunisie%241&/france/corse/aroport(.*)$=%2Ffrance%2Fcorse%2Faeroport%241&/italie/sicile/les-oliennes(.*)$=%2Fitalie%2Fsicile%2Files-eoliennes%241&/portugal/cte-destoril/cte-destoril(.*)$=%2Fportugal%2Fcote-d-estoril%2Fcote-d-estoril%241&/dnemark(.*)$=%2Fdaenemark%241&/frankreich/franzsische-riviera(.*)$=%2Ffrankreich%2Ffranzoesische-riviera%241&/griechenland/athen/athen-kste(.*)$=%2Fgriechenland%2Fathen%2Fathen-kueste%241&/griechenland/korfu/st-georg-sd(.*)$=%2Fgriechenland%2Fkorfu%2Fst-georg-sued%241&/gypten(.*)$=%2Faegypten%241&/italien/sizilien/forza-dagro(.*)$=%2Fitalien%2Fsizilien%2Fforza-d-agro%241&/italien/sizilien/olische-inseln(.*)$=%2Fitalien%2Fsizilien%2Faeolische-inseln%241&/portugal/algarve/olhos-dagua(.*)$=%2Fportugal%2Falgarve%2Folhos-d-agua%241&/portugal/estoril-kste(.*)$=%2Fportugal%2Festoril-kueste%241&/spanien/costa-brava/lestartit(.*)$=%2Fspanien%2Fcosta-brava%2Fl-estartit%241&/spanien/costa-brava/platja-daro(.*)$=%2Fspanien%2Fcosta-brava%2Fplatja-d-aro%241&/spanien/ferien-in-murcia/stdtereisen-nach-murcia(.*)$=%2Fspanien%2Fmurcia%2Fstaedtereisen-nach-murcia%241&/spanien/ferien-in-sevilla/stdtereisen-nach-sevilla(.*)$=%2Fspanien%2Fsevilla%2Fstaedtereisen-nach-sevilla%241&/spanien/ibiza/playa-den-bossa(.*)$=%2Fspanien%2Fibiza%2Fplaya-d-en-bossa%241&/spanien/mallorca/cala-dor(.*)$=%2Fspanien%2Fmallorca%2Fcala-d-or%241&/spanien/mallorca/cala-vias(.*)$=%2Fspanien%2Fmallorca%2Fcala-vinas%241&/spanien/menorca/ferien-in-arenal-den-castell(.*)$=%2Fspanien%2Fmenorca%2Farenal-d-en-castell%241&/vereinigtes-knigreich(.*)$=%2Fvereinigtes-koenigreich%241&/spanien/menorca/ferien-in-calan-blanes(.*)$=%2Fspanien%2Fmenorca%2Fcala-n-blanes%241&/spanien/menorca/ferien-in-calan-bosch(.*)$=%2Fspanien%2Fmenorca%2Fcala-n-bosch%241&/spanien/menorca/ferien-in-calan-forcat(.*)$=%2Fspanien%2Fmenorca%2Fcala-n-forcat%241&/spanien/menorca/ferien-in-mahn(.*)$=%2Fspanien%2Fmenorca%2Fmahon%241&/spanien/menorca/ferien-in-salgar(.*)$=%2Fferien%2Fspanien%2Fmenorca%2Fs-algar%241&/spanien/menorca/ferien-in-santo-toms(.*)$=%2Fspanien%2Fmenorca%2Fsanto-tomas%241&(vacances-|ferien-auf-dem-|ferien-in-der-|ferien-in-|ferien-auf-|ferien-an-der-)([^/]+)=%242&/niederlande/amsterdam/amsterdam/grand-hotel-amrth-amsterdam=%2Fniederlande%2Famsterdam%2Famsterdam%2Fgrand-hotel-amrath-amsterdam&/gypte(.*)$=%2Fegypte%241"
+    	$item.Editing.EndEdit() | Out-Null;
+    	Write-Host $item.Name "Item has been created"; 
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230922T132354Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,62 @@
+﻿---
+ID: "105a8e3f-b1bd-4399-abd0-80d9d8b504f9"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-17345 - animation tiles icons update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $bestPrice = Get-Item -path '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Why book with us/Page Components/Animation Tiles 2/Best price guarantee' -ErrorAction SilentlyContinue
+    if ($bestPrice -ne $null) {
+        $bestPrice.Editing.BeginEdit()
+        $bestPrice["Icon"] = '<image mediaid="{5F91528D-FCC9-4053-9050-9EB597E88DA8}" />'
+        $bestPrice["ActiveIcon"] = '<image mediaid="{AD1173E9-DA76-4170-834D-421F604D2D06}" />'
+        $bestPrice.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $bestPrice.Name "successfully updated"
+    }
+    
+    $freedom = Get-Item -path '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Why book with us/Page Components/Animation Tiles 2/Freedom to change' -ErrorAction SilentlyContinue
+    if ($freedom -ne $null) {
+        $freedom.Editing.BeginEdit()
+        $freedom["Icon"] = '<image mediaid="{F0EF5666-45DC-4664-8D16-36ADBF8D9F73}" />'
+        $freedom["ActiveIcon"] = '<image mediaid="{DD6A3EDD-E44F-46F6-8A34-7514C93B6E18}" />'
+        $freedom.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $freedom.Name "successfully updated"
+    }
+    
+    $deposit = Get-Item -path '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Why book with us/Page Components/Animation Tiles 2/Low desposit' -ErrorAction SilentlyContinue
+    if ($deposit -ne $null) {
+        $deposit.Editing.BeginEdit()
+        $deposit["Icon"] = '<image mediaid="{D6AC92E5-780C-443F-BFD1-638CA99D11DD}" />'
+        $deposit["ActiveIcon"] = '<image mediaid="{66386EB4-0D87-4D14-A514-DC06281D7971}" />'
+        $deposit.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $deposit.Name "successfully updated"
+    }
+    
+    $refund = Get-Item -path '/sitecore/content/EasyJet/Holidays/Home/Root/Info/Why book with us/Page Components/Animation Tiles 2/Refund guarantee' -ErrorAction SilentlyContinue
+    if ($refund -ne $null) {
+        $refund.Editing.BeginEdit()
+        $refund["Icon"] = '<image mediaid="{604D0FC2-D2E2-41A0-A539-B2060BDFEB09}" />'
+        $refund["ActiveIcon"] = '<image mediaid="{0AAB4739-AEFF-4E66-B12E-2E404187B06E}" />'
+        $refund.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $refund.Name "successfully updated"
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230802T115345Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

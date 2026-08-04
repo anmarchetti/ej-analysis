@@ -1,0 +1,314 @@
+.img-carousel-container {
+    position: relative;
+    height: 100%;
+    min-height: 155px;
+
+    @include media-breakpoint-down(sm) {
+        min-height: 228px;
+    }
+
+    .image-gallery-slide {
+        @include media-breakpoint-down(lg) {
+            padding-top: 52%;
+        }
+    }
+
+    .image-gallery-index {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        height: 36px;
+        padding: 6px 8px;
+        background-color: $blackShadowColor;
+        border-radius: 0 0 0 6px;
+
+        span {
+            margin: auto 5px auto 0;
+            font-family: $fontRoundedBook;
+            font-size: 12px;
+            color: $colorWhite;
+            letter-spacing: 0.17px;
+            white-space: nowrap;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        // TODO: Gallery icon is removed. Because it should open the full screen gallery, which we wont have for launch.
+
+        // &::after {
+        //     content: "";
+        //     height: 12px;
+        //     width: 16px;
+        //     text-align: center;
+        //     display: block;
+        //     border: 2px solid $colorWhite;
+        //     background-color: $colorWhite;
+        //     margin-bottom: -4px;
+        //     border-radius: 3px;
+        //     z-index: 0;
+        //     flex: 0 0 auto;
+        //     position: absolute;
+        //     right: 7px;
+        //     top: 14px;
+        //     box-sizing: border-box;
+        // }
+
+        // &::before {
+        //     content: "";
+        //     height: 12px;
+        //     width: 16px;
+        //     border: 2px solid $colorWhite;
+        //     border-radius: 3px;
+        //     display: block;
+        //     position: absolute;
+        //     top: 7px;
+        //     right: 14px;
+        //     z-index: -1;
+        //     box-sizing: border-box;
+        // }
+    }
+
+    .hotel-card-img {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-position: center center;
+        background-size: cover;
+    }
+
+    .fullscreen-btn {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        padding: 6px 5px 6px 7px;
+        line-height: unset;
+        background: $colorPorcelain;
+        border: none;
+        border-radius: 3px 0;
+        cursor: pointer;
+    }
+
+    .hotel-card-img-box {
+        .slider,
+        .slider-list,
+        .slider-slide {
+            height: 100% !important;
+        }
+
+        .slider-slide > img {
+            display: block;
+            width: 100%;
+        }
+
+        .slider-slide > img:focus {
+            margin: auto;
+        }
+    }
+
+    .hotel-super-deal {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        width: 169px;
+        height: 165px;
+        overflow: hidden;
+
+        span {
+            width: 100%;
+            height: 25px;
+            font-family: $fontRoundedBook;
+            font-size: 12px;
+            line-height: 25px;
+            color: $clrEjOrange;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.15px;
+            background: #fff;
+            transform: rotate(-45deg);
+            transform-origin: 140% 70%;
+        }
+    }
+}
+
+.hotel-card {
+    .img-carousel-container {
+        top: 0;
+        left: 0;
+        width: 100%;
+
+        @include media-breakpoint-down(lg) {
+            position: relative;
+        }
+    }
+}
+
+.img-carousel-thumbnails__image .select-image-btn,
+.img-carousel-thumbnails .select-image-btn {
+    position: absolute;
+    right: 0;
+    display: block;
+    width: 14px;
+    height: 14px;
+    padding: 0;
+    background-color: #fff;
+    border: 1px solid $borderColorGrayMiddle;
+    border-radius: 2px;
+    z-index: 1;
+
+    &.checked {
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 4px;
+            width: 3px;
+            height: 7px;
+            border: solid $colorOrange;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+    }
+}
+
+.img-carousel-thumbnails {
+    $box-shadow-size: 3px;
+    margin: 0 0 20px;
+
+    .image-gallery-thumbnails {
+        padding-right: $box-shadow-size;
+        padding-left: $box-shadow-size;
+    }
+
+    &:focus {
+        outline: none;
+
+        .active {
+            .img-carousel-thumbnails__image {
+                box-shadow: 0 0 0 $box-shadow-size rgba(77, 144, 253, 0.8);
+            }
+        }
+    }
+
+    .img-carousel-thumbnails__thumbnail {
+        position: relative;
+        width: auto;
+        margin: 0;
+        border: none;
+
+        + .img-carousel-thumbnails__thumbnail {
+            margin-left: 30px;
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+        &.active {
+            border: none;
+
+            .img-carousel-thumbnails__image {
+                border-color: $clrEjOrange;
+            }
+        }
+    }
+
+    .delete-image-btn {
+        margin-top: 5px;
+        padding: 6px 12px;
+        font-size: 12px;
+        vertical-align: middle;
+
+        &.btn--loading {
+            min-height: 25px;
+
+            &::before {
+                width: 15px;
+                height: 15px;
+            }
+        }
+    }
+}
+
+.hotel-thumbnails {
+    min-height: 96px;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+.img-carousel-manage {
+    margin-top: -10px;
+    margin-bottom: 10px;
+
+    .btn {
+        padding: 9px 23px;
+        vertical-align: middle;
+
+        &:not(:last-child) {
+            margin-right: 15px;
+        }
+
+        &.btn--loading {
+            min-height: 34px;
+
+            &::before {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+}
+
+.img-carousel-batch-manage {
+    float: right;
+
+    .batch-selected-images {
+        margin-right: 18px;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .btn {
+        padding: 9px 23px;
+        vertical-align: middle;
+
+        &:not(:last-child) {
+            margin-right: 15px;
+        }
+
+        &.btn--loading {
+            min-height: 34px;
+
+            &::before {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+}
+
+.popup__footer .img-carousel-batch-manage {
+    float: none;
+    margin-right: auto;
+}
+
+.img-carousel-thumbnails__image {
+    position: relative;
+    box-sizing: content-box;
+    width: 94px;
+    height: 75px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border: 2px solid $colorTransparent;
+}

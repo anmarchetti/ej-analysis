@@ -1,0 +1,163 @@
+.price-graph-widget {
+    .graph-navigation {
+        position: relative;
+    }
+
+    .graph-wrapper {
+        position: relative;
+        margin-bottom: 5px;
+
+        @include media-breakpoint-down(md) {
+            z-index: 1;
+            margin-left: 50px;
+            overflow-x: auto;
+        }
+
+        &.desktop {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    .graph-container {
+        position: relative;
+        height: 420px;
+        background-color: $clrSiteBgWhite;
+
+        canvas {
+            background-color: $clrSiteBgWhite;
+        }
+    }
+
+    .popup__footer {
+        border-top: 1px $colorGrayDark solid;
+
+        @include media-breakpoint-down(md) {
+            border: none;
+        }
+    }
+}
+
+.price-graph-drawer {
+    $left-axis-width: 70px;
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-bottom: 72px;
+    overflow: hidden;
+
+    &.calendar-widget {
+        display: flex;
+        flex-direction: column;
+        overflow: unset;
+        background-color: $clrSiteBgWhite;
+    }
+
+    .graph-wrapper {
+        z-index: 1;
+        margin-left: $left-axis-width;
+        overflow-x: scroll;
+    }
+
+    .price-graph-drawer__content {
+        box-sizing: border-box;
+        height: 100%;
+        padding: 0 10px;
+        overflow-y: scroll;
+    }
+
+    .week-days {
+        min-height: 31px;
+        padding: 5px 20px;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);    
+    }
+
+    .drawer-labels {
+        padding: 10px 10px 0;
+
+        .drawer-name {
+            margin: 0;
+            font-family: $fontRoundedHeadline;
+            font-size: 16px;
+            color: $clrTextMain;
+            text-transform: uppercase;
+        }
+
+        .duration {
+            margin: 5px 0;
+            font-family: $fontRoundedBook;
+            font-weight: 700;
+            color: $clrTextMain;
+        }
+    }
+
+    .y-axis-mobile {
+        position: absolute;
+        z-index: 0;
+        top: 0;
+        height: 420px;
+    }
+
+    .mobile-shadow-left,
+    .mobile-shadow-right {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        bottom: 0;
+        box-shadow: 0 0 8px 4px $clrSiteBgWhite;
+    }
+
+    .mobile-shadow-left {
+        left: $left-axis-width;
+    }
+
+    .mobile-shadow-right {
+        right: 0;
+    }
+}
+
+.alternative-flights-drawer .price-graph-drawer .seats-reservation-notification {
+    @include media-breakpoint-down(md) {
+        margin: 8px 10px 2px;
+        border-radius: 3px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.price-graph-link {
+    display: flex;
+    align-items: center;
+    margin: 20px 0 25px;
+    padding: 5px 30px;
+    font-family: $fontRoundedBook;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 22px;
+    color: $clrEjOrange;
+    background: no-repeat;
+    border: 2px solid $clrEjOrange;
+    border-radius: 4px;
+    cursor: pointer;
+
+    @include media-breakpoint-down(md) {
+        margin: 10px 0 20px;
+        padding: 3px 15px;
+        font-size: 15px;
+    }
+
+    .graph-icon {
+        margin-right: 10px;
+
+        svg {
+            width: 30px;
+            height: 30px;
+            color: $clrEjOrange;
+
+            @include media-breakpoint-down(md) {
+                width: 25px;
+                height: 25px;
+            }
+        }
+    }
+}

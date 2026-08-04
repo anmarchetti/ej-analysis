@@ -1,0 +1,31 @@
+.appHeader {
+    position: relative;
+    z-index: 403;
+    width: 100%;
+    height: 48px;
+    font-weight: 700;
+    background: $clrEjOrange;
+
+    .headerNavigation {
+        width: 100%;
+        margin: 0;
+
+        &::after {
+            display: none;
+        }
+    }
+}
+
+.headerInner {
+    padding: 0;
+    background: $clrEjOrange;
+}
+
+.darkMode {
+    background: $colorBlackLight;
+
+    .headerNavigation,
+    .headerInner {
+        background: $colorBlackLight;
+    }
+}

@@ -1,0 +1,40 @@
+﻿---
+ID: "dfeebfe5-0e06-44b8-a5c6-7d99a87341c2"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-278_fix-loss-seats-message-render-placeholder"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $amendDatesSummaryRenderingItem = Get-Item -Path "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Dates/Amend Dates Summary" -ErrorAction SilentlyContinue;
+    $attentionMessageRenderingItem = Get-Item -Path "/sitecore/layout/Renderings/Feature/Destinations/Attention Message" -ErrorAction SilentlyContinue;
+    $amendDatesSummaryPageItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary" -ErrorAction SilentlyContinue;
+    
+    $renderingAmendSummaryDates = Get-Rendering -Item $amendDatesSummaryPageItem -Render $amendDatesSummaryRenderingItem;
+    
+    if ($renderingAmendSummaryDates -ne $null) {
+        $lossSeatsMessageRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Attention Message";
+        $lossSeatsMessageRenderingDataSource = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary/Page Components/Loss Seats Message";
+        
+        $lossSeatsMessageRendering = Get-Rendering -Item $amendDatesSummaryPageItem -Render $attentionMessageRenderingItem -Index 0;
+        $lossSeatsPlaceholder = "/body/attention-message-" + $renderingAmendSummaryDates.UniqueId + "-0";
+    
+        if ($lossSeatsMessageRendering -ne $null) {
+            Set-Rendering -Item $amendDatesSummaryPageItem -Instance $lossSeatsMessageRendering -Placeholder $lossSeatsPlaceholder;
+            
+            Write-Host $lossSeatsMessageRendering 'Updated';
+        }
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 659
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230908T083635Z

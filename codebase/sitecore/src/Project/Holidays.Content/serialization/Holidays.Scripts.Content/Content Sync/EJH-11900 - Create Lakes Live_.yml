@@ -1,0 +1,81 @@
+﻿---
+ID: "c1526eee-ad5c-40a8-b118-c228b63822c7"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-11900 - Create Lakes Live Price"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $livePriceTempalteId = "{8D0058CA-9E2B-428F-A0DC-50F8BD77A694}"
+    $livePricePath = "/sitecore/content/EasyJet/Holidays/Data/Live Price/Named Searches"
+    $livePricenName = "Lakes"
+    
+    $destinationItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Destinations" 
+    
+    $items = $destinationItem.Children | ForEach-Object { $_.Id } 
+    $ids= $items -join '|'
+    
+    function Get-Or-Create-Item($name, $path, $template){
+        $item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $name -ItemType $template
+        }
+        
+        return $item
+    }
+    
+    function Update-Item($item){
+        if($item -ne $null){
+            $item.Editing.BeginEdit()
+            $themsFolder = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Hotel Themes"  -ErrorAction SilentlyContinue
+            $lakesTheme = $themsFolder.Children | Where-Object { $_.Name -eq "Lakes" } | Select -First 1
+            $item.Fields["ThemeTypes"].Value = $lakesTheme.ID
+            $item.Fields["DefaultDuration"].Value = 7
+            $item.Fields["NumberOfAdults"].Value = 2
+            $item.Fields["NumberOfChildren"].Value = 0
+            $item.Editing.EndEdit() > $null
+            
+            $periodJanMar = Get-Or-Create-Item -Name "Jan - Mar 21" -Path $item.FullPath -Template "{056AC05C-E1D1-4FD4-BC4C-CEC966FA75E2}"
+            $periodJanMar.Editing.BeginEdit()
+            $periodJanMar.Fields["Destinations"].Value = $ids
+            $periodJanMar.Fields["DateOfRunStartDate"].Value = "20210101T000000Z"
+            $periodJanMar.Fields["DateOfRunEndDate"].Value = "20220331T000000Z"
+            $periodJanMar.Fields["SearchDateRangeStartDate"].Value = "20210401T000000Z"
+            $periodJanMar.Fields["SearchDateRangeEndDate"].Value = "20220630T000000Z"
+            $periodJanMar.Editing.EndEdit() > $null
+            
+            $periodAprAugr = Get-Or-Create-Item -Name "Apr - Aug 21" -Path $item.FullPath -Template "{056AC05C-E1D1-4FD4-BC4C-CEC966FA75E2}"
+            $periodAprAugr.Editing.BeginEdit()
+            $periodAprAugr.Fields["Destinations"].Value = $ids
+            $periodAprAugr.Fields["DateOfRunStartDate"].Value = "20210401T000000Z"
+            $periodAprAugr.Fields["DateOfRunEndDate"].Value = "20210831T000000Z"
+            $periodAprAugr.Fields["SearchDateRangeStartDate"].Value = "20210901T000000Z"
+            $periodAprAugr.Fields["SearchDateRangeEndDate"].Value = "20211130T000000Z"
+            $periodAprAugr.Editing.EndEdit() > $null
+            
+            $periodSeptDec = Get-Or-Create-Item -Name "Sept - Dec 20" -Path $item.FullPath -Template "{056AC05C-E1D1-4FD4-BC4C-CEC966FA75E2}"
+            $periodSeptDec.Editing.BeginEdit()
+            $periodSeptDec.Fields["Destinations"].Value = $ids
+            $periodSeptDec.Fields["DateOfRunStartDate"].Value = "20200901T000000Z"
+            $periodSeptDec.Fields["DateOfRunEndDate"].Value = "20201231T000000Z"
+            $periodSeptDec.Fields["SearchDateRangeStartDate"].Value = "20210101T000000Z"
+            $periodSeptDec.Fields["SearchDateRangeEndDate"].Value = "20210630T000000Z"
+            $periodSeptDec.Editing.EndEdit() > $null
+        }
+    }
+    
+    $item = Get-Or-Create-Item -Name $livePricenName -Path $livePricePath -Template $livePriceTempalteId
+    Update-Item -Item $item
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 27750
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210215T143232Z

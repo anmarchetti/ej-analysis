@@ -1,0 +1,45 @@
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    align-items: flex-start;
+    align-self: stretch;
+    gap: 8px;
+}
+
+.option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 32px;
+    padding: 4px 12px;
+    font-family: $fontRoundedDemy;
+    font-size: 14px;
+    color: $colorOrange;
+    border: 2px solid transparent;
+    border-radius: 16px;
+    box-shadow: 0 0 3px 1px $softShadowColor;
+
+    input {
+        top: 0;
+        left: 0;
+    }
+}
+
+.checked {
+    color: $colorInteractiveActive;
+    border-color: $colorInteractiveActive;
+}
+
+.disabled {
+    &:global(.checkbox) {
+        color: $clrTxtLighter;
+        cursor: default;
+    }
+}
+
+.checked.disabled {
+    border-color: $colorBoulder;
+}

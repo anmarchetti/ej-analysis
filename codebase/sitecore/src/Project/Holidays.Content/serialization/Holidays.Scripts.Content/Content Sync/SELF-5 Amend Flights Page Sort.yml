@@ -1,0 +1,38 @@
+﻿---
+ID: "af3d2bc9-0ef1-4533-9174-1220606942b5"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-5 Amend Flights Page Sort By"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $flights = Get-Item -Path "master://sitecore/content/EasyJet/Holidays/Home/Hotel Details/Page Components/Alternative Flights" -ErrorAction SilentlyContinue
+    $flightsAmend = Get-Item -Path "master://sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Alternative Flights" -ErrorAction SilentlyContinue
+    
+    if ($flights -ne $null) {
+    	$flights.Editing.BeginEdit();
+    	$flights["SortOrder"] = "{D3A75C88-DB56-4A23-98C6-5C905342B2DF}|{B64AF1A4-23F3-43D4-92F2-C4B1EEB1D126}|{FD4ADE49-BDA2-4DBF-96F1-BD9D9A51A9A6}|{399192B2-7334-4AD7-9EEE-B1F4A4DDED8D}"
+    	$flights["SortDefault"] = "{D3A75C88-DB56-4A23-98C6-5C905342B2DF}"
+    	$flights.Editing.EndEdit() | Out-Null
+    
+    	Write-Host "Hotel Details alt flights sort values updated"
+    }
+    
+    if ($flightsAmend -ne $null) {
+    	$flightsAmend.Editing.BeginEdit();
+    	$flightsAmend["SortOrder"] = "{D3A75C88-DB56-4A23-98C6-5C905342B2DF}|{B64AF1A4-23F3-43D4-92F2-C4B1EEB1D126}|{FD4ADE49-BDA2-4DBF-96F1-BD9D9A51A9A6}|{399192B2-7334-4AD7-9EEE-B1F4A4DDED8D}"
+    	$flightsAmend["SortDefault"] = "{D3A75C88-DB56-4A23-98C6-5C905342B2DF}"
+    	$flightsAmend.Editing.EndEdit() | Out-Null
+    
+    	Write-Host "Amend alt flights sort values updated"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20211013T113639Z

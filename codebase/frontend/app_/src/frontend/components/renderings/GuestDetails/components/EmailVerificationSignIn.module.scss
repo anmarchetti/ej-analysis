@@ -1,0 +1,50 @@
+.options, .option {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.forgotPasswordInfo {
+    line-height: 1;
+
+    .link {
+        line-height: 1;
+        height: unset;
+    }
+}
+
+.fieldWrapper {
+    display: flex;
+    gap: 16px;
+}
+
+.buttonWrapper {
+    width: 180px;
+
+    .button {
+        height: 44px;
+    }
+}
+
+.signIn {
+    @include media-breakpoint-down(sm) {
+        gap: 17px;
+    }
+}
+
+.withoutSignIn {
+    :global {
+        .radio {
+            display: flex;
+        }
+    }
+}
+
+.errorWrapper {
+    margin: 0 4px;
+    max-width: 355px;
+
+    @include media-breakpoint-down(sm) {
+        max-width: 100%;
+    }
+}

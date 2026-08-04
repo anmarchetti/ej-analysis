@@ -1,0 +1,101 @@
+﻿---
+ID: "20f977f4-ee05-4c6c-929e-ade37591e3b2"
+Parent: "b1e3c34e-a209-4730-a266-ecc77072d88c"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/SPE/Extensions/EasyJet/Functions/PerformanceProfiler
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $Global:MeasureCommandStartTimes = @{}
+    $Global:MeasureCommandCumulativeTimes = @{}
+    $Global:FirstStartTime = $null
+    $Global:LastStopTime = $null
+    
+    Add-Type -AssemblyName System.Configuration
+    $envRole = [System.Configuration.ConfigurationManager]::AppSettings["localenv:define"]
+    
+    function Start-Measure {
+        if ($envRole -ne "Production") {
+            $callStack = Get-PSCallStack
+            if ($callStack.Count -gt 1) {
+                $Name = $callStack[1].FunctionName
+            } else {
+                $Name = "Global"
+            }
+            
+            $currentTime = Get-Date
+            $Global:MeasureCommandStartTimes[$Name] = $currentTime
+    
+            if ($Global:FirstStartTime -eq $null) {
+                $Global:FirstStartTime = $currentTime
+            }
+        }
+    }
+    
+    function Stop-Measure {
+        if ($envRole -ne "Production") {
+            $callStack = Get-PSCallStack
+            if ($callStack.Count -gt 1) {
+                $Name = $callStack[1].FunctionName
+            } else {
+                $Name = "Global"
+            }
+    
+            $currentTime = Get-Date
+            $Global:LastStopTime = $currentTime
+    
+            if ($Global:MeasureCommandStartTimes.ContainsKey($Name)) {
+                $startTime = $Global:MeasureCommandStartTimes[$Name]
+                $elapsedTime = $currentTime - $startTime
+                $elapsedSeconds = $elapsedTime.TotalSeconds
+    
+                if ($Global:MeasureCommandCumulativeTimes.ContainsKey($Name)) {
+                    $Global:MeasureCommandCumulativeTimes[$Name] += $elapsedSeconds
+                } else {
+                    $Global:MeasureCommandCumulativeTimes[$Name] = $elapsedSeconds
+                }
+                $Global:MeasureCommandStartTimes.Remove($Name)
+            }
+        }
+    }
+    
+    function Show-CumulativeTimes {
+        if ($envRole -ne "Production") {
+            $totalDuration = ($Global:LastStopTime - $Global:FirstStartTime).TotalSeconds
+    
+            $resultsTable = @()
+            foreach ($result in $Global:MeasureCommandCumulativeTimes.GetEnumerator()) {
+                $time = $result.Value
+                $roundedTime = [math]::Round($time, 2)
+                $percentage = ($time / $totalDuration) * 100
+    
+                $resultsTable += New-Object PSObject -Property @{
+                    Name = $result.Key
+                    Duration = "{0:N2} sec" -f $roundedTime
+                    Percentage = $percentage
+                }
+            }
+    
+            Write-Host ""
+            Write-Host "------------------------------------------------------------------"
+            Write-Host "Total Duration: $totalDuration Seconds"
+            Write-Host "------------------------------------------------------------------"
+            $resultsTable | Sort-Object Percentage -Descending | Format-Table Name, Duration, @{Name="Percentage"; Expression={"{0:N2}%" -f $_.Percentage}} -AutoSize
+            Write-Host "------------------------------------------------------------------"
+        }
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240125T082214Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,73 @@
+﻿---
+ID: "013e15c9-c724-4605-8a85-acace01a8d25"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Add Recommended Hotels Rendering To Hotel Details
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $itemPathFolder = "master:/content/EasyJet/Holidays/Data/Recommended Hotels Carousel Folder"
+    $templateFolderId = "{25A26131-CCBB-458B-8E37-93FFCA911235}"
+    $itemFolder = Get-Item -path $itemPathFolder -ErrorAction SilentlyContinue
+    
+    # Create Recommended Hotels Carousel Title Component
+    if ($itemFolder -eq $null) {
+        $itemFolder = New-Item -Path $itemPathFolder -ItemType $templateFolderId
+        Write-Host "Item" $itemFolder.Name "successfully created"
+    }
+    
+    $templateId = "{439330F2-BA2B-4D2D-9198-188D525F5877}"
+    
+    $itemDestinationPath = "master:/content/EasyJet/Holidays/Data/Recommended Hotels Carousel Folder/Destination Page Carousel Title"
+    $itemDestination = Get-Item -path $itemDestinationPath -ErrorAction SilentlyContinue
+    
+    # Create Recommended Hotels Carousel Title Component
+    if ($itemDestination -eq $null) {
+        $itemDestination = New-Item -Path $itemDestinationPath -ItemType $templateId -ForceId "{85630FDE-9EEE-4ED5-B8FE-27671EB5307C}"
+        Write-Host "Item" $itemDestination.Name "successfully created"
+        
+        $itemDestination.Editing.BeginEdit()
+        $itemDestination["Title"] = "People who looked at this hotel also viewed"
+        $itemDestination.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $item.Name "successfully updated"
+    }
+    
+    $itemPath = "master:/content/EasyJet/Holidays/Data/Recommended Hotels Carousel Folder/Hotel Page Carousel Title"
+    $item = Get-Item -path $itemPath -ErrorAction SilentlyContinue
+    
+    # Create Recommended Hotels Carousel Title Component
+    if ($item -eq $null) {
+        $item = New-Item -Path $itemPath -ItemType $templateId -ForceId "{AF330A9F-1423-4886-A82F-CE283AAC50AA}"
+        Write-Host "Item" $item.Name "successfully created"
+        
+        $item.Editing.BeginEdit()
+        $item["Title"] = "People who looked at this hotel also viewed"
+        $item.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $item.Name "successfully updated"
+    }
+    
+    # Hotel Details Page
+    $page = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Hotel Details"
+    
+    # Recommended Hotels Booking rendering
+    $recommendedHotelsRenderingId = "{D50F78F7-73DC-4A39-A807-BEC8EDA7BC13}"
+    $recommendedHotelsdRenderingItem = Get-Item -Path "master:" -ID $recommendedHotelsRenderingId | New-Rendering -Placeholder "/body"
+    $recommendedHotelsRendering = Get-Rendering -Item $page -PlaceHolder "/body"
+    
+    # remove and create new Recommended Hotels Booking rendering
+    if ($recommendedHotelsRendering -eq $null){
+        Add-Rendering -Item $page -PlaceHolder "/body" -DataSource $itemPath -Parameter @{ "FallbackImage"='<image mediaid="{B8BDEFA6-5D0E-4F27-B6C3-53BDD9A3A32C}" />'; "MaximumNumberSlider"="9" } -Instance $recommendedHotelsdRenderingItem
+        Write-Host  "Recommended Hotels Booking Rendering was create"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200513T140224Z

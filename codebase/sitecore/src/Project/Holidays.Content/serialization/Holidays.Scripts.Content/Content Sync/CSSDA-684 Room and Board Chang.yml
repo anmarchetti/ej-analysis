@@ -1,0 +1,88 @@
+﻿---
+ID: "ce295bac-ce4b-4d0b-a831-0b614dd9a0ff"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-684 Room and Board Change Confirmation"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function GetOrCreateItem ($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue;
+        
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        
+        return $item
+    }
+    function Add-Or-Update-Page-Rendering ($page,$renderingPath,$renderingPlaceholder,$dataSourcePath) {
+    	$renderingItem = Get-Item -Database "master" -Path $renderingPath;
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -DataSource $dataSourcePath;
+    		Write-Host $renderingItem "Rendering instance added";
+    	}
+    	else {
+    		Write-Host $pageRenderingInstance "Already exists";
+    	}
+    }
+    function create-lang-version($item,$lang,$field,$value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+    }
+    function Update-PopupContent ($popup) {
+        if ($popup -ne $null) {
+            $popup.Editing.BeginEdit();
+            $popup["RoomAndBoardTitle"] = "We've successfuly updated your room and board";
+            $popup["TransferSubtitle"] = "<p>We&rsquo;ve successfully upgraded your transfer to {name}.</p><p>You can see the summary of your choice below.</p>";
+            $popup["RoomAndBoardSubtitle"] = "We've changed your room and board:";
+            
+            @('fr-CH', 'fr-FR') | % {
+                Create-Lang-Version -Item $popup -Lang $_ -Field "RoomAndBoardTitle" -Value "Nous avons réussi à mettre à jour votre chambre et votre pension.";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "TransferSubtitle" -Value "<p>Nous avons réussi à faire passer votre transfert à {name}.</p><p>Vous pouvez consulter le résumé de votre choix ci-dessous.</p>";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "RoomAndBoardSubtitle" -Value "Nous avons changé votre chambre et votre pension:";
+            }
+            @('de-CH', 'de-DE') | % {
+                Create-Lang-Version -Item $popup -Lang $_ -Field "RoomAndBoardTitle" -Value "Wir haben Ihre Unterkunft und Verpflegung erfolgreich aktualisiert";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "TransferSubtitle" -Value "<p>Wir haben Ihre Überweisung erfolgreich auf {name} hochgestuft.</p><p>Sie können die Zusammenfassung Ihrer Wahl unten sehen.</p>";
+                Create-Lang-Version -Item $popup -Lang $_ -Field "RoomAndBoardSubtitle" -Value "Wir haben Ihre Unterkunft und Verpflegung geändert:";
+            }
+            
+            $popup.Editing.EndEdit() | Out-Null;
+            
+            Write-Host $popup.Name "Updated";
+        }
+    }
+    
+    # Creating amend confirmation popup
+    $popupPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Confirmation Amend Popup";
+    
+    $popup = GetOrCreateItem -path $popupPath 
+    
+    Update-PopupContent -popup $popup
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1200
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20221208T142719Z

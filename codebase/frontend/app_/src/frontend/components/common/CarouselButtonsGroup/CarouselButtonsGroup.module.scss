@@ -1,0 +1,47 @@
+.carouselButton {
+    position: absolute;
+    top: 50%;
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px #C0C0C0;
+    opacity: 0.7;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: all 400ms ease-out;
+
+    @include media-breakpoint-down(md) {
+        display: none;
+    }
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 14px;
+        height: 14px;
+        color: $colorOrange;
+        transform: translate(-50%, -50%);
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.next {
+    right: 1px;
+}
+
+.prev {
+    left: 1px;
+}
+
+.disabled {
+    opacity: 0.7; 
+    
+    svg {
+        color: $colorBlackMedium;
+    }
+}

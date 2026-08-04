@@ -1,0 +1,142 @@
+﻿---
+ID: "8421fb08-693c-4f45-b4ac-0d1eb47aafcb"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-10522 Copy Share Holiday Buttons"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Creatin DataSource for Share Holiday Btn
+    $dataFolderPath = "/sitecore/content/EasyJet/Holidays/Data"
+    $shareBtnTemplateId = "{83AC1829-5CB0-4C4D-8E0A-B9C113B01285}"
+    $shareBtnOptionTemplateId = "{348CDB7C-897B-43D3-9C1E-D1A5CC4B137D}"
+    
+    function Create-Item($path, $name, $templateId){
+        $item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $name -ItemType $templateId
+        }
+        return $item;
+    }
+    
+    # CREATE DATA SOURCE
+    $shareBtnDataSource = Create-Item -Path $dataFolderPath -Name "Share Holiday Button" -TemplateId $shareBtnTemplateId 
+    Write-Host "Path: $($shareBtnDataSource.ItemPath)"
+    
+    $option1 = Create-Item -Path $shareBtnDataSource.ItemPath -Name "Copy" -TemplateId $shareBtnOptionTemplateId 
+    $option2 = Create-Item -Path $shareBtnDataSource.ItemPath -Name "SMS" -TemplateId $shareBtnOptionTemplateId
+    $option3 = Create-Item -Path $shareBtnDataSource.ItemPath -Name "Email" -TemplateId $shareBtnOptionTemplateId
+    $option4 = Create-Item -Path $shareBtnDataSource.ItemPath -Name "Facebook" -TemplateId $shareBtnOptionTemplateId 
+    $option5 = Create-Item -Path $shareBtnDataSource.ItemPath -Name "Twitter" -TemplateId $shareBtnOptionTemplateId
+    $option6 = Create-Item -Path $shareBtnDataSource.ItemPath -Name "WhatsApp" -TemplateId $shareBtnOptionTemplateId 
+    $option7 = Create-Item -Path $shareBtnDataSource.ItemPath -Name "HotUKDeals" -TemplateId $shareBtnOptionTemplateId 
+    
+    if ($option1 -ne $null) {
+        $option1.Editing.BeginEdit()
+        $option1.Fields["Name"].Value = "Copy"
+        $option1.Fields["Type"].Value = "Copy"
+        $option1.Fields["AlertMessage"].Value = "Copied to clipboard"
+    
+        $option1.Editing.EndEdit()
+    }
+    
+    if ($option2 -ne $null) {
+        $option2.Editing.BeginEdit()
+        $option2.Fields["Name"].Value = "SMS"
+        $option2.Fields["Type"].Value = "SMS"
+        $option2.Editing.EndEdit()
+    }
+    
+    if ($option3 -ne $null) {
+        $option3.Editing.BeginEdit()
+        $option3.Fields["Name"].Value = "Email"
+        $option3.Fields["Type"].Value = "Email"
+        $option3.Editing.EndEdit()
+    }
+    
+    if ($option4 -ne $null) {
+        $option4.Editing.BeginEdit()
+        $option4.Fields["Name"].Value = "Facebook"
+        $option4.Fields["Type"].Value = "Facebook"
+        $option4.Editing.EndEdit()
+    }
+    
+    if ($option5 -ne $null) {
+        $option5.Editing.BeginEdit()
+        $option5.Fields["Name"].Value = "Twitter"
+        $option5.Fields["Type"].Value = "Twitter"
+        $option5.Editing.EndEdit()
+    }
+    
+    if ($option6 -ne $null) {
+        $option6.Editing.BeginEdit()
+        $option6.Fields["Name"].Value = "WhatsApp"
+        $option6.Fields["Type"].Value = "WhatsApp"
+        $option6.Editing.EndEdit()
+    }
+    
+    if ($option7 -ne $null) {
+        $option7.Editing.BeginEdit()
+        $option7.Fields["Name"].Value = "HotUKDeals"
+        $option7.Fields["Type"].Value = "HotUKDeals"
+        $option7.Editing.EndEdit()
+    }
+    
+    if ($shareBtnDataSource -ne $null){
+        $shareBtnDataSource.Editing.BeginEdit()
+        $shareBtnDataSource.Fields["ShareBtnEnabledInMobile"].Value = "1"
+        $shareBtnDataSource.Fields["ShareBtnEnabledInDesktop"].Value = "1"
+        $shareBtnDataSource.Fields["MobileOptions"].Value = $option1.ID.ToString() + '|' + $option2.ID.ToString() + '|' + $option3.ID.ToString() + '|' + $option4.ID.ToString() + '|' + $option5.ID.ToString() + '|' + $option6.ID.ToString() + '|' + $option7.ID.ToString();
+        $shareBtnDataSource.Fields["DesktopOptions"].Value = $option1.ID.ToString() + '|' + $option3.ID.ToString() + '|' + $option4.ID.ToString() + '|' + $option5.ID.ToString() + '|' + $option6.ID.ToString() + '|' + $option7.ID.ToString();
+        $shareBtnDataSource.Editing.EndEdit()
+    }
+    
+    function Add-New-Rendering($item, $placeholder, $renderingId, $datasource, $index){
+        $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $placeholder
+        Add-Rendering -Item $item -Instance $renderingItem -PlaceHolder $placeholder -DataSource $datasource -Index $index
+    }
+    
+    function Add-Rendering-To($item, $renderingId, $newRenderingId, $datasource, $sign, $specificPlaceholder){
+        $index = 0
+        Get-Rendering -Item $item |
+        Foreach-Object { 
+            $index++
+            if($_.ItemId -eq $renderingId)
+            {
+                if($index -gt 0)
+                {
+                    $incrementIndex = $index
+                    if ($sing -ne 0){
+                        $incrementIndex = $index + $sign
+                    }
+                
+                    if($specificPlaceholder -ne $null){
+                        Add-New-Rendering -Item $item -Placeholder "$($_.Placeholder)/$($specificPlaceholder)-$($_.UniqueId)-0" -RenderingId $newRenderingId -Datasource $datasource -Index $incrementIndex 
+                    }
+                    else{
+                        Add-New-Rendering -Item $item -Placeholder $_.Placeholder -RenderingId $newRenderingId -Datasource $datasource -Index $incrementIndex
+                    }
+                }
+                return
+            }
+        }
+    }
+    
+    $pageitem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Hotel Details";
+    
+    Add-Rendering-To -Item $pageitem -RenderingId "{55EC56AC-9658-4575-8D0E-0C20BE4B3135}" -NewRenderingId "{8FC67B08-BA02-4D1C-B5A2-BC0CA048E3C2}" -Datasource $shareBtnDataSource.ItemPath -Sign 0 -SpecificPlaceholder "share-holiday-button"
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4890
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200714T084139Z

@@ -1,0 +1,147 @@
+.overlay {
+    position: fixed;
+    z-index: $zIndexSuperPopup;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: min(var(--inner-height), 100%);
+    overflow: hidden;
+    background-color: rgba($clrTextMainLight, 0.65);
+}
+
+.tabletWrapper {
+    width: 418px;
+
+    .contentWrapper {
+        padding-top: 24px;
+        background-color: $clrSiteBgWhite;
+        border-radius: 4px;
+    }
+
+    .childrenWrapper {
+        padding: 0 24px;
+    }
+
+    .content {
+        max-height: min(calc(90dvh - 102px), 338px);
+        overflow: auto;
+    }
+
+    .btnWrapper {
+        padding: 24px;
+    }
+}
+
+.mobileWrapper {
+    width: 100%;
+    outline: none;
+
+    @media (hover: hover) {
+        &:focus {
+            outline: unset;
+        }
+    }
+
+    .contentWrapper {
+        padding-bottom: env(safe-area-inset-bottom);
+        background-color: $clrSiteBgWhite;
+        transform: translateY(100%);
+
+        .childrenWrapper {
+            padding: 0 16px;
+        }
+
+        .content {
+            max-height: calc(90dvh - 145px);
+            overflow: auto;
+        }
+
+        .swipe {
+            padding: 10px 0 40px;
+
+            &Indicator {
+                width: 120px;
+                height: 5px;
+                margin: auto;
+                background-color: $colorGrayMiddle;
+                border-radius: 2.5px;
+                opacity: 0.4;
+            }
+        }
+
+        .btnWrapper {
+            padding: 24px 16px 16px;
+        }
+    }
+}
+
+.btnWrapper {
+    &.shadow {
+        box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.14);
+    }
+
+    .button {
+        height: 50px;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: 400;
+        border-width: 2px;
+    }
+}
+
+// hack for iPad/iPhone to prevent body from scrolling
+.appleHelperWrapper {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden auto;
+    overscroll-behavior: none;
+    scrollbar-width: none;
+}
+
+.appleHelperOuter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100% + 1px);
+    min-height: calc(100% + 1px);
+}
+
+.appleHelperInner {
+    position: sticky;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: calc(100% - 1px);
+
+    @include media-breakpoint-down(sm) {
+        justify-content: flex-end;
+    }
+}
+
+.fixedHeight {
+    height: 100dvh;
+
+    .contentWrapper {
+        height: 100dvh;
+
+        .content {
+            max-height: calc(100dvh - 145px);
+        }
+    }
+
+    .btnWrapper {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.14);
+    }
+}

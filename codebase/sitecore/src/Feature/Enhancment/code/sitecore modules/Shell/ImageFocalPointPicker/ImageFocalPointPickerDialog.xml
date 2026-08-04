@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<control xmlns:def="Definition" xmlns="http://schemas.sitecore.net/Visual-Studio-Intellisense">
+    <ImageFocalPointPickerDialog>
+
+        <!--Init jQuery-->
+        <Script src="/sitecore/shell/Controls/Lib/jQuery/jquery-1.12.4.min.js" Language="javascript"></Script>
+        
+        <!--Init Script-->
+        <Script src="/sitecore modules/Shell/ImageFocalPointPicker/js/FocalPointPickerScript.js" Language="javascript"></Script>
+
+        <!--Init Stylesheet-->
+        <link href="/sitecore modules/Shell/ImageFocalPointPicker/css/FocalPointPickerStyles.css" rel="stylesheet" />
+
+        <FormDialog ID="Dialog" Icon="Network/32x32/environment_view.png" Header="Image Focal Point Picker"
+                    Text="Pick the focal point by clicking on the image" OKButton="Select">
+
+            <!--Define Code Beside-->
+            <CodeBeside Type="easyJet.Feature.SitecoreEnhancment.Dialogs.ImageFocalPointPickerDialog, easyJet.Feature.SitecoreEnhancment"/>
+
+            <Groupbox Header="Focal Point Device">
+                <Listbox ID="Devices" SelectionMode="Single"></Listbox>    
+            </Groupbox>
+            
+            <Groupbox Header="Current Focal Point" ID="coordinates">
+                <table width="100%">
+                    <tr valign="center">
+                        <td>
+                            <div class="form-element">
+                                <Edit ID="DesktopViewCoordinates" class ="text-box-coorinates" ReadOnly="true" MaxLength="200"/>
+                                <Edit ID="MobileViewCoordinates" class ="text-box-coorinates" Visible="false" ReadOnly="true"  MaxLength="200"/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </Groupbox>
+
+            <Groupbox Header="Image Frame">
+                <Border class="mapCanvas" ID="mapCanvas">
+                    <div id="focalPoint">
+                        <Image ID="ImageFrame" />
+                        <span id="indicator"></span>
+                    </div>
+                </Border>
+            </Groupbox>
+
+        </FormDialog>
+    </ImageFocalPointPickerDialog>
+</control>

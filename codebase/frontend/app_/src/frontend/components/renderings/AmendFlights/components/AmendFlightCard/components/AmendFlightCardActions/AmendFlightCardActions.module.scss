@@ -1,0 +1,84 @@
+.flightCardActions {
+    @include media-breakpoint-up(md) {
+        display: flex;
+        flex-direction: column;
+        align-self: auto;
+        justify-content: flex-end;
+    }
+}
+
+.tooltip {
+    top: 2px;
+}
+
+.selectButtonContainer {
+    @include media-breakpoint-up(md) {
+        text-align: end;
+    }
+}
+
+.selectButton {
+    @include media-breakpoint-up(md) {
+        align-self: flex-end;
+        width: 205px;
+    }
+}
+
+.priceContainer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+
+    :global(.callout__container) {
+        align-self: flex-end;
+        margin-bottom: 5px;
+
+        @include media-breakpoint-up(md) {
+            margin-bottom: 8px;
+        }
+    }
+}
+
+.priceContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.price {
+    font-size: 150%;
+}
+
+.pricePostfix {
+    font-size: 14px;
+    line-height: 18px;
+
+    @include media-breakpoint-up(md) {
+        font-size: 18px;
+        line-height: 30px;
+    }
+}
+
+.priceTotal {
+    font-size: 28px;
+    line-height: 0.8;
+
+    @include media-breakpoint-down(sm) {
+        font-size: 25px;
+    }
+}
+
+.fee {
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 1.25;
+
+    @include media-breakpoint-up(md) {
+        margin-bottom: 5px;
+    }
+}
+
+.tooltipText {
+    text-align: left;
+}

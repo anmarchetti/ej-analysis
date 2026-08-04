@@ -1,0 +1,51 @@
+.summaryHeader {
+    position: sticky;
+    z-index: $z-index-tooltip;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 82px;
+    background: #fff;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.08), 0 0 4px 0 rgba(0, 0, 0, 0.04), 0 0 0 0.5px rgba(0, 0, 0, 0.1);
+
+    .summaryHeaderInner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 1230px;
+        padding-right: 15px;
+        padding-left: 15px;
+
+        .flightDetails {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: auto;
+            font-size: 14px;
+        }
+
+        .airport {
+            font-weight: bold;
+        }
+
+        svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+        }
+
+        .durationDetails {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    button {
+        width: 187px;
+        height: 50px;
+        font-size: 16px;
+    }
+}

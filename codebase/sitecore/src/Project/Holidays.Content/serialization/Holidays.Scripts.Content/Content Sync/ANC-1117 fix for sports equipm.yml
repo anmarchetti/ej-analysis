@@ -1,0 +1,87 @@
+﻿---
+ID: "1126ccb5-84ec-4453-85f0-4a82e7c7404b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-1117 fix for sports equipment"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $popupPathHolidays = '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Hold Luggage Popup'
+    $payBalancePathHolidays = '/sitecore/content/EasyJet/Holidays/Home/Booking/Pay Balance/Page Components/Pay Balance'
+    $paymentPathHolidays = '/sitecore/content/EasyJet/Holidays/Home/Booking/Payment/Page Components/Payment'
+    $viewBookingPathHolidays = '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/View Booking'
+    $popupPathTrade = '/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Hold Luggage Popup'
+    
+    $sportsEquipmentLargeListHolidays = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Large Sports Equipment'
+    $sportsEquipmentSmallHolidays = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Small Sports Equipment'
+    $sportsEquipmentLargeTrade = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Large Sports Equipment'
+    $sportsEquipmentSmallTrade = '/sitecore/content/EasyJet/TradePortal/Data/Luggage/Small Sports Equipment'
+    
+    $holdLuggagePathTrade = '/sitecore/content/EasyJet/TradePortal/Data/Hold Luggage'
+    $holdLuggagePathHolidays = '/sitecore/content/EasyJet/Holidays/Data/Hold Luggage'
+    $sportsItemsLargeHolidays =  Get-ChildItem -Path $sportsEquipmentLargeListHolidays
+    $sportsItemsSmallHolidays = Get-ChildItem -Path $sportsEquipmentSmallHolidays
+    $sportsItemsLargeTrade = Get-ChildItem -Path $sportsEquipmentLargeTrade
+    $sportsItemsSmallTrade = Get-ChildItem -Path $sportsEquipmentSmallTrade
+    
+    $sportsiItemsListLargeHolidays= ($sportsItemsLargeHolidays | select -ExpandProperty Id) -join "|"
+    $sportsiItemsListSmallHolidays= ($sportsItemsSmallHolidays | select -ExpandProperty Id) -join "|"
+    $sportsItemsListHolidays = $sportsiItemsListLargeHolidays + '|' + $sportsiItemsListSmallHolidays
+    $sportsiItemsListLargeTrade= ($sportsItemsLargeTrade | select -ExpandProperty Id) -join "|"
+    $sportsiItemsListSmallTrade= ($sportsItemsSmallTrade | select -ExpandProperty Id) -join "|"
+    $sporstitemsListTrade = $sportsiItemsListLargeTrade + '|' + $sportsiItemsListSmallTrade
+    
+    
+    function setSportsEquipmentList($itemPath, $codesList, $lang) {
+        $sportsEquipmentItem = Get-Item -Path $itemPath -Language $lang
+        
+         if($sportsEquipmentItem -eq $null -or $sportsEquipmentItem.Versions.GetVersions().Count -eq 0){
+            Add-ItemLanguage -Path $itemPath -TargetLanguage $lang -IfExist Skip -DoNotCopyFields;
+        }
+        $sportsEquipmentItem = Get-Item -Path $itemPath -Language $lang
+        
+            if($sportsEquipmentItem -ne $null) {
+            $sportsEquipmentItem.Editing.BeginEdit()
+            $sportsEquipmentItem["SportsEquipmentItems"] = $codesList
+            #some datasources have different name for the field
+            $sportsEquipmentItem["SportEquipmentItems"] = $codesList
+            $sportsEquipmentItem.Editing.EndEdit() | Out-Null
+            }
+    }
+    
+    setSportsEquipmentList -itemPath $popupPathTrade -codesList $sporstitemsListTrade -lang 'en'
+    
+    setSportsEquipmentList -itemPath $popupPathHolidays -codesList $sportsItemsListHolidays -lang 'en'
+    setSportsEquipmentList -itemPath $popupPathHolidays -codesList $sportsItemsListHolidays -lang 'fr-FR'
+    setSportsEquipmentList -itemPath $popupPathHolidays -codesList $sportsItemsListHolidays -lang 'de-DE'
+    setSportsEquipmentList -itemPath $popupPathHolidays -codesList $sportsItemsListHolidays -lang 'fr-CH'
+    setSportsEquipmentList -itemPath $popupPathHolidays -codesList $sportsItemsListHolidays -lang 'de-CH'
+    
+    setSportsEquipmentList -itemPath $payBalancePathHolidays -codesList $sportsItemsListHolidays -lang 'en'
+    setSportsEquipmentList -itemPath $payBalancePathHolidays -codesList $sportsItemsListHolidays -lang 'fr-FR'
+    setSportsEquipmentList -itemPath $payBalancePathHolidays -codesList $sportsItemsListHolidays -lang 'de-DE'
+    setSportsEquipmentList -itemPath $payBalancePathHolidays -codesList $sportsItemsListHolidays -lang 'fr-CH'
+    setSportsEquipmentList -itemPath $payBalancePathHolidays -codesList $sportsItemsListHolidays -lang 'de-CH'
+    
+    setSportsEquipmentList -itemPath $paymentPathHolidays -codesList $sportsItemsListHolidays -lang 'en'
+    setSportsEquipmentList -itemPath $paymentPathHolidays -codesList $sportsItemsListHolidays -lang 'fr-FR'
+    setSportsEquipmentList -itemPath $paymentPathHolidays -codesList $sportsItemsListHolidays -lang 'de-DE'
+    setSportsEquipmentList -itemPath $paymentPathHolidays -codesList $sportsItemsListHolidays -lang 'fr-CH'
+    setSportsEquipmentList -itemPath $paymentPathHolidays -codesList $sportsItemsListHolidays -lang 'de-CH'
+    
+    setSportsEquipmentList -itemPath $viewBookingPathHolidays -codesList $sportsItemsListHolidays -lang 'en'
+    setSportsEquipmentList -itemPath $viewBookingPathHolidays -codesList $sportsItemsListHolidays -lang 'fr-FR'
+    setSportsEquipmentList -itemPath $viewBookingPathHolidays -codesList $sportsItemsListHolidays -lang 'de-DE'
+    setSportsEquipmentList -itemPath $viewBookingPathHolidays -codesList $sportsItemsListHolidays -lang 'fr-CH'
+    setSportsEquipmentList -itemPath $viewBookingPathHolidays -codesList $sportsItemsListHolidays -lang 'de-CH'
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240123T140926Z

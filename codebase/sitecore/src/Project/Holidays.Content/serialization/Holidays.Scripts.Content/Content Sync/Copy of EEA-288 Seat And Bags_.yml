@@ -1,0 +1,87 @@
+﻿---
+ID: "afb05b1b-9f6a-4340-beab-d09d1c84a3c1"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/Copy of EEA-288 Seat And Bags Update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $urgencymessagetooltiptext_687f6ca398d445908354efe90aeccf67_dech_v1 = @"
+    Dies ist die Anzahl der zum jetzigen Zeitpunkt verfügbaren Sitzplätze für den Flug nach {flightDirection}. Zu einem späteren Zeitpunkt kann es eventuell mehr Verfügbarkeit geben.
+    "@
+    $urgencymessagetooltiptext_687f6ca398d445908354efe90aeccf67_frch_v1 = @"
+    Il s'agit du nombre de sièges restants sur le vol à destination de {flightDirection} à l'heure actuelle. D'autres peuvent devenir disponibles ultérieurement.
+    "@
+    $urgencymessagetooltiptext_687f6ca398d445908354efe90aeccf67_en_v1 = @"
+    This is the number of seats remaining on the {flightDirection} flight only right now. There may be more available at a later date.
+    "@
+    $urgencymessagetooltiptext_687f6ca398d445908354efe90aeccf67_dede_v1 = @"
+    Dies ist die Anzahl der zum jetzigen Zeitpunkt verfügbaren Sitzplätze für den Flug nach {flightDirection}. Zu einem späteren Zeitpunkt kann es eventuell mehr Verfügbarkeit geben.
+    "@
+    $urgencymessagetext_687f6ca398d445908354efe90aeccf67_dech_v1 = @"
+    {avail} Sitzplätze verfügbar!
+    "@
+    $urgencymessagetooltiptext_687f6ca398d445908354efe90aeccf67_frfr_v1 = @"
+    Il s'agit du nombre de sièges restants sur le vol à destination de {flightDirection} à l'heure actuelle. D'autres peuvent devenir disponibles ultérieurement.
+    "@
+    $urgencymessagetext_687f6ca398d445908354efe90aeccf67_frfr_v1 = @"
+    {avail} sièges restants!
+    "@
+    $urgencymessagetext_687f6ca398d445908354efe90aeccf67_en_v1 = @"
+    Only {avail} seats left!
+    "@
+    $urgencymessagetext_687f6ca398d445908354efe90aeccf67_frch_v1 = @"
+    {avail} sièges restants!
+    "@
+    $urgencymessagetext_687f6ca398d445908354efe90aeccf67_dede_v1 = @"
+    {avail} Sitzplätze verfügbar!
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Seat And Bags"
+            TemplatePath = "Feature/Ancillaries/SeatMap/Seat And Bags"
+            Id          = [GUID]"{687F6CA3-98D4-4590-8354-EFE90AECCF67}"
+            Fields      = @{
+                "UrgencyMessageTooltipText" = @{
+                    "de-CH" = $urgencymessagetooltiptext_687f6ca398d445908354efe90aeccf67_dech_v1
+                    "en" = $urgencymessagetooltiptext_687f6ca398d445908354efe90aeccf67_en_v1
+                    "fr-FR" = $urgencymessagetooltiptext_687f6ca398d445908354efe90aeccf67_frfr_v1
+                    "de-DE" = $urgencymessagetooltiptext_687f6ca398d445908354efe90aeccf67_dede_v1
+                    "fr-CH" = $urgencymessagetooltiptext_687f6ca398d445908354efe90aeccf67_frch_v1
+                }
+                "UrgencyMessageSeatsThreshold" = @{
+                    "de-CH" = "50"
+                    "en" = "50"
+                    "fr-FR" = "50"
+                    "de-DE" = "50"
+                    "fr-CH" = "50"
+                }
+                "UrgencyMessageText" = @{
+                    "de-CH" = $urgencymessagetext_687f6ca398d445908354efe90aeccf67_dech_v1
+                    "en" = $urgencymessagetext_687f6ca398d445908354efe90aeccf67_en_v1
+                    "fr-FR" = $urgencymessagetext_687f6ca398d445908354efe90aeccf67_frfr_v1
+                    "de-DE" = $urgencymessagetext_687f6ca398d445908354efe90aeccf67_dede_v1
+                    "fr-CH" = $urgencymessagetext_687f6ca398d445908354efe90aeccf67_frch_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 99999933
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250613T095351Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

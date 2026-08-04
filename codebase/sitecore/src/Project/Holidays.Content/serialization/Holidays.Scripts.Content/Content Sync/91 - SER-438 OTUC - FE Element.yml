@@ -1,0 +1,243 @@
+﻿---
+ID: "4b78f6f6-c0ae-48c1-8054-0f1fec7232b1"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/91 - SER-438 OTUC - FE Elements - Deposit Balance Paid"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+        $item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+         if ($item -eq $null) {
+                $item = New-Item -Path $path -ItemType $templateId
+                Write-Host "Item" $item.Name "successfully created";
+         }
+         return $item
+    }
+    
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    function create-popup($path, $translations ){
+        $data = Get-Or-Create-Item -path $path -templateId '{30B4CEE4-5754-4021-B936-4D9D5F71457E}'
+        foreach ($lang in $translations.Keys) {
+                create-lang-version -item $data -lang $lang -field "IsLinkVisible" -value $translations[$lang]["IsLinkVisible"]
+                create-lang-version -item $data -lang $lang -field "LinkText" -value $translations[$lang]["LinkText"]
+                create-lang-version -item $data -lang $lang -field "TitlePopup" -value $translations[$lang]["TitlePopup"]
+                create-lang-version -item $data -lang $lang -field "TextPopup" -value $translations[$lang]["TextPopup"]
+                create-lang-version -item $data -lang $lang -field "PopupUniqueId" -value $translations[$lang]["PopupUniqueId"]
+            }    
+            
+        return $data;
+    }
+    
+    function set-popup($path, $val ){
+     $data = Get-Or-Create-Item -Path $path -TemplateId '{039B23C0-8AD4-413C-B0B1-7027F74F6C5F}'
+    
+        if ($null -ne $data) {
+            $currentValues = if ($data['Popups']) { $data['Popups'] -split "\|" } else { @() } 
+            
+            $currentValues = $currentValues | Where-Object { $_ -ne "" }
+    
+            $updatedValues = $currentValues + ($val | Where-Object { $_ -notin $currentValues })
+    
+            $data.Editing.BeginEdit()
+            $data['Popups'] = ($updatedValues -join "|")
+            $data.Editing.EndEdit() | Out-Null
+        }
+    } 
+    
+    #rename existing file
+    Rename-Item -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Explanation Popup Folder/Deposit Balance Partial OTUC' -NewName 'Deposit Only Partial OTUC' -Force
+    
+    #OTUC
+    $depositBalanceNoOtuc = @{
+                    "en" = @{
+                        'PopupUniqueId'= 'DepositBalanceNoOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Why am I being refunded this way?'
+                        "TitlePopup"= 'Why am I being refunded this way?'
+                        "TextPopup"= "<p>When booking, we took a <b>{depositPricePP}</b> non-refundable deposit to secure your holiday.</p><p>We’re sorry this holiday isn’t quite right for you, so as part of our <b>ultimate flexibility</b>, we are returning your deposit this time, but as easyJet holidays credit so you can use it to book a holiday that is right for you.</p><p>You can choose if the remainder of your holiday balance will be refunded as credit or to your original payment method.</p><p>For more information about deposits and refunds, please see our <a href='~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z' target='_blank'>booking conditions</a></p>"
+                        
+                    }
+                    "fr-CH" = @{
+                        'PopupUniqueId'= 'DepositBalanceNoOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TitlePopup"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TextPopup"= "<p>Lors de votre réservation, nous avons prélevé un acompte non remboursable de <b>{depositPricePP}</b> afin de sécuriser votre séjour.</p><p>Nous sommes désolés que ces vacances ne vous conviennent pas tout à fait. Dans le cadre de notre politique <b>Ultimate Flexibility</b>, nous vous restituons exceptionnellement votre acompte sous forme de crédit easyJet holidays, que vous pourrez utiliser pour réserver des vacances qui vous conviennent mieux.</p><p>Pour plus d’informations sur les acomptes et les remboursements, veuillez consulter nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>conditions de réservation</a>.</p>"
+                    }
+                    "fr-FR" = @{
+                        'PopupUniqueId'= 'DepositBalanceNoOTUC'
+                         "IsLinkVisible"= '1'
+                        "LinkText"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TitlePopup"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TextPopup"= "<p>Lors de votre réservation, nous avons prélevé un acompte non remboursable de <b>{depositPricePP}</b> afin de sécuriser votre séjour.</p><p>Nous sommes désolés que ces vacances ne vous conviennent pas tout à fait. Dans le cadre de notre politique <b>Ultimate Flexibility</b>, nous vous restituons exceptionnellement votre acompte sous forme de crédit easyJet holidays, que vous pourrez utiliser pour réserver des vacances qui vous conviennent mieux.</p><p>Pour plus d’informations sur les acomptes et les remboursements, veuillez consulter nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>conditions de réservation</a>.</p>"
+                    }
+                    "de-CH" = @{
+                        'PopupUniqueId'= 'DepositBalanceNoOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TitlePopup"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TextPopup"= "<p>Bei der Buchung haben wir eine nicht erstattungsfähige Anzahlung von <b>{depositPricePP}</b> erhoben, um Ihren Urlaub zu sichern.</p><p>Es tut uns leid, dass dieser Urlaub nicht ganz das Richtige für Sie ist. Im Rahmen unserer <b>Ultimate Flexibility</b> erstatten wir Ihnen Ihre Anzahlung dieses Mal zurück – jedoch in Form eines easyJet holidays Guthabens, das Sie für die Buchung eines passenderen Urlaubs nutzen können.</p><p>Für weitere Informationen zu Anzahlungen und Rückerstattungen lesen Sie bitte unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>buchungsbedingungen</a>.</p>"
+                    }
+                    "de-DE" = @{
+                        'PopupUniqueId'= 'DepositBalanceNoOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TitlePopup"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TextPopup"= "<p>Bei der Buchung haben wir eine nicht erstattungsfähige Anzahlung von <b>{depositPricePP}</b> erhoben, um Ihren Urlaub zu sichern.</p><p>Es tut uns leid, dass dieser Urlaub nicht ganz das Richtige für Sie ist. Im Rahmen unserer <b>Ultimate Flexibility</b> erstatten wir Ihnen Ihre Anzahlung dieses Mal zurück – jedoch in Form eines easyJet holidays Guthabens, das Sie für die Buchung eines passenderen Urlaubs nutzen können.</p><p>Für weitere Informationen zu Anzahlungen und Rückerstattungen lesen Sie bitte unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>buchungsbedingungen</a>.</p>"
+                    }
+                }
+    $depositBalancePartialOtuc = @{
+                    "en" = @{
+                        'PopupUniqueId'= 'DepositBalancePartialOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Why am I being refunded this way?'
+                        "TitlePopup"= 'Why am I being refunded this way?'
+                        "TextPopup"= "<p>When booking, we took a {depositPricePP} non-refundable deposit to secure your holiday.</p><p>As part of our <b>ultimate flexibility</b>, we are returning part of your deposit this time, but as easyJet holidays credit so you can use it to book a holiday that is right for you.</p><p>For more information about deposits and refunds, please see our <a href='~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z' target='_blank'>booking conditions</a>.</p>"
+                        
+                    }
+                    "fr-CH" = @{
+                        'PopupUniqueId'= 'DepositBalancePartialOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TitlePopup"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TextPopup"= "<p>Lors de votre réservation, nous avons prélevé un acompte non remboursable de {depositPricePP} afin de sécuriser votre séjour.</p><p>Dans le cadre de notre <b>Ultimate Flexibility</b>, nous vous restituons cette fois une partie de votre acompte, sous forme de crédit easyJet holidays, que vous pourrez utiliser pour réserver des vacances qui vous conviennent mieux.</p><p>Pour plus d’informations sur les acomptes et les remboursements, veuillez consulter nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>conditions de réservation</a>.</p>"
+                    }
+                    "fr-FR" = @{
+                        'PopupUniqueId'= 'DepositBalancePartialOTUC'
+                         "IsLinkVisible"= '1'
+                        "LinkText"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TitlePopup"= "Pourquoi suis-je remboursé de cette manière?"
+                        "TextPopup"= "<p>Lors de votre réservation, nous avons prélevé un acompte non remboursable de <b>{depositPricePP}</b> afin de sécuriser votre séjour.</p><p>Dans le cadre de notre <b>Ultimate Flexibility</b>, nous vous restituons cette fois une partie de votre acompte, sous forme de crédit easyJet holidays, que vous pourrez utiliser pour réserver des vacances qui vous conviennent mieux.</p><p>Pour plus d’informations sur les acomptes et les remboursements, veuillez consulter nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>conditions de réservation</a>.</p>"
+                    }
+                    "de-CH" = @{
+                        'PopupUniqueId'= 'DepositBalancePartialOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TitlePopup"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TextPopup"= "<p>Bei der Buchung haben wir eine nicht erstattungsfähige Anzahlung von <b>{depositPricePP}</b> erhoben, um Ihren Urlaub zu sichern.</p><p>Im Rahmen unserer <b>Ultimate Flexibility</b> erstatten wir Ihnen dieses Mal einen Teil Ihrer Anzahlung – jedoch in Form eines easyJet holidays Guthabens, das Sie für die Buchung eines passenderen Urlaubs nutzen können.</p><p>Für weitere Informationen zu Anzahlungen und Rückerstattungen lesen Sie bitte unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>buchungsbedingungen</a>.</p>"
+                    }
+                    "de-DE" = @{
+                        'PopupUniqueId'= 'DepositBalancePartialOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TitlePopup"= 'Warum wird mir der Betrag auf diese Weise erstattet?'
+                        "TextPopup"= "<p>Bei der Buchung haben wir eine nicht erstattungsfähige Anzahlung von <b>{depositPricePP}</b> erhoben, um Ihren Urlaub zu sichern.</p><p>Im Rahmen unserer <b>Ultimate Flexibility</b> erstatten wir Ihnen dieses Mal einen Teil Ihrer Anzahlung – jedoch in Form eines easyJet holidays Guthabens, das Sie für die Buchung eines passenderen Urlaubs nutzen können.</p><p>Für weitere Informationen zu Anzahlungen und Rückerstattungen lesen Sie bitte unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>buchungsbedingungen</a>.</p>"
+                    }
+                }  
+    $depositBalanceFullOtuc = @{
+                    "en" = @{
+                        'PopupUniqueId'= 'DepositBalanceFullOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Why am I not being refunded in full?'
+                        "TitlePopup"= 'Why am I not being refunded in full?'
+                        "TextPopup"= "<p>When booking, we took a <b>{depositPricePP}</b> non-refundable deposit to secure your holiday.</p><p>We will retain the deposit, but as part of our <b>ultimate flexibility</b>, we can refund the remainder of your holiday balance.</p><p>For more information about deposits and refunds, please see our <a href='~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z' target='_blank'>booking conditions</a>.</p>"
+                        
+                    }
+                    "fr-CH" = @{
+                        'PopupUniqueId'= 'DepositBalanceFullOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= "Pourquoi ne suis-je pas remboursé intégralement"
+                        "TitlePopup"= "Pourquoi ne suis-je pas remboursé intégralement"
+                        "TextPopup"= "<p>Lors de la réservation, nous avons pris un acompte non remboursable de <b>{depositPricePP}</b> pour sécuriser votre séjour.</p><p>Nous conserverons cet acompte, mais dans le cadre de notre <b>flexibilité ultime</b>, nous pouvons vous rembourser le reste du solde de votre séjour.</p.<p>Pour plus d’informations sur les acomptes et les remboursements, veuillez consulter nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>conditions de réservation</a>.</p>"
+                    }
+                    "fr-FR" = @{
+                        'PopupUniqueId'= 'DepositBalanceFullOTUC'
+                         "IsLinkVisible"= '1'
+                        "LinkText"= "Pourquoi ne suis-je pas remboursé intégralement"
+                        "TitlePopup"= "Pourquoi ne suis-je pas remboursé intégralement"
+                        "TextPopup"= "<p>Lors de la réservation, nous avons pris un acompte non remboursable de <b>{depositPricePP}</b> pour sécuriser votre séjour.</p><p>Nous conserverons cet acompte, mais dans le cadre de notre <b>flexibilité ultime</b>, nous pouvons vous rembourser le reste du solde de votre séjour.</p.<p>Pour plus d’informations sur les acomptes et les remboursements, veuillez consulter nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>conditions de réservation</a>.</p>"
+                    }
+                    "de-CH" = @{
+                        'PopupUniqueId'= 'DepositBalanceFullOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Warum werde ich nicht vollständig erstattet?'
+                        "TitlePopup"= 'Warum werde ich nicht vollständig erstattet?'
+                        "TextPopup"= "<p>Bei der Buchung haben wir eine nicht erstattungsfähige Anzahlung in Höhe von <b>{depositPricePP}</b> genommen, um Ihren Urlaub zu sichern.</p><p>Wir behalten diese Anzahlung, aber im Rahmen unserer <b>ultimativen Flexibilität</b> können wir den restlichen Betrag Ihres Urlaubs erstatten.</p><p>Für weitere Informationen zu Anzahlungen und Rückerstattungen lesen Sie bitte unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>buchungsbedingungen</a>.</p>"
+                    }
+                    "de-DE" = @{
+                        'PopupUniqueId'= 'DepositBalanceFullOTUC'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Warum werde ich nicht vollständig erstattet?'
+                        "TitlePopup"= 'Warum werde ich nicht vollständig erstattet?'
+                        "TextPopup"= "<p>Bei der Buchung haben wir eine nicht erstattungsfähige Anzahlung in Höhe von <b>{depositPricePP}</b> genommen, um Ihren Urlaub zu sichern.</p><p>Wir behalten diese Anzahlung, aber im Rahmen unserer <b>ultimativen Flexibilität</b> können wir den restlichen Betrag Ihres Urlaubs erstatten.</p><p>Für weitere Informationen zu Anzahlungen und Rückerstattungen lesen Sie bitte unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>buchungsbedingungen</a>.</p>"
+                    }
+                }  
+    $depositBalanceLess60 = @{
+                    "en" = @{
+                        'PopupUniqueId'= 'DepositBalanceLess60Days'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Why am I not being refunded in full?'
+                        "TitlePopup"= 'Why am I not being refunded in full?'
+                        "TextPopup"= "<p>When booking, we took a <b>{depositPricePP}</b> non-refundable deposit to secure your holiday.</p><p>We will retain the deposit, but as part of our <b>ultimate flexibility</b>, we can refund the remainder of your holiday balance as credit or to your original payment method.</p><p>For more information about deposits and refunds, please see our <a href='~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z' target='_blank'>booking conditions</a>.</p>"
+                        
+                    }
+                    "fr-CH" = @{
+                        'PopupUniqueId'= 'DepositBalanceLess60Days'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= "Pourquoi ne suis-je pas remboursé intégralement"
+                        "TitlePopup"= "Pourquoi ne suis-je pas remboursé intégralement"
+                        "TextPopup"= "<p>Lors de la réservation, nous avons pris un acompte non remboursable de <b>{depositPricePP}</b> pour sécuriser votre séjour.</p><p>Nous conserverons l’acompte, mais dans un souci de <b>flexibilité maximale</b>, nous pouvons rembourser le reste du solde de vos vacances sous forme de crédit ou sur votre mode de paiement initial.</p.<p>Pour plus d’informations sur les acomptes et les remboursements, veuillez consulter nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>conditions de réservation</a>.</p>"
+                    }
+                    "fr-FR" = @{
+                        'PopupUniqueId'= 'DepositBalanceLess60Days'
+                         "IsLinkVisible"= '1'
+                        "LinkText"= "Pourquoi ne suis-je pas remboursé intégralement"
+                        "TitlePopup"= "Pourquoi ne suis-je pas remboursé intégralement"
+                        "TextPopup"= "<p>Lors de la réservation, nous avons pris un acompte non remboursable de <b>{depositPricePP}</b> pour sécuriser votre séjour.</p><p>Nous conserverons l’acompte, mais dans un souci de <b>flexibilité maximale</b>, nous pouvons rembourser le reste du solde de vos vacances sous forme de crédit ou sur votre mode de paiement initial.</p.<p>Pour plus d’informations sur les acomptes et les remboursements, veuillez consulter nos <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>conditions de réservation</a>.</p>"
+                    }
+                    "de-CH" = @{
+                        'PopupUniqueId'= 'DepositBalanceLess60Days'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Warum werde ich nicht vollständig erstattet?'
+                        "TitlePopup"= 'Warum werde ich nicht vollständig erstattet?'
+                        "TextPopup"= "<p>Bei der Buchung haben wir eine nicht erstattungsfähige Anzahlung in Höhe von <b>{depositPricePP}</b> genommen, um Ihren Urlaub zu sichern.</p><p>Wir behalten die Anzahlung ein, aber im Rahmen unserer <b>maximalen Flexibilität</b> können wir den verbleibenden Restbetrag Ihres Urlaubs entweder als Guthaben oder auf Ihre ursprüngliche Zahlungsmethode zurückerstatten.</p><p>Für weitere Informationen zu Anzahlungen und Rückerstattungen lesen Sie bitte unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>buchungsbedingungen</a>.</p>"
+                    }
+                    "de-DE" = @{
+                        'PopupUniqueId'= 'DepositBalanceLess60Days'
+                        "IsLinkVisible"= '1'
+                        "LinkText"= 'Warum werde ich nicht vollständig erstattet?'
+                        "TitlePopup"= 'Warum werde ich nicht vollständig erstattet?'
+                        "TextPopup"= "<p>Bei der Buchung haben wir eine nicht erstattungsfähige Anzahlung in Höhe von <b>{depositPricePP}</b> genommen, um Ihren Urlaub zu sichern.</p><p>Wir behalten die Anzahlung ein, aber im Rahmen unserer <b>maximalen Flexibilität</b> können wir den verbleibenden Restbetrag Ihres Urlaubs entweder als Guthaben oder auf Ihre ursprüngliche Zahlungsmethode zurückerstatten.</p><p>Für weitere Informationen zu Anzahlungen und Rückerstattungen lesen Sie bitte unsere <a href='~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z' target='_blank'>buchungsbedingungen</a>.</p>"
+                    }
+                }  
+                
+    $depositBalanceNoOtucPopup = create-popup -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Explanation Popup Folder/Deposit Balance No OTUC' -Translations $depositBalanceNoOtuc
+    $depositBalancePartialOtucPopup =  create-popup -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Explanation Popup Folder/Deposit Balance Partial OTUC' -Translations $depositBalancePartialOtuc
+    $depositBalanceFullOtuc =  create-popup -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Explanation Popup Folder/Deposit Balance Full OTUC' -Translations $depositBalanceFullOtuc
+    $less60popup =  create-popup -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Explanation Popup Folder/Deposit Balance Less 60 Days' -Translations $depositBalanceLess60
+    
+    #set popups
+    $val =  @($depositBalanceNoOtucPopup[0].ID, $depositBalancePartialOtucPopup[0].ID, $depositBalanceFullOtuc[0].ID, $less60popup[0].ID) -join "|"
+    set-popup -path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking/Original Payment OTUC' -val $val
+    
+    $val =  @($depositBalancePartialOtucPopup[0].ID, $depositBalanceFullOtuc[0].ID, $less60popup[0].ID) -join "|"
+    set-popup -path '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking/Credit Refund OTUC' -val $val
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250317T141742Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,69 @@
+{
+    "Title": "Trasnfers for hotel WITH_TRANSFER_CONTENT (api/DestinationsSearch/GetHotelTransfers)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetHotelTransfers",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "ExactMatcher",
+                "Pattern": "AtcomIds%5B0%5D=WITH_TRANSFER_CONTENT"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": [
+            [
+                {
+                    "Code": "S",
+                    "Name": "$name",
+                    "Airports": [
+                        {
+                            "AirportGroup": "Spain",
+                            "Code": "RMU",
+                            "Name": "Murcia"
+                        },
+                        {
+                            "AirportGroup": "Spain",
+                            "Code": "PMI",
+                            "Name": "Palma Airport"
+                        },
+                        {
+                            "AirportGroup": "Spain",
+                            "Code": "MAH",
+                            "Name": "Mahon"
+                        },
+                        {
+                            "AirportGroup": "Spain",
+                            "Code": "MAD",
+                            "Name": "Madrid"
+                        }
+                    ],
+                    "IconUrl": "/-/media/cacb3397d50d4f128902439355274b26.ashx",
+                    "Content": "Shared bus(Majorca)",
+                    "ContentByDate": [
+                        {
+                            "StartDate": "",
+                            "EndDate": "2020-02-01T00:00:00.0000000",
+                            "Content": "Shared for Accom <strong>before 1st Feb</strong>."
+                        },
+                        {
+                            "StartDate": "2020-02-02T00:00:00.0000000",
+                            "EndDate": "",
+                            "Content": "Shared for Accom <strong>after 1st Feb</strong>."
+                        }
+                    ]
+                }
+            ]
+        ]
+    }
+}

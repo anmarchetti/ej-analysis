@@ -1,0 +1,288 @@
+﻿---
+ID: "213f2d5c-227c-461e-a2e2-dcbe2fec1265"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Helpers/EUXE-778 script for swiss market to enable new search pod design"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Write-Host "START: EJH-18398 Semantic Search Pod Sitecore Script"
+    Write-Log "START: EJH-18398 Semantic Search Pod Sitecore Script"
+    
+    function Update-Rendering-Parameter ($item) {
+    	Write-Host "Updating item $($item.FullPath)"
+    	Write-Log "Updating item $($item.FullPath)"
+    	
+    	$placeHolderV1 = "header"
+    	$placeHolderV2 = "/header"
+    	$renderingId = "{216FE85C-936E-4135-894B-E7DE8BF8A4C2}" #/sitecore/layout/Renderings/Foundation/Destinations/Search Pod
+    	$enableNewDesignNewValue = "1"
+    	
+    	$existsRendering = Get-Rendering -Item $item -PlaceHolder $placeHolderV1 | Where-Object {$_.ItemId -eq $renderingId}
+    	if($existsRendering -eq $null){
+    		$existsRendering = Get-Rendering -Item $item -PlaceHolder $placeHolderV2 | Where-Object {$_.ItemId -eq $renderingId}
+    	}
+    	
+    	if($existsRendering -eq $null){
+    		Write-Host "Rendering is missing on $($item.FullPath)" -ForegroundColor Red
+    		Write-Log "Rendering is missing on $($item.FullPath)" -ForegroundColor Red
+    	} else {
+    		Write-Host "Rendering is in place. Updating EnableNewDesign as '$enableNewDesignNewValue'"
+    		Write-Log "Rendering is in place. Updating EnableNewDesign as '$enableNewDesignNewValue'"
+    		Set-Rendering -Item $item -Instance $existsRendering -Parameter @{ "EnableNewDesign" = "1" } 
+    	}
+    }
+    
+    function Enable-New-Search-Pod () {
+        Write-Host "--------------------Enable new Search Pod BEGIN--------------------"
+        Write-Log "--------------------Enable new Search Pod BEGIN--------------------"
+        
+        $pages = 
+        			"/sitecore/content/EasyJet/Holidays/Home",
+        			"/sitecore/content/EasyJet/Holidays/Home/Hotel Details",
+        			"/sitecore/content/EasyJet/Holidays/Home/MixedResultList",
+        			"/sitecore/content/EasyJet/Holidays/Home/Extras hub"
+        
+        foreach($path in $pages)
+        {
+        	Write-Host "Enable new Search Pod on " $path
+        	Write-Log "Enable new Search Pod on " $path
+        	
+        	$pageItem = Get-Item -Path $path -ErrorAction SilentlyContinue
+        	
+        	if($pageItem -eq $null){
+        		Write-Host "Item is null" -ForegroundColor Red
+        		Write-Log "Item is null" -ForegroundColor Red
+        	} else {
+        		Update-Rendering-Parameter -Item $pageItem
+        	}
+        }
+    	
+    	#Destination pages (all of them below /sitecore/content/EasyJet/Holidays/Home/Destinations folder and their children)
+    	Write-Host "Enable new Search Pod on Destination pages EN"
+    	Write-Log "Enable new Search Pod on Destination pages EN"
+    	$count = 0
+    	Get-ChildItem "/sitecore/content/EasyJet/Holidays/Home/Destinations" -Language "en" | Where-Object { $_.TemplateId -eq "{5F03C6EF-EF52-4F2E-BC5A-B1F065A1E745}"  } | ForEach-Object {
+    		Get-ChildItem $_.FullPath -Language "en" | Where-Object { $_.TemplateId -eq "{2F42EC14-7E56-467A-B300-AB9723C74546}" -or $_.TemplateId -eq "{799ECB20-C605-4A6C-A32B-27222BDBB91E}"  } | ForEach-Object {
+    			Get-ChildItem $_.FullPath -Language "en" | Where-Object { $_.TemplateId -eq "{538939B3-07EC-4C23-BF8C-3A68DE0FDC93}"  } | ForEach-Object {
+    			    Get-ChildItem $_.FullPath -Language "en" | Where-Object { $_.TemplateId -eq "{28E5E169-8F72-4F90-A277-280A8302B607}"  } | ForEach-Object {
+        				Update-Rendering-Parameter -Item $_			
+        				$count++
+        			}
+        			
+    				Update-Rendering-Parameter -Item $_			
+    				$count++
+    			}
+    			
+    			Update-Rendering-Parameter -Item $_		
+    			$count++
+    		}
+    		
+    		Update-Rendering-Parameter -Item $_
+    		$count++
+    	}
+    	Write-Host "Processed Destination pages  EN: $($count)"
+    	Write-Log "Processed Destination pages  EN: $($count)"
+    	
+    	Write-Host "--------------------Enable new Search Pod  EN END--------------------"
+        Write-Log "--------------------Enable new Search Pod  EN END--------------------"
+    	
+    	Write-Host "Enable new Search Pod on Destination pages fr-ch"
+    	Write-Log "Enable new Search Pod on Destination pages fr-ch"
+    	$count = 0
+    	Get-ChildItem "/sitecore/content/EasyJet/Holidays/Home/Destinations" -Language "fr-ch" | Where-Object { $_.TemplateId -eq "{5F03C6EF-EF52-4F2E-BC5A-B1F065A1E745}"  } | ForEach-Object {
+    		Get-ChildItem $_.FullPath -Language "fr-ch" | Where-Object { $_.TemplateId -eq "{2F42EC14-7E56-467A-B300-AB9723C74546}" -or $_.TemplateId -eq "{799ECB20-C605-4A6C-A32B-27222BDBB91E}"  } | ForEach-Object {
+    			Get-ChildItem $_.FullPath -Language "fr-ch" | Where-Object { $_.TemplateId -eq "{538939B3-07EC-4C23-BF8C-3A68DE0FDC93}"  } | ForEach-Object {
+    			    Get-ChildItem $_.FullPath -Language "fr-ch" | Where-Object { $_.TemplateId -eq "{28E5E169-8F72-4F90-A277-280A8302B607}"  } | ForEach-Object {
+        				Update-Rendering-Parameter -Item $_			
+        				$count++
+        			}
+        			
+    				Update-Rendering-Parameter -Item $_			
+    				$count++
+    			}
+    			
+    			Update-Rendering-Parameter -Item $_		
+    			$count++
+    		}
+    		
+    		Update-Rendering-Parameter -Item $_
+    		$count++
+    	}
+    	Write-Host "Processed Destination pages  fr-ch: $($count)"
+    	Write-Log "Processed Destination pages  fr-ch: $($count)"
+    	
+    	Write-Host "--------------------Enable new Search Pod  fr-ch END--------------------"
+        Write-Log "--------------------Enable new Search Pod  fr-ch END--------------------"
+    	
+    	Write-Host "Enable new Search Pod on Destination pages de-ch"
+    	Write-Log "Enable new Search Pod on Destination pages de-ch"
+    	$count = 0
+    	Get-ChildItem "/sitecore/content/EasyJet/Holidays/Home/Destinations" -Language "de-ch" | Where-Object { $_.TemplateId -eq "{5F03C6EF-EF52-4F2E-BC5A-B1F065A1E745}"  } | ForEach-Object {
+    		Get-ChildItem $_.FullPath -Language "de-ch" | Where-Object { $_.TemplateId -eq "{2F42EC14-7E56-467A-B300-AB9723C74546}" -or $_.TemplateId -eq "{799ECB20-C605-4A6C-A32B-27222BDBB91E}"  } | ForEach-Object {
+    			Get-ChildItem $_.FullPath -Language "de-ch" | Where-Object { $_.TemplateId -eq "{538939B3-07EC-4C23-BF8C-3A68DE0FDC93}"  } | ForEach-Object {
+    			    Get-ChildItem $_.FullPath -Language "de-ch" | Where-Object { $_.TemplateId -eq "{28E5E169-8F72-4F90-A277-280A8302B607}"  } | ForEach-Object {
+        				Update-Rendering-Parameter -Item $_			
+        				$count++
+        			}
+        			
+    				Update-Rendering-Parameter -Item $_			
+    				$count++
+    			}
+    			
+    			Update-Rendering-Parameter -Item $_		
+    			$count++
+    		}
+    		
+    		Update-Rendering-Parameter -Item $_
+    		$count++
+    	}
+    	Write-Host "Processed Destination pages  de-ch: $($count)"
+    	Write-Log "Processed Destination pages  de-ch: $($count)"
+    	
+    	Write-Host "--------------------Enable new Search Pod  de-ch END--------------------"
+        Write-Log "--------------------Enable new Search Pod  de-ch END--------------------"
+    }
+    
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        
+        if ($item -eq $null) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item $($item.Name) successfully created"
+        }
+        
+        return $item
+    }
+    
+    function Create-Search-Pod-Data ($folderPath) {
+        $folder = Get-Or-Create-Item -Path $folderPath -TemplateId "{E16615AE-71E2-4FEE-9F85-397A50043FD5}"
+        
+    	$searchPodItems = 
+    		@(
+    			@{
+    				Name = "Beach Holidays";
+    				fields = @( 
+    							@{ 
+    								MenuItemLabel = "Beach holidays";
+    								SelectedItems = "{92755020-F13B-46DE-AA56-21A3C20491C6}|{1C804CAB-F5BC-4A24-8F29-DFAF6F64B0C8}|{023C77B0-B002-40D3-AF51-9735DF6ABF1F}|{47DBBDE0-9470-48FE-8645-5F52D1CF9D78}|{BE75B08A-B8C7-410D-8FFD-4494AD385219}|{AB1352B3-20EC-4376-8E05-566CF209A2BA}|{553A627E-A9B2-4256-884C-764805562D52}|{5AE94F09-2BA3-414B-B709-C393BC437E1E}|{9AF6AAE9-05C1-4925-9748-9B5481A2A99B}|{9B265EF7-D94C-44C9-A265-69C7134D1D0E}|{43190AA5-166A-45E9-8C3C-9F021E4D14C3}";
+    								lang = "en"; 
+    							},
+    							@{ 
+    								MenuItemLabel = "Beach holidays";
+    								SelectedItems = "{92755020-F13B-46DE-AA56-21A3C20491C6}|{1C804CAB-F5BC-4A24-8F29-DFAF6F64B0C8}|{023C77B0-B002-40D3-AF51-9735DF6ABF1F}|{47DBBDE0-9470-48FE-8645-5F52D1CF9D78}|{BE75B08A-B8C7-410D-8FFD-4494AD385219}|{AB1352B3-20EC-4376-8E05-566CF209A2BA}|{553A627E-A9B2-4256-884C-764805562D52}|{5AE94F09-2BA3-414B-B709-C393BC437E1E}|{9AF6AAE9-05C1-4925-9748-9B5481A2A99B}|{9B265EF7-D94C-44C9-A265-69C7134D1D0E}|{43190AA5-166A-45E9-8C3C-9F021E4D14C3}";
+    								lang = "fr-ch"; 
+    							},
+    							@{ 
+    								MenuItemLabel = "Beach holidays";
+    								SelectedItems = "{92755020-F13B-46DE-AA56-21A3C20491C6}|{1C804CAB-F5BC-4A24-8F29-DFAF6F64B0C8}|{023C77B0-B002-40D3-AF51-9735DF6ABF1F}|{47DBBDE0-9470-48FE-8645-5F52D1CF9D78}|{BE75B08A-B8C7-410D-8FFD-4494AD385219}|{AB1352B3-20EC-4376-8E05-566CF209A2BA}|{553A627E-A9B2-4256-884C-764805562D52}|{5AE94F09-2BA3-414B-B709-C393BC437E1E}|{9AF6AAE9-05C1-4925-9748-9B5481A2A99B}|{9B265EF7-D94C-44C9-A265-69C7134D1D0E}|{43190AA5-166A-45E9-8C3C-9F021E4D14C3}";
+    								lang = "de-ch"; 
+    							})
+    			},
+    			@{
+    				Name = "Most popular destinations";
+    				fields = @( 
+    							@{ 
+    								MenuItemLabel = "Most popular destinations";
+    								SelectedItems = "{1AE24879-A5D3-4F9B-A807-5CAE38315F5A}|{EC3947EC-E3B7-45F7-81A1-64315E2C995C}|{14AE3A06-BACB-48F1-B66F-D1ABE3FB2741}|{C0C820EF-DBA4-444C-83DF-7C3D06A88C7D}|{23363DB7-8E57-4AA8-99DF-D041B1F7BB40}|{042442C6-7484-4003-AA26-8F43198351D8}";
+    								lang = "en"; 
+    							},
+    							@{ 
+    								MenuItemLabel = "Most popular destinations";
+    								SelectedItems = "{1AE24879-A5D3-4F9B-A807-5CAE38315F5A}|{EC3947EC-E3B7-45F7-81A1-64315E2C995C}|{14AE3A06-BACB-48F1-B66F-D1ABE3FB2741}|{C0C820EF-DBA4-444C-83DF-7C3D06A88C7D}|{23363DB7-8E57-4AA8-99DF-D041B1F7BB40}|{042442C6-7484-4003-AA26-8F43198351D8}";
+    								lang = "fr-ch"; 
+    							},
+    							@{ 
+    								MenuItemLabel = "Most popular destinations";
+    								SelectedItems = "{1AE24879-A5D3-4F9B-A807-5CAE38315F5A}|{EC3947EC-E3B7-45F7-81A1-64315E2C995C}|{14AE3A06-BACB-48F1-B66F-D1ABE3FB2741}|{C0C820EF-DBA4-444C-83DF-7C3D06A88C7D}|{23363DB7-8E57-4AA8-99DF-D041B1F7BB40}|{042442C6-7484-4003-AA26-8F43198351D8}";
+    								lang = "de-ch"; 
+    							})
+    			},
+    			@{
+    				Name = "Summer city breaks";
+    				fields = @( 
+    							@{ 
+    								MenuItemLabel = "Summer city breaks";
+    								SelectedItems = "{EC3947EC-E3B7-45F7-81A1-64315E2C995C}|{69415523-67C8-4D78-8D71-80792AF94866}|{FA36E5F8-BEBF-4CEB-8CF1-150AE399C47B}|{48082FD6-4D1E-4D8E-9D70-E729A0D6DD03}|{44F3C493-9A84-425D-88A2-239DB846E0D7}";
+    								lang = "en"; 
+    							},
+    							@{ 
+    								MenuItemLabel = "Summer city breaks";
+    								SelectedItems = "{EC3947EC-E3B7-45F7-81A1-64315E2C995C}|{69415523-67C8-4D78-8D71-80792AF94866}|{FA36E5F8-BEBF-4CEB-8CF1-150AE399C47B}|{48082FD6-4D1E-4D8E-9D70-E729A0D6DD03}|{44F3C493-9A84-425D-88A2-239DB846E0D7}";
+    								lang = "fr-ch"; 
+    							},
+    							@{ 
+    								MenuItemLabel = "Summer city breaks";
+    								SelectedItems = "{EC3947EC-E3B7-45F7-81A1-64315E2C995C}|{69415523-67C8-4D78-8D71-80792AF94866}|{FA36E5F8-BEBF-4CEB-8CF1-150AE399C47B}|{48082FD6-4D1E-4D8E-9D70-E729A0D6DD03}|{44F3C493-9A84-425D-88A2-239DB846E0D7}";
+    								lang = "de-ch"; 
+    							})
+    			}
+    		)
+    	
+    	$searchPodItemIds = [System.Collections.ArrayList]@()
+    	
+    	foreach ($searchPodItem in $searchPodItems) {	
+    		$searchPodItemPath = $folderPath + "/" + $searchPodItem.Name
+    		$item = Get-Or-Create-Item -Path $searchPodItemPath -TemplateId "{0ACD9617-8244-42D3-9338-37F51D6E6C27}"
+            
+    		foreach ($field in $searchPodItem.fields) {
+    		    
+    			# Added Language Versions if not exist
+    			Add-ItemVersion -Path $item.FullPath -Language "en" -TargetLanguage $field.lang -IfExist Skip 
+    		   
+    			# Update fields
+    			$item.Editing.BeginEdit()
+    			$item["Menu Item Label"] = $field.MenuItemLabel
+    			$item["Selected Items"] = $field.SelectedItems
+    			$item.Editing.EndEdit() | Out-Null
+    		}
+    		
+    		Write-Host 'Item updated ' $item.path $field.lang
+    		Write-Log  'Item updated ' $item.path $field.lang
+    		
+    		$searchPodItemIds.Add($item.Id)
+    	}
+    	
+    	$sIds = $searchPodItemIds -join "|"
+    	Write-Host "Configure Menu Items for Search Pod Data Folder DONE " $sIds
+    	Write-Log  "Configure Menu Items for Search Pod Data Folder DONE " $sIds
+    	
+        $folder.Editing.BeginEdit()
+    	$folder["Selected Menus"] = $sIds
+    	$folder.Editing.EndEdit() | Out-Null
+    }
+    
+    function Disable-Ab-Test () {
+        $item = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Search Pod Settings"
+        $item.Editing.BeginEdit()
+    	$item["DisableAbTest"] = "1"
+    	$item.Editing.EndEdit() | Out-Null
+    	
+    	Write-Host "DisableAbTest DONE"
+    	Write-Log  "DisableAbTest DONE"
+    }
+    
+    Set-Location -Path master:
+    #Set-Location -Path web:
+    
+    #Create-Search-Pod-Data -FolderPath "/sitecore/content/EasyJet/Holidays/Data/Search Pod Data Folder"
+    #Create-Search-Pod-Data -FolderPath "/sitecore/content/EasyJet/TradePortal/Data/Search Pod Data Folder"
+    Disable-Ab-Test
+    Enable-New-Search-Pod
+    
+    Write-Host "END: EJH-18398 Semantic Search Pod Sitecore Script"
+    Write-Log "END: EJH-18398 Semantic Search Pod Sitecore Script"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240122T070745Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\rkhalupau

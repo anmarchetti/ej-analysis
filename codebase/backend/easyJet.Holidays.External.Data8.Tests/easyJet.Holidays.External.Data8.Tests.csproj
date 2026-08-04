@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<IsTestProject>true</IsTestProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoFixture.AutoMoq"/>
+		<PackageReference Include="AutoFixture.Xunit3"/>
+		<PackageReference Include="FluentAssertions"/>
+		<PackageReference Include="xunit.v3"/>
+		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\easyJet.Holidays.External.Data8\easyJet.Holidays.External.Data8.csproj" />
+	</ItemGroup>
+
+</Project>

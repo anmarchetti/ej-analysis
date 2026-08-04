@@ -1,0 +1,56 @@
+.paxMixPopup {
+    :global {
+        .popup__body,
+        .popup__body:last-child,
+        .popup__footer {
+            padding: 0;
+        }
+
+        .popup__content {
+            border-radius: 4px;
+        }
+
+        .popup__footer {
+            justify-content: center;
+            margin-top: 30px;
+
+            .btn {
+                min-width: 240px;
+            }
+        }
+
+        .drawer-actions {
+            .btn {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.title {
+    margin: 0 0 16px;
+    font-family: $fontRoundedBook;
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 27px;
+    color: $clrTextHeading;
+    text-align: center;
+}
+
+.subtitle {
+    margin: 0 0 24px;
+    font-size: 16px;
+    text-align: center;
+
+    @include media-breakpoint-down(md) {
+        margin: 0 0 32px;
+    }
+}
+
+.form {
+    padding: 24px 16px 16px;
+
+    @include media-breakpoint-down(md) {
+        padding: 15px $container-padding-x_mobile 80px;
+    }
+}

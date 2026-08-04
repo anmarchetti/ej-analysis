@@ -1,0 +1,218 @@
+.yourHotelCard {
+    margin-bottom: 16px;
+    border: 2px solid $clrEjOrange;
+    border-radius: 6px;
+    box-shadow: $lightCardShadow;
+
+    @include media-breakpoint-up(lg) {
+        display: flex;
+        flex-direction: row;
+        min-height: 225px;
+        margin-right: 0;
+        margin-bottom: 40px;
+        margin-left: 0;
+    }
+
+    :global(.popup-overlay) {
+        background-color: $colorBlackLight;
+        opacity: 0.95;
+    }
+}
+
+.imageCarousel {
+    max-width: 451px;
+    padding: 0;
+
+    @include media-breakpoint-up(md) {
+        max-width: none;
+    }
+
+    @include media-breakpoint-up(lg) {
+        flex: 0 0 41.6667%;
+    }
+
+    :global(.image-gallery) {
+        border-radius: 3px 3px 0 0;
+
+        @include media-breakpoint-up(lg) {
+            border-radius: 3px 0 0 3px;
+        }
+    }
+
+    :global(.image-gallery-slide) {
+        @include media-breakpoint-up(md) {
+            min-height: 402px;
+        }
+        @include media-breakpoint-up(lg) {
+            min-height: 228px;
+        }
+    }
+
+    :global(.hotel-card-img) {
+        border-radius: 3px 3px 0 0;
+
+        @include media-breakpoint-up(md) {
+            min-height: 402px;
+        }
+
+        @include media-breakpoint-up(lg) {
+            min-height: 0;
+            border-radius: 3px 0 0 3px;
+        }
+    }
+
+    :global(.popup__dialog .hotel-card-img) {
+        border-radius: 0;
+    }
+
+    :global(.popup__dialog .image-gallery) {
+        border-radius: 0;
+    }
+}
+
+.cardBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 16px;
+
+    @include media-breakpoint-up(lg) {
+        flex-direction: row;
+        align-items: stretch;
+        justify-content: flex-start;
+        padding: 0;
+    }
+
+    :global(.eco-certified) {
+        width: auto;
+        margin: 0;
+        background-color: $colorGrayLighter;
+    }
+
+    :global(.eco-certified__title) {
+        padding: 0 4px;
+    }
+}
+
+.detailsSection {
+    width: 100%;
+
+    @include media-breakpoint-up(lg) {
+        max-width: 70%;
+    }
+}
+
+.offerExtras {
+    @include media-breakpoint-up(md) {
+        padding: 16px 0;
+    }
+
+    @include media-breakpoint-up(lg) {
+        padding: 16px;
+    }
+}
+
+.hotelDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    @include media-breakpoint-up(md) {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    @include media-breakpoint-up(lg) {
+        padding: 16px 18px 13px 24px;
+        border-bottom: 1px dotted $colorDustyGrey;
+    }
+}
+
+.hotelName {
+    padding-right: 35px;
+    font-family: $body_font-family;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24px;
+    color: $colorBlack;
+}
+
+.hotelLocation {
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 20px;
+    color: $colorBlackLight;
+}
+
+.reviewSection {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 8px;
+
+    :global(.star_rating) {
+        margin-right: 8px;
+
+        @include media-breakpoint-up(md) {
+            margin-right: 12px;
+            padding-right: 12px;
+            border-right: 1px solid $colorAlto;
+        }
+    }
+
+    :global(.tripadvisor_rating) {
+        span {
+            border: 2px solid $colorTripadvisorLight;
+            @include sizeSquare(11px);
+        }
+
+        svg {
+            width: 18px;
+            height: 22px;
+        }
+
+        :global(span.active) {
+            background-color: $colorTripadvisorLight;
+        }
+
+        :global(span.active--half) {
+            background: linear-gradient(90deg, $colorTripadvisorLight 51%, $colorTransparent 0);
+        }
+    }
+
+    @include media-breakpoint-up(lg) {
+        margin-top: 4px;
+    }
+}
+
+.selectedSection {
+    display: flex;
+
+    @include media-breakpoint-up(lg) {
+        flex-grow: 1;
+        align-items: flex-end;
+        justify-content: center;
+        margin: 16px 0;
+        padding: 0 40px;
+        border-left: 1px dotted $colorDustyGrey;
+    }
+}
+
+.selected {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 0;
+    font-size: 14px;
+    line-height: 18px;
+    color: $colorBlackMedium;
+
+    svg {
+        @include sizeSquare(16px);
+
+        margin-bottom: 2px;
+        margin-left: 10px;
+    }
+}

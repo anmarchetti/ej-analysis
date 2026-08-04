@@ -1,0 +1,80 @@
+﻿---
+ID: "ed13c180-317e-4957-bf60-fb3c6fbe3166"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUXE-1119 Update dictionary for semantic search pod labels"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item,$lang,$field,$value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value;
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    $SearchPodSelected = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/Selected"
+    $SearchPodSelectedQuantity = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/Selected Quantity"
+    $SearchPodAllDestinations = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/All Destinations"
+    $SearchPodAirportSingular = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/Airport Singular"
+    $SearchPodAirportPlural = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/Airport Plural"
+    $SearchPodHotel = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/Hotel"
+    $SearchPodResort = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/Resort"
+    $SearchPodRegion = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/Region"
+    $SearchPodRegionSingular = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/Region Singular"
+    $SearchPodRegionPlural = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/Region Plural"
+    $SearchPodCountry = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/Country"
+    $SearchPodDestinationsTab = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/Destinations Tab"
+    $SearchPodHotelsTab = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Labels/Hotels Tab"
+    $SearchPodClearAll = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Search Pod/Buttons/Clear All"
+    
+    @('de-CH', 'de-DE') | % {
+        Create-Lang-Version -Item $SearchPodSelected -Lang $_ -Field "Phrase" -Value "Ausgewählt"
+        Create-Lang-Version -Item $SearchPodSelectedQuantity -Lang $_ -Field "Phrase" -Value "{number} Ausgewählt"
+        Create-Lang-Version -Item $SearchPodAllDestinations -Lang $_ -Field "Phrase" -Value "Alle Reiseziele"
+        Create-Lang-Version -Item $SearchPodAirportSingular -Lang $_ -Field "Phrase" -Value "Flughafen"
+        Create-Lang-Version -Item $SearchPodAirportPlural -Lang $_ -Field "Phrase" -Value "{number} Flughäfen"
+        Create-Lang-Version -Item $SearchPodHotel -Lang $_ -Field "Phrase" -Value "Hotel"
+        Create-Lang-Version -Item $SearchPodResort -Lang $_ -Field "Phrase" -Value "Resort"
+        Create-Lang-Version -Item $SearchPodRegion -Lang $_ -Field "Phrase" -Value "Region"
+        Create-Lang-Version -Item $SearchPodRegionSingular -Lang $_ -Field "Phrase" -Value "1 Region"
+        Create-Lang-Version -Item $SearchPodRegionPlural -Lang $_ -Field "Phrase" -Value "{number} Regionen"
+        Create-Lang-Version -Item $SearchPodCountry -Lang $_ -Field "Phrase" -Value "Land"
+        Create-Lang-Version -Item $SearchPodDestinationsTab -Lang $_ -Field "Phrase" -Value "Reiseziele ({number})"
+        Create-Lang-Version -Item $SearchPodHotelsTab -Lang $_ -Field "Phrase" -Value "Hotels ({number})"
+        Create-Lang-Version -Item $SearchPodClearAll -Lang $_ -Field "Phrase" -Value "Alle löschen"
+    }
+    @('fr-CH', 'fr-FR') | % {
+        Create-Lang-Version -Item $SearchPodSelected -Lang $_ -Field "Phrase" -Value "Sélectionné"
+        Create-Lang-Version -Item $SearchPodSelectedQuantity -Lang $_ -Field "Phrase" -Value "{number} Sélectionné"
+        Create-Lang-Version -Item $SearchPodAllDestinations -Lang $_ -Field "Phrase" -Value "Toutes les destinations"
+        Create-Lang-Version -Item $SearchPodAirportSingular -Lang $_ -Field "Phrase" -Value "Aéroport"
+        Create-Lang-Version -Item $SearchPodAirportPlural -Lang $_ -Field "Phrase" -Value "{number} Aéroports"
+        Create-Lang-Version -Item $SearchPodHotel -Lang $_ -Field "Phrase" -Value "Hôtel"
+        Create-Lang-Version -Item $SearchPodResort -Lang $_ -Field "Phrase" -Value "Complexe hôtelier"
+        Create-Lang-Version -Item $SearchPodRegion -Lang $_ -Field "Phrase" -Value "Région"
+        Create-Lang-Version -Item $SearchPodRegionSingular -Lang $_ -Field "Phrase" -Value "1 Région"
+        Create-Lang-Version -Item $SearchPodRegionPlural -Lang $_ -Field "Phrase" -Value "{number} Régions"
+        Create-Lang-Version -Item $SearchPodCountry -Lang $_ -Field "Phrase" -Value "Pays"
+        Create-Lang-Version -Item $SearchPodDestinationsTab -Lang $_ -Field "Phrase" -Value "Destinations ({number})"
+        Create-Lang-Version -Item $SearchPodHotelsTab -Lang $_ -Field "Phrase" -Value "Hôtels ({number})"
+        Create-Lang-Version -Item $SearchPodClearAll -Lang $_ -Field "Phrase" -Value "Effacer tout"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20191118T132901:637096805412053434Z"

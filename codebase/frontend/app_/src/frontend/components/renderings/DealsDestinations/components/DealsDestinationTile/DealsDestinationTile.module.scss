@@ -1,0 +1,77 @@
+@import 'frontend/components/renderings/DealsDestinations/DealsDestinationsVariables.module';
+
+@mixin tile-width($gap, $numberOfCols) {
+    $width: (100% - 2 * $gap * $numberOfCols) / $numberOfCols;
+
+    flex-basis: $width;
+    max-width: $width;
+}
+
+.tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    flex-grow: 0;
+    justify-content: space-between;
+    min-height: 100px;
+    margin: 15px $gap 0;
+    padding: 10px 15px;
+    font-size: 12px;
+    color: $clrTextMain;
+    background-color: $colorWhite;
+    border-radius: $box_border-radius_md;
+
+    @include tile-width($gap, 1);
+
+    @include media-breakpoint-up(sm) {
+        @include tile-width($gap, 2);
+    }
+
+    @include media-breakpoint-up(lg) {
+        @include tile-width($gap, 4);
+
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    &:hover {
+        .title a {
+            color: $clrEjOrangeLight;
+            opacity: 1;
+        }
+    }
+}
+
+.title {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 24px;
+    font-weight: 700;
+    color: $clrTextMain;
+}
+
+.footer {
+    display: flex;
+    width: 100%;
+    margin-top: 25px;
+}
+
+.price {
+    margin-left: auto;
+
+    svg {
+        width: 12px;
+        height: 12px;
+        fill: $clrEjOrangeLight;
+    }
+
+    :global {
+        .price-amount,
+        .price-suffix {
+            font-size: 20px;
+            font-weight: 700;
+            color: $clrEjOrangeLight;
+        }
+    }
+}

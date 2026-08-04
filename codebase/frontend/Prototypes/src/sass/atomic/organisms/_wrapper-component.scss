@@ -1,0 +1,74 @@
+.wrapper-component-container {
+    // Add padding to prevent the margin collapsing for children elements
+    padding-top: 0.1px;
+    padding-bottom: 0.1px;
+
+    &--grey {
+        background-color: $clrSiteBgGrey;
+    }
+
+    &--border-bottom {
+        border-bottom: 1px solid $colorGrayDark;
+    }
+
+    &__inner {
+        max-width: $container-max-width + 2 * $container-padding-x_mobile;
+        margin: auto;
+        padding-right: $container-padding-x_mobile;
+        padding-left: $container-padding-x_mobile;
+    }
+
+    &--full-width &__inner {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+    }
+}
+
+.wrapper-shape {
+    &__triangle-start,
+    &__triangle-end {
+        display: none;
+        width: 100%;
+        height: 40px;
+    }
+
+    &--start &__triangle-start {
+        display: block;
+        background-image: linear-gradient(1.1deg, $clrSiteBgGrey 49%, #fff 51%);
+    }
+
+    &--start-reverse &__triangle-start {
+        display: block;
+        background-image: linear-gradient(
+            -0.9deg,
+            $clrSiteBgGrey 49%,
+            #fff 51%
+        );
+    }
+
+    &--end &__triangle-end {
+        display: block;
+        background: linear-gradient(-1.1deg, #fff 51%, $clrSiteBgGrey 52%);
+    }
+
+    &--end-reverse &__triangle-end {
+        display: block;
+        background-image: linear-gradient(0.9deg, #fff 51%, $clrSiteBgGrey 52%);
+    }
+}
+
+.wrapper-component-container--grey:not(.next-is-sticky) + .wrapper-component-container--grey {
+    position: relative;
+
+    // Fix to hide white stripe if two grey wrappers follow each other
+    .wrapper-shape__triangle-start {
+        position: absolute;
+        bottom: 100%;
+        background: $clrSiteBgGrey;
+    }
+
+    .text-block:first-child {
+        margin-top: 20px;
+    }
+}

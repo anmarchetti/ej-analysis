@@ -1,0 +1,35 @@
+﻿---
+ID: "9bc2e384-260a-4e4e-9959-faabc568e48a"
+Parent: "3fb0dc56-187b-4b94-9915-8b51bb4e9558"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Reports/Hotel Data Audit/Do not translate
+DB: master
+SharedFields:
+- ID: "06d5295c-ed2f-4a54-9bf2-26228d113318"
+  Hint: __Icon
+  Value: Office/32x32/remove_version.png
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Get-ItemReferrer -path 'master:/sitecore/templates/Project/Holidays/Pages/Destinations/Hotel' |
+        Where-Object -FilterScript {$_.Paths.FullPath.StartsWith("/sitecore/content/EasyJet/Holidays/Home/Destinations") -and $_["SkipTranslate"] -eq '1'} |
+                     Show-ListView -Property `
+                         @{Label="Name"; Expression={$_.DisplayName} }, 
+                         @{Label="Path"; Expression={$_.Paths.Path} }, 
+                         @{Label="Do not translate"; Expression={$_["SkipTranslate"] -eq '1' } }
+Languages:
+- Language: en
+  Fields:
+  - ID: "b5e02ad9-d56f-4c41-a065-a133db87bdeb"
+    Hint: __Display name
+    Value: Hotel items that marked as 'Do Not Translate'
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220824T130948Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

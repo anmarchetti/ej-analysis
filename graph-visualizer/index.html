@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EasyJet Holidays · Dependency Graph</title>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Cytoscape & Plugins -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dagre/0.8.5/dagre.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
+  <!-- PapaParse CSV -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header Navbar -->
+    <header>
+      <div class="brand">
+        <div class="brand-icon"><i class="fa-solid fa-diagram-project"></i></div>
+        <h1>EasyJet Holidays · Dependency Graph</h1>
+        <badge>Architectural Matrix</badge>
+      </div>
+
+      <div class="header-controls">
+        <!-- Dataset Selector -->
+        <div class="select-wrapper">
+          <select id="dataset-select" class="select-input">
+            <option value="unified_multilang" selected>🌐 Full Unified Graph (Language ➔ Page ➔ Rendering ➔ API)</option>
+            <option value="renderings_analysis">📊 renderings_analysis.csv (Rendering ➔ Components ➔ API)</option>
+            <option value="pageRendering">📄 pageRendering.csv (Sitecore Page Hierarchy ➔ Rendering)</option>
+            <option value="PageRenderingApiPath">🛣️ PageRenderingApiPath_new.csv (Full Path Page ➔ API)</option>
+          </select>
+        </div>
+
+        <!-- Language Filter -->
+        <div id="lang-filter-wrapper" class="select-wrapper" style="display: flex;">
+          <select id="lang-filter-select" class="select-input">
+            <option value="ALL">All Languages (Root)</option>
+          </select>
+        </div>
+
+        <!-- Page Filter -->
+        <div id="page-filter-wrapper" class="select-wrapper" style="display: flex;">
+          <select id="page-filter-select" class="select-input">
+            <option value="ALL">All Pages</option>
+          </select>
+        </div>
+
+        <!-- File Upload -->
+        <input type="file" id="csv-file-input" accept=".csv" style="display: none;">
+        <button id="upload-btn" class="btn btn-accent"><i class="fa-solid fa-file-csv"></i> Upload CSV</button>
+
+        <!-- Metrics Dashboard Action -->
+        <button id="btn-show-metrics" class="btn btn-secondary"><i class="fa-solid fa-chart-pie"></i> Metrics Summary</button>
+
+        <!-- Actions -->
+        <button id="btn-fit" class="btn btn-icon" title="Fit View"><i class="fa-solid fa-expand"></i></button>
+        <button id="btn-reset" class="btn btn-icon" title="Reset Selection"><i class="fa-solid fa-rotate-left"></i></button>
+        <button id="btn-export-png" class="btn btn-primary"><i class="fa-solid fa-download"></i> PNG</button>
+        <button id="btn-export-json" class="btn btn-icon" title="Export JSON"><i class="fa-solid fa-code"></i></button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="main-content">
+      <!-- Left Sidebar -->
+      <aside class="sidebar">
+        <!-- SEARCH NODE -->
+        <div class="sidebar-section">
+          <div class="sidebar-title">SEARCH NODE</div>
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="search-input" class="search-input" placeholder="Search page, rendering or API...">
+            <div id="search-suggestions" class="search-suggestions"></div>
+          </div>
+        </div>
+
+        <!-- VISIBLE LAYERS -->
+        <div class="sidebar-section">
+          <div class="sidebar-title">VISIBLE LAYERS</div>
+          <div class="layer-pills-row">
+            <button id="btn-toggle-languages" class="layer-pill pill-languages active"><span class="dot-pink"></span> Languages</button>
+            <button id="btn-toggle-pages" class="layer-pill pill-pages active"><span class="dot-blue"></span> Pages</button>
+            <button id="btn-toggle-renderings" class="layer-pill pill-renderings active"><span class="dot-green"></span> Renderings</button>
+            <button id="btn-toggle-apis" class="layer-pill pill-apis active"><span class="dot-orange"></span> APIs</button>
+            <button id="btn-toggle-systems" class="layer-pill pill-systems active"><span class="dot-purple"></span> Systems</button>
+          </div>
+        </div>
+
+        <!-- VIEW MODE -->
+        <div class="sidebar-section">
+          <div class="sidebar-title">VIEW MODE</div>
+          <div class="control-row">
+            <select id="layout-select" class="select-input" style="width: 100%;">
+              <option value="dependency_matrix" selected>📊 Architectural Matrix (5-Column: Language ➔ Component ➔ Page ➔ API ➔ System)</option>
+              <option value="custom_tree">🧠 Mindmap Tree (Horizontal Tree)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- DENSITY -->
+        <div class="sidebar-section">
+          <div class="sidebar-title">DENSITY</div>
+          <div class="control-row">
+            <select id="density-select" class="select-input" style="width: 100%;">
+              <option value="spread" selected>Spread (Spaced)</option>
+              <option value="compact">Compact</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- TOP PAGES NODES -->
+        <div class="sidebar-section">
+          <div class="sidebar-title">TOP PAGES NODES</div>
+          <div class="quick-btn-grid">
+            <button id="btn-quick-tutti-on" class="quick-btn">All On</button>
+            <button id="btn-quick-tutti-off" class="quick-btn">All Off</button>
+            <button id="btn-quick-solo-pages" class="quick-btn">Pages Only</button>
+            <button id="btn-quick-solo-apis" class="quick-btn">APIs Only</button>
+            <button id="btn-quick-solo-comps" class="quick-btn">Comps Only</button>
+          </div>
+        </div>
+
+        <!-- PAGES CHECKLIST WITH CALL COUNTERS -->
+        <div class="sidebar-section flex-1-section">
+          <div class="sidebar-title" id="pages-checklist-title">PAGES (0)</div>
+          <div id="pages-checklist" class="pages-checklist-box">
+            <!-- Dynamically populated with calls counter checkboxes -->
+          </div>
+        </div>
+
+        <!-- GRAPH STATISTICS METRICS SUMMARY -->
+        <div class="sidebar-section">
+          <div class="sidebar-title">GRAPH METRICS SUMMARY</div>
+          <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.4rem;">
+            <div class="stat-card">
+              <div id="stat-languages-total" class="stat-value" style="color: var(--color-language);">8</div>
+              <div class="stat-label">LANGUAGES</div>
+            </div>
+            <div class="stat-card">
+              <div id="stat-pages-total" class="stat-value" style="color: var(--color-page);">936</div>
+              <div class="stat-label">PAGES (190 GROUPS)</div>
+            </div>
+            <div class="stat-card">
+              <div id="stat-renderings-total" class="stat-value" style="color: var(--color-rendering);">321</div>
+              <div class="stat-label">RENDERINGS (30 COMPS)</div>
+            </div>
+            <div class="stat-card">
+              <div id="stat-apis-total" class="stat-value" style="color: var(--color-api);">881</div>
+              <div class="stat-label">APIs</div>
+            </div>
+            <div class="stat-card" style="grid-column: span 2;">
+              <div id="stat-systems-total" class="stat-value" style="color: #a855f7;">9 SYSTEMS</div>
+              <div class="stat-label">BACKEND SYSTEMS & DATA PAYLOADS</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Center Canvas Container -->
+      <main class="canvas-container">
+        <!-- Cytoscape Graph Canvas -->
+        <div id="cy"></div>
+
+        <!-- Canvas Floating Controls -->
+        <div class="canvas-floating-controls">
+          <button id="floating-zoom-in" class="floating-btn" title="Zoom In"><i class="fa-solid fa-plus"></i></button>
+          <button id="floating-zoom-out" class="floating-btn" title="Zoom Out"><i class="fa-solid fa-minus"></i></button>
+          <button id="floating-fit" class="floating-btn" title="Fit View"><i class="fa-solid fa-compress"></i></button>
+        </div>
+
+        <!-- Floating Graph Legend -->
+        <div class="floating-legend">
+          <div class="legend-header"><i class="fa-solid fa-layer-group"></i> Node Types & Heatmap</div>
+          <div class="legend-group">
+            <div class="legend-item"><span class="node-dot dot-language"></span> Language</div>
+            <div class="legend-item"><span class="node-dot dot-folder"></span> Folder</div>
+            <div class="legend-item"><span class="node-dot dot-page"></span> Page</div>
+            <div class="legend-item"><span class="node-dot dot-api"></span> API</div>
+            <div class="legend-item"><span class="node-dot dot-system"></span> System & Data (Level 5)</div>
+            <div class="legend-item"><span class="node-dot" style="background: #f59e0b; box-shadow: 0 0 6px rgba(245,158,11,0.8);"></span> Component ➔ API Direct Call</div>
+          </div>
+          <div class="legend-sub-header">Component / Rendering Usage:</div>
+          <div class="legend-group flex-column-group">
+            <div class="legend-item legend-item-badge">
+              <span><span class="node-dot dot-heatmap-green"></span> Green: Rarely used (1–2 uses)</span>
+              <span id="legend-count-green" class="count-pill pill-green">0</span>
+            </div>
+            <div class="legend-item legend-item-badge">
+              <span><span class="node-dot dot-heatmap-yellow"></span> Yellow: Moderately used (3–9 uses)</span>
+              <span id="legend-count-yellow" class="count-pill pill-yellow">0</span>
+            </div>
+            <div class="legend-item legend-item-badge">
+              <span><span class="node-dot dot-heatmap-red"></span> Red: Heavily used (10+ uses / Core)</span>
+              <span id="legend-count-red" class="count-pill pill-red">0</span>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Right Drawer (Inspector Panel) -->
+      <aside id="inspector" class="inspector">
+        <div class="inspector-header">
+          <div style="flex: 1; overflow: hidden; padding-right: 0.5rem;">
+            <h2 id="inspector-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;">Node Details</h2>
+            <span id="inspector-type-badge" class="badge">Type</span>
+          </div>
+          <button id="inspector-close" class="btn-icon-sm" title="Close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <!-- Single Row for Stats: IN, OUT, CONNECTIONS -->
+        <div class="inspector-stats-row">
+          <div class="stat-card">
+            <div id="stat-in-degree" class="stat-value" style="color: #60a5fa;">0</div>
+            <div class="stat-label">IN</div>
+          </div>
+          <div class="stat-card">
+            <div id="stat-out-degree" class="stat-value" style="color: #f59e0b;">0</div>
+            <div class="stat-label">OUT</div>
+          </div>
+          <div class="stat-card">
+            <div id="stat-total-degree" class="stat-value" style="color: #38bdf8;">0</div>
+            <div class="stat-label">CONNECTIONS</div>
+          </div>
+        </div>
+
+        <!-- Scrollable Results Body -->
+        <div class="inspector-scroll-body">
+          <div class="inspector-section">
+            <h3><i class="fa-solid fa-arrow-right-to-bracket" style="color: #60a5fa;"></i> Incoming Connections</h3>
+            <div id="incoming-list" class="conn-list"></div>
+          </div>
+
+          <div class="inspector-section">
+            <h3><i class="fa-solid fa-arrow-right-from-bracket" style="color: #f59e0b;"></i> Outgoing Connections & Payload</h3>
+            <div id="outgoing-list" class="conn-list"></div>
+          </div>
+
+          <div class="inspector-actions" style="margin-top: 0.5rem; padding-bottom: 1rem;">
+            <button id="btn-focus-node" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-crosshairs"></i> Center Node in Canvas</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Metrics Breakdown Modal -->
+    <div id="metrics-modal" class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2><i class="fa-solid fa-chart-pie"></i> EasyJet Holidays · Architectural Metrics Summary</h2>
+          <button id="metrics-modal-close" class="btn-icon-sm"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <!-- Root Summary Grid -->
+          <div class="metrics-grid">
+            <div class="metric-box">
+              <div class="metric-val" style="color: var(--color-language);">8</div>
+              <div class="metric-lbl">Total Languages</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-val" style="color: var(--color-page);">936</div>
+              <div class="metric-lbl">Raw Pages (190 Groups)</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-val" style="color: var(--color-rendering);">321</div>
+              <div class="metric-lbl">Renderings (30 React Comps)</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-val" style="color: var(--color-api);">881</div>
+              <div class="metric-lbl">Backend APIs</div>
+            </div>
+          </div>
+
+          <!-- Per-Language Breakdown Table -->
+          <h3 style="margin-top: 1.25rem; font-size: 0.95rem; color: var(--accent-cyan);">Detailed Breakdown Per Language</h3>
+          <table class="metrics-table">
+            <thead>
+              <tr>
+                <th>Language</th>
+                <th>Raw Pages & Patterns</th>
+                <th>Sitecore Renderings</th>
+                <th>Backend APIs</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>🇬🇧 <strong>English (en)</strong></td>
+                <td>713</td>
+                <td>321</td>
+                <td>47</td>
+                <td><button class="table-act-btn" data-lang="en">Filter Graph</button></td>
+              </tr>
+              <tr>
+                <td>🇨🇭 <strong>German Switzerland (de-CH)</strong></td>
+                <td>174</td>
+                <td>244</td>
+                <td>38</td>
+                <td><button class="table-act-btn" data-lang="de-CH">Filter Graph</button></td>
+              </tr>
+              <tr>
+                <td>🇨🇭 <strong>French Switzerland (fr-CH)</strong></td>
+                <td>173</td>
+                <td>244</td>
+                <td>38</td>
+                <td><button class="table-act-btn" data-lang="fr-CH">Filter Graph</button></td>
+              </tr>
+              <tr>
+                <td>🇫🇷 <strong>French France (fr-FR)</strong></td>
+                <td>103</td>
+                <td>244</td>
+                <td>38</td>
+                <td><button class="table-act-btn" data-lang="fr-FR">Filter Graph</button></td>
+              </tr>
+              <tr>
+                <td>🇩🇪 <strong>German Germany (de-DE)</strong></td>
+                <td>101</td>
+                <td>242</td>
+                <td>38</td>
+                <td><button class="table-act-btn" data-lang="de-DE">Filter Graph</button></td>
+              </tr>
+              <tr>
+                <td>🇪🇸 <strong>Spanish (es-ES)</strong></td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+                <td><button class="table-act-btn" data-lang="es-ES">Filter Graph</button></td>
+              </tr>
+              <tr>
+                <td>🇮🇹 <strong>Italian (it-IT)</strong></td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+                <td><button class="table-act-btn" data-lang="it-IT">Filter Graph</button></td>
+              </tr>
+              <tr>
+                <td>🇳🇱 <strong>Dutch (nl-NL)</strong></td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+                <td><button class="table-act-btn" data-lang="nl-NL">Filter Graph</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="spinner"></div>
+      <div id="loading-text" class="loading-text">Loading data...</div>
+    </div>
+  </div>
+
+  <!-- Main App Script -->
+  <script src="app.js"></script>
+</body>
+</html>

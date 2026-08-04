@@ -1,0 +1,99 @@
+﻿---
+ID: "bd4c9a83-e79f-4025-8592-c22b3edd5678"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-173 Add Cancel Booking page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $slimDesignsPath = '/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Slim Design'
+    $slimDesignsPathEU = '/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/EU - Slim Design'
+    
+    function Set-Translation-Value-To-Multilist($itemPath, $language, $key, $value) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            $item = Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+            Write-Host "Created" $language "version for" $item.Name "item"
+        } else {
+            Write-Host $language "version for Item" $item.Name "already exist"
+        }
+    
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $item[$key] + $value
+            $item.Editing.EndEdit() | Out-Null
+            Write-Host "Field" $key "for" $item.Name "item updated with value" $translation
+        }
+    }
+    
+    function Create-Lang-Version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue
+    
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+    
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+         }
+    }
+    
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        
+        if (-Not $item){
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item $($item.Name) successfully created"
+        }
+        
+        return $item
+    }
+    
+    function updateBreadcrumbsDictionary() {
+        $dictionaryPath = "/sitecore/content/EasyJet/Holidays/Dictionary/Path Breadcrumbs/Labels/Cancel Booking"
+        $dictionaryItem = Get-Or-Create-Item -Path $dictionaryPath -TemplateId "{6D1CD897-1936-4A3A-A511-289A94C2A7B1}"
+    
+        @('en') | % {
+            Create-Lang-Version -Item $dictionaryItem -Lang $_ -Field "Key" -Value 'PathBreadcrumbs.Labels.CancelBooking'
+            Create-Lang-Version -Item $dictionaryItem -Lang $_ -Field "Phrase" -Value "Cancel your holiday"
+        }
+    
+        @('de-CH', 'de-DE') | % {
+            Create-Lang-Version -Item $dictionaryItem -Lang $_ -Field "Phrase" -Value "Urlaub stornieren"
+        }
+    
+        @('fr-CH', 'fr-FR') | % {
+            Create-Lang-Version -Item $dictionaryItem -Lang $_ -Field "Phrase" -Value "Annulez vos vacances"
+        }
+    
+        Write-Host "Updated dictionary GenericMessages.LinkToContactFormHTML"
+    }
+    
+    Set-Translation-Value-To-Multilist -ItemPath $slimDesignsPath -Language 'en' -Key 'PageTemplates' -Value "|{E9544BE7-0494-410B-9E66-E0EC96B44ED6}"
+    
+    @('de-CH', 'de-DE', 'fr-CH', 'fr-FR') | % {
+        Set-Translation-Value-To-Multilist -ItemPath $slimDesignsPathEU -Language $_ -Key 'PageTemplates' -Value "|{E9544BE7-0494-410B-9E66-E0EC96B44ED6}"
+    }
+    
+    updateBreadcrumbsDictionary
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230628T103556Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

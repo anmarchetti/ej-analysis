@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <Nullable>enable</Nullable>
+
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Amazon.Lambda.Core" />
+        <PackageReference Include="Amazon.Lambda.TestUtilities" />
+        <PackageReference Include="Amazon.Lambda.SQSEvents" />
+        <PackageReference Include="AutoFixture" />
+        <PackageReference Include="FluentAssertions" />
+        <PackageReference Include="Moq" />
+        <PackageReference Include="xunit.v3" />
+        <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
+        <PackageReference Include="Newtonsoft.Json" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\easyJet.Holidays.Api.Domain\easyJet.Holidays.Api.Domain.csproj" />
+      <ProjectReference Include="..\easyJet.Holidays.External.AWS.DatahubSync\easyJet.Holidays.External.AWS.DatahubSync.csproj" />
+    </ItemGroup>
+</Project>

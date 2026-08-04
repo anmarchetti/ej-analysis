@@ -1,0 +1,319 @@
+﻿---
+ID: "2b0426ad-9fac-451b-9495-9fd40eb9cedb"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/BOOK-1679 FPH Payment Update"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $holidayshomebookingpaymentpagecomponentsfphpayment_Id = "{D59BEE89-A407-4BC8-A65A-705E554B8DC6}"
+    $fphpayment_fasttracklabel_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    Fast Track Security (UK only)
+    "@
+    $fphpayment_paywithdepositdescription_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <p>Secure your holiday today with a <strong>{depositPricePP} per person deposit.</strong></p><p>The remaining balance of <strong>{amount}</strong> needs to be paid by <strong>{date}</strong></p>
+    "@
+    $fphpayment_issuenumberinfo_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <image mediaid="{9C046B89-DB21-4E98-BBDD-A39DC7B8D784}" />
+    "@
+    $fphpayment_paywithdepositattention_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    The holiday is getting closer! Remember to pay the remaining balance in 5 days.
+    "@
+    $fphpayment_iconcreditinfoblock_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <image mediaid="{EA82CDAB-9D20-4D63-83F0-DA42CFDF9DD9}" />
+    "@
+    $fphpayment_importantinformationconfirmation_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    Tick this box to confirm you&rsquo;ve viewed and agree to our <a rel="noopener noreferrer" href="https://www.easyjet.com/en/holidays/info/travel-information?ecp=FPH " target="_blank">travel information</a>, <a rel="noopener noreferrer" href="https://www.easyjet.com/en/holidays/flight-plus-hotel/booking-conditions" target="_blank">Booking Conditions </a>including information on cancellation terms, Package Travel &amp; Linked Travel Arrangements and <a href="https://www.easyjet.com/en/terms-and-conditions/dangerous-goods">Dangerous Goods Policy</a>, and that everyone who&rsquo;s travelling is aware of their contents too.
+    "@
+    $fphpayment_usecreditformtitle_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    How much credit would you like to use?
+    "@
+    $fphpayment_pricejumppopupdescription_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    We’re sorry, but the price has changed on this booking. It’s now {price}. If you’re happy with the new price, you can continue with this booking, or you can head back to the search page to look for a different booking.
+    "@
+    $fphpayment_overheadbagaddedlabel_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    {count} x Large cabin bags with speedy boarding
+    "@
+    $fphpayment_emailinstruction_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    Once you've booked, you'll find your airport parking instructions in your booking.
+    "@
+    $fphpayment_includedwithinfantlabel_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    {count} x Small under seat cabin bags, {infantCount} x baby change bags
+    "@
+    $fphpayment_payfulldescription_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    Book today and pay the <strong>full amount</strong> of your trip.
+    "@
+    $fphpayment_importantinformation_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <p><span><span class="ui-provider a b c d e f g h i j k l m n o p q r s t u v w x y z ab ac ae af ag ah ai aj ak" dir="ltr">You and everyone on your booking must have</span> valid passports, any applicable visas and meet all entry requirements. Visit the UK government&nbsp;website&nbsp;for further information and advice for your <a href="https://www.gov.uk/foreign-travel-advice">holiday destination</a> and <a href="https://www.gov.uk/uk-border-control">return to the UK</a>.&nbsp;</span>This booking is protected under the ATOL scheme, as set out in the ATOL certificate to be supplied.</p>
+    "@
+    $fphpayment_paywithdepositdescriptiononepassengerincludingtax_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <p>Secure your holiday today with a <strong>{depositPricePP} deposit.</strong></p>
+    <p>The remaining balance of <strong>{amount}</strong> (excluding local taxes) needs to be paid by <strong>{date}</strong></p>
+    "@
+    $fphpayment_protectionimage_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <image mediaid="{3AAF21D8-A435-4832-AD86-58B714E8B5DB}" />
+    "@
+    $fphpayment_paywithdepositdescriptionincludingtax_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <p>Secure your holiday today with a <strong>{depositPricePP} per person deposit.</strong></p>
+    <p>The remaining balance of <strong>{amount}</strong> (excluding local taxes) needs to be paid by <strong>{date}</strong></p>
+    "@
+    $fphpayment_textcreditinfoblock_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <span style="background-color: #ffffff; color: #000000;">Don&rsquo;t forget &ndash; you have easyJet holidays credit to spend! Apply it to this booking by checking &lsquo;use your holiday credit&rsquo; below.</span>
+    "@
+    $fphpayment_amountlefttopay_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    Please choose how you’d like to pay the remaining {amount}
+    "@
+    $fphpayment_readmorelink_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <link text="Read more about bags" linktype="external" url="http://www.easyjet.com/en/help/baggage/cabin-bag-and-hold-luggage" anchor="" target="_blank" />
+    "@
+    $fphpayment_payfulldescriptionincludingtax_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <p>Book today and pay the <strong>full amount</strong> of your trip (excluding local taxes).</p>
+    "@
+    $fphpayment_overheadaddedicon_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <image mediaid="{D04439D4-A1E7-409F-B074-CBA5D1B14D5E}" />
+    "@
+    $fphpayment_includedicon_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <image mediaid="{CB598726-D37F-4F61-8B1C-B7A9DEF9DEE9}" />
+    "@
+    $fphpayment_protectiontitle_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    Your Flight + Hotel booking is secure as all easyJet bookings are fully protected.
+    "@
+    $fphpayment_parkingdates_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    {from} - {to}
+    "@
+    $fphpayment_cvvinfo_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <image mediaid="{F5BF2F87-BA36-4B7E-B300-D0E3DC117EFB}" />
+    "@
+    $fphpayment_usecreditdescription_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <p>You have&nbsp;<strong>{amount}&nbsp;</strong>available in your holiday credit account. You can use part or all your credit to either pay the full amount or just the deposit.</p>
+    <p>If you want to put all of your easyJet holidays credit towards your booking but you don&rsquo;t want to pay the full holiday balance upfront, follow these steps.
+    </p>
+    <p>First, pay your deposit in full, selecting your easyJet holidays credit as the payment method. Once this is complete, go to Manage My Booking and you&rsquo;ll be able to apply any remaining credit to the balance of your holiday.</p>
+    "@
+    $fphpayment_cvvinfoamex_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <image mediaid="{3C3FEA8B-FB56-4261-844E-F38C68019CEB}" />
+    "@
+    $fphpayment_paymentimages_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    {19D3ED30-17EA-4774-840D-7A7BFAE6926A}|{0D275411-1860-4794-85DC-E20CCFEE7E92}|{EA7A5C7C-672B-4164-BE58-36B1FE4415DD}|{E04FBB64-3414-49D0-9003-684002B31EDB}|{CA0BEA75-4E5B-4385-87CB-5866133C1345}|{CA99592F-A46A-4F1F-94BA-AEDE0F8A2361}
+    "@
+    $fphpayment_usecreditlogintext_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    Looking to use your holiday credit? Please <a href="~/link.aspx?_id=39D2516DE32A4B54B5B47FFB40F67EAA&amp;_z=z">login</a>&nbsp;into your account.
+    "@
+    $fphpayment_priceincreasedmessage_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    The price of your booking has increased by {amount}. The most up to date price of your booking is {newprice}
+    "@
+    $fphpayment_departureairporttext_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    {destination} Parking booked with
+    "@
+    $fphpayment_pricedecreasedmessage_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    The price of your booking has decreased by {amount}. The most up to date price of your booking is {newprice}
+    "@
+    $fphpayment_paywithdepositdescriptiononepassenger_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    <p>Secure your holiday today with a <strong>{depositPricePP} deposit.</strong></p><p>The remaining balance of <strong>{amount}</strong> needs to be paid by <strong>{date}</strong></p>
+    "@
+    $fphpayment_importantinformationconfirmationwithairportparking_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    Tick this box to confirm you&rsquo;ve viewed and agree to our <a rel="noopener noreferrer" href="https://www.easyjet.com/en/holidays/info/travel-information?ecp=FPH " target="_blank">travel information</a>, <a rel="noopener noreferrer" href="https://www.easyjet.com/en/holidays/flight-plus-hotel/booking-conditions" target="_blank">Booking Conditions </a>including information on cancellation terms, Package Travel &amp; Linked Travel Arrangements and <a href="https://www.easyjet.com/en/terms-and-conditions/dangerous-goods">Dangerous Goods Policy</a>, and that everyone who&rsquo;s travelling is aware of their contents too.
+    <span style="display: block; margin-top: 30px;"><strong>Conditions for Airport Parking: </strong>by ticking this box you also confirm you have read the
+    <a href="https://www.holidayextras.com/privacy.html" target="_blank" rel="noopener noreferrer">
+    privacy policy</a>, and are aware of the
+    <a href="https://terms.holidayextras.co.uk/en/documents/terms/?docs=terms_and_conditions_api&amp;agent=AJ514" target="_blank" rel="noopener noreferrer">    booking conditions&nbsp;</a>for airport parking services provided by Holiday Extras.</span>
+    "@
+    $fphpayment_paymentdeny_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    Unfortunately we haven&rsquo;t been able to authorise your payment. Please contact easyJet customer services on 0330 912 6593&nbsp;and quote the error code shown below:<br />
+    Error Code: 267<rprot001><br />
+    Contact Us - <a href="https://www.easyjet.com/en/holidays/flight-plus-hotel/help/contact-form">https://www.easyjet.com/en/holidays/flight-plus-hotel/help/contact-form</a><br />
+    If you&rsquo;re attempting to book a holiday departing within the next 30 days please call us to ensure the matter is resolved as soon as possible.</rprot001>
+    "@
+    $fphpayment_includedbagslabel_d59bee89a4074bc8a65a705e554b8dc6_en_v2 = @"
+    {count} x Small under seat cabin bags
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Booking/Payment/Page Components/FPH Payment"
+            TemplatePath = "/sitecore/templates/Feature/Destinations/Payment"
+            Id          = $holidayshomebookingpaymentpagecomponentsfphpayment_Id
+            Fields      = @{
+                "ImportantInformation" = @{
+                    "en" = $fphpayment_importantinformation_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "PayWithDepositDescriptionOnePassenger" = @{
+                    "en" = $fphpayment_paywithdepositdescriptiononepassenger_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "ImportantInformationConfirmationWithAirportParking" = @{
+                    "en" = $fphpayment_importantinformationconfirmationwithairportparking_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "PayWithDepositDescriptionOnePassengerIncludingTax" = @{
+                    "en" = $fphpayment_paywithdepositdescriptiononepassengerincludingtax_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "PriceJumpPopupAccept" = @{
+                    "en" = "Continue with new price"
+                }
+                "PriceDecreasedMessage" = @{
+                    "en" = $fphpayment_pricedecreasedmessage_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "AmountLeftToPay" = @{
+                    "en" = $fphpayment_amountlefttopay_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "PriceJumpPopupTitle" = @{
+                    "en" = "The price of your booking has changed"
+                }
+                "ProtectionImage" = @{
+                    "en" = $fphpayment_protectionimage_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "PriceJumpPopupDescription" = @{
+                    "en" = $fphpayment_pricejumppopupdescription_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "TextCreditInfoBlock" = @{
+                    "en" = $fphpayment_textcreditinfoblock_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "PaymentDeny" = @{
+                    "en" = $fphpayment_paymentdeny_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "ParkingDates" = @{
+                    "en" = $fphpayment_parkingdates_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "PriceJumpPopupDecline" = @{
+                    "en" = "Search again"
+                }
+                "EmailInstruction" = @{
+                    "en" = $fphpayment_emailinstruction_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "PriceIncreasedMessage" = @{
+                    "en" = $fphpayment_priceincreasedmessage_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "IconCreditInfoBlock" = @{
+                    "en" = $fphpayment_iconcreditinfoblock_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "ProtectionTitle" = @{
+                    "en" = $fphpayment_protectiontitle_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "EnablePriceJumpInfoBox" = @{
+                    "en" = "1"
+                }
+                "DepartureAirportText" = @{
+                    "en" = $fphpayment_departureairporttext_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "ImportantInformationConfirmation" = @{
+                    "en" = $fphpayment_importantinformationconfirmation_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "PayFullDescriptionIncludingTax" = @{
+                    "en" = $fphpayment_payfulldescriptionincludingtax_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "PayWithDepositAttention" = @{
+                    "en" = $fphpayment_paywithdepositattention_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "PayWithDepositDescriptionIncludingTax" = @{
+                    "en" = $fphpayment_paywithdepositdescriptionincludingtax_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "PayWithDepositDescription" = @{
+                    "en" = $fphpayment_paywithdepositdescription_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "PayFullDescription" = @{
+                    "en" = $fphpayment_payfulldescription_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "CvvInfoAMEX" = @{
+                    "en" = $fphpayment_cvvinfoamex_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "IsUseCreditShown" = @{
+                    "en" = "1"
+                }
+                "UseCreditTitle" = @{
+                    "en" = "Use your holiday credit"
+                }
+                "LuggageInfoTitle" = @{
+                    "en" = "Bags and Luggage"
+                }
+                "IncludedBagsLabel" = @{
+                    "en" = $fphpayment_includedbagslabel_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "IncludedWithInfantLabel" = @{
+                    "en" = $fphpayment_includedwithinfantlabel_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "OverheadBagAddedLabel" = @{
+                    "en" = $fphpayment_overheadbagaddedlabel_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "IssueNumberInfo" = @{
+                    "en" = $fphpayment_issuenumberinfo_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "__Sortorder" = @{
+                    "en" = "300"
+                }
+                "ServiceLineLabel" = @{
+                    "en" = "Dedicated customer service"
+                }
+                "CvvInfo" = @{
+                    "en" = $fphpayment_cvvinfo_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "ReadMoreLink" = @{
+                    "en" = $fphpayment_readmorelink_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "PaymentImages" = @{
+                    "en" = $fphpayment_paymentimages_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "OverheadAddedIcon" = @{
+                    "en" = $fphpayment_overheadaddedicon_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "IncludedIcon" = @{
+                    "en" = $fphpayment_includedicon_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "UseCreditFormTitle" = @{
+                    "en" = $fphpayment_usecreditformtitle_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "UseCreditDescription" = @{
+                    "en" = $fphpayment_usecreditdescription_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "CreditDebitCardLabel" = @{
+                    "en" = "Credit/debit card"
+                }
+                "PramName" = @{
+                    "en" = "Pram or Pushchair"
+                }
+                "UseCreditLogInText" = @{
+                    "en" = $fphpayment_usecreditlogintext_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+                "SportEquipmentsLabel" = @{
+                    "en" = "Sports equipment"
+                }
+                "FastTrackLabel" = @{
+                    "en" = $fphpayment_fasttracklabel_d59bee89a4074bc8a65a705e554b8dc6_en_v2
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagespayment_Id = "{90C3EF76-7AE5-4ACF-AFAD-60E64C3F71CF}"
+    $payment_renderingreplacements_90c3ef767ae54acfafad60e64c3f71cf_en_v1 = @"
+    {6C234F53-080F-4C8E-AC01-CE83E3C28998}:{6C234F53-080F-4C8E-AC01-CE83E3C28998}:Placeholder=%2fheader%2ftitle-bar-%7bAA8C7F95-04F8-470E-8DD9-208FFAB45DC4%7d-0&Data+Source=%7b9283463A-FB1A-4859-B333-42A1B7BED774%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=:{946F8C61-8778-4258-8261-E3DAFED3EC58}|{6C234F53-080F-4C8E-AC01-CE83E3C28998}:{6C234F53-080F-4C8E-AC01-CE83E3C28998}:Placeholder=%2fheader%2fsubheader-%7bAA8C7F95-04F8-470E-8DD9-208FFAB45DC4%7d-0&Data+Source=%7b9CC43582-0359-450B-87E0-8EC707C420D0%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=:{D2C8460D-F8C8-4887-93CE-CFB625C08D09}|{9C7CAD82-BB33-4563-BCAF-4B362B6278B3}:{9C7CAD82-BB33-4563-BCAF-4B362B6278B3}:Placeholder=%2fbody&Data+Source=%7b3D075B49-B691-4823-A013-6CE43C8B5376%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=|{9D5C09DD-EFB0-4AF8-AE1E-C84444E69106}:{9D5C09DD-EFB0-4AF8-AE1E-C84444E69106}:Placeholder=%2fbody%2fcomponent-wrapper-inner-%7bb8fd2975-fd9e-4cee-a563-f38252f74081%7d-0&Data+Source=%7bD59BEE89-A407-4BC8-A65A-705E554B8DC6%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Payment"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagespayment_Id
+            Fields      = @{
+                "RenderingReplacements" = @{
+                    "en" = $payment_renderingreplacements_90c3ef767ae54acfafad60e64c3f71cf_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 100000179
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260626T110923Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

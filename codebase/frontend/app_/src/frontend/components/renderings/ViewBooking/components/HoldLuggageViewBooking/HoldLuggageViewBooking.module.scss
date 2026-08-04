@@ -1,0 +1,21 @@
+.luggage {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    :global(.confirmed-luggage__read-more) {
+        margin-top: 16px;
+        margin-left: 55px;
+        font-family: $fontRoundedDemy;
+        font-weight: 400;
+        font-size: 16px;
+
+        @include media-breakpoint-down(md) {
+            margin-left: 41px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    }
+}

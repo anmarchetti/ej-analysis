@@ -1,0 +1,40 @@
+{
+  "Title": "Alternative rooms(s_tp=6) for accom 82551ecc",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/fcgi-bin/ezydmouk/avcache3_g",
+          "IgnoreCase": true
+        }
+      ]
+    },
+    "Params": [
+      {
+        "Name": "s_tp",
+        "Matchers": [
+          {
+            "Name": "WildcardMatcher",
+            "Pattern": "6"
+          }
+        ]
+      },
+      {
+        "Name": "accom",
+        "Matchers": [
+          {
+            "Name": "WildcardMatcher",
+            "Pattern": "82551ecc"
+          }
+        ]
+      }
+    ],
+    "Methods": [ "Get" ]
+  },
+  "Response": {
+    "Headers": { "Content-Type": "application/json; charset=utf-8" },
+    "StatusCode": 200,
+    "BodyAsFile": "__admin/files/Atcom/AmendController/RoomAndBoard/InfoEndpoint/AvCache_82551ecc_ST6.xml"
+  }
+}

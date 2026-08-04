@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <ItemGroup>
+        <PackageReference Include="Schema.NET" />
+        <PackageReference Include="CsvHelper" />
+        <PackageReference Include="Sitecore.Buckets" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)SitecoreProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GeneratedAssemblyInfoFile>Properties\Assemblyinfo.cs</GeneratedAssemblyInfoFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="App_Config\Include\Feature\easyJet.Feature.Redirects.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <None Include="App_Config\Include\Feature\easyJet.Feature.Redirects.Debug.config">
+            <DependentUpon>easyJet.Feature.Redirects.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Feature\easyJet.Feature.Redirects.Release.config">
+            <DependentUpon>easyJet.Feature.Redirects.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="sitecore\shell\Applications\RedirectTool\**\*.*">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Sitecore.LayoutService">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>..\..\..\..\lib\Sitecore.LayoutService.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.LayoutService.Mvc">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>..\..\..\..\lib\Sitecore.LayoutService.Mvc.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Destinations\code\easyJet.Foundation.Destinations.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Multisite\code\easyJet.Foundation.Multisite.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\SitecoreExtensions\code\EasyJet.Foundation.SitecoreExtensions.csproj" />
+    </ItemGroup>
+</Project>

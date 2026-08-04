@@ -1,0 +1,45 @@
+﻿---
+ID: "3aff8030-c091-4242-925f-dc2ea1278ceb"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Rollback Homepage Confidence Module
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $informationTiles =  Get-Item -path '/sitecore/content/EasyJet/Holidays/Data/Information Tiles/Global Information Tiles' -templateId "{A5727395-0B58-464F-B6CC-83E450109E4E}";
+    
+    #Update Text block rendering for tiles block
+    $homePage = Get-Item -Path '/sitecore/content/EasyJet/Holidays/Home';
+    $renderings = Get-Rendering -Path '/sitecore/content/EasyJet/Holidays/Home';
+    
+    $renderings| ForEach-Object {
+    	# If the current item has a certain template, print out its path in the tree
+    	if ($_.Datasource -eq $informationTiles.ID) {
+    $informationTilesRendering = $_;
+    	}
+    }
+    
+    $textBlocksRenderings = Get-Rendering -Item $homePage -Placeholder $informationTilesRendering.Placeholder;
+    
+    if ($textBlocksRenderings -is [array]) {
+        $textBlocksRendering = $textBlocksRenderings[0];
+    } else { 
+        $textBlocksRendering = $textBlocksRenderings;
+    }
+    
+    $textBlocksRendering.Datasource = '/sitecore/content/EasyJet/Holidays/Data/Text Blocks/Why book with us';
+    Set-Rendering -Item $homePage -Instance $textBlocksRendering;
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4890
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200714T084139Z

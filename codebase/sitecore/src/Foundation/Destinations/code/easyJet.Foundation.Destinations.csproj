@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" />
+    <PackageReference Include="Sitecore.Analytics" />
+    <PackageReference Include="Sitecore.ContentSearch" />
+    <PackageReference Include="Sitecore.ContentSearch.Linq" />
+    <PackageReference Include="Sitecore.ContentSearch.SolrProvider" />
+    <PackageReference Include="Sitecore.ContentSearch.SolrNetExtension" />
+    <PackageReference Include="Sitecore.JavaScriptServices.Configuration" />
+    <PackageReference Include="System.Threading.Tasks.Dataflow" />
+    <PackageReference Include="SolrNet.Core" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)SitecoreProject.props" />
+  <PropertyGroup>
+    <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratedAssemblyInfoFile>Properties\Assemblyinfo.cs</GeneratedAssemblyInfoFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="App_Config\Include\Foundation\easyJet.Foundation.Destinations.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <Content Include="App_Config\Include\Foundation\easyJet.Foundation.Destinations.Solr.CustomIndex.Master.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <Content Include="App_Config\Include\Foundation\easyJet.Foundation.Destinations.Solr.CustomIndex.Web.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <Content Include="App_Config\Include\Foundation\easyJet.Foundation.TransferInfo.Solr.CustomIndex.Master.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Destinations.Solr.CustomIndex.Master.CI.config">
+      <DependentUpon>easyJet.Foundation.Destinations.Solr.CustomIndex.Master.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Destinations.Solr.CustomIndex.Master.Debug.config">
+      <DependentUpon>easyJet.Foundation.Destinations.Solr.CustomIndex.Master.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Destinations.Solr.CustomIndex.Master.Release.config">
+      <DependentUpon>easyJet.Foundation.Destinations.Solr.CustomIndex.Master.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <Content Include="App_Config\Include\Foundation\easyJet.Foundation.TransferInfo.Solr.CustomIndex.Web.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Destinations.Solr.CustomIndex.Web.CI.config">
+      <DependentUpon>easyJet.Foundation.Destinations.Solr.CustomIndex.Web.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Destinations.Solr.CustomIndex.Web.Debug.config">
+      <DependentUpon>easyJet.Foundation.Destinations.Solr.CustomIndex.Web.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Destinations.Solr.CustomIndex.Web.Release.config">
+      <DependentUpon>easyJet.Foundation.Destinations.Solr.CustomIndex.Web.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.TransferInfo.Solr.CustomIndex.Master.CI.config">
+      <DependentUpon>easyJet.Foundation.TransferInfo.Solr.CustomIndex.Master.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.TransferInfo.Solr.CustomIndex.Master.Debug.config">
+      <DependentUpon>easyJet.Foundation.TransferInfo.Solr.CustomIndex.Master.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.TransferInfo.Solr.CustomIndex.Master.Release.config">
+      <DependentUpon>easyJet.Foundation.TransferInfo.Solr.CustomIndex.Master.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.TransferInfo.Solr.CustomIndex.Web.CI.config">
+      <DependentUpon>easyJet.Foundation.TransferInfo.Solr.CustomIndex.Web.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.TransferInfo.Solr.CustomIndex.Web.Debug.config">
+      <DependentUpon>easyJet.Foundation.TransferInfo.Solr.CustomIndex.Web.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.TransferInfo.Solr.CustomIndex.Web.Release.config">
+      <DependentUpon>easyJet.Foundation.TransferInfo.Solr.CustomIndex.Web.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Destinations.CI.config">
+      <DependentUpon>easyJet.Foundation.Destinations.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Destinations.Debug.config">
+      <DependentUpon>easyJet.Foundation.Destinations.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+    <None Include="App_Config\Include\Foundation\easyJet.Foundation.Destinations.Release.config">
+      <DependentUpon>easyJet.Foundation.Destinations.config</DependentUpon>
+      <IsTransformFile>true</IsTransformFile>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)src\Foundation\Analytics\code\easyJet.Foundation.Analytics.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\Foundation\Multisite\code\easyJet.Foundation.Multisite.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\Foundation\SiteModes\code\easyJet.Foundation.SiteModes.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <SonarQubeSetting Include="sonar.coverage.exclusions">
+      <Value>
+**/Tasks/Commands/RunHbgBrokenImagesLinksReport.cs, 
+**/Tasks/Commands/RunS3BrokenImagesLinksReport.cs
+</Value>
+    </SonarQubeSetting>
+  </ItemGroup>
+</Project>

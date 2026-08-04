@@ -1,0 +1,44 @@
+﻿---
+ID: "402c5764-1d70-4dde-b434-95c1844feccc"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-16362 Contact Us Form Promo Block Theme"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+        $item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+         if ($item -eq $null) {
+                $item = New-Item -Path $path -ItemType $templateId
+                Write-Host "Item" $item.Name "successfully created";
+         }
+         return $item
+    }
+    $form = Get-Or-Create-Item "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Contact Us" "{D6E273D0-4C78-4ABD-B412-5C98E7C9DB94}"
+    $promoBlocksRenderingItemId = "{FF441699-4D65-45C1-B565-E87714B5A278}"
+    $promoParameters = [ordered]@{
+    "Theme" = "Text Variant - Alternative"
+    }
+    
+    
+    foreach($itemRendering in Get-Rendering -Item $form -FinalLayout) {
+        Write-Host "Rendering UniqueId: $($itemRendering.UniqueId)"
+        if($itemRendering.ItemId -eq $promoBlocksRenderingItemId){
+            $itemRendering | Set-RenderingParameter -Parameter $promoParameters | Set-Rendering -Item $form
+        }
+        Get-RenderingParameter -Rendering $itemRendering | Format-Table -Auto
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 700
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

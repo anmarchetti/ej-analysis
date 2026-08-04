@@ -1,0 +1,51 @@
+﻿---
+ID: "f876a073-afe7-41d3-bd81-578a1bc1808c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-168 add eco certified rendering"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Renderings"
+    
+    $myRenderings = @(
+        @{ 
+            Title          = "Eco Certified"
+            PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+            RenderingPath  = "/sitecore/layout/Renderings/Feature/Destinations/Eco Certified"
+            Placeholder    = "/body/eco-certified-{5500ac44-5df4-4473-8e8c-ea635a187882}-0"
+            PlaceBeforeRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/BookingHeroBanner"
+        },
+    @{ 
+            Title          = "Eco Certified"
+            PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation"
+            RenderingPath  = "/sitecore/layout/Renderings/Feature/Destinations/Eco Certified"
+            Placeholder    = "/body/eco-certified-{5d228e7e-0347-4e8e-ac47-d911eba730d7}-0"
+            PlaceBeforeRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/BookingHeroBanner"
+        },
+    @{ 
+            Title          = "Eco Certified"
+            PagePath       = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirmation"
+            RenderingPath  = "/sitecore/layout/Renderings/Feature/Destinations/Eco Certified"
+            Placeholder    = "/body/eco-certified-{69e811f9-4582-4c53-9317-7e983d66ef29}-0"
+            PlaceBeforeRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/BookingHeroBanner"
+        },
+    @{ 
+            Title          = "Eco Certified"
+            PagePath       = "/sitecore/content/EasyJet/TradePortal/Home/Booking/View Booking"
+            RenderingPath  = "/sitecore/layout/Renderings/Feature/Destinations/Eco Certified"
+            Placeholder    = "/body/eco-certified-{a0c9d3d6-ce99-4d98-b482-df23906098ac}-0"
+            PlaceBeforeRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/BookingHeroBanner"
+        }
+    )
+    ImportRenderings -renderingsToAttach $myRenderings
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191118T132901Z

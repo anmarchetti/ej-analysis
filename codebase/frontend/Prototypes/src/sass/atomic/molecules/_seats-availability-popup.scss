@@ -1,0 +1,75 @@
+.seats-availability-popup {
+    // for usage over seat-map-widget
+    z-index: 1061 !important;
+
+    .popup__body:last-child {
+        padding: 50px 44px 40px;
+
+        @include media-breakpoint-down(md) {
+            padding: 20px;
+        }
+    }
+
+    .confirmation-checkbox {
+        margin-bottom: 40px;
+    }
+
+    .seats-availability-popup__title {
+        margin: 0 0 20px;
+        font-family: $fontRoundedHeadline;
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 1;
+        text-transform: uppercase;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 16px;
+            font-size: 24px;
+        }
+    }
+
+    .seats-availability-popup__description {
+        margin-bottom: 40px;
+        font-family: $fontRoundedBook;
+        font-size: 18px;
+        line-height: 24px;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 13px;
+            font-size: 16px;
+            line-height: 21px;
+        }
+    }
+
+    .seats-availability-popup__agreement {
+        margin-bottom: 40px;
+        font-size: 14px;
+        line-height: 1.25;
+    }
+
+    .seats-availability-popup__btn {
+        min-width: unset;
+        margin-bottom: 16px;
+        padding: 15px 25px;
+        font-size: 16px;
+        line-height: 20px;
+        border-radius: 4px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .seats-availability-popup__btn + .seats-availability-popup__btn {
+        margin-left: 55px;
+
+        @include media-breakpoint-down(md) {
+            margin-left: 0;
+        }
+    }
+}
+
+.seats-availability-popup + .popup-overlay {
+    // for usage over seat-map-widget
+    z-index: 1060;
+}

@@ -1,0 +1,87 @@
+﻿---
+ID: "af6924bf-417f-4c9f-afbc-f9ff6dd65c5d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/WP-671 No Booking Checkbox Translations"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    # Daten für mehrere Sitecore-Items
+    $data = @{
+        Items = @(
+            @{
+                Path = "/sitecore/content/EasyJet/Holidays/Home/Help/Contact Form/Page Components/Form";
+                Fields = @{
+                    NoBookingYetLabel = @(
+                        @{ Language = "en"; Text = "I haven't booked yet" },
+                        @{ Language = "de-DE"; Text = "Ich habe noch nicht gebucht" },
+                        @{ Language = "de-CH"; Text = "Ich habe noch nicht gebucht" },
+                        @{ Language = "fr-CH"; Text = "Je n'ai pas encore réservé" },
+                        @{ Language = "fr-Fr"; Text = "Je n'ai pas encore réservé" }
+                    )
+                }
+            },
+            @{
+                Path = "/sitecore/content/EasyJet/Holidays/Home/Help/Contact Form/Page Components/Form";
+                Fields = @{
+                    NoBookingYetLabel = @(
+                        @{ Language = "en"; Text = "I haven't booked yet" },
+                        @{ Language = "de-DE"; Text = "Ich habe noch nicht gebucht" },
+                        @{ Language = "de-CH"; Text = "Ich habe noch nicht gebucht" },
+                        @{ Language = "fr-CH"; Text = "Je n'ai pas encore réservé" },
+                        @{ Language = "fr-Fr"; Text = "Je n'ai pas encore réservé" }
+                    )
+                }
+            }
+            # Weitere Items können hier hinzugefügt werden
+        )
+    }
+    
+    # Iteration über jedes Item
+    foreach ($itemData in $data.Items) {
+        $formPath = $itemData.Path
+        Write-Host "--------------------------"
+        Write-Host "Updating item: '$formPath'"
+        Write-Host "--------------------------"
+        $item = Get-Item -Path $formPath -ErrorAction SilentlyContinue
+    
+        # Überprüfung, ob das Item existiert
+        if ($item -eq $null) {
+            Write-Host "Item not found at path: $formPath"
+            continue
+        }
+    
+        # Verwende GetEnumerator und ForEach-Object zur Iteration über die Felder
+        $itemData.Fields.GetEnumerator() | ForEach-Object {
+            $fieldName = $_.Key
+            $_.Value | ForEach-Object {
+                $languageItem = Get-Item -Path $formPath -Language $_.Language -ErrorAction SilentlyContinue
+                if ($languageItem -eq $null) {
+                    # Erstellt eine neue Sprachversion, falls nicht vorhanden
+                    $languageItem = New-Item -Path $formPath -Language $_.Language
+                }
+    
+                # Bearbeite das Item in der entsprechenden Sprache
+                $languageItem.Editing.BeginEdit()
+                $languageItem[$fieldName] = $_.Text
+                $languageItem.Editing.EndEdit() | Out-Null
+    
+                Write-Host "Updated field '$fieldName' for language '$($_.Language)' with text: $($_.Text)"
+            }
+        }
+    }
+    Write-Host "Update process for all items completed."
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230302T083838Z

@@ -1,0 +1,164 @@
+.dialog {
+    z-index: 10000;
+    position: fixed;
+    width: min(400px, calc(100vw - 32px));
+    max-height: initial;
+    left: 40px;
+    bottom: 40px;
+    top: auto;
+    right: auto;
+    margin: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 14px 40px rgba(23, 24, 24, 0.2), 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: bottom 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nonModalContainer {
+    pointer-events: none;
+}
+
+.nonModalOverlay {
+    pointer-events: none;
+    background: transparent;
+}
+
+.nonModalContent {
+    pointer-events: auto;
+}
+
+.content {
+    border-radius: 16px;
+    background: $colorWhite;
+    color: $clrTextMain;
+    text-align: left;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+
+    :global(.popup__title) {
+        margin: 0;
+        font-size: 40px;
+        line-height: 0.95;
+        text-transform: uppercase;
+        letter-spacing: 0.2px;
+        font-family: $fontUnboundedSans;
+        color: $clrTextMain;
+    }
+
+    :global(.popup__content) {
+        border-radius: 16px;
+        background: $colorWhite;
+    }
+
+    :global(.popup__header) {
+        padding: 16px 16px 0;
+        border-bottom: none;
+        margin: 0 40px 0 0;
+    }
+
+    :global(.popup__body) {
+        padding: 8px 16px 16px;
+        text-align: left;
+    }
+
+    :global(.popup__close) {
+        top: 12px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        color: $clrEjOrange;
+    }
+
+    :global(.popup__close svg) {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+.description {
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.motivation {
+    margin-bottom: 12px;
+    line-height: 1.15;
+    font-family: $fontRoundedDemy;
+}
+
+.controls {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+}
+
+.code {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid $colorGeyser;
+    border-radius: 8px;
+    background: $colorPorcelain;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: $fontUnboundedSans;
+    text-transform: uppercase;
+}
+
+.controls :global(.btn) {
+    flex: 0 0 auto;
+    min-width: 172px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: $fontRoundedDemy;
+    line-height: 1;
+    padding: 0 20px;
+}
+
+@media (max-width: 767px) {
+    .dialog {
+        left: 0;
+        right: 0;
+        width: auto;
+        bottom: 0;
+        max-width: 100%;
+
+        :global(.popup__title) {
+            font-size: 36px;
+        }
+    }
+
+    .motivation {
+        margin-bottom: 8px;
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+
+    .code {
+        text-align: center;
+        justify-content: center;
+        height: 52px;
+        padding: 0 16px;
+        font-size: 24px;
+    }
+
+    .controls :global(.btn) {
+        width: 100%;
+        min-width: 0;
+        height: 52px;
+        font-size: 16px;
+    }
+}

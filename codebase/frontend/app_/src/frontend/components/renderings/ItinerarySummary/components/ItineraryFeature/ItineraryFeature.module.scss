@@ -1,0 +1,48 @@
+.feature {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+
+    @include media-breakpoint-up(md) {
+        justify-content: center;
+        gap: 4px;
+    }
+
+    &.expanded {
+        margin-top: 8px;
+
+        @include media-breakpoint-up(md) {
+            margin-top: 16px;
+            font-size: 16px;
+        }
+    }
+}
+
+.heading {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    font-weight: 700;
+}
+
+.tooltipTrigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    margin-left: -5px;
+    color: $colorLuxuryOrange;
+    cursor: pointer;
+
+    svg {
+        width: 13px;
+        height: 13px;
+    }
+}
+
+.description {
+    font-size: 14px;
+    line-height: 1.285;
+}

@@ -1,0 +1,208 @@
+﻿---
+ID: "2fafc801-7367-49f6-a7f9-27a93066b745"
+Parent: "948aeef1-0427-4351-a86f-10be447ce6fc"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Reports/Broken Images Links Report
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function -Name ConvertTo-Xlsx
+    Import-Function -Name Export-Xlsx
+    
+    $env = "PRODG"
+    $targetDb = "web" # Target database for check publish status
+    $sourceDb = "master"
+    $sourceCountry = ""
+    $time = Get-Date -UFormat %s -Millisecond 0
+    $date = Get-Date -Format "dd_MM_yyyy"
+    
+    $filename = "BrokenImagesLinksReport_$($sourceDb)_Small_$($date)_$($time)"
+    $reportsFolderPath = "$($sourceDb):/sitecore/media library/Files/easyJet Hotel Report Export"
+    $reportFolderName = "Broken Image Links Reports"
+    
+    
+    $rootItemPath = "$($sourceDb):/sitecore/content/EasyJet/Holidays/Home/Destinations"
+    $imagesFolderTemplateId = "{AF7DAAA8-8099-4F22-A607-F0E1FBA6AD0D}"
+    $externalImageTemplateId = "{E4B3BB73-22AB-4843-A816-3AA32EDDC7DC}"
+    $roomsFolderTemplateId = "{1762DFC8-B872-41A2-A7C1-A54B93DD6CCD}"
+    $hotelTemplateId = "{28E5E169-8F72-4F90-A277-280A8302B607}"
+    $imageFields = @( "Small") #@("Small","Medium","Large")
+    
+    function Has-BaseTemplate ($item,$baseTemplateId)
+    {
+    	if ($item -eq $null)
+    	{
+    		return false;
+    	}
+    	$template = [Sitecore.Data.Managers.TemplateManager]::GetTemplate($item);
+    	return $template -ne $null -and $template.InheritsFrom($baseTemplateId);
+    }
+    
+    function Get-Hotels-Recursive ($root,$list) {
+    	foreach ($child in $root.Children) {
+    		if (Has-BaseTemplate -Item $child -baseTemplateId "{168F65DC-9ECD-4A6E-AD93-A46464E45F79}") {
+    			if ($child.TemplateId -eq "{538939B3-07EC-4C23-BF8C-3A68DE0FDC93}")
+    			{
+    				foreach ($item in $child.Children) {
+    					if ($item.TemplateId -ne $hotelTemplateId) {
+    						continue;
+    					}
+    					$list.Add($item) > $null
+    				}
+    			}
+    			else {
+    				Write-Host $child.Paths.FullPath
+    				Get-Hotels-Recursive $child $list
+    			}
+    		}
+    	}
+    }
+    
+    function Get-Or-Create-Item ($path,$template) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $template
+    	}
+    	return $item
+    }
+    
+    function Save-Document ($reportsFolderPath,$reportFolderName,$reportName,$data) {
+    	$reportsFolder = Get-Or-Create-Item -Path "$($reportsFolderPath)/$($reportFolderName)" -Template "{FE5DD826-48C6-436D-B87A-7C4210C7413B}"
+    	$item = New-Item -Path "$($reportsFolder.Paths.FullPath)/$reportName" -ItemType "{962B53C4-F93B-4DF9-9821-415C867B8903}"
+    	$data = $data | ForEach-Object { New-Object PSObject -Property $_ }
+    	[byte[]]$data = $data | ConvertTo-Xlsx
+    	[Sitecore.Data.Items.MediaItem]$mediaItem = $item
+    	[Sitecore.Resources.Media.Media]$media = [Sitecore.Resources.Media.MediaManager]::GetMedia($mediaItem);
+    	$stream = New-Object System.IO.MemoryStream
+    	$stream.Write($data,0,$data.Count)
+    	$media.SetStream($stream,"xlsx");
+    	$stream.Close();
+    	Out-Download -Name "$($reportName).xlsx" -InputObject $data
+    }
+    
+    function Get-UrlStatusCode ([string]$Url)
+    {
+    	try
+    	{
+    		(Invoke-WebRequest -Uri $Url -Method Head -UseBasicParsing -DisableKeepAlive).StatusCode
+    	}
+    	catch [Net.WebException]
+    	{
+    		[int]$_.Exception.Response.StatusCode
+    	}
+    }
+    
+    function Get-Publish-Status ($item) {
+    	$isPublished = Test-Path -Path "$($targetDb):$($item.Paths.FullPath)"
+    	if ($isPublished) {
+    		return "Yes"
+    	}
+    
+    	return "No"
+    }
+    
+    function Get-Additional-Hotel-Info ($hotelItem) {
+        $atcomCodes = @()
+    	$hotelItem.Children | Where { $_.TemplateId -eq $roomsFolderTemplateId } | %{ $atcomCodes += $_["Code"] }
+    	$reportRow = [ordered]@{
+    		CountryName = $hotelItem.Parent.Parent.Parent["Name"]
+    		CountryCode = $hotelItem.Parent.Parent.Parent["Code"]
+    		RegionName = $hotelItem.Parent.Parent["Name"]
+    		RegionCode = $hotelItem.Parent.Parent["Code"]
+    		ResortName = $hotelItem.Parent["Name"]
+    		ResortCode = $hotelItem.Parent["Code"]
+    		GIATA = $hotelItem["GiataCode"]
+    		AtcomCodes = $atcomCodes -join "| "
+    		HotelName = $hotelItem["Name"]
+    	}
+    
+    	return $reportRow
+    }
+    
+    function Get-Images-Status ($images,[string]$type,$hotelItem) {
+    	$brokenLinks = @()
+    	foreach ($image in $images) {
+    		$imageName = $image.name
+    		foreach ($imageField in $imageFields) {
+    			$imageStatus = @{}
+    
+    			$imgUrl = $image[$imageField]
+    			$pulishStatus = Get-Publish-Status $image
+    
+    			$hotelInfo = Get-Additional-Hotel-Info -HotelItem $hotelItem
+    
+    			if ($imgUrl -ne "" -and $imgUrl -ne $null) {
+    
+    				$statusCode = Get-UrlStatusCode -Url $imgUrl
+    
+    				if ($statusCode -ne 200) {
+    					$brokenLinks += ($hotelInfo + [ordered]@{
+    							name = $imageName;
+    							StatusCode = $statusCode;
+    							Size = $imageField;
+    							Url = $imgUrl;
+    							Type = $type;
+    							Published = $pulishStatus
+    						})
+    				}
+    
+    			} else {
+    				$brokenLinks += ($hotelInfo + [ordered]@{
+    						name = $imageName;
+    						StatusCode = "Empty Field";
+    						Size = $imageField;
+    						Url = "";
+    						Type = $type;
+    						Published = $pulishStatus
+    					})
+    			}
+    
+    		}
+    	}
+    	return $brokenLinks
+    }
+    
+    function Run-Images-Check {
+    	$imagesStatuses = @()
+    	$hotels = [System.Collections.ArrayList]@()
+    	$root = Get-Item $rootItemPath
+    	Get-Hotels-Recursive $root $hotels
+    
+    	foreach ($hotel in $hotels) {
+    		$hotelImagesFolder = $hotel.Children | Where { $_.TemplateId -eq $imagesFolderTemplateId } | Select -First 1
+    		$hotelRoomsFolder = $hotel.Children | Where { $_.TemplateId -eq $roomsFolderTemplateId } | Select -First 1
+    
+    		$images = $hotelImagesFolder.Children | Where { $_.TemplateId -eq $externalImageTemplateId }
+    
+    		$imagesStatuses += Get-Images-Status -images $images -Type "Hotel Image" -HotelItem $hotel
+    
+    		$rooms = $hotelRoomsFolder.Children
+    
+    		$roomsImagesFolders = $rooms.Children | Where { $_.TemplateId -eq $imagesFolderTemplateId }
+    		$roomImages = $roomsImagesFolders.Children | Where { $_.TemplateId -eq $externalImageTemplateId }
+    
+    		$roomsImagesStatuses = Get-Images-Status -images $roomImages -Type "Room Image" -HotelItem $hotel
+    
+    		$imagesStatuses += $roomsImagesStatuses
+    	}
+    
+        Save-Document -ReportsFolderPath $reportsFolderPath -ReportFolderName $reportFolderName -ReportName $filename -Data $imagesStatuses
+    }
+    
+    $stopWatch = New-Object -TypeName System.Diagnostics.Stopwatch
+    $stopWatch.Start()
+    
+    Run-Images-Check
+    
+    $stopWatch.Stop()
+    Write-Host "Images Links Check completed. Elapsed time - $($StopWatch.Elapsed)" -ForegroundColor Green 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200408T100643Z

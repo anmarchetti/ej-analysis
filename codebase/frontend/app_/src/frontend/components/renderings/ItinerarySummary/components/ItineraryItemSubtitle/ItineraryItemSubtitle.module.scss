@@ -1,0 +1,24 @@
+.subtitle {
+    display: inline;
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.285;
+    color: $colorBlackLight;
+
+    @include media-breakpoint-up(md) {
+        font-size: 16px;
+    }
+}
+
+.subtitleContent {
+    font-size: 14px;
+    font-weight: 400;
+    color: $colorBlackLight;
+    margin-inline-start: 4px;
+
+    &.withoutMargin {
+        margin-inline-start: 0;
+    }
+}

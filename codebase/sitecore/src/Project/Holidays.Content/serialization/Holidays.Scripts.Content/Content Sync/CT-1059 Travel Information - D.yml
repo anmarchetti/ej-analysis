@@ -1,0 +1,1777 @@
+﻿---
+ID: "0a4b7390-78e6-4ac0-9f1c-06590631e66c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CT-1059 Travel Information - Disruption - Help"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $holidayshomerootinfotravelinformationpagecomponentstextblockstravelinfoafteraccordionsflightplushotel_Id = "{F9BAB1B0-F038-4730-9C2B-406BC969FB53}"
+    $travelinfoafteraccordionsflightplushotel_description_f9bab1b0f03847309c2b406bc969fb53_dede_v4 = @"
+    <p>Bei Fragen findest du weitere Infos in den&nbsp;<a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z">FAQs</a>&nbsp;auf unserer&nbsp;Website. Wenn du vor deiner Abreise oder w&auml;hrend deinem Urlaub mit uns sprechen musst, logge dich einfach in deinen Account ein, rufe deine Buchung auf und starte einen Chat mit uns. Oder besuche unsere <a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z">Kontaktseite</a>.</p>
+    "@
+    $travelinfoafteraccordionsflightplushotel_description_f9bab1b0f03847309c2b406bc969fb53_en_v4 = @"
+    <p>If you have any questions, we may already have the answer on our website. Our <a href="~/link.aspx?_id=4842693FD3F7438F9D5100C64A2E8047&amp;_z=z">help centre</a>&nbsp;has information needed to guide you through every step of your holiday journey. We also have our easyJet holidays chatbot in the corner of this page, who&rsquo;ll be able to help at any time. If you still need to speak to our team, you can visit our <a href="~/link.aspx?_id=ADCD2BC5066645E78246B8ABAD045313&amp;_z=z">contact us page</a>.</p>
+    "@
+    $travelinfoafteraccordionsflightplushotel_description_f9bab1b0f03847309c2b406bc969fb53_frfr_v4 = @"
+    <p>Si vous avez des questions, il se peut que nous ayons d&eacute;j&agrave; la r&eacute;ponse sur notre site internet. Notre&nbsp;<a href="https://www.easyjet.com/fr/vacances/aide">centre d&rsquo;aide</a>&nbsp;dispose des informations n&eacute;cessaires pour vous guider &agrave; chaque &eacute;tape de vos vacances. Si vous avez encore besoin de parler &agrave; notre &eacute;quipe&nbsp;avant de partir ou pendant votre s&eacute;jour, <a href="~/link.aspx?_id=E3A5DDD5CA704419B5C4E7F72564F4F3&amp;_z=z">connectez-vous &agrave; votre compte</a>&nbsp;et consultez votre r&eacute;servation pour lancer un chat avec l'un de nos conseillers. Vous pouvez &eacute;galement consulter notre <a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z">page de contact</a>.</p>
+    "@
+    $travelinfoafteraccordionsflightplushotel_description_f9bab1b0f03847309c2b406bc969fb53_dech_v4 = @"
+    <p>Bei Fragen k&ouml;nnte die ben&ouml;tigte Information bereits auf unserer&nbsp;Website zu finden sein. In unseren&nbsp;<a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z">FAQs</a>&nbsp;findest du hilfreiche Informationen f&uuml;r alle Einzelheiten deiner Ferien. Wenn du mit unserem Team sprechen m&ouml;chtest, logge dich in dein Konto ein, rufe deine Buchung auf und starte einen Chat mit uns. Oder besuche unsere&nbsp;<a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z">Kontaktseite</a>.</p>
+    "@
+    $travelinfoafteraccordionsflightplushotel_description_f9bab1b0f03847309c2b406bc969fb53_frch_v4 = @"
+    <p>Si vous avez des questions, il se peut que nous ayons d&eacute;j&agrave; la r&eacute;ponse sur notre site internet. Notre&nbsp;<a href="https://www.easyjet.com/ch-fr/vacances/aide">centre d&rsquo;aide</a>&nbsp;dispose des informations n&eacute;cessaires pour vous guider &agrave; chaque &eacute;tape de vos vacances. Si vous avez encore besoin de parler &agrave; notre &eacute;quipe avant de partir ou pendant votre s&eacute;jour, <a href="~/link.aspx?_id=E3A5DDD5CA704419B5C4E7F72564F4F3&amp;_z=z">connectez-vous &agrave; votre compte</a> et consultez votre r&eacute;servation pour lancer un chat avec l'un de nos conseillers. Vous pouvez &eacute;galement consulter notre <a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z">page de contact</a>.</p>
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Travel information/Page Components/Text Blocks/Travel Info After Accordions - Flight plus Hotel"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+            Id          = $holidayshomerootinfotravelinformationpagecomponentstextblockstravelinfoafteraccordionsflightplushotel_Id
+            Fields      = @{
+                "Title" = @{
+                    "de-CH" = "Kontakt"
+                    "en" = "Contacting us"
+                    "fr-FR" = "Nous contacter"
+                    "de-DE" = "Kontakt"
+                    "fr-CH" = "Nous contacter"
+                }
+                "Description" = @{
+                    "de-CH" = $travelinfoafteraccordionsflightplushotel_description_f9bab1b0f03847309c2b406bc969fb53_dech_v4
+                    "en" = $travelinfoafteraccordionsflightplushotel_description_f9bab1b0f03847309c2b406bc969fb53_en_v4
+                    "fr-FR" = $travelinfoafteraccordionsflightplushotel_description_f9bab1b0f03847309c2b406bc969fb53_frfr_v4
+                    "de-DE" = $travelinfoafteraccordionsflightplushotel_description_f9bab1b0f03847309c2b406bc969fb53_dede_v4
+                    "fr-CH" = $travelinfoafteraccordionsflightplushotel_description_f9bab1b0f03847309c2b406bc969fb53_frch_v4
+                }
+                "__Sortorder" = @{
+                    "en" = "300"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelcovidtesting_Id = "{F388CCC6-3873-4094-B4D0-02C2C46B4CDD}"
+    $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelhelpcentre_Id = "{7C125703-8E77-47A0-BD9B-1FD3F017AC34}"
+    $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelcovidcommitments_Id = "{962B4B7A-DAA6-4870-BF40-A2DBE70175FA}"
+    $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelcustomersafety_Id = "{D37028A1-4CFE-4E8E-BE49-A65B00293849}"
+    $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelcovidtraveltips_Id = "{08490F36-C534-4E11-B4A3-36681B5FD5D5}"
+    $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotel_Id = "{89CBB6C8-2630-406D-AB5E-A2AEAF5F0C06}"
+    $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelultimateflexibility_Id = "{2D470A2B-CA25-46BF-A508-3173CC2825DD}"
+    $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelviewbooking_Id = "{FC723F7A-02E2-46C6-87BC-162AFE662B7E}"
+    $helplinksflightplushotel_title_89cbb6c82630406dab5ea2aeaf5f0c06_frfr_v1 = @"
+    Vous ne trouvez pas ce que vous cherchez ?
+    "@
+    $ultimateflexibility_trackinglabel_2d470a2bca2546bfa5083173cc2825dd_en_v3 = @"
+    `$name
+    "@
+    $ultimateflexibility_link_2d470a2bca2546bfa5083173cc2825dd_frch_v3 = @"
+    <link text="Our ultimate flexibility" linktype="external" url="https://www.easyjet.com/en/holidays/info/why-book-with-us" anchor="" target="" rel="" />
+    "@
+    $covidtesting_icon_f388ccc638734094b4d002c2c46b4cdd_en_v1 = @"
+    <image mediaid="{9CF41A3C-E600-494B-85F8-83BA6384418E}" />
+    "@
+    $covidcommitments_link_962b4b7adaa64870bf40a2dbe70175fa_en_v1 = @"
+    <link text="Covid commitments" linktype="external" url="https://www.easyjet.com/en/holidays/info/covid-19-response" anchor="" target="" rel="" />
+    "@
+    $customersafety_link_d37028a14cfe4e8ebe49a65b00293849_frfr_v1 = @"
+    <link id="{5647B61B-ABC7-46AF-9721-F4AFB9DC1642}" querystring="" target="" text="Sécurité et bien-être" anchor="" url="" title="" class="" linktype="internal" />
+    "@
+    $customersafety_link_d37028a14cfe4e8ebe49a65b00293849_en_v1 = @"
+    <link text="Safety &amp; wellbeing" anchor="" linktype="internal" class="" title=""  querystring="" id="{5647B61B-ABC7-46AF-9721-F4AFB9DC1642}" />
+    "@
+    $covidtraveltips_icon_08490f36c5344e11b4a336681b5fd5d5_en_v1 = @"
+    <image mediaid="{35070570-CB06-48A3-BE8D-7C1D77E460E4}" alt="Covid travel tips" height="" width="" hspace="" vspace="" />
+    "@
+    $covidtraveltips_link_08490f36c5344e11b4a336681b5fd5d5_dech_v1 = @"
+    <link text="Covid travel tips" linktype="external" url="https://www.easyjet.com/en/holidays/info/covid-travel-tips" anchor="" target="" rel="" />
+    "@
+    $viewbooking_link_fc723f7a02e246c687bc162afe662b7e_en_v1 = @"
+    <link id="{39D2516D-E32A-4B54-B5B4-7FFB40F67EAA}" querystring="viewmybooking=true" text="View booking" anchor="" title="" class="" linktype="internal" />
+    "@
+    $covidcommitments_link_962b4b7adaa64870bf40a2dbe70175fa_dech_v1 = @"
+    <link text="Covid commitments" linktype="external" url="https://www.easyjet.com/en/holidays/info/covid-19-response" anchor="" target="" rel="" />
+    "@
+    $covidtesting_trackinglabel_f388ccc638734094b4d002c2c46b4cdd_en_v1 = @"
+    `$name
+    "@
+    $helpcentre_trackinglabel_7c1257038e7747a0bd9b1fd3f017ac34_en_v1 = @"
+    `$name
+    "@
+    $covidtraveltips_link_08490f36c5344e11b4a336681b5fd5d5_frch_v1 = @"
+    <link text="Covid travel tips" linktype="external" url="https://www.easyjet.com/en/holidays/info/covid-travel-tips" anchor="" target="" rel="" />
+    "@
+    $covidcommitments_trackinglabel_962b4b7adaa64870bf40a2dbe70175fa_en_v1 = @"
+    `$name
+    "@
+    $covidcommitments_link_962b4b7adaa64870bf40a2dbe70175fa_frch_v1 = @"
+    <link text="Covid commitments" linktype="external" url="https://www.easyjet.com/en/holidays/info/covid-19-response" anchor="" target="" rel="" />
+    "@
+    $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_frfr_v1 = @"
+    <link id="{00000000-0000-0000-0000-000000000000}" querystring="" target="" rel="" text="Centre d’assistance" anchor="" url="https://www.easyjet.com/fr/vacances/aide" title="" class="" linktype="external" />
+    "@
+    $helplinksflightplushotel_links_89cbb6c82630406dab5ea2aeaf5f0c06_frfr_v1 = @"
+    Sitecore.Links.ItemLinks
+    "@
+    $ultimateflexibility_link_2d470a2bca2546bfa5083173cc2825dd_frfr_v3 = @"
+    <link id="{00000000-0000-0000-0000-000000000000}" querystring="" target="" rel="" text="Notre flexibilité ultime" anchor="" url="https://www.easyjet.com/fr/vacances/informations/pourquoi-reserver-aupres-de-nous" title="" class="" linktype="external" />
+    "@
+    $ultimateflexibility_link_2d470a2bca2546bfa5083173cc2825dd_dech_v3 = @"
+    <link text="Our ultimate flexibility" linktype="external" url="https://www.easyjet.com/en/holidays/info/why-book-with-us" anchor="" target="" rel="" />
+    "@
+    $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_dede_v1 = @"
+    <link text="Hilfe-Center" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />
+    "@
+    $viewbooking_link_fc723f7a02e246c687bc162afe662b7e_frch_v1 = @"
+    <link id="{39D2516D-E32A-4B54-B5B4-7FFB40F67EAA}" querystring="viewmybooking=true" text="View booking" anchor="" title="" class="" linktype="internal" />
+    "@
+    $helplinksflightplushotel_title_89cbb6c82630406dab5ea2aeaf5f0c06_en_v1 = @"
+    Can't find what you're looking for?
+    "@
+    $helplinksflightplushotel_title_89cbb6c82630406dab5ea2aeaf5f0c06_dech_v1 = @"
+    Can't find what you're looking for?
+    "@
+    $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_dech_v1 = @"
+    <link text="Help centre" linktype="external" url="https://www.easyjet.com/en/holidays/help" anchor="" target="" rel="" />
+    "@
+    $customersafety_title_d37028a14cfe4e8ebe49a65b00293849_dech_v1 = @"
+    Customer safety & wellbeing
+    "@
+    $customersafety_link_d37028a14cfe4e8ebe49a65b00293849_dede_v1 = @"
+    <link text="Sicherheit und Wohlbefinden" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{64E0C983-A5F5-4265-8716-576347BB7F53}" />
+    "@
+    $customersafety_title_d37028a14cfe4e8ebe49a65b00293849_en_v1 = @"
+    Customer safety & wellbeing
+    "@
+    $helpcentre_icon_7c1257038e7747a0bd9b1fd3f017ac34_en_v1 = @"
+    <image mediaid="{2710E02E-944D-49ED-BA31-EA40163039EB}" />
+    "@
+    $covidtesting_link_f388ccc638734094b4d002c2c46b4cdd_dede_v1 = @"
+    <link id="{00000000-0000-0000-0000-000000000000}" querystring="" target="_blank" rel="" text=" " anchor="" url="https://www.easyjet.com/en/holidays/info/covid-19-testing" title="" class="" linktype="external" />
+    "@
+    $viewbooking_icon_fc723f7a02e246c687bc162afe662b7e_en_v1 = @"
+    <image mediaid="{AB27689A-29F6-4161-8657-0CD6D36E6E97}" />
+    "@
+    $helplinksflightplushotel_title_89cbb6c82630406dab5ea2aeaf5f0c06_frch_v1 = @"
+    Can't find what you're looking for?
+    "@
+    $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_en_v1 = @"
+    <link text="Help centre" linktype="external" url="https://www.easyjet.com/en/holidays/flight-plus-hotel/help" anchor="" target="" rel="" />
+    "@
+    $covidtraveltips_trackinglabel_08490f36c5344e11b4a336681b5fd5d5_en_v1 = @"
+    `$name
+    "@
+    $ultimateflexibility_description_2d470a2bca2546bfa5083173cc2825dd_dech_v3 = @"
+    When it comes to being flexible, we're on your side
+    "@
+    $ultimateflexibility_description_2d470a2bca2546bfa5083173cc2825dd_frfr_v3 = @"
+    Pour la flexibilité, vous pouvez compter sur nous
+    "@
+    $ultimateflexibility_link_2d470a2bca2546bfa5083173cc2825dd_en_v3 = @"
+    <link text="Our ultimate flexibility" linktype="external" url="https://www.easyjet.com/en/holidays/info/why-book-with-us" anchor="" target="" rel="" />
+    "@
+    $ultimateflexibility_description_2d470a2bca2546bfa5083173cc2825dd_frch_v3 = @"
+    When it comes to being flexible, we're on your side
+    "@
+    $covidtesting_link_f388ccc638734094b4d002c2c46b4cdd_en_v1 = @"
+    <link text="Covid testing" linktype="external" url="https://www.easyjet.com/en/holidays/info/covid-19-testing" anchor="" target="_blank" rel="" />
+    "@
+    $customersafety_title_d37028a14cfe4e8ebe49a65b00293849_frch_v1 = @"
+    Customer safety & wellbeing
+    "@
+    $covidtesting_link_f388ccc638734094b4d002c2c46b4cdd_dech_v1 = @"
+    <link text="Covid testing" linktype="external" url="https://www.easyjet.com/en/holidays/info/covid-19-testing" anchor="" target="_blank" rel="" />
+    "@
+    $ultimateflexibility_icon_2d470a2bca2546bfa5083173cc2825dd_en_v3 = @"
+    <image mediaid="{97248AB4-9666-4ADB-969F-CCBC38489639}" height="" hspace="" width="" alt="Protection Promise" vspace="" />
+    "@
+    $viewbooking_link_fc723f7a02e246c687bc162afe662b7e_dech_v1 = @"
+    <link id="{39D2516D-E32A-4B54-B5B4-7FFB40F67EAA}" querystring="viewmybooking=true" text="View booking" anchor="" title="" class="" linktype="internal" />
+    "@
+    $helplinksflightplushotel_title_89cbb6c82630406dab5ea2aeaf5f0c06_dede_v1 = @"
+    Noch nicht fündig geworden?
+    "@
+    $customersafety_link_d37028a14cfe4e8ebe49a65b00293849_dech_v1 = @"
+    <link text="Safety &amp; wellbeing" anchor="" linktype="internal" class="" title=""  querystring="" id="{5647B61B-ABC7-46AF-9721-F4AFB9DC1642}" />
+    "@
+    $covidtesting_link_f388ccc638734094b4d002c2c46b4cdd_frfr_v1 = @"
+    <link id="{00000000-0000-0000-0000-000000000000}" querystring="" target="_blank" rel="" text=" " anchor="" url="https://www.easyjet.com/en/holidays/info/covid-19-testing" title="" class="" linktype="external" />
+    "@
+    $helplinksflightplushotel_links_89cbb6c82630406dab5ea2aeaf5f0c06_frch_v1 = @"
+    Sitecore.Links.ItemLinks
+    "@
+    $customersafety_icon_d37028a14cfe4e8ebe49a65b00293849_en_v1 = @"
+    <image mediaid="{94A29AD8-D5A4-427C-B53D-BF1C72E944B0}" />
+    "@
+    $covidcommitments_icon_962b4b7adaa64870bf40a2dbe70175fa_en_v1 = @"
+    <image mediaid="{09099DDC-E2A5-4D23-ABB7-25D093910BBA}" height="" hspace="" width="" alt="Covid commitments" vspace="" />
+    "@
+    $helplinksflightplushotel_links_89cbb6c82630406dab5ea2aeaf5f0c06_dech_v1 = @"
+    Sitecore.Links.ItemLinks
+    "@
+    $covidtesting_link_f388ccc638734094b4d002c2c46b4cdd_frch_v1 = @"
+    <link text="Covid testing" linktype="external" url="https://www.easyjet.com/en/holidays/info/covid-19-testing" anchor="" target="_blank" rel="" />
+    "@
+    $covidtesting_description_f388ccc638734094b4d002c2c46b4cdd_dede_v1 = @"
+    Wir arbeiten mit verschiedenen Anbietern zusammen, um ermäßigte Preise anbieten zu können
+    "@
+    $helplinksflightplushotel_links_89cbb6c82630406dab5ea2aeaf5f0c06_dede_v1 = @"
+    Sitecore.Links.ItemLinks
+    "@
+    $viewbooking_link_fc723f7a02e246c687bc162afe662b7e_frfr_v1 = @"
+    <link id="{39D2516D-E32A-4B54-B5B4-7FFB40F67EAA}" querystring="viewmybooking=true" target="" text="Voir la réservation" anchor="" url="" title="" class="" linktype="internal" />
+    "@
+    $customersafety_trackinglabel_d37028a14cfe4e8ebe49a65b00293849_en_v1 = @"
+    `$name
+    "@
+    $viewbooking_link_fc723f7a02e246c687bc162afe662b7e_dede_v1 = @"
+    <link text="Buchung anzeigen" anchor="" linktype="internal" class="" title="" target="" querystring="viewmybooking=true" id="{39D2516D-E32A-4B54-B5B4-7FFB40F67EAA}" />
+    "@
+    $ultimateflexibility_description_2d470a2bca2546bfa5083173cc2825dd_en_v3 = @"
+    When it comes to being flexible, we're on your side
+    "@
+    $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_frch_v1 = @"
+    <link text="Help centre" linktype="external" url="https://www.easyjet.com/en/holidays/help" anchor="" target="" rel="" />
+    "@
+    $customersafety_link_d37028a14cfe4e8ebe49a65b00293849_frch_v1 = @"
+    <link text="Safety &amp; wellbeing" anchor="" linktype="internal" class="" title=""  querystring="" id="{5647B61B-ABC7-46AF-9721-F4AFB9DC1642}" />
+    "@
+    $helplinksflightplushotel_links_89cbb6c82630406dab5ea2aeaf5f0c06_en_v1 = @"
+    Sitecore.Links.ItemLinks
+    "@
+    $covidtraveltips_link_08490f36c5344e11b4a336681b5fd5d5_en_v1 = @"
+    <link text="Covid travel tips" linktype="external" url="https://www.easyjet.com/en/holidays/info/covid-travel-tips" anchor="" target="" rel="" />
+    "@
+    $viewbooking_description_fc723f7a02e246c687bc162afe662b7e_dede_v1 = @"
+    Logge dich mit deiner E-Mail-Adresse oder deiner Buchungsnummer ein, um deine Buchung anzuzeigen
+    "@
+    $viewbooking_trackinglabel_fc723f7a02e246c687bc162afe662b7e_en_v1 = @"
+    `$name
+    "@
+    $ultimateflexibility_link_2d470a2bca2546bfa5083173cc2825dd_dede_v3 = @"
+    <link text="Unsere ultimative Flexibilität" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{4A8303A3-E9BA-40CE-BEA3-44C66F6DDA65}" />
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Travel information/Page Components/Help Links - Flight plus Hotel"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Help Links"
+            Id          = $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotel_Id
+            Fields      = @{
+                "Links" = @{
+                    "de-CH" = $helplinksflightplushotel_links_89cbb6c82630406dab5ea2aeaf5f0c06_dech_v1
+                    "en" = $helplinksflightplushotel_links_89cbb6c82630406dab5ea2aeaf5f0c06_en_v1
+                    "fr-FR" = $helplinksflightplushotel_links_89cbb6c82630406dab5ea2aeaf5f0c06_frfr_v1
+                    "de-DE" = $helplinksflightplushotel_links_89cbb6c82630406dab5ea2aeaf5f0c06_dede_v1
+                    "fr-CH" = $helplinksflightplushotel_links_89cbb6c82630406dab5ea2aeaf5f0c06_frch_v1
+                }
+                "Title" = @{
+                    "de-CH" = $helplinksflightplushotel_title_89cbb6c82630406dab5ea2aeaf5f0c06_dech_v1
+                    "en" = $helplinksflightplushotel_title_89cbb6c82630406dab5ea2aeaf5f0c06_en_v1
+                    "fr-FR" = $helplinksflightplushotel_title_89cbb6c82630406dab5ea2aeaf5f0c06_frfr_v1
+                    "de-DE" = $helplinksflightplushotel_title_89cbb6c82630406dab5ea2aeaf5f0c06_dede_v1
+                    "fr-CH" = $helplinksflightplushotel_title_89cbb6c82630406dab5ea2aeaf5f0c06_frch_v1
+                }
+                "__Sortorder" = @{
+                    "en" = "600"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Travel information/Page Components/Help Links - Flight plus Hotel/Covid commitments"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Help Link"
+            Id          = $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelcovidcommitments_Id
+            Fields      = @{
+                "Link" = @{
+                    "de-CH" = $covidcommitments_link_962b4b7adaa64870bf40a2dbe70175fa_dech_v1
+                    "en" = $covidcommitments_link_962b4b7adaa64870bf40a2dbe70175fa_en_v1
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                    "fr-CH" = $covidcommitments_link_962b4b7adaa64870bf40a2dbe70175fa_frch_v1
+                }
+                "Description" = @{
+                    "de-CH" = "More information on our Covid-19 commitments and some essential reading"
+                    "en" = "More information on our Covid-19 commitments and some essential reading"
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                    "fr-CH" = "More information on our Covid-19 commitments and some essential reading"
+                }
+                "Title" = @{
+                    "de-CH" = "Covid-19 commitments"
+                    "en" = "Covid-19 commitments"
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                    "fr-CH" = "Covid-19 commitments"
+                }
+                "Icon" = @{
+                    "en" = $covidcommitments_icon_962b4b7adaa64870bf40a2dbe70175fa_en_v1
+                }
+                "SkipTranslate" = @{
+                    "en" = "1"
+                }
+                "TrackingLabel" = @{
+                    "en" = $covidcommitments_trackinglabel_962b4b7adaa64870bf40a2dbe70175fa_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Travel information/Page Components/Help Links - Flight plus Hotel/Covid testing"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Help Link"
+            Id          = $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelcovidtesting_Id
+            Fields      = @{
+                "Link" = @{
+                    "de-CH" = $covidtesting_link_f388ccc638734094b4d002c2c46b4cdd_dech_v1
+                    "en" = $covidtesting_link_f388ccc638734094b4d002c2c46b4cdd_en_v1
+                    "fr-FR" = $covidtesting_link_f388ccc638734094b4d002c2c46b4cdd_frfr_v1
+                    "de-DE" = $covidtesting_link_f388ccc638734094b4d002c2c46b4cdd_dede_v1
+                    "fr-CH" = $covidtesting_link_f388ccc638734094b4d002c2c46b4cdd_frch_v1
+                }
+                "Description" = @{
+                    "de-CH" = "We’re working with a couple of different providers to offer discounted rates"
+                    "en" = "We’re working with a couple of different providers to offer discounted rates"
+                    "fr-FR" = "Nous collaborons avec plusieurs fournisseurs pour pouvoir vous proposer des tarifs avantageux"
+                    "de-DE" = $covidtesting_description_f388ccc638734094b4d002c2c46b4cdd_dede_v1
+                    "fr-CH" = "We’re working with a couple of different providers to offer discounted rates"
+                }
+                "Title" = @{
+                    "de-CH" = "Covid testing"
+                    "en" = "Covid testing"
+                    "fr-FR" = " "
+                    "de-DE" = " "
+                    "fr-CH" = "Covid testing"
+                }
+                "Icon" = @{
+                    "en" = $covidtesting_icon_f388ccc638734094b4d002c2c46b4cdd_en_v1
+                }
+                "TrackingLabel" = @{
+                    "en" = $covidtesting_trackinglabel_f388ccc638734094b4d002c2c46b4cdd_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Travel information/Page Components/Help Links - Flight plus Hotel/Covid travel tips"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Help Link"
+            Id          = $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelcovidtraveltips_Id
+            Fields      = @{
+                "Link" = @{
+                    "de-CH" = $covidtraveltips_link_08490f36c5344e11b4a336681b5fd5d5_dech_v1
+                    "en" = $covidtraveltips_link_08490f36c5344e11b4a336681b5fd5d5_en_v1
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                    "fr-CH" = $covidtraveltips_link_08490f36c5344e11b4a336681b5fd5d5_frch_v1
+                }
+                "Description" = @{
+                    "de-CH" = "Tips to help you stay safe and well on your holiday"
+                    "en" = "Tips to help you stay safe and well on your holiday"
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                    "fr-CH" = "Tips to help you stay safe and well on your holiday"
+                }
+                "Title" = @{
+                    "de-CH" = "Covid travel tips"
+                    "en" = "Covid travel tips"
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                    "fr-CH" = "Covid travel tips"
+                }
+                "Icon" = @{
+                    "en" = $covidtraveltips_icon_08490f36c5344e11b4a336681b5fd5d5_en_v1
+                }
+                "SkipTranslate" = @{
+                    "en" = "1"
+                }
+                "TrackingLabel" = @{
+                    "en" = $covidtraveltips_trackinglabel_08490f36c5344e11b4a336681b5fd5d5_en_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Travel information/Page Components/Help Links - Flight plus Hotel/Customer safety"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Help Link"
+            Id          = $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelcustomersafety_Id
+            Fields      = @{
+                "Link" = @{
+                    "de-CH" = $customersafety_link_d37028a14cfe4e8ebe49a65b00293849_dech_v1
+                    "en" = $customersafety_link_d37028a14cfe4e8ebe49a65b00293849_en_v1
+                    "fr-FR" = $customersafety_link_d37028a14cfe4e8ebe49a65b00293849_frfr_v1
+                    "de-DE" = $customersafety_link_d37028a14cfe4e8ebe49a65b00293849_dede_v1
+                    "fr-CH" = $customersafety_link_d37028a14cfe4e8ebe49a65b00293849_frch_v1
+                }
+                "Description" = @{
+                    "de-CH" = "All our resources on keeping you and your family safe on holiday
+    "
+                    "en" = "All our resources on keeping you and your family safe on holiday
+    "
+                    "fr-FR" = "Toutes nos ressources sur la sécurité en vacances pour vous et votre famille
+    "
+                    "de-DE" = "Alle Ressourcen für deinen Schutz im Urlaub
+    "
+                    "fr-CH" = "All our resources on keeping you and your family safe on holiday
+    "
+                }
+                "Title" = @{
+                    "de-CH" = $customersafety_title_d37028a14cfe4e8ebe49a65b00293849_dech_v1
+                    "en" = $customersafety_title_d37028a14cfe4e8ebe49a65b00293849_en_v1
+                    "fr-FR" = "Sécurité et bien-être"
+                    "de-DE" = "Sicherheit und Wohlbefinden der Kunden"
+                    "fr-CH" = $customersafety_title_d37028a14cfe4e8ebe49a65b00293849_frch_v1
+                }
+                "Icon" = @{
+                    "en" = $customersafety_icon_d37028a14cfe4e8ebe49a65b00293849_en_v1
+                }
+                "__Sortorder" = @{
+                    "en" = "100"
+                }
+                "TrackingLabel" = @{
+                    "en" = $customersafety_trackinglabel_d37028a14cfe4e8ebe49a65b00293849_en_v1
+                }
+            }
+        },
+    
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Travel information/Page Components/Help Links - Flight plus Hotel/Ultimate Flexibility"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Help Link"
+            Id          = $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelultimateflexibility_Id
+            Fields      = @{
+                "Link" = @{
+                    "de-CH" = $ultimateflexibility_link_2d470a2bca2546bfa5083173cc2825dd_dech_v3
+                    "en" = $ultimateflexibility_link_2d470a2bca2546bfa5083173cc2825dd_en_v3
+                    "fr-FR" = $ultimateflexibility_link_2d470a2bca2546bfa5083173cc2825dd_frfr_v3
+                    "de-DE" = $ultimateflexibility_link_2d470a2bca2546bfa5083173cc2825dd_dede_v3
+                    "fr-CH" = $ultimateflexibility_link_2d470a2bca2546bfa5083173cc2825dd_frch_v3
+                }
+                "Description" = @{
+                    "de-CH" = $ultimateflexibility_description_2d470a2bca2546bfa5083173cc2825dd_dech_v3
+                    "en" = $ultimateflexibility_description_2d470a2bca2546bfa5083173cc2825dd_en_v3
+                    "fr-FR" = $ultimateflexibility_description_2d470a2bca2546bfa5083173cc2825dd_frfr_v3
+                    "de-DE" = "Flexibilität bei der Buchung und danach"
+                    "fr-CH" = $ultimateflexibility_description_2d470a2bca2546bfa5083173cc2825dd_frch_v3
+                }
+                "Title" = @{
+                    "de-CH" = "Our ultimate flexibility"
+                    "en" = "Our ultimate flexibility"
+                    "fr-FR" = "Notre flexibilité ultime"
+                    "de-DE" = "Unsere ultimative Flexibilität"
+                    "fr-CH" = "Our ultimate flexibility"
+                }
+                "Icon" = @{
+                    "en" = $ultimateflexibility_icon_2d470a2bca2546bfa5083173cc2825dd_en_v3
+                }
+                "TrackingLabel" = @{
+                    "en" = $ultimateflexibility_trackinglabel_2d470a2bca2546bfa5083173cc2825dd_en_v3
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Travel information/Page Components/Help Links - Flight plus Hotel/View Booking"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Help Link"
+            Id          = $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelviewbooking_Id
+            Fields      = @{
+                "Link" = @{
+                    "de-CH" = $viewbooking_link_fc723f7a02e246c687bc162afe662b7e_dech_v1
+                    "en" = $viewbooking_link_fc723f7a02e246c687bc162afe662b7e_en_v1
+                    "fr-FR" = $viewbooking_link_fc723f7a02e246c687bc162afe662b7e_frfr_v1
+                    "de-DE" = $viewbooking_link_fc723f7a02e246c687bc162afe662b7e_dede_v1
+                    "fr-CH" = $viewbooking_link_fc723f7a02e246c687bc162afe662b7e_frch_v1
+                }
+                "Description" = @{
+                    "de-CH" = "Log in with your email or holiday reference to see your booking"
+                    "en" = "Log in with your email or holiday reference to see your booking"
+                    "fr-FR" = "Connectez-vous à l’aide de votre adresse email ou de votre référence de séjour pour voir votre réservation"
+                    "de-DE" = $viewbooking_description_fc723f7a02e246c687bc162afe662b7e_dede_v1
+                    "fr-CH" = "Log in with your email or holiday reference to see your booking"
+                }
+                "Title" = @{
+                    "de-CH" = "View booking"
+                    "en" = "View booking"
+                    "fr-FR" = "Voir la réservation"
+                    "de-DE" = "Buchung anzeigen"
+                    "fr-CH" = "View booking"
+                }
+                "Icon" = @{
+                    "en" = $viewbooking_icon_fc723f7a02e246c687bc162afe662b7e_en_v1
+                }
+                "__Sortorder" = @{
+                    "en" = "300"
+                }
+                "TrackingLabel" = @{
+                    "en" = $viewbooking_trackinglabel_fc723f7a02e246c687bc162afe662b7e_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    $holidayssettingsexperiencecontextprovidersflightplushotelprovider_Id = "{4CFB61DB-2344-43AA-A823-8EF25D8A9E42}"
+    $flightplushotelprovider_pages_4cfb61db234443aaa8238ef25d8a9e42_en_v1 = @"
+    {E9BB3931-8317-46BE-B87D-15C25E9D2E42}|{83887C99-9E8B-43E0-AED3-55975BCB77A9}|{3C9F6A35-CFAF-4BBD-AD59-E7B3FC7F91D1}|{71FF7484-D991-42C5-A56F-F46DADC3BEFA}|{1086BA6F-12D0-41A9-8C00-528758D84736}|{98E6F83A-EF42-4D8B-BC01-1F9D898EBA72}|{529066C9-8159-4F14-89B9-E65A4B9FA8FD}|{1684CC40-EF59-431F-A463-6FD6B51FD43C}|{F0489A83-9C3D-4A5C-B12A-FD0F89512B24}|{B3D0F968-C97F-41C1-B991-C1892AFD9C86}|{90C3EF76-7AE5-4ACF-AFAD-60E64C3F71CF}|{2DD6F9CF-305C-43E3-B437-CBA5606BB4C4}|{42B7E3C8-C6E4-4B59-B663-690A5ECC0A6A}|{C19B2667-66D5-479A-A91A-623165F11E44}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProvider"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelprovider_Id
+            Fields      = @{
+                "Identifier" = @{
+                    "en" = "FPH"
+                }
+                "Pages" = @{
+                    "en" = $flightplushotelprovider_pages_4cfb61db234443aaa8238ef25d8a9e42_en_v1
+                }
+                "IsPublic" = @{
+                    "en" = "0"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesinfodisruptionpage_Id = "{42B7E3C8-C6E4-4B59-B663-690A5ECC0A6A}"
+    $infodisruptionpage_page_42b7e3c8c6e44b59b663690a5ecc0a6a_en_v1 = @"
+    {562E0B52-E970-4A8D-BE72-017B204B3BF5}
+    "@
+    $infodisruptionpage_allowedrenderings_42b7e3c8c6e44b59b663690a5ecc0a6a_en_v1 = @"
+    {8697E1B1-A31B-4641-B6F9-0DBC289C5B59}|{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{43546A28-D231-4287-96D2-25DEF529F1A5}|{FF441699-4D65-45C1-B565-E87714B5A278}|{F439DE66-8B5C-4235-BE17-8675B58AA50A}|{2D95BAD8-F895-4481-B3F3-694DFC4D6C94}|{80151534-6F1B-4B38-A2E6-F7D894423B7A}|{9133F3CA-553F-42F5-8529-54734B53A378}|{CFDDA56D-9D28-45DE-BED6-FF67AC4C38B5}|{216FE85C-936E-4135-894B-E7DE8BF8A4C2}|{6C234F53-080F-4C8E-AC01-CE83E3C28998}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{CD5896B7-610B-42AC-8AB5-25DB60A8A357}|{1BE9E86B-46EE-4D90-AA80-9873341F1324}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{98D6518D-053C-4A0B-9CCE-262B51E43F22}|{BF0D518B-282B-4ABC-A499-47AD5B0A0A87}|{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{B6732EB5-D407-4D55-B596-A0816C062804}|{1F56A2E2-6217-4749-A104-010F800B94E1}
+    "@
+    $infodisruptionpage_renderingreplacements_42b7e3c8c6e44b59b663690a5ecc0a6a_en_v1 = @"
+    {8697E1B1-A31B-4641-B6F9-0DBC289C5B59}:{8E396F8C-17FB-4A84-A4CA-995F63B305F8}:Placeholder=%2fbody&Data+Source=%7b12819FED-36B1-4345-901C-D4BB55A6DA8D%7d&DisableLazyLoading=1&TextOrder=&ShowImageGradient=&TitleTag=h1&IsTriangleStart=1&FontSize=Mobile+-+44px+Desktop+-+74px|{F439DE66-8B5C-4235-BE17-8675B58AA50A}:{F439DE66-8B5C-4235-BE17-8675B58AA50A}:Placeholder=%2fbody%2fcomponent-wrapper-inner-%7b826C954D-15B0-4A49-9E03-EFD19BFF14F0%7d-0&Data+Source=%7bBF89707A-DC47-45BC-9753-B793ED9AD012%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ZeroMargin=:{9955B9C1-02A3-417A-A13B-1C646AFEAF82}|{F439DE66-8B5C-4235-BE17-8675B58AA50A}:{F439DE66-8B5C-4235-BE17-8675B58AA50A}:Placeholder=%2fbody%2fcomponent-wrapper-inner-%7b15ABF324-DA20-4245-B247-79CE3C5CD5A0%7d-0&Data+Source=%7b1F75D064-CA98-493A-8345-AB941386D4DC%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ZeroMargin=:{B9DFC986-3397-458B-873F-C30DDD8A84E9}|{9133F3CA-553F-42F5-8529-54734B53A378}:{9133F3CA-553F-42F5-8529-54734B53A378}:Placeholder=%2fbody%2fcomponent-wrapper-inner-%7bECAF513E-BB64-4DB7-A73E-CB54EF292D78%7d-0&Data+Source=%7b2D82843C-C891-4129-8D78-592EEB1EFFE6%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&Variant=|{43546A28-D231-4287-96D2-25DEF529F1A5}:{43546A28-D231-4287-96D2-25DEF529F1A5}:Placeholder=%2fbody%2fcomponent-wrapper-inner-%7bECAF513E-BB64-4DB7-A73E-CB54EF292D78%7d-0&Data+Source=%7bD8177143-CD00-4ACB-A4B1-5B595F32A1D2%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&DescriptionPosition=&TruncateTextOnMobile=&TitleTag=&TitlePosition=&TitleFontStyle=default&IsIconAboveTitle=&ClassName=:{A6BC3293-45EF-419F-BCBA-3ABFD55D8A41}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Info-DisruptionPage"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesinfodisruptionpage_Id
+            Fields      = @{
+                "Page" = @{
+                    "en" = $infodisruptionpage_page_42b7e3c8c6e44b59b663690a5ecc0a6a_en_v1
+                }
+                "RenderingReplacements" = @{
+                    "en" = $infodisruptionpage_renderingreplacements_42b7e3c8c6e44b59b663690a5ecc0a6a_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $infodisruptionpage_allowedrenderings_42b7e3c8c6e44b59b663690a5ecc0a6a_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesinfotravelinformationpage_Id = "{C19B2667-66D5-479A-A91A-623165F11E44}"
+    $infotravelinformationpage_allowedrenderings_c19b266766d5479aa91a623165f11e44_en_v1 = @"
+    {CFDDA56D-9D28-45DE-BED6-FF67AC4C38B5}|{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{6C234F53-080F-4C8E-AC01-CE83E3C28998}|{43546A28-D231-4287-96D2-25DEF529F1A5}|{5392D6A9-E829-437D-8D11-4775446E57BB}|{507729FF-2917-416A-A731-BD2FB5D5BE90}|{9548AF18-BCAB-4DAE-A754-B3A99C14A429}|{C26DC3D2-BAAE-4354-8A0E-1BE074262AEC}|{F439DE66-8B5C-4235-BE17-8675B58AA50A}|{9133F3CA-553F-42F5-8529-54734B53A378}|{99B65A6C-5D48-411F-A0B2-F9F340727ACD}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{CD5896B7-610B-42AC-8AB5-25DB60A8A357}|{1BE9E86B-46EE-4D90-AA80-9873341F1324}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{98D6518D-053C-4A0B-9CCE-262B51E43F22}|{BF0D518B-282B-4ABC-A499-47AD5B0A0A87}|{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{BC962612-BC42-4168-B796-60A80AC2B469}|{B6732EB5-D407-4D55-B596-A0816C062804}|{1F56A2E2-6217-4749-A104-010F800B94E1}
+    "@
+    $infotravelinformationpage_page_c19b266766d5479aa91a623165f11e44_en_v1 = @"
+    {725A5D37-ACDD-41BB-94E7-EB828BEA2CC5}
+    "@
+    $infotravelinformationpage_renderingreplacements_c19b266766d5479aa91a623165f11e44_en_v1 = @"
+    {43546A28-D231-4287-96D2-25DEF529F1A5}:{43546A28-D231-4287-96D2-25DEF529F1A5}:Placeholder=%2fbody%2fcomponent-wrapper-inner-%7bFF1C01A9-BF58-40B9-A6E1-E70C247584DF%7d-0&Data+Source=%7b37BFC697-3B78-4B50-9CF7-4D4D4A942293%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&DescriptionPosition=&TruncateTextOnMobile=&TitleTag=&TitlePosition=&TitleFontStyle=default&IsIconAboveTitle=&ClassName=:{A7AF1D2E-A595-4FA8-BB75-DDBFA60C22DE}|{43546A28-D231-4287-96D2-25DEF529F1A5}:{43546A28-D231-4287-96D2-25DEF529F1A5}:Placeholder=%2fbody%2fcomponent-wrapper-inner-%7bE47F80F0-5562-42FD-9E30-1D94124A681E%7d-0&Data+Source=%7bC46D4391-7108-4CF8-9228-FBB5604A1385%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&DescriptionPosition=&TruncateTextOnMobile=&TitleTag=&TitlePosition=&TitleFontStyle=default&IsIconAboveTitle=&ClassName=:{83F535C9-BAA5-485F-948F-C93AF68CED6B}|{43546A28-D231-4287-96D2-25DEF529F1A5}:{43546A28-D231-4287-96D2-25DEF529F1A5}:Placeholder=%2fbody%2fcomponent-wrapper-inner-%7b600CF64E-1C16-41B8-8CDD-5EEFFA73737D%7d-0&Data+Source=%7bF9BAB1B0-F038-4730-9C2B-406BC969FB53%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&DescriptionPosition=&TruncateTextOnMobile=&TitleTag=&TitlePosition=&TitleFontStyle=default&IsIconAboveTitle=&ClassName=:{A479C648-8220-4DA9-8E3C-D686E431C9D3}|{9133F3CA-553F-42F5-8529-54734B53A378}:{9133F3CA-553F-42F5-8529-54734B53A378}:Placeholder=%2fbody%2fcomponent-wrapper-inner-%7b600CF64E-1C16-41B8-8CDD-5EEFFA73737D%7d-0&Data+Source=%7b89CBB6C8-2630-406D-AB5E-A2AEAF5F0C06%7d&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&Variant=:{A2BD16CC-6FEA-46D6-890B-CD077FD7AB98}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Info-TravelInformationPage"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+            Id          = $holidayssettingsexperiencecontextprovidersflightplushotelproviderpagesinfotravelinformationpage_Id
+            Fields      = @{
+                "Page" = @{
+                    "en" = $infotravelinformationpage_page_c19b266766d5479aa91a623165f11e44_en_v1
+                }
+                "RenderingReplacements" = @{
+                    "en" = $infotravelinformationpage_renderingreplacements_c19b266766d5479aa91a623165f11e44_en_v1
+                }
+                "AllowedRenderings" = @{
+                    "en" = $infotravelinformationpage_allowedrenderings_c19b266766d5479aa91a623165f11e44_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    $holidayshomerootinfotravelinformationpagecomponentstextblockstravelinfobeforeaccordionsflightplushotel_Id = "{C46D4391-7108-4CF8-9228-FBB5604A1385}"
+    $travelinfobeforeaccordionsflightplushotel_description_c46d439171084cf89228fbb5604a1385_frfr_v38 = @"
+    <p>Veuillez consulter ci-dessous nos derni&egrave;res informations de voyage pour les clients easyJet.</p>
+    <p>Si vous avez r&eacute;serv&eacute; un vol uniquement avec easyJet, veuillez consulter la page d&rsquo;<a href="https://www.easyjet.com/fr/aide/preparer-votre-voyage/dernieres-informations-de-voyage">informations de voyage pour les vols</a>.</p>
+    "@
+    $travelinfobeforeaccordionsflightplushotel_description_c46d439171084cf89228fbb5604a1385_frch_v38 = @"
+    <p>Veuillez consulter ci-dessous nos derni&egrave;res informations de voyage pour les clients easyJet. </p>
+    <p>Si vous avez r&eacute;serv&eacute; un vol uniquement avec easyJet, veuillez consulter la page d&rsquo;<a href="https://www.easyjet.com/fr/aide/preparer-votre-voyage/dernieres-informations-de-voyage">informations de voyage pour les vols</a>. </p>
+    "@
+    $travelinfobeforeaccordionsflightplushotel_description_c46d439171084cf89228fbb5604a1385_dede_v38 = @"
+    <p>Wir k&ouml;nnen es kaum erwarten, dich in deinen wohlverdienten Urlaub zu schicken. Unten sind einige wichtige Dinge aufgef&uuml;hrt, die du vor deiner Reise beachten solltest.</p>
+    <p>Wenn du nur einen Flug bei easyJet gebucht hast, sieh dir bitte die&nbsp;<a rel="noopener noreferrer" href="https://www.easyjet.com/de/hilfe/boarding-und-fliegen/verspatungen-und-annullierung" target="_blank">Reiseinformationsseite&nbsp;</a>f&uuml;r Fl&uuml;ge an. Diese Seite ist nur f&uuml;r Kunden von&nbsp;easyJet bestimmt.</p>
+    "@
+    $travelinfobeforeaccordionsflightplushotel_description_c46d439171084cf89228fbb5604a1385_dech_v38 = @"
+    <p>Wir k&ouml;nnen es kaum erwarten, dich in deine wohlverdienten Ferien zu bringen. Unten findest du einige wichtige Informationen, die du vor deiner Reise beachten solltest. </p>
+    <p>Wenn du nur einen Flug mit easyJet gebucht hast, sieh dir bitte die&nbsp;<a rel="noopener noreferrer" target="_blank" href="https://www.easyjet.com/de/hilfe/boarding-und-fliegen/verspatungen-und-annullierung">Reiseinformationsseite</a>&nbsp;f&uuml;r Fl&uuml;ge an. Diese Seite ist nur f&uuml;r Kunden von&nbsp;easyJet bestimmt.</p>
+    "@
+    $travelinfobeforeaccordionsflightplushotel_description_c46d439171084cf89228fbb5604a1385_en_v38 = @"
+    <p>Please&nbsp;see below our latest travel information for easyJet customers. If you have a flight only booking with easyJet, please refer to the latest&nbsp;<a rel="noopener noreferrer" href="https://www.easyjet.com/en/help/preparing-to-fly/latest-travel-information" target="_blank">travel information page&nbsp;</a>for flights. </p>
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Travel information/Page Components/Text Blocks/Travel Info Before Accordions - Flight plus Hotel"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+            Id          = $holidayshomerootinfotravelinformationpagecomponentstextblockstravelinfobeforeaccordionsflightplushotel_Id
+            Fields      = @{
+                "Title" = @{
+                    "de-CH" = "Reiseinformationen für Kunden von easyJet"
+                    "en" = "Travel information for easyJet customers"
+                    "fr-FR" = "Informations de voyage pour les clients easyJet"
+                    "de-DE" = "Reiseinformationen für Kunden von easyJet"
+                    "fr-CH" = "Informations de voyage pour les clients easyJet"
+                }
+                "Description" = @{
+                    "de-CH" = $travelinfobeforeaccordionsflightplushotel_description_c46d439171084cf89228fbb5604a1385_dech_v38
+                    "en" = $travelinfobeforeaccordionsflightplushotel_description_c46d439171084cf89228fbb5604a1385_en_v38
+                    "fr-FR" = $travelinfobeforeaccordionsflightplushotel_description_c46d439171084cf89228fbb5604a1385_frfr_v38
+                    "de-DE" = $travelinfobeforeaccordionsflightplushotel_description_c46d439171084cf89228fbb5604a1385_dede_v38
+                    "fr-CH" = $travelinfobeforeaccordionsflightplushotel_description_c46d439171084cf89228fbb5604a1385_frch_v38
+                }
+                "__Sortorder" = @{
+                    "en" = "200"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+        $holidayshomerootinfotravelinformationpagecomponentstextblockstravelheadingfordestinationaccordionflightplushotel_Id = "{37BFC697-3B78-4B50-9CF7-4D4D4A942293}"
+        $itemsToCreate = @(
+            @{
+                Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Travel information/Page Components/Text Blocks/Travel Heading for destination accordion - Flight plus Hotel"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+                Id          = $holidayshomerootinfotravelinformationpagecomponentstextblockstravelheadingfordestinationaccordionflightplushotel_Id
+                Fields      = @{
+                    "Title" = @{
+                        "de-CH" = "Latest updates to easyJet holidays customers"
+                        "en" = "Latest updates to easyJet customers"
+                        "fr-FR" = "Dernières mises à jour pour les clients easyJet holidays"
+                        "de-DE" = "Aktuelle Neuigkeiten für Kunden von easyJet Holidays"
+                        "fr-CH" = "Latest updates to easyJet holidays customers"
+                    }
+                }
+            }
+        )
+        ImportContent -itemsToCreate $itemsToCreate
+        
+        
+    $holidayspresentationpagedesignsslimdesignflightplushotelhelppage_Id = "{3CD89A97-C41B-46F0-85A7-8BAB06073953}"
+    $slimdesignflightplushotelhelppage_rootitem_3cd89a97c41b46f085a78bab06073953_en_v1 = @"
+    {AA44D4CB-7FD3-4B3D-A7CE-89221B96F349}
+    "@
+    $slimdesignflightplushotelhelppage_pagetemplates_3cd89a97c41b46f085a78bab06073953_en_v1 = @"
+    {09BEF082-3309-4083-9F0B-71FB8D60D7F5}|{CBCF50A8-017C-4FBE-A642-55979E8B1877}|{4EDEE9C4-1042-453A-B567-958BE3D89DA5}|{89B3FA91-A1DC-4DCC-B581-51103E374969}|{4CF74561-4E5C-4AFF-8753-A8F15CB35870}|{370185FE-F7FB-4E3C-8C9F-12986570F74F}|{E9544BE7-0494-410B-9E66-E0EC96B44ED6}|{3149AE7B-6C85-49DF-9BA0-5CE46819F2B8}|{D6E273D0-4C78-4ABD-B412-5C98E7C9DB94}
+    "@
+    $slimdesignflightplushotelhelppage_partialdesigns_3cd89a97c41b46f085a78bab06073953_en_v1 = @"
+    {30A208B3-0819-4452-A436-EAC1C2CAF33D}|{CCDB2B44-04AD-4E2F-A838-64B1B3535E69}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Slim Design - Flight plus Hotel - HelpPage"
+            TemplatePath = "/sitecore/templates/Foundation/Presentation/Page Design"
+            Id          = $holidayspresentationpagedesignsslimdesignflightplushotelhelppage_Id
+            Fields      = @{
+                "ExperienceContextProviders" = @{
+                }
+                "RootItem" = @{
+                    "en" = $slimdesignflightplushotelhelppage_rootitem_3cd89a97c41b46f085a78bab06073953_en_v1
+                }
+                "PageTemplates" = @{
+                    "en" = $slimdesignflightplushotelhelppage_pagetemplates_3cd89a97c41b46f085a78bab06073953_en_v1
+                }
+                "PartialDesigns" = @{
+                    "en" = $slimdesignflightplushotelhelppage_partialdesigns_3cd89a97c41b46f085a78bab06073953_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    $holidayshomerootinfodisruptionpagecomponentsherobannerflightplushotel_Id = "{12819FED-36B1-4345-901C-D4BB55A6DA8D}"
+    $herobannerflightplushotel_image_12819fed36b14345901cd4bb55a6da8d_frfr_v3 = @"
+    <image mediaid="{697FF6BE-D20C-465C-8DA5-FF2F33857D9B}" dfx="18" dfy="42" mfx="23" mfy="44" />
+    "@
+    $herobannerflightplushotel_renderings_12819fed36b14345901cd4bb55a6da8d_en_v3 = @"
+    <r xmlns:p="p" xmlns:s="s" p:p="1"><d id="{FE5D7FDF-89C0-4D99-9AA3-B5FBD009C9F3}"><r uid="{FFA55171-8AA1-4090-869C-35290B899213}"><p:d /></r><r uid="{F798EFD1-E850-4D19-9FE1-C1D559327BE9}"><p:d /></r><r uid="{DF799241-1784-400B-8EFF-1E35CDE67606}"><p:d /></r><r uid="{CDDC57EE-1B6D-4B66-A74D-F3635A649EF0}"><p:d /></r><r uid="{C9C3B6B5-D8E3-41D4-9902-FE3683794A78}" p:before="*" s:id="{8697E1B1-A31B-4641-B6F9-0DBC289C5B59}" s:par="?DisableLazyLoading=1&amp;TextOrder&amp;ShowImageGradient&amp;TitleTag=h1&amp;IsTriangleStart=1&amp;FontSize=Mobile+-+44px+Desktop+-+74px" s:ph="/body" /><r uid="{7AEB175D-4028-4822-9CD9-9DFFA84B9BAD}" p:after="r[@uid='{C9C3B6B5-D8E3-41D4-9902-FE3683794A78}']" s:ds="/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Breadcrumbs" s:id="{3C4B5E64-BD84-48D9-83BE-01D3017B7843}" s:par="?IsHomeIconShown=1&amp;IsWrapped=1&amp;IsOpaque=1" s:ph="/body/hero-banner-top-section-{C9C3B6B5-D8E3-41D4-9902-FE3683794A78}-0" /><r uid="{04B8948D-C27A-4D83-B11D-CB09F1FE6B54}" p:after="r[@uid='{7AEB175D-4028-4822-9CD9-9DFFA84B9BAD}']" s:id="{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}" s:par="?PaddingTopMobile=Padding+Top+Mobile+32px&amp;PaddingBottom=Padding+Bottom+64px&amp;PaddingBottomMobile=Padding+Bottom+Mobile+32px&amp;PaddingTop=Padding+Top+32px" s:ph="/body" /><r uid="{82995D2D-6BC4-4D8B-8252-7C90D08AC9B4}" p:after="r[@uid='{04B8948D-C27A-4D83-B11D-CB09F1FE6B54}']" s:ds="/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to expect - Section Title" s:id="{43546A28-D231-4287-96D2-25DEF529F1A5}" s:par="?TitleTag=h2&amp;TitleWeight=400&amp;TitleFontSize=Mobile+-+20px+Desktop+-+32px&amp;PaddingSize=0px&amp;TitleFontStyle=rounded+demi" s:ph="/body/component-wrapper-inner-{04B8948D-C27A-4D83-B11D-CB09F1FE6B54}-0" /><r uid="{F04F3E6F-3FBA-43DC-A168-0D9722960206}" p:after="r[@uid='{82995D2D-6BC4-4D8B-8252-7C90D08AC9B4}']" s:ds="/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to expect tiles" s:id="{FF441699-4D65-45C1-B565-E87714B5A278}" s:par="?Theme=Link Tile With Border Variant&amp;ShowShard=0" s:ph="/body/component-wrapper-inner-{04B8948D-C27A-4D83-B11D-CB09F1FE6B54}-0" /><r uid="{826C954D-15B0-4A49-9E03-EFD19BFF14F0}" p:after="r[@uid='{F04F3E6F-3FBA-43DC-A168-0D9722960206}']" s:id="{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}" s:par="?IsGreyBackground=1&amp;Anchor=what-to-do-now-section&amp;PaddingTopMobile=Padding Top Mobile 32px&amp;PaddingBottom=Padding Bottom 64px&amp;PaddingBottomMobile=Padding Bottom Mobile 32px&amp;PaddingTop=Padding Top 64px" s:ph="/body" /><r uid="{EC75AADC-849E-42CA-B182-68843444A0DB}" p:after="r[@uid='{826C954D-15B0-4A49-9E03-EFD19BFF14F0}']" s:ds="/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Section Title" s:id="{43546A28-D231-4287-96D2-25DEF529F1A5}" s:par="?TitleTag=h2&amp;TitleWeight=400&amp;TitleFontSize=Mobile+-+20px+Desktop+-+32px&amp;PaddingSize=0px&amp;TitleFontStyle=rounded+demi" s:ph="/body/component-wrapper-inner-{826C954D-15B0-4A49-9E03-EFD19BFF14F0}-0" /><r uid="{9955B9C1-02A3-417A-A13B-1C646AFEAF82}" p:after="r[@uid='{EC75AADC-849E-42CA-B182-68843444A0DB}']" s:ds="/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions" s:id="{F439DE66-8B5C-4235-BE17-8675B58AA50A}" s:par="?ZeroMargin=1" s:ph="/body/component-wrapper-inner-{826C954D-15B0-4A49-9E03-EFD19BFF14F0}-0" /><r uid="{9AD80D86-FACB-48FE-8B10-535507A829A2}" p:after="r[@uid='{9955B9C1-02A3-417A-A13B-1C646AFEAF82}']" s:id="{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}" s:par="?PaddingTopMobile=Padding+Top+Mobile+32px&amp;Anchor=compensation-forms-section&amp;PaddingTop=Padding+Top+64px" s:ph="/body" /><r uid="{92150A03-2830-4EAC-A24A-4692EDDF0CFC}" p:after="r[@uid='{9AD80D86-FACB-48FE-8B10-535507A829A2}']" s:ds="/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Attention Message" s:id="{2D95BAD8-F895-4481-B3F3-694DFC4D6C94}" s:par="?Type=Blue+warning" s:ph="/body/component-wrapper-inner-{9AD80D86-FACB-48FE-8B10-535507A829A2}-0" /><r uid="{1D55AAF6-5F5A-49BB-8DA9-5367F3E99043}" p:after="r[@uid='{92150A03-2830-4EAC-A24A-4692EDDF0CFC}']" s:id="{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}" s:par="?PaddingTopMobile=Padding+Top+Mobile+32px&amp;PaddingTop=Padding+Top+32px" s:ph="/body" /><r uid="{89F0E47D-7D87-4C84-940C-FAD2E180C2B3}" p:after="r[@uid='{1D55AAF6-5F5A-49BB-8DA9-5367F3E99043}']" s:ds="/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses - Section Title" s:id="{43546A28-D231-4287-96D2-25DEF529F1A5}" s:par="?TitleFontStyle=rounded+demi&amp;IsIconAboveTitle=0&amp;TitleWeight=400&amp;TitleTag=h2&amp;TitleFontSize=Mobile+-+20px+Desktop+-+32px&amp;PaddingSize=0px" s:ph="/body/component-wrapper-inner-{1D55AAF6-5F5A-49BB-8DA9-5367F3E99043}-0" /><r uid="{8CD67D3B-BA85-4F6E-B571-D243EF5352AA}" p:after="r[@uid='{89F0E47D-7D87-4C84-940C-FAD2E180C2B3}']" s:ds="/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Expenses Form" s:id="{80151534-6F1B-4B38-A2E6-F7D894423B7A}" s:ph="/body/component-wrapper-inner-{1D55AAF6-5F5A-49BB-8DA9-5367F3E99043}-0" /><r uid="{5258807A-B40A-4C3A-8A20-FA870263F552}" p:after="r[@uid='{8CD67D3B-BA85-4F6E-B571-D243EF5352AA}']" s:id="{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}" s:par="?PaddingTopMobile=Padding+Top+Mobile+32px&amp;PaddingTop=Padding+Top+32px" s:ph="/body" /><r uid="{9CFF7C0B-CC1A-4D81-BDC0-E401AB6EF0A4}" p:after="r[@uid='{5258807A-B40A-4C3A-8A20-FA870263F552}']" s:ds="/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation - Section Title" s:id="{43546A28-D231-4287-96D2-25DEF529F1A5}" s:par="?TitleFontStyle=rounded+demi&amp;IsIconAboveTitle=0&amp;TitleWeight=400&amp;TitleTag=h2&amp;TitleFontSize=Mobile+-+20px+Desktop+-+32px&amp;PaddingSize=0px" s:ph="/body/component-wrapper-inner-{5258807A-B40A-4C3A-8A20-FA870263F552}-0" /><r uid="{043BCA40-89AF-4259-99BA-EC17CDEF4FE7}" p:after="r[@uid='{9CFF7C0B-CC1A-4D81-BDC0-E401AB6EF0A4}']" s:ds="/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation Form" s:id="{80151534-6F1B-4B38-A2E6-F7D894423B7A}" s:ph="/body/component-wrapper-inner-{5258807A-B40A-4C3A-8A20-FA870263F552}-0" /><r uid="{15ABF324-DA20-4245-B247-79CE3C5CD5A0}" p:after="r[@uid='{043BCA40-89AF-4259-99BA-EC17CDEF4FE7}']" s:id="{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}" s:par="?Anchor=still-have-questions-section&amp;PaddingTopMobile=Padding+Top+Mobile+32px&amp;PaddingBottom=Padding+Bottom+64px&amp;PaddingBottomMobile=Padding+Bottom+Mobile+32px&amp;PaddingTop=Padding+Top+64px" s:ph="/body" /><r uid="{281CA27D-2121-4915-8A4C-9C00AC604C8F}" p:after="r[@uid='{15ABF324-DA20-4245-B247-79CE3C5CD5A0}']" s:ds="/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions - Section Title" s:id="{43546A28-D231-4287-96D2-25DEF529F1A5}" s:par="?TitleTag=h2&amp;TitleWeight=400&amp;TitleFontSize=Mobile+-+20px+Desktop+-+32px&amp;PaddingSize=0px&amp;TitleFontStyle=rounded+demi" s:ph="/body/component-wrapper-inner-{15ABF324-DA20-4245-B247-79CE3C5CD5A0}-0" /><r uid="{B9DFC986-3397-458B-873F-C30DDD8A84E9}" p:after="r[@uid='{281CA27D-2121-4915-8A4C-9C00AC604C8F}']" s:ds="/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions" s:id="{F439DE66-8B5C-4235-BE17-8675B58AA50A}" s:par="?ZeroMargin=1" s:ph="/body/component-wrapper-inner-{15ABF324-DA20-4245-B247-79CE3C5CD5A0}-0" /><r uid="{ECAF513E-BB64-4DB7-A73E-CB54EF292D78}" p:after="r[@uid='{B9DFC986-3397-458B-873F-C30DDD8A84E9}']" s:id="{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}" s:par="?IsGreyBackground=1&amp;PaddingTopMobile=Padding+Top+Mobile+32px&amp;PaddingTop=Padding+Top+32px" s:ph="/body" /><r uid="{A6BC3293-45EF-419F-BCBA-3ABFD55D8A41}" p:after="r[@uid='{ECAF513E-BB64-4DB7-A73E-CB54EF292D78}']" s:ds="/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Contact us - Section Title" s:id="{43546A28-D231-4287-96D2-25DEF529F1A5}" s:par="?TitleFontStyle=rounded+demi&amp;IsIconAboveTitle=1&amp;TitleWeight=400&amp;TitleTag=h2&amp;TitleFontSize=Mobile+-+20px+Desktop+-+32px&amp;PaddingSize=0px" s:ph="/body/component-wrapper-inner-{ECAF513E-BB64-4DB7-A73E-CB54EF292D78}-0" /><r uid="{2C9AB7E2-B529-4E6A-9A2B-E6463EF0E35C}" p:after="*[1=2]" s:ds="/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Help Links" s:id="{9133F3CA-553F-42F5-8529-54734B53A378}" s:par="?Variant=Horizontal+Alignment" s:ph="/body/component-wrapper-inner-{ECAF513E-BB64-4DB7-A73E-CB54EF292D78}-0" /></d></r>
+    "@
+    $herobannerflightplushotel_image_12819fed36b14345901cd4bb55a6da8d_frch_v3 = @"
+    <image mediaid="{697FF6BE-D20C-465C-8DA5-FF2F33857D9B}" dfx="18" dfy="42" mfx="23" mfy="44" />
+    "@
+    $herobannerflightplushotel_image_12819fed36b14345901cd4bb55a6da8d_en_v3 = @"
+    <image mediaid="{697FF6BE-D20C-465C-8DA5-FF2F33857D9B}" dfx="18" dfy="42" mfx="23" mfy="44" />
+    "@
+    $herobannerflightplushotel_image_12819fed36b14345901cd4bb55a6da8d_dede_v3 = @"
+    <image mediaid="{697FF6BE-D20C-465C-8DA5-FF2F33857D9B}" dfx="18" dfy="42" mfx="23" mfy="44" />
+    "@
+    $herobannerflightplushotel_image_12819fed36b14345901cd4bb55a6da8d_dech_v3 = @"
+    <image mediaid="{697FF6BE-D20C-465C-8DA5-FF2F33857D9B}" dfx="18" dfy="42" mfx="23" mfy="44" />
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Hero Banner - Flight plus Hotel"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Generic Hero Banner"
+            Id          = $holidayshomerootinfodisruptionpagecomponentsherobannerflightplushotel_Id
+            Fields      = @{
+                "SkipTranslate" = @{
+                    "en" = "1"
+                }
+                "__Renderings" = @{
+                    "en" = $herobannerflightplushotel_renderings_12819fed36b14345901cd4bb55a6da8d_en_v3
+                }
+                "Image" = @{
+                    "de-CH" = $herobannerflightplushotel_image_12819fed36b14345901cd4bb55a6da8d_dech_v3
+                    "en" = $herobannerflightplushotel_image_12819fed36b14345901cd4bb55a6da8d_en_v3
+                    "fr-FR" = $herobannerflightplushotel_image_12819fed36b14345901cd4bb55a6da8d_frfr_v3
+                    "de-DE" = $herobannerflightplushotel_image_12819fed36b14345901cd4bb55a6da8d_dede_v3
+                    "fr-CH" = $herobannerflightplushotel_image_12819fed36b14345901cd4bb55a6da8d_frch_v3
+                }
+                "Title" = @{
+                    "en" = "Unexpected changes to your trip"
+                }
+                "__Sortorder" = @{
+                    "en" = "3500"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    $holidayshomerootinfodisruptionpagecomponentsstillhavequestionsflightplushotelq1_Id = "{4E53D7C7-E570-419A-AACD-4C97055E9A63}"
+    $holidayshomerootinfodisruptionpagecomponentsstillhavequestionsflightplushotelq4_Id = "{481C3A2D-7A70-4D0E-81F3-6F81746E875F}"
+    $holidayshomerootinfodisruptionpagecomponentsstillhavequestionsflightplushotelq2_Id = "{A0700F2D-C715-4BDA-94C2-087C7E9A08E3}"
+    $holidayshomerootinfodisruptionpagecomponentsstillhavequestionsflightplushotel_Id = "{1F75D064-CA98-493A-8345-AB941386D4DC}"
+    $holidayshomerootinfodisruptionpagecomponentsstillhavequestionsflightplushotelq3_Id = "{53493E50-C314-49C1-8B8D-0560A6F105F5}"
+    $q4_question_481c3a2d7a704d0e81f36f81746e875f_frfr_v1 = @"
+    Quelles dépenses puis-je me faire rembourser par mon assurance voyage ?
+    "@
+    $q1_question_4e53d7c7e570419aaacd4c97055e9a63_frch_v1 = @"
+    Comment trouver mes nouvelles informations de vol?
+    "@
+    $q2_answer_a0700f2dc7154bda94c2087c7e9a08e3_frch_v1 = @"
+    <p>Nous essayons g&eacute;n&eacute;ralement d&rsquo;organiser un transport pour vous emmener &agrave; votre nouvel a&eacute;roport de d&eacute;part. Si votre vol est report&eacute; au lendemain, nous faisons &eacute;galement de notre mieux pour vous trouver un endroit o&ugrave; passer la nuit.</p>
+    <p>Selon les circonstances, les horaires et la disponibilit&eacute;, votre h&ocirc;tel pour la nuit peut &ecirc;tre situ&eacute; pr&egrave;s de votre a&eacute;roport de d&eacute;part initial ou plus pr&egrave;s du nouveau.</p>
+    <p>Si nous vous demandons d&rsquo;effectuer vos propres r&eacute;servations, veuillez conserver tous les re&ccedil;us relatifs aux d&eacute;penses effectu&eacute;es dans les limites du raisonnable, afin de pouvoir en demander le remboursement plus tard.</p>
+    <p>&Agrave; moins que nous ne vous ayons contact&eacute; pour vous informer du contraire en utilisant les coordonn&eacute;es fournies lors de la r&eacute;servation de vos vacances, si votre vol retour atterrit &agrave; un autre a&eacute;roport, vous devrez rentrer chez vous par vos propres moyens et conserver vos re&ccedil;us afin de pouvoir demander le remboursement de vos frais de transport dans les limites du raisonnable.</p>
+    "@
+    $q4_question_481c3a2d7a704d0e81f36f81746e875f_en_v1 = @"
+    What expenses should I claim back from my travel insurance?
+    "@
+    $q3_answer_53493e50c31449c18b8d0560a6f105f5_en_v2 = @"
+    <p>If your original return flight has been cancelled due to disruption, we&rsquo;ll book you on to an alternative easyJet flight back to the UK and do our best to minimise any inconvenience. </p>
+    <p>If the new flight we confirm isn&rsquo;t suitable, and you&rsquo;ve found reasonably priced alternative transport at least a day earlier than the flight we&rsquo;ve rebooked you on, you may book that transport and claim back reasonable expenses. </p>
+    <p>To submit a successful expense claim, please makre sure to let us know that you&rsquo;ve booked an alternative option, by <a rel="noopener noreferrer" href="https://www.easyjet.com/en?utm_id=confirmation" target="_blank">logging into your booking</a> to initiate a chat with us.&nbsp;</p>
+    "@
+    $q1_question_4e53d7c7e570419aaacd4c97055e9a63_en_v1 = @"
+    How do I find my new flight details?
+    "@
+    $q3_answer_53493e50c31449c18b8d0560a6f105f5_dech_v2 = @"
+    <p style="color: #000000; background-color: #ffffff; margin-right: 0px; margin-bottom: 10px; margin-left: 0px;">Wenn dein urspr&uuml;nglicher Heimflug aufgrund von St&ouml;rungen&nbsp;storniert wurde, buchen wir dich auf einen alternativen R&uuml;ckflug mit easyJet um und setzen alles daran, die Unannehmlichkeiten aufs Minimum zu beschr&auml;nken.</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Wenn dir der von uns best&auml;tigte neue Flug nicht zusagt und du mindestens einen Tag vor dem von uns umgebuchten Flug eine alternative Bef&ouml;rderungsm&ouml;glichkeit gefunden hast, kannst du diese buchen und eine Erstattung der Kosten in angemessener H&ouml;he beantragen.</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Um deine Kosten erfolgreich geltend zu machen, musst du uns mitteilen, dass du einen alternativen Tansport gebucht hast, beispielsweise indem du&nbsp;<a tabindex="0" href="~/link.aspx?_id=CE1EB23F27E2418B97906F508A4FC91F&amp;_z=z" data-path="/hilfe/hilfe-im-urlaub" style="color: #ff6600; background-color: initial;"><span>einen Chat mit uns startest oder unser Support-Team anrufst</span></a>. Das erm&ouml;glicht es uns, Sitzpl&auml;tze f&uuml;r andere Reisende verf&uuml;gbar zu machen, sodass alle G&auml;ste so bald wie m&ouml;glich nach Hause kommen k&ouml;nnen.</p>
+    "@
+    $q4_question_481c3a2d7a704d0e81f36f81746e875f_frch_v1 = @"
+    Quelles dépenses puis-je me faire rembourser par mon assurance voyage?
+    "@
+    $q1_question_4e53d7c7e570419aaacd4c97055e9a63_dede_v1 = @"
+    Wie finde ich meine neuen Fluginformationen?
+    "@
+    $q4_answer_481c3a2d7a704d0e81f36f81746e875f_en_v1 = @"
+    <p>If you&rsquo;ve incurred additional expenses, we strongly recommend contacting your travel insurance provider, especially for costs such as: </p>
+    <ul>
+        <li>Missed days at work </li>
+        <li>Missed appointments </li>
+        <li>Medical bills </li>
+        <li>Pet care
+        </li>
+    </ul>
+    <p>Your insurer may be able to cover expenses that easyJet holidays can&rsquo;t, such as those beyond your package or regulatory entitlements.  </p>
+    "@
+    $q1_answer_4e53d7c7e570419aaacd4c97055e9a63_en_v1 = @"
+    <p>We&rsquo;ll proactively contact you by email, and sometimes text, to the contact details provided when you booked your holiday, if there are any changes to your flight, so there&rsquo;s no need to call us for this information.<br />
+    <br />
+    You can also view the latest live details of your new flight by logging in to <a href="https://www.easyjet.com/"><strong><span style="text-decoration: underline;">easyJet.com</span></strong></a> and checking your booking. You&rsquo;ll need your flight details and flight reference number beginning with &lsquo;K&rsquo;, which you can find in the emails we&rsquo;ve previously sent. </p>
+    "@
+    $q3_answer_53493e50c31449c18b8d0560a6f105f5_frfr_v2 = @"
+    <p>Si votre vol retour a été annulé en raison de perturbations, nous vous réserverons un autre vol easyJet pour rentrer chez vous et ferons tout notre possible pour minimiser les désagréments. </p>
+    <p>Si le nouveau vol que nous confirmons ne vous convient pas et que vous avez trouvé un autre moyen de transport au moins un jour avant le vol que nous avons réservé pour vous, vous pouvez réserver ce moyen de transport et demander le remboursement des frais dans les limites du raisonnable. </p>
+    <p>Pour soumettre une demande de remboursement des frais, veillez à nous informer que vous avez réservé une autre option, par exemple en <a href="~/link.aspx?_id=CE1EB23F27E2418B97906F508A4FC91F&amp;_z=z"><span style="text-decoration: underline;"><strong>lançant un chat avec nous ou en appelant notre équipe</strong></span></a>. Cela nous permet également de libérer des sièges afin que d’autres passagers puissent rentrer chez eux plus tôt.  </p>
+    "@
+    $q3_question_53493e50c31449c18b8d0560a6f105f5_frch_v2 = @"
+    Puis-je réserver moi-même mon vol retour?
+    "@
+    $q1_answer_4e53d7c7e570419aaacd4c97055e9a63_frfr_v1 = @"
+    <p>En cas de modification de votre vol, nous vous contacterons  de mani&egrave;re proactive par e-mail, et parfois par SMS, aux coordonn&eacute;es fournies lors de la r&eacute;servation de vos vacances. Vous n&rsquo;aurez donc pas besoin de nous appeler pour obtenir ces informations.<br />
+    <br />
+    Vous pouvez &eacute;galement consulter les derni&egrave;res informations en direct concernant votre nouveau vol en vous connectant &agrave; <span style="text-decoration: underline;"><strong><a href="https://www.easyjet.com/fr">easyJet.com/fr</a></strong></span> e<a href="https://www.easyjet.com/"><strong><span style="text-decoration: underline;"><strong><span style="text-decoration: underline;"></span></strong></span></strong></a>t en consultant votre r&eacute;servation. Vous aurez besoin de vos informations de vol et du num&eacute;ro de r&eacute;f&eacute;rence du vol commen&ccedil;ant par un &laquo;&nbsp;K&nbsp;&raquo;, que vous trouverez dans les e-mails que nous vous avons pr&eacute;c&eacute;demment envoy&eacute;s. </p>
+    "@
+    $q3_question_53493e50c31449c18b8d0560a6f105f5_en_v2 = @"
+    Can I book my own flight home?
+    "@
+    $q4_question_481c3a2d7a704d0e81f36f81746e875f_dede_v1 = @"
+    Welche Kosten kann ich von meiner Reiseversicherung zurückfordern?
+    "@
+    $q3_question_53493e50c31449c18b8d0560a6f105f5_dech_v2 = @"
+    Kann ich meinen eigenen Rückflug buchen?
+    "@
+    $q4_answer_481c3a2d7a704d0e81f36f81746e875f_dede_v1 = @"
+    <p>Wenn dir zusätzliche Kosten entstanden sind, empfehlen wir dir, dich unbedingt an deinen Reiseversicherungsanbieter zu wenden, insbesondere bei Kosten wie: </p>
+    <ul>
+        <li>Versäumte Arbeitstage </li>
+        <li>Versäumte Termine </li>
+        <li>Arztrechnungen </li>
+        <li>Haustierbetreuung
+        </li>
+    </ul>
+    <p>Dein Versicherer kann möglicherweise Kosten übernehmen, die easyJet holidays nicht erstattet, beispielsweise Kosten, die über dein Pauschalangebot oder deine gesetzlichen Ansprüche hinausgehen.  </p>
+    "@
+    $q2_question_a0700f2dc7154bda94c2087c7e9a08e3_en_v1 = @"
+    What if my new flight leaves or arrives at a different UK airport?
+    "@
+    $q4_question_481c3a2d7a704d0e81f36f81746e875f_dech_v1 = @"
+    Welche Kosten kann ich von meiner Reiseversicherung zurückfordern?
+    "@
+    $q1_question_4e53d7c7e570419aaacd4c97055e9a63_dech_v1 = @"
+    Wie finde ich meine neuen Fluginformationen?
+    "@
+    $q2_answer_a0700f2dc7154bda94c2087c7e9a08e3_en_v1 = @"
+    <p>We&rsquo;ll usually organise transportation to take you to your new UK departure airport. If you have an overnight delay, we&rsquo;ll also do our best to find you somewhere to stay for the night. </p>
+    <p>Depending on circumstances, timing, and availability, your overnight hotel may be near your original departure airport or closer to your new one. </p>
+    <p>If we invite you to make your own arrangements, please keep hold of all receipts for reasonable expenses, which you can claim back later. </p>
+    <p>Unless we&rsquo;ve contacted you to say otherwise using the contact details provided when you booked your holiday if your return flight lands at a different UK airport, you should make your own way home and keep receipts to claim for reasonable transport expenses.</p>
+    "@
+    $q4_answer_481c3a2d7a704d0e81f36f81746e875f_dech_v1 = @"
+    <p style="color: #000000; background-color: #ffffff; margin-right: 0px; margin-bottom: 10px; margin-left: 0px;">Wenn dir zus&auml;tzliche Kosten entstanden sind, empfehlen wir dir, dich unbedingt an deinen Reiseversicherungsanbieter zu wenden, insbesondere bei Kosten wie:</p>
+    <ul style="color: #000000; background-color: #ffffff;">
+        <li>Vers&auml;umte Arbeitstage</li>
+        <li>Vers&auml;umte Termine</li>
+        <li>Arztrechnungen</li>
+        <li>Haustierbetreuung</li>
+    </ul>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Dein Versicherer kann m&ouml;glicherweise Kosten &uuml;bernehmen, die easyJet holidays nicht erstattet, beispielsweise Kosten, die &uuml;ber dein Pauschalangebot oder deine gesetzlichen Anspr&uuml;che hinausgehen.</p>
+    "@
+    $q2_answer_a0700f2dc7154bda94c2087c7e9a08e3_frfr_v1 = @"
+    <p>Nous essayons g&eacute;n&eacute;ralement d&rsquo;organiser un transport pour vous emmener &agrave; votre nouvel a&eacute;roport de d&eacute;part. Si votre vol est report&eacute; au lendemain, nous faisons &eacute;galement de notre mieux pour vous trouver un endroit o&ugrave; passer la nuit. </p>
+    <p>Selon les circonstances, les horaires et la disponibilit&eacute;, votre h&ocirc;tel pour la nuit peut &ecirc;tre situ&eacute; pr&egrave;s de votre a&eacute;roport de d&eacute;part initial ou plus pr&egrave;s du nouveau. </p>
+    <p>Si nous vous demandons d&rsquo;effectuer vos propres r&eacute;servations, veuillez conserver tous les re&ccedil;us relatifs aux d&eacute;penses effectu&eacute;es dans les limites du raisonnable, afin de pouvoir en demander le remboursement plus tard. </p>
+    <p>&Agrave; moins que nous ne vous ayons contact&eacute; pour vous informer du contraire en utilisant les coordonn&eacute;es fournies lors de la r&eacute;servation de vos vacances, si votre vol retour atterrit &agrave; un autre a&eacute;roport, vous devrez rentrer chez vous par vos propres moyens et conserver vos re&ccedil;us afin de pouvoir demander le remboursement de vos frais de transport dans les limites du raisonnable.</p>
+    "@
+    $q2_question_a0700f2dc7154bda94c2087c7e9a08e3_dede_v1 = @"
+    Was passiert, wenn mein neuer Flug von einem anderen Flughafen abfliegt oder dort ankommt?
+    "@
+    $q2_question_a0700f2dc7154bda94c2087c7e9a08e3_dech_v1 = @"
+    Was passiert, wenn mein neuer Flug von einem anderen Flughafen abfliegt oder dort ankommt?
+    "@
+    $q4_answer_481c3a2d7a704d0e81f36f81746e875f_frfr_v1 = @"
+    <p>Si vous avez engagé des frais supplémentaires, nous vous recommandons vivement de contacter votre prestataire d’assurance voyage, en particulier pour des frais tels que : </p>
+    <ul>
+        <li>Les jours de travail manqués </li>
+        <li>Les rendez-vous manqués </li>
+        <li>Les frais médicaux </li>
+        <li>La garde d’animaux de compagnie
+        </li>
+    </ul>
+    <p>Votre assureur sera peut-être en mesure de rembourser les dépenses qui ne sont pas prises en charge par easyJet holidays, comme celles non comprises dans votre séjour ou dans les prestations prévues par la réglementation.  </p>
+    "@
+    $q3_answer_53493e50c31449c18b8d0560a6f105f5_frch_v2 = @"
+    <p>Si votre vol retour a &eacute;t&eacute; annul&eacute; en raison de perturbations, nous vous r&eacute;serverons un autre vol easyJet pour rentrer chez vous et ferons tout notre possible pour minimiser les d&eacute;sagr&eacute;ments.</p>
+    <p>Si le nouveau vol que nous confirmons ne vous convient pas et que vous avez trouv&eacute; un autre moyen de transport au moins un jour avant le vol que nous avons r&eacute;serv&eacute; pour vous, vous pouvez r&eacute;server ce moyen de transport et demander le remboursement des frais dans les limites du raisonnable.</p>
+    <p>Pour soumettre une demande de remboursement des frais, veillez &agrave; nous informer que vous avez r&eacute;serv&eacute; une autre option, par exemple en&nbsp;<a href="https://www.easyjet.com/ch-fr/vacances/aide/assistance-pendant-vos-vacances"><span style="text-decoration: underline;"><strong>lan&ccedil;ant un chat avec nous ou en appelant notre &eacute;quipe</strong></span></a>. Cela nous permet &eacute;galement de lib&eacute;rer des si&egrave;ges afin que d&rsquo;autres passagers puissent rentrer chez eux plus t&ocirc;t.</p>
+    "@
+    $q3_question_53493e50c31449c18b8d0560a6f105f5_frfr_v2 = @"
+    Puis-je réserver moi-même mon vol retour ?
+    "@
+    $q2_answer_a0700f2dc7154bda94c2087c7e9a08e3_dede_v1 = @"
+    <p>In der Regel organisieren wir den Transfer zu deinem neuen Abflughafen. Bei einer Verspätung über Nacht bemühen wir uns außerdem um eine Unterkunft für dich und deine Gruppe. </p>
+    <p>Je nach den Umständen, dem Zeitpunkt und der Verfügbarkeit kann deine Unterkunft in der Nähe deines ursprünglichen Abflughafens oder näher an deinem neuen Abflughafen liegen. </p>
+    <p>Wenn wir dich bitten, dich selbst um eine Unterkunft zu kümmern, bewahre bitte sämtliche Belege über angemessene Ausgaben auf, die du später geltend machen kannst. </p>
+    <p>Sofern wir dich nicht unter den bei deiner Buchung angegebenen Kontaktdaten anderweitig informiert haben, solltest du, wenn dein Rückflug an einem anderen Flughafen landet, selbst für deine Heimreise sorgen und die Belege aufbewahren, um die angemessenen Transportkosten geltend machen zu können.</p>
+    "@
+    $q1_answer_4e53d7c7e570419aaacd4c97055e9a63_dech_v1 = @"
+    <p><span style="color: #000000; background-color: #ffffff;">Wir werden dich im Falle von &Auml;nderungen an deinem Flug proaktiv per E-Mail und manchmal auch per SMS unter den Kontaktdaten benachrichtigen, die du bei der Buchung deiner Ferien angegeben hast, sodass du uns nicht anrufen musst, um diese Informationen zu erhalten.</span><br style="color: #000000; background-color: #ffffff;" />
+    <br style="color: #000000; background-color: #ffffff;" />
+    <span style="color: #000000; background-color: #ffffff;">Die aktuellen Daten zu deinem neuen Flug kannst du auch einsehen, indem du dich bei&nbsp;</span><a tabindex="0" target="_blank" href="https://www.easyjet.com/ch-de/" rel="noopener noreferrer" style="color: #ff6600; background-color: #ffffff;"><span>easyJet.com/ch-de</span></a><span style="color: #000000; background-color: #ffffff;">&nbsp;einloggst und deine Buchung aufrufst. Du brauchst deine Fluginformationen und die Flugreferenznummer, die mit einem &bdquo;K&ldquo; beginnt. Diese findest du in den E-Mails, die wir dir geschickt haben.</span> </p>
+    "@
+    $q3_question_53493e50c31449c18b8d0560a6f105f5_dede_v2 = @"
+    Kann ich meinen eigenen Rückflug buchen?
+    "@
+    $q1_answer_4e53d7c7e570419aaacd4c97055e9a63_frch_v1 = @"
+    <p>En cas de modification de votre vol, nous vous contacterons de mani&egrave;re proactive par e-mail, et parfois par SMS, aux coordonn&eacute;es fournies lors de la r&eacute;servation de vos vacances. Vous n&rsquo;aurez donc pas besoin de nous appeler pour obtenir ces informations.<br />
+    <br />
+    Vous pouvez &eacute;galement consulter les derni&egrave;res informations en direct concernant votre nouveau vol en vous connectant &agrave; <strong><a href="https://www.easyjet.com/fr">easyJet.com/fr</a>&nbsp;</strong>et en consultant votre r&eacute;servation. Vous aurez besoin de vos informations de vol et du num&eacute;ro de r&eacute;f&eacute;rence du vol commen&ccedil;ant par un &laquo;&nbsp;K&nbsp;&raquo;, que vous trouverez dans les e-mails que nous vous avons pr&eacute;c&eacute;demment envoy&eacute;s.</p>
+    "@
+    $q2_question_a0700f2dc7154bda94c2087c7e9a08e3_frch_v1 = @"
+    Que se passe-t-il si mon nouveau vol part ou arrive dans un autre aéroport?
+    "@
+    $q1_answer_4e53d7c7e570419aaacd4c97055e9a63_dede_v1 = @"
+    <p>Wir werden dich im Falle von &Auml;nderungen an deinem Flug proaktiv per E-Mail und manchmal auch per SMS unter den Kontaktdaten benachrichtigen, die du bei der Buchung deines Urlaubs angegeben hast, sodass du uns nicht anrufen musst, um diese Informationen zu erhalten.<br />
+    <br />
+    Die aktuellen Details zu deinem neuen Flug kannst du auch einsehen, indem du dich bei <a href="https://www.easyjet.com/de"><strong><span style="text-decoration: underline;">easyJet.com/de</span></strong></a> einloggst und deine Buchung aufrufst. Du brauchst deine Fluginformationen und die Flugreferenznummer, die mit einem &bdquo;K&ldquo; beginnt. Diese findest du in den E-Mails, die wir dir geschickt haben. </p>
+    "@
+    $q3_answer_53493e50c31449c18b8d0560a6f105f5_dede_v2 = @"
+    <p>Wenn dein urspr&uuml;nglicher Heimflug aufgrund von St&ouml;rungen storniert wurde, buchen wir dich auf einen alternativen R&uuml;ckflug mit easyJet um und setzen alles daran, die Unannehmlichkeiten aufs Minimum zu beschr&auml;nken. </p>
+    <p>Wenn dir der von uns best&auml;tigte neue Flug nicht zusagt und du mindestens einen Tag vor dem von uns umgebuchten Flug eine alternative Bef&ouml;rderungsm&ouml;glichkeit gefunden hast, kannst du diese buchen und eine Erstattung der Kosten in angemessener H&ouml;he beantragen. </p>
+    <p>Um deine Kosten erfolgreich geltend zu machen, musst du uns mitteilen, dass du einen alternativen Tansport gebucht hast, beispielsweise indem du <a href="~/link.aspx?_id=CE1EB23F27E2418B97906F508A4FC91F&amp;_z=z"><span style="text-decoration: underline;"><strong>einen Chat mit uns startest oder unser Support-Team anrufst</strong></span></a>. Das erm&ouml;glicht es uns, Sitzpl&auml;tze f&uuml;r andere Reisende verf&uuml;gbar zu machen, sodass alle G&auml;ste so bald wie m&ouml;glich nach Hause kommen k&ouml;nnen.  </p>
+    "@
+    $q4_answer_481c3a2d7a704d0e81f36f81746e875f_frch_v1 = @"
+    <p>Si vous avez engag&eacute; des frais suppl&eacute;mentaires, nous vous recommandons vivement de contacter votre prestataire d&rsquo;assurance voyage, en particulier pour des frais tels que&nbsp;:</p>
+    <ul>
+        <li>Les jours de travail manqu&eacute;s</li>
+        <li>Les rendez-vous manqu&eacute;s</li>
+        <li>Les frais m&eacute;dicaux</li>
+        <li>La garde d&rsquo;animaux de compagnie</li>
+    </ul>
+    <p>Votre assureur sera peut-&ecirc;tre en mesure de rembourser les d&eacute;penses qui ne sont pas prises en charge par easyJet holidays, comme celles non comprises dans votre s&eacute;jour ou dans les prestations pr&eacute;vues par la r&eacute;glementation.</p>
+    "@
+    $q1_question_4e53d7c7e570419aaacd4c97055e9a63_frfr_v1 = @"
+    Comment trouver mes nouvelles informations de vol ?
+    "@
+    $q2_question_a0700f2dc7154bda94c2087c7e9a08e3_frfr_v1 = @"
+    Que se passe-t-il si mon nouveau vol part ou arrive dans un autre aéroport ?
+    "@
+    $q2_answer_a0700f2dc7154bda94c2087c7e9a08e3_dech_v1 = @"
+    <p style="color: #000000; background-color: #ffffff; margin-right: 0px; margin-bottom: 10px; margin-left: 0px;">In der Regel organisieren wir den Transfer zu deinem neuen Abflughafen. Bei einer Versp&auml;tung &uuml;ber Nacht bem&uuml;hen wir uns ausserdem um eine Unterkunft f&uuml;r dich und deine Gruppe.</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Je nach den Umst&auml;nden, dem Zeitpunkt und der Verf&uuml;gbarkeit kann deine Unterkunft in der N&auml;he deines urspr&uuml;nglichen Abflughafens oder n&auml;her an deinem neuen Abflughafen liegen.</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Wenn wir dich bitten, dich selbst um eine Unterkunft zu k&uuml;mmern, bewahre bitte s&auml;mtliche Belege &uuml;ber angemessene Ausgaben auf, die du sp&auml;ter geltend machen kannst.</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Sofern wir dich nicht unter den bei deiner Buchung angegebenen Kontaktdaten anderweitig informiert haben, solltest du, wenn dein R&uuml;ckflug an einem anderen Flughafen landet, selbst f&uuml;r deine Heimreise sorgen und die Belege aufbewahren, um die angemessenen Transportkosten geltend machen zu k&ouml;nnen.</p>
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions - Flight plus Hotel"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question and Answer Folder"
+            Id          = $holidayshomerootinfodisruptionpagecomponentsstillhavequestionsflightplushotel_Id
+            Fields      = @{
+                "__Sortorder" = @{
+                    "en" = "1200"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions - Flight plus Hotel/Q1"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+            Id          = $holidayshomerootinfodisruptionpagecomponentsstillhavequestionsflightplushotelq1_Id
+            Fields      = @{
+                "NavigationParameter" = @{
+                    "en" = "newflightdetails"
+                }
+                "Question" = @{
+                    "de-CH" = $q1_question_4e53d7c7e570419aaacd4c97055e9a63_dech_v1
+                    "en" = $q1_question_4e53d7c7e570419aaacd4c97055e9a63_en_v1
+                    "fr-FR" = $q1_question_4e53d7c7e570419aaacd4c97055e9a63_frfr_v1
+                    "de-DE" = $q1_question_4e53d7c7e570419aaacd4c97055e9a63_dede_v1
+                    "fr-CH" = $q1_question_4e53d7c7e570419aaacd4c97055e9a63_frch_v1
+                }
+                "Answer" = @{
+                    "de-CH" = $q1_answer_4e53d7c7e570419aaacd4c97055e9a63_dech_v1
+                    "en" = $q1_answer_4e53d7c7e570419aaacd4c97055e9a63_en_v1
+                    "fr-FR" = $q1_answer_4e53d7c7e570419aaacd4c97055e9a63_frfr_v1
+                    "de-DE" = $q1_answer_4e53d7c7e570419aaacd4c97055e9a63_dede_v1
+                    "fr-CH" = $q1_answer_4e53d7c7e570419aaacd4c97055e9a63_frch_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions - Flight plus Hotel/Q2"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+            Id          = $holidayshomerootinfodisruptionpagecomponentsstillhavequestionsflightplushotelq2_Id
+            Fields      = @{
+                "NavigationParameter" = @{
+                    "en" = "differentairport"
+                }
+                "Question" = @{
+                    "de-CH" = $q2_question_a0700f2dc7154bda94c2087c7e9a08e3_dech_v1
+                    "en" = $q2_question_a0700f2dc7154bda94c2087c7e9a08e3_en_v1
+                    "fr-FR" = $q2_question_a0700f2dc7154bda94c2087c7e9a08e3_frfr_v1
+                    "de-DE" = $q2_question_a0700f2dc7154bda94c2087c7e9a08e3_dede_v1
+                    "fr-CH" = $q2_question_a0700f2dc7154bda94c2087c7e9a08e3_frch_v1
+                }
+                "Answer" = @{
+                    "de-CH" = $q2_answer_a0700f2dc7154bda94c2087c7e9a08e3_dech_v1
+                    "en" = $q2_answer_a0700f2dc7154bda94c2087c7e9a08e3_en_v1
+                    "fr-FR" = $q2_answer_a0700f2dc7154bda94c2087c7e9a08e3_frfr_v1
+                    "de-DE" = $q2_answer_a0700f2dc7154bda94c2087c7e9a08e3_dede_v1
+                    "fr-CH" = $q2_answer_a0700f2dc7154bda94c2087c7e9a08e3_frch_v1
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions - Flight plus Hotel/Q3"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+            Id          = $holidayshomerootinfodisruptionpagecomponentsstillhavequestionsflightplushotelq3_Id
+            Fields      = @{
+                "NavigationParameter" = @{
+                    "en" = "ownflighthome"
+                }
+                "Question" = @{
+                    "de-CH" = $q3_question_53493e50c31449c18b8d0560a6f105f5_dech_v2
+                    "en" = $q3_question_53493e50c31449c18b8d0560a6f105f5_en_v2
+                    "fr-FR" = $q3_question_53493e50c31449c18b8d0560a6f105f5_frfr_v2
+                    "de-DE" = $q3_question_53493e50c31449c18b8d0560a6f105f5_dede_v2
+                    "fr-CH" = $q3_question_53493e50c31449c18b8d0560a6f105f5_frch_v2
+                }
+                "Answer" = @{
+                    "de-CH" = $q3_answer_53493e50c31449c18b8d0560a6f105f5_dech_v2
+                    "en" = $q3_answer_53493e50c31449c18b8d0560a6f105f5_en_v2
+                    "fr-FR" = $q3_answer_53493e50c31449c18b8d0560a6f105f5_frfr_v2
+                    "de-DE" = $q3_answer_53493e50c31449c18b8d0560a6f105f5_dede_v2
+                    "fr-CH" = $q3_answer_53493e50c31449c18b8d0560a6f105f5_frch_v2
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Still have questions - Flight plus Hotel/Q4"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+            Id          = $holidayshomerootinfodisruptionpagecomponentsstillhavequestionsflightplushotelq4_Id
+            Fields      = @{
+                "NavigationParameter" = @{
+                    "en" = "claimfrominsurance"
+                }
+                "Question" = @{
+                    "de-CH" = $q4_question_481c3a2d7a704d0e81f36f81746e875f_dech_v1
+                    "en" = $q4_question_481c3a2d7a704d0e81f36f81746e875f_en_v1
+                    "fr-FR" = $q4_question_481c3a2d7a704d0e81f36f81746e875f_frfr_v1
+                    "de-DE" = $q4_question_481c3a2d7a704d0e81f36f81746e875f_dede_v1
+                    "fr-CH" = $q4_question_481c3a2d7a704d0e81f36f81746e875f_frch_v1
+                }
+                "Answer" = @{
+                    "de-CH" = $q4_answer_481c3a2d7a704d0e81f36f81746e875f_dech_v1
+                    "en" = $q4_answer_481c3a2d7a704d0e81f36f81746e875f_en_v1
+                    "fr-FR" = $q4_answer_481c3a2d7a704d0e81f36f81746e875f_frfr_v1
+                    "de-DE" = $q4_answer_481c3a2d7a704d0e81f36f81746e875f_dede_v1
+                    "fr-CH" = $q4_answer_481c3a2d7a704d0e81f36f81746e875f_frch_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    $holidayshomerootinfodisruptionpagecomponentswhattodonowquestionsflightplushotelq3_Id = "{E99EFCA2-E06E-4C6A-850E-91DBD57B9BDB}"
+    $holidayshomerootinfodisruptionpagecomponentswhattodonowquestionsflightplushotelq6_Id = "{0E6BE4AF-D377-4C98-87C6-1F980C93E34F}"
+    $holidayshomerootinfodisruptionpagecomponentswhattodonowquestionsflightplushotel_Id = "{BF89707A-DC47-45BC-9753-B793ED9AD012}"
+    $holidayshomerootinfodisruptionpagecomponentswhattodonowquestionsflightplushotelq2_Id = "{5410F31B-F68F-4D34-BB8D-75AE0213A45D}"
+    $holidayshomerootinfodisruptionpagecomponentswhattodonowquestionsflightplushotelq5_Id = "{82EC431A-56D4-440A-AE36-BA9ADD688ED5}"
+    $holidayshomerootinfodisruptionpagecomponentswhattodonowquestionsflightplushotelq1_Id = "{5FB1505F-4BAF-487F-A0D9-2BA7B2869947}"
+    $holidayshomerootinfodisruptionpagecomponentswhattodonowquestionsflightplushotelq4_Id = "{13F47D25-F152-46A9-B924-9F73C622321D}"
+    $q5_answer_82ec431a56d4440aae36ba9add688ed5_frfr_v1 = @"
+    <p>Mettre fin à vos vacances et vous ramener chez vous plus tôt que prévu est une solution de dernier recours. Nous sommes conscients de la déception que cela peut représenter. Si cela s’avère nécessaire, nous vous contacterons et vous communiquerons les informations relatives à vos nouveaux horaires de transfert (le cas échéant) et de vol, qui peuvent être dans plusieurs jours, en fonction de notre calendrier de vol. </p>
+    <p>En cas de perturbations importantes, nous pourrions vous demander de prendre vos propres dispositions pour le retour et éventuellement de réserver votre propre hébergement pour la nuit. Toutes les&nbsp;<a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">dépenses effectuées dans les limites du raisonnable</span></strong></a> vous seront remboursées.</p>
+    <p>Sachez que nous vous aiderons à rentrer chez vous, même si cela ne peut se faire immédiatement. Dans des cas extrêmes, tels qu’une catastrophe naturelle, les autorités locales peuvent intervenir et dans ce cas, il est essentiel de suivre leurs instructions. Nous nous efforcerons de rester en contact avec vous. Veuillez consulter régulièrement vos e-mails et votre téléphone. Vous recevrez par e-mail et SMS des informations actualisées envoyées aux coordonnées indiquées lors de la réservation de vos vacances.  </p>
+    "@
+    $q3_answer_e99efca2e06e4c6a850e91dbd57b9bdb_frfr_v2 = @"
+    <p><strong>Mon vol aller est annulé</strong>
+    </p>
+    <p>Si votre vol aller est annulé avant votre départ, nous vous présentons nos excuses et ferons tout notre
+    possible pour vous transférer sur un autre vol approprié. Si nous ne parvenons pas à trouver un autre vol,
+    nous annulerons malheureusement votre séjour et procéderons immédiatement
+    à son remboursement.
+    </p>
+    <p><strong>Mon vol retour est annulé</strong>
+    </p>
+    <p>Si votre vol retour est annulé pendant vos vacances, ne vous inquiétez pas.
+    Nous ferons tout notre possible pour trouver d’autres solutions pendant
+    votre séjour afin que vous puissiez rentrer chez vous. Nous disposons d’une équipe dédiée qui vous contactera
+    de manière proactive en utilisant les coordonnées indiquées lors de
+    la réservation de vos vacances. Pour connaître vos droits, consultez la page de nos <a href="~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z"><strong><span style="text-decoration: underline;">conditions générales de réservation</span></strong></a>&nbsp;ou
+    consultez notre <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">centre d'aide</span></strong></a>&nbsp;pour en savoir plus.</p>
+    <p>Pour que vous sachiez à quoi vous attendre, notre délai moyen pour effectuer ces
+    arrangements est de 60 minutes. Nous vous remercions donc de votre patience pendant que notre équipe
+    recherche la meilleure alternative pour vous.</p>
+    "@
+    $q4_answer_13f47d25f15246a9b9249f73c622321d_dede_v2 = @"
+    <p>Wir wissen, wie ärgerlich eine Planänderung sein kann. Wenn du länger bleiben musst, werden wir unser Bestes tun, schnellstmöglich eine Unterkunft für dich und deine Gruppe zu finden. Wir werden versuchen, dich in deinem derzeitigen Hotel unterzubringen, aber es kann vorkommen, dass du in ein anderes Hotel umziehen musst. </p>
+    <p>In Extremfällen, wie beispielsweise bei Naturkatastrophen, kann es sein, dass die Behörden vor Ort die Kontrolle übernehmen. Es ist wichtig, deren Anweisungen zu befolgen. Wir bleiben über die Kontaktdaten, die du bei der Buchung angegeben hast, mit dir in Verbindung. Bitte überprüfe regelmässig deine E-Mails und SMS.&nbsp;</p>
+    <p>Wenn du eine Unterkunft brauchst, werden wir dir die notwendigen Details zukommen lassen oder dich fragen, ob du selbst eine Unterkunft finden und buchen kannst, für die wir die <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">Kosten in angemessener Höhe </span></strong></a> erstatten.</p>
+    <p>Unser deutschsprachiges Service Team ist rund um die Uhr erreichbar und darauf spezialisiert, Gäste in diesen Situationen zu unterstützen. Da dein Urlaubspaket weitere Leistungen wie Transfers oder Hotels umfasst, können Gäste von easyJet holidays die Self-Service-App der easyJet Airline nicht zur Buchung einer Übernachtungsmöglichkeit nutzen.  </p>
+    <br />
+    "@
+    $q2_answer_5410f31bf68f4d34bb8d75ae0213a45d_dech_v2 = @"
+    <p style="color: #000000; background-color: #ffffff; margin-right: 0px; margin-bottom: 10px; margin-left: 0px;">Wenn dein Flug versp&auml;tet ist oder verschoben wurde, meldet sich das easyJet holidays Team bei dir. M&ouml;glicherweise erh&auml;ltst du auch eine Nachricht, die vom Team der Airline an die bei der Buchung deiner Ferien angegebenen Kontaktdaten gesendet wird.</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Im Normalfall brauchen wir f&uuml;r die Umbuchung nicht l&auml;nger als eine Stunde. Wir bitten daher um etwas Geduld, w&auml;hrend unser Team die n&auml;chstbeste Alternative f&uuml;r dich und deine Gruppe findet.</p>
+    "@
+    $q4_answer_13f47d25f15246a9b9249f73c622321d_en_v2 = @"
+    <p>We understand how frustrating this can be if you find yourself needing to stay longer than planned, we&rsquo;ll do our best to secure somewhere for you to stay. While we aim to keep you at your current hotel, it's more than likely that you'll need to move to a different one. </p>
+    <p>In extreme cases, such as a natural disaster, local authorities may take control, and it&rsquo;s essential to follow their instructions. We&rsquo;ll try to keep in touch with you on the contact details provided when you made your booking, so please check your emails and phone regularly.&nbsp;</p>
+    <p>If you need somewhere to stay overnight, we&rsquo;ll provide you with the necessary details or let you know if you&rsquo;re able to find and book your own and claim back <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">reasonable expenses</span></strong></a>.</p>
+    <p>Our UK-based 24/7 On Holiday Support team is dedicated to assisting&nbsp;customers in times like these. Because there are other components to your holiday package, such as transfers or hotels, easyJet holidays customers can't use the easyJet airline self-service app to book somewhere to stay overnight.  </p>
+    <br />
+    "@
+    $q2_answer_5410f31bf68f4d34bb8d75ae0213a45d_dede_v2 = @"
+    <p>Wenn dein Flug verspätet ist oder verschoben wurde, meldet sich das easyJet holidays Team bei dir. Möglicherweise erhältst du auch eine Nachricht, die vom Team der Airline an die bei der Buchung deines Urlaubs angegebenen Kontaktdaten gesendet wird.</p>
+    <p>Im Normalfall brauchen wir für die Umbuchung nicht länger als eine Stunde. Wir bitten daher um etwas Geduld, während unser Team die nächstbeste Alternative für dich und deine Gruppe findet.</p>
+    "@
+    $q6_answer_0e6be4afd3774c9887c61f980c93e34f_dech_v1 = @"
+    <span style="color: #000000; background-color: #ffffff;">Wenn eine Flug&auml;nderung oder andere Umst&auml;nde, die ausserhalb unserer Kontrolle liegen, dazu f&uuml;hren, dass deine Ferien nicht stattfinden k&ouml;nnen, stornieren wir die Buchung. Du hast die Wahl zwischen einer vollst&auml;ndigen R&uuml;ckerstattung, einer Gutschrift auf dein easyJet holidays Konto (gem&auml;ss unseren AGB f&uuml;r Guthaben) oder einer Ersatzreise von uns:</span>
+    <ul style="color: #000000; background-color: #ffffff;">
+        <li>die mindestens dem gleichen Standard und Preis entspricht, sofern wir dir eine solche anbieten k&ouml;nnen; oder</li>
+        <li>die einer niedrigeren Preiskategorie <span style="color: #000000; background-color: #ffffff;">entspricht</span>, sofern wir dir eine solche anbieten k&ouml;nnen, wobei wir die Differenz zum urspr&uuml;nglichen Reisepreis zur&uuml;ckerstatten.</li>
+    </ul>
+    "@
+    $q4_answer_13f47d25f15246a9b9249f73c622321d_frfr_v2 = @"
+    <p>Nous comprenons à quel point cela peut être frustrant de devoir rester plus longtemps que prévu, mais nous ferons de notre mieux pour vous trouver un endroit où séjourner. Même si nous mettons tout en œuvre pour vous permettre de rester dans votre hôtel actuel, dans certaines situations il est possible que vous deviez en changer. </p>
+    <p>Dans des cas extrêmes, tels qu’une catastrophe naturelle, les autorités locales peuvent prendre en charge la situation et il est indispensable que vous suiviez leurs instructions. Nous essaierons de vous contacter via les coordonnées fournies lors de votre réservation. Veuillez donc vérifier régulièrement vos e-mails et votre téléphone.&nbsp;</p>
+    <p>Si vous avez besoin d’un hébergement pour la nuit, nous vous communiquerons les informations nécessaires, ou si vous en réservez un par vous-même à un prix raisonnable, nous vous indiquerons comment demander le <a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">remboursement</span></strong></a>.</p>
+    <p>Notre équipe d’assistance vacances disponible 24 h/24, 7 j/7 est entièrement dédiée à aider nos clients dans ce type de situations. Comme d’autres éléments sont compris dans votre séjour, tels que les transferts ou l’hôtel, nos clients easyJet holidays ne peuvent pas utiliser l’application en libre-service de la compagnie aérienne easyJet pour réserver un hébergement pour la nuit.  </p>
+    <br />
+    "@
+    $q5_answer_82ec431a56d4440aae36ba9add688ed5_frch_v1 = @"
+    <p>Mettre fin &agrave; vos vacances et vous ramener chez vous plus t&ocirc;t que pr&eacute;vu est une solution de dernier recours. Nous sommes conscients de la d&eacute;ception que cela peut repr&eacute;senter. Si cela s&rsquo;av&egrave;re n&eacute;cessaire, nous vous contacterons et vous communiquerons les informations relatives &agrave; vos nouveaux horaires de transfert (le cas &eacute;ch&eacute;ant) et de vol, qui peuvent &ecirc;tre dans plusieurs jours, en fonction de notre calendrier de vol.
+    </p>
+    <p>
+    En cas de perturbations importantes, nous pourrions vous demander de prendre vos propres dispositions pour le retour et &eacute;ventuellement de r&eacute;server votre propre h&eacute;bergement pour la nuit. Toutes les <a href="~/link.aspx?_id=1BF845E9475E44D492D902899964BE87&amp;_z=z"><span style="text-decoration: underline;"><strong>d&eacute;penses effectu&eacute;es dans les limites du raisonnable</strong></span></a>&nbsp;vous seront rembours&eacute;es.
+    </p>
+    <p>
+    Sachez que nous vous aiderons &agrave; rentrer chez vous, m&ecirc;me si cela ne peut se faire imm&eacute;diatement. Dans des cas extr&ecirc;mes, tels qu&rsquo;une catastrophe naturelle, les autorit&eacute;s locales peuvent intervenir et dans ce cas, il est essentiel de suivre leurs instructions. Nous nous efforcerons de rester en contact avec vous. Veuillez consulter r&eacute;guli&egrave;rement vos e-mails et votre t&eacute;l&eacute;phone. Vous recevrez par e-mail et SMS des informations actualis&eacute;es envoy&eacute;es aux coordonn&eacute;es indiqu&eacute;es lors de la r&eacute;servation de vos vacances.</p>
+    "@
+    $q6_answer_0e6be4afd3774c9887c61f980c93e34f_dede_v1 = @"
+    Wenn eine Flug&auml;nderung oder andere Umst&auml;nde, die au&szlig;erhalb unserer Kontrolle liegen, dazu f&uuml;hren, dass dein Urlaub nicht stattfinden kann, stornieren wir ihn. Du hast die Wahl zwischen einer vollst&auml;ndigen R&uuml;ckerstattung, einer Gutschrift auf deinen easyJet holidays Account (gem&auml;&szlig; unseren AGB f&uuml;r Guthaben) oder einem Ersatzurlaub von uns:
+    <ul>
+        <li>der mindestens dem gleichen Standard und Preis entspricht, sofern wir dir einen solchen anbieten k&ouml;nnen; oder </li>
+        <li>der einer niedrigeren Preiskategorie entspricht, sofern wir dir einen solchen anbieten k&ouml;nnen, wobei wir die Differenz zum urspr&uuml;nglichen Reisepreis zur&uuml;ckerstatten.</li>
+    </ul>
+    "@
+    $q2_answer_5410f31bf68f4d34bb8d75ae0213a45d_frch_v2 = @"
+    <p>Si votre vol est retardé ou reprogrammé, l'équipe easyJet holidays vous contactera. Vous pouvez également recevoir un message de notre part envoyé par l'équipe de la compagnie aérienne  aux coordonnées fournies lors de la réservation de votre séjour. </p>
+    <p>Pour que vous sachiez à quoi vous attendre, sachez que nous effectuons généralement ces  modifications dans un délai de 60 minutes. Nous vous remercions donc de votre patience pendant que notre équipe recherche  la meilleure alternative pour vous. </p>
+    "@
+    $q1_answer_5fb1505f4baf487fa0d92ba7b2869947_dede_v2 = @"
+    <p>Wenn dein Flug ausf&auml;llt oder sich versp&auml;tet, werden wir alles tun, um dich
+    auf dem Laufenden zu halten. Du kannst auch den easyJet <a href="https://www.easyjet.com/de/flug-plan"><strong><span style="text-decoration: underline;">Flight-Tracker</span></strong></a> auf unserer Website
+    oder in unserer App aufrufen, um die aktuellsten Fluginformationen zu erhalten. </p>
+    <p>
+    Da wir uns um deine gesamte Urlaubsreise k&uuml;mmern, m&uuml;ssen wir m&ouml;glicherweise verschiedene Segmente
+    deiner Reise anpassen, angefangen bei deinem Flug &uuml;ber dein Hotel bis hin zum Transfer
+    (falls enthalten). W&auml;hrend wir mit unseren Partnern vor Ort arbeiten,
+    erh&auml;ltst du m&ouml;glicherweise mehrere Updates. Das ist v&ouml;llig normal und hilft uns,
+    dich so schnell wie m&ouml;glich &uuml;ber den aktuellen Stand zu informieren. Bitte schau regelm&auml;&szlig;ig in deinen E-Mail-Eingang und
+    achte auch auf SMS von uns. Updates werden an die&nbsp;Kontaktdaten gesendet, die du bei der Buchung deines
+    Urlaubs angegeben hast. </p>
+    <p>
+    Wenn die Flug&auml;nderung weitreichend ist oder durch externe Faktoren wie Wetter,
+    Flugsicherung oder Streik verursacht wird, findest du aktuelle Informationen und Ratschl&auml;ge auf unserer Seite <a href="~/link.aspx?_id=725A5D37ACDD41BB94E7EB828BEA2CC5&amp;_z=z"><strong><span style="text-decoration: underline;">Reiseinformationen</span></strong></a>.  </p>
+    "@
+    $q1_answer_5fb1505f4baf487fa0d92ba7b2869947_en_v2 = @"
+    <p>If your flight is significantly disrupted or delayed by more than 3 hours, we&rsquo;ll always do our best to get in touch
+    and share updates. You can also check the easyJet <a href="https://www.easyjet.com/en/flight-tracker"><strong><span style="text-decoration: underline;">flight tracker</span></strong></a> on our website
+    or app for the most up-to-date flight information. </p>
+    <p>
+    As we look after your entire holiday, we may need to adjust different parts of
+    your trip &mdash; starting with your flight, then your hotel, and finally your transfers
+    (if included). You might receive several updates as we work through each stage
+    with our trusted partners. That&rsquo;s completely normal and helps us keep you
+    informed as quickly as possible. Keep checking your emails for updates and
+    look out for texts from us to the contact details provided when you booked your
+    holiday. </p>
+    <p>
+    If the disruption is widespread or caused by external factors such as weather,
+    air traffic control, or industrial action, you can also visit our latest <a href="~/link.aspx?_id=725A5D37ACDD41BB94E7EB828BEA2CC5&amp;_z=z"><strong><span style="text-decoration: underline;">travel information</span></strong></a>&nbsp;page for broader travel updates and advice.  </p>
+    "@
+    $q2_answer_5410f31bf68f4d34bb8d75ae0213a45d_en_v2 = @"
+    <p>If your flight is delayed by more than 3 hours or re-scheduled, you&rsquo;ll be contacted by the easyJet holidays team. You may also receive a message from us sent by the airline team  to the details provided when you booked your holiday.</p>
+    <p>Just so you know what to expect, our average speed in making these  arrangements is within 60 minutes so please bear with us while our team look  at the next best alternative for you.</p>
+    "@
+    $q3_answer_e99efca2e06e4c6a850e91dbd57b9bdb_en_v2 = @"
+    <p><strong>My outbound flight is cancelled</strong>
+    </p>
+    <p>If your outbound flight is cancelled before you go, we&rsquo;re sorry and we&rsquo;ll do our
+    very best to move you on to a suitable alternative flight. If we can&rsquo;t find one,
+    then unfortunately we&rsquo;ll cancel your holiday and press the button on a refund
+    straight away.
+    </p>
+    <p><strong>My return flight is cancelled</strong>
+    </p>
+    <p>If your return flight is cancelled while you're on holiday, please try not to worry.
+    We&rsquo;ll do everything possible to help with alternative arrangements whilst you&rsquo;re
+    in resort to get you home. And we have a dedicated team that&rsquo;ll proactively
+    reach out to you using the contact details provided when you booked your
+    holiday. For information on your rights, check our <a href="~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z"><strong><span style="text-decoration: underline;">booking conditions</span></strong></a>&nbsp;page or
+    visit our <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">help centre</span></strong></a>&nbsp;to find out more.</p>
+    <p>Just so you know what to expect, our average speed in making these
+    arrangements is within 60 minutes so please bear with us while our team look
+    at the next best alternative for you. And because there are other components to your holiday package, such as transfers or hotels, easyJet holidays customers can't use the easyJet airline self-service app to book somewhere to stay overnight.</p>
+    "@
+    $q6_answer_0e6be4afd3774c9887c61f980c93e34f_en_v1 = @"
+    If travel disruption or another situation beyond our control means we can&rsquo;t fulfil your holiday, we&rsquo;ll cancel it and you can either have a full refund, choose to receive account credit (subject to our Credit on Account Terms and Conditions), or accept a replacement holiday from us of:
+    <ul>
+        <li>at least equivalent standard and price, if we&rsquo;re able to offer you one or; </li>
+        <li>a lower quality holiday, if we&rsquo;re able to offer you one and then we&rsquo;ll refund you any difference in price between your original holiday purchased and the new one.</li>
+    </ul>
+    "@
+    $q1_answer_5fb1505f4baf487fa0d92ba7b2869947_frfr_v2 = @"
+    <p>Si votre vol subit des perturbations ou est retard&eacute;, nous ferons toujours de notre mieux pour vous contacter
+    et vous communiquer des informations actualis&eacute;es. Vous pouvez aussi consulter le <a href="https://www.easyjet.com/fr/suivi-de-vol-en-direct"><strong><span style="text-decoration: underline;">flight tracker</span></strong></a> easyJet sur notre site Internet
+    ou notre application pour obtenir les toutes derni&egrave;res informations concernant votre vol. </p>
+    <p>
+    Comme nous nous occupons de l&rsquo;ensemble de vos vacances, nous pourrions &ecirc;tre amen&eacute;s &agrave; modifier diff&eacute;rents &eacute;l&eacute;ments de
+    votre voyage, &agrave; commencer par votre vol, puis votre h&ocirc;tel et enfin vos transferts
+    (le cas &eacute;ch&eacute;ant). Vous recevrez sans doute &agrave; plusieurs reprises des informations actualis&eacute;es au fur et &agrave; mesure que nous progresserons
+    avec nos partenaires de confiance. Cela est normal et nous permet de vous tenir
+    inform&eacute;s aussi vite que possible. Consultez r&eacute;guli&egrave;rement vos e-mails pour toute mise &agrave; jour, ainsi que
+    les SMS que nous vous enverrons aux coordonn&eacute;es indiqu&eacute;es lors de
+    la r&eacute;servation de vos vacances. </p>
+    <p>
+    Si les perturbations sont g&eacute;n&eacute;ralis&eacute;es ou ont &eacute;t&eacute; caus&eacute;es par des facteurs externes, tels que les conditions m&eacute;t&eacute;orologiques,
+    le contr&ocirc;le du trafic a&eacute;rien ou une gr&egrave;ve, vous pouvez &eacute;galement vous rendre sur notre page indiquant les derni&egrave;res <a href="~/link.aspx?_id=725A5D37ACDD41BB94E7EB828BEA2CC5&amp;_z=z"><strong><span style="text-decoration: underline;">informations sur les voyages</span></strong></a>&nbsp;pour trouver plus de mises &agrave; jour ou de conseils.  </p>
+    "@
+    $q3_answer_e99efca2e06e4c6a850e91dbd57b9bdb_dech_v2 = @"
+    <p style="color: #000000; background-color: #ffffff; margin-right: 0px; margin-bottom: 10px; margin-left: 0px;"><span><strong>Mein Hinflug wurde storniert</strong></span></p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Wenn dein Hinflug vor deiner Abreise storniert wird, bedauern wir dies sehr und werden unser Bestes tun, einen geeigneten Alternativflug f&uuml;r dich und deine Gruppe zu organisieren. Wenn es keine passende Alternative gibt, werden wir deine Ferien leider stornieren m&uuml;ssen und eine sofortige R&uuml;ckerstattung veranlassen.</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;"><span><strong>Mein R&uuml;ckflug wurde storniert</strong></span></p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Wenn dein R&uuml;ckflug w&auml;hrend deiner Ferien storniert wird, sollte das kein Grund zur Beunruhigung sein. Wir werden alles tun, um w&auml;hrend deines Aufenthalts eine alternative L&ouml;sung f&uuml;r deine Heimreise zu finden. Unser engagiertes Team wird sich unter den bei der Buchung deiner Ferien angegebenen Kontaktdaten proaktiv mit dir in Verbindung setzen. Informationen zu deinen Rechten findest du in unseren&nbsp;<a tabindex="0" href="https://www.easyjet.com/ch-de/ferien/information/buchungsbedingungen" data-path="/information/booking-conditions" style="color: #ff6600; background-color: initial;"><span>Buchungsbedingungen</span></a>&nbsp;oder in unseren&nbsp;<a tabindex="0" href="https://www.easyjet.com/ch-de/ferien/hilfe" data-path="/hilfe" style="color: #ff6600; background-color: initial;"><span>FAQs</span></a>.</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Im Durchschnitt dauert die Umbuchung etwa eine Stunde. Wir bitten dich daher um etwas Geduld, w&auml;hrend unser Team die n&auml;chstbeste Alternative f&uuml;r dich findet.</p>
+    "@
+    $q5_answer_82ec431a56d4440aae36ba9add688ed5_en_v1 = @"
+    <p>Having to end your holiday and bring you home early is a last resort, and we recognise how disappointing this can be. If a situation occurs where this becomes necessary, we&rsquo;ll contact you and provide details of your new transfer times (if applicable) and flight times, which may not be for a few days depending on our flight schedule. </p>
+    <p>At times of significant travel disruption, we may invite you to make your own return travel arrangements, and possibly to find and book your own overnight hotel. You&rsquo;ll be reimbursed for all&nbsp;<a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">reasonable expenses</span></strong></a> you incur.</p>
+    <p>Please know that we&rsquo;ll get you home, even if it cannot happen immediately. In extreme cases, such as a natural disaster, local authorities may take control over a situation and if so, you should follow their instructions. We&rsquo;ll try and keep in touch with you, and you should check your emails and phone regularly. You&rsquo;ll get updates by email and text message to the contact details provided when you booked your holiday.  </p>
+    "@
+    $q1_answer_5fb1505f4baf487fa0d92ba7b2869947_frch_v2 = @"
+    <p>Si votre vol subit des perturbations ou est retard&eacute;, nous ferons toujours de notre mieux pour vous contacter et vous communiquer des informations actualis&eacute;es. Vous pouvez aussi consulter le <a href="https://www.easyjet.com/ch-fr/suivi-de-vol-en-direct"><span style="text-decoration: underline;"><strong>flight tracker</strong></span></a> easyJet sur notre site Internet ou notre application pour obtenir les toutes derni&egrave;res informations concernant votre vol.
+    </p>
+    <p>Comme nous nous occupons de l&rsquo;ensemble de vos vacances, nous pourrions &ecirc;tre amen&eacute;s &agrave; modifier diff&eacute;rents &eacute;l&eacute;ments de votre voyage, &agrave; commencer par votre vol, puis votre h&ocirc;tel et enfin vos transferts (le cas &eacute;ch&eacute;ant). Vous recevrez sans doute &agrave; plusieurs reprises des informations actualis&eacute;es au fur et &agrave; mesure que nous progresserons avec nos partenaires de confiance. Cela est normal et nous permet de vous tenir inform&eacute;s aussi vite que possible. Consultez r&eacute;guli&egrave;rement vos e-mails pour toute mise &agrave; jour, ainsi que les SMS que nous vous enverrons aux coordonn&eacute;es indiqu&eacute;es lors de la r&eacute;servation de vos vacances.
+    </p>
+    <p>Si les perturbations sont g&eacute;n&eacute;ralis&eacute;es ou ont &eacute;t&eacute; caus&eacute;es par des facteurs externes, tels que les conditions m&eacute;t&eacute;orologiques, le contr&ocirc;le du trafic a&eacute;rien ou une gr&egrave;ve, vous pouvez &eacute;galement vous rendre sur notre page indiquant les derni&egrave;res <a href="https://www.easyjet.com/ch-fr/vacances/informations/travel-information"><strong><span style="text-decoration: underline;">informations sur les voyages</span></strong></a> pour trouver plus de mises &agrave; jour ou de conseils.</p>
+    "@
+    $q5_answer_82ec431a56d4440aae36ba9add688ed5_dede_v1 = @"
+    <p>Deinen Urlaub vorzeitig zu beenden und dich früher als ursprünglich geplant nach Hause zu bringen, ist der letzte Ausweg und wir sind uns bewusst, wie enttäuschend das sein kann. Sollte eine Situation eintreten, in der dies notwendig wird, werden wir dich kontaktieren und dir die neuen Flugzeiten mitteilen. Deine neuen Flüge finden je nach Flugplan möglicherweise erst in einigen Tagen statt. Wir teilen dir auch die neue Abholzeit für deinen Transfer mit (falls zutreffend). </p>
+    <p>Bei erheblichen Reisestörungen bitten wir dich möglicherweise, deine Rückreise selbst zu organisieren und dir gegebenenfalls selbst eine Übernachtungsmöglichkeit in einem Hotel zu suchen und zu buchen. Wir werden dir sämtliche&nbsp;<a href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section"><strong><span style="text-decoration: underline;">angemessenen Kosten</span></strong></a>, die dir dadurch entstehen, erstatten.</p>
+    <p>Du kannst dich darauf verlassen, dass wir dich nach Hause bringen, auch wenn dies vielleicht nicht sofort möglich ist. In Extremfällen, wie beispielsweise bei einer Naturkatastrophe, können die örtlichen Behörden die Kontrolle übernehmen. In solch einem Fall solltest du ihren Anweisungen folgen. Wir werden versuchen, mit dir in Kontakt zu bleiben, überprüfe daher bitte regelmässig deine E-Mails und SMS. Du erhältst Updates per E-Mail und SMS an die Kontaktdaten, die du bei der Buchung deines Urlaubs angegeben hast.  </p>
+    "@
+    $q4_answer_13f47d25f15246a9b9249f73c622321d_frch_v2 = @"
+    <p>Nous comprenons &agrave; quel point cela peut &ecirc;tre frustrant de devoir rester plus longtemps que pr&eacute;vu, mais nous ferons de notre mieux pour vous trouver un endroit o&ugrave; s&eacute;journer. M&ecirc;me si nous mettons tout en &oelig;uvre pour vous permettre de rester dans votre h&ocirc;tel actuel, dans certaines situations il est possible que vous deviez en changer.
+    </p>
+    <p>Dans des cas extr&ecirc;mes, tels qu&rsquo;une catastrophe naturelle, les autorit&eacute;s locales peuvent prendre en charge la situation et il est indispensable que vous suiviez leurs instructions. Nous essaierons de vous contacter via les coordonn&eacute;es fournies lors de votre r&eacute;servation. Veuillez donc v&eacute;rifier r&eacute;guli&egrave;rement vos e-mails et votre t&eacute;l&eacute;phone.
+    </p>
+    <p>Si vous avez besoin d&rsquo;un h&eacute;bergement pour la nuit, nous vous communiquerons les informations n&eacute;cessaires, ou si vous en r&eacute;servez un par vous-m&ecirc;me &agrave; un prix raisonnable, nous vous indiquerons comment demander le <a href="~/link.aspx?_id=1BF845E9475E44D492D902899964BE87&amp;_z=z"><strong><span style="text-decoration: underline;">remboursement</span></strong></a>.
+    </p>
+    <p>Notre &eacute;quipe d&rsquo;assistance vacances disponible 24 h/24, 7 j/7 est enti&egrave;rement d&eacute;di&eacute;e &agrave; aider nos clients dans ce type de situations. Comme d&rsquo;autres &eacute;l&eacute;ments sont compris dans votre s&eacute;jour, tels que les transferts ou l&rsquo;h&ocirc;tel, nos clients easyJet holidays ne peuvent pas utiliser l&rsquo;application en libre-service de la compagnie a&eacute;rienne easyJet pour r&eacute;server un h&eacute;bergement pour la nuit.</p>
+    "@
+    $q6_question_0e6be4afd3774c9887c61f980c93e34f_dech_v1 = @"
+    Meine Ferien können aufgrund weitreichender Störungen nicht stattfinden.
+    "@
+    $q4_answer_13f47d25f15246a9b9249f73c622321d_dech_v2 = @"
+    <p style="color: #000000; background-color: #ffffff; margin-right: 0px; margin-bottom: 10px; margin-left: 0px;">Wir wissen, wie &auml;rgerlich eine Plan&auml;nderung sein kann. Wenn du l&auml;nger bleiben musst, werden wir unser Bestes tun, schnellstm&ouml;glich eine Unterkunft f&uuml;r dich und deine Gruppe zu finden. Wir werden versuchen, dich in deinem derzeitigen Hotel unterzubringen, aber es kann vorkommen, dass du in ein anderes Hotel umziehen musst.</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">In Extremf&auml;llen, wie beispielsweise bei Naturkatastrophen, kann es sein, dass die Beh&ouml;rden vor Ort die Kontrolle &uuml;bernehmen. Es ist wichtig, deren Anweisungen zu befolgen. Wir bleiben &uuml;ber die Kontaktdaten, die du bei der Buchung angegeben hast, mit dir in Verbindung. Bitte &uuml;berpr&uuml;fe regelm&auml;ssig deine E-Mails und SMS.&nbsp;</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Wenn du eine Unterkunft brauchst, werden wir dir die notwendigen Details zukommen lassen oder dich fragen, ob du selbst eine Unterkunft finden und buchen kannst, f&uuml;r die wir die&nbsp;<a tabindex="0" href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section" data-path="/information/flugunterbrechung#compensation-forms-section" style="color: #ff6600; background-color: initial;"><span>Kosten in angemessener H&ouml;he&nbsp;</span></a>erstatten.</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Unser deutschsprechendes Service Team ist rund um die Uhr erreichbar und darauf spezialisiert, G&auml;ste in diesen Situationen zu unterst&uuml;tzen. Da dein Pauschalpaket weitere Leistungen wie Transfers oder Hotels umfasst, k&ouml;nnen G&auml;ste von easyJet holidays die Self-Service-App der easyJet Airline nicht zur Buchung einer &Uuml;bernachtungsm&ouml;glichkeit nutzen.</p>
+    "@
+    $q3_answer_e99efca2e06e4c6a850e91dbd57b9bdb_dede_v2 = @"
+    <p><strong>Mein Hinflug wurde storniert</strong>
+    </p>
+    <p>Wenn dein Hinflug vor deiner Abreise storniert wird, bedauern wir dies sehr und werden unser Bestes tun,
+    einen geeigneten Alternativflug f&uuml;r dich und deine Gruppe zu organisieren. Wenn es keine passende Alternative gibt,
+    werden wir deinen Urlaub leider stornieren m&uuml;ssen und eine sofortige R&uuml;ckerstattung
+    veranlassen.
+    </p>
+    <p><strong>Mein R&uuml;ckflug wurde storniert</strong>
+    </p>
+    <p>Wenn dein R&uuml;ckflug w&auml;hrend deines Urlaubs storniert wird, sollte das kein Grund zur Beunruhigung sein.
+    Wir werden alles tun, um w&auml;hrend deines Aufenthalts eine alternative L&ouml;sung
+    f&uuml;r deine Heimreise zu finden. Unser engagiertes Team wird sich
+    unter den bei der Buchung deines Urlaubs angegebenen Kontaktdaten proaktiv mit dir in Verbindung setzen. Informationen zu deinen Rechten findest du in unseren <a href="~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z"><strong><span style="text-decoration: underline;">Buchungsbedingungen</span></strong></a> oder
+    in unseren <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">FAQs</span></strong></a>.</p>
+    <p>Im Durchschnitt dauert die Umbuchung
+    etwa eine Stunde. Wir bitten dich daher um etwas Geduld, w&auml;hrend unser Team
+    die n&auml;chstbeste Alternative f&uuml;r dich findet.</p>
+    "@
+    $q6_answer_0e6be4afd3774c9887c61f980c93e34f_frfr_v1 = @"
+    Si des perturbations de voyage ou une autre situation indépendante de notre volonté nous empêchent d’organiser votre séjour, nous l’annulerons et vous pourrez soit obtenir un remboursement intégral, soit choisir de recevoir un avoir sur votre compte (conformément à nos conditions générales relatives aux avoirs), soit accepter de notre part un nouveau séjour :
+    <ul>
+        <li>d’un standing et d’un prix équivalents, si nous sommes en mesure de vous en proposer un ou ; </li>
+        <li>d’un standing inférieur, si nous sommes en mesure de vous en proposer un, et nous vous rembourserons alors toute différence de prix entre le séjour initialement réservé et le nouveau.</li>
+    </ul>
+    "@
+    $q3_answer_e99efca2e06e4c6a850e91dbd57b9bdb_frch_v2 = @"
+    <p><span><strong>Mon vol aller est annul&eacute;</strong></span></p>
+    <p>Si votre vol aller est annul&eacute; avant votre d&eacute;part, nous vous pr&eacute;sentons nos excuses et ferons tout notre possible pour vous transf&eacute;rer sur un autre vol appropri&eacute;. Si nous ne parvenons pas &agrave; trouver un autre vol, nous annulerons malheureusement votre s&eacute;jour et proc&eacute;derons imm&eacute;diatement &agrave; son remboursement.</p>
+    <p><span><strong>Mon vol retour est annul&eacute;</strong></span></p>
+    <p>Si votre vol retour est annul&eacute; pendant vos vacances, ne vous inqui&eacute;tez pas. Nous ferons tout notre possible pour trouver d&rsquo;autres solutions pendant votre s&eacute;jour afin que vous puissiez rentrer chez vous. Nous disposons d&rsquo;une &eacute;quipe d&eacute;di&eacute;e qui vous contactera de mani&egrave;re proactive en utilisant les coordonn&eacute;es indiqu&eacute;es lors de la r&eacute;servation de vos vacances. Pour conna&icirc;tre vos droits, consultez la page de nos&nbsp;<a href="~/link.aspx?_id=912E490A633C4ECA8942727A28DF20DD&amp;_z=z"><strong><span style="text-decoration: underline;">conditions de r&eacute;servation</span></strong></a><span>&nbsp;ou
+    visitez notre </span><a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">centre d'aide</span></strong></a><span>&nbsp;pour en savoir plus.</span></p>
+    <p style="margin-right: 0px; margin-bottom: 10px; margin-left: 0px;">Pour que vous sachiez &agrave; quoi vous attendre, notre d&eacute;lai moyen pour effectuer ces arrangements est de 60&nbsp;minutes. Nous vous remercions donc de votre patience pendant que notre &eacute;quipe recherche la meilleure alternative pour vous.</p>
+    "@
+    $q5_answer_82ec431a56d4440aae36ba9add688ed5_dech_v1 = @"
+    <p style="color: #000000; background-color: #ffffff; margin-right: 0px; margin-bottom: 10px; margin-left: 0px;">Deine Ferien vorzeitig zu beenden und dich fr&uuml;her als urspr&uuml;nglich geplant nach Hause zu bringen, ist der letzte Ausweg und wir sind uns bewusst, wie entt&auml;uschend das sein kann. Sollte eine Situation eintreten, in der dies notwendig wird, werden wir dich kontaktieren und dir die neuen Flugzeiten mitteilen. Deine neuen Fl&uuml;ge finden je nach Flugplan m&ouml;glicherweise erst in einigen Tagen statt. Wir teilen dir auch die neue Abholzeit f&uuml;r deinen Transfer mit (falls zutreffend).</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Bei erheblichen Reisest&ouml;rungen bitten wir dich m&ouml;glicherweise, deine R&uuml;ckreise selbst zu organisieren und dir gegebenenfalls selbst eine &Uuml;bernachtungsm&ouml;glichkeit in einem Hotel zu suchen und zu buchen. Wir werden dir s&auml;mtliche&nbsp;<a tabindex="0" href="~/link.aspx?_id=562E0B52E9704A8DBE72017B204B3BF5&amp;_z=z#compensation-forms-section" data-path="/information/flugunterbrechung#compensation-forms-section" style="color: #ff6600; background-color: initial;"><span>angemessenen Kosten</span></a>, die dir dadurch entstehen, erstatten.</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Du kannst dich darauf verlassen, dass wir dich nach Hause bringen, auch wenn dies vielleicht nicht sofort m&ouml;glich ist. In Extremf&auml;llen, wie beispielsweise bei einer Naturkatastrophe, k&ouml;nnen die &ouml;rtlichen Beh&ouml;rden die Kontrolle &uuml;bernehmen. In solch einem Fall solltest du ihren Anweisungen folgen. Wir werden versuchen, mit dir in Kontakt zu bleiben, &uuml;berpr&uuml;fe daher bitte regelm&auml;ssig deine E-Mails und SMS. Du erh&auml;ltst Updates per E-Mail und SMS an die Kontaktdaten, die du bei der Buchung deiner Ferien angegeben hast.</p>
+    "@
+    $q6_answer_0e6be4afd3774c9887c61f980c93e34f_frch_v1 = @"
+    <span>Si des perturbations de voyage ou une autre situation ind&eacute;pendante de notre volont&eacute; nous emp&ecirc;chent d&rsquo;organiser votre s&eacute;jour, nous l&rsquo;annulerons et vous pourrez soit obtenir un remboursement int&eacute;gral, soit choisir de recevoir un avoir sur votre compte (conform&eacute;ment &agrave; nos conditions g&eacute;n&eacute;rales relatives aux avoirs), soit accepter de notre part un nouveau s&eacute;jour&nbsp;:</span>
+    <ul>
+        <li>d&rsquo;un standing et d&rsquo;un prix &eacute;quivalents, si nous sommes en mesure de vous en proposer un ou&nbsp;;</li>
+        <li>d&rsquo;un standing inf&eacute;rieur, si nous sommes en mesure de vous en proposer un, et nous vous rembourserons alors toute diff&eacute;rence de prix entre le s&eacute;jour initialement r&eacute;serv&eacute; et le nouveau.</li>
+    </ul>
+    "@
+    $q1_answer_5fb1505f4baf487fa0d92ba7b2869947_dech_v2 = @"
+    <p style="color: #000000; background-color: #ffffff; margin-right: 0px; margin-bottom: 10px; margin-left: 0px;">Wenn dein Flug ausf&auml;llt oder sich versp&auml;tet, werden wir alles tun, um dich auf dem Laufenden zu halten. Du kannst auch den easyJet&nbsp;<a tabindex="0" target="_blank" href="https://www.easyjet.com/de/flug-plan" rel="noopener noreferrer" style="color: #ff6600; background-color: initial;"><span>Flight-Tracker</span></a>&nbsp;auf unserer Website oder in unserer App aufrufen, um die aktuellsten Fluginformationen zu erhalten.</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Da wir uns um deine gesamte Ferienreise k&uuml;mmern, m&uuml;ssen wir m&ouml;glicherweise verschiedene Segmente deiner Reise anpassen, angefangen bei deinem Flug &uuml;ber dein Hotel bis hin zum Transfer (falls enthalten). W&auml;hrend wir mit unseren Partnern vor Ort arbeiten, erh&auml;ltst du m&ouml;glicherweise mehrere Updates. Das ist v&ouml;llig normal und hilft uns, dich so schnell wie m&ouml;glich &uuml;ber den aktuellen Stand zu informieren. Bitte schau regelm&auml;ssig in deinen E-Mail-Eingang und achte auch auf SMS von uns. Updates werden an die&nbsp;Kontaktdaten gesendet, die du bei der Buchung deiner Ferien angegeben hast.</p>
+    <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 10px;">Wenn die Flugunterbrechung weitreichend ist oder durch externe Faktoren wie Wetter, Flugsicherung oder Streik verursacht wird, findest du aktuelle Informationen und Ratschl&auml;ge auf unserer Seite&nbsp;<a tabindex="0" href="https://www.easyjet.com/ch-de/ferien/information/travel-information" data-path="/information/travel-information" style="color: #ff6600; background-color: initial;"><span>Reiseinformationen</span></a>.</p>
+    "@
+    $q2_answer_5410f31bf68f4d34bb8d75ae0213a45d_frfr_v2 = @"
+    <p>Si votre vol est retardé ou reprogrammé, l’équipe easyJet holidays vous contactera. Vous pouvez également recevoir un message de notre part, envoyé par l’équipe de la compagnie aérienne, aux coordonnées que vous avez fournies lors de la réservation de vos vacances.</p>
+    <p>Pour que vous sachiez à quoi vous attendre, notre délai moyen pour effectuer ces arrangements est de 60 minutes. Nous vous remercions donc de votre patience pendant que notre équipe recherche la meilleure alternative pour vous.</p>
+    "@
+    $q4_question_13f47d25f15246a9b9249f73c622321d_dech_v2 = @"
+    Mein Flug startet nicht wie geplant, und ich brauche vor meiner Heimreise eine Unterkunft
+    "@
+    $q1_question_5fb1505f4baf487fa0d92ba7b2869947_en_v2 = @"
+    My flight status and updates...
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions - Flight plus Hotel"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question and Answer Folder"
+            Id          = $holidayshomerootinfodisruptionpagecomponentswhattodonowquestionsflightplushotel_Id
+            Fields      = @{
+                "__Sortorder" = @{
+                    "en" = "500"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions - Flight plus Hotel/Q1"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+            Id          = $holidayshomerootinfodisruptionpagecomponentswhattodonowquestionsflightplushotelq1_Id
+            Fields      = @{
+                "NavigationParameter" = @{
+                    "en" = "flightstatusupdate"
+                }
+                "Question" = @{
+                    "de-CH" = "Mein Flugstatus und aktuelle Informationen"
+                    "en" = $q1_question_5fb1505f4baf487fa0d92ba7b2869947_en_v2
+                    "fr-FR" = "Informations actualisées sur mon vol"
+                    "de-DE" = "Mein Flugstatus und aktuelle Informationen"
+                    "fr-CH" = "Informations actualisées sur mon vol"
+                }
+                "Answer" = @{
+                    "de-CH" = $q1_answer_5fb1505f4baf487fa0d92ba7b2869947_dech_v2
+                    "en" = $q1_answer_5fb1505f4baf487fa0d92ba7b2869947_en_v2
+                    "fr-FR" = $q1_answer_5fb1505f4baf487fa0d92ba7b2869947_frfr_v2
+                    "de-DE" = $q1_answer_5fb1505f4baf487fa0d92ba7b2869947_dede_v2
+                    "fr-CH" = $q1_answer_5fb1505f4baf487fa0d92ba7b2869947_frch_v2
+                }
+                "__Sortorder" = @{
+                    "en" = "100"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions - Flight plus Hotel/Q2"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+            Id          = $holidayshomerootinfodisruptionpagecomponentswhattodonowquestionsflightplushotelq2_Id
+            Fields      = @{
+                "NavigationParameter" = @{
+                    "en" = "flightdelayed"
+                }
+                "Question" = @{
+                    "de-CH" = "Mein Flug ist verspätet"
+                    "en" = "My flight is delayed"
+                    "fr-FR" = "Mon vol est retardé"
+                    "de-DE" = "Mein Flug hat Verspätung"
+                    "fr-CH" = "Mon vol est retardé"
+                }
+                "Answer" = @{
+                    "de-CH" = $q2_answer_5410f31bf68f4d34bb8d75ae0213a45d_dech_v2
+                    "en" = $q2_answer_5410f31bf68f4d34bb8d75ae0213a45d_en_v2
+                    "fr-FR" = $q2_answer_5410f31bf68f4d34bb8d75ae0213a45d_frfr_v2
+                    "de-DE" = $q2_answer_5410f31bf68f4d34bb8d75ae0213a45d_dede_v2
+                    "fr-CH" = $q2_answer_5410f31bf68f4d34bb8d75ae0213a45d_frch_v2
+                }
+                "__Sortorder" = @{
+                    "en" = "200"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions - Flight plus Hotel/Q3"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+            Id          = $holidayshomerootinfodisruptionpagecomponentswhattodonowquestionsflightplushotelq3_Id
+            Fields      = @{
+                "NavigationParameter" = @{
+                    "en" = "flightcancelled"
+                }
+                "Question" = @{
+                    "de-CH" = "Mein Flug wurde storniert"
+                    "en" = "My flight is cancelled"
+                    "fr-FR" = "Mon vol est annulé"
+                    "de-DE" = "Mein Flug wurde storniert"
+                    "fr-CH" = "Mon vol est annulé"
+                }
+                "Answer" = @{
+                    "de-CH" = $q3_answer_e99efca2e06e4c6a850e91dbd57b9bdb_dech_v2
+                    "en" = $q3_answer_e99efca2e06e4c6a850e91dbd57b9bdb_en_v2
+                    "fr-FR" = $q3_answer_e99efca2e06e4c6a850e91dbd57b9bdb_frfr_v2
+                    "de-DE" = $q3_answer_e99efca2e06e4c6a850e91dbd57b9bdb_dede_v2
+                    "fr-CH" = $q3_answer_e99efca2e06e4c6a850e91dbd57b9bdb_frch_v2
+                }
+                "__Sortorder" = @{
+                    "en" = "300"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions - Flight plus Hotel/Q4"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+            Id          = $holidayshomerootinfodisruptionpagecomponentswhattodonowquestionsflightplushotelq4_Id
+            Fields      = @{
+                "NavigationParameter" = @{
+                    "en" = "somewheretostay"
+                }
+                "Question" = @{
+                    "de-CH" = $q4_question_13f47d25f15246a9b9249f73c622321d_dech_v2
+                    "en" = "My flight isn't leaving as planned and I need somewhere to stay before returning home"
+                    "fr-FR" = "Mon vol ne part pas à l’horaire prévu et j’ai besoin d’un endroit où séjourner avant mon retour"
+                    "de-DE" = "Mein Flug startet nicht wie geplant und ich brauche vor meinem Heimflug eine Unterkunft"
+                    "fr-CH" = "Mon vol ne part pas à l'horaire prévu et j’ai besoin d’un endroit où séjourner avant mon retour"
+                }
+                "Answer" = @{
+                    "de-CH" = $q4_answer_13f47d25f15246a9b9249f73c622321d_dech_v2
+                    "en" = $q4_answer_13f47d25f15246a9b9249f73c622321d_en_v2
+                    "fr-FR" = $q4_answer_13f47d25f15246a9b9249f73c622321d_frfr_v2
+                    "de-DE" = $q4_answer_13f47d25f15246a9b9249f73c622321d_dede_v2
+                    "fr-CH" = $q4_answer_13f47d25f15246a9b9249f73c622321d_frch_v2
+                }
+                "__Sortorder" = @{
+                    "en" = "400"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions - Flight plus Hotel/Q5"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+            Id          = $holidayshomerootinfodisruptionpagecomponentswhattodonowquestionsflightplushotelq5_Id
+            Fields      = @{
+                "NavigationParameter" = @{
+                    "en" = "holidayshortened"
+                }
+                "Question" = @{
+                    "de-CH" = "Meine Ferien wurden gekürzt"
+                    "en" = "My holiday was shortened"
+                    "fr-FR" = "Mes vacances ont été raccourcies"
+                    "de-DE" = "Mein Urlaub wurde gekürzt"
+                    "fr-CH" = "Mes vacances ont été écourtées"
+                }
+                "Answer" = @{
+                    "de-CH" = $q5_answer_82ec431a56d4440aae36ba9add688ed5_dech_v1
+                    "en" = $q5_answer_82ec431a56d4440aae36ba9add688ed5_en_v1
+                    "fr-FR" = $q5_answer_82ec431a56d4440aae36ba9add688ed5_frfr_v1
+                    "de-DE" = $q5_answer_82ec431a56d4440aae36ba9add688ed5_dede_v1
+                    "fr-CH" = $q5_answer_82ec431a56d4440aae36ba9add688ed5_frch_v1
+                }
+                "__Sortorder" = @{
+                    "en" = "500"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/What to do now - Questions - Flight plus Hotel/Q6"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Question And Answer"
+            Id          = $holidayshomerootinfodisruptionpagecomponentswhattodonowquestionsflightplushotelq6_Id
+            Fields      = @{
+                "NavigationParameter" = @{
+                    "en" = "holidaycancelled"
+                }
+                "Question" = @{
+                    "de-CH" = $q6_question_0e6be4afd3774c9887c61f980c93e34f_dech_v1
+                    "en" = "My holiday can’t go ahead due to widespread disruption"
+                    "fr-FR" = "Mes vacances ne peuvent pas avoir lieu en raison de perturbations généralisées"
+                    "de-DE" = "Mein Urlaub kann aufgrund weitreichender Flugänderungen nicht stattfinden"
+                    "fr-CH" = "Mes vacances ne peuvent pas avoir lieu en raison de perturbations généralisées"
+                }
+                "Answer" = @{
+                    "de-CH" = $q6_answer_0e6be4afd3774c9887c61f980c93e34f_dech_v1
+                    "en" = $q6_answer_0e6be4afd3774c9887c61f980c93e34f_en_v1
+                    "fr-FR" = $q6_answer_0e6be4afd3774c9887c61f980c93e34f_frfr_v1
+                    "de-DE" = $q6_answer_0e6be4afd3774c9887c61f980c93e34f_dede_v1
+                    "fr-CH" = $q6_answer_0e6be4afd3774c9887c61f980c93e34f_frch_v1
+                }
+                "__Sortorder" = @{
+                    "en" = "600"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelhelpcentre_Id = "{7C125703-8E77-47A0-BD9B-1FD3F017AC34}"
+    $helpcentre_trackinglabel_7c1257038e7747a0bd9b1fd3f017ac34_en_v1 = @"
+    `$name
+    "@
+    $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_frfr_v1 = @"
+    <link id="{00000000-0000-0000-0000-000000000000}" querystring="" target="" rel="" text="Centre d’assistance" anchor="" url="https://www.easyjet.com/fr/vacances/aide" title="" class="" linktype="external" />
+    "@
+    $helpcentre_icon_7c1257038e7747a0bd9b1fd3f017ac34_en_v1 = @"
+    <image mediaid="{2710E02E-944D-49ED-BA31-EA40163039EB}" />
+    "@
+    $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_dede_v1 = @"
+    <link text="Hilfe-Center" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />
+    "@
+    $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_dech_v1 = @"
+    <link text="Help centre" linktype="external" url="https://www.easyjet.com/en/holidays/help" anchor="" target="" rel="" />
+    "@
+    $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_frch_v1 = @"
+    <link text="Help centre" linktype="external" url="https://www.easyjet.com/en/holidays/help" anchor="" target="" rel="" />
+    "@
+    $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_en_v1 = @"
+    <link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{4842693F-D3F7-438F-9D51-00C64A2E8047}" />
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Travel information/Page Components/Help Links - Flight plus Hotel/Help centre"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Help Link"
+            Id          = $holidayshomerootinfotravelinformationpagecomponentshelplinksflightplushotelhelpcentre_Id
+            Fields      = @{
+                "Link" = @{
+                    "de-CH" = $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_dech_v1
+                    "en" = $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_en_v1
+                    "fr-FR" = $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_frfr_v1
+                    "de-DE" = $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_dede_v1
+                    "fr-CH" = $helpcentre_link_7c1257038e7747a0bd9b1fd3f017ac34_frch_v1
+                }
+                "Description" = @{
+                    "de-CH" = "Answers to the most commonly asked questions"
+                    "en" = "Answers to the most commonly asked questions"
+                    "fr-FR" = "Réponses aux questions les plus fréquemment posées"
+                    "de-DE" = "Häufig gestellte Fragen"
+                    "fr-CH" = "Answers to the most commonly asked questions"
+                }
+                "Title" = @{
+                    "de-CH" = "Help centre"
+                    "en" = "Help centre"
+                    "fr-FR" = "Centre d’aide"
+                    "de-DE" = "FAQ"
+                    "fr-CH" = "Help centre"
+                }
+                "Icon" = @{
+                    "en" = $helpcentre_icon_7c1257038e7747a0bd9b1fd3f017ac34_en_v1
+                }
+                "TrackingLabel" = @{
+                    "en" = $helpcentre_trackinglabel_7c1257038e7747a0bd9b1fd3f017ac34_en_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    $holidayshomerootinfodisruptionpagecomponentshelplinksflightplushotelcontactus_Id = "{413E8B78-C8D9-4E6F-8E60-8E5FAD5EEE64}"
+    $holidayshomerootinfodisruptionpagecomponentshelplinksflightplushotel_Id = "{2D82843C-C891-4129-8D78-592EEB1EFFE6}"
+    $holidayshomerootinfodisruptionpagecomponentshelplinksflightplushotelhelpcentre_Id = "{82EA2B9E-56F4-415F-80B1-82D3C300FD14}"
+    $contactus_icon_413e8b78c8d94e6f8e608e5fad5eee64_en_v2 = @"
+    <image mediaid="{C0D4A8E6-BA76-4D93-BF0A-7D850F10D974}" alt="Contact Us" />
+    "@
+    $helpcentre_link_82ea2b9e56f4415f80b182d3c300fd14_frch_v2 = @"
+    <link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />
+    "@
+    $contactus_link_413e8b78c8d94e6f8e608e5fad5eee64_en_v2 = @"
+    <link text="Contact us" anchor="" linktype="internal" class="" title=""  querystring="" id="{ADCD2BC5-0666-45E7-8246-B8ABAD045313}" />
+    "@
+    $helpcentre_link_82ea2b9e56f4415f80b182d3c300fd14_en_v2 = @"
+    <link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{4842693F-D3F7-438F-9D51-00C64A2E8047}" />
+    "@
+    $helpcentre_link_82ea2b9e56f4415f80b182d3c300fd14_frfr_v2 = @"
+    <link class="" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" querystring="" anchor="" target="" title="" linktype="internal" text="" url="" />
+    "@
+    $helplinksflightplushotel_links_2d82843cc89141298d78592eeb1effe6_dech_v1 = @"
+    Sitecore.Links.ItemLinks
+    "@
+    $helplinksflightplushotel_links_2d82843cc89141298d78592eeb1effe6_en_v1 = @"
+    Sitecore.Links.ItemLinks
+    "@
+    $contactus_link_413e8b78c8d94e6f8e608e5fad5eee64_dede_v2 = @"
+    <link target="" text="Kontakt mit uns" url="" class="" linktype="internal" title="" anchor="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" querystring="" />
+    "@
+    $helplinksflightplushotel_links_2d82843cc89141298d78592eeb1effe6_frch_v1 = @"
+    Sitecore.Links.ItemLinks
+    "@
+    $contactus_link_413e8b78c8d94e6f8e608e5fad5eee64_dech_v2 = @"
+    <link text="Contact us" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />
+    "@
+    $helpcentre_link_82ea2b9e56f4415f80b182d3c300fd14_dech_v2 = @"
+    <link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" />
+    "@
+    $contactus_link_413e8b78c8d94e6f8e608e5fad5eee64_frfr_v2 = @"
+    <link target="" text="Nous contacter" url="" class="" linktype="internal" title="" anchor="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" querystring="" />
+    "@
+    $helplinksflightplushotel_links_2d82843cc89141298d78592eeb1effe6_frfr_v1 = @"
+    Sitecore.Links.ItemLinks
+    "@
+    $contactus_link_413e8b78c8d94e6f8e608e5fad5eee64_frch_v2 = @"
+    <link text="Contact us" anchor="" linktype="internal" class="" title="" target="" querystring="" id="{2E3D3AB0-1BB1-4360-8729-E411F5496F54}" />
+    "@
+    $helpcentre_link_82ea2b9e56f4415f80b182d3c300fd14_dede_v2 = @"
+    <link class="" id="{01FA2D69-2BB3-4BA9-B98D-15DA2DF1D8AC}" querystring="" anchor="" target="" title="" linktype="internal" text="" url="" />
+    "@
+    $helpcentre_icon_82ea2b9e56f4415f80b182d3c300fd14_en_v2 = @"
+    <image mediaid="{2710E02E-944D-49ED-BA31-EA40163039EB}" height="" hspace="" width="" alt="Help centre" vspace="" />
+    "@
+    $helplinksflightplushotel_links_2d82843cc89141298d78592eeb1effe6_dede_v1 = @"
+    Sitecore.Links.ItemLinks
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Help Links - Flight plus Hotel"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Help Links"
+            Id          = $holidayshomerootinfodisruptionpagecomponentshelplinksflightplushotel_Id
+            Fields      = @{
+                "Links" = @{
+                    "de-CH" = $helplinksflightplushotel_links_2d82843cc89141298d78592eeb1effe6_dech_v1
+                    "en" = $helplinksflightplushotel_links_2d82843cc89141298d78592eeb1effe6_en_v1
+                    "fr-FR" = $helplinksflightplushotel_links_2d82843cc89141298d78592eeb1effe6_frfr_v1
+                    "de-DE" = $helplinksflightplushotel_links_2d82843cc89141298d78592eeb1effe6_dede_v1
+                    "fr-CH" = $helplinksflightplushotel_links_2d82843cc89141298d78592eeb1effe6_frch_v1
+                }
+                "__Sortorder" = @{
+                    "en" = "1400"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Help Links - Flight plus Hotel/Help centre"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Help Link"
+            Id          = $holidayshomerootinfodisruptionpagecomponentshelplinksflightplushotelhelpcentre_Id
+            Fields      = @{
+                "Link" = @{
+                    "de-CH" = $helpcentre_link_82ea2b9e56f4415f80b182d3c300fd14_dech_v2
+                    "en" = $helpcentre_link_82ea2b9e56f4415f80b182d3c300fd14_en_v2
+                    "fr-FR" = $helpcentre_link_82ea2b9e56f4415f80b182d3c300fd14_frfr_v2
+                    "de-DE" = $helpcentre_link_82ea2b9e56f4415f80b182d3c300fd14_dede_v2
+                    "fr-CH" = $helpcentre_link_82ea2b9e56f4415f80b182d3c300fd14_frch_v2
+                }
+                "Title" = @{
+                    "de-CH" = "FAQs"
+                    "en" = "Help centre"
+                    "fr-FR" = "Centre d’aide"
+                    "de-DE" = "FAQs"
+                    "fr-CH" = "Centre d’aide"
+                }
+                "Icon" = @{
+                    "en" = $helpcentre_icon_82ea2b9e56f4415f80b182d3c300fd14_en_v2
+                }
+                "__Sortorder" = @{
+                    "en" = "100"
+                }
+                "TrackingLabel" = @{
+                    "en" = "help centre"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Help Links - Flight plus Hotel/Contact us"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Help Link"
+            Id          = $holidayshomerootinfodisruptionpagecomponentshelplinksflightplushotelcontactus_Id
+            Fields      = @{
+                "Link" = @{
+                    "de-CH" = $contactus_link_413e8b78c8d94e6f8e608e5fad5eee64_dech_v2
+                    "en" = $contactus_link_413e8b78c8d94e6f8e608e5fad5eee64_en_v2
+                    "fr-FR" = $contactus_link_413e8b78c8d94e6f8e608e5fad5eee64_frfr_v2
+                    "de-DE" = $contactus_link_413e8b78c8d94e6f8e608e5fad5eee64_dede_v2
+                    "fr-CH" = $contactus_link_413e8b78c8d94e6f8e608e5fad5eee64_frch_v2
+                }
+                "Title" = @{
+                    "de-CH" = "Kontakt mit uns"
+                    "en" = "Contact us"
+                    "fr-FR" = "Nous contacter"
+                    "de-DE" = "Kontakt mit uns"
+                    "fr-CH" = "Contactez-nous"
+                }
+                "Icon" = @{
+                    "en" = $contactus_icon_413e8b78c8d94e6f8e608e5fad5eee64_en_v2
+                }
+                "__Sortorder" = @{
+                    "en" = "200"
+                }
+                "TrackingLabel" = @{
+                    "en" = "contact us"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    $holidayshomerootinfodisruptionpagecomponentscontactussectiontitleflightplushotel_Id = "{D8177143-CD00-4ACB-A4B1-5B595F32A1D2}"
+    $contactussectiontitleflightplushotel_title_d8177143cd004acba4b15b595f32a1d2_en_v6 = @"
+    STILL STUCK?
+    "@
+    $contactussectiontitleflightplushotel_icon_d8177143cd004acba4b15b595f32a1d2_frch_v6 = @"
+    <image mediaid="{911BA700-854E-49C8-A401-3027C414F1B6}" alt="message" height="80" width="80" hspace="" vspace="" />
+    "@
+    $contactussectiontitleflightplushotel_icon_d8177143cd004acba4b15b595f32a1d2_frfr_v6 = @"
+    <image mediaid="{911BA700-854E-49C8-A401-3027C414F1B6}" alt="message" height="80" width="80" hspace="" vspace="" />
+    "@
+    $contactussectiontitleflightplushotel_description_d8177143cd004acba4b15b595f32a1d2_dede_v6 = @"
+    <p style="font-size: 14px;">Wir verstehen, dass das Warten stressig sein kann, aber danke, dass du uns etwas Zeit gibst. Unser Team arbeitet gerade an alternativen L&ouml;sungen und wird sich mit dir in Verbindung setzen, sobald wir mehr Infos haben. Wir nutzen daf&uuml;r die Kontaktdaten, die du bei der Buchung deines Urlaubs angegeben hast. </p>
+    <p style="font-size: 14px;">In der Zwischenzeit kannst du unsere&nbsp;<a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">FAQs</span></strong></a>&nbsp;oder unsere <a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z"><strong><span style="text-decoration: underline;">Kontaktseite</span></strong></a>&nbsp;besuchen, wenn du weitere Hilfe ben&ouml;tigst. </p>
+    "@
+    $contactussectiontitleflightplushotel_description_d8177143cd004acba4b15b595f32a1d2_frch_v6 = @"
+    <p>Nous sommes parfaitement conscients qu'attendre peut &ecirc;tre particuli&egrave;rement stressant, et nous vous remercions de votre patience. Notre &eacute;quipe travaille actuellement &agrave; la mise en place de solutions alternatives et vous contactera d&egrave;s que nous aurons plus d&rsquo;informations, en utilisant les coordonn&eacute;es fournies lors de la r&eacute;servation de vos vacances.</p>
+    <p>En attendant, n&rsquo;h&eacute;sitez pas &agrave; consulter notre&nbsp;<a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">Centre d'aide</span></strong></a>&nbsp;pour plus d&rsquo;informations, ou notre page&nbsp;<a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z"><strong><span style="text-decoration: underline;">Nous contacter</span></strong></a>&nbsp;si vous avez besoin d&rsquo;une assistance compl&eacute;mentaire.</p>
+    "@
+    $contactussectiontitleflightplushotel_title_d8177143cd004acba4b15b595f32a1d2_frfr_v6 = @"
+    VOUS NE SAVEZ TOUJOURS PAS QUOI FAIRE ?
+    "@
+    $contactussectiontitleflightplushotel_icon_d8177143cd004acba4b15b595f32a1d2_dech_v6 = @"
+    <image mediaid="{911BA700-854E-49C8-A401-3027C414F1B6}" alt="Nachricht" height="80" width="80" hspace="" vspace="" />
+    "@
+    $contactussectiontitleflightplushotel_description_d8177143cd004acba4b15b595f32a1d2_dech_v6 = @"
+    <p style="color: #333333; background-color: #f1f5f6;">Wir verstehen, dass das Warten stressig sein kann, aber danke, dass du uns etwas Zeit gibst. Unser Team arbeitet gerade an alternativen L&ouml;sungen und wird sich mit dir in Verbindung setzen, sobald wir mehr Infos haben. Wir nutzen daf&uuml;r die Kontaktdaten, die du bei der Buchung deiner Ferien angegeben hast.</p>
+    <p style="color: #333333; background-color: #f1f5f6;">In der Zwischenzeit kannst du unsere&nbsp;<a tabindex="0" href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z" data-path="/hilfe" style="color: #ff6600; background-color: initial;"><span>FAQs</span></a>&nbsp;oder unsere&nbsp;<span><a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z">Kontaktseite</a></span>&nbsp;besuchen, wenn du weitere Hilfe ben&ouml;tigst.</p>
+    "@
+    $contactussectiontitleflightplushotel_title_d8177143cd004acba4b15b595f32a1d2_frch_v6 = @"
+    VOUS NE SAVEZ TOUJOURS PAS QUOI FAIRE?
+    "@
+    $contactussectiontitleflightplushotel_title_d8177143cd004acba4b15b595f32a1d2_dech_v6 = @"
+    DU STECKST IMMER NOCH FEST?
+    "@
+    $contactussectiontitleflightplushotel_title_d8177143cd004acba4b15b595f32a1d2_dede_v6 = @"
+    DU STECKST IMMER NOCH FEST?
+    "@
+    $contactussectiontitleflightplushotel_icon_d8177143cd004acba4b15b595f32a1d2_en_v6 = @"
+    <image mediaid="{911BA700-854E-49C8-A401-3027C414F1B6}" alt="message" height="80" width="80" hspace="" vspace="" />
+    "@
+    $contactussectiontitleflightplushotel_icon_d8177143cd004acba4b15b595f32a1d2_dede_v6 = @"
+    <image mediaid="{911BA700-854E-49C8-A401-3027C414F1B6}" alt="message" height="80" width="80" hspace="" vspace="" />
+    "@
+    $contactussectiontitleflightplushotel_description_d8177143cd004acba4b15b595f32a1d2_frfr_v6 = @"
+    <p style="font-size: 14px;">Nous sommes parfaitement conscients qu'attendre peut être particulièrement stressant, et nous vous remercions de votre patience. Notre équipe travaille actuellement à la mise en place de solutions alternatives et vous contactera dès que nous aurons plus d’informations, en utilisant les coordonnées fournies lors de la réservation de vos vacances. </p>
+    <p style="font-size: 14px;">En attendant, n’hésitez pas à consulter notre <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z"><strong><span style="text-decoration: underline;">Centre d'aide</span></strong></a>&nbsp;pour plus d’informations, ou notre page <a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z"><strong><span style="text-decoration: underline;">Nous contacter</span></strong></a>&nbsp;si vous avez besoin d’une assistance complémentaire.</p>
+    "@
+    $contactussectiontitleflightplushotel_description_d8177143cd004acba4b15b595f32a1d2_en_v6 = @"
+    <p style="font-size: 14px;">We understand waiting can feel stressful, but thanks for giving us some time. Our team is currently working on alternative arrangements and will reach out as soon as we have more information using the contact details provided when you booked your holiday. </p>
+    <p style="font-size: 14px;">In the meantime, feel free to visit our <a href="~/link.aspx?_id=4842693FD3F7438F9D5100C64A2E8047&amp;_z=z"><strong><span style="text-decoration: underline;">help centre</span></strong></a>&nbsp;for assistance, or our <a href="~/link.aspx?_id=ADCD2BC5066645E78246B8ABAD045313&amp;_z=z"><strong><span style="text-decoration: underline;">contact us</span></strong></a>&nbsp;page if you still need extra help.</p>
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Contact us - Section Title - Flight Plus Hotel"
+            TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+            Id          = $holidayshomerootinfodisruptionpagecomponentscontactussectiontitleflightplushotel_Id
+            Fields      = @{
+                "Title" = @{
+                    "de-CH" = $contactussectiontitleflightplushotel_title_d8177143cd004acba4b15b595f32a1d2_dech_v6
+                    "en" = $contactussectiontitleflightplushotel_title_d8177143cd004acba4b15b595f32a1d2_en_v6
+                    "fr-FR" = $contactussectiontitleflightplushotel_title_d8177143cd004acba4b15b595f32a1d2_frfr_v6
+                    "de-DE" = $contactussectiontitleflightplushotel_title_d8177143cd004acba4b15b595f32a1d2_dede_v6
+                    "fr-CH" = $contactussectiontitleflightplushotel_title_d8177143cd004acba4b15b595f32a1d2_frch_v6
+                }
+                "Description" = @{
+                    "de-CH" = $contactussectiontitleflightplushotel_description_d8177143cd004acba4b15b595f32a1d2_dech_v6
+                    "en" = $contactussectiontitleflightplushotel_description_d8177143cd004acba4b15b595f32a1d2_en_v6
+                    "fr-FR" = $contactussectiontitleflightplushotel_description_d8177143cd004acba4b15b595f32a1d2_frfr_v6
+                    "de-DE" = $contactussectiontitleflightplushotel_description_d8177143cd004acba4b15b595f32a1d2_dede_v6
+                    "fr-CH" = $contactussectiontitleflightplushotel_description_d8177143cd004acba4b15b595f32a1d2_frch_v6
+                }
+                "__Sortorder" = @{
+                    "en" = "1300"
+                }
+                "Icon" = @{
+                    "de-CH" = $contactussectiontitleflightplushotel_icon_d8177143cd004acba4b15b595f32a1d2_dech_v6
+                    "en" = $contactussectiontitleflightplushotel_icon_d8177143cd004acba4b15b595f32a1d2_en_v6
+                    "fr-FR" = $contactussectiontitleflightplushotel_icon_d8177143cd004acba4b15b595f32a1d2_frfr_v6
+                    "de-DE" = $contactussectiontitleflightplushotel_icon_d8177143cd004acba4b15b595f32a1d2_dede_v6
+                    "fr-CH" = $contactussectiontitleflightplushotel_icon_d8177143cd004acba4b15b595f32a1d2_frch_v6
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 100000184
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260710T074151Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

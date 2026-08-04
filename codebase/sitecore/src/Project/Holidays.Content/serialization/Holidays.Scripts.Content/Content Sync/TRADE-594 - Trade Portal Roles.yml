@@ -1,0 +1,103 @@
+﻿---
+ID: "eeb1260d-1e83-462f-939e-9529c533949f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/TRADE-594 - Trade Portal Roles"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path, $template) {
+        	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        	if ($item -eq $null) {
+        		$item = New-Item -Path $path -ItemType $template
+        	}
+        	return $item
+        }
+        
+        $navigationsPath = "/sitecore/content/EasyJet/TradePortal/Data/Navigations/User Management"
+        $navigationLinkTemplate = "{BC011F0A-976C-4825-9E01-8BAA7C8E6CCA}"
+        $navigationLinkFolderTemplate = "{F2AEDD6F-5BE8-4833-84D2-8DE7ABA3D3D1}"
+        
+        $superUserRoleItemId = "{E319C8C3-0F0F-4D8A-B624-7AC285034ABA}";
+        $adminRoleItemId = "{F48D0711-46C7-4B32-BAFD-F9AE9865B471}";
+        $managerRoleItemId = "{3F655CC0-5DFC-4F65-B3A3-B685F1BF85A2}";
+        $userRoleItemId = "{C489EA98-F725-4D85-9014-3203EF3C84A5}";
+        
+        $supportHub = [PSCustomObject]@{
+            LinkText = "Trade Support Hub"; 
+            PageItemId = "{2FE42B7A-87BA-4245-ACA5-1338B333D0CC}";
+            RoleItemIds = @($superUserRoleItemId);
+        }
+        
+        $consortiumHub = [PSCustomObject]@{
+            LinkText = "Consortium Hub"; 
+            PageItemId = "{48357EAA-A0B9-42C6-9D8A-F2A7FE26D1C4}";
+            RoleItemIds = @($adminRoleItemId);
+        }
+        
+        $managerHub = [PSCustomObject]@{
+            LinkText = "Manager Hub"; 
+            PageItemId = "{64C0FAF8-DF81-4FEA-BAF8-148691435DBC}";
+            RoleItemIds = @($managerRoleItemId);
+        }
+        
+        $manageAccount = [PSCustomObject]@{
+            LinkText = "Manage Account"; 
+            PageItemId = "{11963478-7522-4DC0-B5C0-D6D9845F6AB2}";
+            RoleItemIds = @($superUserRoleItemId, $adminRoleItemId, $managerRoleItemId, $userRoleItemId);
+        }
+        
+        $links = @($manageAccount, $supportHub, $consortiumHub, $managerHub)
+        $linksIds = @()
+        
+        $userManagementFolder = Get-Or-Create-Item -Path $navigationsPath -template $navigationLinkFolderTemplate
+        
+        if ($userManagementFolder -ne $null) {
+            $links | ForEach-Object {
+                $link = $_
+                    
+                $item = Get-Or-Create-Item -Path "$navigationsPath/$($link.LinkText)" -Template $navigationLinkTemplate
+                    
+                $item.Editing.BeginEdit()
+                $item["Link"] = '<link text="' + $link.LinkText + '" anchor="" linktype="internal" class="" title="" target="" querystring="" id="' + $link.PageItemId + '" />';
+                $newValue = @();
+                $link.RoleItemIds | ForEach-Object {
+                    $newValue += $_
+                    $item["AllowedRoles"] = $newValue -join "|";
+                }
+                $item.Editing.EndEdit() | Out-Null
+                
+                $linksIds += $item.ID.ToString();
+            }
+        }
+        
+        $logOutLinkItemId = "{1EE87E59-5FC0-40A5-AA44-162A544E724F}";
+        $viewBookingsLinkItemId = "{47AD9A5B-7447-4D2D-9FD5-D4E504119DE0}";
+        $loggedInLinkPath = "/sitecore/content/EasyJet/TradePortal/Data/Navigations/Button/Profile Logged In";
+        
+        $loggedInLinkItem = Get-Item -Path $loggedInLinkPath -ErrorAction SilentlyContinue
+        	if ($loggedInLinkItem -ne $null) {
+        	    
+        	    $linksValue = $viewBookingsLinkItemId;
+        	    $linksIds | ForEach-Object {
+        	        $linksValue += "|" + $_
+        	    }
+        	    $linksValue += "|" + $logOutLinkItemId;
+        	    
+        		$loggedInLinkItem.Editing.BeginEdit()
+                $loggedInLinkItem["ChildrenLinks"] = $linksValue;
+                $loggedInLinkItem.Editing.EndEdit() | Out-Null
+        	}
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230302T083838Z

@@ -1,0 +1,46 @@
+.like-badge {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    line-height: 1.333;
+    color: #fff;
+    letter-spacing: 0.17px;
+    background-color: $clrEjOrange;
+    border-radius: 6px 0;
+
+    +.hotel-card-img__pills {
+        margin-top: 30px;
+    }
+
+    &.promo {
+        top: auto;
+        bottom: 0;
+        padding: 8px 14px;
+        background-color: $clrEjOrangeDarkShadow;
+        border-radius: 0 6px;
+    }
+
+    @include media-breakpoint-down(lg) {
+        &.promo {
+            border-radius: 0 6px 0 0;
+        }
+    }
+                       
+    @include media-breakpoint-down(md) {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+
+    svg {
+        flex-shrink: 0;
+        width: 1.2em;
+        height: 1.2em;
+        margin-right: 5px;
+    }
+}

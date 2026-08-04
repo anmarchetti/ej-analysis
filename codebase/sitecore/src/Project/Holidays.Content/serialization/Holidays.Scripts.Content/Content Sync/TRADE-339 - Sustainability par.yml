@@ -1,0 +1,166 @@
+﻿---
+ID: "5f821008-6546-474d-a372-d01db3275fb3"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/TRADE-339 - Sustainability partnerships and certifications section"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -Language "en" -ErrorAction SilentlyContinue
+        
+        if (-Not $item){
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item $($item.Name) successfully created"
+        }
+        
+        return $item
+    }
+    
+    function Get-Rendering-Index{
+        param($item, $renderingUniqueId)
+        $i = 0
+        
+        Get-Rendering -Item $item -FinalLayout -Language "en" | ForEach-Object{
+            if ($_.UniqueId -eq $renderingUniqueId){
+                return $i
+            }
+            $i++
+        }
+        
+        return -1
+    }
+    
+    function Replace-Rendering{
+        param([item]$item,$oldRendering,[string]$placeholder,[int]$index,[string]$datasource,[string]$renderingId)
+    
+        #Remove old rendering
+        if($oldRendering -ne $null) {
+            Remove-Rendering -Item $item -UniqueId $oldRendering.UniqueId -FinalLayout -Language "en"
+        }
+    
+        # Find the rendering item and convert to a rendering
+        $renderingItem = Get-Item -Path "master:" -Id $renderingId | New-Rendering -PlaceHolder $placeholder
+    
+        # Add the rendering to the item
+        Add-Rendering -Item $item -PlaceHolder $placeholder -Instance $renderingItem -Index $index -DataSource $datasource -FinalLayout -Language "en"
+    }
+    
+    function Create-Carousel-Item-Data-Source($path, $templateIdl, $title, $description, $image){
+        $item = Get-Or-Create-Item -Path $path -TemplateId "{F9E788E8-1C56-4843-A5BC-19C1CECD1DC6}"
+    
+        if ($item -ne $null){
+            $item.Editing.BeginEdit()
+    
+            $item["Title"] = $title
+            $item["Description"] = $description
+            $item["Logo"] = $image
+    
+            $item.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Created data source for carousel item: " $title
+        }
+    
+        return $item
+    }
+    
+    function Add-Cards-To-Carousel($carousel, $cards){
+        if($carousel -ne $null -And $cards -ne $null) {
+            $carousel.Editing.BeginEdit()
+            $carousel["Cards"] = $cards
+            $carousel.Editing.EndEdit()
+            
+            Write-Host "Cards were added to partnerships carousel"
+        }
+    }
+    
+    $sustainabilityPagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Sustainability"
+    $pageComponentsPath = "$($sustainabilityPagePath)/Page Components"
+    $carouselDataSourcePath = "$($pageComponentsPath)/Partnerships Carousel"
+    
+    # Our partnerships and certifications text block data sources
+    $sectionTitle = Get-Or-Create-Item -Path "$($pageComponentsPath)/Text Blocks/Partnerships And Certificates" -TemplateId "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}"
+    
+    if ($sectionTitle -ne $null) {
+        $sectionTitle.Editing.BeginEdit()
+        $sectionTitle["Title"] = "Our partnerships and certifications"
+        $sectionTitle.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Created data sources: Our partnerships and certifications text block"
+    }
+    
+    # Our partnerships and certifications carousel data sources
+    $carousel = Get-Or-Create-Item -Path $carouselDataSourcePath -TemplateId "{101A3D9C-063B-4DBD-8A28-39EF80F74754}"
+    
+    $card1 = Create-Carousel-Item-Data-Source -Path "$($carouselDataSourcePath)/ABTA" -Title "ABTA" -Description "ABTA offers advice and guidance to&nbsp;the travel industry on&nbsp;high service standards, health and safety, and promoting responsible tourism&nbsp;&mdash; making them the perfect partner to&nbsp;help&nbsp;us on&nbsp;our journey towards a&nbsp;Travelife for Tour Operators certification&nbsp;&mdash; an&nbsp;internationally recognised sustainability initiative." -Image "<image mediaid='{BA5B5C26-EC84-444C-9E25-3C82B577D627}' />"
+    $card2 = Create-Carousel-Item-Data-Source -Path "$($carouselDataSourcePath)/Eco-certified hotels" -Title "Eco-certified hotels" -Description "The green leaf motif shows hotels which are eco-certified and have a&nbsp;Global Sustainable Tourism Council certification or&nbsp;have achieved GSTC recognised standards for hotels. This means the accommodation complies with the highest social and environmental standards on&nbsp;the market, through the highest assurance level that exists. We&nbsp;are encouraging our hotels to&nbsp;be&nbsp;certified by&nbsp;the end of&nbsp;2025 and working with them to&nbsp;understand the benefits of&nbsp;becoming certified. Read more about GSTC criteria." -Image "<image mediaid='{E0ED4894-8318-4B56-AECE-479209FCCE67}' />"
+    $card3 = Create-Carousel-Item-Data-Source -Path "$($carouselDataSourcePath)/Global Sustainable Tourism Committee" -Title "GSTC membership" -Description "The GSTC is&nbsp;a&nbsp;global membership organisation, formed to&nbsp;manage global standards for sustainable travel and tourism, the GSTC Criteria, and to&nbsp;foster increased knowledge and understanding of&nbsp;sustainable tourism practices through the adoption of&nbsp;universal sustainable tourism principles. So&nbsp;we&rsquo;re proud to&nbsp;be&nbsp;a&nbsp;GSTC member and to&nbsp;work together to&nbsp;help enable our hotel partners to&nbsp;achieve GSTC-recognised certification." -Image "<image mediaid='{6717C68C-00CC-470A-901B-F89639D6506F}' />"
+    $card4 = Create-Carousel-Item-Data-Source -Path "$($carouselDataSourcePath)/The University of Oxford" -Title "University of Oxford partnership" -Description "The University of&nbsp;Oxford, globally renowned for excellence, helps the lives of&nbsp;millions, solving real-world problems through a&nbsp;huge network of&nbsp;partnerships and collaborations. That&rsquo;s why we&rsquo;ve partnered with them to&nbsp;establish the Oxford SDG (sustainable development goals) Impact Lab. We&rsquo;ll work together to&nbsp;identify challenges and opportunities for sustainable tourism pursuing our aim to&nbsp;be&nbsp;an&nbsp;industry leader in&nbsp;sustainable tourism that has a&nbsp;positive impact on&nbsp;the environment and local communities." -Image "<image mediaid='{2353C0BA-F927-4332-AC39-EB52E9750747}' />"
+    $card5 = Create-Carousel-Item-Data-Source -Path "$($carouselDataSourcePath)/Travel Foundation" -Title "The travel foundation partnership" -Description "The Travel Foundation brings together different players in the travel industry to develop the practical solutions needed to maximise the benefits and minimise the negative impacts of tourism in everyone’s holiday destinations. Which is why we’re partnering with the Travel Foundation to shape our approach from the ground up." -Image "<image mediaid='{FDF106BD-32B4-4C63-B8FE-FB846F1E4078}' />"
+    
+    Add-Cards-To-Carousel -Carousel $carousel -Cards $("$($card1.ID)|$($card2.ID)|$($card3.ID)|$($card4.ID)|$($card5.ID)")
+    
+    # Renderings
+    $page = Get-Item -Path $sustainabilityPagePath -ErrorAction SilentlyContinue
+    
+    $wrapperRenderingIndex = Get-Rendering-Index -Item $page -RenderingUniqueId "{7f17a79a-6a60-4c2d-81a3-dc51e0810503}" | Select -First 1
+    $wrapperRendering = Get-Rendering -Item $page -Index $wrapperRenderingIndex -FinalLayout -Language "en"
+    
+    if($wrapperRendering -ne $null){
+        $carouselRenderingId = "{DCBDE6F1-3C83-48BA-8DBB-8E4B0FA84E63}"
+        $textBlockRenderingId = "{43546A28-D231-4287-96D2-25DEF529F1A5}"
+        $placeholder = "/body/component-wrapper-inner-$($wrapperRendering.UniqueId)-0"
+    
+        $oldDatasourceId = "{0903993B-2DBA-4DD3-A74D-5583096F89BE}"
+        $oldRenderingItemPath = "master:/sitecore/layout/Renderings/Feature/PageContent/Partnerships And Certificates"
+        $oldRenderingItem = Get-Item -Path $oldRenderingItemPath
+        $oldRendering = Get-Rendering -Item $page -PlaceHolder $placeholder -Rendering $oldRenderingItem -DataSource $oldDatasourceId -FinalLayout -Language "en"
+    
+        $textBlockIndex = $wrapperRenderingIndex + 1
+        $carouselIndex = $textBlockIndex + 1
+    
+        # add text block rendering
+        $textBlockRenderingItem = Get-Item -Path "master:" -Id $textBlockRenderingId | New-Rendering -PlaceHolder $placeholder
+        Add-Rendering -Item $page -PlaceHolder $placeholder -Instance $textBlockRenderingItem -Index $textBlockIndex -DataSource $sectionTitle.FullPath -FinalLayout -Language "en"
+        
+        # add text block rendering params
+        $textBlockParams = @{TitlePosition="center"; TitleTag="h2"; ClassName="sustainability-text-block"}
+        Get-Rendering -Item $page -PlaceHolder $placeholder -FinalLayout -Language "en" | Set-RenderingParameter -Parameter $textBlockParams | Set-Rendering -Item $page -FinalLayout -Language "en" 
+    
+        # replace rendering for partnerships and certifications
+        Replace-Rendering -Item $page -OldRendering $oldRendering -PlaceHolder $placeholder -Index $carouselIndex -DataSource $carousel.FullPath -RenderingId $carouselRenderingId
+    }
+    
+    function Remove-Rendering-From-Layouts{
+        param($item, $placeholder, $renderingPath, $dataSource)
+    
+        @("de-CH", "de-DE", "es-ES", "fr-CH", "fr-FR", "it-IT", "nl-NL") | % {
+            $renderingItem = Get-Item -Path $renderingPath
+            $rendering = Get-Rendering -Item $item -PlaceHolder $placeholder -Rendering $renderingItem -DataSource $dataSource -FinalLayout -Language $_
+    
+            if($rendering -ne $null) {
+                Remove-Rendering -Item $item -UniqueId $rendering.UniqueId -FinalLayout -Language $_
+            }
+        }
+    }
+    
+    # remove sliced banner from non eng final layouts
+    Remove-Rendering-From-Layouts -Item $page -PlaceHolder "body" -RenderingPath "master:/sitecore/layout/Renderings/Feature/PageContent/Sliced Banner" -DataSource "/sitecore/content/EasyJet/Holidays/Home/Sustainability/Page Components/Information Banners/Our Work"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 150
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230804T102242Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

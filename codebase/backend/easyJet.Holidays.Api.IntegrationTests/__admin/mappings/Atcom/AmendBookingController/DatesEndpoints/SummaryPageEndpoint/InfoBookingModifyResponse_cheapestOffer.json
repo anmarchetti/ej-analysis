@@ -1,0 +1,26 @@
+﻿{
+    "Title": "InfoBookingRequest successfull response for ESTF0008 with external routes",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/EZYDMO/VRPWebservice/AniteGateway/AniteGateway.aspx",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Body": {
+            "Matcher": {
+                "Name": "XPathMatcher",
+                "Pattern": "/*:InfoModifyBookingRequest/*:Bkg_Ent/*:Package/*:Accom/*:HtlPrd/*:Acc_Cd/text()='ESTF0008'"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "text/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/Atcom/AmendController/DatesEndpoints/SummaryPageEndpoint/InfoBookingModifyResponse_cheapestOffer.xml"
+    }
+}

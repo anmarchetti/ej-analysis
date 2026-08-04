@@ -1,0 +1,18 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgLockFilled = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'lock-filled-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <path d='M18.22 9.21H16.3V6.29A4.29 4.29 0 0012 2a4.29 4.29 0 00-4.28 4.29v2.92H5.78a2.35 2.35 0 00-2.35 2.35v8.09A2.35 2.35 0 005.78 22h12.44a2.35 2.35 0 002.35-2.35v-8.09a2.35 2.35 0 00-2.35-2.35zm-8.5-2.92a2.29 2.29 0 014.58 0v2.92H9.72zm3.29 10v1.31a1 1 0 01-2 0v-1.27a2 2 0 01-1-1.73 2 2 0 113 1.72z' />
+    </svg>
+);
+
+export default SvgLockFilled;

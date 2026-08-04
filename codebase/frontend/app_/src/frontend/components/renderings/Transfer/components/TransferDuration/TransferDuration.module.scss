@@ -1,0 +1,21 @@
+.container {
+    &.hideOnMobile {
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    &.hideOnDesktop {
+        display: none;
+
+        @include media-breakpoint-down(md) {
+            display: flex;
+        }
+    }
+}
+
+.callout {
+    @include media-breakpoint-up(md) {
+        margin-top: 3px;
+    }
+}

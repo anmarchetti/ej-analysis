@@ -1,0 +1,25 @@
+﻿---
+ID: "d0703c56-55c0-43d2-b0ef-3d4348756fe5"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-351_Change-card-refund-description"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $cashRefundItem = Get-Item -path "/sitecore/content/EasyJet/Holidays/Dictionary/Credit Confirm/Refund Cards/Cash Refund Amount"
+    
+    if ($cashRefundItem -ne $null) {
+        $cashRefundItem.Editing.BeginEdit()
+        $cashRefundItem["Phrase"] = "Amount refunded to original method of payment";
+        $cashRefundItem.Editing.EndEdit() | Out-Null
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230126T132303Z

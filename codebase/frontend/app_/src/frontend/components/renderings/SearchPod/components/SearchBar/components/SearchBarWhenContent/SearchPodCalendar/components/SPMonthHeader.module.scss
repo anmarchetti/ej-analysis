@@ -1,0 +1,68 @@
+$buttonSize: 30px;
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    min-height: $buttonSize;
+}
+
+.button {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: $buttonSize;
+    height: $buttonSize;
+    padding: 0;
+    background: $clrEjOrange;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    cursor: pointer;
+
+    svg {
+        color: $colorWhite;
+    }
+
+    @include media-breakpoint-down(md) {
+        display: none;
+    }
+}
+
+.nextButton {
+    right: -30px;
+
+    @include media-breakpoint-down(lg) {
+        right: 0;
+    }
+}
+
+.prevButton {
+    left: -30px;
+
+    svg {
+        transform: rotate(180deg);
+    }
+
+    @include media-breakpoint-down(lg) {
+        left: 0;
+    }
+}
+
+.monthName {
+    font-family: $fontRoundedHeadline;
+    font-size: 14px;
+    font-weight: 400;
+    color: $clrEjOrange;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        padding-bottom: 5px;
+        border-bottom: 1px solid $colorAlto;
+    }
+}

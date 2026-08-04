@@ -1,0 +1,59 @@
+.triggerwrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    padding-top: 20px;
+    
+    :global(.holiday-summary) & {
+        margin: 0;
+        padding: 20px 0;
+        border-top: 1px solid $clrBorderGray;
+        border-bottom: 1px solid $clrBorderGray;
+    }
+}
+
+.promoButton {
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.icon {
+    @include sizeSquare(16px);
+
+    margin-left: 4px;
+    font-size: 20px;
+    color: $colorOrange;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.container {
+    background: $colorWhite;
+}
+
+.info {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.title {
+    margin-bottom: 10px;
+    font-family: $fontRoundedBook;
+    font-size: 40px;
+    line-height: 50px;
+    color: $clrTextMain;
+    text-transform: uppercase;
+}
+
+.description {
+    margin-bottom: 30px;
+    font-family: $fontRoundedDemy;
+    font-size: 18px;
+    line-height: 24px;
+    color: $clrTextMain;
+}

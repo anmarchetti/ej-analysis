@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 sp1 (http://www.altova.com) by Kim Howells (Anite Business Systems) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="AtComRes/FlightExtraSearchResponse" xmlns:p2="AtComRes/Common" targetNamespace="AtComRes/FlightExtraSearchResponse" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+	<xs:element name="FlightExtraSearchResponse">
+		<xs:annotation>
+			<xs:documentation>defined the response to search for FlightExtras</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="p2:AtcomresBaseOfferSearchResponse">
+					<xs:sequence>
+						<xs:element ref="p2:Pax" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

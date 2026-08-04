@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+        <AWSProjectType>Lambda</AWSProjectType>
+        <!-- This property makes the build directory similar to a publish directory and helps the AWS .NET Lambda Mock Test Tool find project dependencies. -->
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <!-- Generate ready to run images during publishing to improve cold start time. -->
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <AssemblyName>DatahubSync</AssemblyName>
+    </PropertyGroup>
+    <PropertyGroup>
+        <NoWarn>CA1724;CA1716</NoWarn>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Amazon.Lambda.Annotations" />
+        <PackageReference Include="Amazon.Lambda.Core" />
+        <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" />
+        <PackageReference Include="Amazon.Lambda.SQSEvents" />
+        <PackageReference Include="Newtonsoft.Json" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\easyJet.Holidays.External.AWS.Domain\easyJet.Holidays.External.AWS.Domain.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Resources\iata.tzmap" />
+    </ItemGroup>
+</Project>

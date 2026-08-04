@@ -1,0 +1,30 @@
+.description {
+    font-size: 16px;
+    line-height: 1.375; 
+
+    p {
+        font-size: 16px;
+        line-height: 1.375; 
+    }
+}
+
+.guestCardsContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding-top: 16px;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-top: 1px solid $colorGeyser;
+
+    @include media-breakpoint-up(md) {
+        grid-template-columns: repeat(2, minmax(400px, 1fr));
+    }
+}
+
+.infoBlock {
+    padding: 16px;
+    background: $colorPorcelain;
+    border: 1px solid $colorGeyser;
+    border-radius: 4px;
+}

@@ -1,0 +1,106 @@
+﻿---
+ID: "0524f7f8-251d-49c7-9c66-ba55211f8ac7"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Update Covid 19 Tips Page
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    #Update Presentation Details
+    function Update-Presentation-Details {
+    	param([item]$item,[string]$datasource,[int]$position,[string]$renderingId, [string]$placeholder, $parameter)
+    	
+    	$rendering = Get-Rendering -Item $item -Index $position | Where-Object {$_.ItemId -eq $renderingId}
+    	if ($rendering -ne $null) {
+    	   	Set-Rendering -Item $item -Instance $rendering -Parameter $parameter -Datasource $datasource 
+    	} else {
+            $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $placeholder
+            Add-Rendering -Item $item -PlaceHolder $placeholder -DataSource $datasource -Instance $renderingItem -Parameter $parameter -index $position
+    	}
+    }
+    
+    #Update Promo Block Item
+    function Update-Promo-Block {
+    	param([item]$item,[string]$title,[item]$image,[string]$description, [string]$sortOrder)
+    
+        if ($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item["Title"] = $title
+            $item["Image"] = [string]::Format("<image mediaid='{0}' />",$image.ID)
+            $item["Description"] = $description
+            $item["__SortOrder"] = $sortOrder
+            $item.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    function Get-Or-Create-Item {
+    	param($parent,$itemName,$templateId)
+    
+    	$item = Get-ChildItem -Item $parent | Where-Object { $_.Name -eq $itemName } | Select -First 1
+    
+    	if ($item.Count -eq 0) {
+    		New-Item -Parent $parent -Name $itemName -ItemType $templateId
+    	}
+    
+    	return $item
+    }
+    
+    $covid19TipsPage = Get-Item -Path "master:\sitecore\content\EasyJet\Holidays\Home\Root\Info\Covid Travel Tips"
+    $pageComponentItem = Get-Item -Path "master:\sitecore\content\EasyJet\Holidays\Home\Root\Info\Covid Travel Tips\Page Components"
+    
+    $promoBlocks = Get-Or-Create-Item -parent $pageComponentItem -itemName "Promo Blocks" -templateId "{EB30259D-FF9A-46CB-8E0C-4616B148F3A8}" # Template ID of PromoBlockFolder
+    
+    #Clean up text blocks
+    $textBlock = Get-Item -Path "master:\sitecore\layout\Renderings\Feature\PageContent\Text Block"
+    Remove-Rendering -Item $covid19TipsPage -Rendering $textBlock 
+    
+    $intoText =  Get-Item -Path "master:\sitecore\content\EasyJet\Holidays\Home\Root\Info\Covid Travel Tips\Page Components\Text Blocks\Intro Text"
+    Update-Presentation-Details -item $covid19TipsPage -datasource $intoText.ID -position 3 -renderingId "{43546A28-D231-4287-96D2-25DEF529F1A5}" -placeholder "/body/component-wrapper-inner-{DF799241-1784-400B-8EFF-1E35CDE67606}-0"  -parameter @{"TitleTag"  = "h2"; "TitlePosition" ="left"; "TitleFontStyle" = "default"}
+    Update-Presentation-Details -item $covid19TipsPage -datasource $promoBlocks.ID -position 5 -renderingId "{FF441699-4D65-45C1-B565-E87714B5A278}" -placeholder "/body/component-wrapper-inner-{DF799241-1784-400B-8EFF-1E35CDE67606}-0"  -parameter @{Theme = "Icon Text Variant - Alternative"}
+    
+    
+    #Cover Up
+    $promoBlockCoverUp = Get-Or-Create-Item -parent $promoBlocks -itemName "Cover up" -templateId "{84ACB697-5638-4525-9801-B31CAC2E0394}" # Template ID of PromoBlock
+    $coverUpImage = Get-Item -Path "master:\sitecore\media library\Project\Holidays\Default\Covid Safety Tips\EJH_web_mask_v1"
+    Update-Promo-Block -sortOrder "100" -item $promoBlockCoverUp -title $promoBlockCoverUp.Name -image $coverUpImage -description "Wearing a face covering is becoming more of a regular feature at home, and the same applies for your holiday. You’ll need to wear one at the airport, on the flight, on your transfer and also possibly in resort and within the hotel. Our advice would be to make sure it’s comfortable and breathable – especially when you’ll be wearing it in higher temperatures. It’s worth trying on at home and ensuring it fits properly too, and one you can self-adjust can work well here. We also recommend taking more than you need and keeping them in your hand luggage since it’s good practice to change them at regular intervals. "
+    
+    #MoneyMatters
+    $promoBlockMoneyMatters = Get-Or-Create-Item -parent $promoBlocks -itemName "Money matters" -templateId "{84ACB697-5638-4525-9801-B31CAC2E0394}" # Template ID of PromoBlock
+    $moneyMattersImage = Get-Item -Path "master:\sitecore\media library\Project\Holidays\Default\Covid Safety Tips\EJH_web_-guidelines_v1"
+    Update-Promo-Block -sortOrder "200" -item $promoBlockMoneyMatters -title $promoBlockMoneyMatters.Name -image $moneyMattersImage -description "At home we’ve been encouraged to use contactless payments wherever possible during this time. For your holiday you may wish to think about this too. A pre-paid currency card can be useful here. It’s also worth thinking about how much money you’ll need while you’re away and planning a contingency amount to cover any unexpected costs that may arise. This may be as a result of an extended stay, although rest assured many of our hotel partners have plans in place to help here too. But it’s always good to be prepared. It’s also worth checking your insurance cover."
+    
+    #Avoid Crowds
+    $promoBlockAvoidCrowds = Get-Or-Create-Item -parent $promoBlocks -itemName "Avoid crowds" -templateId "{84ACB697-5638-4525-9801-B31CAC2E0394}" # Template ID of PromoBlock
+    $avoidImage = Get-Item -Path "master:\sitecore\media library\Project\Holidays\Default\Covid Safety Tips\EJH_web_clock_v1"
+    Update-Promo-Block -sortOrder "300" -item $promoBlockAvoidCrowds -title $promoBlockAvoidCrowds.Name -image $avoidImage -description "Many of our favourite holiday destinations will be quieter than usual so it’s an even better time to enjoy them. Even when it comes to some of the more popular places head out and explore slightly off the beaten path to enjoy some of more undiscovered spots like secluded bays and local neighbourhood restaurants (although be aware that not all places will be open yet). To really make the most of it and have more of the place to yourselves try to visit outside of the popular peak times."
+    
+    #Keeping Clean
+    $promoBlockKeepingClean = Get-Or-Create-Item -parent $promoBlocks -itemName "Keeping clean" -templateId "{84ACB697-5638-4525-9801-B31CAC2E0394}" # Template ID of PromoBlock
+    $keepImage = Get-Item -Path "master:\sitecore\media library\Project\Holidays\Default\Covid Safety Tips\EJH_web_handwash_v1"
+    Update-Promo-Block -sortOrder "400" -item $promoBlockKeepingClean -title $promoBlockKeepingClean.Name -image $keepImage -description "We all know how important hand washing is and just because you’re in holiday mode, this shouldn’t be any different. Remember to wash your hands frequently and make use of the sanitiser stations. It’s a good idea to have some sanitiser of your own too. Just make sure it’s below 100ml to pop in your hand luggage for the flight. You might also want to think about taking some anti-bacterial wipes, for example to wipe your luggage handles and wheels, although some hotels will disinfect your bags for you."
+    
+    #Check official guidance
+    $promoBlockCheck = Get-Or-Create-Item -parent $promoBlocks -itemName "Check official guidance" -templateId "{84ACB697-5638-4525-9801-B31CAC2E0394}" # Template ID of PromoBlock
+    $blockCheck = Get-Item -Path "master:\sitecore\media library\Project\Holidays\Default\Covid Safety Tips\EJH_web_chef_v1"
+    Update-Promo-Block -sortOrder "500" -item $promoBlockCheck -title $promoBlockCheck.Name -image $blockCheck -description "There’s a wealth of information from the UK government on things to know before you travel and as the advice can change regularly, particularly at the moment, it’s worth keeping a close eye on it. You should visit the Foreign Travel Advice pages here and you can sign up for alerts for where you plan to travel to. You should make sure you know the entry requirements and have the relevant documents (such as health certificate or completed questionnaire) for where you’re heading, what you can expect when you’re there, and you’ll also need to complete your journey and contact details 48 hours before arriving back to the UK. Here’s another good page to check out for more information."
+    
+    #Food makes a holiday
+    $promoBlockFood = Get-Or-Create-Item -parent $promoBlocks -itemName "Food makes a holiday" -templateId "{84ACB697-5638-4525-9801-B31CAC2E0394}" # Template ID of PromoBlock
+    $foodImage = Get-Item -Path "master:\sitecore\media library\Project\Holidays\Default\Covid Safety Tips\EJH_web_beach-towels_v1"
+    Update-Promo-Block -sortOrder "600" -item $promoBlockFood -title $promoBlockFood.Name -image $foodImage -description "We all have our own preferences when it comes to eating on holiday and we know it can make or break a trip. If you would rather prepare and eat some, or all, of your meals in your own space, then self-catering might be best. If you would rather have all the prep and cleaning up taken care of (not to mention not having to keep an eye on the budget) then all-inclusive could be for you. Just remember that the service might look a little different especially when it comes to buffets. It all comes down to personal choice. The key thing to mention here is that our hotel partners have been working hard behind the scenes whichever board basis you choose to ensure your safety."
+    
+    #Patience is a virtue
+    $promoBlockPatience = Get-Or-Create-Item -parent $promoBlocks -itemName "Patience is a virtue" -templateId "{84ACB697-5638-4525-9801-B31CAC2E0394}" # Template ID of PromoBlock
+    $virtueImage = Get-Item -Path "master:\sitecore\media library\Project\Holidays\Default\Covid Safety Tips\EJH_web_creditcard_v1"
+    Update-Promo-Block -sortOrder "700" -item $promoBlockPatience -title $promoBlockPatience.Name -image $virtueImage -description "This is new for all of us and there are new processes and procedures in place which we’re all adjusting to. Be kind and patient – you might expect to queue a little more than usual. You may experience longer delays, at immigration for example especially if there are additional checks in place, or when arriving and checking in to your hotel. Remember though it’s to keep us all safe and you’re on holiday."
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200929T093902Z

@@ -1,0 +1,89 @@
+.container {
+    width: 100%;
+    padding: 24px;
+    border: 1px solid $colorGeyser;
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+        flex-direction: column;
+        padding: 12px 16px;
+    }
+
+    svg {
+        color: $colorBlack;
+    }
+
+    .row:first-child {
+        padding-top: 0;
+    }
+
+    .row:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid $colorGeyser;
+
+    @include media-breakpoint-up(lg) {
+        flex-direction: row;
+        gap: 24px;
+        padding: 24px 0;
+    }
+
+    :global(.free-for-kids-pill) {
+        width: auto;
+    }
+}
+
+.row > * {
+    width: 100%;
+
+    @include media-breakpoint-up(lg) {
+        width: 50%;
+    }
+}
+
+.airportParkingRow > * {
+    @include media-breakpoint-up(lg) {
+        width: 100%;
+    }
+}
+
+.block {
+    display: flex;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    width: auto;
+    font-family: $fontRoundedDemy;
+    font-size: 14px;
+    line-height: 1.5;
+
+    @include media-breakpoint-up(md) {
+        font-size: 16px;
+    }
+}
+
+.icon {
+    width: 21px;
+    height: 21px;
+    margin-right: 16px;
+    color: $colorOrange;
+
+    @include media-breakpoint-up(md) {
+        width: 24px;
+        height: 24px;
+        margin-right: 12px;
+    }
+}

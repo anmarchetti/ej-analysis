@@ -1,0 +1,58 @@
+.touristTaxSummary {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.paidToUs {
+    font-size: 16px;
+}
+
+.taxRow {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.taxLabel {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.taxAmount {
+    white-space: nowrap;
+}
+
+
+.newTaxPrice {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 4px;
+}
+
+
+.tooltipContent {
+    font-size: 14px;
+}
+
+.tooltipTitle {
+    margin-bottom: 8px;
+    font-family: $fontRoundedDemy;
+    font-size: 14px;
+    font-weight: 400;
+
+    @include media-breakpoint-down(sm) {
+        margin-bottom: 16px;
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        text-align: center;
+        text-transform: uppercase;
+    }
+}

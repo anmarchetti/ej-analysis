@@ -1,0 +1,153 @@
+﻿---
+ID: "45a07f10-11ee-4589-9fb0-3f433b1e4718"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/3 - SER-1034 - Cancelled Booking Page F and H"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Booking Hero Banner F and H" -Permanently -Recurse
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Cancelation Breakdown F and H" -Permanently -Recurse
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Hotel Summary F and H" -Permanently -Recurse
+    
+    
+    Copy-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Booking Hero Banner" -Destination "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Booking Hero Banner F and H"
+    Copy-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Cancelation Breakdown" -Destination "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Cancelation Breakdown F and H" -Recurse
+    Copy-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Hotel Summary" -Destination "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Hotel Summary F and H"
+    
+    
+    $updates = @(
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Booking Hero Banner F and H"
+            TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Booking Hero Banner"
+            Fields      = @{
+                 "Title" = @{
+                    "en" = "Booking cancelled"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+            }
+         },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Cancelation Breakdown F and H"
+            TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Cancellation Breakdown Folder/Cancellation Breakdown"
+            Fields      = @{
+                 "Subtext" = @{
+                    "en" = "The trip you booked on {date} has been cancelled, we’ve sent you an email to confirm."
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+            }
+         },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Cancelation Breakdown F and H/Date Item"
+            TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Cancellation Breakdown Folder/Cancellation Breakdown Item"
+            Fields      = @{
+                 "Title" = @{
+                    "en" = "Booking cancelled"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                }
+            }
+         },
+         @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Hotel Summary F and H"
+            TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Booking Download Banner"
+            Fields      = @{
+                "Title" = @{
+                    "en" = "Your cancelled booking"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                 }
+                 "AltTitle" = @{
+                    "en" = "Your luxury booking"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                 }
+                 "PriceTitle" = @{
+                    "en" = "Booking"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                 }
+                 "ViewSummaryLabel" = @{
+                    "en" = "View booking summary"
+                    "fr-CH" = ""
+                    "de-CH" = ""
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                 }
+            }
+         }
+    )
+    ImportContent -itemsToCreate $updates
+    
+    $heroBannerId = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Booking Hero Banner F and H"
+    $hotelSummaryId = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Hotel Summary F and H"
+    $breakdownId = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Cancelation Breakdown F and H"
+    
+    $updates = @(
+         @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/Cancelled Booking"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPageTemplate"
+            Fields      = @{
+                "PageTemplate" = @{
+                    "en" = "{A93C4899-6582-49EC-9481-C5FDC7863D18}"
+                    "fr-CH" = "{A93C4899-6582-49EC-9481-C5FDC7863D18}"
+                    "de-CH" = "{A93C4899-6582-49EC-9481-C5FDC7863D18}"
+                    "fr-FR" = "{A93C4899-6582-49EC-9481-C5FDC7863D18}"
+                    "de-DE" = "{A93C4899-6582-49EC-9481-C5FDC7863D18}"
+                }
+                "AllowedRenderings" = @{
+                    "en" = "{C30624AB-A71F-492A-ADFF-73A1952FF024}|{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}|{3C4B5E64-BD84-48D9-83BE-01D3017B7843}|{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{A266310A-FCBC-46A1-80C8-3AECB4F06727}|{6615BDBE-E40B-4166-972A-5754B34A1F0E}|{630D2676-483E-420D-8F04-4C15212F3EFF}|{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}|{5A4E2577-32C2-420F-9F52-494394DA3364}|{E78B6A7E-0EC5-4324-A290-971EE74C1FC8}|{68FFCF4F-8A07-4553-8687-DB9501C09694}|{4C8A4AAC-A206-43FD-B7C7-D5B4BE5C0A4B}|{D780FE57-012E-46C0-B26C-C812B278B5D2}|{D80590E8-7A27-422E-95E2-D7A686A9206C}|{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{1BE9E86B-46EE-4D90-AA80-9873341F1324}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{98D6518D-053C-4A0B-9CCE-262B51E43F22}|{BF0D518B-282B-4ABC-A499-47AD5B0A0A87}|{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{B6732EB5-D407-4D55-B596-A0816C062804}|{1F56A2E2-6217-4749-A104-010F800B94E1}"
+                    "fr-CH" = "{C30624AB-A71F-492A-ADFF-73A1952FF024}|{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}|{3C4B5E64-BD84-48D9-83BE-01D3017B7843}|{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{A266310A-FCBC-46A1-80C8-3AECB4F06727}|{6615BDBE-E40B-4166-972A-5754B34A1F0E}|{630D2676-483E-420D-8F04-4C15212F3EFF}|{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}|{5A4E2577-32C2-420F-9F52-494394DA3364}|{E78B6A7E-0EC5-4324-A290-971EE74C1FC8}|{68FFCF4F-8A07-4553-8687-DB9501C09694}|{4C8A4AAC-A206-43FD-B7C7-D5B4BE5C0A4B}|{D780FE57-012E-46C0-B26C-C812B278B5D2}|{D80590E8-7A27-422E-95E2-D7A686A9206C}|{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{1BE9E86B-46EE-4D90-AA80-9873341F1324}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{98D6518D-053C-4A0B-9CCE-262B51E43F22}|{BF0D518B-282B-4ABC-A499-47AD5B0A0A87}|{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{B6732EB5-D407-4D55-B596-A0816C062804}|{1F56A2E2-6217-4749-A104-010F800B94E1}"
+                    "de-CH" = "{C30624AB-A71F-492A-ADFF-73A1952FF024}|{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}|{3C4B5E64-BD84-48D9-83BE-01D3017B7843}|{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{A266310A-FCBC-46A1-80C8-3AECB4F06727}|{6615BDBE-E40B-4166-972A-5754B34A1F0E}|{630D2676-483E-420D-8F04-4C15212F3EFF}|{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}|{5A4E2577-32C2-420F-9F52-494394DA3364}|{E78B6A7E-0EC5-4324-A290-971EE74C1FC8}|{68FFCF4F-8A07-4553-8687-DB9501C09694}|{4C8A4AAC-A206-43FD-B7C7-D5B4BE5C0A4B}|{D780FE57-012E-46C0-B26C-C812B278B5D2}|{D80590E8-7A27-422E-95E2-D7A686A9206C}|{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{1BE9E86B-46EE-4D90-AA80-9873341F1324}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{98D6518D-053C-4A0B-9CCE-262B51E43F22}|{BF0D518B-282B-4ABC-A499-47AD5B0A0A87}|{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{B6732EB5-D407-4D55-B596-A0816C062804}|{1F56A2E2-6217-4749-A104-010F800B94E1}"
+                    "fr-FR" = "{C30624AB-A71F-492A-ADFF-73A1952FF024}|{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}|{3C4B5E64-BD84-48D9-83BE-01D3017B7843}|{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{A266310A-FCBC-46A1-80C8-3AECB4F06727}|{6615BDBE-E40B-4166-972A-5754B34A1F0E}|{630D2676-483E-420D-8F04-4C15212F3EFF}|{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}|{5A4E2577-32C2-420F-9F52-494394DA3364}|{E78B6A7E-0EC5-4324-A290-971EE74C1FC8}|{68FFCF4F-8A07-4553-8687-DB9501C09694}|{4C8A4AAC-A206-43FD-B7C7-D5B4BE5C0A4B}|{D780FE57-012E-46C0-B26C-C812B278B5D2}|{D80590E8-7A27-422E-95E2-D7A686A9206C}|{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{1BE9E86B-46EE-4D90-AA80-9873341F1324}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{98D6518D-053C-4A0B-9CCE-262B51E43F22}|{BF0D518B-282B-4ABC-A499-47AD5B0A0A87}|{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{B6732EB5-D407-4D55-B596-A0816C062804}|{1F56A2E2-6217-4749-A104-010F800B94E1}"
+                    "de-DE" = "{C30624AB-A71F-492A-ADFF-73A1952FF024}|{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}|{3C4B5E64-BD84-48D9-83BE-01D3017B7843}|{3CFB6E83-8DFD-418F-86BF-ACDD663328D5}|{A266310A-FCBC-46A1-80C8-3AECB4F06727}|{6615BDBE-E40B-4166-972A-5754B34A1F0E}|{630D2676-483E-420D-8F04-4C15212F3EFF}|{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}|{5A4E2577-32C2-420F-9F52-494394DA3364}|{E78B6A7E-0EC5-4324-A290-971EE74C1FC8}|{68FFCF4F-8A07-4553-8687-DB9501C09694}|{4C8A4AAC-A206-43FD-B7C7-D5B4BE5C0A4B}|{D780FE57-012E-46C0-B26C-C812B278B5D2}|{D80590E8-7A27-422E-95E2-D7A686A9206C}|{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}|{2E44B4F9-150A-4AF0-9EF4-CA4E257640A8}|{6BD6250D-C741-40AD-B0B0-95E29085ACEC}|{12BC8416-2B13-4F6B-A302-25FEBCDB61B6}|{F78B3296-08D2-4901-AF1B-3BC3CD3BB67F}|{1BE9E86B-46EE-4D90-AA80-9873341F1324}|{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}|{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}|{98D6518D-053C-4A0B-9CCE-262B51E43F22}|{BF0D518B-282B-4ABC-A499-47AD5B0A0A87}|{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}|{D40C1427-9E42-45F4-9302-DD063A4F8F24}|{B6732EB5-D407-4D55-B596-A0816C062804}|{1F56A2E2-6217-4749-A104-010F800B94E1}"
+                }
+                "RenderingReplacements" = @{
+                    "en" = @"
+    {EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}:{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}:Placeholder=%2fbody%2fbooking-context-%7bcc492373-8f36-4039-9415-a058294f33a9%7d-0&Data+Source=$($heroBannerId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowCountdown=|{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}:{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}:Placeholder=%2fbody%2fbooking-context-%7bcc492373-8f36-4039-9415-a058294f33a9%7d-0%2fmasonry-aside-%7b0ff0d499-1851-476f-91c1-547a0f14f579%7d-0%2fmasonry-item-%7b7aa5b76a-a133-409b-85f6-35278eb2e86d%7d-0&Data+Source=$($hotelSummaryId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowButtonOnly=&IsOpeningPopupLinkVisible=|{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}:{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}:Placeholder=%2fbody%2fbooking-context-%7bCC492373-8F36-4039-9415-A058294F33A9%7d-0%2fmasonry-section-%7b0FF0D499-1851-476F-91C1-547A0F14F579%7d-0%2fmasonry-item-%7bCFFBCCD2-8384-43A8-8164-847021CFF5EE%7d-0&Data+Source=$($breakdownId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                    "fr-CH" = @"
+    {EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}:{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}:Placeholder=%2fbody%2fbooking-context-%7bcc492373-8f36-4039-9415-a058294f33a9%7d-0&Data+Source=$($heroBannerId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowCountdown=|{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}:{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}:Placeholder=%2fbody%2fbooking-context-%7bcc492373-8f36-4039-9415-a058294f33a9%7d-0%2fmasonry-aside-%7b0ff0d499-1851-476f-91c1-547a0f14f579%7d-0%2fmasonry-item-%7b7aa5b76a-a133-409b-85f6-35278eb2e86d%7d-0&Data+Source=$($hotelSummaryId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowButtonOnly=&IsOpeningPopupLinkVisible=|{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}:{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}:Placeholder=%2fbody%2fbooking-context-%7bCC492373-8F36-4039-9415-A058294F33A9%7d-0%2fmasonry-section-%7b0FF0D499-1851-476F-91C1-547A0F14F579%7d-0%2fmasonry-item-%7bCFFBCCD2-8384-43A8-8164-847021CFF5EE%7d-0&Data+Source=$($breakdownId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                    "de-CH" = @"
+    {EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}:{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}:Placeholder=%2fbody%2fbooking-context-%7bcc492373-8f36-4039-9415-a058294f33a9%7d-0&Data+Source=$($heroBannerId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowCountdown=|{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}:{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}:Placeholder=%2fbody%2fbooking-context-%7bcc492373-8f36-4039-9415-a058294f33a9%7d-0%2fmasonry-aside-%7b0ff0d499-1851-476f-91c1-547a0f14f579%7d-0%2fmasonry-item-%7b7aa5b76a-a133-409b-85f6-35278eb2e86d%7d-0&Data+Source=$($hotelSummaryId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowButtonOnly=&IsOpeningPopupLinkVisible=|{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}:{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}:Placeholder=%2fbody%2fbooking-context-%7bCC492373-8F36-4039-9415-A058294F33A9%7d-0%2fmasonry-section-%7b0FF0D499-1851-476F-91C1-547A0F14F579%7d-0%2fmasonry-item-%7bCFFBCCD2-8384-43A8-8164-847021CFF5EE%7d-0&Data+Source=$($breakdownId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                    "fr-FR" = @"
+    {EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}:{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}:Placeholder=%2fbody%2fbooking-context-%7bcc492373-8f36-4039-9415-a058294f33a9%7d-0&Data+Source=$($heroBannerId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowCountdown=|{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}:{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}:Placeholder=%2fbody%2fbooking-context-%7bcc492373-8f36-4039-9415-a058294f33a9%7d-0%2fmasonry-aside-%7b0ff0d499-1851-476f-91c1-547a0f14f579%7d-0%2fmasonry-item-%7b7aa5b76a-a133-409b-85f6-35278eb2e86d%7d-0&Data+Source=$($hotelSummaryId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowButtonOnly=&IsOpeningPopupLinkVisible=|{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}:{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}:Placeholder=%2fbody%2fbooking-context-%7bCC492373-8F36-4039-9415-A058294F33A9%7d-0%2fmasonry-section-%7b0FF0D499-1851-476F-91C1-547A0F14F579%7d-0%2fmasonry-item-%7bCFFBCCD2-8384-43A8-8164-847021CFF5EE%7d-0&Data+Source=$($breakdownId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                    "de-DE" = @"
+    {EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}:{EB7FC7F6-F0AD-48E7-B7D0-FA303E6FEA3D}:Placeholder=%2fbody%2fbooking-context-%7bcc492373-8f36-4039-9415-a058294f33a9%7d-0&Data+Source=$($heroBannerId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowCountdown=|{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}:{00E6EA38-0298-454C-B2B1-91BBC3BFAE70}:Placeholder=%2fbody%2fbooking-context-%7bcc492373-8f36-4039-9415-a058294f33a9%7d-0%2fmasonry-aside-%7b0ff0d499-1851-476f-91c1-547a0f14f579%7d-0%2fmasonry-item-%7b7aa5b76a-a133-409b-85f6-35278eb2e86d%7d-0&Data+Source=$($hotelSummaryId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=&ShowButtonOnly=&IsOpeningPopupLinkVisible=|{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}:{C131E6D9-0FE6-4806-9AB9-53CF144F4CA5}:Placeholder=%2fbody%2fbooking-context-%7bCC492373-8F36-4039-9415-A058294F33A9%7d-0%2fmasonry-section-%7b0FF0D499-1851-476F-91C1-547A0F14F579%7d-0%2fmasonry-item-%7bCFFBCCD2-8384-43A8-8164-847021CFF5EE%7d-0&Data+Source=$($breakdownId.ID)&Additional+Parameters=&Caching=0%7c0%7c0%7c0%7c0%7c0%7c0%7c0&CacheClearingBehavior=Clear+on+publish&Personalization=&ForceReloadChildren=&CSSStyles=&Tests=
+    "@
+                }
+            }
+         }
+    )
+    
+    ImportContent -itemsToCreate $updates
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

@@ -1,0 +1,35 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+
+    @include media-breakpoint-up(lg) {
+        flex-direction: row;
+        margin-top: 40px;
+    }
+}
+
+.dropdowns {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    border-top: 1px solid $colorGeyser;
+
+
+    @include media-breakpoint-up(lg) {
+        max-width: 803px;
+        padding-top: 0;
+        border-top: none;
+
+        > :nth-last-child(2) {
+            margin-bottom: 24px;
+        }
+    }
+}
+
+.continueButton {
+    align-self: flex-end;
+    width: 200px;
+}

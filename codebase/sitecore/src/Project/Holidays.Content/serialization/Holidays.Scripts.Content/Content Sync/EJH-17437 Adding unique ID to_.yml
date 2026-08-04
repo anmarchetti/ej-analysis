@@ -1,0 +1,103 @@
+﻿---
+ID: "6f57d356-0c0b-447f-9adf-e927e38f8b6d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-17437 Adding unique ID to data Promotion EUX"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -Language "en" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    $components = @(
+        @{
+            Path = "/sitecore/content/EasyJet/Holidays/Data/Header Navigation Promotions/Destinations Promotion"
+            TemplateId = "{F81391B1-3915-4ED5-A493-99728C730BB6}"
+            DataPromotionValues = @{
+                "en" = 'promotionDestination';
+                "fr-FR" = 'promotionDestination';
+    			      "fr-CH" = 'promotionDestination';
+    			      "de-DE" = 'promotionDestination';
+    			      "de-CH" = 'promotionDestination';
+            }
+        },
+    	 @{
+            Path = "/sitecore/content/EasyJet/Holidays/Data/Header Navigation Promotions/Holidays Promotion"
+            TemplateId = "{F0D1003D-96FB-481C-BC67-41A6DA20A7FA}"
+            DataPromotionValues = @{
+                "en" = 'promotionHolidays';
+                "fr-FR" = 'promotionHolidays';
+                "fr-CH" = 'promotionHolidays';
+                "de-DE" = 'promotionHolidays';
+                "de-CH" = 'promotionHolidays';
+            }
+        },
+        @{
+            Path = "/sitecore/content/EasyJet/Holidays/Data/Header Navigation Promotions/Deals Promotion"
+            TemplateId = "{4CCE4324-9EF4-4939-B737-4C9418435195}"
+            DataPromotionValues = @{
+                "en" = 'promotionDeals';
+                "fr-FR" = 'promotionDeals';
+                "fr-CH" = 'promotionDeals';
+                "de-DE" = 'promotionDeals';
+                "de-CH" = 'promotionDeals';
+            }
+        },
+        @{
+            Path = "/sitecore/content/EasyJet/Holidays/Data/Header Navigation Promotions/Travel Info Promotion"
+            TemplateId = "{7E0D08C3-C7C4-460F-85DE-083BF1381483}"
+            DataPromotionValues = @{
+                "en" = 'promotionTravelInfo';
+                "fr-FR" = 'promotionTravelInfo';
+                "fr-CH" = 'promotionTravelInfo';
+                "de-DE" = 'promotionTravelInfo';
+                "de-CH" = 'promotionTravelInfo';
+            }
+        }
+    )
+    
+    foreach ($component in $components) {
+        foreach ($lang in $component.DataPromotionValues.Keys) {
+            $item = Get-Or-Create-Item -path $component.Path -template $component.TemplateId
+            $item.Editing.BeginEdit()
+            $item["__Source"] = $component.DataPromotionValues["en"]
+            $item.Editing.EndEdit()
+            
+            $item = Get-Item -Path $item.Paths.FullPath -Language $lang
+            if($item -ne $null){
+                $item.Editing.BeginEdit()
+                $item["DataPromotion"] = $component.DataPromotionValues[$lang]
+                $item.Editing.EndEdit()
+            }
+        }
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230906T121059Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin
+- Language: "fr-FR"
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230906T120708Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

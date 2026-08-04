@@ -1,0 +1,63 @@
+.wrapper {
+    width: auto;
+    max-width: max-content;
+    padding: 0;
+    background: none;
+    border: none;
+
+    @media (hover: none) and (pointer: coarse) {
+        &:focus {
+            outline: none;
+        }
+    }
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.content {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    width: fit-content;
+    min-height: 24px;
+    padding: 2px 8px;
+    color: $clrTextMain;
+    border-radius: 4px;
+}
+
+.iconWrapper {
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+
+    svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.titleWrapper {
+    margin: 2px 0;
+    font-family: $fontRoundedDemy;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    text-align: left;
+}
+
+.ellipsis {
+    display: -webkit-box;
+    overflow: hidden;
+    word-break: break-all;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.dotted {
+    text-decoration-line: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+}

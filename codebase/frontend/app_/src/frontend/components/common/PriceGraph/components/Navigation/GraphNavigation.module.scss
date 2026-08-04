@@ -1,0 +1,44 @@
+.button {
+    position: absolute;
+    z-index: $z-index-over-element;
+    top: 50%;
+    left: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: $clrEjOrange;
+    background: $colorWhite;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.25);
+    opacity: 1;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: opacity 0.4s ease-out;
+
+    svg {
+        width: 12px;
+        height: 12px;
+        stroke: currentcolor;
+        stroke-width: 1;
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+
+    &.next {
+        right: 2px;
+        left: auto;
+    }
+
+    &.disabled {
+        color: $clrTxtLight;
+        background: $clrSiteBgGrey;
+        border-color: $clrSiteBgGrey;
+        opacity: 1;
+        cursor: default;
+    }
+}

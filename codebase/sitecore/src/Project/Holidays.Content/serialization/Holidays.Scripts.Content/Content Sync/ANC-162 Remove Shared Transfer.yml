@@ -1,0 +1,85 @@
+﻿---
+ID: "eeace7c4-ccbf-49e6-b443-f0cb538d68be"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-162 Remove Shared Transfer SE"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $translations = @{
+        "fr-CH" = @{
+            "PrivateFeesTitle" = "Des frais supplémentaires peuvent s'appliquer"
+            "PrivateFeesDescription" = "Notre partenaire de transfert peut facturer des frais supplémentaires pour le transport d'équipements sportifs. Vous devrez contacter le centre de support client après la réservation."
+        }
+        "fr-FR" = @{
+            "PrivateFeesTitle" = "Des frais supplémentaires peuvent s'appliquer"
+            "PrivateFeesDescription" = "Notre partenaire de transfert peut facturer des frais supplémentaires pour le transport d'équipements sportifs. Vous devrez contacter le centre de support client après la réservation."
+        }
+        "de-CH" = @{
+            "PrivateFeesTitle" = "Zusätzliche Gebühren können anfallen"
+            "PrivateFeesDescription" = "Unser Transferpartner kann zusätzliche Gebühren für den Transport von Sportgeräten berechnen. Sie müssen sich nach der Buchung an das Kundensupportzentrum wenden."
+        }
+        "de-DE" = @{
+            "PrivateFeesTitle" = "Zusätzliche Gebühren können anfallen"
+            "PrivateFeesDescription" = "Unser Transferpartner kann zusätzliche Gebühren für den Transport von Sportgeräten berechnen. Sie müssen sich nach der Buchung an das Kundensupportzentrum wenden."
+        }
+    }
+    
+    function create-lang-version($item, $lang, $field, $value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+        }
+            
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    function Transfer-Update($website){
+        $dataSourcePath ="/sitecore/content/EasyJet/$website/Home/Booking/Page Components/Transfer Section"
+        
+        $dataSourceItem = Get-Item -Path $dataSourcePath
+        
+        if($dataSourceItem -ne $null) {
+            $dataSourceItem.Editing.BeginEdit()
+            $dataSourceItem["PrivateFeesTitle"] = "Additional fees may apply"
+            $dataSourceItem["PrivateFeesDescription"] = "Our transfer partner may charge additional feed for taking sport equipment. You will need to contact the customer support centre after booking."
+            $dataSourceItem.Editing.EndEdit() | Out-Null
+            
+            Write-Host "Transfer Section Datasource updated"
+        }
+        
+        # Add translations on Holidays
+        if($website -eq "Holidays"){
+            foreach ($lang in $translations.Keys) {
+                create-lang-version -item $dataSourceItem -lang $lang -field "PrivateFeesTitle" -value $translations[$lang]["PrivateFeesTitle"]
+                create-lang-version -item $dataSourceItem -lang $lang -field "PrivateFeesDescription" -value $translations[$lang]["PrivateFeesDescription"]
+                
+                Write-Host "Translations added"
+            }
+        }
+        
+        Write-Host "Transfers updated on" $website
+    }
+    
+    Transfer-Update -website "Holidays"
+    Transfer-Update -website "TradePortal"
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1020
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240628T111752Z

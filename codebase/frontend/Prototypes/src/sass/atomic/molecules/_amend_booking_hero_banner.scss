@@ -1,0 +1,316 @@
+$amend-hero-banner-height-translucent-stripe: 439px;
+$amend-hero-banner-height-default: 491px;
+$stripe-slant-angle: 12deg;
+
+@mixin banner-triangles($color: $clrSiteBgWhite) {
+    &.triangle-end {
+        background: linear-gradient(2deg, #fff 51%, rgba(255, 255, 255, 0) 52%);
+
+        @include media-breakpoint-down(md) {
+            background-image: linear-gradient(
+                3deg,
+                #fff 50%,
+                rgba(255, 255, 255, 0) 52%
+            );
+        }
+    }
+}
+
+.amend-hero-banner {
+    position: relative;
+    background-position: center center;
+    background-size: cover;
+}
+
+.amend-hero-banner__content-wrapper {
+    height: 100%;
+}
+
+.amend-hero-banner__image {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.amend-hero-banner__placeholder-top {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 15px;
+    left: 15px;
+    display: flex;
+    justify-content: space-between;
+
+    .path-breadcrumbs-wrap .path-breadcrumbs {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.amend-hero-banner__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 200px;
+    padding: 20px;
+}
+
+.amend-hero-banner__text {
+    position: relative;
+    line-height: 1.2;
+}
+
+.amend-hero-banner__title {
+    margin: 10px 0 0;
+    font-family: $fontGenerationHeadline;
+    font-size: 75px;
+    line-height: 1;
+    color: inherit;
+
+    @include media-breakpoint-down(lg) {
+        font-size: 65px;
+    }
+
+    @include media-breakpoint-down(md) {
+        width: 70%;
+        margin-top: 5px;
+        font-size: 40px;
+    }
+}
+
+.amend-hero-banner__subtitle {
+    font-family: $fontRoundedHeadline;
+    font-size: 30px;
+    font-weight: 700;
+
+    @include media-breakpoint-down(md) {
+        font-size: 20px;
+        line-height: 1.25;
+    }
+}
+
+.amend-hero-banner__description {
+    font-family: $fontRoundedHeadline;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.25;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+}
+
+.amend-hero-banner--triangle {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 150px;
+
+    @include media-breakpoint-down(md) {
+        height: 25px;
+    }
+
+    @include banner-triangles();
+}
+
+.amend-hero-banner--translucent-stripe {
+    overflow: hidden;
+    color: $clrTextMain;
+
+    @include media-breakpoint-up(md) {
+        min-height: $amend-hero-banner-height-translucent-stripe;
+
+        // Desktop stripe slant block
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: calc(50% + 55px);
+            min-width: $container-max-width / 2 - 120px;
+            height: 200%;
+            background: linear-gradient(
+                44.71deg,
+                #fff 0%,
+                rgba(255, 255, 255, 0.72) 148.96%
+            );
+            transform: rotate($stripe-slant-angle);
+            transform-origin: 100% 0;
+        }
+    }
+
+    .path-breadcrumbs-wrap {
+        padding: 20px 0 0;
+
+        @include media-breakpoint-down(md) {
+            padding-top: 14px;
+        }
+    }
+
+    .amend-hero-banner__text {
+        position: relative;
+        max-width: 490px;
+        margin-top: 85px;
+        line-height: 1.2;
+        color: $clrTextMain;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 120px;
+        }
+
+        @include media-breakpoint-down(sm) {
+            margin-top: 140px;
+        }
+
+        @include media-breakpoint-up(md) {
+            display: flex;
+            flex: 1 0 auto;
+            flex-direction: column;
+            width: 45%;
+            margin-bottom: 20px;
+        }
+    }
+
+    .amend-hero-banner__inner {
+        @include media-breakpoint-down(md) {
+            &::before {
+                // Mobile stripe slant block, that added to inner content.
+                content: "";
+                position: absolute;
+                z-index: -1;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(
+                    -174deg,
+                    rgba(#fff, 0) 170px,
+                    rgba(#fff, 0.64) 171px,
+                    rgba(#fff, 0.9) 100%
+                );
+            }
+        }
+    }
+
+    .amend-hero-banner__description {
+        &::before {
+            content: "";
+            display: block;
+            width: 100%;
+            margin: 15px 0 35px;
+            border-top: 1px solid $clrTextMain;
+
+            @include media-breakpoint-down(md) {
+                margin: 9px 0 16px;
+            }
+        }
+    }
+}
+
+.amend-hero-banner--gradient-overlay {
+    @include media-breakpoint-up(md) {
+        min-height: $amend-hero-banner-height-default;
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(
+            29.36deg,
+            rgba(0, 0, 0, 0.61) 0%,
+            rgba(0, 0, 0, 0) 100%
+        );
+
+        @include media-breakpoint-down(md) {
+            background: linear-gradient(
+                13.15deg,
+                rgba(0, 0, 0, 0.61) 0%,
+                rgba(0, 0, 0, 0) 126.65%
+            );
+        }
+    }
+
+    .path-breadcrumbs-wrap {
+        padding: 45px 0 0;
+
+        @include media-breakpoint-down(md) {
+            padding-top: 16px;
+        }
+    }
+
+    .amend-hero-banner__text {
+        margin-top: 110px;
+        color: $colorWhite;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 50px;
+            margin-bottom: 15px;
+        }
+    }
+
+    .amend-hero-banner__inner {
+        @include media-breakpoint-down(md) {
+            padding: 15px;
+        }
+    }
+}
+
+.amend-hero-banner__price-block {
+    position: absolute;
+    right: 20px;
+    bottom: 0;
+    width: 155px;
+    padding: 35px 15px 23px;
+    background: linear-gradient(-10deg, $clrEjOrange 84%, transparent 85%);
+
+    @include media-breakpoint-down(md) {
+        right: 15px;
+        width: 105px;
+        padding: 30px 8px 20px;
+    }
+
+    p {
+        margin: 0;
+        font-size: 20px;
+        line-height: 24px;
+        color: $clrSiteBgWhite;
+
+        @include media-breakpoint-down(md) {
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
+
+    span {
+        margin-top: 5px;
+        font-size: 30px;
+        color: $clrSiteBgWhite;
+
+        @include media-breakpoint-down(md) {
+            font-size: 20px;
+            line-height: 20px;
+        }
+    }
+}
+
+.amend-hero-banner__price {
+    @include media-breakpoint-down(md) {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        min-height: auto;
+    }
+}

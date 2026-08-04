@@ -1,0 +1,78 @@
+﻿---
+ID: "3b55595d-d469-4fd3-b2d9-21b27e24ccba"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create Media Center Items Structure
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    
+    function create-item($path, $itemName, $itemType){
+        $itemToCreateExist = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($itemToCreateExist -eq $null){
+            $createdItem = New-Item -Path $path -Name $itemName -ItemType $itemType
+    
+            if($createdItem -ne $null){
+                Write-Host "$($itemName) item is created"
+                return $createdItem
+            }
+        }
+        return $null
+    }
+    
+    $mediaCenterPageItemPath = "/sitecore/content/EasyJet/Holidays/Home"
+    
+    $mediaCenterPageItem = create-item -Path $mediaCenterPageItemPath -ItemName "Media Center" -ItemType "{A5A1C3C6-76BD-448E-9709-4CD6957A4813}" # item to add data
+    
+    $contentHubPageItemPath = "/sitecore/content/EasyJet/Holidays/Home/Media Center"
+    
+    create-item -Path $contentHubPageItemPath -ItemName "Content Hub" -ItemType "{99755ECC-B50F-419C-9F80-95E013672D94}"
+    
+    $articlePageItemPath = "/sitecore/content/EasyJet/Holidays/Home/Media Center/Content Hub"
+    
+    $articlePageItem = create-item -Path $articlePageItemPath -ItemName "Electric Aircraft" -ItemType "{A3A83479-5CEC-440E-9B30-A7AD70121343}" # item to add data
+    
+    $topicFolderItemPath = "/sitecore/content/EasyJet/Holidays/Data"
+    
+    create-item -Path $topicFolderItemPath -ItemName "Topics" -ItemType "{96B44174-B3B5-4D27-9DD3-7D5EB28307DF}"
+    
+    $topicItemPath = "/sitecore/content/EasyJet/Holidays/Data/Topics"
+    
+    $topicItem = create-item -Path $topicItemPath -ItemName "Environment" -ItemType "{BA13D0EE-2A1A-493B-A047-9D149D5D43B9}" # item to add data
+    
+    
+    if($mediaCenterPageItem -ne $null){
+        $mediaCenterPageItem.Editing.BeginEdit()
+        $mediaCenterPageItem.Fields["Title"].Value = "Media Centre"
+        $mediaCenterPageItem.Fields["Description"].Value = "Welcome to the easyjet holiday's media centre."
+        $mediaCenterPageItem.Editing.EndEdit()
+    }
+    
+    if($articlePageItem -ne $null){
+        $articlePageItem.Editing.BeginEdit()
+        $articlePageItem.Fields["Title"].Value = "Electric Aircraft"
+        $articlePageItem.Fields["TopContent"].Value = "Electric Aircraft"
+        $articlePageItem.Fields["BottomContent"].Value = "Electric Aircraft"
+        $articlePageItem.Editing.EndEdit()
+    }
+    
+    if($topicItem -ne $null){
+        $topicItem.Editing.BeginEdit()
+        $topicItem.Fields["Name"].Value = "Environment"
+        $topicItem.Editing.EndEdit()
+    }
+    
+    Write-Host "Script work have completed"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 100
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

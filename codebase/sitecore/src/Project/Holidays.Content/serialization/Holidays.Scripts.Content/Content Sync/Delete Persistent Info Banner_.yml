@@ -1,0 +1,34 @@
+﻿---
+ID: "93f0d0c2-6fa9-4677-b2e9-ef942646d737"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Delete Persistent Info Banner Rendering From Iframe
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $page = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/IFrame Search Pod"
+    
+    $oldRenderingItem = Get-Item -Path "master:" -Id "{CFDDA56D-9D28-45DE-BED6-FF67AC4C38B5}"
+        
+    Remove-Rendering -Item $page -Rendering $oldRenderingItem
+    
+    
+    
+    
+        
+    
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4890
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200714T084139Z

@@ -1,0 +1,95 @@
+﻿---
+ID: "5dceeb5a-8398-48c5-b1e9-76208f3caaf4"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-15732 - Benefits"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $benefits = @(
+        @{
+            'Key'   = "B0001"
+            'Name' = "One small cabin bag"
+            'Description' = "Maximum size 45 x 36 x 20 cm.{0}Must fit under the seat in front of you." -f [environment]::NewLine
+        },
+        @{
+            'Key'   = "B0002"
+            'Name' = "One large cabin bag"
+            'Description' = "Maximum size 56 x 45 x 25 cm.{0}Subject to available space" -f [environment]::NewLine
+        },
+        @{
+            'Key'   = "B0003"
+            'Name' = "One large cabin bag"
+            'Description' = "Maximum size 56 x 45 x 25 cm."
+        },
+        @{
+            'Key'   = "B0006"
+            'Name' = "Speedy Boarding"
+            'Description' = "Be amongst the first to board, or board at your leisure."
+        },
+        @{
+            'Key'   = "B0007"
+            'Name' = "Dedicated Bag Drop"
+            'Description' = "Priority Bag Drop desks in the check-in area."
+        },
+        @{
+            'Key'   = "B0008"
+            'Name' = "Fast Track Security"
+            'Description' = "Breeze through security at selected airports with Fast Track Security"
+        },
+        @{
+            'Key'   = "B0009"
+            'Name' = "Free route changes"
+            'Description' = "You can change your route (departure or destination airport) within +/-1 day and will not incur a change fee, but you will have to pay any difference between your original fare and the current FLEXI fare for the new flight.{0}If the new fare is lower, no refund will be made. {0}Changes are subject to seat and route availability and are not guaranteed{0}See here for more details." -f [environment]::NewLine
+        },
+        @{
+            'Key'   = "B0010"
+            'Name' = "Bistro voucher"
+            'Description' = "A voucher to the value of £7.50 (or equivalent currency) to spend on food & drink onboard.{0}Non-refundable if unused." -f [environment]::NewLine
+        },
+        @{
+            'Key'   = "B0011"
+            'Name' = "Free time/date changes"
+            'Description' = "You can change your flights within +/- 1 day of your original flight date with no change fee or fare difference.{0}Changes are subject to seat and route availability and are not guaranteed.{0}See here for more details." -f [environment]::NewLine
+        }
+    )
+    
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $template
+        }
+        return $item
+    }
+    
+    $benefitFolder = Get-Or-Create-Item -path "/sitecore/content/EasyJet/Holidays/Data/Benefits" -template "{C3753755-1173-4A48-A91D-9E256F666829}"
+    
+    foreach($benefit in $benefits){
+        $name = "$($benefit.Key) - $($benefit.Name)"
+        $validName = [Sitecore.Data.Items.ItemUtil]::ProposeValidItemName($name)
+        $path = "$($benefitFolder.Paths.FullPath)/$($validName)"
+        $item = Get-Or-Create-Item -path $path -template "{48AF1101-502F-4802-B3D8-AF6CFDACF587}"
+        $item.Editing.BeginEdit()
+    	$item["Code"] = $benefit.Key
+    	$item["Name"] = $benefit.Name
+    	$item["Description"] = $benefit.Description
+    	$item.Editing.EndEdit()
+    }
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 600
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220719T092649Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

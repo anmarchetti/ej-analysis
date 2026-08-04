@@ -1,0 +1,33 @@
+﻿{
+  "Title": "CMS Accommodation to Giata mapping data",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/api/ReferenceData/GetAccommodationToGiataMapping",
+          "IgnoreCase": true
+        }
+      ]
+    },
+    "Body": {
+      "Matcher": {
+        "Name": "ExactMatcher",
+        "Pattern": "AtcomIds%5B0%5D=553c&AtcomIds%5B1%5D=40c6"
+      }
+    },
+    "Methods": [
+      "POST"
+    ]
+  },
+  "Response": {
+    "Headers": {
+      "Content-Type": "application/json; charset=utf-8"
+    },
+    "StatusCode": 200,
+    "BodyAsJson": {
+      "553c": "28925",
+      "40c6": "28925"
+    }
+  }
+}

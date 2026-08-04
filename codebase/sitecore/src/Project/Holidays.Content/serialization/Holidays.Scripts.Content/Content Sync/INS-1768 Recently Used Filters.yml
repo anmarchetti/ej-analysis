@@ -1,0 +1,416 @@
+﻿---
+ID: "6ac48a84-0edf-46c6-9ffd-bbff07b58d6e"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-1768 Recently Used Filters"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $itemPath = "/sitecore/content/EasyJet/Holidays/Data/Filter Pills"
+    $itemId = "{CC28B0BD-5947-4377-A505-93F7D40A9473}"
+    $templateId = "{4B2BEF5F-508D-4732-8A70-516FD9E05173}"
+    
+    $item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+    if ($null -eq $item) {
+        $parentPath = Split-Path -Path $itemPath -Parent
+        $itemName = Split-Path -Path $itemPath -Leaf
+        
+        $item = New-Item -Path $parentPath -Name $itemName -ItemType $templateId -ForceId $itemId
+        Write-Host "Created item:" $item.Paths.FullPath
+    } else {
+        Write-Host "Item already exists:" $item.Paths.FullPath
+    }
+    
+    $item.Editing.BeginEdit()
+    $item["MinNumberOfOffers"] = "1"
+    $item.Editing.EndEdit() | Out-Null
+    
+    function Set-TranslatedFieldValue(
+        [Sitecore.Data.Items.Item]$sourceItem,
+        [string]$lang,
+        [string]$fieldName,
+        [string]$fieldValue
+    ) {
+        $targetLangItem = Get-Item -Path $sourceItem.Paths.FullPath -Language $lang
+        if ($null -eq $targetLangItem -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $sourceItem -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+        }
+    
+        $targetLangItem = Get-Item -Path $sourceItem.Paths.FullPath -Language $lang
+        $targetLangItem.Editing.BeginEdit()
+        $targetLangItem[$fieldName] = $fieldValue
+        $targetLangItem.Editing.EndEdit() | Out-Null
+    }
+    
+    function Upsert-FilterPillsChild(
+        [Sitecore.Data.Items.Item]$parentItem,
+        [string]$childId,
+        [string]$childName,
+        [string]$childTemplateId,
+        [string]$code,
+        [string]$displayName,
+        [string]$filterCode,
+        [string]$type,
+        [int]$sortOrder
+    ) {
+        $childPath = "$($parentItem.Paths.FullPath)/$childName"
+        $childItem = Get-Item -Path $childPath -ErrorAction SilentlyContinue
+    
+        if ($null -eq $childItem) {
+            $childItem = New-Item -Path $parentItem.ID -Name $childName -ItemType $childTemplateId -ForceId $childId
+            Write-Host "Created child item:" $childItem.Paths.FullPath
+        } else {
+            Write-Host "Child item already exists:" $childItem.Paths.FullPath
+        }
+    
+        $childItem.Editing.BeginEdit()
+        $childItem["Code"] = $code
+        $childItem["Name"] = $displayName
+        $childItem["FilterCode"] = $filterCode
+        $childItem["__Sortorder"] = $sortOrder.ToString()
+        if (-not [string]::IsNullOrWhiteSpace($type)) {
+            $childItem["Type"] = $type
+        }
+        $childItem.Editing.EndEdit() | Out-Null
+    }
+    
+    $children = @(
+        @{
+            Id = "{1A0A24C4-E7BC-4DE5-A676-5E38295E0B10}";
+            Name = "1plus TripAdvisor rating";
+            TemplateId = "{EE8ACAA4-83E6-40D4-98F3-0F0DDC61BF4D}";
+            Code = "1";
+            DisplayName = "1+ TripAdvisor rating";
+            FilterCode = "tripAdvisorRating";
+            Type = $null;
+            SortOrder = 100
+        },
+        @{
+            Id = "{B800DDDD-66F1-443F-B291-90BAFCF8954B}";
+            Name = "2plus TripAdvisor rating";
+            TemplateId = "{EE8ACAA4-83E6-40D4-98F3-0F0DDC61BF4D}";
+            Code = "2";
+            DisplayName = "2+ TripAdvisor rating";
+            FilterCode = "tripAdvisorRating";
+            Type = $null;
+            SortOrder = 100
+        },
+        @{
+            Id = "{6C25422D-B955-4FBC-A998-54629A23C9EB}";
+            Name = "3plus TripAdvisor rating";
+            TemplateId = "{EE8ACAA4-83E6-40D4-98F3-0F0DDC61BF4D}";
+            Code = "3";
+            DisplayName = "3+ TripAdvisor rating";
+            FilterCode = "tripAdvisorRating";
+            Type = $null;
+            SortOrder = 100
+        },
+        @{
+            Id = "{680BEDBF-D9EF-4C20-87F1-10446A09D3EB}";
+            Name = "4plus TripAdvisor rating";
+            TemplateId = "{EE8ACAA4-83E6-40D4-98F3-0F0DDC61BF4D}";
+            Code = "4";
+            DisplayName = "4+ TripAdvisor rating";
+            FilterCode = "tripAdvisorRating";
+            Type = $null;
+            SortOrder = 100
+        },
+        @{
+            Id = "{AFD0EA4D-220A-4AA9-854C-8487FD43178F}";
+            Name = "5 TripAdvisor rating";
+            TemplateId = "{EE8ACAA4-83E6-40D4-98F3-0F0DDC61BF4D}";
+            Code = "5";
+            DisplayName = "5 TripAdvisor rating";
+            FilterCode = "tripAdvisorRating";
+            Type = $null;
+            SortOrder = 100
+        },
+        @{
+            Id = "{59E11227-5CC3-4FC3-9F47-A9FFD62C2DB1}";
+            Name = "1 Star Hotels";
+            TemplateId = "{EE8ACAA4-83E6-40D4-98F3-0F0DDC61BF4D}";
+            Code = "1";
+            DisplayName = "1 Star Hotels";
+            FilterCode = "starRating";
+            Type = $null;
+            SortOrder = 200
+        },
+        @{
+            Id = "{0881EE51-69E0-4E35-942F-772CD530845C}";
+            Name = "2 Star Hotels";
+            TemplateId = "{EE8ACAA4-83E6-40D4-98F3-0F0DDC61BF4D}";
+            Code = "2";
+            DisplayName = "2 Star Hotels";
+            FilterCode = "starRating";
+            Type = $null;
+            SortOrder = 200
+        },
+        @{
+            Id = "{99E29B3E-4AAA-44AB-ACDA-602D0043D93C}";
+            Name = "3 Star Hotels";
+            TemplateId = "{EE8ACAA4-83E6-40D4-98F3-0F0DDC61BF4D}";
+            Code = "3";
+            DisplayName = "3 Star Hotels";
+            FilterCode = "starRating";
+            Type = $null;
+            SortOrder = 200
+        },
+        @{
+            Id = "{387ABDFA-0D65-4C0F-BFE0-C3C872491437}";
+            Name = "4 Star Hotels";
+            TemplateId = "{EE8ACAA4-83E6-40D4-98F3-0F0DDC61BF4D}";
+            Code = "4";
+            DisplayName = "4 Star Hotels";
+            FilterCode = "starRating";
+            Type = $null;
+            SortOrder = 200
+        },
+        @{
+            Id = "{0D3D7031-2A55-433B-9FBC-78F8C04CC550}";
+            Name = "5 Star Hotels";
+            TemplateId = "{EE8ACAA4-83E6-40D4-98F3-0F0DDC61BF4D}";
+            Code = "5";
+            DisplayName = "5 Star Hotels";
+            FilterCode = "starRating";
+            Type = $null;
+            SortOrder = 200
+        },
+        @{
+            Id = "{BDCADE88-AB22-494D-AA33-7395BCB85448}";
+            Name = "Morning departure";
+            TemplateId = "{42F5F481-5C03-4678-AA41-3960BA7E5144}";
+            Code = "morning";
+            DisplayName = "Morning departure";
+            FilterCode = "timeSlots";
+            Type = "Outbound Departure Time";
+            SortOrder = 300
+        },
+        @{
+            Id = "{3C88E4ED-31AD-482F-90CD-365756BEFC8F}";
+            Name = "Afternoon departure";
+            TemplateId = "{42F5F481-5C03-4678-AA41-3960BA7E5144}";
+            Code = "afternoon";
+            DisplayName = "Afternoon departure";
+            FilterCode = "timeSlots";
+            Type = "Outbound Departure Time";
+            SortOrder = 400
+        },
+        @{
+            Id = "{75E2D0D6-E401-4BE5-954C-4F794754A610}";
+            Name = "Evening departure";
+            TemplateId = "{42F5F481-5C03-4678-AA41-3960BA7E5144}";
+            Code = "evening";
+            DisplayName = "Evening departure";
+            FilterCode = "timeSlots";
+            Type = "Outbound Departure Time";
+            SortOrder = 400
+        },
+        @{
+            Id = "{742592C0-65A1-4E53-A83D-059482ED184A}";
+            Name = "Night departure";
+            TemplateId = "{42F5F481-5C03-4678-AA41-3960BA7E5144}";
+            Code = "night";
+            DisplayName = "Night departure";
+            FilterCode = "timeSlots";
+            Type = "Outbound Departure Time";
+            SortOrder = 400
+        },
+    
+        @{
+            Id = "{2ECD5B57-ABFB-4623-AC02-80E6DD9C8631}";
+            Name = "Morning return";
+            TemplateId = "{42F5F481-5C03-4678-AA41-3960BA7E5144}";
+            Code = "morning";
+            DisplayName = "Morning return";
+            FilterCode = "timeSlots";
+            Type = "Inbound Departure Time";
+            SortOrder = 500
+        },
+        @{
+            Id = "{CD09583E-E6E5-4B15-A020-68BC659C799D}";
+            Name = "Afternoon return";
+            TemplateId = "{42F5F481-5C03-4678-AA41-3960BA7E5144}";
+            Code = "afternoon";
+            DisplayName = "Afternoon return";
+            FilterCode = "timeSlots";
+            Type = "Inbound Departure Time";
+            SortOrder = 600
+        },
+        @{
+            Id = "{FD6F5D0F-396E-4D4C-A78D-5D3FBD425C86}";
+            Name = "Evening return";
+            TemplateId = "{42F5F481-5C03-4678-AA41-3960BA7E5144}";
+            Code = "evening";
+            DisplayName = "Evening return";
+            FilterCode = "timeSlots";
+            Type = "Inbound Departure Time";
+            SortOrder = 600
+        },
+        @{
+            Id = "{D9B46177-92DA-412D-9513-A90A34586837}";
+            Name = "Night return";
+            TemplateId = "{42F5F481-5C03-4678-AA41-3960BA7E5144}";
+            Code = "night";
+            DisplayName = "Night return";
+            FilterCode = "timeSlots";
+            Type = "Inbound Departure Time";
+            SortOrder = 600
+        }
+    )
+    
+    foreach ($child in $children) {
+        Upsert-FilterPillsChild `
+            -parentItem $item `
+            -childId $child.Id `
+            -childName $child.Name `
+            -childTemplateId $child.TemplateId `
+            -code $child.Code `
+            -displayName $child.DisplayName `
+            -filterCode $child.FilterCode `
+            -type $child.Type `
+            -sortOrder $child.SortOrder
+    }
+    
+    $tripAdvisorRatingTranslations = @(
+        @{ Id = "{1A0A24C4-E7BC-4DE5-A676-5E38295E0B10}"; FrName = "Note TripAdvisor 1+"; DeName = "TripAdvisor-Bewertung 1+" },
+        @{ Id = "{B800DDDD-66F1-443F-B291-90BAFCF8954B}"; FrName = "Note TripAdvisor 2+"; DeName = "TripAdvisor-Bewertung 2+" },
+        @{ Id = "{6C25422D-B955-4FBC-A998-54629A23C9EB}"; FrName = "Note TripAdvisor 3+"; DeName = "TripAdvisor-Bewertung 3+" },
+        @{ Id = "{680BEDBF-D9EF-4C20-87F1-10446A09D3EB}"; FrName = "Note TripAdvisor 4+"; DeName = "TripAdvisor-Bewertung 4+" },
+        @{ Id = "{AFD0EA4D-220A-4AA9-854C-8487FD43178F}"; FrName = "Note TripAdvisor 5"; DeName = "TripAdvisor-Bewertung 5" }
+    )
+    
+    foreach ($tripAdvisorRating in $tripAdvisorRatingTranslations) {
+        $tripAdvisorRatingItem = Get-Item -Path "master:" -ID $tripAdvisorRating.Id -ErrorAction SilentlyContinue
+        if ($null -eq $tripAdvisorRatingItem) {
+            continue
+        }
+    
+        @("fr-CH", "fr-FR") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $tripAdvisorRatingItem -lang $_ -fieldName "Name" -fieldValue $tripAdvisorRating.FrName
+        }
+        @("de-CH", "de-DE") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $tripAdvisorRatingItem -lang $_ -fieldName "Name" -fieldValue $tripAdvisorRating.DeName
+        }
+    }
+    
+    $starHotelTranslations = @(
+        @{ Id = "{59E11227-5CC3-4FC3-9F47-A9FFD62C2DB1}"; FrName = "Hôtels 1 étoile"; DeName = "1-Stern-Hotels" },
+        @{ Id = "{0881EE51-69E0-4E35-942F-772CD530845C}"; FrName = "Hôtels 2 étoiles"; DeName = "2-Sterne-Hotels" },
+        @{ Id = "{99E29B3E-4AAA-44AB-ACDA-602D0043D93C}"; FrName = "Hôtels 3 étoiles"; DeName = "3-Sterne-Hotels" },
+        @{ Id = "{387ABDFA-0D65-4C0F-BFE0-C3C872491437}"; FrName = "Hôtels 4 étoiles"; DeName = "4-Sterne-Hotels" },
+        @{ Id = "{0D3D7031-2A55-433B-9FBC-78F8C04CC550}"; FrName = "Hôtels 5 étoiles"; DeName = "5-Sterne-Hotels" }
+    )
+    
+    foreach ($starHotel in $starHotelTranslations) {
+        $starHotelItem = Get-Item -Path "master:" -ID $starHotel.Id -ErrorAction SilentlyContinue
+        if ($null -eq $starHotelItem) {
+            continue
+        }
+    
+        @("fr-CH", "fr-FR") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $starHotelItem -lang $_ -fieldName "Name" -fieldValue $starHotel.FrName
+        }
+        @("de-CH", "de-DE") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $starHotelItem -lang $_ -fieldName "Name" -fieldValue $starHotel.DeName
+        }
+    }
+    
+    $timeSlotTranslations = @(
+        @{ Id = "{BDCADE88-AB22-494D-AA33-7395BCB85448}"; FrName = "Départ le matin"; DeName = "Abflug morgens" },
+        @{ Id = "{3C88E4ED-31AD-482F-90CD-365756BEFC8F}"; FrName = "Départ dans l'après-midi"; DeName = "Abflug nachmittags" },
+        @{ Id = "{75E2D0D6-E401-4BE5-954C-4F794754A610}"; FrName = "Départ en fin d'après-midi"; DeName = "Abflug abends" },
+        @{ Id = "{742592C0-65A1-4E53-A83D-059482ED184A}"; FrName = "Départ le soir"; DeName = "Abflug nachts" },
+        @{ Id = "{2ECD5B57-ABFB-4623-AC02-80E6DD9C8631}"; FrName = "Retour le matin"; DeName = "Rückflug morgens" },
+        @{ Id = "{CD09583E-E6E5-4B15-A020-68BC659C799D}"; FrName = "Retour dans l'après-midi"; DeName = "Rückflug nachmittags" },
+        @{ Id = "{FD6F5D0F-396E-4D4C-A78D-5D3FBD425C86}"; FrName = "Retour en fin d'après-midi"; DeName = "Rückflug abends" },
+        @{ Id = "{D9B46177-92DA-412D-9513-A90A34586837}"; FrName = "Retour le soir"; DeName = "Rückflug nachts" }
+    )
+    
+    foreach ($timeSlot in $timeSlotTranslations) {
+        $timeSlotItem = Get-Item -Path "master:" -ID $timeSlot.Id -ErrorAction SilentlyContinue
+        if ($null -eq $timeSlotItem) {
+            continue
+        }
+    
+        @("fr-CH", "fr-FR") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $timeSlotItem -lang $_ -fieldName "Name" -fieldValue $timeSlot.FrName
+        }
+        @("de-CH", "de-DE") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $timeSlotItem -lang $_ -fieldName "Name" -fieldValue $timeSlot.DeName
+        }
+    }
+    
+    # Update Morning Time Filter to use the code without space at the end
+    $morningTimeFilter = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Search Filters/Time Filters/Morning" -ErrorAction SilentlyContinue
+    if ($null -ne $morningTimeFilter) {
+        $morningTimeFilter.Editing.BeginEdit()
+        $morningTimeFilter["Code"] = "morning"
+        $morningTimeFilter.Editing.EndEdit() | Out-Null
+    }
+    
+    # Update Search Result Pages with the new filter
+    $itemPaths = @(
+        "master:/sitecore/content/EasyJet/Holidays/Home/MixedResultList",
+        "master:/sitecore/content/EasyJet/TradePortal/Home/MixedResultList"
+    )
+    $fieldName = "Filters Order"
+    $valueToPrepend = "{5288C8EA-6CD1-4870-BD48-0AFFAB9DB9FE}"
+    $languages = @("de-CH", "de-DE", "en", "fr-CH", "fr-FR")
+    
+    foreach ($itemPath in $itemPaths) {
+        $item = Get-Item -Path $itemPath -ErrorAction SilentlyContinue
+        if (-not $item) {
+            Write-Warning "Item not found: $itemPath"
+            continue
+        }
+    
+        foreach ($language in $languages) {
+            $languageItem = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue
+            if (-not $languageItem -or $languageItem.Versions.Count -eq 0) {
+                Write-Host "No versions for $itemPath [$language]. Skipping."
+                continue
+            }
+    
+            $versions = $languageItem.Versions.GetVersionNumbers()
+            foreach ($version in $versions) {
+                $versionItem = Get-Item -Path $itemPath -Language $language -Version $version -ErrorAction SilentlyContinue
+                if (-not $versionItem) { continue }
+    
+                $currentValue = [string]$versionItem[$fieldName]
+                $parts = @()
+                if (-not [string]::IsNullOrWhiteSpace($currentValue)) {
+                    $parts = $currentValue -split "\|"
+                }
+    
+                if ($parts -contains $valueToPrepend) {
+                    Write-Host "Already present [$language v$version]: $($versionItem.Paths.FullPath)"
+                    continue
+                }
+    
+                $newValue = if ([string]::IsNullOrWhiteSpace($currentValue)) {
+                    $valueToPrepend
+                } else {
+                    "$valueToPrepend|$currentValue"
+                }
+    
+                $versionItem.Editing.BeginEdit()
+                $versionItem[$fieldName] = $newValue
+                $versionItem.Editing.EndEdit() | Out-Null
+                Write-Host "Updated [$language v$version]: $($versionItem.Paths.FullPath)"
+            }
+        }
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260316T180512Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

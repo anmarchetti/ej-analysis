@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <PackageReference Include="Sitecore.XConnect" />
+    <PackageReference Include="Sitecore.XConnect.Client" />
+    <PackageReference Include="Sitecore.XConnect.Client.Configuration" />
+    <PackageReference Include="Sitecore.XConnect.Collection.Model" />
+    <PackageReference Include="Sitecore.XConnect.Core" />
+    <PackageReference Include="Sitecore.XConnect.Segmentation.Predicates" />
+    <PackageReference Include="Sitecore.XConnect.Service" />
+    <PackageReference Include="Sitecore.Xdb.MarketingAutomation.Core" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)SitecoreProject.props" />
+  <PropertyGroup>
+    <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratedAssemblyInfoFile>Properties\Assemblyinfo.cs</GeneratedAssemblyInfoFile>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)src\Foundation\PushNotification\code\easyJet.Foundation.PushNotifications.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\Foundation\XConnect\code\easyJet.Foundation.XConnect.Common.csproj" />
+  </ItemGroup>
+</Project>

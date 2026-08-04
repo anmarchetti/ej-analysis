@@ -1,0 +1,229 @@
+﻿---
+ID: "43b4f3e6-c1d7-40c8-ae8a-44151d063e0b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-844 Cancellation Unavailable"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+            Import-Function "Import Content"
+            $bookingToolbarTemplatePath = "/sitecore/templates/Feature/Booking/Booking Toolbar"
+            $bookingToolbarRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/Booking Toolbar"
+            $bookingContextRenderingId = "{C30624AB-A71F-492A-ADFF-73A1952FF024}"
+            
+            $cancellationUnavailableRenderingId = "{39A44877-7E92-48FD-B57D-BB985B47BE9A}"
+            $cancellationUnavailableRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/Cancellation Unavailable Banner"
+            $cancellationUnavailableTemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Cancellation Unavailable Banner"
+            $cancellDatasoursePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Cancellation Unavailable Banner"
+            
+            
+            $contactUsBannerRenderingPath = "/sitecore/layout/Renderings/Feature/Booking/Contact Us Banner"
+            $contactUsBannerDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Contact Us Banner"
+            
+            $contactUsBannerChannelDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Contact Us Banner/Contact Us"
+            
+            $viewBookingRenderingId = "{B932CD1B-05BD-4F1D-947F-1E6F48C4F649}"
+            $viewBookingRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/View Booking"
+            
+            $viewBookingDatasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/View Booking"
+            $viewBookingTemplatePath = "/sitecore/templates/Feature/Destinations/View Booking"
+            
+           
+    
+            function New-Content() {
+                    $updates = @(
+                         @{
+                            Path         = $cancellDatasoursePath
+                            TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Cancellation Unavailable Banner"
+                            Fields      = @{
+                                 "Title" = @{
+                                    "en" = "You tried cancelling but it wasn't successful."
+                                    "fr-CH" = "Vous avez essayé d’annuler votre séjour mais cela n’a pas fonctionné."
+                                    "de-CH" = "Dein Stornierungsversuch konnte nicht erfolgreich abgeschlossen werden."
+                                    "fr-FR" = "Vous avez essayé d’annuler votre séjour mais cela n’a pas fonctionné."
+                                    "de-DE" = "Dein Stornierungsversuch konnte nicht erfolgreich abgeschlossen werden."
+                                }
+                                 "Description" = @{
+                                    "en" = "We couldn't process your cancellation. Please get in touch with our team who can help with your cancellation."
+                                    "fr-CH" = "Nous n’avons pas pu traiter votre demande d’annulation. Veuillez contacter notre équipe pour obtenir de l’aide."
+                                    "de-CH" = "Leider konnten wir deine Stornierung nicht abschliessen. Bitte wende dich an unser Team, das dir bei der Stornierung deiner Buchung helfen kann."
+                                    "fr-FR" = "Nous n’avons pas pu traiter votre demande d’annulation. Veuillez contacter notre équipe pour obtenir de l’aide."
+                                    "de-DE" = "Leider konnten wir deine Stornierung nicht abschließen. Bitte wende dich an unser Team, das dir bei der Stornierung deiner Buchung helfen kann."
+                                }
+                                "Icon" = @{
+                                    "en" = "<image mediaid='{EA82CDAB-9D20-4D63-83F0-DA42CFDF9DD9}' />"
+                                    "fr-CH" = "<image mediaid='{EA82CDAB-9D20-4D63-83F0-DA42CFDF9DD9}' />"
+                                    "de-CH" = "<image mediaid='{EA82CDAB-9D20-4D63-83F0-DA42CFDF9DD9}' />"
+                                    "fr-FR" = "<image mediaid='{EA82CDAB-9D20-4D63-83F0-DA42CFDF9DD9}' />"
+                                    "de-DE" = "<image mediaid='{EA82CDAB-9D20-4D63-83F0-DA42CFDF9DD9}' />"
+                                }
+                            }
+                            },
+                            @{
+                            Path         = $contactUsBannerDatasourcePath
+                            TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Banner"
+                            Fields      = @{
+                                 "CTAOpenButtonLabel" = @{
+                                    "en" = "Contact us"
+                                    "fr-CH" = "Nous contacter"
+                                    "de-CH" = "Kontakt mit uns"
+                                    "fr-FR" = "Nous contacter"
+                                    "de-DE" = "Kontakt mit uns"
+                                }
+                                "CTACloseButtonLabel" = @{
+                                    "en" = "Close"
+                                    "fr-CH" = "Fermer"
+                                    "de-CH" = "Schliessen"
+                                    "fr-FR" = "Fermer"
+                                    "de-DE" = "Schließen"
+                                }
+                                "Title" = @{
+                                    "en" = "Contact us"
+                                    "fr-CH" = "Nous contacter"
+                                    "de-CH" = "Bitte ruf uns an"
+                                    "fr-FR" = "Nous contacter"
+                                    "de-DE" = "Bitte ruf uns an"
+                                }
+                            }
+                         },
+                         @{
+                            Path         = $contactUsBannerChannelDatasourcePath
+                            TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Popup Channel"
+                            ID          = "{A7F7B74F-D798-43F2-BFB0-97C3F892C4D6}"
+                            Fields      = @{
+                                 "Title" = @{
+                                    "en" = "We’re having trouble cancelling your holiday online"
+                                    "fr-CH" = "Nous n’arrivons pas à annuler votre séjour en ligne"
+                                    "de-CH" = "Leider können wir deine Ferien nicht online stornieren"
+                                    "fr-FR" = "Nous n’arrivons pas à annuler votre séjour en ligne"
+                                    "de-DE" = "Leider können wir deinen Urlaub nicht online stornieren"
+                                }
+                                "Description" = @{
+                                    "en" = "It looks like your cancellation hasn’t gone through yet, but don’t worry our team can sort this for you. Please contact our team on: <p><a href='tel:443309126593'>+44 330 912 6593</a></p> <p>Thanks, your easyJet holidays team</p>"
+                                    "fr-CH" = "Il semblerait que votre demande d’annulation n’ait pas été traitée. Rassurez-vous, notre équipe peut le faire pour vous. Veuillez nous appeler au <p><a href='tel:33481499425'>+33 4 81 49 94 25</a> ou au <a href='tel:41223240012'>+41 22 324 00 12</a></p> <p>Merci, votre équipe easyJet holidays</p>"
+                                    "de-CH" = "Die Stornierung erscheint noch nicht als abgeschlossen, aber keine Sorge, unser Team wird sich darum kümmern. Bitte wende dich an unser Team unter:<p><a href='tel:410223240012'>+41 (0)223 24 00 12</a> / <a href='tel:4903022027698'>+49 (0)302 202 7698</a></p> <p>Danke, dein easyJet holidays Team</p>"
+                                    "fr-FR" = "Il semblerait que votre demande d’annulation n’ait pas été traitée. Rassurez-vous, notre équipe peut le faire pour vous. Veuillez nous appeler au <p><a href='tel:33481499425'>+33 4 81 49 94 25</a> ou au <a href='tel:41223240012'>+41 22 324 00 12</a></p> <p>Merci, votre équipe easyJet holidays</p>"
+                                    "de-DE" = "Die Stornierung erscheint noch nicht als abgeschlossen, aber keine Sorge, unser Team wird sich darum kümmern. Bitte wende dich an unser Team unter:<p><a href='tel:4903022027698'>+49 (0)302 202 7698</a> / <a href='tel:410223240012'>+41 (0)223 24 00 12</a></p> <p>Danke, dein easyJet holidays Team</p>"
+                                }
+                            }
+                         }
+                          @{
+                            Path         = $contactUsBannerDatasourcePath
+                            TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Banner"
+                            Fields      = @{
+                                 "ContactChannels" = @{
+                                    "en" = "{A7F7B74F-D798-43F2-BFB0-97C3F892C4D6}"
+                                    "fr-CH" = "{A7F7B74F-D798-43F2-BFB0-97C3F892C4D6}"
+                                    "de-CH" = "{A7F7B74F-D798-43F2-BFB0-97C3F892C4D6}"
+                                    "fr-FR" = "{A7F7B74F-D798-43F2-BFB0-97C3F892C4D6}"
+                                    "de-DE" = "{A7F7B74F-D798-43F2-BFB0-97C3F892C4D6}"
+                                }
+                                "ContactChannelsLuxury"= @{
+                                    "en" = "{A7F7B74F-D798-43F2-BFB0-97C3F892C4D6}"
+                                    "fr-CH" = "{A7F7B74F-D798-43F2-BFB0-97C3F892C4D6}"
+                                    "de-CH" = "{A7F7B74F-D798-43F2-BFB0-97C3F892C4D6}"
+                                    "fr-FR" = "{A7F7B74F-D798-43F2-BFB0-97C3F892C4D6}"
+                                    "de-DE" = "{A7F7B74F-D798-43F2-BFB0-97C3F892C4D6}"
+                                }
+                            }
+                         },
+                         @{
+                            Path         = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos/Refund Unavailable"
+                            TemplatePath = "/sitecore/templates/Feature/Destinations/Refund Info"
+                            Fields      = @{
+                                "Title"=@{
+                                    "en" = "Looking to cancel your holiday?"
+                                    "fr-CH" = "Vous souhaitez annuler votre séjour?"
+                                    "de-CH" = "Möchtest du deine Ferien stornieren?"
+                                    "fr-FR" = "Vous souhaitez annuler votre séjour?"
+                                    "de-DE" = "Möchtest du deinen Urlaub stornieren?"
+                                }
+                                
+                                 "Description" = @{
+                                    "en" = "We're sorry, but it seems we’re unable to cancel your booking online. If you still need to cancel, please contact our team on <a href='tel:443301235025'>+44 330 123 5025</a>."
+                                    "fr-CH" = "Désolé, mais il semblerait que vous ne puissiez pas annuler votre séjour en ligne. Si vous devez toujours annuler, veuillez nous appeler au <a href='tel:33481499425'>+33 4 81 49 94 25</a> ou au <a href='tel:41223240012'>+41 22 324 00 12</a>."
+                                    "de-CH" = "Es tut uns leid, aber wir können deine Buchung leider nicht online stornieren. Wenn du weiterhin stornieren möchtest, wende dich bitte an unser Team unter: <a href='tel:410223240012'>+41 (0)223 24 00 12</a> / <a href='tel:4903022027698'>+49 (0)302 202 7698</a>."
+                                    "fr-FR" = "Désolé, mais il semblerait que vous ne puissiez pas annuler votre séjour en ligne. Si vous devez toujours annuler, veuillez nous appeler au <a href='tel:33481499425'>+33 4 81 49 94 25</a> ou au <a href='tel:41223240012'>+41 22 324 00 12</a>."
+                                    "de-DE" = "Es tut uns leid, aber wir können deine Buchung leider nicht online stornieren. Wenn du weiterhin stornieren möchtest, wende dich bitte an unser Team unter: <a href='tel:4903022027698'>+49 (0)302 202 7698</a> / <a href='tel:410223240012'>+41 (0)223 24 00 12</a>."
+                                }
+                                "IsButtonHidden" = @{
+                                    "en" = "1"
+                                    "fr-CH" = "1"
+                                    "de-CH" = "1"
+                                    "fr-FR" = "1"
+                                    "de-DE" = "1"
+                                }
+                                "RefundType" = @{
+                                    "en" = "{DEB6D6B5-2BDB-4ED8-BCD7-0177A1075B85}"
+                                    "fr-CH" = "{DEB6D6B5-2BDB-4ED8-BCD7-0177A1075B85}"
+                                    "de-CH" = "{DEB6D6B5-2BDB-4ED8-BCD7-0177A1075B85}"
+                                    "fr-FR" = "{DEB6D6B5-2BDB-4ED8-BCD7-0177A1075B85}"
+                                    "de-DE" = "{DEB6D6B5-2BDB-4ED8-BCD7-0177A1075B85}"
+                                }
+                                
+                            }
+                         }
+                         @{
+                            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking"
+                            TemplatePath = "/sitecore/templates/Feature/Booking/Cancel Booking/Cancel Booking"
+                            Fields      = @{
+                                 "ErrorPopupTitle" = @{
+                                    "en" = "We’re having trouble cancelling your holiday online"
+                                    "fr-CH" = "Nous n’arrivons pas à annuler votre séjour en ligne"
+                                    "de-CH" = "Leider können wir deine Ferien nicht online stornieren"
+                                    "fr-FR" = "Nous n’arrivons pas à annuler votre séjour en ligne"
+                                    "de-DE" = "Leider können wir deinen Urlaub nicht online stornieren"
+                                }
+                                "ErrorPopupDescription" = @{
+                                    "en" = "It looks like your cancellation hasn’t gone through yet, but don’t worry our team can sort this for you. Please contact our team on: <p><a href='tel:443309126593'>+44 330 912 6593</a></p> <p>Thanks, your easyJet holidays team</p>"
+                                    "fr-CH" = "Il semblerait que votre demande d’annulation n’ait pas été traitée. Rassurez-vous, notre équipe peut le faire pour vous. Veuillez nous appeler au <p><a href='tel:33481499425'>+33 4 81 49 94 25</a> ou au <a href='tel:41223240012'>+41 22 324 00 12</a></p> <p>Merci, votre équipe easyJet holidays</p>"
+                                    "de-CH" = "Die Stornierung erscheint noch nicht als abgeschlossen, aber keine Sorge, unser Team wird sich darum kümmern. Bitte wende dich an unser Team unter:<p><a href='tel:410223240012'>+41 (0)223 24 00 12</a> / <a href='tel:4903022027698'>+49 (0)302 202 7698</a></p> <p>Danke, dein easyJet holidays Team</p>"
+                                    "fr-FR" = "Il semblerait que votre demande d’annulation n’ait pas été traitée. Rassurez-vous, notre équipe peut le faire pour vous. Veuillez nous appeler au <p><a href='tel:33481499425'>+33 4 81 49 94 25</a> ou au <a href='tel:41223240012'>+41 22 324 00 12</a></p> <p>Merci, votre équipe easyJet holidays</p>"
+                                    "de-DE" = "Die Stornierung erscheint noch nicht als abgeschlossen, aber keine Sorge, unser Team wird sich darum kümmern. Bitte wende dich an unser Team unter:<p><a href='tel:4903022027698'>+49 (0)302 202 7698</a> / <a href='tel:410223240012'>+41 (0)223 24 00 12</a></p> <p>Danke, dein easyJet holidays Team</p>"
+                                }
+                                "ErrorPopupButtonLabel" = @{
+                                    "en" = "Back to View booking"
+                                    "fr-CH" = "Retour à la réservation"
+                                    "de-CH" = "Zurück zur Buchung"
+                                    "fr-FR" = "Retour à la réservation"
+                                    "de-DE" = "Zurück zur Buchung"
+                                }
+                            }
+                         }
+                         
+                         
+                    )
+                    ImportContent -itemsToCreate $updates
+                }
+                
+                 function Add-Renderings($pagePath, $datasourcePath) {
+                    $page = Get-Item -Path $pagePath
+                    $viewBookingRendering = Get-Rendering -Item $page | Where-Object {$_.ItemId -eq $viewBookingRenderingId}
+                    $cancellationUnavailableRendering = Get-Item -Path $cancellationUnavailableRenderingPath
+                    $cancellationUnavailableInstance = New-Rendering -Item $cancellationUnavailableRendering 
+                    Add-Rendering -Item $page -Instance $cancellationUnavailableInstance -Index 12 -Placeholder "/body/toolbar-top-section-$($viewBookingRendering.UniqueId)-0" -DataSource $cancellDatasoursePath
+                    
+                    
+                    $cancellUnavailableRendering = Get-Rendering -Item $page | Where-Object {$_.ItemId -eq $cancellationUnavailableRenderingId}
+                    $contactUsBannerRendering = Get-Item -Path $contactUsBannerRenderingPath
+                    $contactUsBannerRenderingInstance = New-Rendering -Item $contactUsBannerRendering
+                    
+                    Add-Rendering -Item $page -Instance $contactUsBannerRenderingInstance -Index 13 -Placeholder "/body/toolbar-top-section-$($viewBookingRendering.UniqueId)-0/contact-us-$($cancellUnavailableRendering.UniqueId)-0" -DataSource $contactUsBannerDatasourcePath -Parameter  @{ "ShowButtonOnly" = "1" } 
+    
+                    
+                    New-Content -PagePath $pagePath -DatasoursePath $datasoursePath;
+                 }
+    
+                Add-Renderings -PagePath "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking" -DatasourcePath $cancellDatasoursePath
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260410T160803Z

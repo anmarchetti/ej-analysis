@@ -1,0 +1,31 @@
+﻿---
+ID: "a1fe9fab-6780-4793-b0bd-28774805cdce"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-10575 create facility headers folder"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $facilityHeadersFolderTemplateId = "{327E2D6C-4F48-45AA-A944-97B7483EF8BE}"
+    $facilityHeadersFolderPath = "/sitecore/content/EasyJet/Holidays/Data/Facilities Headers"
+    
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null){
+            $item = New-Item -Path $path -ItemType $templateId
+        }
+        
+        return $item
+    }
+    
+    Get-Or-Create-Item -Path $facilityHeadersFolderPath -TemplateId $facilityHeadersFolderTemplateId
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210809T132932Z

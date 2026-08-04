@@ -1,0 +1,25 @@
+.iconWrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+
+    @media (hover: hover) {
+        &:focus-visible {
+            border-radius: 2px;
+            outline: 1px $colorBlack solid;
+        }
+    }
+
+    svg {
+        width: 14px;
+        height: 14px;
+        color: $clrEjOrange;
+        cursor: pointer;
+    }
+}

@@ -1,0 +1,299 @@
+﻿@model easyJet.Holidays.IntegrationTests.TestApi.Models.RandomBooking
+@{
+    ViewData["Title"] = "TestAPI - Booking UI";
+    var maxNumberOfBookings = 10;
+}
+
+<div class="text-center">
+    @using (Html.BeginForm("Index", "BookingUi", FormMethod.Post, new { id = "form"}))
+    {
+        <table cellpadding="5" cellspacing="5" width="100%">
+            <tr>
+                <th colspan="2" align="center">Booking criteria</th>
+            </tr>
+            <tr>
+                <td style="text-align:right">Days before departure: </td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.DaysBeforeDeparture)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Number of adults: </td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.NumberOfAdults)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Number of children: </td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.NumberOfChildren)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Number of infants: </td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.NumberOfInfants)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Duration (days): </td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.Duration)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Price: </td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.MinPrice)
+                    -
+                    @Html.TextBoxFor(m => m.MaxPrice)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Promocode: </td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.Promocode)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Promo collection eg. lux: </td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.PromoCollection)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Language: </td>
+                <td style="text-align:left">
+                    @* @Html.TextBoxFor(m => m.Language) *@
+                    @Html.DropDownListFor(m => m.Language, (SelectList)ViewBag.Languages, "Select Language")
+                    @Html.ValidationMessageFor(m => m.Language, null, new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Contract type:</td>
+                <td style="text-align:left">
+                    @Html.DropDownListFor(m => m.ContractType, (SelectList)ViewBag.ContractTypes)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Flight type:</td>
+                <td style="text-align:left">
+                    @Html.DropDownListFor(m => m.FlightType, (SelectList)ViewBag.FlightTypes)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Alterations: </td>
+                <td style="text-align:left">
+                    @Html.CheckBoxFor(m => m.BookTheMostExpensiveFlight)
+                    @Html.LabelFor(m => m.BookTheMostExpensiveFlight)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right"></td>
+                <td style="text-align:left">
+                    @Html.CheckBoxFor(m => m.BookTheMostExpensiveRoomAndBoard)
+                    @Html.LabelFor(m => m.BookTheMostExpensiveRoomAndBoard)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Payment completion option</td>
+                <td style="text-align:left">
+                    @Html.DropDownListFor(m => m.PaymentCompletion, (SelectList)ViewBag.PaymentCompletion)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Payment method option</td>
+                <td style="text-align:left">
+                    @Html.DropDownListFor(m => m.PaymentOption, (SelectList)ViewBag.PaymentOption)
+                </td>
+            </tr>
+            <tr class="customMethodOfPayment" >
+                <td style="text-align:right">CASH [%]</td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.CashPercent)%
+                </td>
+            </tr>
+            <tr class="customMethodOfPayment" >
+                <td style="text-align:right">REFUND [%]</td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.RefundCreditPercent)%
+                </td>
+            </tr>
+            <tr class="customMethodOfPayment" >
+                <td style="text-align:right">ONE TIME CREDIT [%]</td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.OneTimeCreditPercent)%
+                </td>
+            </tr>
+            <tr class="customMethodOfPayment" >
+                <td style="text-align:right">GOOD WILL [%]</td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.GoodWillCreditPercent)%
+                </td>
+            </tr>
+            <tr class="customMethodOfPayment" >
+                <td style="text-align:right">GIFT CARD [%]</td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.GiftCardCreditPercent)%
+                </td>
+            </tr>
+            <tr class="customMethodOfPayment" >
+                <td style="text-align:right">Clear vouchers</td>
+                <td style="text-align:left">
+                    @Html.CheckBoxFor(m => m.ClearVouchers)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Number of bookings to create: </td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.NumberOfBookings, new { @id = "numberInput", @type = "number", @min = "0", @max = @maxNumberOfBookings })
+                    @Html.ValidationMessageFor(m => m.NumberOfBookings, null, new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right">Authentication method: </td>
+                <td style="text-align:left">
+                    @foreach (var method in Enum.GetValues(typeof(AuthenticationMethod)).Cast<AuthenticationMethod>())
+                    {
+                    <input type="radio" value="@method" id="AuthenticationMethod_@method" name="AuthenticationMethod" @(method == Model.AuthenticationMethod ? "checked" : "") />
+                    <label for="AuthenticationMethod_@method">@method</label><br />
+                    }
+                </td>
+            </tr>
+            <tr class="userAuthenticationMethod">
+                <td style="text-align:right">Email: </td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.Email)
+                </td>
+            </tr>
+            <tr class="userAuthenticationMethod">
+                <td style="text-align:right">Password: </td>
+                <td style="text-align:left">
+                    @Html.PasswordFor(m => m.Password)
+                    <input type="checkbox" id="showPassword" />
+                    <label for="showPassword">Show Password</label>
+                </td>
+            </tr>
+            <tr class="agentAuthenticationMethod">
+                <td style="text-align:right">Agent number: </td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.AgentNumber)
+                    @Html.ValidationMessageFor(m => m.AgentNumber, null, new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr class="agentAuthenticationMethod">
+                <td style="text-align:right">Password: </td>
+                <td style="text-align:left">
+                    @Html.PasswordFor(m => m.AgentPassword)
+                    <input type="checkbox" id="agentShowPassword" />
+                    <label for="agentShowPassword">Show Password</label>
+                    @Html.ValidationMessageFor(m => m.AgentPassword, null, new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr class="agentAuthenticationMethod">
+                <td style="text-align:right">Consultant name: </td>
+                <td style="text-align:left">
+                    @Html.TextBoxFor(m => m.ConsultantName)
+                    @Html.ValidationMessageFor(m => m.ConsultantName, null, new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input id="submitButton" type="submit" value="Submit" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" id="response">@Html.Raw(Model?.Booking)</td>
+            </tr>
+            <tr>
+                <td colspan="2" id="logs">
+                    <textarea readonly="readonly" style="height:200px; width:75%; ">@Model?.Logs</textarea>
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function(){
+                $('input[type=radio][name=AuthenticationMethod]').change(function () {
+                    handleAuthenticationMethodChange(this.value);
+                });
+            $('#AuthenticationMethod_@Model.AuthenticationMethod').prop('checked', true);
+            handleAuthenticationMethodChange('@Model.AuthenticationMethod');
+        });
+
+        function handleAuthenticationMethodChange(value) {
+            if (value === '@AuthenticationMethod.GenerateRandomUser') {
+                $(".userAuthenticationMethod").hide();
+                $(".agentAuthenticationMethod").hide();
+            }
+            if (value === '@AuthenticationMethod.TradePortal') {
+                $(".userAuthenticationMethod").hide();
+                $(".agentAuthenticationMethod").show();
+            }
+            if (value === '@AuthenticationMethod.UseExistingUser') {
+                $(".userAuthenticationMethod").show();
+                $(".agentAuthenticationMethod").hide();
+            }
+        }
+
+        $(".customMethodOfPayment").hide();
+        $('select[name=PaymentOption]').change(function () {
+            if (this.value !== 'CUSTOM') {
+                $(".customMethodOfPayment").hide();
+            }
+            else {
+                $(".customMethodOfPayment").show();
+            }
+        });
+
+        document.getElementById('showPassword').addEventListener('change', function () {
+            var passwordField = document.getElementById('Password');
+            if (this.checked) {
+                passwordField.type = 'text'; // Show password
+            } else {
+                passwordField.type = 'password'; // Mask password
+            }
+        });
+
+        document.getElementById('agentShowPassword').addEventListener('change', function () {
+            var passwordField = document.getElementById('AgentPassword');
+            if (this.checked) {
+                passwordField.type = 'text'; // Show password
+            } else {
+                passwordField.type = 'password'; // Mask password
+            }
+        });
+
+        const form =document.getElementById('form');
+        const input = document.getElementById('numberInput');
+        const submitButton = document.getElementById('submitButton');
+        const validationMessage = document.querySelector('.text-danger');
+        let isSubmitted = false;
+        let isNumberOfBookingsValid = true;
+
+        input.addEventListener('input', function () {
+            const value = parseInt(input.value, @maxNumberOfBookings);
+
+            if (!isNaN(value) && value > @maxNumberOfBookings) {
+                isNumberOfBookingsValid = false;
+                validationMessage.textContent = "The number of bookings cannot exceed 10.";
+            } else {
+                isNumberOfBookingsValid = true;
+                validationMessage.textContent = "";
+            }
+
+            updateSubmitButtonState();
+        });
+
+        form.addEventListener('submit', function() 
+        {
+            isSubmitted = true;
+            updateSubmitButtonState();
+        })
+
+        function updateSubmitButtonState() {
+            submitButton.disabled = isSubmitted || !isNumberOfBookingsValid;
+        }
+
+    </script>
+}

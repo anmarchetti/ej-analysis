@@ -1,0 +1,78 @@
+﻿---
+ID: "fe49cd49-b4ed-4061-82a3-66eb845deb93"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-9817 Homepage - Holidays under component"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    
+    $pagePath=  '/sitecore/content/EasyJet/Holidays/Home';
+    
+    # Insert component wrapper
+    $homePage= Get-Item -Path $pagePath
+    $componentWrapperPlaceHolder= 'first-wrapper'
+    $componentWrapperRenderingPath = "/sitecore/layout/Renderings/Project/Holidays/Component Wrapper"
+    $componentWrapperItem = Get-Item -Database "master" -Path $componentWrapperRenderingPath | New-Rendering -Placeholder $componentWrapperPlaceHolder
+    Add-Rendering -Item $homePage -PlaceHolder $componentWrapperPlaceHolder -Instance $componentWrapperItem 
+    
+    $componentWrapperRenderings = Get-Rendering -Item $homePage -Placeholder $componentWrapperPlaceHolder
+    if ($componentWrapperRenderings -is [array]) {
+        $componentWrapperRend = $componentWrapperRenderings[0]
+    } else { 
+        $componentWrapperRend = $componentWrapperRenderings
+    }
+    
+    $pageComponents = Get-Item -path "master:/content/EasyJet/Holidays/Home/Page Components";
+    
+    $componentPlaceholder = '/body/component-wrapper-inner-'+ $componentWrapperRend.UniqueId +'-0'
+    $componentData = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Page Components/Holidays Under" -templateId "{A23790C0-A22E-4679-8F4B-FDDF84083454}"
+    $componentRenderingPath = '/sitecore/layout/Renderings/Feature/PageContent/Holidays Under'
+    $comonentRendering = Get-Item -Database "master" -Path $componentRenderingPath | New-Rendering -Placeholder $componentPlaceholder -DataSource $componentData
+    Add-Rendering -Item $homePage -PlaceHolder $componentPlaceholder -Instance $comonentRendering 
+    
+    $pill1 = Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/Page Components/Holidays Under/Pill" -templateId "{57A4FEC9-8F8C-4D85-B2D7-F3D305869B9D}"
+    if ($pill1-ne $null) {
+        $pill1.Editing.BeginEdit()
+        $pill1["Link"] = '<link text="" anchor="" linktype="internal" class="" title=""  querystring="" id="{0518D8C6-B7CA-4C73-86C2-A29D971EBEAB}" />';
+        $pill1["IsPpShown"] = '1';
+        $pill1["Price"] = '1234';
+        $pill1.Editing.EndEdit() | Out-Null
+    }  
+    
+    if ($componentData -ne $null) {
+        [Sitecore.Data.Fields.MultilistField]$pillsField = $componentData.Fields["Pills"];
+        $componentData.Editing.BeginEdit()
+        $pillsField.add($pill1.ID);
+        $componentData["Title"] = "HOLIDAYS UNDER";
+        $componentData["Description"] = "Wondering where in the world you can jet off to with easyJet holidays? Whether you’re daydreaming about a mini break or a longer holiday in the sun, our short and mid-haul destinations have got you covered.";
+        $componentData.Editing.EndEdit() | Out-Null
+        Write-Host "Top help links content updated"
+    }
+    
+    Get-Rendering -Item $homePage -PlaceHolder 'first-wrapper' | 
+        Foreach-Object { 
+            $_.Placeholder = "body"; 
+            Set-Rendering -Item $homePage -Instance $_
+        }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 4890
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200714T084139Z

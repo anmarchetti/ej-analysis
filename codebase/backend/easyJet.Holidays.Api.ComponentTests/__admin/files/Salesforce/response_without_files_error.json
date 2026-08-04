@@ -1,0 +1,45 @@
+{
+    "compositeResponse": [
+        {
+            "body": {
+                "done": true,
+                "records": [
+                    {
+                        "Id": "0123L000000XXXXQAX",
+                        "attributes": {
+                            "type": "RecordType",
+                            "url": "/services/data/v56.0/sobjects/RecordType/0123L000000XXXXQAX"
+                        }
+                    }
+                ],
+                "totalSize": 1
+            },
+            "httpHeaders": {},
+            "httpStatusCode": 200,
+            "referenceId": "refRecordType"
+        },
+        {
+            "body": [
+                {
+                    "errorCode": "STORAGE_LIMIT_EXCEEDED",
+                    "fields": [],
+                    "message": "storage limit exceeded"
+                }
+            ],
+            "httpHeaders": {},
+            "httpStatusCode": 400,
+            "referenceId": "refCase"
+        },
+        {
+            "body": [
+                {
+                    "errorCode": "PROCESSING_HALTED",
+                    "message": "The transaction was rolled back since another operation in the same transaction failed."
+                }
+            ],
+            "httpHeaders": {},
+            "httpStatusCode": 400,
+            "referenceId": "refCaseNoInfo"
+        }
+    ]
+}

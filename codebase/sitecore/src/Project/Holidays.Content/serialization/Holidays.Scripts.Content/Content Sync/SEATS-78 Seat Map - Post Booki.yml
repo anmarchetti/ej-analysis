@@ -1,0 +1,63 @@
+﻿---
+ID: "e4be552a-107a-406f-b122-0cdc9fdd0ec9"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SEATS-78 Seat Map - Post Booking - Balance Logic - Payment"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-datasource-item ($name,$path,$templateId) {
+    	$item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue;
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $name -ItemType $templateId;
+    		return $item;
+    	}
+    
+    	return $item;
+    }
+    
+    $pagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment";
+    $page = Get-Item -Path $pagePath;
+    
+    $datasourceName = "Seats Not Available Popup";
+    $datasourceTemplateId = "{1F96DD24-930E-4314-8E10-BCFD27315288}";
+    $datasourcePath = $pagePath + "/Page Components";
+    $datasourceitem = create-datasource-item -Name $datasourceName -Path $datasourcePath -TemplateId $datasourceTemplateId;
+    
+    if ($datasourceitem -ne $null) {
+    	$datasourceitem.Editing.BeginEdit();
+    	$datasourceitem["Title"] = "There is a problem with your seats";
+    	$datasourceitem["Description"] = "One or more of the seats you have picked for your flights are now unavailable.<br><br>" +
+    		"You can choose other seats, or go back and view your holiday booking.<br><br>" +
+    		"You can reserve seats up to 30 days before departure date.";
+    	$datasourceitem["ReselectSeatsButtonText"] = "Choose other seats"
+    	$datasourceitem["ClearSeatsButtonText"] = "Back to view booking";
+    	$datasourceitem.Editing.EndEdit() | Out-Null;
+    	Write-Host $datasourceitem.Name "is updated";
+    }
+    
+    $placeholder = "body";
+    $renderingPath = "/sitecore/layout/Renderings/Feature/SeatMap/Seats Not Available Popup";
+    $renderingId = "{8AE530B1-7702-48B7-A4B9-442E50845EFA}";
+    $rendering = Get-Rendering -Item $page -PlaceHolder $placeholder | Where-Object { $_.ItemId -eq $renderingId };
+    
+    if ($rendering -eq $null) {
+    	$renderingItem = Get-Item -Database "master" -Path $renderingPath | New-Rendering -PlaceHolder $placeholder;
+    	Add-Rendering -Item $page -PlaceHolder $placeholder -Instance $renderingItem -DataSource $datasourceItem.ID;
+    	Write-Host "Seats Not Available Popup rendering successfully added to" $page.Name "page";
+    }
+    	
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 200
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

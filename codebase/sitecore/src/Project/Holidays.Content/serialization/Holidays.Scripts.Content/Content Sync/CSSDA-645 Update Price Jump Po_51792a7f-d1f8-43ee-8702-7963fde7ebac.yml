@@ -1,0 +1,76 @@
+﻿---
+ID: "51792a7f-d1f8-43ee-8702-7963fde7ebac"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-645 Update Price Jump Popup Refund Description"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item,$lang,$field,$value) {
+    
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+    
+       
+    
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    
+        }
+    
+       
+    
+        if ($null -ne $field) {
+    
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+    
+            $targetLangItem.Editing.BeginEdit()
+    
+            $targetLangItem[$field] = $value;
+    
+            $targetLangItem.Editing.EndEdit() | Out-Null
+    
+        }
+    
+    }
+    
+     
+    
+     
+    $item = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Dictionary/Price Jump Popup/Labels/Refund Description"
+    
+    
+    
+    @('de-CH', 'de-DE') | % {
+    
+        Create-Lang-Version -Item $item -Lang $_ -Field "Phrase" -Value "Aufgrund der Preisänderung erhalten Sie nun eine Erstattung von {refundAmount}."
+    
+    }
+    
+    
+    @('fr-CH', 'fr-FR') | % {
+    
+        Create-Lang-Version -Item $item -Lang $_ -Field "Phrase" -Value "En raison du changement de prix, vous recevrez désormais un remboursement de {refundAmount}."
+    
+    }
+    
+    @('en') | % {
+    
+        Create-Lang-Version -Item $item -Lang $_ -Field "Phrase" -Value "Due to the change in price, you will now receive a refund of {refundAmount}."
+    
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230925T090536Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

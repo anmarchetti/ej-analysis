@@ -1,0 +1,116 @@
+.container {
+    position: relative;
+    display: flex;
+
+    &:last-child {
+        padding-bottom: 0;
+    }
+}
+
+.headerTitle {
+    flex-shrink: 0;
+    width: 132px;
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.285;
+
+    @include media-breakpoint-down(md) {
+        width: auto;
+        max-width: calc(100% - 32px);
+        margin-right: auto;
+    }
+}
+
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    margin-right: 16px;
+    background-color: $clrSiteBgWhite;
+    border: 1px solid $clrEjOrange;
+    border-radius: 50%;
+
+    svg {
+        width: 16px;
+        height: 16px;
+        fill: $clrEjOrange;
+    }
+}
+
+.itemWithButton {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 16px;
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px 1px rgba(51, 51, 51, 0.15);
+
+    @include media-breakpoint-down(md) {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+}
+
+.itemContent {
+    @include media-breakpoint-down(md) {
+        order: 3;
+        width: 100%;
+    }
+}
+
+.expandButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin-left: auto;
+
+    .chevron {
+        width: 11px;
+        height: 11px;
+
+        &.expanded {
+            transform: rotate(180deg) translateX(50%);
+        }
+    }
+}
+
+.verticalSeparator {
+    position: absolute;
+    z-index: $z-index-negative;
+    width: 0;
+    height: calc(100% + 16px);
+    margin-top: 16px;
+    border-left: 1px solid $clrEjOrange;
+    margin-inline-start: 16px;
+
+    @include media-breakpoint-down(md) {
+        margin-inline-start: 14px;
+    }
+
+    &.hidden {
+        display: none;
+    }
+}
+
+.container.greyedOut {
+    .icon {
+        border-color: #616161;
+
+        svg {
+            fill: #616161;
+        }
+    }
+
+    .verticalSeparator {
+        border-color: #616161;
+    }
+}

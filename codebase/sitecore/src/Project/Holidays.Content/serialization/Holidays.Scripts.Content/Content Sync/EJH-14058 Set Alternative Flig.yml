@@ -1,0 +1,28 @@
+﻿---
+ID: "5033c58c-ab12-431b-9074-28a125bf0ad9"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14058 Set Alternative Flights Filter Order"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $flights = Get-Item -Path "master://sitecore/content/EasyJet/Holidays/Home/Hotel Details/Page Components/Alternative Flights" -ErrorAction SilentlyContinue
+    
+    if ($flights -ne $null) {
+    	$flights.Editing.BeginEdit();
+    	$flights["FiltersOrder"] = "{EC9EA973-22E9-42DD-9878-2CC27987BC27}|{1255525F-3BFF-4BF5-B0FD-3CC60A9DE8A9}|{2CF265A2-B919-43B2-8BB8-1C8DF835BE64}"
+    	$flights.Editing.EndEdit() | Out-Null
+    
+    	Write-Host "Filters Order updated"
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20211001T120404Z

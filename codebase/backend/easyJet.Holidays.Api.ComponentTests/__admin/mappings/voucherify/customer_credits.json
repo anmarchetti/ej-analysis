@@ -1,0 +1,125 @@
+{
+    "Title": "valid code testone",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/v1/vouchers",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "customer",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "24103"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "object": "list",
+            "total": 9,
+            "data_ref": "vouchers",
+            "vouchers": [
+                {
+                    "id": "v_agdJjn6SuTQZ2mavUvHseubfqEq1IwkV",
+                    "code": "bulk-tool-84d8ddad-235f-406e-bdd9-5ab91e27c125-refund",
+                    "campaign": "easyJet-credit",
+                    "campaign_id": "camp_2OfBKBC6DpBD6mTUEMCkZLgu",
+                    "category": "ej Holidays",
+                    "type": "GIFT_VOUCHER",
+                    "discount": null,
+                    "gift": {
+                        "amount": 17000,
+                        "balance": 17000
+                    },
+                    "loyalty_card": null,
+                    "start_date": null,
+                    "expiration_date": "3021-07-14T00:00:00.000Z",
+                    "validity_timeframe": null,
+                    "validity_day_of_week": null,
+                    "active": true,
+                    "additional_info": null,
+                    "metadata": {
+                        "memo": "",
+                        "reason": "refund",
+                        "source": "ATCOM",
+                        "currency": "GBP",
+                        "booking_ref": "9028489"
+                    },
+                    "is_referral_code": false,
+                    "created_at": "2020-07-14T13:57:39.730Z",
+                    "updated_at": "2020-07-14T13:57:53.319Z",
+                    "holder_id": "cust_623piNIvfyRLtAxRvDVXPzsd",
+                    "object": "voucher",
+                    "publish": {
+                        "object": "list",
+                        "count": 1,
+                        "url": "/v1/vouchers/bulk-tool-84d8ddad-235f-406e-bdd9-5ab91e27c125-refund/publications?page=1&limit=10"
+                    },
+                    "redemption": {
+                        "object": "list",
+                        "quantity": null,
+                        "redeemed_quantity": 0,
+                        "redeemed_amount": 0,
+                        "url": "/v1/vouchers/bulk-tool-84d8ddad-235f-406e-bdd9-5ab91e27c125-refund/redemptions?page=1&limit=10"
+                    }
+                },
+                {
+                    "id": "v_2sB2mcT9kqtrdaGV5ut2nrYG4B3Bz0CH",
+                    "code": "bulk-tool-0df12b41-5421-4b96-ac4b-5f0377ae2c81-refund",
+                    "campaign": "easyJet-credit",
+                    "campaign_id": "camp_2OfBKBC6DpBD6mTUEMCkZLgu",
+                    "category": "ej Holidays",
+                    "type": "GIFT_VOUCHER",
+                    "discount": null,
+                    "gift": {
+                        "amount": 500000,
+                        "balance": 500000
+                    },
+                    "loyalty_card": null,
+                    "start_date": null,
+                    "expiration_date": "3021-07-14T00:00:00.000Z",
+                    "validity_timeframe": null,
+                    "validity_day_of_week": null,
+                    "active": true,
+                    "additional_info": null,
+                    "metadata": {
+                        "memo": "",
+                        "reason": "refund",
+                        "source": "ATCOM",
+                        "currency": "GBP",
+                        "booking_ref": "40000394"
+                    },
+                    "is_referral_code": false,
+                    "created_at": "2020-07-14T13:57:23.092Z",
+                    "updated_at": "2020-07-14T13:57:23.265Z",
+                    "holder_id": "cust_623piNIvfyRLtAxRvDVXPzsd",
+                    "object": "voucher",
+                    "publish": {
+                        "object": "list",
+                        "count": 1,
+                        "url": "/v1/vouchers/bulk-tool-0df12b41-5421-4b96-ac4b-5f0377ae2c81-refund/publications?page=1&limit=10"
+                    },
+                    "redemption": {
+                        "object": "list",
+                        "quantity": null,
+                        "redeemed_quantity": 0,
+                        "redeemed_amount": 0,
+                        "url": "/v1/vouchers/bulk-tool-0df12b41-5421-4b96-ac4b-5f0377ae2c81-refund/redemptions?page=1&limit=10"
+                    }
+                }
+            ]
+        }
+    }
+}

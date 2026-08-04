@@ -1,0 +1,93 @@
+$asideWidth: 288px;
+
+.wrapper {
+    display: grid;
+    grid-template-columns: minmax(250px, 1fr);
+    row-gap: 24px;
+    width: 100%;
+    max-width: $container-max-width + 2 * $container-padding-x_mobile;
+    margin: 0 auto;
+    padding: 40px $container-padding-x_mobile;
+
+    @include media-breakpoint-up(md) {
+        grid-template-columns: auto $asideWidth;
+        gap: 0 16px;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding-top: 24px;
+    }
+
+    > div:empty {
+        display: none;
+    }
+
+    :global {
+        .hotels-carousel {
+            padding: 0;
+
+            .react-multi-carousel-list {
+                @include media-breakpoint-down(md) {
+                    margin: 0 -10px;
+                }
+            }
+        }
+
+        .excursions {
+            margin: 0;
+            padding: 0;
+
+            &::after {
+                display: none;
+            }
+        }
+
+        .card {
+            margin-bottom: 0;
+        }
+
+        .carousel-offer-card {
+            margin: 5px 8px;
+        }
+
+        .hotels-carousel__title {
+            font-size: 25px;
+            font-family: $fontRoundedBook;
+            line-height: 1.08;
+            text-transform: uppercase;
+            font-weight: 400;
+            margin-bottom: 24px;
+        }
+    }
+}
+
+.reverseView {
+    @include media-breakpoint-up(md) {
+        grid-template-columns: $asideWidth auto;
+    }
+
+    .section {
+        grid-column: 2;
+    }
+
+    .aside {
+        grid-column: 1;
+    }
+}
+
+.section,
+.aside {
+    display: grid;
+    grid-template-rows: max-content;
+    grid-template-columns: minmax(250px, 1fr);
+    row-gap: 40px;
+
+    > div:empty {
+        display: none;
+    }
+}
+
+.aside {
+    display: flex;
+    flex-direction: column;
+}

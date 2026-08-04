@@ -1,0 +1,1560 @@
+﻿{
+    "Title": "Activities from musement service coordinates (api/v3/activities?offset=0&limit=10&distance=100KM&coordinates=40.86356,17.38704)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/v3/activities",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Headers": [
+            {
+                "Name": "X-Musement-Version",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "3.4.0"
+                    }
+                ]
+            },
+            {
+                "Name": "X-Musement-Currency",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "GBP"
+                    }
+                ]
+            }
+        ],
+        "Params": [
+            {
+                "Name": "distance",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "100KM"
+                    }
+                ]
+            },
+            {
+                "Name": "offset",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "0"
+                    }
+                ]
+            },
+            {
+                "Name": "limit",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "10"
+                    }
+                ]
+            },
+            {
+                "Name": "sort_by",
+                "Matchers": [
+                    {
+                        "Name": "ExactMatcher",
+                        "Pattern": "-relevance-city"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "meta": {
+                "count": 33
+            },
+            "data": [
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P0D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "0199e7f8-0939-4843-9518-7efc0537a22d",
+                    "city": {
+                        "id": 83,
+                        "name": "Matera",
+                        "country": {
+                            "id": 82,
+                            "name": "Italy",
+                            "iso_code": "IT"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0002/68/fotolia-204147503-subscription-xxl-jpg_header-167970.jpeg",
+                        "url": "https://musement.com/us/matera/",
+                        "time_zone": "Europe/Rome"
+                    },
+                    "title": "Panoramic tour of Matera in Ape Calessino",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "PRINTED",
+                    "temporary": false,
+                    "description": "Visit the city of Matera with a typical Italian transport, the Ape Calessino.",
+                    "about": "Lead into the streets of Matera with this special tour.\nWith the Ape Calessino tour, you'll have the chance to admire the wonderful atmosphere of Matera, the European Capital of Culture 2019. Comfort, style and culture are all combined in one of the most unique tours of the city. Quality and professionalism are guaranteed to give you the best possible service.In 45 minutes you'll visit the most iconic sites of the city: Chiesa del Purgatorio, Cattedrale di Matera, Chiesa di San Giovanni, Sasso Barisano (Veduta Panoramica), Sasso Caveoso (Veduta Panoramica di San Pietro Caveoso) and Piazza Vittorio Veneto.",
+                    "meeting_point": "Piazza San Francesco.",
+                    "operational_days": "Every day",
+                    "duration_range": {
+                        "max": "PT45M"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "it",
+                            "name": "Italian"
+                        },
+                        {
+                            "code": "de",
+                            "name": "German"
+                        }
+                    ],
+                    "group_size": [],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "transport",
+                            "name": "Transport included"
+                        }
+                    ],
+                    "features": [],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0003/24/thumb_223348_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 26.0,
+                        "formatted_value": "£ 26.00",
+                        "formatted_iso_value": "£26.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 26.0,
+                        "formatted_value": "£ 26.00",
+                        "formatted_iso_value": "£26.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 26.0,
+                        "formatted_value": "£ 26.00",
+                        "formatted_iso_value": "£26.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 26.0,
+                        "formatted_value": "£ 26.00",
+                        "formatted_iso_value": "£26.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 40.665386,
+                    "longitude": 16.608721,
+                    "url": "https://musement.com/us/matera/panoramic-tour-of-matera-in-ape-calessino-92059/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "e16a2a4a-4df8-4a40-820f-662f39bce7e8",
+                        "logo_url": "https://images-sandbox.musement.com/cover/0002/96/thumb_195764_cover_header.png?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P1D",
+                    "cutoff_time": "P3D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "1449785f-2046-11e7-9cc9-06a7e332783f",
+                    "city": {
+                        "id": 80,
+                        "name": "Bari",
+                        "country": {
+                            "id": 82,
+                            "name": "Italy",
+                            "iso_code": "IT"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/07/bari_header-6580.jpeg",
+                        "url": "https://musement.com/us/bari/",
+                        "time_zone": "Europe/Rome"
+                    },
+                    "title": "Bari Walking Tour (min. 4 adults)",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Buy your Bari City Walk with Musement and explore Bari discovering picturesque and hidden corners with an expert guide.",
+                    "about": "Tour begins visiting the main attractions of the old town such as the Basilica of Saint Nicholas with its precious Crypt, the ancient Cathedral of Saint Sabinus and the millenary Swabian Castle.Tour goes on walking along the authentic narrow streets, where old ladies still make pasta by hand, kids play outdoor and people cook in every corner. Tour ends discovering the modern French part of the city with opera theaters, luxury shopping streets, the famous fish market on the sea-side and the lively squares where a taste of local products is not to be missed. Seal the deal tasting delicious italian home made ice cream.",
+                    "meeting_point": "Strada Vallisa 81, old townVelostation in the Port of Bari (only cruise passengers)",
+                    "operational_days": "Everyday",
+                    "duration_range": {
+                        "max": "PT2H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "it",
+                            "name": "Italian"
+                        },
+                        {
+                            "code": "fr",
+                            "name": "French"
+                        },
+                        {
+                            "code": "es",
+                            "name": "Spanish"
+                        },
+                        {
+                            "code": "de",
+                            "name": "German"
+                        },
+                        {
+                            "code": "pt",
+                            "name": "Portuguese"
+                        }
+                    ],
+                    "group_size": [],
+                    "food": [],
+                    "services": [],
+                    "features": [],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0003/32/thumb_231696_cover_header.png?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 13.0,
+                        "formatted_value": "£ 13.00",
+                        "formatted_iso_value": "£13.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 13.0,
+                        "formatted_value": "£ 13.00",
+                        "formatted_iso_value": "£13.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 13.0,
+                        "formatted_value": "£ 13.00",
+                        "formatted_iso_value": "£13.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 13.0,
+                        "formatted_value": "£ 13.00",
+                        "formatted_iso_value": "£13.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 41.127544,
+                    "longitude": 16.871549,
+                    "url": "https://musement.com/us/bari/bari-walking-tour-min-4-adults-6630/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c1979d46-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/37/thumb_36841_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P1D",
+                    "cutoff_time": "P3D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "14497dc7-2046-11e7-9cc9-06a7e332783f",
+                    "city": {
+                        "id": 80,
+                        "name": "Bari",
+                        "country": {
+                            "id": 82,
+                            "name": "Italy",
+                            "iso_code": "IT"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/07/bari_header-6580.jpeg",
+                        "url": "https://musement.com/us/bari/",
+                        "time_zone": "Europe/Rome"
+                    },
+                    "title": "Bari Street Food Walking Tour (min. 2 adults)",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Buy your Tour of Bari and its flavors with Musement and discover the southern Italian culinary culture.",
+                    "about": "Tour begins visiting the main attractions of the old town such as the Basilica of Saint Nicholas with its precious Crypt, the ancient Cathedral of Saint Sabinus and the millenary Swabian Castle. Tour goes on having several tasting stops in a Panificio, to learn how focaccia barese is made and taste a slice; in a Salumeria, to find out the different kinds of cheeses & salami while drinking a glass of wine; in one of the typical corners, to discover fried street food strong flavour such as sgagliozze and panzerotti; in a Gelateria, to enjoy the home-made ice cream choosing your favourite one between a great selection Tour ends discovering the modern French part of the city along the famous sea-side, opera theaters and luxury shopping streets.",
+                    "meeting_point": "Strada Vallisa 81, old town or Velostation in the Port of Bari (only cruise passengers)",
+                    "operational_days": "Everyday",
+                    "duration_range": {
+                        "max": "PT3H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "it",
+                            "name": "Italian"
+                        },
+                        {
+                            "code": "fr",
+                            "name": "French"
+                        },
+                        {
+                            "code": "es",
+                            "name": "Spanish"
+                        },
+                        {
+                            "code": "de",
+                            "name": "German"
+                        },
+                        {
+                            "code": "pt",
+                            "name": "Portuguese"
+                        },
+                        {
+                            "code": "ru",
+                            "name": "Russian"
+                        },
+                        {
+                            "code": "ja",
+                            "name": "Japanese"
+                        }
+                    ],
+                    "group_size": [
+                        {
+                            "code": "small",
+                            "name": "Small group"
+                        }
+                    ],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "wheelchair",
+                            "name": "Wheelchair accessible"
+                        },
+                        {
+                            "code": "pet-friendly",
+                            "name": "Pet friendly"
+                        }
+                    ],
+                    "features": [],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0003/32/thumb_231471_cover_header.png?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 39.0,
+                        "formatted_value": "£ 39.00",
+                        "formatted_iso_value": "£39.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 39.0,
+                        "formatted_value": "£ 39.00",
+                        "formatted_iso_value": "£39.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 39.0,
+                        "formatted_value": "£ 39.00",
+                        "formatted_iso_value": "£39.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 39.0,
+                        "formatted_value": "£ 39.00",
+                        "formatted_iso_value": "£39.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 41.127544,
+                    "longitude": 16.871549,
+                    "url": "https://musement.com/us/bari/bari-street-food-walking-tour-min-2-adults-6631/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 3,
+                            "name": "Food & wine",
+                            "active": true,
+                            "code": "food-wine",
+                            "slug": "food-wine",
+                            "url": "https://musement.com/us/food-wine-t/",
+                            "meta_title": "Delight in local Food and Wine wherever you go",
+                            "meta_description": "Let Musement treat you to the wonders of the gastronomic world. Taste wine in France, eat tapas in Spain or make pasta in Italy...the choice is yours!",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/30/food-wine-01-jpg_header-29025.jpeg?w=540",
+                            "relevance": 70
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c1979d46-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/37/thumb_36841_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P1D",
+                    "cutoff_time": "P3D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "14498363-2046-11e7-9cc9-06a7e332783f",
+                    "city": {
+                        "id": 80,
+                        "name": "Bari",
+                        "country": {
+                            "id": 82,
+                            "name": "Italy",
+                            "iso_code": "IT"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/07/bari_header-6580.jpeg",
+                        "url": "https://musement.com/us/bari/",
+                        "time_zone": "Europe/Rome"
+                    },
+                    "title": "Bari Walking Tour with Pasta Experience (min. 2 adults)",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Buy your Bari pasta experience with Musement and have a pasta making class in a typical house of the old town.",
+                    "about": "Tour begins visiting the main attractions of the old town such as the Basilica of Saint Nicholas with its precious Crypt, the ancient Cathedral of Saint Sabinus and the millenary Swabian Castle. Tour goes on discovering the modern French part of the city along the famous sea-side, with its fish market, opera theaters and luxury shopping streets. Tour ends at Signora Maria’s House where we will learn how to make orecchiette, the local home-made pasta and find out the secrets of its traditional recipe. While drinking genuine Primitivo red wine we will cook and taste our own home-made pasta feeling like a native. And to finish with we will taste some delicious italian home made ice cream",
+                    "meeting_point": "Strada Vallisa 81, old town or Velostation in the Port of Bari (only cruise passengers)",
+                    "operational_days": "Everyday",
+                    "duration_range": {
+                        "max": "PT2H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "it",
+                            "name": "Italian"
+                        },
+                        {
+                            "code": "fr",
+                            "name": "French"
+                        },
+                        {
+                            "code": "es",
+                            "name": "Spanish"
+                        },
+                        {
+                            "code": "de",
+                            "name": "German"
+                        },
+                        {
+                            "code": "pt",
+                            "name": "Portuguese"
+                        }
+                    ],
+                    "group_size": [
+                        {
+                            "code": "small",
+                            "name": "Small group"
+                        }
+                    ],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "wheelchair",
+                            "name": "Wheelchair accessible"
+                        },
+                        {
+                            "code": "pet-friendly",
+                            "name": "Pet friendly"
+                        }
+                    ],
+                    "features": [],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0003/32/thumb_231461_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 34.0,
+                        "formatted_value": "£ 34.00",
+                        "formatted_iso_value": "£34.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 34.0,
+                        "formatted_value": "£ 34.00",
+                        "formatted_iso_value": "£34.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 34.0,
+                        "formatted_value": "£ 34.00",
+                        "formatted_iso_value": "£34.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 34.0,
+                        "formatted_value": "£ 34.00",
+                        "formatted_iso_value": "£34.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 41.127544,
+                    "longitude": 16.871549,
+                    "url": "https://musement.com/us/bari/bari-walking-tour-with-pasta-experience-min-2-adults-6633/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c1979d46-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/37/thumb_36841_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P1D",
+                    "cutoff_time": "P3D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "14498916-2046-11e7-9cc9-06a7e332783f",
+                    "city": {
+                        "id": 80,
+                        "name": "Bari",
+                        "country": {
+                            "id": 82,
+                            "name": "Italy",
+                            "iso_code": "IT"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/07/bari_header-6580.jpeg",
+                        "url": "https://musement.com/us/bari/",
+                        "time_zone": "Europe/Rome"
+                    },
+                    "title": "Shopping Walking Tour in Bari (min. 2 adults)",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Buy your Shopping in Bari tour with Musement and explore Bari and its commercial soul along luxury shopping streets.",
+                    "about": "Tour begins having a panoramic view of the main attractions of the old town such as the Basilica of Saint Nicholas, the ancient Cathedral of Saint Sabinus and the millenary Swabian Castle. We will explore the little alleys of the old time and discover the hidden secrets of this beautiful city. Tour goes on shopping into the most fashionable atelier and boutiques to discover the real \"made in italy\" products and handcrafts. Tour ends in the lively squares of the old town where a typical italian aperitivo will take place. Spritz or posecco and some little snacks will be enjoyed after a day of a shopping spree. Time to relax and unwind.",
+                    "meeting_point": "Strada Vallisa 81, old town or Velostation in the Port of Bari (only cruise passengers)",
+                    "operational_days": "Everyday",
+                    "duration_range": {
+                        "max": "PT3H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "it",
+                            "name": "Italian"
+                        },
+                        {
+                            "code": "fr",
+                            "name": "French"
+                        },
+                        {
+                            "code": "es",
+                            "name": "Spanish"
+                        },
+                        {
+                            "code": "de",
+                            "name": "German"
+                        }
+                    ],
+                    "group_size": [
+                        {
+                            "code": "small",
+                            "name": "Small group"
+                        }
+                    ],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "pet-friendly",
+                            "name": "Pet friendly"
+                        }
+                    ],
+                    "features": [],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0003/32/thumb_231485_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 28.0,
+                        "formatted_value": "£ 28.00",
+                        "formatted_iso_value": "£28.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 28.0,
+                        "formatted_value": "£ 28.00",
+                        "formatted_iso_value": "£28.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 28.0,
+                        "formatted_value": "£ 28.00",
+                        "formatted_iso_value": "£28.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 28.0,
+                        "formatted_value": "£ 28.00",
+                        "formatted_iso_value": "£28.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 41.127544,
+                    "longitude": 16.871549,
+                    "url": "https://musement.com/us/bari/shopping-walking-tour-in-bari-min-2-adults-6634/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c1979d46-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/37/thumb_36841_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P1D",
+                    "cutoff_time": "P3D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "144999a9-2046-11e7-9cc9-06a7e332783f",
+                    "city": {
+                        "id": 81,
+                        "name": "Lecce",
+                        "country": {
+                            "id": 82,
+                            "name": "Italy",
+                            "iso_code": "IT"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/07/lecce_header-6417.jpeg",
+                        "url": "https://musement.com/us/lecce/",
+                        "time_zone": "Europe/Rome"
+                    },
+                    "title": "Lecce shopping experience",
+                    "relevance": 1,
+                    "emergency_phone_number": "+393896207353",
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Buy your Shopping in Lecce tour with Musement and Explore Lecce and its commercial soul along luxury shopping streets",
+                    "about": "The tour starts having a panoramic view of the main attractions of the old town such the charming Santa Croce Basilica with its Baroque style, the Duomo and its huge square and the millenary roman amphitheater.\nThe tour goes on shopping into the most fashionable atelier and boutiques to discover the real made in italy products and handcrafts. The tour ends in the lively squares of the old town where a typical italian aperitivo is not to be missed.",
+                    "operational_days": "Every day",
+                    "duration_range": {
+                        "max": "PT3H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "it",
+                            "name": "Italian"
+                        },
+                        {
+                            "code": "fr",
+                            "name": "French"
+                        },
+                        {
+                            "code": "es",
+                            "name": "Spanish"
+                        },
+                        {
+                            "code": "de",
+                            "name": "German"
+                        },
+                        {
+                            "code": "pt",
+                            "name": "Portuguese"
+                        },
+                        {
+                            "code": "ru",
+                            "name": "Russian"
+                        },
+                        {
+                            "code": "ja",
+                            "name": "Japanese"
+                        }
+                    ],
+                    "group_size": [
+                        {
+                            "code": "small",
+                            "name": "Small group"
+                        }
+                    ],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "wheelchair",
+                            "name": "Wheelchair accessible"
+                        },
+                        {
+                            "code": "pick-up",
+                            "name": "Hotel pick up"
+                        },
+                        {
+                            "code": "pet-friendly",
+                            "name": "Pet friendly"
+                        }
+                    ],
+                    "features": [],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0001/38/thumb_37238_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 39.0,
+                        "formatted_value": "£ 39.00",
+                        "formatted_iso_value": "£39.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 39.0,
+                        "formatted_value": "£ 39.00",
+                        "formatted_iso_value": "£39.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 39.0,
+                        "formatted_value": "£ 39.00",
+                        "formatted_iso_value": "£39.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 39.0,
+                        "formatted_value": "£ 39.00",
+                        "formatted_iso_value": "£39.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 40.353506,
+                    "longitude": 18.168558,
+                    "url": "https://musement.com/us/lecce/lecce-shopping-experience-6639/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c1979d46-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/37/thumb_36841_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P1D",
+                    "cutoff_time": "P1D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "1449b373-2046-11e7-9cc9-06a7e332783f",
+                    "city": {
+                        "id": 80,
+                        "name": "Bari",
+                        "country": {
+                            "id": 82,
+                            "name": "Italy",
+                            "iso_code": "IT"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/07/bari_header-6580.jpeg",
+                        "url": "https://musement.com/us/bari/",
+                        "time_zone": "Europe/Rome"
+                    },
+                    "title": "Bari Bike Tour (min. 2 adults)",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Explore Bari and discover picturesque and hidden corners with an expert guide by bike.",
+                    "about": "Tour begins visiting the main attractions of the old town such as the Basilica of Saint Nicholas with its precious Crypt, the ancient Cathedral of Saint Sabinus and the millenary Swabian Castle. Tour goes on riding along the authentic narrow streets, where old ladies still make pasta by hand, kids play outdoor and people cook in every corner. Tour ends discovering the modern French part of the city with opera theaters, luxury shopping streets, the famous fish market on the sea-side, the beach and the livelysquares where a taste of local products is not to be missed. The tour also includes tasting of delicious italian home made ice cream.",
+                    "meeting_point": "Strada Vallisa 81, old town, Bari or Velostation in the Port of Bari (only cruise passengers)",
+                    "operational_days": "Everyday",
+                    "duration_range": {
+                        "max": "PT2H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "it",
+                            "name": "Italian"
+                        },
+                        {
+                            "code": "fr",
+                            "name": "French"
+                        },
+                        {
+                            "code": "es",
+                            "name": "Spanish"
+                        },
+                        {
+                            "code": "de",
+                            "name": "German"
+                        }
+                    ],
+                    "group_size": [],
+                    "food": [],
+                    "services": [],
+                    "features": [],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0001/38/thumb_37267_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 22.0,
+                        "formatted_value": "£ 22.00",
+                        "formatted_iso_value": "£22.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 22.0,
+                        "formatted_value": "£ 22.00",
+                        "formatted_iso_value": "£22.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 22.0,
+                        "formatted_value": "£ 22.00",
+                        "formatted_iso_value": "£22.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 22.0,
+                        "formatted_value": "£ 22.00",
+                        "formatted_iso_value": "£22.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 41.127519,
+                    "longitude": 16.871415,
+                    "url": "https://musement.com/us/bari/bari-bike-tour-min-2-adults-6645/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c1979d46-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/37/thumb_36841_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P1D",
+                    "cutoff_time": "P3D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "1449b890-2046-11e7-9cc9-06a7e332783f",
+                    "city": {
+                        "id": 80,
+                        "name": "Bari",
+                        "country": {
+                            "id": 82,
+                            "name": "Italy",
+                            "iso_code": "IT"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/07/bari_header-6580.jpeg",
+                        "url": "https://musement.com/us/bari/",
+                        "time_zone": "Europe/Rome"
+                    },
+                    "title": "Bari History & Culture Walking Tour (min. 2 adults)",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Buy your Bari and its history tour with Musement and explore traces of the past past of monuments, churches and nobile buildings.",
+                    "about": "Tour begins visiting the main attractions of the old town such as the Basilica of Saint Nicholas with its precious Crypt. Tour goes on visiting two museums of your choice: Succorpo of the Cathedral, to discover underground Roman walls and crypt; Archaeological museum of Santa Scolastica, to find out the traces of Peuceti, the first inhabitants of the city; Swebian Castle, to see the collection of plaster casts and temporary art exhibitions; Palazzo Simi, a palace built on a Byzantine church, to admire ancient pottery; Civic Museum, to evoke the atmosphere of the city from the Renaissance period to the present days. Tour ends discovering the modern French part of the city along the famous sea-side, opera theatres and luxury shopping streets and the lively squares where a taste of local products is not to be missed.",
+                    "meeting_point": "Strada Vallisa 81, old townVelostation in the Port of Bari (only cruise passengers)",
+                    "operational_days": "Everyday",
+                    "duration_range": {
+                        "max": "PT3H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "it",
+                            "name": "Italian"
+                        },
+                        {
+                            "code": "fr",
+                            "name": "French"
+                        },
+                        {
+                            "code": "es",
+                            "name": "Spanish"
+                        },
+                        {
+                            "code": "de",
+                            "name": "German"
+                        },
+                        {
+                            "code": "pt",
+                            "name": "Portuguese"
+                        },
+                        {
+                            "code": "ru",
+                            "name": "Russian"
+                        }
+                    ],
+                    "group_size": [],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "pet-friendly",
+                            "name": "Pet friendly"
+                        }
+                    ],
+                    "features": [],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0003/32/thumb_231484_cover_header.png?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 26.0,
+                        "formatted_value": "£ 26.00",
+                        "formatted_iso_value": "£26.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 26.0,
+                        "formatted_value": "£ 26.00",
+                        "formatted_iso_value": "£26.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 26.0,
+                        "formatted_value": "£ 26.00",
+                        "formatted_iso_value": "£26.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 26.0,
+                        "formatted_value": "£ 26.00",
+                        "formatted_iso_value": "£26.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 41.127544,
+                    "longitude": 16.871549,
+                    "url": "https://musement.com/us/bari/bari-history-culture-walking-tour-min-2-adults-6646/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c1979d46-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/37/thumb_36841_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P0D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "14727bcb-ba32-44ec-9d51-27c091e95132",
+                    "city": {
+                        "id": 81,
+                        "name": "Lecce",
+                        "country": {
+                            "id": 82,
+                            "name": "Italy",
+                            "iso_code": "IT"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/07/lecce_header-6417.jpeg",
+                        "url": "https://musement.com/us/lecce/",
+                        "time_zone": "Europe/Rome"
+                    },
+                    "title": "The secrets of Barocco walking tour of Lecce",
+                    "relevance": 1,
+                    "emergency_phone_number": "00390577236330",
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Discover the highlights of Leccese Baroque architecture on a guided walking tour including Duomo Square and St. Oronzo Square.",
+                    "about": "Join a fascinating tour through the history of Lecce from the old Messapian and Roman times to the splendor of the city during the Renaissance and the Baroque Period. A professional guide will tell you about the history and the enchanting architecture of the buildings.Discover more about Baroque architecture by taking a walk in the beautiful city of Lecce, known as the Capital of Apulia. Start in Duomo Square with the Cathedral, the Bell Tower, the Bishop Palace and the Seminary. Continue to St. Irene Church along the main street Vittorio Emanuele II to reach Lecce's main square, St. Oronzo Square, where the Roman Amphitheatre is located. End up with the Church of the Holy Cross and the Celestini Palace, the symbols of Leccese Baroque style.",
+                    "operational_days": "Every day",
+                    "duration_range": {
+                        "max": "PT2H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "it",
+                            "name": "Italian"
+                        },
+                        {
+                            "code": "es",
+                            "name": "Spanish"
+                        }
+                    ],
+                    "group_size": [],
+                    "food": [],
+                    "services": [],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        },
+                        {
+                            "code": "ADDVA_GUIDE",
+                            "name": "Guided Tour"
+                        }
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0038/41/thumb_3740216_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 61.0,
+                        "formatted_value": "£ 61.00",
+                        "formatted_iso_value": "£61.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 61.0,
+                        "formatted_value": "£ 61.00",
+                        "formatted_iso_value": "£61.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 61.0,
+                        "formatted_value": "£ 61.00",
+                        "formatted_iso_value": "£61.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 61.0,
+                        "formatted_value": "£ 61.00",
+                        "formatted_iso_value": "£61.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 40.351891,
+                    "longitude": 18.168719,
+                    "url": "https://musement.com/us/lecce/the-secrets-of-barocco-walking-tour-of-lecce-168195/",
+                    "flavours": [
+                        {
+                            "id": 111,
+                            "name": "Guided Tour",
+                            "active": true,
+                            "slug": "guided-tour"
+                        }
+                    ],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c18f1180-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/11/thumb_10612_default_header.jpeg?w=540"
+                    },
+                    "giftable": false,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": true
+                },
+                {
+                    "max_confirmation_time": "PT12H",
+                    "cutoff_time": "PT12H",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "1668e8da-2046-11e7-9cc9-06a7e332783f",
+                    "city": {
+                        "id": 81,
+                        "name": "Lecce",
+                        "country": {
+                            "id": 82,
+                            "name": "Italy",
+                            "iso_code": "IT"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/07/lecce_header-6417.jpeg",
+                        "url": "https://musement.com/us/lecce/",
+                        "time_zone": "Europe/Rome"
+                    },
+                    "title": "Winery tour and tasting in Salento at the Leone de Castris winery",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Visit Salento and don't miss out on the Leone de Castris winery with its famous Salice Salentino and Five Roses wine. Wine tasting with optional snacks or lunch.",
+                    "about": "The winery was founded in 1665 by a Spanish man: the count of Lemos. In 1925 the first wine was bottled by Piero and Lisetta Leone de Castris, the grandparents of the current owner Piernicola Leone de Castris. In 1943 the Five Roses was born - the first rosé ever to be bottled in Italy. Furthermore, this was followed by the 50° Vendemmia Salice Salentino Riserve - the first Salice red wine to be bottled in 1954, still 20 years before the birth of the DOC Salice Salentino.\nThe Experience\n- Presentation of the winery with historical background included\n- Visit to the wine cellar where wines are aged\n- Explanation of the production chain from harvesting to bottling \n- Guided tour of the “Piero e Salvatore Leone de Castris” Wine Museum\n- The possibility to purchase wines at “Il Bottegone Leone de Castris” shop\n\nOffer\nThree options with differing prices:\n- \"LA GRANDE TRADIZIONE\" TOUR: Guided tour of the historical offices, cellar and Museum 'Piero e Salvatore Leone de Castris' and technical tasting of three wines identifying the company: Messapia Verdeca Igt Salento, Five Roses Anniversary Rosato Igt Salento, 50th Harvest Salice Salentino DOC Riserva: € 24.00 (2 - 80 people max)\n- \"FOOD EXPERIENCE\" TOUR: Guided tour of the historical offices, cellar and Museum 'Piero e Salvatore Leone de Castris' with light lunch buffet and tasting of three wines identifying the company: Messapia Verdeca Igt Salento, Five Roses Anniversary RosatoIgt Salento, 50th Harvest Salice Salentino DOC Riserva: € 44.00 (2 - 80 people max)\n- \"DONNA LISA\" TOUR (from April to September): Guided tour of the historical offices, cellar and Museum 'Piero e Salvatore Leone de Castris', with lunch and tasting of 3 wines in combination with the chef's dishes, at the Milo Restaurant of the Hotel Villa Donna Lisa, next to the cellar: € 52,00 (8 - 80 people max)\n Please note: there is a discount for groups of more than 10 people - for more information, please send a request from the Musement Food&Wine page under the \"Tailor Made Tours\" tab.",
+                    "operational_days": "Monday - Friday",
+                    "duration_range": {
+                        "max": "PT2H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "it",
+                            "name": "Italian"
+                        },
+                        {
+                            "code": "fr",
+                            "name": "French"
+                        }
+                    ],
+                    "group_size": [],
+                    "food": [],
+                    "services": [],
+                    "features": [],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0002/09/leone-de-castris-grand-wine-tour_header-108931.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 21.0,
+                        "formatted_value": "£ 21.00",
+                        "formatted_iso_value": "£21.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 21.0,
+                        "formatted_value": "£ 21.00",
+                        "formatted_iso_value": "£21.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 21.0,
+                        "formatted_value": "£ 21.00",
+                        "formatted_iso_value": "£21.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 21.0,
+                        "formatted_value": "£ 21.00",
+                        "formatted_iso_value": "£21.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 40.382374,
+                    "longitude": 17.965792,
+                    "url": "https://musement.com/us/lecce/winery-tour-and-tasting-in-salento-at-the-leone-de-castris-winery-10483/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 3,
+                            "name": "Food & wine",
+                            "active": true,
+                            "code": "food-wine",
+                            "slug": "food-wine",
+                            "url": "https://musement.com/us/food-wine-t/",
+                            "meta_title": "Delight in local Food and Wine wherever you go",
+                            "meta_description": "Let Musement treat you to the wonders of the gastronomic world. Taste wine in France, eat tapas in Spain or make pasta in Italy...the choice is yours!",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/30/food-wine-01-jpg_header-29025.jpeg?w=540",
+                            "relevance": 70
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "01942e1e-58aa-42df-a7ec-eb378cec64ba"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                }
+            ]
+        }
+    }
+}

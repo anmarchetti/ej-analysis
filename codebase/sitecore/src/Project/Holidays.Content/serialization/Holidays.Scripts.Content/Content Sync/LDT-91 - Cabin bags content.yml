@@ -1,0 +1,188 @@
+﻿---
+ID: "a5ee4eb5-d7b8-44e9-b61a-53979b7395c7"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-91 - Cabin bags content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Cabin Bags/Content"
+    $datasourcePathTrade = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Cabin Bags/Content"
+    
+    $updates = @(
+        @{
+            Path         = $datasourcePath
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Ancillaries Content Folder/Ancillaries Content"
+        },
+        @{
+            Path         = $datasourcePath + "/Default content" 
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Ancillaries Content Folder/Ancillaries Content Item"
+            Fields      = @{
+                "Subtitle" = @{
+                    "en"    = "Add extra cabin bags and Speedy Boarding"
+                    "fr-CH" = "Bagages à main supplémentaires et Speedy Boarding"
+                    "fr-FR" = "Bagages à main supplémentaires et Speedy Boarding"
+                    "de-CH" = "Zusätzliches Handgepäck und Speedy Boarding hinzufügen"
+                    "de-DE" = "Zusätzliches Handgepäck und Speedy Boarding hinzufügen"
+                }
+                "Description" = @{
+                    "en"    = "Get an extra 15kg cabin bag, and Speedy Boarding for just {price} per person, per flight"
+                    "fr-CH" = "Emmenez un bagage à main supplémentaire de 15 kg et profitez du Speedy Boarding pour seulement {price} par personne et par vol"
+                    "fr-FR" = "Emmenez un bagage à main supplémentaire de 15 kg et profitez du Speedy Boarding pour seulement {price} par personne et par vol"
+                    "de-CH" = "Erhalte ein zusätzliches 15 kg Handgepäckstück und Speedy Boarding für nur {price} pro Person und Flug"
+                    "de-DE" = "Erhalte ein zusätzliches 15 kg Handgepäckstück und Speedy Boarding für nur {price} pro Person und Flug"
+                }
+            }
+        },
+        @{
+            Path         = $datasourcePath + "/Luxury content" 
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Ancillaries Content Folder/Ancillaries Content Item"
+            Fields      = @{
+                "Subtitle" = @{
+                    "en"    = "Skip the queue, bring the big bag"
+                    "fr-CH" = "Coupez la file, prenez le grand sac"
+                    "fr-FR" = "Évitez la file, emportez le grand sac"
+                    "de-CH" = "Sparen Sie sich das Anstehen, nehmen Sie die große Tasche mit"
+                    "de-DE" = "Schlängeln Sie sich an der Schlange vorbei, nehmen Sie die große Tasche mit"
+                }
+                "Description" = @{
+                    "en"    = "Large cabin bags and speedy boarding are all part of the luxury package."
+                    "fr-CH" = "Les grands bagages cabine et l’embarquement prioritaire sont inclus dans l’offre de luxe."
+                    "fr-FR" = "Les grands bagages cabine et l’embarquement rapide font tous partie du forfait de luxe."
+                    "de-CH" = "Große Kabinengepäckstücke und Priority Boarding sind alle Teil des Luxuspakets."
+                    "de-DE" = "Große Kabinengepäckstücke und bevorzugtes Einsteigen sind im Luxuspaket enthalten."
+                }
+            }
+        },
+        @{
+            Path         = $datasourcePath + "/Unavailable LCB" 
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Ancillaries Content Folder/Ancillaries Content Item"
+            Fields      = @{
+                "Subtitle" = @{
+                    "en"    = "Your cabin bag allowance"
+                    "fr-CH" = "Votre franchise de bagages à main"
+                    "fr-FR" = "Votre franchise de bagages à main"
+                    "de-CH" = "Deine Handgepäck-Freimenge"
+                    "de-DE" = "Deine Handgepäck-Freimenge"
+                }
+                "Description" = @{
+                    "en"    = "Each passenger is allowed to take a single small under seat bag on their flights"
+                    "fr-CH" = "Chaque passager est autorisé à emporter un petit bagage à main à placer sous le siège avant pendant le vol"
+                    "fr-FR" = "Chaque passager est autorisé à emporter un petit bagage à main à placer sous le siège avant pendant le vol"
+                    "de-CH" = "Jede Person darf ein kleines Handgepäckstück für unter den Sitz mit auf den Flug nehmen"
+                    "de-DE" = "Jede Person darf ein kleines Handgepäckstück für unter den Sitz mit auf den Flug nehmen"
+                }
+            }
+        },
+        @{
+            Path         = $datasourcePathTrade
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Ancillaries Content Folder/Ancillaries Content"
+        },
+        @{
+            Path         = $datasourcePathTrade + "/Default content" 
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Ancillaries Content Folder/Ancillaries Content Item"
+            Fields      = @{
+                "Subtitle" = @{
+                    "en"    = "Add extra cabin bags and Speedy Boarding"
+                }
+                "Description" = @{
+                    "en"    = "Get an extra 15kg cabin bag, and Speedy Boarding for just {price} per person, per flight"
+                }
+            }
+        },
+        @{
+            Path         = $datasourcePathTrade + "/Luxury content" 
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Ancillaries Content Folder/Ancillaries Content Item"
+            Fields      = @{
+                "Subtitle" = @{
+                    "en"    = "Skip the queue, bring the big bag"
+                }
+                "Description" = @{
+                    "en"    = "Large cabin bags and speedy boarding are all part of the luxury package."
+                }
+            }
+        },
+        @{
+            Path         = $datasourcePathTrade + "/Unavailable LCB" 
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Ancillaries Content Folder/Ancillaries Content Item"
+            Fields      = @{
+                "Subtitle" = @{
+                    "en"    = "Your cabin bag allowance"
+                }
+                "Description" = @{
+                    "en"    = "Each passenger is allowed to take a single small under seat bag on their flights"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $updates
+    
+    Add-ItemLanguage -Path $datasourcePath -TargetLanguage 'fr-CH' -IfExist Skip -DoNotCopyFields;
+    Add-ItemLanguage -Path $datasourcePath -TargetLanguage 'fr-FR' -IfExist Skip -DoNotCopyFields;
+    Add-ItemLanguage -Path $datasourcePath -TargetLanguage 'de-CH' -IfExist Skip -DoNotCopyFields;
+    Add-ItemLanguage -Path $datasourcePath -TargetLanguage 'de-DE' -IfExist Skip -DoNotCopyFields;
+    
+    $defaultItem = Get-Item -Path "$($datasourcePath)/Default content" -ErrorAction SilentlyContinue;
+    $luxuryItem = Get-Item -Path "$($datasourcePath)/Luxury content"  -ErrorAction SilentlyContinue;
+    $lcbItem = Get-Item -Path "$($datasourcePath)/Unavailable LCB"  -ErrorAction SilentlyContinue;
+    
+    $defaultItemTrade = Get-Item -Path "$($datasourcePathTrade)/Default content" -ErrorAction SilentlyContinue;
+    $luxuryItemPortal = Get-Item -Path "$($datasourcePathTrade)/Luxury content"  -ErrorAction SilentlyContinue;
+    $lcbItemPortal = Get-Item -Path "$($datasourcePathTrade)/Unavailable LCB"  -ErrorAction SilentlyContinue;
+    
+    $updates = @(
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Data/Ancillaries/Cabin Bags" 
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage/Cabin Bags"
+            Fields      = @{
+                "DefaultContent" = @{
+                    "en"    = $defaultItem.ID
+                }
+                "LuxuryContent" = @{
+                    "en"    = $luxuryItem.ID
+                }
+                "UnavailableLCBContent" = @{
+                    "en"    = $lcbItem.ID
+                } 
+                "CollapseOpenViewOnly" = @{
+                    "en"    = "View cabin bags"
+                    "fr-CH" = "Voir les bagages cabine"
+                    "fr-FR" = "Voir les bagages cabine"
+                    "de-CH" = "Kabinengepäck anzeigen"
+                    "de-DE" = "Kabinengepäck anzeigen"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/TradePortal/Data/Ancillaries/Cabin Bags" 
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Luggage/Cabin Bags"
+            Fields      = @{
+                "DefaultContent" = @{
+                    "en"    = $defaultItemTrade.ID
+                }
+                "LuxuryContent" = @{
+                    "en"    = $luxuryItemPortal.ID
+                }
+                "UnavailableLCBContent" = @{
+                    "en"    = $lcbItemPortal.ID
+                } 
+                "CollapseOpenViewOnly" = @{
+                    "en"    = "View cabin bags"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $updates
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

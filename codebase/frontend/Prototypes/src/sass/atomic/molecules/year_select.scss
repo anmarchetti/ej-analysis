@@ -1,0 +1,99 @@
+.year-dropdown {
+    width: 60px;
+
+    &__overlay {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: $clrTextHeading;
+        opacity: .2;
+    }
+
+    &__select {
+        &:focus {
+            outline: none;
+        }
+
+        .custom-select {
+            &__control {
+                height: 20px;
+                border: none;
+                box-shadow: none;
+            }
+
+            &__indicator-separator, &__placeholder {
+                display: none;
+            }
+
+            &__value-container {
+                width: 60px;
+            }
+
+            &__dropdown-indicator {
+                padding: 0;
+                color: $clrEjOrange;
+
+                svg {
+                    width: 10px;
+                }
+
+                &:hover {
+                    color: $clrEjOrange;
+                }
+            }
+
+            &__single-value {
+                font-family: $fontRoundedBook;
+                font-size: 14px;
+                color: $clrEjOrange;
+            }
+
+            &__menu {
+                z-index: 3;
+                width: 125px;
+                margin: 0;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    z-index: 1;
+                    top: -20px;
+                    left: 20px;
+                    border: 10px solid transparent;
+                    border-bottom: 10px solid $clrSiteBgWhite;
+                }
+            }
+
+            &__menu-list {
+                padding: 0;
+                border-radius: 5px;
+            }
+
+            &__option {
+                padding: 0 55px 0 15px;
+                line-height: 50px;
+                background: $clrSiteBgWhite;
+                border-bottom: 1px solid $clrBorderGray;
+
+                &--is-selected {
+                    color: $clrEjOrange;
+                    background-color: $colorGrayLighter;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        width: 12px;
+                        height: 6px;
+                        margin-top: 18px;
+                        margin-left: 30px;
+                        border-bottom: 1px solid $clrEjOrange;
+                        border-left: 1px solid $clrEjOrange;
+                        transform: rotate(-45deg);
+                    }
+                }
+            }
+        }
+    }
+}

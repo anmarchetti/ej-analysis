@@ -1,0 +1,253 @@
+﻿---
+ID: "286e6759-d84e-481a-bc51-1ed3bcab8d19"
+Parent: "3fb0dc56-187b-4b94-9915-8b51bb4e9558"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Reports/Hotel Data Audit/Broken Coordinates
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    <#
+    BOOK-1277 Find hotels with anomalous coordinates (by Region) and show a report.
+    #>
+    
+    param(
+        # The destinations root path.
+        [string]$RootPath = "master:/sitecore/content/EasyJet/Holidays/Home/Destinations",
+    
+        # Hotel template name
+        [string]$HotelTemplateName = "Hotel",
+    
+        # Field names for coordinates.
+        [string]$LatitudeField = "Latitude",
+        [string]$LongitudeField = "Longitude",
+    
+        # Outlier detection knobs (per Region):
+        [int]   $MinHotelsPerRegion  = 3,    # Need at least this many valid hotels to compute stats (invalid ones still reported)
+        [double]$MinAbsKm            = 200.0, # A hard floor: anything > this from the region median may be flagged
+        [double]$MadMultiplier       = 5.0,  # Robust outlier cutoff: median + (MadMultiplier × MAD)
+        [double]$NearestNeighborFlagKm = 100.0  # Also flag if nearest neighbor > this distance (0 to disable)
+    )
+    
+    function Parse-Coord([string]$s) {
+        if ([string]::IsNullOrWhiteSpace($s)) { return $null }
+        $d = 0.0
+        if ([double]::TryParse($s, [Globalization.NumberStyles]::Float, [Globalization.CultureInfo]::InvariantCulture, [ref]$d)) { return $d }
+        $s2 = $s -replace ',', '.'
+        if ([double]::TryParse($s2, [ref]$d)) { return $d }
+        return $null
+    }
+    function Is-ValidCoord($lat,$lon){
+        if ($lat -eq $null -or $lon -eq $null) { return $false }
+        if ($lat -lt -90 -or $lat -gt 90) { return $false }
+        if ($lon -lt -180 -or $lon -gt 180) { return $false }
+        return $true
+    }
+    function Get-DistanceKm([double]$lat1,[double]$lon1,[double]$lat2,[double]$lon2){
+        $R = 6371.0088
+        $rad = [math]::PI/180.0
+        $phi1 = $lat1 * $rad
+        $phi2 = $lat2 * $rad
+        $dPhi = ($lat2 - $lat1) * $rad
+        $dLambda = ($lon2 - $lon1) * $rad
+        $a = [math]::sin($dPhi/2)*[math]::sin($dPhi/2) + [math]::cos($phi1)*[math]::cos($phi2)*[math]::sin($dLambda/2)*[math]::sin($dLambda/2)
+        $c = 2 * [math]::atan2([math]::Sqrt($a), [math]::Sqrt(1-$a))
+        return $R * $c
+    }
+    function Get-Median([double[]]$arr){
+        $n = $arr.Count
+        if ($n -eq 0) { return $null }
+        $sorted = $arr | Sort-Object
+        if ($n % 2 -eq 1) { return $sorted[[int]([math]::Floor($n/2))] }
+        else { return ($sorted[$n/2 - 1] + $sorted[$n/2]) / 2.0 }
+    }
+    function Get-MAD([double[]]$arr){
+        $m = Get-Median $arr
+        if ($null -eq $m) { return $null }
+        $dev = @()
+        foreach($x in $arr){ $dev += [math]::Abs($x - $m) }
+        return Get-Median $dev
+    }
+    
+    # Validate root
+    $rootItem = $null
+    try { $rootItem = Get-Item -Path $RootPath -ErrorAction Stop } catch { }
+    if (-not $rootItem) {
+        throw "RootPath '$RootPath' not found. Set the `$RootPath to your Hotels container (e.g. master:/sitecore/content/EasyJet/Holidays/Home/Destinations)."
+    }
+    
+    $results = New-Object System.Collections.Generic.List[object]
+    [int]$regionsScanned = 0
+    [int]$hotelsScanned  = 0
+    
+    # Function to check hotels within the region of the country
+    function Check-Region($regionItem, $country) {
+        
+        # Group hotels by Region
+        $regionHotels = @()
+        $resorts = Get-ChildItem -Path $regionItem.ProviderPath | Where-Object { $_.TemplateName -eq "Resort"}
+        foreach ($resort in $resorts) {
+             $resortHotels = Get-ChildItem -Path $resort.ProviderPath | Where-Object { $_.TemplateName -eq "Hotel"}
+                    
+             $global:hotelsScanned += $resortHotels.Count
+             $regionHotels += $resortHotels
+        }
+        
+        # Parse coords
+        $valid   = New-Object System.Collections.Generic.List[object]
+        $invalid = New-Object System.Collections.Generic.List[object]
+    
+        for ($i=0; $i -lt $regionHotels.Count; $i++) {
+            $item = $regionHotels[$i]
+            $lat  = Parse-Coord $item[$LatitudeField]
+            $lon  = Parse-Coord $item[$LongitudeField]
+            $reasons = @()
+    
+            if ($lat -eq $null -or $lon -eq $null) { $reasons += "Missing/Non-numeric" }
+            elseif (-not (Is-ValidCoord $lat $lon)) { $reasons += "Out-of-range" }
+            elseif ([math]::Abs($lat) -lt 0.00001 -and [math]::Abs($lon) -lt 0.00001) { $reasons += "Zero,Zero (0,0)" }
+    
+            if ($reasons.Count -gt 0) {
+                $invalid.Add(@{ Item=$item; Lat=$lat; Lon=$lon; Reason=($reasons -join "; ") })
+            } else {
+                $valid.Add(@{ Item=$item; Lat=$lat; Lon=$lon })
+            }
+        }
+    
+        # Compute region median center if there are enough valid hotels
+        $latMedian = $null; $lonMedian = $null
+        if ($valid.Count -ge [math]::Max(2, $MinHotelsPerRegion)) {
+            $latMedian = Get-Median ($valid | ForEach-Object { $_.Lat })
+            $lonMedian = Get-Median ($valid | ForEach-Object { $_.Lon })
+    
+            # Distances to region median
+            $dists = @()
+            foreach ($v in $valid) {
+                $d = Get-DistanceKm $v.Lat $v.Lon $latMedian $lonMedian
+                $v["DistToCenter"] = $d
+                $dists += $d
+            }
+    
+            # Robust threshold
+            $dMed = Get-Median $dists
+            $mad  = Get-MAD $dists
+            if ($mad -eq $null) { $mad = 0.0 }
+            $centerThreshold = [math]::Max($MinAbsKm, ($dMed + ($MadMultiplier * $mad)))
+    
+            # Nearest-neighbor distances
+            if ($valid.Count -ge 2) {
+                for ($i=0; $i -lt $valid.Count; $i++) {
+                    $min = [double]::PositiveInfinity
+                    for ($j=0; $j -lt $valid.Count; $j++) {
+                        if ($i -eq $j) { continue }
+                        $min = [math]::Min($min, (Get-DistanceKm $valid[$i].Lat $valid[$i].Lon $valid[$j].Lat $valid[$j].Lon))
+                    }
+                    $valid[$i]["NearestKm"] = $min
+                }
+            }
+    
+            # Flag anomalies among valid coords
+            foreach ($v in $valid) {
+                $reasons = @()
+                if ($v.DistToCenter -gt $centerThreshold) {
+                    $reasons += "Far from region median (> $([math]::Round($centerThreshold,1)) km)"
+                }
+                if ($NearestNeighborFlagKm -gt 0 -and $v.NearestKm -gt $NearestNeighborFlagKm) {
+                    $reasons += "Isolated from nearest neighbor (> $NearestNeighborFlagKm km)"
+                }
+    
+                if ($reasons.Count -gt 0) {
+                    $hotel   = $v.Item
+                    $resort  = $hotel.Parent
+                    $results.Add([pscustomobject]@{
+                        Item                   = $hotel
+                        Hotel                  = $hotel.DisplayName
+                        Resort                 = if ($resort)  { $resort.DisplayName }  else { "" }
+                        Region                 = $regionItem.DisplayName
+                        Country                = if ($country) { $country.DisplayName } else { "" }
+                        Reason                 = ($reasons -join "; ")
+                        Lat                    = [math]::Round($v.Lat, 6)
+                        Lon                    = [math]::Round($v.Lon, 6)
+                        DistToRegionMedianKm   = [math]::Round($v.DistToCenter, 1)
+                        NearestNeighborKm      = if ($v.NearestKm -ne [double]::PositiveInfinity) { [math]::Round($v.NearestKm,1) } else { $null }
+                        RegionCenterLat        = if ($latMedian -ne $null) { [math]::Round($latMedian,6) } else { $null }
+                        RegionCenterLon        = if ($lonMedian -ne $null) { [math]::Round($lonMedian,6) } else { $null }
+                        Path                   = $hotel.Paths.FullPath
+                        Id                     = $hotel.ID
+                    })
+                }
+            }
+        }
+    
+        # Always report invalid coordinates (even if not enough valid to compute stats)
+        foreach ($inv in $invalid) {
+            $hotel   = $inv.Item
+            $resort  = $hotel.Parent
+            $results.Add([pscustomobject]@{
+                Item                   = $hotel
+                Hotel                  = $hotel.DisplayName
+                Resort                 = if ($resort)  { $resort.DisplayName }  else { "" }
+                Region                 = $regionItem.DisplayName
+                Country                = if ($country) { $country.DisplayName } else { "" }
+                Reason                 = $inv.Reason
+                Lat                    = $inv.Lat
+                Lon                    = $inv.Lon
+                DistToRegionMedianKm   = $null
+                NearestNeighborKm      = $null
+                RegionCenterLat        = if ($latMedian -ne $null) { [math]::Round($latMedian,6) } else { $null }
+                RegionCenterLon        = if ($lonMedian -ne $null) { [math]::Round($lonMedian,6) } else { $null }
+                Path                   = $hotel.Paths.FullPath
+                Id                     = $hotel.ID
+            })
+        }
+    }
+    
+    # ---- Start ----
+    $countryItems = Get-ChildItem -Path $rootItem.ProviderPath | Where-Object { $_.TemplateName -eq "Country" -or $_.TemplateName -eq "VirtualCountry" }
+        foreach ($countryItem in $countryItems) {
+            "Checking country $($countryItem.Name)..."
+        
+            $regions = Get-ChildItem -Path $countryItem.ProviderPath | Where-Object { $_.TemplateName -eq "Region" -or $_.TemplateName -eq "VirtualRegion" -or "Region - City" }
+            foreach ($region in $regions) {
+                $global:regionsScanned++
+                
+                Check-Region -Region $region -Country $countryItem
+            }
+        }
+    
+    # ---- Report ----
+    $info = "Root: $RootPath`r`n" +
+            "Rules: invalid coords; outliers where distance to region median > max($MinAbsKm km, median + $MadMultiplier × MAD); nearest neighbor > $NearestNeighborFlagKm km.`r`n" +
+            "Regions scanned: $regionsScanned | Hotels scanned: $hotelsScanned | Flagged: " + $results.Count
+    
+    $results |
+        Sort-Object Region, DistToRegionMedianKm -Descending |
+        Show-ListView -Title "Hotels with anomalous coordinates (by Region)" `
+                      -InfoTitle "Anomaly report" `
+                      -InfoDescription $info `
+                      -PageSize 200 `
+                      -Property @(
+                          @{ Name = "Hotel"; Expression = { $_.Hotel } }
+                          @{ Name = "Resort"; Expression = { $_.Resort } }
+                          @{ Name = "Region"; Expression = { $_.Region } }
+                          @{ Name = "Country"; Expression = { $_.Country } }
+                          @{ Name = "Reason"; Expression = { $_.Reason } }
+                          @{ Name = "Lat"; Expression = { $_.Lat } }
+                          @{ Name = "Lon"; Expression = { $_.Lon } }
+                          @{ Name = "Dist → Region median (km)"; Expression = { $_.DistToRegionMedianKm } }
+                          @{ Name = "Nearest neighbor (km)"; Expression = { $_.NearestNeighborKm } }
+                          @{ Name = "Region center (lat)"; Expression = { $_.RegionCenterLat } }
+                          @{ Name = "Region center (lon)"; Expression = { $_.RegionCenterLon } }
+                          @{ Name = "Path"; Expression = { $_.Path } }
+                          @{ Name = "Id"; Expression = { $_.Id } }
+                      )
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20251007T112128Z

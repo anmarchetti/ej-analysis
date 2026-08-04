@@ -1,0 +1,124 @@
+﻿---
+ID: "6f0a91d2-51f3-40cf-bad4-5b727da7e7d1"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/TRADE-341 - Sustainability Our Approach section"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -Language "en" -ErrorAction SilentlyContinue
+        
+        if (-Not $item){
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item $($item.Name) successfully created"
+        }
+        
+        return $item
+    }
+    
+    function Get-Rendering-Index{
+        param($item, $renderingUniqueId)
+        $i = 0
+        
+        Get-Rendering -Item $item -FinalLayout -Language "en" | ForEach-Object{
+            if ($_.UniqueId -eq $renderingUniqueId){
+                return $i
+            }
+            $i++
+        }
+        
+        return -1
+    }
+    
+    $sustainabilityPagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Sustainability"
+    $pageComponentsPath = "$($sustainabilityPagePath)/Page Components"
+    
+    # Our Approach text block data source
+    $textBlock = Get-Or-Create-Item -Path "$($pageComponentsPath)/Text Blocks/Our Approach" -TemplateId "{BD18AA14-C33D-4E76-B5F4-59CBB936BE31}"
+    
+    if ($textBlock -ne $null) {
+        $textBlock.Editing.BeginEdit()
+        $textBlock["Title"] = "Our Approach"
+        $textBlock["Description"] = "Our approach is&nbsp;to&nbsp;fund, support, and partner with organisations and individuals who are making significant progress towards making sustainable holidays mainstream. We&nbsp;connect the scale, industry experience, and economic weight of&nbsp;the easyJet group to&nbsp;the problem solving abilities, expertise, and research prowess of&nbsp;others. It&rsquo;s a&nbsp;winning combination, and has helped&nbsp;us make great progress so&nbsp;far"
+        $textBlock.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Created data sources: Our Approach text block"
+    }
+    
+    # Renderings
+    $page = Get-Item -Path $sustainabilityPagePath -ErrorAction SilentlyContinue
+    
+    # remove old video section rendering
+    $videoRenderingId = "{C26DC3D2-BAAE-4354-8A0E-1BE074262AEC}"
+    $videoRenderingItemPath = "master:/sitecore/layout/Renderings/Feature/MediaCenter/Media Video"
+        
+    $oldVideoRenderingItem = Get-Item -Path $videoRenderingItemPath
+    $oldVideoRendering = Get-Rendering -Item $page -PlaceHolder "body" -Rendering $oldVideoRenderingItem -DataSource "{70FA1604-EA9A-48C6-8E33-DBD0BE54BA24}"
+    
+    if($oldVideoRendering -ne $null) {
+        Remove-Rendering -Item $page -UniqueId $oldVideoRendering.UniqueId
+        
+        Write-Host "Removed old Video rendering"
+    }
+    
+    # Insert Our Approach wrapper rendering after Animation Tiles section
+    $animationTilesUid = "{50457970-f9eb-49d3-b0fa-e59ba72a092e}"
+    
+    $insertAfterIndex = Get-Rendering-Index -Item $page -RenderingUniqueId $animationTilesUid | Select -First 1
+    $wrapperIndex = $insertAfterIndex + 1
+    
+    # Add Wrapper Rendering
+    $wrapperItem = Get-Item -Path "master:/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper" | New-Rendering -Placeholder "body"
+    Add-Rendering -Item $page -PlaceHolder "body" -Instance $wrapperItem -Index $wrapperIndex -FinalLayout -Language "en"
+    $wrapperRendering = Get-Rendering -Item $page -Index $wrapperIndex -FinalLayout -Language "en"
+    
+    if($wrapperRendering -ne $null){
+        $textBlockRenderingPath = "master:/sitecore/layout/Renderings/Feature/PageContent/Text Block"
+        $placeholder = "/body/component-wrapper-inner-$($wrapperRendering.UniqueId)-0"
+    
+        $textBlockIndex = $wrapperIndex + 1
+        $videoIndex = $textBlockIndex + 1
+    
+        # add text block rendering
+        $textBlockRenderingItem = Get-Item -Path $textBlockRenderingPath | New-Rendering -PlaceHolder $placeholder
+        
+        if($textBlockRenderingItem -ne $null) {
+            Add-Rendering -Item $page -PlaceHolder $placeholder -Instance $textBlockRenderingItem -Index $textBlockIndex -DataSource $textBlock.FullPath -FinalLayout -Language "en"
+    
+            # add text block rendering params
+            $textBlockParams = @{TitlePosition="center"; TitleTag="h2"; ClassName="sustainability-text-block sustainability-text-block--our-approach"}
+            Get-Rendering -Item $page -PlaceHolder $placeholder -FinalLayout -Language "en" | Set-RenderingParameter -Parameter $textBlockParams | Set-Rendering -Item $page -FinalLayout -Language "en"
+        
+            Write-Host "Added Our Approach text block rendering"
+        }
+        
+        # add video section rendering
+        $videoParams = @{ClassName="sustainabilityVideo"}
+        $videoRenderingItem = Get-Item $videoRenderingItemPath | New-Rendering -PlaceHolder "body"
+        $videoDataSource = "/sitecore/content/EasyJet/Holidays/Home/Sustainability/Page Components/Video 1"
+        
+        if($videoRenderingItem -ne $null) {
+            Add-Rendering -Item $page -PlaceHolder "body" -Instance $videoRenderingItem -Index $videoIndex -DataSource $videoDataSource -FinalLayout -Language "en"
+            Get-Rendering -Item $page -PlaceHolder "body" -DataSource $videoDataSource -FinalLayout -Language "en" | Set-RenderingParameter -Parameter $videoParams | Set-Rendering -Item $page -FinalLayout -Language "en"
+        
+            Write-Host "Added new Video rendering"
+        }
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 150
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230804T102242Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

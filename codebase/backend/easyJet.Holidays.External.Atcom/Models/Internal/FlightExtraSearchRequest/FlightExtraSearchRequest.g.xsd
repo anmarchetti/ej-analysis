@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 sp1 (http://www.altova.com) by Kim Howells (Anite Business Systems) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="AtComRes/FlightExtraSearchRequest" xmlns:p2="AtComRes/Common" targetNamespace="AtComRes/FlightExtraSearchRequest" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+	<xs:element name="FlightExtraSearchRequest">
+		<xs:annotation>
+			<xs:documentation>defined the request to search for FlightExtras</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="p2:AtcomresBaseOfferSearchRequest">
+					<xs:sequence>
+						<xs:element name="Base_Prd" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The base product for which extras shall be searched.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="p2:Route_List"/>
+									<xs:element ref="p2:Prom" minOccurs="0"/>
+									<xs:element ref="p2:Acc_Cd" minOccurs="0"/>
+									<xs:sequence>
+										<xs:annotation>
+											<xs:documentation>This is only needed when sending message to Tracs</xs:documentation>
+										</xs:annotation>
+										<xs:element ref="p2:PackageNo" minOccurs="0"/>
+										<xs:element ref="p2:Accom" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element ref="p2:Pax" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="p2:Ref" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>If not present assume Inclusive flight when searching for baggage.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

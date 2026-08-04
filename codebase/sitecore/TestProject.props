@@ -1,0 +1,175 @@
+<Project>
+    <Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.0.41" />
+    <Import Project="$(SolutionDir)CommonWebProject.props" />
+    <ItemGroup>
+        <None Update="App.config">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="app.config">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <PropertyGroup>
+        <CentralPackagesFile>$(SolutionDir)PackageVersions.props</CentralPackagesFile>
+        <IsPublishable>false</IsPublishable>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="System.Buffers"/>
+        <PackageReference Include="System.Memory"/>
+        <PackageReference Include="System.Numerics.Vectors"/>
+        <PackageReference Include="Microsoft.AspNet.Mvc"/>
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces"/>
+        <PackageReference Include="System.Linq.Async"/>
+        <PackageReference Include="System.Linq.Async.Queryable"/>
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe"/>
+        <PackageReference Include="EnterpriseLibrary.Common"/>
+
+        <PackageReference Include="Sitecore.Kernel" />
+        <PackageReference Include="Sitecore.ContentSearch" />
+        <PackageReference Include="Sitecore.ContentSearch.Data" />
+        <PackageReference Include="Sitecore.ContentSearch.Linq" />
+        <PackageReference Include="Sitecore.ContentSearch.ContentExtraction"/>
+        <PackageReference Include="Sitecore.Nexus.Licensing" />
+        <PackageReference Include="Castle.Core"/>
+        <PackageReference Include="AutoFixture" />
+        <PackageReference Include="AutoFixture.Xunit2"/>
+        <PackageReference Include="AutoFixture.AutoNSubstitute" />
+        <PackageReference Include="FluentAssertions"/>
+        <PackageReference Include="Newtonsoft.Json"/>
+        <PackageReference Include="NSubstitute"/>
+        <PackageReference Include="Sitecore.FakeDb"/>
+        <PackageReference Include="Sitecore.FakeDb.AutoFixture"/>
+        <PackageReference Include="Sitecore.NSubstituteUtils"/>
+        <PackageReference Include="xunit"/>
+        <PackageReference Include="xunit.abstractions"/>
+        <PackageReference Include="xunit.analyzers"/>
+        <PackageReference Include="xunit.assert"/>
+        <PackageReference Include="xunit.core"/>
+        <PackageReference Include="xunit.extensibility.core"/>
+        <PackageReference Include="xunit.extensibility.execution"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions"/>
+        <PackageReference Include="Microsoft.Extensions.Logging"/>
+        <PackageReference Include="Polly"/>
+        <PackageReference Include="RichardSzalay.MockHttp"/>
+        <PackageReference Include="coverlet.collector" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" PrivateAssets="all"/>
+        <PackageReference Include="coverlet.msbuild"/>
+        <PackageReference Include="xunit.runner.visualstudio" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" PrivateAssets="all"/>
+        <PackageReference Include="StyleCop.Analyzers" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" PrivateAssets="all"/>
+        <PackageReference Include="NSubstitute.Analyzers.CSharp" IncludeAssets="runtime; build; native; contentfiles; analyzers" PrivateAssets="all"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Sitecore.JavaScriptServices.Forms.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.JavaScriptServices.Forms.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.JavaScriptServices.Tracker.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.JavaScriptServices.Tracker.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.JavaScriptServices.ViewEngine.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.JavaScriptServices.ViewEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.LayoutService.Analytics.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.LayoutService.Analytics.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.LayoutService.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.LayoutService.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.LayoutService.GraphQL.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.LayoutService.GraphQL.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.LayoutService.Mvc.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.LayoutService.Mvc.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.Services.GraphQL.Content.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.Services.GraphQL.Content.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.Services.GraphQL.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.Services.GraphQL.dll</HintPath>
+        </Reference>
+        <Reference Include="Sitecore.Services.GraphQL.EdgeSchema.dll">
+            <HintPath>$(SolutionDir)lib\Sitecore.Services.GraphQL.EdgeSchema.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup Condition=" '$(ProjectName)' != 'easyJet.Foundation.Testing' ">
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Testing\tests\easyJet.Foundation.Testing.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\SitecoreExtensions\code\EasyJet.Foundation.SitecoreExtensions.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <AdditionalFiles Include="$(SolutionDir)nsubstitute.json" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="$(SolutionDir)nsubstitute.json" />
+    </ItemGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <NoWarn>1701;1702;NU1603;xUnit1006;xUnit1004</NoWarn>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'true'">$(SolutionDir)stylecop-dev.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'false' Or '$(StyleCopEnabled)' == ''">$(SolutionDir)stylecop-prod.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'CI|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'true'">$(SolutionDir)stylecop-dev.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'false' Or '$(StyleCopEnabled)' == ''">$(SolutionDir)stylecop-prod.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'CI|x64' ">
+        <DebugSymbols>true</DebugSymbols>
+        <PlatformTarget>x64</PlatformTarget>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'true'">$(SolutionDir)stylecop-dev.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'false' Or '$(StyleCopEnabled)' == ''">$(SolutionDir)stylecop-prod.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+        <DebugSymbols>true</DebugSymbols>
+        <PlatformTarget>x64</PlatformTarget>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'true'">$(SolutionDir)stylecop-dev.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'false' Or '$(StyleCopEnabled)' == ''">$(SolutionDir)stylecop-prod.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'true'">$(SolutionDir)stylecop-dev.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'false' Or '$(StyleCopEnabled)' == ''">$(SolutionDir)stylecop-prod.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+        <DebugSymbols>true</DebugSymbols>
+        <PlatformTarget>x64</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'true'">$(SolutionDir)stylecop-dev.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet Condition="'$(StyleCopEnabled)' == 'false' Or '$(StyleCopEnabled)' == ''">$(SolutionDir)stylecop-prod.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+</Project>

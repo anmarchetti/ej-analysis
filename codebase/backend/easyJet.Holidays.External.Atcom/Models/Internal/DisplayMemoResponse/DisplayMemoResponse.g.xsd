@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="AtComRes/DisplayMemoResponse" xmlns:ns1="AtComRes/DisplayMemoResponse" xmlns:p2="AtComRes/Common">
+    <xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+    <xs:element name="DisplayMemoResponse">
+        <xs:annotation>
+            <xs:documentation>Response with all required memo types for an existing booking in @ComRes</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="p2:AtcomresBaseResponse">
+                    <xs:sequence>
+                        <xs:element ref="p2:BkgNum"/>
+                        <xs:element ref="p2:Memo" minOccurs="0" maxOccurs="unbounded">
+                            <xs:annotation>
+                                <xs:documentation>All memos matching the requiered memo codes</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

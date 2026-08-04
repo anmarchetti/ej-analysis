@@ -1,0 +1,312 @@
+﻿---
+ID: "4ee97b18-3617-4fe2-8313-daf20ccbe86d"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Create And Update Luggage And Policy Banner
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $luggageFolderTemplateId = "{7049D914-8A6F-49C7-B6B9-0DA237E4BE60}"
+    $baggageFolderTemplateId = "{D74DBBA7-C331-463E-BFBB-7D1866618257}"
+    $messageByDateFolderTemplateId = "{9A010BDD-A08A-45FE-878D-4D28DD7A7404}"
+    
+    $policyBanner = "{DB71496E-7E80-4AC9-9C91-185FD04A2C4C}"
+    $policyBannersFolder = "{66E19817-42BC-4946-84F0-404C9EE02F1C}"
+    $policyBannersFolderName = "Policy Banners"
+    $bagsPolicyBannersFolderName = "Bags Policy Banners"
+    $updatedBagsPolicyBannerName = "Updated cabin bag policy banner"
+    $cabinBagPolicyBannerData = @{
+        Title = "We’ve updated our cabin bag policy"
+        Description = "We’ve made some changes to what you can carry on board. Before you travel, make sure you’re aware of our new policy."
+        Link = "<link text='Find out more' linktype='external' url='https://www.easyjet.com/en/holidays/help?helpCategory=luggage' anchor='' class='external-link' target='_blank' />"
+    }
+    
+    $bagsComponentId = "{9FD91E19-714F-4313-9E52-FF77B4E9F030}"
+    $policyBannerId = "{7E2EEFDE-8087-4767-BB9C-398497F6E7C4}" 
+    
+    $pagesPaths = @(
+        "/sitecore/content/EasyJet/Holidays/Home/Booking",
+        "/sitecore/content/EasyJet/Holidays/Home/Booking/Pay Balance",
+        "/sitecore/content/EasyJet/Holidays/Home/Booking/Payment",
+        "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking",
+        "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation"
+    )
+    
+    $parametersPerPage = @{
+        "$($pagesPaths[0])" =  @{ Theme = "Extras"}
+        "$($pagesPaths[1])" =  @{ Theme = "Payment"}
+        "$($pagesPaths[2])" =  @{ Theme = "Payment"}
+        "$($pagesPaths[3])" =  @{ Theme = "View Booking"}
+        "$($pagesPaths[4])" =  @{ Theme = "View Booking"}
+    }
+    
+    $renderings = @(
+        "{A9AB43A5-41EA-40AD-AC79-0343E6AD5111}"
+        "{5357E74B-96BE-4BE8-B512-F0B419FBA5FE}"
+        "{9D5C09DD-EFB0-4AF8-AE1E-C84444E69106}"
+        "{B932CD1B-05BD-4F1D-947F-1E6F48C4F649}"
+        "{E10ECB4E-19CE-4255-982C-04E6E3592A20}"
+    )
+    
+    $luggage = @(
+        @{
+            Before = @{
+                Name = "Cabin bags"
+                Dimensions = "56 x 45 x 25cm (backpack or handbag)"
+                Icon = "<image mediaid=""{A8185116-2B90-4DEB-AC1B-5F6A1689A22E}"" />"
+                AlretMessage = ""
+                InformationMessage = "Looking to add more bags? Don't worry! If want-to take more luggage or bring any scu•rts equipment. can do this after you've booked"
+                Messages = ""
+            }
+            After = @{
+                Name = "Small cabin bags"
+                Dimensions = "45 x 36 x 20cm (backpack or handbag"
+                Icon = "<image mediaid=""{F4903401-188C-4A12-93DD-9AEB4A6C5A65}"" />"
+                AlretMessage = "Please be aware Our cabin bag policy has recently changed,&nbsp;<a href='/en/holidays/info/privacy-policy'>find out more about bag allowances here</a>"
+                InformationMessage = "<p><strong>Looking to add more bags?</strong></p><p>If you're looking to add more bags or take additional hand luggage don't worry! You can book more luggage or sports equipment after you've booked</p>"
+                Messages = ""
+            }
+        }, #extras
+        @{
+            Before = @{
+                Name = "Cabin bags"
+                Dimensions = "56 x 45 x 25cm (backpack or handbag)"
+                Icon = "<image mediaid=""{4DAC7810-B435-4067-BD6C-7346A238CAEF}"" />"
+                AlretMessage = ""
+                InformationMessage = ""
+                Messages = ""
+            }
+            After = @{
+                Name = "Small cabin bags"
+                Dimensions = "(45 x 36 x 20cm)"
+                Icon = "<image mediaid=""{F4903401-188C-4A12-93DD-9AEB4A6C5A65}"" />"
+                AlretMessage = ""
+                InformationMessage = ""
+                Messages = ""
+            }
+        }, #pay balance
+        @{
+            Before = @{
+                Name = "Cabin bags"
+                Dimensions = "56 x 45 x 25cm (backpack or handbag)"
+                Icon = "<image mediaid=""{4DAC7810-B435-4067-BD6C-7346A238CAEF}"" />"
+                AlretMessage = ""
+                InformationMessage = ""
+                Messages = ""
+            }
+            After = @{
+                Name = "Small cabin bags"
+                Dimensions = "(45 x 36 x 20cm)"
+                Icon = "<image mediaid=""{F4903401-188C-4A12-93DD-9AEB4A6C5A65}"" />"
+                AlretMessage = ""
+                InformationMessage = ""
+                Messages = ""
+            }
+        }, #payment
+        @{
+            Before = @{
+                Name = "Cabin bags"
+                Dimensions = "56 x 45 x 25cm (including handles and wheels)"
+                Icon = "<image mediaid=""{137C5BD1-91B2-475B-8206-7AB502000444}"" />"
+                AlretMessage = ""
+                InformationMessage = ""
+                Messages = ""
+            }
+            After = @{
+                Name = "Small cabin bags"
+                Dimensions = "Bagpack or handbag, maximum 45 x 36 x 20cm including any nandles or wheels"
+                Icon = "<image mediaid=""{ED25EF4C-D80E-41A0-B914-360EF8D694F1}"" />"
+                AlretMessage = "Please be aware Our cabin bag policy has recently changed,&nbsp;<a href='/en/holidays/info/privacy-policy''>find out more about bag allowances here</a>"
+                InformationMessage = ""
+                Messages = ""
+            }
+        }, #view booking
+        @{
+            Before = @{
+                Name = "Cabin bags"
+                Dimensions = "56 x 45 x 25cm (including handles and wheels)"
+                Icon = "<image mediaid=""{137C5BD1-91B2-475B-8206-7AB502000444}"" />"
+                AlretMessage = ""
+                InformationMessage = ""
+                Messages = ""
+            }
+            After = @{
+                Name = "Small cabin bags"
+                Dimensions = "Bagpack or handbag, maximum 45 x 36 x 20cm including any nandles or wheels"
+                Icon = "<image mediaid=""{ED25EF4C-D80E-41A0-B914-360EF8D694F1}"" />"
+                AlretMessage = "Please be aware Our cabin bag policy has recently changed,&nbsp;<a href='/en/holidays/info/privacy-policy'>find out more about bag allowances here</a>"
+                InformationMessage = ""
+                Messages = ""
+            }
+        }  #confirmation
+    )
+    
+    $luggageFolderName = "Luggage"
+    
+    $cabinBagsName = "2 x Cabin bags"
+    $smallCabinBagsName = "2 x Small cabin bags"
+    
+    $messageByDateBefore10FebName = "Before 10th Feb"
+    $beforeDateRange = @{
+        StartDate = ""
+        EndDate = "20210209T000000Z"
+    }
+    $messageByDateOnOrAfter10FebName = "On Or After The 10th Feb"
+    $afterDateRange = @{
+        StartDate = "20210210T000000Z"
+        EndDate = ""
+    }
+    
+    function Get-Or-Create-Item($path, $name, $templateId){
+        $item = Get-Item -Path "$($path)/$($name)" -ErrorAction SilentlyContinue
+        if($item -eq $null){
+            $item = New-Item -Path $path -Name $name -ItemType $templateId
+        }
+        
+        return $item
+    }
+    
+    function Update-Message-By-Date($item, $dateRange, $data){
+        $item.Editing.BeginEdit()
+        $item.Fields["StartDate"].Value = $dateRange.StartDate
+        $item.Fields["EndDate"].Value = $dateRange.EndDate
+        if ($data -ne $null){
+            $item.Fields["AlertMessage"].Value = $data.AlretMessage
+            $item.Fields["InformationMessage"].Value = $data.InformationMessage
+        }
+        $item.Editing.EndEdit() > $null
+    }
+    
+    function Update-Baggage-Info($item, $data){
+        $item.Editing.BeginEdit()
+        $item.Fields["Name"].Value = $data.Name
+        $item.Fields["Dimensions"].Value = $data.Dimensions
+        $item.Fields["Icon"].Value = $data.Icon
+        $item.Fields["Messages"].Value = $data.Messages
+        $item.Editing.EndEdit() > $null
+    }
+    
+    function Add-New-Rendering($item, $placeholder, $renderingId, $datasource, $index, $parameters){
+        $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $placeholder
+        if($parameters -ne $null)
+        {
+            Add-Rendering -Item $item -Instance $renderingItem -PlaceHolder $placeholder -Parameter $parameters -DataSource $datasource -Index $index
+        }
+        else
+        {
+            Add-Rendering -Item $item -Instance $renderingItem -PlaceHolder $placeholder -DataSource $datasource -Index $index
+        }
+    }
+    
+    function Remove-Renderings-By-RenderingId($item, $renderingId){
+        Get-Rendering -Item $item |
+        Foreach-Object {
+            if($_.ItemId -eq $renderingId)
+            {
+                Remove-Rendering -Item $item -Instance $_
+            }
+        }
+    }
+    
+    function Add-Rendering-To($item, $renderingId, $newRenderingId, $datasource, $parameters, $sign, $specificPlaceholder){
+        $index = 0
+        Get-Rendering -Item $item |
+        Foreach-Object { 
+            $index++
+            if($_.ItemId -eq $renderingId)
+            {
+                if($index -gt 0)
+                {
+                    $incrementIndex = $index
+                    if ($sing -ne 0){
+                        $incrementIndex = $index + $sign
+                    }
+                
+                    if($specificPlaceholder -ne $null){
+                        Add-New-Rendering -Item $item -Placeholder "$($_.Placeholder)/$($specificPlaceholder)-$($_.UniqueId)-0" -RenderingId $newRenderingId -Datasource $datasource -Index $incrementIndex -Parameters $parameters
+                    }
+                    else{
+                        Add-New-Rendering -Item $item -Placeholder $_.Placeholder -RenderingId $newRenderingId -Datasource $datasource -Index $incrementIndex -Parameters $parameters
+                    }
+                }
+                return
+            }
+        }
+    }
+    
+    function Add-Rendering-After-With-Specific-Placeholder($item, $renderingId, $newRenderingId, $datasource, $parameters){
+        Add-Rendering-To -Item $item -RenderingId $renderingId -NewRenderingId $newRenderingId -Datasource $datasource -Parameters $parameters -Sign 0 -SpecificPlaceholder "bags"
+    }
+    
+    function Add-Rendering-To-Body-Placeholder($item, $renderingId, $newRenderingId, $datasource, $parameters){
+        Add-New-Rendering -Item $item -Placeholder "/body" -RenderingId $newRenderingId -Datasource $datasource -Index 0 -Parameters $parameters
+    }
+    
+    function Create-Luggage(){
+        for($i = 0; $i -lt $pagesPaths.length; $i++){
+            $luggageItem = Get-Or-Create-Item -Path "$($pagesPaths[$i])/Page Components" -Name $luggageFolderName -TemplateId $luggageFolderTemplateId
+            $pageitem = Get-Item -Path $pagesPaths[$i]
+            
+            Add-Rendering-After-With-Specific-Placeholder -Item $pageitem -RenderingId $renderings[$i] -NewRenderingId $bagsComponentId -Datasource $luggageItem.Id -Parameters $parametersPerPage[$pagesPaths[$i]]
+            $cabinBagsItem = Get-Or-Create-Item -Path $luggageItem.FullPath -Name $cabinBagsName -TemplateId $baggageFolderTemplateId
+            $smallCabinbagsItem = Get-Or-Create-Item -Path $luggageItem.FullPath -Name $smallCabinBagsName -TemplateId $baggageFolderTemplateId
+            
+            $messageByDateForCabinBagsItem = Get-Or-Create-Item -Path $cabinBagsItem.FullPath -Name $messageByDateBefore10FebName -TemplateId $messageByDateFolderTemplateId
+            $messageByDateForSamllCabinBagsItem = Get-Or-Create-Item -Path $smallCabinbagsItem.FullPath -Name $messageByDateOnOrAfter10FebName -TemplateId $messageByDateFolderTemplateId
+            
+            Update-Message-By-Date -Item $messageByDateForCabinBagsItem -DateRange $beforeDateRange -Data $luggage[$i].Before
+            Update-Message-By-Date -Item $messageByDateForSamllCabinBagsItem -DateRange $afterDateRange -Data $luggage[$i].After
+            
+            $luggage[$i].Before.Messages = $messageByDateForCabinBagsItem.Id
+            $luggage[$i].After.Messages = $messageByDateForSamllCabinBagsItem.Id
+            
+            Update-Baggage-Info -Item $cabinBagsItem -Data $luggage[$i].Before
+            Update-Baggage-Info -Item $smallCabinbagsItem -Data $luggage[$i].After
+        }
+    }
+    
+    function Update-Policy-Item($item, $data, $dateRange){
+        $item.Editing.BeginEdit()
+        $item["Title"] = $data.Title
+        $item["Description"] = $data.Description
+        $item["Link"] = $data.Link
+        $item["StartDate"] = $dateRange.StartDate
+        $item["EndDate"] = $dateRange.EndDate
+        $item.Editing.EndEdit()
+    }
+    
+    function Create-Bags-Policy(){
+        $policyBannerItem = Get-Or-Create-Item -Path "/sitecore/content/EasyJet/Holidays/Data" -Name $policyBannersFolderName -TemplateId $policyBannersFolder
+        $bagsPolicyBannersItem = Get-Or-Create-Item -Path $policyBannerItem.Fullpath -Name $bagsPolicyBannersFolderName -TemplateId $policyBannersFolder
+        $updatedBagsPolicyBannerItem = Get-Or-Create-Item -Path $bagsPolicyBannersItem.Fullpath -Name $updatedBagsPolicyBannerName -TemplateId $policyBanner
+        Update-Policy-Item -Item $updatedBagsPolicyBannerItem -Data $cabinBagPolicyBannerData -DateRange $afterDateRange
+        
+        $viewBokingPageItem = Get-Item -Path $pagesPaths[3]
+        $confirmatoinPageItem = Get-Item -Path $pagesPaths[4]
+        
+        Add-Rendering-To-Body-Placeholder -Item $viewBokingPageItem -RenderingId "{3695CE85-3DBD-490F-A31A-A26DB8E4772C}" -NewRenderingId $policyBannerId -Datasource $bagsPolicyBannersItem.Id
+        Add-Rendering-To-Body-Placeholder -Item $confirmatoinPageItem -RenderingId "{3695CE85-3DBD-490F-A31A-A26DB8E4772C}" -NewRenderingId $policyBannerId -Datasource $bagsPolicyBannersItem.Id
+    }
+    
+    function Remove-All-Renderigns(){
+        for($i = 0; $i -lt $pagesPaths.length; $i++){
+            $luggageItem = Get-Or-Create-Item -Path "$($pagesPaths[$i])/Page Components" -Name $luggageFolderName -TemplateId $luggageFolderTemplateId
+            $pageitem = Get-Item -Path $pagesPaths[$i]
+            Remove-Renderings-By-RenderingId -Item $pageitem -RenderingId $bagsComponentId
+            Remove-Renderings-By-RenderingId -Item $pageitem -RenderingId $policyBannerId
+        }
+    }
+    
+    Remove-All-Renderigns
+    Create-Luggage
+    Create-Bags-Policy
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201119T122857Z

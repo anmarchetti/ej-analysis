@@ -1,0 +1,74 @@
+.tourRoutesCard {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    max-width: 100%;
+    margin: 7.5px;
+}
+
+.background {
+    position: relative;
+    display: block;
+    height: 300px;
+    overflow: hidden;
+    background-size: cover;
+}
+
+.content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+}
+
+.title {
+    margin: 16px 0 0 16px;
+    font-family: "easyjet_rounded_demi",
+        Arial,
+        Helvetica,
+        sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+
+    @include media-breakpoint-down(md) {
+        margin: 8px 0 0 8px;
+    }
+}
+
+.routeInfo {
+    height: auto;
+    padding: 0 16px;
+
+    @include media-breakpoint-down(md) {
+        padding: 0 8px;
+    }
+}
+
+.routeInfoItem {
+    padding-top: 0;
+    color: #000;
+
+    svg {
+        width: 16px;
+        height: 16px;
+        fill: #333;
+
+        path {
+            fill: #333;
+        }
+    }
+}
+
+.description {
+    height: auto;
+    margin: 0;
+    padding: 0 8px 10px;
+    color: #000;
+}
+
+.button {
+    width: auto;
+    margin: auto 8px 8px;
+    border: 1px solid #f60;
+    border-radius: 6px;
+}

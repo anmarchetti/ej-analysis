@@ -1,0 +1,88 @@
+﻿---
+ID: "60cf18a8-ab28-4a2e-921c-7f8b9aa11996"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-102 - Transfers content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $updates = @(
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Transfer Section"
+            TemplatePath = "/sitecore/templates/Feature/Ancillaries/Transfer/Transfer Section"
+            Fields      = @{
+                "IncludedForFreeText" = @{
+                    "en"    = "Included"
+                    "fr-CH" = "Inclus"
+                    "fr-FR" = "Inclus"
+                    "de-CH" = "Inbegriffen"
+                    "de-DE" = "Inbegriffen"
+                }
+                "UpgradeForFree" = @{
+                    "en"    = "Upgrade for <b>free</b>"
+                    "fr-CH" = "Surclassement <b>gratuit</b>"
+                    "fr-FR" = "Surclassement <b>gratuit</b>"
+                    "de-CH" = "<b>Kostenlos</b> upgraden"
+                    "de-DE" = "<b>Kostenlos</b> upgraden"
+                }
+                "PrivateCTADescription" = @{
+                    "en"    = "Book private transfer"
+                    "fr-CH" = "Réserver un transfert privé"
+                    "fr-FR" = "Réserver un transfert privé"
+                    "de-CH" = "Privattransfer buchen"
+                    "de-DE" = "Privattransfer buchen"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Transfer Section Trade"
+            TemplatePath = "/sitecore/templates/Project/Trade Portal/Datasource/Transfer Section Trade"
+            Fields      = @{
+                "IncludedForFreeText" = @{
+                    "en"    = "Included"
+                }
+                "UpgradeForFree" = @{
+                    "en"    = "Upgrade for <b>free</b>"
+                }
+                "PrivateCTADescription" = @{
+                    "en"    = "Book private transfer"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/Holidays/Data/Transfers/Private DMC"
+            TemplatePath = "/sitecore/templates/Foundation/Destinations/Transfers/Transfer Type"
+            Fields      = @{
+                "Name" = @{
+                    "en"    = "Private transfer"
+                    "fr-CH" = "Transfert privé"
+                    "fr-FR" = "Transfert privé"
+                    "de-CH" = "Privattransfer"
+                    "de-DE" = "Privattransfer"
+                }
+            }
+        },
+        @{
+            Path         = "/sitecore/content/EasyJet/TradePortal/Data/Transfers/Private DMC"
+            TemplatePath = "/sitecore/templates/Foundation/Destinations/Transfers/Transfer Type"
+            Fields      = @{
+                "Name" = @{
+                    "en"    = "Private transfer"
+                }
+            }
+        }
+    )
+    
+    ImportContent -itemsToCreate $updates
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

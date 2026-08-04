@@ -1,0 +1,149 @@
+﻿---
+ID: "39b0f997-936f-4735-a962-d7fc6c9f8b2a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-1231 EUX - Sitecore - Hold luggage - There are no language versions for categories"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $template){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+            if($item -eq $null){
+                $item = New-Item -Path $path -ItemType $template
+            }
+        return $item
+    }
+    
+    
+    function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+        }
+        
+    $lugFolder = '/sitecore/content/EasyJet/Holidays/Data/Luggage'
+    $hold = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage'
+    $large = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Large Sports Equipment'
+    $small = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Small Sports Equipment'
+    $pre = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Pre Paid Excess Weight'
+    $extra = '/sitecore/content/EasyJet/Holidays/Data/Luggage/Extra Hold Luggage'
+    
+    $lugFolderTemplate = '{8434F506-C87F-4D50-AADA-F50D36E90BFC}'
+    $categoryTemplate = '{928655D3-BFC1-4E24-99A5-096BE1B24D09}'
+    
+    $Luggage = Get-Or-Create-Item -Path $lugFolder -Template $lugFolderTemplate
+    $HoldBaggage = Get-Or-Create-Item -Path $hold -Template $categoryTemplate
+    $LargeSportsEquipment = Get-Or-Create-Item -Path $large -Template $categoryTemplate
+    $SmallSportsEquipment = Get-Or-Create-Item -Path $small -Template $categoryTemplate
+    $PrePaidExcessWeight = Get-Or-Create-Item -Path $pre -Template $categoryTemplate
+    $ExtraHoldLuggage = Get-Or-Create-Item -Path $extra -Template $categoryTemplate
+    
+    $translations = @{
+            "fr-CH" = @{
+                "NameHB" = "Bagages de soute"
+                "NameLSE" = "Grand équipement sportif"
+                "NameSSE" = "Petit matériel de sport"
+                "NamePPEW" = "Poids excédentaire prépayé"
+                "NameEHL" = "Bagages de soute supplémentaires"
+                
+            }
+            "fr-FR" = @{
+                "NameHB" = "Bagages de soute"
+                "NameLSE" = "Grand équipement sportif"
+                "NameSSE" = "Petit matériel de sport"
+                "NamePPEW" = "Poids excédentaire prépayé"
+                "NameEHL" = "Bagages de soute supplémentaires"
+                
+            }
+            "de-CH" = @{
+                "NameHB" = "Aufgegebenes Gepäck"
+                "NameLSE" = "Große Sportgeräte"
+                "NameSSE" = "Kleine Sportgeräte"
+                "NamePPEW" = "Vorausbezahltes Übergewicht"
+                "NameEHL" = "Extra aufgegebenes Gepäck"
+              
+            }
+            "de-DE" = @{
+                "NameHB" = "Aufgegebenes Gepäck"
+                "NameLSE" = "Große Sportgeräte"
+                "NameSSE" = "Kleine Sportgeräte"
+                "NamePPEW" = "Vorausbezahltes Übergewicht"
+                "NameEHL" = "Extra aufgegebenes Gepäck"
+               
+            }
+        }
+        
+        
+    foreach ($lang in $translations.Keys) {
+        create-lang-version -item $Luggage -lang $lang
+        
+        create-lang-version -item $HoldBaggage -lang $lang -field "Name" -value $translations[$lang]["NameHB"]
+        create-lang-version -item $LargeSportsEquipment -lang $lang -field "Name" -value $translations[$lang]["NameLSE"]
+        create-lang-version -item $SmallSportsEquipment -lang $lang -field "Name" -value $translations[$lang]["NameSSE"]
+        create-lang-version -item $PrePaidExcessWeight -lang $lang -field "Name" -value $translations[$lang]["NamePPEW"]
+        create-lang-version -item $ExtraHoldLuggage -lang $lang -field "Name" -value $translations[$lang]["NameEHL"]
+    }  
+    
+    #Set up pupup fields
+    $item1 = Get-Or-Create-Item -Path '/sitecore/content/EasyJet/Holidays/Data/Luggage/Extra Hold Luggage/Hold Baggage 15kg' -Template '{41775FBB-D551-4813-B3D7-1BDC7C6DB534}'
+    $item2 = Get-Or-Create-Item -Path '/sitecore/content/EasyJet/Holidays/Data/Luggage/Hold Baggage/Hold Baggage 23kg' -Template '{41775FBB-D551-4813-B3D7-1BDC7C6DB534}'
+    $data = Get-Or-Create-Item -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Hold Luggage Popup' -Template '{6EF73B24-21E2-4091-9CBD-BEBC57953B66}'
+    $value = "$($item1.ID)|$($item2.ID)"
+    
+    Write-Host $value
+    
+    $translations = @{
+            "fr-CH" = @{
+                "HoldLuggageItems" = $value
+            }
+            "fr-FR" = @{
+                "HoldLuggageItems" = $value
+                
+            }
+            "de-CH" = @{
+                "HoldLuggageItems" = $value
+              
+            }
+            "de-DE" = @{
+                "HoldLuggageItems" = $value
+               
+            }
+        }
+    
+    foreach ($lang in $translations.Keys) {
+        create-lang-version -item $data -lang $lang -field "HoldLuggageItems" -value $translations[$lang]["HoldLuggageItems"]
+    }  
+Languages:
+- Language: "de-DE"
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240228T095827Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240228T101135Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

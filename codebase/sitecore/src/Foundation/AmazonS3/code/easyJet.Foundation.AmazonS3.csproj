@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <ItemGroup>
+        <PackageReference Include="AWSSDK.Core" />
+        <PackageReference Include="AWSSDK.S3" />
+        <PackageReference Include="ImageResizer" />
+        <PackageReference Include="Sitecore.ContentSearch" />
+        <PackageReference Include="Sitecore.ContentSearch.Linq" />
+    </ItemGroup>
+    <Import Project="$(SolutionDir)SitecoreProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GeneratedAssemblyInfoFile>Properties\Assemblyinfo.cs</GeneratedAssemblyInfoFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="App_Config\Include\Foundation\easyJet.Foundation.AmazonS3.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <None Include="App_Config\Include\Foundation\easyJet.Foundation.AmazonS3.CI.config">
+            <DependentUpon>easyJet.Foundation.AmazonS3.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Foundation\easyJet.Foundation.AmazonS3.Debug.config">
+            <DependentUpon>easyJet.Foundation.AmazonS3.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Foundation\easyJet.Foundation.AmazonS3.Release.config">
+            <DependentUpon>easyJet.Foundation.AmazonS3.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Update="sitecore\shell\Applications\Media\UploadManager\EasyJetBulkUpload.aspx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="sitecore\shell\Applications\Media\UploadManager\EasyJetUploadManager.aspx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Destinations\code\easyJet.Foundation.Destinations.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Foundation\Optimization\code\easyJet.Foundation.Optimization.csproj" />
+        <ProjectReference Include="$(SolutionDir)src\Feature\Enhancment\code\easyJet.Feature.SitecoreEnhancment.csproj" />
+    </ItemGroup>
+</Project>

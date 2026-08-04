@@ -1,0 +1,38 @@
+.container {
+    :global(.drawer__actions) {
+        box-shadow: $generalBoxShadow;
+    }
+
+    :global(.fee-banner-mobile:not(.stuck)) {
+        width: 100%;
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    z-index: $zIndexSuperPopup;
+}
+
+.body {
+    padding: 16px 16px 66px;
+
+    .title {
+        margin-top: 0;
+        margin-bottom: 4px;
+        font-family: $fontRoundedHeadline;
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 1.1;
+    }
+
+    .description {
+        margin-bottom: 16px;
+        font-size: 14px;
+        line-height: 1.28;
+        color: $clrTextMain;
+    }
+}
+
+.cancelBtn:global(.btn) {
+    min-height: 60px;
+    padding: 10px 15px;
+}

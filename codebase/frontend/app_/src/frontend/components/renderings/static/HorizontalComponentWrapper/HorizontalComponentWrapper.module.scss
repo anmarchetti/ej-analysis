@@ -1,0 +1,18 @@
+.direction {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: $container-max-width;
+    margin: auto;
+}
+
+.innerWrapper {
+    :global(.wrapper-component-container) {
+        :global(.wrapper-shape) {
+            :global(.wrapper-shape__triangle-start),
+            :global(.wrapper-shape__triangle-end) {
+                display: none;
+            }
+        }
+    }
+}

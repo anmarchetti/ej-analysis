@@ -1,0 +1,152 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 24px 16px;
+    border-bottom: 1px solid $colorGeyser;
+
+    @include media-breakpoint-up(lg) {
+        padding: 32px 24px;
+    }
+}
+
+.shadowy {
+    border: 1px solid #d7e2e5;
+    box-shadow: 0 0 4px #00000026;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.meta {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.titleText {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 25px;
+    text-align: left;
+
+    @include media-breakpoint-down(lg) {
+        font-size: 16px;
+    }
+}
+
+.icon {
+    margin-right: 16px;
+
+    @include media-breakpoint-down(lg) {
+        margin-right: 8px;
+    }
+}
+
+.chevron {
+    @include sizeSquare(16px);
+
+    color: $colorOrange;
+    transform: rotate(90deg);
+    transition: transform 0.3s;
+
+    @include media-breakpoint-up(lg) {
+        margin-right: 12px;
+    }
+
+    svg {
+        @include sizeSquare(16px);
+    }
+}
+
+.opened > .meta .chevron {
+    transform: rotate(270deg);
+}
+
+.disabled {
+    .titleText {
+        color: $colorMidnightGray;
+    }
+
+    .chevron {
+        color: $colorMidnightGray;
+    }
+
+    .meta {
+        cursor: default;
+    }
+}
+
+.animatedContainer {
+    margin-right: -15px;
+    margin-left: -15px;
+    padding-right: 15px;
+
+    // prevent shadow cut
+    padding-left: 15px;
+}
+
+.childrenWrapper {
+    max-height: 0;
+    animation-name: on-close;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.opened > .childrenWrapper {
+    max-height: 10000px;
+    animation-name: on-open;
+}
+
+// Animation was created to maintain element visibility when the overflow is applied
+@keyframes on-open {
+    0% {
+        overflow: hidden;
+        opacity: 0;
+    }
+
+    50% {
+        overflow: hidden;
+        opacity: 0.3;
+    }
+
+    90% {
+        overflow: hidden;
+    }
+
+    100% {
+        overflow: visible;
+        opacity: 1;
+    }
+}
+
+@keyframes on-close {
+    0% {
+        max-height: 1000px;
+        overflow: visible;
+        opacity: 1;
+    }
+
+    10% {
+        overflow: hidden;
+    }
+
+    70% {
+        opacity: 0;
+    }
+
+    100% {
+        overflow: hidden;
+    }
+}
+
+.shimmer {
+    height: 28px;
+    border-radius: 20px;
+}

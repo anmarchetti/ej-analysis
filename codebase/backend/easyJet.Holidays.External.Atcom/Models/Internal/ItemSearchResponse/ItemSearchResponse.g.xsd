@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="AtComRes/ItemSearchResponse" xmlns:p2="AtComRes/Common" xmlns:ns1="AtComRes/ItemSearchResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+    <xs:element name="ItemSearchResponse">
+        <xs:annotation>
+            <xs:documentation>response with Item offers </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="p2:AtcomresBaseOfferSearchResponse"/>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

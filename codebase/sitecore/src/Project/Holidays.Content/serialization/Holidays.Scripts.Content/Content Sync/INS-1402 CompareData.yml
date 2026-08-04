@@ -1,0 +1,134 @@
+﻿---
+ID: "808b24ee-a4ec-4269-8335-b6b33fe1cbb7"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-1402 CompareData"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content" 
+    Import-Function "Import Renderings"
+    $datasourceTarget="/sitecore/content/EasyJet/Holidays/Data/Compare Deals"
+    
+    Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Shortlists/Page Components/Comparison Table"  -ErrorAction SilentlyContinue | 
+        Move-Item -Destination "master:$datasourceTarget"  -ErrorAction SilentlyContinue | Out-Null
+    
+    
+    $itemsToCreate = @(
+        @{
+            Path        = "$datasourceTarget"
+            TemplatePath = "/sitecore/templates/Feature/Destinations/Comparison/Compare Deals"
+    
+            Fields      = @{
+                "CompareLabel" = @{
+                    "de-CH" = "Vergleichen Sie"
+                    "en" = "Compare"
+                    "fr-FR" = "Comparer"
+                    "de-DE" = "Vergleichen Sie"
+                    "fr-CH" = "Comparer"
+                }
+                "CompareCTA" = @{
+                    "de-CH" = "Ferien vergleichen"
+                    "en" = "Compare holidays"
+                    "fr-FR" = "Comparer les vacances"
+                    "de-DE" = "Ferien vergleichen"
+                    "fr-CH" = "Comparer les vacances"
+                }
+                "CompareMobileCTA" = @{
+                    "de-CH" = "Vergleichen Sie"
+                    "en" = "Compare"
+                    "fr-FR" = "Comparer"
+                    "de-DE" = "Vergleichen Sie"
+                    "fr-CH" = "Comparer"
+                }
+                "CancelCompareButton" = @{
+                    "de-CH" = "Vergleich abbrechen"
+                    "en" = "Cancel Comparison"
+                    "fr-FR" = "Annuler la comparaison"
+                    "de-DE" = "Vergleich abbrechen"
+                    "fr-CH" = "Annuler la comparaison"
+                }
+                "ViewCompareButton" = @{
+                    "de-CH" = "Ansicht Vergleich"
+                    "en" = "View Comparison"
+                    "fr-FR" = "Voir la comparaison"
+                    "de-DE" = "Ansicht Vergleich"
+                    "fr-CH" = "Voir la comparaison"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    
+    
+    $myRenderings = @(
+        @{ 
+            Title          = "Compare Deals"
+            PagePath       = "/sitecore/content/EasyJet/Holidays/Home/MixedResultList"
+            RenderingPath  = "/sitecore/layout/Renderings/Feature/Destinations/Compare Deals"
+            Placeholder    = "/body/component-wrapper-inner-{3ede0aec-2846-45a7-b9da-d77e2f356021}-0/compare-deals-{9ed3c2b4-6fbb-4cf6-9464-9d14a0984c93}-0"
+            DataSourcePath = "/sitecore/content/EasyJet/Holidays/Data/Compare Deals"
+            PlaceBeforeRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Search Results"
+        }
+    )
+    
+    ImportRenderings -renderingsToAttach $myRenderings
+    
+    $myRenderings = @(
+        @{ 
+            Title          = "Compare Deals"
+            PagePath       = "/sitecore/content/EasyJet/Holidays/Home/Shortlists"
+            RenderingPath  = "/sitecore/layout/Renderings/Feature/Destinations/Compare Deals"
+            Placeholder    = "/body/compare-deals-{494865ee-63ca-4966-b3c1-6bb78c01136f}-0"
+            DataSourcePath = "/sitecore/content/EasyJet/Holidays/Data/Compare Deals"
+            PlaceBeforeRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Listed Items"
+        }
+    )
+    
+    ImportRenderings -renderingsToAttach $myRenderings
+    
+    
+    
+    $holidayssettingscomparedealssettings_Id = [GUID]"{1080F87E-1D10-4B20-A1E6-FA658C79EA59}"
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Compare Deals Settings"
+            TemplatePath = "Feature/Destinations/Comparison/Settings/Compare Deals"
+            Id          = $holidayssettingscomparedealssettings_Id
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    Copy-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data/Compare Deals" -Destination "master:/sitecore/content/EasyJet/TradePortal/Data/Compare Deals" -Recurse
+    
+    
+    $myRenderings = @(
+        @{ 
+            Title          = "Compare Deals"
+            PagePath       = "/sitecore/content/EasyJet/TradePortal/Home/MixedResultList"
+            RenderingPath  = "/sitecore/layout/Renderings/Feature/Destinations/Compare Deals"
+            Placeholder    = "/body/component-wrapper-inner-{3ec4afc7-9857-4894-9552-b00c1f45c41a}-0/compare-deals-{9ed3c2b4-6fbb-4cf6-9464-9d14a0984c93}-0"
+            DataSourcePath = "/sitecore/content/EasyJet/TradePortal/Data/Compare Deals"
+            PlaceBeforeRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Search Results"
+        }
+    )
+    
+    ImportRenderings -renderingsToAttach $myRenderings
+    
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Settings/Compare Deals Settings"
+            TemplatePath = "Feature/Destinations/Comparison/Settings/Compare Deals" 
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Value: "20251016T075645:638961982056088287Z"

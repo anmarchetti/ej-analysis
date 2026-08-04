@@ -1,0 +1,77 @@
+.modal-dialog {
+    .popup__dialog {
+        width: 740px;
+
+        @include media-breakpoint-down(md) {
+            width: auto;
+        }
+    }
+
+    > .popup__dialog > .popup__content > .popup__body {
+        padding: 0;
+    }
+
+    img {
+        width: 80px;
+
+        @include media-breakpoint-down(md) {
+            width: 60px;
+        }
+    }
+
+    .popup__footer {
+        justify-content: center;
+        padding: 25px 90px 65px;
+
+        @include media-breakpoint-down(md) {
+            padding: 10px 40px 35px;
+        }
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 75px 90px 20px;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding: 35px 40px 20px;
+        }
+
+        &__title {
+            margin: 35px 0 25px;
+            font-family: $fontRoundedHeadline;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 42px;
+
+            @include media-breakpoint-down(md) {
+                margin: 20px 0 10px;
+                font-size: 22px;
+                line-height: 32px;
+            }
+        }
+
+        &__description {
+            font-size: 18px;
+            line-height: 21px;
+            letter-spacing: 0;
+
+            @include media-breakpoint-down(md) {
+                font-size: 16px;
+                line-height: 26px;
+            }
+        }
+    }
+
+    .btn {
+        width: 390px;
+        padding: 18px 30px;
+
+        @include media-breakpoint-down(md) {
+            padding: 15px 30px;
+            font-size: 14px;
+        }
+    }
+}

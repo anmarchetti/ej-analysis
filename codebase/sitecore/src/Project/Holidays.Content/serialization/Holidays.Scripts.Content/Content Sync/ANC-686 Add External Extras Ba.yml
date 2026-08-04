@@ -1,0 +1,225 @@
+﻿---
+ID: "e4e4df49-3439-4bee-a4ee-ddf2f60ef3f2"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-686 Add External Extras Banners"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-item($path, $itemName, $itemType){
+        $itemToCreateExist = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+        if($itemToCreateExist -eq $null){
+            $createdItem = New-Item -Path $path -Name $itemName -ItemType $itemType
+    
+            if($createdItem -ne $null){
+                Write-Host "$($itemName) item is created"
+                return $createdItem
+            }
+        }
+        return $itemToCreateExist
+    }
+    
+    function create-lang-version($item, $lang, $field, $value, $param) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value;
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    function Add-New-Rendering($item, $placeholder, $renderingId, $datasource, $index){
+    	$defaultLayout = Get-LayoutDevice "Default"
+    	$renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering -Placeholder $placeholder
+    	$renderingInstance = Get-Rendering -Item $item -PlaceHolder $placeholder -Device $defaultLayout -FinalLayout | Where-Object {$_.ItemId -eq $renderingId}
+    	
+    	if ($renderingInstance -eq $null)
+    	{
+    		Add-Rendering -Item $item -Instance $renderingItem -PlaceHolder $placeholder -DataSource $datasource -Index $index -FinalLayout
+    
+    		Write-Host "Successfully created rendering with datasource:" $datasource
+    	}
+    }
+    
+    function Update-ParntershipRendering($item, $placeholder, $renderingId){
+    	$defaultLayout = Get-LayoutDevice "Default"
+    	$renderingInstance = Get-Rendering -Item $item -Device $defaultLayout -FinalLayout | Where-Object {$_.ItemId -eq $renderingId}
+    	
+    	if ($renderingInstance -ne $null)
+    	{
+    	    $parameters = [ordered]@{"Theme"="Without%20Live%20Price&amp;IsLogoBackgroundTransparent&amp;ForceReloadChildren"}
+    		Set-RenderingParameter -Instance $renderingInstance -Parameter $parameters
+            Set-Rendering -Instance $renderingInstance -Item $item -FinalLayout
+    		
+    		Write-Host "Successfully updated rendering:" $renderingId
+    	}
+    }
+    
+    function create-banners($website) {
+    		
+    	# Create External Banners Folder
+    	$dataPath = "/sitecore/content/EasyJet/" + $website + "/Data"
+    	$externalExtrasBannersPath = $dataPath + "/External Extras Banners"
+    
+    	create-item -Path $dataPath -ItemName "External Extras Banners" -ItemType "{5879CF45-BEB4-48F9-9FEC-EC7AE107CF0F}"
+    
+    	#Create Default Banner
+    	$defaultBannerPath =  $dataPath + "/External Extras Banners/Default Banner"
+    
+    	create-item -Path $externalExtrasBannersPath -ItemName "Default Banner" -ItemType "{DFA8D57E-A6EC-41C2-8F47-9C8231D88544}"
+    
+    	# Travel Insurence Banner
+    
+    	$toursAndExperiences = create-item -Path $defaultBannerPath -ItemName "Tours and experiences" -ItemType "{C5C2275C-B21B-440F-BE24-CD8BF783B3BE}"
+    
+    	Create-Lang-Version -Item $toursAndExperiences -Lang "en" -Field "Title" -Value "Tours and experiences"
+    	Create-Lang-Version -Item $toursAndExperiences -Lang "en" -Field "TitleSuperscript" -Value "FUN DAYS OUT"
+    	Create-Lang-Version -Item $toursAndExperiences -Lang "en" -Field "Description" -Value "Check out a wide range of tours, excursions and activities for your holiday."
+    	Create-Lang-Version -Item $toursAndExperiences -Lang "en" -Field "PriceSuperscript" -Value "From"
+    	Create-Lang-Version -Item $toursAndExperiences -Lang "en" -Field "Price" -Value "tbd"
+    	Create-Lang-Version -Item $toursAndExperiences -Lang "en" -Field "Logo" -Value "<image mediaid='{921C2F6D-8ADA-4D16-888C-FA82FED900F6}' />"
+    	Create-Lang-Version -Item $toursAndExperiences -Lang "en" -Field "Image" -Value "<image mediaid='{DD06E99A-B6C9-4164-86E4-8259D277A634}' />"
+    	Create-Lang-Version -Item $toursAndExperiences -Lang "en" -Field "CTA" -Value "<link text='View excursions' linktype='external' url='https://experiences.easyjet.com/uk?utm_source=My-Booking-List&amp;utm_campaign=generic&amp;utm_medium=web&amp;aid=easyJet' anchor='' target='_blank' rel='' />"
+    	Create-Lang-Version -Item $toursAndExperiences -Lang "en" -Field "__Sortorder" -Value 50
+    
+    
+    	# Airport Parking Banner
+    	$airportParking = create-item -Path $defaultBannerPath -ItemName "Airport parking" -ItemType "{C5C2275C-B21B-440F-BE24-CD8BF783B3BE}"
+    
+    	Create-Lang-Version -Item $airportParking -Lang "en" -Field "Title" -Value "Airport parking"
+    	Create-Lang-Version -Item $airportParking -Lang "en" -Field "TitleSuperscript" -Value "BOOK, SAVE & PARK"
+    	Create-Lang-Version -Item $airportParking -Lang "en" -Field "Description" -Value "Make sure you’ve got a spot to park at the airport."
+    	Create-Lang-Version -Item $airportParking -Lang "en" -Field "PriceSuperscript" -Value "From"
+    	Create-Lang-Version -Item $airportParking -Lang "en" -Field "Price" -Value "tbd"
+    	Create-Lang-Version -Item $airportParking -Lang "en" -Field "Logo" -Value ""
+    	Create-Lang-Version -Item $airportParking -Lang "en" -Field "Image" -Value "<image mediaid='{384E1D63-AF9F-4BF2-9958-1763199B5AFB}' />"
+    	Create-Lang-Version -Item $airportParking -Lang "en" -Field "CTA" -Value "<link text='Book airport parking' linktype='external' url='https://parking.easyjet.com/easyjetholidays-parking.html' anchor='' target='_blank' rel='' />"
+    	Create-Lang-Version -Item $airportParking -Lang "en" -Field "__Sortorder" -Value 100
+    
+    	# Airport Lounge Banner
+    	$airportLounge = create-item -Path $defaultBannerPath -ItemName "Airport lounge" -ItemType "{C5C2275C-B21B-440F-BE24-CD8BF783B3BE}"
+    
+    	Create-Lang-Version -Item $airportLounge -Lang "en" -Field "Title" -Value "Airport lounge"
+    	Create-Lang-Version -Item $airportLounge -Lang "en" -Field "TitleSuperscript" -Value "RELAX IN STYLE"
+    	Create-Lang-Version -Item $airportLounge -Lang "en" -Field "Description" -Value "Relax and enjoy your pre-flight airport experience in comfort."
+    	Create-Lang-Version -Item $airportLounge -Lang "en" -Field "PriceSuperscript" -Value "Reserve from"
+    	Create-Lang-Version -Item $airportLounge -Lang "en" -Field "Price" -Value "tbd"
+    	Create-Lang-Version -Item $airportLounge -Lang "en" -Field "Logo" -Value ""
+    	Create-Lang-Version -Item $airportLounge -Lang "en" -Field "Image" -Value "<image mediaid='{F525A635-E3D4-44CF-88CA-89BD51069714}' />"
+    	Create-Lang-Version -Item $airportLounge -Lang "en" -Field "CTA" -Value "<link text='Book an airport lounge' linktype='external' url='https://parking.easyjet.com/easyjetholidays-lounges.html' anchor='' target='_blank' rel='' />"
+    	Create-Lang-Version -Item $airportLounge -Lang "en" -Field "__Sortorder" -Value 150
+    
+    	# Fast Track Security Banner
+    	$fastTrack = create-item -Path $defaultBannerPath -ItemName "Fast track security" -ItemType "{C5C2275C-B21B-440F-BE24-CD8BF783B3BE}"
+    
+    	Create-Lang-Version -Item $fastTrack -Lang "en" -Field "Title" -Value "Fast track security"
+    	Create-Lang-Version -Item $fastTrack -Lang "en" -Field "TitleSuperscript" -Value "SKIP THE QUEUES"
+    	Create-Lang-Version -Item $fastTrack -Lang "en" -Field "Description" -Value "Get through the airport quicker with fast track security passes."
+    	Create-Lang-Version -Item $fastTrack -Lang "en" -Field "PriceSuperscript" -Value "Only"
+    	Create-Lang-Version -Item $fastTrack -Lang "en" -Field "Price" -Value "tbd"
+    	Create-Lang-Version -Item $fastTrack -Lang "en" -Field "Logo" -Value "<image mediaid='{523DB63A-1EB9-4C00-9415-3890488B4E7A}' />"
+    	Create-Lang-Version -Item $fastTrack -Lang "en" -Field "Image" -Value "<image mediaid='{F9FDD4ED-E90D-4325-80B5-C0AE26ECB213}' />"
+    	Create-Lang-Version -Item $fastTrack -Lang "en" -Field "CTA" -Value "<link text='Book fast track' linktype='external' url='https://fasttrack.easyjet.com' anchor='' target='_blank' rel='' />"
+    	Create-Lang-Version -Item $fastTrack -Lang "en" -Field "__Sortorder" -Value 200	
+    }
+    
+    function setup-holidays-pages() {
+    	
+    	# External Extras Banner Rendering
+    	$extrasBannerRendering = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/External Extras Banner" 
+    	$extrasBannerRenderingId = "{84E4A703-662D-41CE-9A3E-86946DF9E04B}"
+    	$partnershipComponentRenderingId = "{EF923FE5-72B8-41AE-9D17-BD2B8B99A377}"
+    	$placeholder = "/body/component-wrapper-inner-{7C4EF512-A5D3-4AE5-A6AA-D8C893BF4819}-0"
+    
+    
+    	# Add Default Banner to MyBookings
+    	$myBookingsPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings"
+    	$myBookingsPageEn = Get-Item -Path $myBookingsPagePath -Language "en"
+    
+    	$datasourceDefaultBanner = "/sitecore/content/EasyJet/Holidays/Data/External Extras Banners/Default Banner"
+    	$partnershipComponentDatsource = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/Page Components/Partnership Component"
+    
+    	# Remove Partnership Component
+    	$partnershipRendering = Get-Item -Path '/sitecore/layout/Renderings/Feature/PageContent/Partnership Component'
+    	$partnershipComponent = Get-Rendering -Item $myBookingsPageEn -Rendering $partnershipRendering
+    
+    	if ($partnershipComponent -ne $null) {
+    	    Write-Host "Start removing partnership component"
+            Remove-Rendering -Item $myBookingsPageEn -Instance $partnershipComponent
+            Write-Host "Partnership component was removed from My_Bookings"
+        } else {
+            Write-Host "Partnership component not found"
+        }
+    
+    	# Add Partnership Component to existing markets
+    	$myBookingsPageDeCh = Get-Item -Path $myBookingsPagePath -Language "de-CH"
+    	$myBookingsPageFrCh = Get-Item -Path $myBookingsPagePath -Language "fr-CH"
+    	$myBookingsPageFr = Get-Item -Path $myBookingsPagePath -Language "fr-FR"
+    	$myBookingsPageDe = Get-Item -Path $myBookingsPagePath -Language "de-DE"
+    	
+    	Add-New-Rendering -Item $myBookingsPageDeCh -Placeholder $placeholder -RenderingId $partnershipComponentRenderingId -Datasource $partnershipComponentDatsource -Index 0 
+    	Update-ParntershipRendering -Item $myBookingsPageDeCh -Placeholder $placeholder -RenderingId $partnershipComponentRenderingId
+    	Write-Host "Partnership component was added to My_Bookings (de-CH)"
+    	
+    	Add-New-Rendering -Item $myBookingsPageFrCh -Placeholder $placeholder -RenderingId $partnershipComponentRenderingId -Datasource $partnershipComponentDatsource -Index 0
+    	Update-ParntershipRendering -Item $myBookingsPageFrCh -Placeholder $placeholder -RenderingId $partnershipComponentRenderingId
+    	Write-Host "Partnership component was added to My_Bookings (fr-CH)"
+    	
+    	Add-New-Rendering -Item $myBookingsPageFr -Placeholder $placeholder -RenderingId $partnershipComponentRenderingId -Datasource $partnershipComponentDatsource -Index 0
+    	Update-ParntershipRendering -Item $myBookingsPageFr -Placeholder $placeholder -RenderingId $partnershipComponentRenderingId
+    	Write-Host "Partnership component was added to My_Bookings (fr-FR)"
+    	
+    	Add-New-Rendering -Item $myBookingsPageDe -Placeholder $placeholder -RenderingId $partnershipComponentRenderingId -Datasource $partnershipComponentDatsource -Index 0
+    	Update-ParntershipRendering -Item $myBookingsPageDe -Placeholder $placeholder -RenderingId $partnershipComponentRenderingId
+    	Write-Host "Partnership component was added to My_Bookings (de-DE)"
+    	
+    	# Add External Extras Component to EN 
+    
+    	Add-New-Rendering -Item $myBookingsPageEn -Placeholder $placeholder -RenderingId $extrasBannerRenderingId -Datasource $datasourceDefaultBanner -Index 0
+    	
+        Write-Host "External Banner Component was added to My_Bookings"
+    
+    	# Add Default Banner Banner to MyBooking
+    	$myBookingPage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking"
+    	Add-New-Rendering -Item $myBookingPage -Placeholder "/body/external-extras-banner-{5500ac44-5df4-4473-8e8c-ea635a187882}-0" -RenderingId $extrasBannerRenderingId -Datasource $datasourceDefaultBanner  -Index 8
+        
+        Write-Host "External Banner Component was added to My_Booking"
+    
+    	# Add Default Banner to Booking Confirmation
+    	$bookingConfirmationPage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation"
+    	$datasourceTrippleBanner = "/sitecore/content/EasyJet/Holidays/Data/External Extras Banners/Default Banner"
+    	
+    	Add-New-Rendering -Item $bookingConfirmationPage -Placeholder "/body/external-extras-banner-{5d228e7e-0347-4e8e-ac47-d911eba730d7}-0" -RenderingId $extrasBannerRenderingId -Datasource $datasourceDefaultBanner  -Index 1
+    	
+    	Write-Host "External Banner Component was added to Confirmation Page"
+    }
+    
+    create-banners -Website "Holidays"
+    create-banners -Website "TradePortal"
+    
+    setup-holidays-pages
+    
+    Write-Host "Script was executed"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 153
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230804T102242Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,38 @@
+{
+  "Title": "DisplayMemoResponse for VALID_DEFAULT_LUGGAGE",
+  "Priority": 0,
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/EZYDMO/VRPWebservice/AniteGateway/AniteGateway.aspx",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "POST"
+    ],
+    "Body": {
+      "Matcher": {
+        "Name": "WildcardMatcher",
+        "Pattern": "*<p2:DisplayMemoRequest*<p1:BkgNum><p1:BkgId>VALID_DEFAULT_LUGGAGE</p1:BkgId>*",
+        "IgnoreCase": true
+      }
+    }
+  },
+  "Response": {
+    "StatusCode": 200,
+    "Body": "<p2:DisplayMemoResponse xmlns:p1=\"AtComRes/Common\" xmlns:p2=\"AtComRes/DisplayMemoResponse\"><!-- Response returned from: EZYCON.EJH.ATCOM --><p1:Adm Xsd_Ver=\"TE3.22.4.2\"><p1:ReqId>4b757225-8dc6-44b2-9a25-2ba5427fb65c</p1:ReqId><p1:Tm>2023-11-08T14:38:32.044375+00:00</p1:Tm><p1:Trk From=\"atcomres\" To=\"easyjet\" /></p1:Adm><p1:CltInfo><p1:Locale>en_EN</p1:Locale><p1:CltSysContext>3</p1:CltSysContext><p1:Agt_No>WAGBP</p1:Agt_No><p1:TermCode>ABCD</p1:TermCode><p1:User_Name>EZYVRP</p1:User_Name><p1:Chan>inhouse</p1:Chan><p1:Channel_Type>VRP</p1:Channel_Type><p1:User_Role>INTERNAL</p1:User_Role></p1:CltInfo><p1:BkgNum><p1:BkgId>VALID_DEFAULT_LUGGAGE</p1:BkgId><p1:CurrentVersion>1</p1:CurrentVersion></p1:BkgNum><p1:Memo><p1:Memo_Dt>2023-11-08T14:28:53+00:00</p1:Memo_Dt><p1:Memo_Cd>:OC</p1:Memo_Cd><p1:Memo_Name>Opt created</p1:Memo_Name><p1:Memo_User_Name>EZYVRP</p1:Memo_User_Name><p1:Memo_User_Desc>easyJet Holidays VRP User</p1:Memo_User_Desc><p1:Memo_Key>28741700</p1:Memo_Key><p1:Memo_Rights>READ</p1:Memo_Rights><p1:Memo_Rights>WRITE</p1:Memo_Rights><p1:Memo_Rights>DELETE</p1:Memo_Rights><p1:Memo_Seq>1</p1:Memo_Seq><p1:Agent Cd=\"WAGBP\" Name=\"Web Agent £\" /></p1:Memo><p1:Memo><p1:Memo_Dt>2023-11-08T14:28:59+00:00</p1:Memo_Dt><p1:Memo_Cd>:OB</p1:Memo_Cd><p1:Memo_Name>Opt to booking</p1:Memo_Name><p1:Memo_User_Name>EZYVRP</p1:Memo_User_Name><p1:Memo_User_Desc>easyJet Holidays VRP User</p1:Memo_User_Desc><p1:Memo_Key>28741703</p1:Memo_Key><p1:Memo_Rights>READ</p1:Memo_Rights><p1:Memo_Rights>WRITE</p1:Memo_Rights><p1:Memo_Rights>DELETE</p1:Memo_Rights><p1:Memo_Seq>4</p1:Memo_Seq><p1:Agent Cd=\"WAGBP\" Name=\"Web Agent £\" /></p1:Memo></p2:DisplayMemoResponse>",
+    "Headers": {
+      "Content-Type": "text/xml",
+      "Cache-Control": "private",
+      "Vary": "Accept-Encoding",
+      "Server": "Microsoft-IIS/10.0",
+      "X-AspNet-Version": "4.0.30319",
+      "X-Powered-By": "ASP.NET",
+      "Date": "Wed, 08 Nov 2023 14:38:32 GMT"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+.boards {
+    position: relative;
+
+    :global(.show-more) {
+        position: relative;
+        padding: 0;
+        font-family: $fontRoundedDemy;
+        font-size: 18px;
+
+        @include media-breakpoint-down(md) {
+            padding: 16px;
+            font-size: 16px;
+            background-color: $colorWhite;
+            border-width: 1px;
+            border-radius: $box-border-radius_md;
+        }
+    }
+}

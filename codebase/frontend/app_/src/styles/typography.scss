@@ -1,0 +1,294 @@
+body {
+    font-family: $body_font-family;
+    font-size: $body_font-size;
+    line-height: $body_line-height;
+    color: $body_color;
+
+    @include media-breakpoint-down(md) {
+        font-size: $body_font-size_mobile;
+    }
+}
+
+p {
+    font-size: $body_font-size;
+
+    @include media-breakpoint-down(md) {
+        font-size: $body_font-size_mobile;
+    }
+}
+
+h1 {
+    margin: 1rem 0;
+    font-family: $fontGenerationHeadline;
+    font-size: 70px;
+    font-weight: normal;
+    line-height: 1;
+    color: $clrTextHeading;
+
+    @include media-breakpoint-down(md) {
+        font-size: 50px;
+    }
+}
+
+h2 {
+    font-family: $fontRoundedHeadline;
+    font-size: 40px;
+    font-weight: normal;
+    line-height: 1.25;
+    color: $clrTextHeading;
+
+    @include media-breakpoint-down(md) {
+        font-size: 30px;
+    }
+}
+
+h3 {
+    font-family: $fontGenerationHeadline;
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 1.25;
+    color: $clrTextHeading;
+
+    @include media-breakpoint-down(md) {
+        font-size: 18px;
+    }
+}
+
+h4 {
+    font-family: $fontRoundedBook;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.333;
+}
+
+a {
+    &,
+    &:visited,
+    &:focus,
+    &:hover,
+    &:active {
+        color: $colorOrange;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    &:hover {
+        @include media-breakpoint-up(lg) {
+            opacity: 0.8;
+        }
+    }
+
+    &.text-link {
+        text-decoration: underline;
+    }
+}
+
+.link-overlay {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.link-pseudo-overlay {
+    &,
+    &:visited {
+        color: inherit;
+    }
+
+    // Use pseudo content to stretch the link's layout over the whole card
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-bold {
+    font-weight: bolder;
+}
+
+.text-big {
+    font-size: 18px;
+}
+
+.text-bigger {
+    font-size: 28px;
+}
+
+.text-small {
+    font-size: 14px;
+}
+
+.mobile-f14-desktop-f16 {
+    font-size: 16px !important;
+    @include media-breakpoint-down(md) {
+        font-size: 14px !important;
+    }
+}
+
+.mobile-f18-desktop-f24 {
+    font-size: 24px !important;
+    @include media-breakpoint-down(md) {
+        font-size: 18px !important;
+    }
+}
+
+.mobile-f20-desktop-f32 {
+    font-size: 32px !important;
+    @include media-breakpoint-down(md) {
+        font-size: 20px !important;
+    }
+}
+
+.mobile-f24-desktop-f36 {
+    font-size: 36px !important;
+    @include media-breakpoint-down(md) {
+        font-size: 24px !important;
+    }
+}
+
+/* --- Static Banner Title styles: start  --- */
+.mobile-f40-desktop-f66 {
+    font-size: 66px !important;
+    @include media-breakpoint-down(md) {
+        font-size: 40px !important;
+    }
+}
+
+.mobile-f44-desktop-f74 {
+    font-size: 74px !important;
+    @include media-breakpoint-down(md) {
+        font-size: 44px !important;
+    }
+}
+
+.mobile-f48-desktop-f82 {
+    font-size: 82px !important;
+    @include media-breakpoint-down(md) {
+        font-size: 48px !important;
+    }
+}
+
+.mobile-f50-desktop-f90 {
+    font-size: 90px !important;
+    @include media-breakpoint-down(md) {
+        font-size: 50px !important;
+    }
+}
+
+/* --- Static Banner Title styles: end  --- */
+
+.weight-100 {
+    font-weight: 100 !important;
+}
+
+.weight-200 {
+    font-weight: 200 !important;
+}
+
+.weight-300 {
+    font-weight: 300 !important;
+}
+
+.weight-400 {
+    font-weight: 400 !important;
+}
+
+.weight-500 {
+    font-weight: 500 !important;
+}
+
+.weight-600 {
+    font-weight: 600 !important;
+}
+
+.weight-700 {
+    font-weight: 700 !important;
+}
+
+.weight-800 {
+    font-weight: 800 !important;
+}
+
+.weight-900 {
+    font-weight: 900 !important;
+}
+
+.position-center {
+    align-items: center !important;
+    justify-content: center !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    text-align: center !important;
+}
+
+.position-left {
+    align-items: flex-start !important;
+    justify-content: left !important;
+    margin-right: auto !important;
+    margin-left: 0 !important;
+    text-align: left !important;
+}
+
+.position-right {
+    align-items: flex-end !important;
+    justify-content: right !important;
+    margin-right: 0 !important;
+    margin-left: auto !important;
+    text-align: right !important;
+}
+
+.font-rounded {
+    font-family: $fontRoundedHeadline !important;
+}
+
+.font-rounded-demi {
+    font-family: $fontRoundedBook !important;
+}
+
+.font-generation-headline {
+    font-family: $fontGenerationHeadline !important;
+}
+
+.font-unbounded-sans {
+    font-family: $fontUnboundedSans !important;
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+        .text#{$infix}-left {
+            text-align: left !important;
+        }
+        .text#{$infix}-right {
+            text-align: right !important;
+        }
+        .text#{$infix}-center {
+            text-align: center !important;
+        }
+    }
+}
+
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+.text-single-line {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.text-truncate {
+    @include text-truncate;
+}

@@ -1,0 +1,163 @@
+.checkbox {
+    padding: 10px 4px;
+
+    @include media-breakpoint-up(sm) {
+        padding: 8px 4px;
+    }
+
+    :global(.checkbox__control) {
+        border-color: $colorGrayBorder;
+        @include sizeSquare(24px);
+    }
+
+    :global(input:checked ~ .checkbox__control) {
+        border-color: $colorGrayBorder;
+    }
+
+    :global(.checkbox--label) {
+        padding-left: 12px;
+        font-size: 16px;
+        line-height: 1.375;
+    }
+}
+
+.radioBtn {
+    padding: 10px 4px;
+
+    @include media-breakpoint-up(sm) {
+        padding: 8px 4px;
+    }
+
+    :global(.radio__label) {
+        --radio-size: 24px;
+
+        padding-left: 36px;
+        font-size: 16px;
+        line-height: 1.375;
+    }
+}
+
+
+.input:focus ~ .placeholder,
+.input:not(:placeholder-shown) ~ .placeholder {
+    top: -10px;
+    left: 12px;
+    padding: 0 4px;
+    background-color: $colorWhite;
+    opacity: 1;
+}
+
+.input {
+    padding: 8px 12px;
+    border: 1px solid $colorGrayBorder;
+    border-radius: 4px;
+}
+
+.placeholder {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 0 4px;
+    font-size: 16px;
+    line-height: 1.375;
+    pointer-events: none;
+    transition: 0.2s ease all;
+}
+
+.additionalInfo {
+    margin-top: 8px;
+    padding-left: 4px;
+    font-size: 14px;
+    line-height: 1.285;
+}
+
+.error {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding-left: 4px;
+    color: $colorSystemError;
+
+    svg {
+        padding: 1px;
+        @include sizeSquare(16px);
+    }
+}
+
+.errorInput {
+    :global(.checkbox__control) {
+        border-color: $colorSystemError;
+    }
+
+    :global(.checkbox--label) {
+        color: $colorSystemError;
+    }
+
+    :global(.radio__label) {
+        color: $colorSystemError;
+
+        &::before {
+            border-color: $colorSystemError;
+        }
+    }
+
+    
+    .input {
+        border-color: $colorSystemError;
+    }
+
+    .placeholder {
+        color: $colorSystemError;
+    }
+}
+
+.fieldset {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.inputNumber {
+    width: 146px;
+    height: 44px;
+}
+
+.inputNumber::-webkit-outer-spin-button,
+.inputNumber::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+.inputNumber[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.textArea {
+    display: block;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 114px;
+    margin-top: 24px;
+
+    @include media-breakpoint-up(sm) {
+        min-height: 130px;
+    }
+}
+
+.inputText {
+    width: 100%;
+    max-width: 600px;
+    height: 44px;
+}
+
+.inputWrapper {
+    position: relative;
+    margin: 8px 4px 0;
+}
+
+.inputOtherWrapper {
+    position: relative;
+    margin: 0 4px;
+}

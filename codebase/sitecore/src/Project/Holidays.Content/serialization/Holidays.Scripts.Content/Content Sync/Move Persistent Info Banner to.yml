@@ -1,0 +1,31 @@
+﻿---
+ID: "76e44bba-bffb-4c24-bb60-d1f27a7dee26"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Move Persistent Info Banner to the Home top
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $item = Get-Item "/sitecore/content/EasyJet/Holidays/Home" -ErrorAction SilentlyContinue;
+    $renderingId = "{CFDDA56D-9D28-45DE-BED6-FF67AC4C38B5}"
+    $position = 0;
+    
+    $renderingItem = Get-Rendering -Item $item | Where-Object {$_.ItemId -eq $renderingId}
+    
+    if($renderingItem -ne $null){
+        Set-Rendering -Item $item -Instance $renderingItem -Index $position
+        Write-Host "Successfully set to" $position "position"
+    } else {
+        Write-Host "Rendering wasn't found"
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201029T092754Z

@@ -1,0 +1,189 @@
+﻿---
+ID: "1c195b65-9b87-4cfd-8623-bc0a74f55d2f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/BOOK-821 - Create common settings for pills"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $holidaysVisibilityPath = "/sitecore/content/EasyJet/Holidays/Settings/Pills Visibility Settings"
+    $holidaysVisibilityItemEN = Get-Item -Path $holidaysVisibilityPath -ErrorAction SilentlyContinue
+    $holidaysVisibilityItemFRCH = Get-Item -Path $holidaysVisibilityPath -ErrorAction SilentlyContinue -Language 'fr-CH'
+    $holidaysVisibilityItemFRFR = Get-Item -Path $holidaysVisibilityPath -ErrorAction SilentlyContinue -Language 'fr-FR'
+    $holidaysVisibilityItemDECH = Get-Item -Path $holidaysVisibilityPath -ErrorAction SilentlyContinue -Language 'de-CH'
+    $holidaysVisibilityItemDEDE = Get-Item -Path $holidaysVisibilityPath -ErrorAction SilentlyContinue -Language 'de-DE'
+    
+    $holidaysWeLovePath = "/sitecore/content/EasyJet/Holidays/Settings/We Love pill Settings"
+    $holidaysWeLoveItemEN = Get-Item -Path $holidaysWeLovePath -ErrorAction SilentlyContinue
+    $holidaysWeLoveItemFRCH = Get-Item -Path $holidaysWeLovePath -ErrorAction SilentlyContinue -Language 'fr-CH'
+    $holidaysWeLoveItemFRFR = Get-Item -Path $holidaysWeLovePath -ErrorAction SilentlyContinue -Language 'fr-FR'
+    $holidaysWeLoveItemDECH = Get-Item -Path $holidaysWeLovePath -ErrorAction SilentlyContinue -Language 'de-CH'
+    $holidaysWeLoveItemDEDE = Get-Item -Path $holidaysWeLovePath -ErrorAction SilentlyContinue -Language 'de-DE'
+    
+    $tradeVisibilityPath = "/sitecore/content/EasyJet/TradePortal/Settings/Pills Visibility Settings"
+    $tradeVisibilityItemEN = Get-Item -Path $tradeVisibilityPath -ErrorAction SilentlyContinue
+    
+    $tradeWeLovePath = "/sitecore/content/EasyJet/TradePortal/Settings/We Love pill Settings"
+    $tradeWeLoveItemEN = Get-Item -Path $tradeWeLovePath -ErrorAction SilentlyContinue
+    
+    $holidaysUpdates = @(
+        @{ 
+            Path = "/sitecore/content/EasyJet/Holidays/Settings/Pills Settings"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/Pills Settings"
+            Fields = @{  
+                "FreeForKidsPill" = @{ 
+                    "en"    = $holidaysVisibilityItemEN["FreeForKidsPill"]
+                    "fr-CH" = $holidaysVisibilityItemFRCH["FreeForKidsPill"]
+                    "fr-FR" = $holidaysVisibilityItemFRFR["FreeForKidsPill"]
+                    "de-CH" = $holidaysVisibilityItemDECH["FreeForKidsPill"]
+                    "de-DE" = $holidaysVisibilityItemDEDE["FreeForKidsPill"]
+                }
+                "DepositPill" = @{ 
+                    "en"    = $holidaysVisibilityItemEN["DepositPill"]
+                    "fr-CH" = $holidaysVisibilityItemFRCH["DepositPill"]
+                    "fr-FR" = $holidaysVisibilityItemFRFR["DepositPill"]
+                    "de-CH" = $holidaysVisibilityItemDECH["DepositPill"]
+                    "de-DE" = $holidaysVisibilityItemDEDE["DepositPill"]
+                }
+                "DiscountPill" = @{ 
+                    "en"    = $holidaysVisibilityItemEN["DiscountPill"]
+                    "fr-CH" = $holidaysVisibilityItemFRCH["DiscountPill"]
+                    "fr-FR" = $holidaysVisibilityItemFRFR["DiscountPill"]
+                    "de-CH" = $holidaysVisibilityItemDECH["DiscountPill"]
+                    "de-DE" = $holidaysVisibilityItemDEDE["DiscountPill"]
+                }
+                "FreeForInfantsPill" = @{ 
+                    "en"    = $holidaysVisibilityItemEN["FreeForInfantsPill"]
+                    "fr-CH" = $holidaysVisibilityItemFRCH["FreeForInfantsPill"]
+                    "fr-FR" = $holidaysVisibilityItemFRFR["FreeForInfantsPill"]
+                    "de-CH" = $holidaysVisibilityItemDECH["FreeForInfantsPill"]
+                    "de-DE" = $holidaysVisibilityItemDEDE["FreeForInfantsPill"]
+                }
+                "GreatValuePill" = @{ 
+                    "en"    = $holidaysVisibilityItemEN["GreatValuePill"]
+                    "fr-CH" = $holidaysVisibilityItemFRCH["GreatValuePill"]
+                    "fr-FR" = $holidaysVisibilityItemFRFR["GreatValuePill"]
+                    "de-CH" = $holidaysVisibilityItemDECH["GreatValuePill"]
+                    "de-DE" = $holidaysVisibilityItemDEDE["GreatValuePill"]
+                }
+                "SuperDealsLabel" = @{ 
+                    "en"    = $holidaysVisibilityItemEN["SuperDealsLabel"]
+                    "fr-CH" = $holidaysVisibilityItemFRCH["SuperDealsLabel"]
+                    "fr-FR" = $holidaysVisibilityItemFRFR["SuperDealsLabel"]
+                    "de-CH" = $holidaysVisibilityItemDECH["SuperDealsLabel"]
+                    "de-DE" = $holidaysVisibilityItemDEDE["SuperDealsLabel"]
+                }
+                "WithConfidenceMoreThan28Message" = @{ 
+                    "en"    = $holidaysVisibilityItemEN["WithConfidenceMoreThan28Message"]
+                    "fr-CH" = $holidaysVisibilityItemFRCH["WithConfidenceMoreThan28Message"]
+                    "fr-FR" = $holidaysVisibilityItemFRFR["WithConfidenceMoreThan28Message"]
+                    "de-CH" = $holidaysVisibilityItemDECH["WithConfidenceMoreThan28Message"]
+                    "de-DE" = $holidaysVisibilityItemDEDE["WithConfidenceMoreThan28Message"]
+                }
+                "WithConfidenceLessThan28Message" = @{ 
+                    "en"    = $holidaysVisibilityItemEN["WithConfidenceLessThan28Message"]
+                    "fr-CH" = $holidaysVisibilityItemFRCH["WithConfidenceLessThan28Message"]
+                    "fr-FR" = $holidaysVisibilityItemFRFR["WithConfidenceLessThan28Message"]
+                    "de-CH" = $holidaysVisibilityItemDECH["WithConfidenceLessThan28Message"]
+                    "de-DE" = $holidaysVisibilityItemDEDE["WithConfidenceLessThan28Message"]
+                }
+                "AreStrikethroughPricesEnabled" = @{ 
+                    "en"    = $holidaysVisibilityItemEN["AreStrikethroughPricesEnabled"]
+                    "fr-CH" = $holidaysVisibilityItemFRCH["AreStrikethroughPricesEnabled"]
+                    "fr-FR" = $holidaysVisibilityItemFRFR["AreStrikethroughPricesEnabled"]
+                    "de-CH" = $holidaysVisibilityItemDECH["AreStrikethroughPricesEnabled"]
+                    "de-DE" = $holidaysVisibilityItemDEDE["AreStrikethroughPricesEnabled"]
+                }
+                "IsWeLovePillEnabled" = @{ 
+                    "en"    = $holidaysWeLoveItemEN["IsWeLovePillEnabled"]
+                    "fr-CH" = $holidaysWeLoveItemFRCH["IsWeLovePillEnabled"]
+                    "fr-FR" = $holidaysWeLoveItemFRFR["IsWeLovePillEnabled"]
+                    "de-CH" = $holidaysWeLoveItemDECH["IsWeLovePillEnabled"]
+                    "de-DE" = $holidaysWeLoveItemDEDE["IsWeLovePillEnabled"]
+                }
+                "SmallFreeBoardUpgradeIcon" = @{ 
+                    "en"    = "<image mediaid='{202D82D5-DF57-4CEA-846C-4CB3607CD16B}' />"
+                    "fr-CH" = "<image mediaid='{202D82D5-DF57-4CEA-846C-4CB3607CD16B}' />"
+                    "fr-FR" = "<image mediaid='{202D82D5-DF57-4CEA-846C-4CB3607CD16B}' />"
+                    "de-CH" = "<image mediaid='{202D82D5-DF57-4CEA-846C-4CB3607CD16B}' />"
+                    "de-DE" = "<image mediaid='{202D82D5-DF57-4CEA-846C-4CB3607CD16B}' />"
+                }
+                "BigFreeBoardUpgradeIcon" = @{ 
+                    "en"    = "<image mediaid='{98F7D3A9-A7A2-475E-8848-48F70F92FCFC}' />"
+                    "fr-CH" = "<image mediaid='{98F7D3A9-A7A2-475E-8848-48F70F92FCFC}' />"
+                    "fr-FR" = "<image mediaid='{98F7D3A9-A7A2-475E-8848-48F70F92FCFC}' />"
+                    "de-CH" = "<image mediaid='{98F7D3A9-A7A2-475E-8848-48F70F92FCFC}' />"
+                    "de-DE" = "<image mediaid='{98F7D3A9-A7A2-475E-8848-48F70F92FCFC}' />"
+                }
+            }
+        },
+        @{ 
+            Path = "/sitecore/content/EasyJet/TradePortal/Settings/Pills Settings"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/Pills Settings"
+            Fields = @{  
+                "FreeForKidsPill" = @{ 
+                    "en"    = $tradeVisibilityItemEN["FreeForKidsPill"]
+                }
+                "DepositPill" = @{ 
+                    "en"    = $tradeVisibilityItemEN["DepositPill"]
+                }
+                "DiscountPill" = @{ 
+                    "en"    = $tradeVisibilityItemEN["DiscountPill"]
+                }
+                "FreeForInfantsPill" = @{ 
+                    "en"    = $tradeVisibilityItemEN["FreeForInfantsPill"]
+                }
+                "GreatValuePill" = @{ 
+                    "en"    = $tradeVisibilityItemEN["GreatValuePill"]
+                }
+                "SuperDealsLabel" = @{ 
+                    "en"    = $tradeVisibilityItemEN["SuperDealsLabel"]
+                }
+                "WithConfidenceMoreThan28Message" = @{ 
+                    "en"    = $tradeVisibilityItemEN["WithConfidenceMoreThan28Message"]
+                }
+                "WithConfidenceLessThan28Message" = @{ 
+                    "en"    = $tradeVisibilityItemEN["WithConfidenceLessThan28Message"]
+                }
+                "AreStrikethroughPricesEnabled" = @{ 
+                    "en"    = $tradeVisibilityItemEN["AreStrikethroughPricesEnabled"]
+                }
+                "IsWeLovePillEnabled" = @{ 
+                    "en"    = $tradeWeLoveItemEN["IsWeLovePillEnabled"]
+                }
+                "SmallFreeBoardUpgradeIcon" = @{ 
+                    "en"    = "<image mediaid='{202D82D5-DF57-4CEA-846C-4CB3607CD16B}' />"
+                }
+                "BigFreeBoardUpgradeIcon" = @{ 
+                    "en"    = "<image mediaid='{98F7D3A9-A7A2-475E-8848-48F70F92FCFC}' />"
+                }
+            }
+        }
+    )
+    
+    ImportContent -itemsToCreate $holidaysUpdates
+    
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Pills Visibility Settings"
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/We Love pill Settings"
+    Remove-Item -Path "/sitecore/content/EasyJet/TradePortal/Settings/Pills Visibility Settings"
+    Remove-Item -Path "/sitecore/content/EasyJet/TradePortal/Settings/We Love pill Settings"
+    
+    Write-Host "setting created"; 
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250206T064448Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,62 @@
+﻿---
+ID: "cd1e58e0-5420-47d1-b2ea-1ebba8a2c174"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-1105 Cancellation Looping"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Settings/Credit and Cash Refund Settings"
+    $tradeDatasoursePath = "/sitecore/content/EasyJet/TradePortal/Settings/Credit and Cash Refund Settings"
+    $settingTemplatePath = "/sitecore/templates/Foundation/Destinations/Settings/Cancel and Credit Rules/Cancel And Credit Settings Folder/Content/AllowedAmountOfFailures"
+    
+    
+    function New-Content() {
+    
+        $updates = @(
+            @{
+                Path         = $datasourcePath
+                TemplatePath = $settingTemplatePath
+                Fields       = @{
+                    "AllowedAmountOfFailures" = @{
+                       "en" = 1
+                        "fr-CH" = 1
+                        "de-CH" = 1
+                        "fr-FR" = 1
+                        "de-DE" = 1
+                    }
+                }
+            }
+            @{
+                Path         = $tradeDatasoursePath
+                TemplatePath = $settingTemplatePath
+                Fields       = @{
+                    "AllowedAmountOfFailures" = @{
+                       "en" = 1
+                        "fr-CH" = 1
+                        "de-CH" = 1
+                        "fr-FR" = 1
+                        "de-DE" = 1
+                    }
+                }
+            }
+        )
+    
+        ImportContent -itemsToCreate $updates
+    }
+    
+    
+    
+    New-Content
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260319T113737Z

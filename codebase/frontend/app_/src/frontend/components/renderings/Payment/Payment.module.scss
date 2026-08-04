@@ -1,0 +1,73 @@
+.title {
+    margin: 40px 0;
+
+    @include media-breakpoint-down(md) {
+        margin: 20px 0;
+    }
+}
+
+.bannerWrapper {
+    margin-top: 20px;
+
+    &.flightPlusHotel {
+        margin-top: 0;
+    }
+}
+
+.content {
+    display: flex;
+    gap: 8px;
+}
+
+.icon {
+    margin: 0;
+
+    @include sizeSquare(20px);
+
+    svg {
+        @include sizeSquare(20px);
+    }
+}
+
+.priceJumpAlert {
+    padding: 16px 24px 16px 15px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+
+    &.basic {
+        margin-bottom: 0!important;
+    }
+
+    @include media-breakpoint-down(md) {
+        padding: 15px;
+    }
+
+    :global {
+        .d-flex {
+            gap: 8px;
+        }
+
+        .error-message__icon {
+            align-items: flex-start;
+
+            svg {
+                margin: 0;
+            }
+        }
+
+        .error-message__container {
+            font-size: 16px;
+
+            @include media-breakpoint-down(md) {
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+.fphDetails {
+    margin-top: 32px;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 20px;
+    }
+}

@@ -1,0 +1,85 @@
+﻿---
+ID: "412b4f7a-356b-43a6-909c-cf33fd5d8f99"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-98 add luxury filter to promo pages"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $tradeRoot = "/sitecore/content/EasyJet/TradePortal/Home/Root"
+    $holidaysRoot = "/sitecore/content/EasyJet/Holidays/Home/Root"
+    $requestedSearchesRoot = "/sitecore/content/EasyJet/Holidays/Data/Requested Searches"
+    $baseFiltersTemplateId = [Sitecore.Data.ID]::Parse("{C48F0878-9D0F-4C83-86CB-D655445406A0}");
+    
+    filter Where-InheritsTemplate {
+        param(
+            [Parameter(Mandatory = $true,ValueFromPipeline = $true)]
+            [Sitecore.Data.Items.Item]$item
+        )
+        if ($item) {
+            $itemTemplate = [Sitecore.Data.Managers.TemplateManager]::GetTemplate($item)
+            if ($itemTemplate -ne $null -and $itemTemplate.DescendsFromOrEquals($baseFiltersTemplateId)) {
+                $Item
+            }
+        }
+    }
+    
+    # Add filter to a page
+    $filterId = "{DE3CFE4D-364A-4393-8885-538F4F27FA2E}"
+    $hotelTypeFilterId = "{1B59F944-1A5A-424B-BE50-C3B9A35FC7FE}"
+    
+    function Update-Page-Filters-Order ($page) {
+    
+    	if ($page.Fields["Filters Order"].Value -ne $null `
+    	-and !$page.Fields["Filters Order"].Value.Split("|").Contains($filterId) `
+    	-and $page.Fields["Filters Order"].Value.Split("|").Contains($hotelTypeFilterId)) {
+    	    $currentFilters = $page.Fields["Filters Order"].Value;
+    	    
+    		$page.Editing.BeginEdit();
+    		$page.Fields["Filters Order"].Value = "$($filterId)|$($currentFilters)";
+    		$page.Editing.EndEdit() | Out-Null;
+            
+            "Updated: " + $page.Name
+    	}
+    }
+    
+    # remap current setup for new fields
+    function update-promo-pages($lang, $isTrade) {
+        $root = $holidaysRoot
+        $promos = @()
+        if ($isTrade) {
+            $root = $tradeRoot
+        } else {
+            $promos += gci -path $requestedSearchesRoot -language $lang -recurse | Where-InheritsTemplate
+        }
+        
+        $promos += gci -path $root -language $lang -recurse | Where-InheritsTemplate
+        
+        $promos | % {
+            $promo = $_
+            
+            Update-Page-Filters-Order($promo)
+        }
+    }
+    
+    "Holidays: "
+    @('en', 'fr-CH', 'fr-FR', 'de-CH', 'de-DE') | % {
+        update-promo-pages -lang $_
+    }
+    
+    "Trade: "
+    update-promo-pages -lang "en" -isTrade true
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250623T120706Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

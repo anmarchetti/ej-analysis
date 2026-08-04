@@ -1,0 +1,50 @@
+﻿---
+ID: "6fe0d6d9-3623-4871-9717-8f830361a786"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EHD-319 - Remove rendering linked to SerachResultVariantA"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $searchPageItem = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/MixedResultList"
+    $searchPageRenderings = Get-Rendering -Item $searchPageItem -FinalLayout
+    
+    $searchResultVariant_UId = "{B48549D9-5748-42AF-BD2F-C08769F5E04E}";
+    $searchResult_UId = "{9ED3C2B4-6FBB-4CF6-9464-9D14A0984C93}";
+    $searchPodVariant_RenderingId = "{DDD5C14E-7951-4C82-AF12-ABD3F24D9BCF}";
+    
+    #Removed all rendering linked to SearchResultVariant except SearchPodVariant (needs placeholder replaced)
+    $renderingsToRemove = $searchPageRenderings | Where-Object {($_.Placeholder -Match $searchResultVariant_UId -and $_.ItemID -ne $searchPodVariant_RenderingId) -or ($_.UniqueId -eq $searchResultVariant_UId)}
+    
+    if ($renderingsToRemove) {
+        foreach ($rendering in $renderingsToRemove)
+            {
+                Remove-Rendering -Item $searchPageItem -Instance $rendering -FinalLayout;
+                Write-Host "Rendering $($rendering.UniqueId) was removed from MixedResultPage"
+            }
+    }
+    
+    $renderingSearchPodVariant = $searchPageRenderings | Where-Object {$_.ItemID -eq $searchPodVariant_RenderingId}
+    
+    if ($renderingSearchPodVariant) {
+        $oldPlaceholder = $renderingSearchPodVariant.Placeholder;
+        $newPlaceholder = $renderingSearchPodVariant.Placeholder.Replace($searchResultVariant_UId, $searchResult_UId);
+        
+        $renderingSearchPodVariant.Placeholder = $newPlaceholder;
+        Set-Rendering -Item $searchPageItem -Instance $renderingSearchPodVariant -FinalLayout;
+        Write-Host "Placeholder for rendering $($renderingSearchPodVariant.UniqueId) was replaced from $($oldPlaceholder) to $($newPlaceholder)"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240227T153908Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

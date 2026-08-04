@@ -1,0 +1,91 @@
+﻿---
+ID: "51b9a933-f2b2-41a1-b6aa-8571dab78374"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/ANC-558 Booking Confirmation LCB"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $renderingIdCabinBags = "{EDCABB4F-676C-4418-BBEE-4E0009F946E5}"
+    $holdLuggageRenderingId = "{89F16941-1EA9-4990-88BD-794D3B45292D}" 
+    $cabinBagsDSHolidaysPath = "/sitecore/content/EasyJet/Holidays/Data/Cabin Bags"
+    $cabinBagsDSTradePath = "/sitecore/content/EasyJet/TradePortal/Data/Cabin Bags"
+    $holdLuggageDSHolidaysPath = "/sitecore/content/EasyJet/Holidays/Data/Hold Luggage"
+    $holdLuggageDSTradePath = "/sitecore/content/EasyJet/TradePortal/Data/Hold Luggage"
+    $pageHoliday = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation"
+    $pageTrade = Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirmation"
+    
+    function Delete-Rendering($page, $renderingIdToDelete){
+        $renderingsToDelete = Get-Rendering -Item $page | Where-Object {$_.ItemId -eq $renderingIdToDelete} -ErrorAction SilentlyContinue
+        foreach ($rendering in $renderingsToDelete) {
+            Remove-Rendering -Item $page -Instance $rendering
+        }
+    }
+    
+    function Add-RenderingToPage($page, $renderingIdToAdd, $dataSourcePath, $placeholder){
+        $dataSource = Get-Item -Path $dataSourcePath
+        $newRendering = Get-Item -Database "master" -Path $renderingIdToAdd | New-Rendering
+        Add-Rendering -Item $page -Instance $newRendering -PlaceHolder $placeholder -DataSource $dataSource.ID
+    }
+    
+    Move-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Page Components/Cabin Bags" -Destination $cabinBagsDSHolidaysPath -ErrorAction SilentlyContinue
+    Move-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Page Components/Cabin Bags" -Destination $cabinBagsDSTradePath -ErrorAction SilentlyContinue
+    Write-Host "Cabin Bags data sources were successfully moved."
+    
+    Delete-Rendering -page $pageHoliday -renderingIdToDelete $holdLuggageRenderingId
+    Delete-Rendering -page $pageTrade -renderingIdToDelete $holdLuggageRenderingId
+    
+    function Update-Rendering ($pagePath, $data) {
+        $page = Get-Item -Path $pagePath
+        $rendering = Get-Rendering -Item $page | Where-Object { $_.ItemId -eq $renderingIdCabinBags } | Select -First 1
+       
+       if ($rendering -ne $null) {
+           Set-Rendering -Item $page -Instance $rendering -Datasource $data
+           Write-Host "Cabin Bags data source updated on extras page for $data";
+       }
+    }
+    
+    Update-Rendering -pagePath '/sitecore/content/EasyJet/Holidays/Home/Booking' -data $cabinBagsDSHolidaysPath
+    Update-Rendering -pagePath '/sitecore/content/EasyJet/TradePortal/Home/Booking' -data $cabinBagsDSTradePath
+    
+    $dataSourceHoliday = Get-Item -Path $cabinBagsDSHolidaysPath
+    $renderingWrapperHoliday = Get-Rendering -Item $pageHoliday | Where-Object {$_.ItemId -eq '{E10ECB4E-19CE-4255-982C-04E6E3592A20}'}
+    $renderingPlaceholderHoliday = "/body/bags-$($renderingWrapperHoliday.UniqueId)-0"
+    Add-RenderingToPage -page $pageHoliday -renderingIdToAdd $renderingIdCabinBags -dataSourcePath $cabinBagsDSHolidaysPath -placeholder $renderingPlaceholderHoliday
+    
+    $dataSourceTrade = Get-Item -Path $cabinBagsDSTradePath
+    $renderingWrapperTrade = Get-Rendering -Item $pageTrade | Where-Object {$_.ItemId -eq '{355B5C34-78DB-4494-AA2C-33C453186F2C}'}
+    $renderingPlaceholderTrade = "/body/bags-$($renderingWrapperTrade.UniqueId)-0"
+    Add-RenderingToPage -page $pageTrade -renderingIdToAdd $renderingIdCabinBags -dataSourcePath $cabinBagsDSTradePath -placeholder $renderingPlaceholderTrade
+    
+    Write-Host "Cabin Bags rendering was successfully added to both Holiday and Trade Portal confirmation pages."
+    
+    $dataSource = Get-Item -Path $holdLuggageDSHolidaysPath
+    $renderingWrapperHoliday = Get-Rendering -Item $pageHoliday  | Where-Object {$_.ItemId -eq '{E10ECB4E-19CE-4255-982C-04E6E3592A20}'}
+    $renderingPlaceholderHoliday = "/body/bags-$($renderingWrapperHoliday.UniqueId)-0"
+    
+    $bagsRenderingHoliday = Get-Item -Database "master" -Path $holdLuggageRenderingId | New-Rendering
+    Add-Rendering -Item $pageHoliday -Instance $bagsRenderingHoliday -PlaceHolder $renderingPlaceholderHoliday -DataSource $dataSource.ID
+    Write-Host "Hold Luggage rendering was successfully added to confirmation page";
+    
+    $dataSourceTrade = Get-Item -Path $holdLuggageDSTradePath
+    $renderingWrapperTrade = Get-Rendering -Item $pageTrade  | Where-Object {$_.ItemId -eq '{355B5C34-78DB-4494-AA2C-33C453186F2C}'}
+    $renderingPlaceholderTrade = "/body/bags-$($renderingWrapperTrade.UniqueId)-0"
+    
+    $bagsRenderingTrade = Get-Item -Database "master" -Path $holdLuggageRenderingId | New-Rendering
+    Add-Rendering -Item $pageTrade -Instance $bagsRenderingTrade -PlaceHolder $renderingPlaceholderTrade -DataSource $dataSourceTrade.ID
+    Write-Host "Hold Luggage rendering was successfully added to trade portal confirmation page";
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 3030
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240328T075152Z

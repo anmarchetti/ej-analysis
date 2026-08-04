@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+}
+
+.subtitleWrapper {
+    display: flex;
+    gap: 16px;
+
+    @include media-breakpoint-down(md) {
+        display: block;
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+    line-height: 1.4;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 8px;
+
+        display: block;
+    }
+}
+
+.content .feature {
+    font-size: 14px !important;
+    line-height: 1.285;
+
+    :global(img) {
+        width: 16px;
+        height: 16px;
+    }
+}

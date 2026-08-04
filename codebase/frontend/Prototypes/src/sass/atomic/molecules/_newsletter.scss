@@ -1,0 +1,29 @@
+.newsletter {
+
+    @include media-breakpoint-down(lg) {
+        margin-bottom: 30px;
+    }
+
+    &--header {
+        margin-bottom: 15px;
+        font-family: $fontRoundedHeadline;
+        font-size: 36px;
+        line-height: 1.2;
+        color: $clrTextMain;
+
+        @include media-breakpoint-down(md) {
+            font-size: 20px;
+        }
+    }
+
+    &--description {
+        font-family: $fontRoundedBook;
+        font-size: 18px;
+        line-height: 1.555;
+        color: $clrTextMainLight;
+
+        @include media-breakpoint-down(md) {
+            font-size: 14px;
+        }
+    }
+}

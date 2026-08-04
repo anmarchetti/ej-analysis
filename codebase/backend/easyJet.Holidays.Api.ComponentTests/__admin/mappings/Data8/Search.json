@@ -1,0 +1,35 @@
+{
+  "Title": "Response for Data8 Search request",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "RegexMatcher",
+          "Pattern": "^/?PredictiveAddress/Search\\.json$",
+          "IgnoreCase": true
+        }
+      ]
+    },
+    "Methods": [ "Post" ]
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsJson": {
+      "Status": {
+        "Success": true,
+        "ErrorMessage": null,
+        "CreditsRemaining": 983
+      },
+      "Results": [
+        {
+          "label": "ASHTON-UNDER-LYNE, OL7 ",
+          "value": "L762557077|CC=GB;PAF=2026.4.6.1510594",
+          "container": true,
+          "items": 106
+        }
+      ],
+      "Count": 1,
+      "SessionID": "86b4b10bfdd24e94bc982e93fa18c0df"
+    }
+  }
+}

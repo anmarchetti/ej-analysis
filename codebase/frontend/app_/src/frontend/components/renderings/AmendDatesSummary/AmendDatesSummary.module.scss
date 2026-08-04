@@ -1,0 +1,121 @@
+.container {
+    :global(.sticky-wr) {
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    :global(.summary-footer) {
+        display: none;
+        @include media-breakpoint-down(md) {
+            display: flex;
+        }
+    }
+}
+
+.changeFeeCalloutContent {
+    color: $colorBlackMedium;
+}
+
+.continueBtn {
+    display: flex;
+    justify-content: flex-end;
+
+    @include media-breakpoint-down(md) {
+        display: none;
+    }
+}
+
+.amendSummaryDates {
+    display: flex;
+    padding: 40px 0 0;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        padding-top: 16px;
+    }
+
+    :global(.fee-banner-mobile:not(.stuck)) {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+}
+
+.withFeeBanner {
+    .pricesDesktop {
+        margin-bottom: 16px;
+    }
+
+    .pricesMobile {
+        margin-bottom: 16px;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .mainContent {
+        @include media-breakpoint-down(sm) {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid $colorGeyser;
+        }
+    }
+
+    :global(.fee-banner-desktop) {
+        margin-bottom: 32px;
+    }
+}
+
+.pricesDesktop {
+    display: flex;
+    flex-direction: column;
+
+    @include media-breakpoint-down(md) {
+        display: none;
+    }
+}
+
+.pricesMobile {
+    display: none;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid $colorGeyser;
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+    }
+}
+
+.mainContent {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: calc(100% - 377px);
+    padding-bottom: 16px;
+
+    @include media-breakpoint-down(sm) {
+        width: 100%;
+    }
+}
+
+.hotel {
+    width: 357px;
+    margin-right: 20px;
+
+    @include media-breakpoint-down(md) {
+        width: 40%;
+    }
+
+    @include media-breakpoint-down(sm) {
+        width: 100%;
+    }
+}
+
+h3.priceDrawerTitle {
+    margin-top: 24px;
+}
+
+.priceDrawerText {
+    line-height: 21px;
+}

@@ -1,0 +1,142 @@
+{
+  "Name": "easyJet.Foundation.PushNotifications.Model",
+  "Version": "1.0",
+  "References": [
+    {
+      "Name": "XConnect",
+      "Version": "1.0"
+    }
+  ],
+  "Types": {
+    "easyJet.Foundation.PushNotifications.Facets.PushSubscription": {
+      "Type": "Facet",
+      "BaseType": "Sitecore.XConnect.Facet",
+      "ClrType": "easyJet.Foundation.PushNotifications.Facets.PushSubscription, easyJet.Foundation.PushNotifications, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "Endpoint": {
+          "Type": "String"
+        },
+        "Keys": {
+          "Type": {
+            "String": "String"
+          }
+        },
+        "Token": {
+          "Type": "String"
+        }
+      }
+    },
+    "easyJet.Foundation.PushNotifications.Facets.PushSubscriptions": {
+      "Type": "Facet",
+      "BaseType": "Sitecore.XConnect.Facet",
+      "ClrType": "easyJet.Foundation.PushNotifications.Facets.PushSubscriptions, easyJet.Foundation.PushNotifications, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "Subscriptions": {
+          "Type": {
+            "Guid": "easyJet.Foundation.PushNotifications.Facets.PushSubscription"
+          }
+        }
+      }
+    },
+    "easyJet.Foundation.PushNotifications.Facets.TrackingData": {
+      "Type": "Facet",
+      "BaseType": "Sitecore.XConnect.Facet",
+      "ClrType": "easyJet.Foundation.PushNotifications.Facets.TrackingData, easyJet.Foundation.PushNotifications, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "Endpoint": {
+          "Type": "String"
+        },
+        "AccommodationId": {
+          "Type": "String"
+        }
+      }
+    },
+    "easyJet.Foundation.PushNotifications.Facets.UserSearches": {
+      "Type": "Facet",
+      "BaseType": "Sitecore.XConnect.Facet",
+      "ClrType": "easyJet.Foundation.PushNotifications.Facets.UserSearches, easyJet.Foundation.PushNotifications, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "Searches": {
+          "Type": [
+            "easyJet.Foundation.PushNotifications.Facets.UserSearch"
+          ]
+        }
+      }
+    },
+    "easyJet.Foundation.PushNotifications.Facets.UserSearch": {
+      "Type": "Complex",
+      "ClrType": "easyJet.Foundation.PushNotifications.Facets.UserSearch, easyJet.Foundation.PushNotifications, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "Airports": {
+          "Type": [
+            "easyJet.Foundation.PushNotifications.Facets.TrackingItem"
+          ]
+        },
+        "Destinations": {
+          "Type": [
+            "easyJet.Foundation.PushNotifications.Facets.TrackingItem"
+          ]
+        },
+        "StartDate": {
+          "Type": "DateTime"
+        },
+        "EndDate": {
+          "Type": "DateTime"
+        }
+      }
+    },
+    "easyJet.Foundation.PushNotifications.Facets.TrackingItem": {
+      "Type": "Complex",
+      "ClrType": "easyJet.Foundation.PushNotifications.Facets.TrackingItem, easyJet.Foundation.PushNotifications, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "Id": {
+          "Type": "String"
+        },
+        "Code": {
+          "Type": "String"
+        },
+        "Name": {
+          "Type": "String"
+        },
+        "Type": {
+          "Type": "String"
+        }
+      }
+    },
+    "easyJet.Foundation.PushNotifications.Facets.PushNotificationBooking": {
+      "Type": "Facet",
+      "BaseType": "Sitecore.XConnect.Facet",
+      "ClrType": "easyJet.Foundation.PushNotifications.Facets.PushNotificationBooking, easyJet.Foundation.PushNotifications, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Properties": {
+        "AccommodationId": {
+          "Type": "String"
+        },
+        "Image": {
+          "Type": "String"
+        }
+      }
+    }
+  },
+  "Facets": [
+    {
+      "Target": "Contact",
+      "Name": "PushSubscriptions",
+      "Type": "easyJet.Foundation.PushNotifications.Facets.PushSubscriptions"
+    },
+    {
+      "Target": "Contact",
+      "Name": "TrackingData",
+      "Type": "easyJet.Foundation.PushNotifications.Facets.TrackingData"
+    },
+    {
+      "Target": "Interaction",
+      "Name": "UserSearches",
+      "Type": "easyJet.Foundation.PushNotifications.Facets.UserSearches"
+    },
+    {
+      "Target": "Contact",
+      "Name": "PushNotificationBooking",
+      "Type": "easyJet.Foundation.PushNotifications.Facets.PushNotificationBooking"
+    }
+  ]
+}

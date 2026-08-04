@@ -1,0 +1,141 @@
+.mobileInfo {
+    @include media-breakpoint-up(xs) {
+        display: none;
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    @include media-breakpoint-up(lg) {
+        gap: 12px;
+    }
+
+    .refItem {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        padding: 12px 0;
+
+        @include media-breakpoint-down(md) {
+            &:first-child {
+                padding-top: 0;
+                border-top: none;
+            }
+        }
+    }
+
+    .bookingRef .refItem {
+        padding-top: 0;
+    }
+
+    .flightRefWithBorder {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #d7e2e5;
+
+        .refItem {
+            padding: 0;
+        }
+    }
+
+    .borderInside {
+        .refItem {
+            padding: 16px 0;
+            border-top: 1px solid #d7e2e5;
+
+            @include media-breakpoint-up(lg) {
+                padding: 12px 0;
+
+                &:first-child {
+                    padding-top: 0;
+                    border-top: none;
+                }
+            }
+
+            &:last-child {
+                padding-bottom: 0;
+            }
+        }
+    }
+
+    .ref {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: baseline;
+        gap: 16px;
+    }
+
+    .refNumber {
+        margin: 0;
+        padding: 3px 6px;
+        font-size: 14px;
+    }
+
+    .refTitle {
+        margin-right: auto;
+        font-family: $fontRoundedDemy;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    .flightGuests {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .guest {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .guestName {
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        color: $clrTextMain;
+    }
+
+    .leadPassengerPill {
+        padding: 2px 8px;
+        font-family: $fontRoundedDemy;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.333;
+        color: $clrTextMain;
+        white-space: nowrap;
+        background: $colorYellowSuperLight;
+        border-radius: 4px;
+    }
+
+    .scrollInfo {
+        padding-top: 16px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.285;
+        border-top: 1px solid $colorGeyser;
+
+        :global(a) {
+            font-family: $fontRoundedDemy;
+            font-weight: 600;
+            color: $colorOrange;
+            text-decoration-line: underline;
+        }
+
+        @include media-breakpoint-up(lg) {
+            padding-top: 12px;
+        }
+    }
+}
+
+.noTitle {
+    display: none;
+}

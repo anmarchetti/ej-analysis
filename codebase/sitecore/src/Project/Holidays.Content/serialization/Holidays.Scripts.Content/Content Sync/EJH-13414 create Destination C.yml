@@ -1,0 +1,66 @@
+﻿---
+ID: "e87a8fdb-cfed-4f26-b2fc-c79896fca7a0"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-13414 create Destination Content Component for Pandemic Traffic Lights"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if (-Not $item) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+        return $item
+    }
+    
+    function Create-Or-Update-Promo-Block($blockName, $title, $description, $image, $sortOrder) {
+        $path = $promoBlocksFolderPath +'/'+ $blockName
+        $item = Get-Or-Create-Item -path $path -templateId $promoBlockTemplateId
+        
+        if ($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item["Title"] = $title
+            $item["Description"] = $description
+            if($image -ne $null){
+                $item["Image"] = '<image mediaid="' + $image +'" />';
+            }
+            $item["__Sortorder"] = $sortOrder
+            $item.Editing.EndEdit() | Out-Null;
+            
+            Write-Host "Item" $item.Name "successfully updated";
+        } else {
+             Write-Host "Smth went wrong";
+        }
+    
+    }
+    
+    $pagePath = "master:/sitecore/content/EasyJet/Holidays/Home/Root/Info/Travel information"
+    $page = Get-Item -Path $pagePath -ErrorAction SilentlyContinue
+            
+    $promoBlocksFolderPath = $pagePath + "/Page Components/Traffic Lights Descriptions"
+    $promoBlocksFolder = Get-Or-Create-Item -path $promoBlocksFolderPath -templateId "{EB30259D-FF9A-46CB-8E0C-4616B148F3A8}"
+    
+    if ($promoBlocksFolder -ne $null) {
+        $promoBlockTemplateId = "{84ACB697-5638-4525-9801-B31CAC2E0394}"
+        
+        Create-Or-Update-Promo-Block -blockName 'green' -title 'GREEN LIGHT' -description 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at risus consectetur, malesuada elit.<ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at risus consectetur</li><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at risus consectetur</li><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at risus consectetur</li></ul>' -image '{70582406-C93C-471E-85EE-D2D038D32E2A}' -sortOrder 100
+        Create-Or-Update-Promo-Block -blockName 'amber' -title 'AMBER LIGHT' -description 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at risus consectetur, malesuada elit.<ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at risus consectetur</li><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at risus consectetur</li><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at risus consectetur</li></ul>' -image '{A793C845-605A-4DC7-B157-B62A625995EB}' -sortOrder 200
+        Create-Or-Update-Promo-Block -blockName 'red' -title 'RED LIGHT' -description 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at risus consectetur, malesuada elit.<ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at risus consectetur</li><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at risus consectetur</li><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at risus consectetur</li></ul>' -image '{D5C0FE9B-FAF6-4CCF-A107-FAA9663DE98A}' -sortOrder 300
+    }
+    
+    Write-Host "Script ended";
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1200
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

@@ -1,0 +1,106 @@
+{
+    "Title": "CMS Benefits",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/Content/ByPath",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "path",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "{site}/Data/Ancillaries/Benefits"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "Children": [
+                {
+                    "Icon": "/-/jssmedia/0cb9f279ec444d6ca1c8e17e1d0b8ccd.ashx",
+                    "Description": "Maximum size 45 x 36 x 20 cm.\r\nMust fit under the seat in front of you.",
+                    "Name": "Small under seat bag",
+                    "Code": "B0001",
+                    "AutoTranslate": "",
+                    "SkipTranslate": ""
+                },
+                {
+                    "Icon": "/-/jssmedia/17f764bba1294e04aa4f9ab6e5a763c6.ashx",
+                    "Description": "Maximum size 56 x 45 x 25 cm.\r\nSubject to available space",
+                    "Name": "Large overhead bag",
+                    "Code": "B0002",
+                    "AutoTranslate": "",
+                    "SkipTranslate": ""
+                },
+                {
+                    "Icon": "/-/jssmedia/17f764bba1294e04aa4f9ab6e5a763c6.ashx",
+                    "Description": "Maximum size 56 x 45 x 25 cm.",
+                    "Name": "Large overhead bag",
+                    "Code": "B0003",
+                    "AutoTranslate": "",
+                    "SkipTranslate": ""
+                },
+                {
+                    "Icon": null,
+                    "Description": "Be amongst the first to board, or board at your leisure.",
+                    "Name": "Speedy Boarding",
+                    "Code": "B0006",
+                    "AutoTranslate": "",
+                    "SkipTranslate": ""
+                },
+                {
+                    "Icon": null,
+                    "Description": "Priority Bag Drop desks in the check-in area.",
+                    "Name": "Dedicated Bag Drop",
+                    "Code": "B0007",
+                    "AutoTranslate": "",
+                    "SkipTranslate": ""
+                },
+                {
+                    "Icon": null,
+                    "Description": "Breeze through security at selected airports with Fast Track Security",
+                    "Name": "Fast Track Security",
+                    "Code": "B0008",
+                    "AutoTranslate": "",
+                    "SkipTranslate": ""
+                },
+                {
+                    "Icon": null,
+                    "Description": "You can change your route (departure or destination airport) within +/-1 day and will not incur a change fee, but you will have to pay any difference between your original fare and the current FLEXI fare for the new flight.\r\nIf the new fare is lower, no refund will be made. \r\nChanges are subject to seat and route availability and are not guaranteed\r\nSee here for more details.",
+                    "Name": "Free route changes",
+                    "Code": "B0009",
+                    "AutoTranslate": "",
+                    "SkipTranslate": ""
+                },
+                {
+                    "Icon": null,
+                    "Description": "A voucher to the value of �7.50 (or equivalent currency) to spend on food \u0026 drink onboard.\r\nNon-refundable if unused.",
+                    "Name": "Bistro voucher",
+                    "Code": "B0010",
+                    "AutoTranslate": "",
+                    "SkipTranslate": ""
+                },
+                {
+                    "Icon": null,
+                    "Description": "You can change your flights within +/- 1 day of your original flight date with no change fee or fare difference.\r\nChanges are subject to seat and route availability and are not guaranteed.\r\nSee here for more details.",
+                    "Name": "Free time/date changes",
+                    "Code": "B0011",
+                    "AutoTranslate": "",
+                    "SkipTranslate": ""
+                }
+            ]
+        }
+    }
+}

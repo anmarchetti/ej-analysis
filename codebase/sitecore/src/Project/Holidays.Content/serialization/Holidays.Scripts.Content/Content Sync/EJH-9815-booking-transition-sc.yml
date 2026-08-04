@@ -1,0 +1,109 @@
+﻿---
+ID: "e55228e2-6142-4fc6-9224-f848f09738c8"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-9815-booking-transition-screen"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$itemName,$templateId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId
+    		Write-Host $item.Name "created";
+    	}
+    	return $item
+    }
+    
+    function Create-Tiles ($path) {
+    	$tiles = @(
+    		@{
+    			TileTitle = "ATOL PROTECTED";
+    			TileDescription = "Every part of your holiday is 100% covered with ATOL protection scheme";
+    			TileIcon = '<image mediaid="{C2F6E65C-9F42-4988-BBE7-B6D5C505CF06}" />';
+    		},
+    		@{
+    			TileTitle = "23KG CHECKED-IN BAG INCLUDED";
+    			TileDescription = "23kg luggage plus cabin bag for everyone";
+    			TileIcon = '<image mediaid="{1D010217-97E9-4582-A1AF-DB4C014102AD}" />';
+    		},
+    		@{
+    			TileTitle = "BEST PRICE GUARANTEE";
+    			TileDescription = "We guarantee to beat the price if you find the same holiday cheaper elsewhere";
+    			TileIcon = '<image mediaid="{C1508D82-71E5-4683-BD52-A8F80623A97C}" />';
+    		},
+    		@{
+    			TileTitle = "SPREAD THE COST";
+    			TileDescription = "Book with just a 60 deposit and pay the remainder 60 days before departure";
+    			TileIcon = '<image mediaid="{BB0C7DD2-0B02-4DB3-86BF-D6CEB6B06372}" />';
+    		}
+    	)
+    
+    	$tilesIds = @();
+    
+    	foreach ($tile in $tiles) {
+    		$tileItem = Get-Or-Create-Item -Path $path -ItemName $tile.TileTitle -TemplateId "{9F50FCDD-1D3D-4656-9BE2-89A13E49921D}"
+    		$tilesIds += $tileItem.ID
+    
+    		$tileItem.Editing.BeginEdit()
+    		$tileItem["TileTitle"] = $tile.TileTitle
+    		$tileItem["TileDescription"] = $tile.TileDescription
+    		$tileItem["TileIcon"] = $tile.TileIcon
+    		$tileItem.Editing.EndEdit() | Out-Null
+    	}
+    
+    	return $tilesIds;
+    }
+    
+    function Create-Rendering ($item, $placeholder) {
+        $rendering = Get-Rendering -Item $item -DataSource $exactPath
+        if($rendering -eq $null){
+            Add-Rendering -Item $item -PlaceHolder $placeholder -Instance $renderingItem -DataSource $exactPath
+            Write-Host "Rendering added"
+        }
+    }
+    
+    $exactPath = "/sitecore/content/EasyJet/Holidays/Data/Booking Transition Screen"
+    $path = "/sitecore/content/EasyJet/Holidays/Data"
+    $name = "Booking Transition Screen"
+    $template = "{49508281-6602-4850-B9FA-D92E43232EC9}"
+    $item = Get-Item $exactPath -ErrorAction SilentlyContinue
+    if ($item -eq $null) {
+    	$item = New-Item -Path $exactPath -ItemType $template
+    	$tilesIds = Create-Tiles -Path $item.FullPath;
+    
+    	$item.Editing.BeginEdit()
+    	$item["Icon"] = '<image mediaid="{15C3816C-A503-4B2F-A86D-CBFBEB7A068E}" />'
+    	$item["Tiles"] = ($tilesIds -join "|")
+    	$item.Editing.EndEdit() | Out-Null
+    }
+    $placeholder = "/body";
+    $renderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Booking Transition Screen"
+    $renderingItem = Get-Item -Database "master" -Path $renderingPath | New-Rendering -Placeholder "main"
+    
+    $booking = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking"
+    Create-Rendering -item $booking -placeholder $placeholder
+    
+    $payment = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Payment"
+    Create-Rendering -item $payment -placeholder $placeholder
+    
+    $details = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Booking/Guest Details"
+    Create-Rendering -item $details -placeholder $placeholder
+    
+    $hotel = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home/Hotel Details"
+    Create-Rendering -item $hotel -placeholder $placeholder
+    
+    Write-Host "Finished"
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 150
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230109T082623Z

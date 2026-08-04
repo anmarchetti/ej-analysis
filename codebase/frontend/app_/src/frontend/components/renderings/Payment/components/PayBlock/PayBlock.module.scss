@@ -1,0 +1,134 @@
+.holidaySummary {
+    margin-top: 6.25rem;
+    margin-bottom: 3.75rem;
+    break-inside: avoid;
+
+    @include media-breakpoint-down(md) {
+        margin: 4rem 0;
+    }
+}
+
+.pageTitle {
+    @include media-breakpoint-down(md) {
+        font-size: 1.875rem;
+        hyphens: auto;
+        word-break: keep-all;
+    }
+}
+
+.content {
+    padding: 0 2.0625rem;
+
+    @include media-breakpoint-down(md) {
+        padding: 0 0.625rem;
+    }
+}
+
+.contentItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 0;
+    font-size: 1.125rem;
+    color: #2e2e2e;
+    border-top: 1px solid $clrBorderGray;
+
+    @include media-breakpoint-down(md) {
+        padding: 0.9375rem 0;
+        font-size: 1rem;
+    }
+}
+
+.contentItemFirst {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.price {
+    margin-left: 0.625rem;
+    font-size: 1.5rem;
+    white-space: nowrap;
+
+    @include media-breakpoint-down(md) {
+        font-size: 1rem;
+    }
+}
+
+.priceDiscount {
+    composes: price;
+    color: $colorRed;
+}
+
+.pricePP {
+    composes: price;
+    font-size: 1.125rem;
+}
+
+.totalPrice {
+    margin: 0 -2.0625rem;
+    padding: 1.25rem 2.0625rem;
+    font-size: 2.1875rem;
+    background-color: $colorGrayLighter;
+    border-top: none;
+
+    @include media-breakpoint-down(md) {
+        margin: 0 -0.625rem;
+        padding: 0.9375rem 0.625rem;
+        font-size: 1.125rem;
+    }
+}
+
+.totalPriceDescription {
+    color: $clrTextHeading;
+}
+
+.totalPriceAmount {
+    font-size: 2.1875rem;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(md) {
+        font-size: 1.125rem;
+    }
+
+    span {
+        font-size: 70%;
+    }
+}
+
+.description {
+    color: $clrTextHeading;
+}
+
+.payNowButton {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.3rem;
+    max-width: 21.5625rem;
+    margin-top: 1.875rem;
+    margin-left: auto;
+
+    &:disabled {
+        cursor: not-allowed;
+    }
+
+    @include media-breakpoint-down(sm) {
+        max-width: 100%;
+    }
+}
+
+.customApplePayButtonClass {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 1.875rem;
+
+    @include media-breakpoint-down(md) {
+        display: block;
+        width: 100%;
+
+        apple-pay-button {
+            --apple-pay-button-width: 100%;
+        }
+    }
+}

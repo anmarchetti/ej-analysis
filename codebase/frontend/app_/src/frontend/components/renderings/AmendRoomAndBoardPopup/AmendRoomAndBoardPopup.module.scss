@@ -1,0 +1,33 @@
+
+
+    .roomsContainer {
+        margin: 0;
+        padding: 0;
+        border-top: none;
+
+        &.isLoading > div:first-of-type {
+           margin-bottom: 0;
+        }
+    }
+
+    .content {
+        --side-padding: 24px;
+
+        padding-right: var(--side-padding);
+        padding-left: var(--side-padding);
+
+        :global(.board-and-room) {
+            margin: 0;
+            padding: 24px 0;
+
+            h3 {
+                margin: 16px 0;
+            }
+
+            div[data-item-selection='selected'] {
+                margin: 16px 0;
+            }
+        }
+    }
+
+

@@ -1,0 +1,35 @@
+{
+  "Title": "Response for Data8 DrillDown request",
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "RegexMatcher",
+          "Pattern": "^/?PredictiveAddress/DrillDown\\.json$",
+          "IgnoreCase": true
+        }
+      ]
+    },
+    "Methods": [ "Post" ]
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsJson": {
+      "Status": {
+        "Success": true,
+        "ErrorMessage": null,
+        "CreditsRemaining": 983
+      },
+      "Results": [
+        {
+          "label": "Norbain Distribution Centre, Alexandria Drive, ASHTON-UNDER-LYNE, Lancashire, OL7 ",
+          "value": "PCdSziFEub4Jfypd0G1R4NbQ|CC=GB;PAF=2026.4.6.1510594",
+          "container": false,
+          "items": 1
+        }
+      ],
+      "Count": 15,
+      "SessionID": null
+    }
+  }
+}

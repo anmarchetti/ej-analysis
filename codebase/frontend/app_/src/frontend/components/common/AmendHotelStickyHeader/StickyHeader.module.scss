@@ -1,0 +1,79 @@
+.header {
+    background-color: $colorWhite;
+    box-shadow: $cardShadow;
+}
+
+.basket {
+    display: flex;
+    justify-content: space-between;
+}
+
+.details {
+    display: flex;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    margin: 16px 0;
+    overflow: hidden;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 18px;
+
+    svg {
+        margin-right: 11px;
+        @include sizeSquare(24px);
+    }
+
+    :global(.icon--bg-image) {
+        margin-right: 11px;
+        @include sizeSquare(24px);
+    }
+}
+
+.withSeparator {
+    position: relative;
+    margin-right: 24px;
+    padding-right: 24px;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 1px;
+        height: 68px;
+        background: $colorGrayMiddle;
+        transform: skewX(-15deg);
+        transform-origin: top right;
+    }
+}
+
+.priceSection {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.withDiagonalGreySeparator {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+}
+
+.withNoOverflow {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+    overflow: unset;
+}
+
+.buttonColumn {
+    margin: auto 0 auto 24px;
+}

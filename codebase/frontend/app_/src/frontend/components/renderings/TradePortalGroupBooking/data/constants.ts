@@ -1,0 +1,1 @@
+export const MIN_PEOPLE_COUNT_FOR_GROUP_BOOKING = 9;

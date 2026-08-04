@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Sitecore.Framework.Conditions" />
+        <PackageReference Include="Sitecore.Framework.Rules.Abstractions" />
+        <PackageReference Include="Sitecore.XConnect"/>
+        <PackageReference Include="Sitecore.XConnect.Client"/>
+        <PackageReference Include="Sitecore.XConnect.Collection.Model"/>
+        <PackageReference Include="Sitecore.XConnect.Core"/>
+        <PackageReference Include="Sitecore.XConnect.Service"/>
+        <PackageReference Include="Sitecore.Xdb.MarketingAutomation.Core"/>
+    </ItemGroup>
+    <Import Project="$(SolutionDir)TestProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)src\Foundation\PushNotification\code\easyJet.Foundation.PushNotifications.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="App_Config\sc.PushNotifications.FakeConfig.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+</Project>

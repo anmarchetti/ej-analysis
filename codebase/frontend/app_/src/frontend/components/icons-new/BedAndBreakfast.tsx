@@ -1,0 +1,18 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgBedAndBreakfast = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        className={classNames('icon-svg', props.className)}
+        data-tid={props['data-tid'] ?? 'bed-and-breakfast-icon'}
+    >
+        <path d='M18.85 10H3.71a1 1 0 000 2h15.14a1 1 0 000-2zm-7.56 2.64a7.23 7.23 0 00-3.36.86l2.31 6.34h2.11l2.32-6.34a7.26 7.26 0 00-3.38-.86zm-3.88 1.85a6 6 0 00-1.81 1.22 1.36 1.36 0 00-.41 1 .75.75 0 000 .21l3.48 3.28.7-.37zm9.95 2.44a1.52 1.52 0 000-.21 1.41 1.41 0 00-.42-1 6 6 0 00-1.81-1.22l-2 5.35.7.37 3.48-3.28zm.26.87L15 20.26a6 6 0 011.27 1.36.86.86 0 00.73.38h.06a.85.85 0 00.73-.46 3.66 3.66 0 00.09-3.2 3.76 3.76 0 00-.26-.54zm-12.94.53a3.66 3.66 0 00.09 3.2.86.86 0 00.73.47h.06a.89.89 0 00.74-.37 5.69 5.69 0 011.26-1.36L5 17.8a5.24 5.24 0 00-.32.53zM18.35 2H6a.8.8 0 00-.8.8v2.67a6.07 6.07 0 002 4.53h8.19a6 6 0 001.51-2.12h1.46a2.94 2.94 0 100-5.87zm0 3.87h-1V4h1a.94.94 0 110 1.87z' />
+    </svg>
+);
+
+export default SvgBedAndBreakfast;

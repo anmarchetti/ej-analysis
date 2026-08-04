@@ -1,0 +1,214 @@
+$imageSize: 500px;
+
+.wrapper {
+    display: flex;
+    border-radius: 4px;
+    box-shadow: 0 0 12px 2px $colorAlto;
+}
+
+.section {
+    flex: 1 1;
+    margin: 24px;
+
+    &:first-child {
+        flex: 0 0;
+        margin-right: 0;
+        padding-right: 24px;
+        border-right: 1px solid $colorAlto;
+    }
+}
+
+.sectionTitle {
+    margin: 0 0 8px;
+    padding: 0;
+    font-family: $fontRoundedBook;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.sectionDesc {
+    margin: 0 0 16px;
+    font-size: 16px;
+}
+
+.posterWrapper {
+    border: 1px solid $colorPorcelain;
+}
+
+.poster.priority {
+    position: relative;
+    width: $imageSize;
+    height: $imageSize;
+    margin: 0;
+    overflow: hidden;
+    background: $colorWhite;
+    border: none;
+    border-radius: 0;
+}
+
+.luxuryBanner.priority {
+    position: absolute;
+    z-index: $z-index-dropdown;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 0;
+}
+
+.background {
+    position: relative;
+    width: $imageSize;
+    height: $imageSize;
+    padding: 24px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+
+    &::before {
+        @include image-shadow-overlay(linear-gradient(174deg, rgba(0, 0, 0, 0.64) 5.32%, $colorTransparent 33%));
+
+        left: -1px; // overload left:0 because 1px line was still visible
+    }
+
+    :global(.promo-slide__item__price) {
+        right: -1px;
+        padding: 8px 24px;
+
+        @mixin white-triangle() {
+            content: '';
+            position: absolute;
+            left: 0;
+            display: block;
+            width: 0;
+            height: 0;
+            background-image: none;
+            border-top: 43px solid transparent;
+            border-right: 405px solid $colorWhite;
+            border-bottom: 10px solid $colorWhite;
+            border-left: 0;
+        }
+
+        &::before {
+            @include white-triangle;
+
+            top: -43px;
+        }
+
+        /**
+        *  Duplicated shifted pseudo-element is used
+        *  to hide the line, appearing when the image is rendered
+        */
+        &::after {
+            @include white-triangle;
+
+            top: -44px;
+        }
+    }
+
+    :global(.price-prefix) {
+        font-size: 18px;
+        font-weight: 400;
+    }
+
+    :global(.price) {
+        font-family: $fontRoundedHeadline;
+        font-size: 40px;
+        line-height: 42px;
+    }
+
+    :global(.price-suffix) {
+        font-size: 24px;
+    }
+}
+
+.imgLink {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    display: block;
+    width: $imageSize;
+    height: $imageSize;
+    font-size: 0;
+    text-decoration: none;
+    background-color: $colorWhite;
+    cursor: default;
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.location {
+    position: relative;
+    display: block;
+    font-family: $fontGenerationHeadline;
+    font-size: 64px;
+    font-weight: 400;
+    line-height: 1;
+    color: $colorWhite;
+}
+
+.location.luxury {
+    margin-top: 32px;
+}
+
+.hotel {
+    position: relative;
+    display: block;
+    font-size: 24px;
+    line-height: 30px;
+    color: $colorWhite;
+}
+
+.logo {
+    position: absolute;
+    bottom: 24px;
+    width: 132px;
+}
+
+.UMlogo {
+    position: absolute;
+    bottom: 24px;
+    max-width: 125px;
+    max-height: 125px;
+}
+
+.checkboxes {
+    > * {
+        justify-content: flex-start;
+        margin: 16px 0;
+    }
+
+    :global(.checkbox__control) {
+        margin-right: 10px;
+    }
+}
+
+.actionBtn {
+    margin-right: 24px;
+}
+
+.actionBtnDesc {
+    font-size: 14px;
+    color: $colorBlackMedium;
+}
+
+.textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 16px;
+    padding: 15px 42px 15px 20px;
+    font-size: 14px;
+    line-height: 29px;
+    color: $colorBlackMedium;
+    border: 1px solid $colorDustyGrey;
+    border-radius: $box_border-radius_md;
+    resize: none;
+}

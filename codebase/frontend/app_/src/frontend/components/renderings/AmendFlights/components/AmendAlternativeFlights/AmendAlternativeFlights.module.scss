@@ -1,0 +1,42 @@
+.container {
+    :global(.fee-banner-mobile:not(.stuck)) {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+}
+
+.no-flights {
+    margin-top: 3rem;
+    margin-bottom: 12rem;
+    color: $colorBlack;
+
+    @include media-breakpoint-up(sm) {
+        margin-top: 4.5rem;
+        margin-bottom: 30rem;
+    }
+
+    .no-flights__title {
+        margin: 0;
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+
+        @include media-breakpoint-up(sm) {
+            font-size: 24px;
+        }
+    }
+
+    .no-flights__text {
+        margin: 0.6rem 0;
+
+        @include media-breakpoint-up(sm) {
+            font-size: 18px;
+        }
+    }
+
+    .no-flights__icon {
+        width: 14px;
+        height: 14px;
+        margin-bottom: 8px;
+    }
+}

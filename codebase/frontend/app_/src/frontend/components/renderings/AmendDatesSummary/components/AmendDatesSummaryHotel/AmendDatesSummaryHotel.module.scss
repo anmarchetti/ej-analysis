@@ -1,0 +1,49 @@
+.hotel {
+    :global(.hotel-card-img-box-wr) {
+        overflow: hidden;
+        border-radius: 4px;
+        aspect-ratio: 1.745;
+    }
+
+    :global(.img-carousel-container, .image-gallery-slide) {
+        min-height: unset;
+    }
+
+    :global(.popup-overlay) {
+        background-color: $colorBlackLight;
+        opacity: 0.95;
+    }
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        margin-right: 0;
+        padding-bottom: 16px;
+        border-bottom: 1px solid $colorGeyser;
+    }
+}
+
+.titleRating {
+    margin: 24px 0 27px;
+
+    @include media-breakpoint-down(md) {
+        margin: 16px 0;
+    }
+}
+
+.title {
+    margin-bottom: 5px;
+    font-family: $fontRoundedDemy;
+    font-size: 18px;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    font-family: $fontRoundedDemy;
+    font-size: 14px;
+
+    svg {
+        margin-left: 5px;
+    }
+}

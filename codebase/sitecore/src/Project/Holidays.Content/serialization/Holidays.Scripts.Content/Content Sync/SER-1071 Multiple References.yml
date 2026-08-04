@@ -1,0 +1,78 @@
+﻿---
+ID: "f5521422-bc13-4e32-852b-cfcc19dcadb7"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-1071 Multiple References"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+        Import-Function "Import Content"
+    
+                
+                $dictTemplatePath = "/sitecore/templates/System/Dictionary/Dictionary entry"
+        
+                function New-Content() {
+                        $updates = @(
+                              @{
+                                Path         = "/sitecore/content/EasyJet/Holidays/Dictionary/Booking Header/Labels/Flight Ref Title"
+                                TemplatePath = $dictTemplatePath
+                                Fields      = @{
+                                     "Phrase" = @{
+                                        "en" = "This is your easyJet airline flight reference number. View your flight on easyJet's website"
+                                        "fr-CH" = "Voici votre numéro de référence de vol easyJet. Consultez votre vol sur le site easyJet"
+                                        "de-CH" = "Dies ist Ihre easyJet Flugreferenznummer. Sehen Sie Ihren Flug auf der easyJet Website ein"
+                                        "fr-FR" = "Voici votre numéro de référence de vol easyJet. Consultez votre vol sur le site easyJet"
+                                        "de-DE" = "Dies ist Ihre easyJet Flugreferenznummer. Sehen Sie Ihren Flug auf der easyJet Website ein"
+                                     }
+                                }
+                             },
+                               @{
+                                Path         = "/sitecore/content/EasyJet/Holidays/Dictionary/Booking Header/Labels/Holiday Ref Title"
+                                TemplatePath = $dictTemplatePath
+                                Fields      = @{
+                                     "Phrase" = @{
+                                        "en" = "This is your easyJet holidays booking reference number to view your holiday and check-in"
+                                        "fr-CH" = "Voici votre numéro de référence de réservation easyJet holidays pour consulter votre séjour et effectuer l’enregistrement"
+                                        "de-CH" = "Dies ist Ihre easyJet holidays Buchungsreferenznummer, um Ihre Reise einzusehen und einzuchecken"
+                                        "fr-FR" = "Voici votre numéro de référence de réservation easyJet holidays pour consulter votre séjour et effectuer l’enregistrement"
+                                        "de-DE" = "Dies ist Ihre easyJet holidays Buchungsreferenznummer, um Ihre Reise einzusehen und einzuchecken"
+                                    }
+                                }
+                             },
+                             
+                              @{
+                                Path         = "/sitecore/content/EasyJet/TradePortal/Dictionary/Booking Header/Labels/Flight Ref Title"
+                                TemplatePath = $dictTemplatePath
+                                Fields      = @{
+                                     "Phrase" = @{
+                                        "en" = "This is your easyJet airline flight reference number. View your flight on easyJet's website"
+                                    }
+                                }
+                             },
+                               @{
+                                Path         = "/sitecore/content/EasyJet/TradePortal/Dictionary/Booking Header/Labels/Holiday Ref Title"
+                                TemplatePath = $dictTemplatePath
+                                Fields      = @{
+                                     "Phrase" = @{
+                                        "en" = "This is your easyJet holidays booking reference number to view you holiday and check-in"
+                                    }
+                                }
+                             }
+                             
+                        )
+                        ImportContent -itemsToCreate $updates
+                    }
+                    
+                    New-Content
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260223T124954Z

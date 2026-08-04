@@ -1,0 +1,34 @@
+.wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 850px;
+    margin: 60px auto;
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        margin: auto;
+    }
+}
+
+.skeleton {
+    width: 100%;
+    max-width: 320px;
+
+    :global(.placeholder-shimmer) {
+        height: 30px;
+        border-radius: 30px;
+    }
+}
+
+.header {
+    margin-bottom: 50px;
+}
+
+.header > :global(.placeholder-shimmer) {
+    margin-top: 20px;
+}
+
+.body > :global(.placeholder-shimmer) {
+    margin-top: 15px;
+}

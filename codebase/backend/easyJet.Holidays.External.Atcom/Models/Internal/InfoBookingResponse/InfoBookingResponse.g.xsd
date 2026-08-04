@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 sp1 (http://www.altova.com) by Kim Howells (Anite Business Systems) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="AtComRes/InfoBookingResponse" xmlns:p2="AtComRes/Common" targetNamespace="AtComRes/InfoBookingResponse" elementFormDefault="qualified">
+	<xs:import namespace="AtComRes/Common" schemaLocation="../Common/Common.xsd"/>
+	<xs:element name="InfoBookingResponse">
+		<xs:annotation>
+			<xs:documentation>Response all informations of possible booking with the actual availability and prices of one or more packages</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="p2:AtcomresBookingBaseResponse">
+					<xs:sequence>
+						<xs:element ref="p2:Search_Results" minOccurs="0"/>
+						<xs:element name="DuplicateBooking" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="p2:BkgId"/>
+									<xs:element ref="p2:Bkg_Dt_Tm"/>
+									<xs:element name="FullBalanceRequired" type="xs:boolean"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

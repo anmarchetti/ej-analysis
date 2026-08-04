@@ -1,0 +1,60 @@
+﻿---
+ID: "1e536639-55cd-403c-900b-5304268554cb"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-11910 Booking Confirmation - Updated Design 2"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $bookingConfirmationPage  = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation" -ErrorAction SilentlyContinue
+    $rendering = Get-Rendering -Item $bookingConfirmationPage  | Where-Object { $_.ItemId -eq "{9FD91E19-714F-4313-9E52-FF77B4E9F030}" } | Select -First 1
+    Set-Rendering -Item $bookingConfirmationPage  -Instance $rendering -Datasource "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Luggage"
+    
+    $rendering = Get-Rendering -Item $bookingConfirmationPage  | Where-Object { $_.ItemId -eq "{E10ECB4E-19CE-4255-982C-04E6E3592A20}" } | Select -First 1
+    Set-Rendering -Item $bookingConfirmationPage  -Instance $rendering -Datasource "/sitecore/content/EasyJet/Holidays/Data/Luggage Configuration"
+    
+    
+    Get-Item -Path '/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Luggage' | Remove-Item  -Recurse
+    $luggagesForClone = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/My_booking/Page Components/Luggage" -ErrorAction SilentlyContinue
+    $pageComponents = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components" -ErrorAction SilentlyContinue
+    $luggageItem = New-ItemClone -Item $luggagesForClone -Destination $pageComponents  -Recurse
+    
+    $cabinBags = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Luggage/2 x Cabin bags" -ErrorAction SilentlyContinue
+    $cabinBagValue = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Luggage/2 x Cabin bags/Before 10 Feb"  -ErrorAction SilentlyContinue
+    if ($cabinBagValue -ne $null){
+        $cabinBags.Editing.BeginEdit()
+        $cabinBags.Fields["Messages"].Value =$cabinBagValue.ID
+        $cabinBags.Editing.EndEdit()
+    } 
+    
+    $cabinBagsSmall = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Luggage/2 x Small cabin bags" -ErrorAction SilentlyContinue
+    $cabinBagValue = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Luggage/2 x Small cabin bags/After 10 Feb" -ErrorAction SilentlyContinue
+    if ($cabinBagsSmall -ne $null){
+        $cabinBagsSmall.Editing.BeginEdit()
+        $cabinBagsSmall.Fields["Messages"].Value =$cabinBagValue.ID
+        $cabinBagsSmall.Editing.EndEdit()
+    } 
+    
+    $helpLinks = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Bottom Help Links" -ErrorAction SilentlyContinue
+    $link1 = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Bottom Help Links/Chat To Us" -ErrorAction SilentlyContinue
+    $link2 = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components/Bottom Help Links/Contact Us" -ErrorAction SilentlyContinue
+    if ($helpLinks -ne $null){
+        $helpLinks.Editing.BeginEdit()
+        $helpLinks.Fields["Links"].Value ="$($link1.ID)|$($link2.ID)"
+        $helpLinks.Editing.EndEdit()
+    } 
+    
+    $rendering = Get-Rendering -Item $bookingConfirmationPage  | Where-Object { $_.ItemId -eq "{9133F3CA-553F-42F5-8529-54734B53A378}" } | Select -First 1
+    if ($rendering -ne $null) {
+        Set-Rendering -Item $bookingConfirmationPage -Instance $rendering -Parameter @{ "Variant" = "Card With Border" } 
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210129T123501Z

@@ -1,0 +1,61 @@
+.content {
+    @include media-breakpoint-up(lg) {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.boardRooms {
+    display: flex;
+
+    @include media-breakpoint-down(sm) {
+        flex-direction: column;
+    }
+}
+
+.boardRooms > *:last-child {
+    margin: 0 0 0 24px;
+    padding: 0 0 0 24px;
+    border-left: 1px solid $colorGeyser;
+
+    @include media-breakpoint-down(sm) {
+        margin: 16px 0 0;
+        padding: 16px 0 10px;
+        border-top: 1px solid $colorGeyser;
+        border-left: none;
+    }
+}
+
+.board {
+    display: flex;
+    flex-direction: column;
+}
+
+.rooms {
+    display: flex;
+    flex-direction: column;
+}
+
+.rooms > *:not(:last-child) {
+    margin-bottom: 8px;
+}
+
+.room {
+    display: flex;
+    flex-direction: column;
+
+    @include media-breakpoint-down(sm) {
+        font-size: 14px;
+    }
+}
+
+.title {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-weight: 700;
+
+    @include media-breakpoint-down(sm) {
+        font-size: 14px;
+    }
+}

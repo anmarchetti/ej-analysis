@@ -1,0 +1,24 @@
+.select {
+    min-width: 230px;
+
+    :global {
+        .custom-select__menu-list {
+            overflow-y: visible;
+        }
+
+        .custom-select__option {
+            padding: 12px 16px 12px 20px;
+            line-height: 16px;
+            text-wrap: wrap;
+
+            &:hover, &:focus, &--is-focused {
+                color: $clrEjOrangeDarkShadow;
+            }
+        }
+
+        .custom-select__option--is-selected {
+            color: $clrEjOrange;
+            background-color: #f1f5f6;
+        }
+    }
+}

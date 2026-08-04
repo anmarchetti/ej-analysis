@@ -1,0 +1,71 @@
+.bigBlockItem {
+    @include media-breakpoint-up(sm) {
+        flex-basis: calc(50% - #{$promo-blocks-gutter});
+    }
+
+    @include media-breakpoint-up(lg) {
+        flex-basis: calc(33.3% - #{$promo-blocks-gutter});
+    }
+}
+
+.smallBlockItem {
+    max-width: ($container-max-width - 3 * $promo-blocks-gutter) / 4;
+}
+
+.textWhite {
+    color: $colorWhite !important;
+}
+
+.textBlack {
+    color: $clrTextMain !important;
+}
+
+.textTiny {
+    font-size: 20px !important;
+    @include media-breakpoint-down(md) {
+        font-size: 16px !important;
+    }
+}
+
+.textExtraSmall {
+    font-size: 24px !important;
+    @include media-breakpoint-down(md) {
+        font-size: 20px !important;
+    }
+}
+
+.textSmall {
+    font-size: 32px !important;
+    @include media-breakpoint-down(md) {
+        font-size: 24px !important;
+    }
+}
+
+.textMedium {
+    font-size: 44px !important;
+    @include media-breakpoint-down(md) {
+        font-size: 32px !important;
+    }
+}
+
+.textLarge {
+    font-size: 56px !important;
+    @include media-breakpoint-down(md) {
+        font-size: 40px !important;
+    }
+}
+
+.wrapper {
+    margin-bottom: 40px;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 20px;
+    }
+}
+
+.taxInfo {
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+    margin: 6px auto 0;
+}

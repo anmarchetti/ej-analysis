@@ -1,0 +1,30 @@
+﻿---
+ID: "5cbe27ab-cbc0-4f7d-9ecd-f6a41190a0d5"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-13214-pandemic-levels"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $pandemicLevelPath = "/sitecore/content/EasyJet/Holidays/Settings/Pandemic Levels"
+    $templateId = "{1E5A9A2B-02C2-4180-A463-89C5BB48B5BB}"
+    
+    function Get-Or-Create-Item($path,$templateId){
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        $item.FullPath
+        if($item -eq $null){
+            $item = New-Item -Path $path -ItemType $templateId
+        }
+    }
+    
+    Get-Or-Create-Item -Path $pandemicLevelPath -TemplateId $templateId
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210411T171913Z

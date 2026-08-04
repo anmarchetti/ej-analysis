@@ -1,0 +1,41 @@
+.item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+
+    @include media-breakpoint-up(md) {
+        align-items: center;
+    }
+}
+
+.eligibleIcon {
+    @include sizeSquare(20px);
+
+    padding: 4px;
+    fill: $colorGreenSuccess;
+}
+
+.notEligibleIcon {
+    @include sizeSquare(20px);
+
+    padding: 4px;
+    fill: $colorSystemError;
+}
+
+
+.tooltipIcon {
+    @include sizeSquare(16px);
+
+    margin-left: 4px;
+}
+
+.text {
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    line-height: 1.375; 
+
+    span {
+        display: inline-flex;
+        align-items: center;
+    }
+}

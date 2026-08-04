@@ -1,0 +1,95 @@
+.credit {
+    font-family: $fontRoundedBook;
+    border-top: 1px solid $clrBorderGray;
+    border-left: 3px solid transparent;
+
+    &.disabledCredit {
+        background: $colorGrayLighter;
+    }
+
+    &.expandedCredit {
+        border-left: 3px solid $clrEjOrange;
+    }
+}
+
+.recentCredit {
+    .balance,
+    .expireDate {
+        color: $colorGreen;
+    }
+}
+
+.balanceInfo {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 180px 90px;
+}
+
+.mainItem {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 140px 156px 1fr 136px 118px 144px 45px;
+    min-height: 80px;
+    padding: 8px 0;
+    padding-left: 9px;
+}
+
+.mainItemWithLogos {
+    display: grid;
+    align-items: center;
+    gap: 0;
+}
+
+.hideExpandBtn {
+    grid-template-columns: 2fr 1fr;
+}
+
+.details {
+    position: relative;
+}
+
+.balance {
+    margin-bottom: 5px;
+    font-size: 24px;
+    color: $clrTextMain;
+    text-align: right;
+}
+
+.decimal {
+    font-size: 18px;
+}
+
+.createdDate {
+    font-size: 16px;
+    line-height: 1.375;
+    color: $clrTextMain;
+    text-align: right;
+}
+
+.expandBtn {
+    height: 100%;
+    padding: 0 15px;
+    color: $clrEjOrange;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $colorWhite;
+    }
+
+    &:focus {
+        background-color: $colorWhite;
+    }
+
+    svg {
+        width: 15px;
+        height: 15px;
+    }
+}
+
+.expandedBtn {
+    svg {
+        transform: rotate(180deg);
+    }
+}

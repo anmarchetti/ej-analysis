@@ -1,0 +1,37 @@
+﻿---
+ID: "a0159992-55e0-4afc-8c51-20d6cd93e589"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSS-000_fix-seats-map-placeholder-id"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $maendDatesSummaryPage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary" -ErrorAction SilentlyContinue;
+    $amendSummaryItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary/Page Components/Amend Dates Summary Page" -ErrorAction SilentlyContinue;
+    
+    $seatMapRenderingItem = Get-Item -Path "/sitecore/layout/Renderings/Feature/SeatMap/Seat Map" -ErrorAction SilentlyContinue;
+    $amendDatesSummaryRenderingItem = Get-Item -Path "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Dates/Amend Dates Summary" -ErrorAction SilentlyContinue
+    
+    $amendDatesSummaryRenderingInstance = Get-Rendering -Item $maendDatesSummaryPage -Render $amendDatesSummaryRenderingItem;
+    $seatMapRenderingInstance = Get-Rendering -Item $maendDatesSummaryPage -Rendering $seatMapRenderingItem;
+    
+    if ($seatMapRenderingInstance -ne $null) {
+        $placeholder = "/body/seat-map-" + $amendDatesSummaryRenderingInstance.UniqueId + "-0";
+        
+        Set-Rendering -Item $maendDatesSummaryPage -Instance $seatMapRenderingInstance -Placeholder $placeholder;
+        
+        Write-Host $seatMapRenderingInstance.Name "Updated";
+    }
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 310
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240531T120821Z

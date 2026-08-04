@@ -1,0 +1,134 @@
+﻿---
+ID: "47ca4f6c-2ea5-4509-be5a-f59c1004cf5b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-315 - Credit Types content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $holidayCreditPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit"
+    
+    $balanceHistoryRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Balance History"
+    $creditTypesDataSourcePath = '/sitecore/content/EasyJet/Holidays/Home/Booking/Holiday Credit/Page Components/Credit Types'
+    
+    $creditTypesFolderTemplateId = "{DAC62369-7765-4A1E-9F69-43E6586FFA30}"
+    $creditTypesItemTemplateId = "{75DCBE12-AD50-4148-A33A-BBB8791D779A}"
+    
+    function Create-Item ($path, $template) {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+            $item = New-Item -Path $path -Name $itemName -ItemType $template
+            Write-Host "Item" $item.Name "successfully created"
+        } else {
+            Write-Host "Item" $item.Name "already exist"
+        }
+        return $item
+    }
+    
+    function Set-Translation-Value($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            $item = Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+            Write-Host "Created" $language "version for" $item.Name "item"
+        } else {
+            Write-Host $language "version for Item" $item.Name "already exist"
+        }
+    
+        if($item -ne $null -and $key -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+            Write-Host "Field" $key "for" $item.Name "item updated with value" $translation
+        }
+    }
+    
+    function Create-Credit-Types-Folder-Content() {
+        $disruptionFolderContent = Create-Item -Path $creditTypesDataSourcePath -Template $creditTypesFolderTemplateId
+        $disruptionFolderContent.Editing.BeginEdit()
+        $disruptionFolderContent["ShowLogos"] = "1"
+        $disruptionFolderContent.Editing.EndEdit() | Out-Null
+        
+        Set-Translation-Value -ItemPath $creditTypesDataSourcePath -Language 'fr-FR'
+        Set-Translation-Value -ItemPath $creditTypesDataSourcePath -Language 'de-DE'
+        Set-Translation-Value -ItemPath $creditTypesDataSourcePath -Language 'fr-CH'
+        Set-Translation-Value -ItemPath $creditTypesDataSourcePath -Language 'de-CH'
+    }
+    
+    function Create-Default-Credit-Type-Item() {
+        $path = $creditTypesDataSourcePath + '/Default'
+        $disruptionL1Content = Create-Item -Path $path -Template $creditTypesItemTemplateId
+        $disruptionL1Content.Editing.BeginEdit()
+        $disruptionL1Content["Title"] = "Credit"
+        $disruptionL1Content["LogoImage"] = '<image mediaid="{1CB9AEA8-F299-4483-9450-A0EAAF5D3504}" />'
+        $disruptionL1Content.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Title' -Translation "Avoir"
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Title' -Translation "Guthaben"
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Title' -Translation "Avoir"
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Title' -Translation "Guthaben"
+    }
+    
+    function Create-Tesco-Credit-Type-Item() {
+        $path = $creditTypesDataSourcePath + '/Tesco'
+        $disruptionL1Content = Create-Item -Path $path -Template $creditTypesItemTemplateId
+        $disruptionL1Content.Editing.BeginEdit()
+        $disruptionL1Content["Title"] = "Tesco Clubcard"
+        $disruptionL1Content["Key"] = "Promotion - Tesco Clubcard"
+        $disruptionL1Content["LogoImage"] = '<image mediaid="{DFADA6AF-A1BB-42A7-B8B8-B8EC860F8C7D}" />'
+        $disruptionL1Content.Editing.EndEdit() | Out-Null
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'Title' -Translation "Tesco Clubcard"
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'Title' -Translation "Tesco Clubcard"
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'Title' -Translation "Tesco Clubcard"
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'Title' -Translation "Tesco Clubcard"
+    }
+    
+    function Update-Rendering() {
+        $holidayCreditPageItem = Get-Item -Path $holidayCreditPagePath
+        $balanceHistoryRendering = Get-Item -Path $balanceHistoryRenderingPath
+        $creditTypesDataSource = Get-Item -Path $creditTypesDataSourcePath
+        $balanceHistoryPageRendering = Get-Rendering -Item $holidayCreditPageItem -Rendering $balanceHistoryRendering
+        
+        if ($balanceHistoryPageRendering -ne $null) {
+            Set-Rendering -Item $holidayCreditPageItem -Instance $balanceHistoryPageRendering -Datasource $creditTypesDataSource.ID
+            Write-Host "Balance History data source updated on Holiday Credit page";
+        }
+    }
+    
+    Create-Credit-Types-Folder-Content;
+    Create-Default-Credit-Type-Item;
+    Create-Tesco-Credit-Type-Item;
+    Update-Rendering; 
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 400
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230628T103556Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

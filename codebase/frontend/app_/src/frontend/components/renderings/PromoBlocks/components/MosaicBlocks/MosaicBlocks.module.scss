@@ -1,0 +1,94 @@
+$promo-slide-gutter: 16px;
+$promo-slide-height: 505px;
+
+.promoSlider {
+    margin: 8px (-$promo-slide-gutter / 2);
+    position: relative;
+    padding: 0;
+
+    :global(.carousel-button-group) {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        margin-top: -43px;
+
+        :global(.btn) {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            height: 46px;
+            background: $colorWhite;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12);
+        }
+
+        :global(.btn.arrow--right) {
+            right: 0;
+        }
+
+        :global(.btn.arrow--left) {
+            left: 0;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        :global(.carousel-button-group) {
+            display: none;
+        }
+    }
+}
+
+.promoSlide {
+    @include media-breakpoint-up(md) {
+        display: flex;
+        align-items: stretch;
+        height: $promo-slide-height;
+    }
+}
+
+.promoSlideCol {
+    display: flex;
+    flex-direction: column;
+
+    @include media-breakpoint-up(md) {
+        flex: 0 0 33.333%;
+        max-width: 33.333%;
+    }
+}
+
+.linkBlock {
+    position: relative;
+    margin: 20px 8px 0;
+    text-align: center;
+
+    .taxInfo {
+        position: absolute;
+        top: 50%;
+        cursor: default;
+        transform: translateY(-50%);
+
+        @include media-breakpoint-down(xl) {
+            position: static;
+            margin: 0 auto 20px;
+            transform: none;
+        }
+    }
+
+    .btnLink {
+        width: 266px;
+        padding-top: 14px;
+        padding-bottom: 14px;
+        font-size: 16px;
+        line-height: 18px;
+
+        @include media-breakpoint-down(md) {
+            width: 163px;
+            padding: 10px 15px;
+            font-size: 14px;
+            line-height: 16px;
+        }
+    }
+}

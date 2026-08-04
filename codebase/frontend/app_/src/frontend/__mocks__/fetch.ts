@@ -1,0 +1,17 @@
+export const mockGlobalFetch: Response = {
+    ok: true,
+    status: 200,
+    statusText: 'OK',
+    headers: new Headers(),
+    redirected: false,
+    type: 'basic',
+    url: '',
+    clone: jest.fn(),
+    body: null,
+    bodyUsed: false,
+    json: async () => ({}),
+    text: async () => '',
+    formData: async () => new FormData(),
+    arrayBuffer: async () => new ArrayBuffer(0),
+    blob: async () => new Blob(),
+};

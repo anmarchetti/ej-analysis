@@ -1,0 +1,37 @@
+{
+    "Title": "OFTFlightSeatPlanRequest flight AYTLTN 2556",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/BasicService.asmx",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Headers": [
+            {
+                "Name": "Authorization",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "Basic *"
+                    }
+                ]
+            }
+        ],
+        "Body": {
+            "Matcher": {
+                "Name": "XPathMatcher",
+                "Pattern": "//OFTFlightSeatPlanRequest[@B2BAPIUserEmailAddress='easyjetb2b@ejholidaysweb.com' and @DepAirportCode='AYT' and @ArrAirportCode='LTN' and @FlightNumber='2556']"
+            }
+        },
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "Content-Type: text/xml; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsFile": "__admin/files/B2B/amend/commit/B2B_SeatsPlan_AYTLTN_2556.xml"
+    }
+}

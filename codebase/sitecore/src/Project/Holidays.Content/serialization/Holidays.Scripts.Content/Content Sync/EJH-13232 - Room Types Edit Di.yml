@@ -1,0 +1,42 @@
+﻿---
+ID: "85084003-506b-4c4a-ada8-b6d735daab79"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-13232 - Room Types Edit Dictionary"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $path = "Holiday Theme  Text/Labels/Holiday"
+    $phrase = "{holidayTheme} {holidayType} Holiday"
+    
+    $item1 = Get-Item -Path "master:" -Query "/sitecore/content/EasyJet/Holidays/Dictionary/Room Types/Labels/Want To Upgrade"
+    
+    if ($item1 -ne $null) {
+            $item1.Editing.BeginEdit()
+            $item1["Phrase"] = "Fancy an upgrade?"
+            $item1.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $item1.Name "successfully updated"
+    }
+    
+    $item2 = Get-Item -Path "master:" -Query "/sitecore/content/EasyJet/Holidays/Dictionary/Room Types/Labels/Your Room Selection"
+    
+    if ($item2 -ne $null) {
+            $item2.Editing.BeginEdit()
+            $item2["Phrase"] = "Your current choice"
+            $item2.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $item2.Name "successfully updated"
+    }
+    
+    Write-Host "Finished"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210531T065122Z

@@ -1,0 +1,112 @@
+.container {
+    padding: 10px 0;
+    background-color: $clrSiteBgGrey;
+
+    @include media-breakpoint-up(lg) {
+        padding: 0;
+    }
+}
+
+.wrapper {
+    position: relative;
+    z-index: 9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 97%;
+    margin: 0 auto;
+    padding: 10px 15px;
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    color: $clrTextMain;
+    background-color: $clrSiteBgWhite;
+    border: 1px solid $colorProofingOrange;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    animation: fade-in 0.4s ease-in-out;
+
+    @include media-breakpoint-up(lg) {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        max-width: 60%;
+        margin: 0;
+    }
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.text {
+    margin-right: 15px;
+    font-size: 14px;
+    line-height: 18px;
+
+    @include media-breakpoint-up(md) {
+        font-size: 16px;
+    }
+
+    b {
+        font-family: $fontRoundedDemy;
+    }
+}
+
+.closeBtn {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    
+    svg {
+        display: block;
+        width: 1em;
+        height: 1em;
+        fill: $colorProofingOrange;
+    }
+}
+
+.exit {
+    opacity: 0;
+    animation: fade-out 0.4s ease-in-out;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 100;
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 100;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.container.luxury {
+    background-color: $clrSiteBgWhite;
+
+    .wrapper {
+        top: unset;
+        left: unset;
+        margin-top: 0;
+
+        @include media-breakpoint-up(lg) {
+            margin-top: 24px;
+        }
+    }
+}

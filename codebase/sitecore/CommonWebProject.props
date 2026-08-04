@@ -1,0 +1,33 @@
+<Project>
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <OutputPath>bin\</OutputPath>
+        <Configurations>Debug;Release;CI</Configurations>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+        <RestorePackagesPath>$(SolutionDir)packages</RestorePackagesPath>
+    </PropertyGroup>
+    <PropertyGroup>
+        <Deterministic>true</Deterministic>
+        <FileAlignment>512</FileAlignment>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    </PropertyGroup>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    </PropertyGroup>
+    <ItemGroup>
+        <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="*\\*.orig" />
+        <None Remove="Properties\launchSettings.json" />
+    </ItemGroup>
+    <PropertyGroup>
+        <SitecoreVersion>10.4.1</SitecoreVersion>
+        <SitecoreJSSVersion>22.0.0</SitecoreJSSVersion>
+        <FrameworkVersion>net48</FrameworkVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(StyleCopEnabled)' == ''">
+        <StyleCopEnabled>true</StyleCopEnabled>
+    </PropertyGroup>
+</Project>

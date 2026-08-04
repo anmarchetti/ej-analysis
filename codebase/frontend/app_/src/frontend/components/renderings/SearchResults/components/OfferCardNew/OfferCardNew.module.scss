@@ -1,0 +1,318 @@
+@import './OfferCardNewVariables.module';
+
+.cardWrapper {
+    margin-bottom: 30px;
+    border-radius: 6px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.05);
+
+    @include media-breakpoint-down(md) {
+        box-shadow: 0 2px 4px 0 rgba(178, 178, 175, 0.5);
+    }
+
+    @include media-breakpoint-down(lg) {
+        overflow: hidden;
+    }
+
+    .luxuryWrapper {
+        border-radius: 6px;
+    }
+
+    .luxuryBanner {
+        border-radius: 5px 5px 0 0;
+    }
+}
+
+.luxuryContent.priority {
+    border-radius: 0 0 5px 5px;
+}
+
+.luxury .card {
+    border-radius: 0;
+
+    :global {
+        .hotel-card {
+            border-radius: 0;
+        }
+
+        .image-gallery {
+            border-radius: 0;
+        }
+    }
+
+    .priceWrapper {
+        border-radius: 0;
+    }
+}
+
+.card {
+    border-radius: 6px;
+
+    .topWrapper {
+        border-radius: 0 6px 0 0;
+    }
+
+    :global(.alternative-boards-link),
+    :global(.other-routes .main-link) {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+
+        svg {
+            @include sizeSquare(15px);
+
+            margin-right: 6px;
+            margin-left: 0;
+        }
+    }
+
+    :global {
+        .hotel-card {
+            border-radius: inherit;
+        }
+
+        .hotel-card-head {
+            border-radius: 0 6px 0 0;
+        }
+
+        .image-gallery {
+            overflow: hidden;
+            border-radius: 6px 0 0;
+        }
+    }
+
+    :global(.hotel-card-txt-v2) {
+        @include media-breakpoint-down(xl) {
+            margin: 8px $hotelCardEdgeSpacing 0;
+            padding-bottom: 0;
+        }
+    }
+
+    :global(.img-carousel-container) {
+        @include media-breakpoint-down(xl) {
+            position: relative;
+        }
+    }
+
+    :global(.image-gallery-slide) {
+        @include media-breakpoint-down(xl) {
+            padding-top: 56%;
+        }
+    }
+
+    @media (width <= 800px) {
+        :global(.hotel-card-options-v2) {
+            flex-flow: column nowrap;
+        }
+
+        :global(.hotel-card-options-v2 > div:nth-child(even)) {
+            padding-left: 0;
+        }
+
+        :global(.hotel-card-head.hotel-card-head-v2) {
+            padding: 15px $hotelCardEdgeSpacing 0;
+        }
+
+        :global(.star_rating) {
+            margin-bottom: 0;
+        }
+
+        :global(.hotel-reviews) {
+            margin-bottom: 0;
+        }
+
+        :global(.holiday-details__icon-v2 svg) {
+            width: $hotelCardOptionsIconSize;
+            height: $hotelCardOptionsIconSize;
+        }
+
+        :global(.holiday-details__icon-v2 .icon--bg-image) {
+            width: $hotelCardOptionsIconSize;
+            height: $hotelCardOptionsIconSize;
+        }
+
+        :global(.holiday-details__icon-v2 img) {
+            width: $hotelCardOptionsIconSize;
+            height: $hotelCardOptionsIconSize;
+        }
+
+        :global(.holiday-details__item) {
+            width: 100%;
+        }
+
+        :global(.hotel-card-head-location) {
+            margin-top: 2px;
+        }
+    }
+
+    :global(.holiday-details__text-v2) {
+        line-height: 1.3;
+
+        @include media-breakpoint-down(md) {
+            font-size: 14px;
+        }
+    }
+
+    :global(.like-badge.promo) {
+        border-radius: 0 6px 0 0;
+    }
+
+    :global(.promotional-message) {
+        width: max-content;
+        padding: 6px;
+
+        @include media-breakpoint-down(xl) {
+            width: 100%;
+            padding-top: 12px;
+            padding-bottom: 10px;
+        }
+
+        :global(.promotional-message__title-txt-block) {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+            font-family: $fontRoundedBook;
+            font-weight: 700;
+        }
+    }
+
+    :global(.promotional-message):not(:first-child) {
+        margin-top: 6px;
+    }
+
+    :global(.hotel-card-head-v2) {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 22px 8px;
+        border-bottom: 1px dotted $colorDustyGrey;
+
+        @include media-breakpoint-down(xl) {
+            padding: 15px $hotelCardEdgeSpacing;
+            border-bottom: none;
+        }
+    }
+}
+
+.headerPills {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    margin-left: 6px;
+
+    @include media-breakpoint-down(xl) {
+        width: auto;
+        max-width: 100%;
+    }
+
+    :global(.promotional-messages__container) {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 6px;
+    }
+
+    :global(.promotional-message) {
+        width: 100%;
+    }
+}
+
+.hotelInfoHeader {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.header {
+    :global(.hotel-card-head-title-box) {
+        width: 62%;
+        padding: 0;
+
+        @include media-breakpoint-down(xl) {
+            width: 100%;
+        }
+    }
+
+    :global(.hotel-card-head-bookmark) {
+        @include media-breakpoint-down(xl) {
+            position: static;
+        }
+    }
+
+    :global(.star_rating) {
+        margin-right: 8px;
+
+        @include media-breakpoint-up(md) {
+            margin-right: 12px;
+            padding-right: 12px;
+        }
+    }
+
+    :global(.hotel-reviews) {
+        padding-left: 0;
+
+        &::after {
+            border: none;
+        }
+    }
+
+    .headerActions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        width: 37%;
+    }
+}
+
+.compareLabel {
+    @include media-breakpoint-up(xl) {
+        margin-bottom: 8px;
+    }
+
+    @include media-breakpoint-down(xl) {
+        align-items: center;
+        align-self: flex-start;
+        margin-top: 4px;
+    }
+
+    &:global(.checkbox) {
+        gap: 8px;
+    }
+
+    :global {
+        @include media-breakpoint-down(xl) {
+            .checkbox__control {
+                align-self: center;
+            }
+        }
+    }
+}
+
+.dividerRating {
+    @include media-breakpoint-up(md) {
+        border-right: 1px solid $colorAlto;
+    }
+}
+
+.hotelRatings {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 5px 0;
+
+    @include media-breakpoint-down(md) {
+        flex-wrap: wrap;
+        column-gap: 10px;
+    }
+}
+
+:global(.hotel-card-v2) {
+    :global(.hotel-price__main) {
+        .priceWithEnabledDiscountWrapper.priority {
+            color: $clrTextMain;
+
+            @include media-breakpoint-up(lg) {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+        }
+    }
+}

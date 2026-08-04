@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)SitecoreProject.props" />
+  <PropertyGroup>
+    <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratedAssemblyInfoFile>Properties\Assemblyinfo.cs</GeneratedAssemblyInfoFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="sitecore modules\**\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <SonarQubeSetting Include="sonar.coverage.exclusions">
+      <Value>
+**/Constants.cs, 
+**/Controllers/ChangeTrackingController.cs, 
+**/Hooks/ChangeTrackerHook.cs, 
+**/Logging/ChangeTrackingLogger.cs, 
+**/Models/ChangeSetViewModel.cs, 
+**/Models/ChangeViewModel.cs, 
+**/Models/FieldChangeViewModel.cs, 
+**/Models/ItemChangeSetViewModel.cs, 
+**/Models/ItemChangeViewModel.cs, 
+**/Powershell/Helper.cs, 
+**/Services/ChangeTrackingSettingsService.cs, 
+**/Services/ChangeTrackingStoreService.cs, 
+**/Services/DatabaseContextService.cs, 
+**/sitecore modules/easyJet/ChangeTracking/ct-ee.js, 
+**/sitecore modules/easyJet/ChangeTracking/history.js, 
+**/sitecore modules/easyJet/ChangeTracking/jsdiff.js, 
+**/sitecore modules/easyJet/ChangeTracking/moment.js
+</Value>
+    </SonarQubeSetting>
+  </ItemGroup>
+</Project>

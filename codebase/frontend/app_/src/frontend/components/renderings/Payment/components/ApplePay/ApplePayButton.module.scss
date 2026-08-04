@@ -1,0 +1,29 @@
+.applePayButtonContainer {
+    apple-pay-button {
+        --apple-pay-button-width: 21.563rem;
+        --apple-pay-button-height: 3.75rem;
+        --apple-pay-button-border-radius: 4px;
+        --apple-pay-button-padding: 0.625rem 2rem;
+        --apple-pay-button-box-sizing: border-box;
+}
+
+    @include media-breakpoint-down(md) {
+        apple-pay-button {
+            --apple-pay-button-width: 100%;
+            --apple-pay-button-max-width: 45.938rem;
+            --apple-pay-button-min-width: 10rem;
+            --apple-pay-button-padding: 0.313rem 1rem;
+            --apple-pay-button-height: 3rem;
+        }
+    }
+}
+
+.applePayButtonDisabled {
+    opacity: 0.4;
+    transition: opacity 0.4s;
+}
+
+.applePayButtonEnabled {
+    opacity: 1;
+    transition: opacity 0.4s;
+}

@@ -1,0 +1,89 @@
+﻿---
+ID: "2bd6b576-7a21-49fb-8d23-e9e97f56de3b"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-600 OTUC - Destination rules refund option"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Explanation Popup Folder/Destination rules"
+    $templateItemPath = "/sitecore/templates/Feature/Booking/Cancel Booking/Explanation Popup"
+    
+    $updates = @(
+            @{
+                Path         = $datasourcePath
+                TemplatePath = $templateItemPath
+                Fields      = @{
+                    "IsLinkVisible" = @{
+                        "en" = "1"
+                        "fr-CH" = "1"
+                        "de-CH" = "1"
+                        "fr-FR" = "1"
+                        "de-DE" = "1"
+                    }
+                    "LinkText" = @{
+                        "en" = "Why am I being refunded in credit?"
+                        "fr-CH" = "Pourquoi suis-je remboursé de cette manière?"
+                        "de-CH" = "Warum wird mir der Betrag auf diese Weise erstattet?"
+                        "fr-FR" = "Pourquoi suis-je remboursé de cette manière?"
+                        "de-DE" = "Warum wird mir der Betrag auf diese Weise erstattet?"
+                    }
+                    "TitlePopup" = @{
+                        "en" = "Why am I being refunded in credit?"
+                        "fr-CH" = "Pourquoi suis-je remboursé de cette manière?"
+                        "de-CH" = "Warum wird mir der Betrag auf diese Weise erstattet?"
+                        "fr-FR" = "Pourquoi suis-je remboursé de cette manière?"
+                        "de-DE" = "Warum wird mir der Betrag auf diese Weise erstattet?"
+                    }
+                    "TextPopup" = @{
+                        "en" = "<p>Due to the uncertainty around your holiday plans, we're offering a refund in easyJet holidays credit, so that you can book another holiday that’s right for you.</p><p>For more information about deposits, refunds, cancellation charges and credit terms please see our <a href='~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z' target='_blank'>booking conditions</a></p>"
+                        "fr-CH" = "<p>En raison des incertitudes concernant vos projets de vacances, nous vous offrons un remboursement sous forme de crédit easyJet holidays, vous permettant ainsi de réserver un autre séjour qui vous convient.</p> <p>Pour en savoir plus sur les acomptes, les remboursements, les frais d’annulation et les conditions liées au crédit, veuillez consulter nos <a href='~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z' target='_blank'>conditions de réservation</a>.</p>"
+                        "de-CH" = "<p>Wegen der Unsicherheiten rund um Ihre Ferienpläne bieten wir eine Rückerstattung in Form eines easyJet holidays-Guthabens an, damit Sie eine andere passende Reise buchen können.</p> <p>Mehr Informationen zu Anzahlungen, Rückerstattungen, Annullationsgebühren und den Guthabenbedingungen finden Sie in unseren <a href='~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z' target='_blank'>Buchungsbedingungen</a>.</p>"
+                        "fr-FR" = "<p>En raison de l’incertitude entourant vos projets de vacances, nous vous proposons un remboursement sous forme de crédit easyJet holidays, afin que vous puissiez réserver un autre séjour qui vous convient.</p> <p>Pour plus d’informations sur les acomptes, les remboursements, les frais d’annulation et les conditions du crédit, veuillez consulter nos <a href='~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z' target='_blank'>conditions de réservation</a>.</p>"
+                        "de-DE" = "<p>Aufgrund der Unsicherheit bezüglich Ihrer Urlaubspläne bieten wir eine Rückerstattung in Form eines easyJet holidays-Guthabens an, damit Sie einen anderen passenden Urlaub buchen können.</p> <p>Weitere Informationen zu Anzahlungen, Rückerstattungen, Stornogebühren und den Bedingungen des Guthabens finden Sie in unseren <a href='~/link.aspx?_id=025A25A5147A4240AC4406DA980D41FD&amp;_z=z' target='_blank'>Buchungsbedingungen</a>.</p>"
+                    }
+                    "PopupUniqueId" = @{
+                        "en" = "DestinationRulesApplied"
+                        "fr-CH" = "DestinationRulesApplied"
+                        "de-CH" = "DestinationRulesApplied"
+                        "fr-FR" = "DestinationRulesApplied"
+                        "de-DE" = "DestinationRulesApplied"
+                    }
+                }
+            }
+        )
+    ImportContent -itemsToCreate $updates
+    
+    $itemPopup =  Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Explanation Popup Folder/Destination rules"
+    $creditItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking/Credit Refund OTUC"
+    $fieldValue = $creditItem['Popups'] + "|" + $itemPopup.ID
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking/Credit Refund OTUC"
+                TemplatePath = "/sitecore/templates/Feature/Booking/Cancel Booking/Refund Option"
+                Fields      = @{
+                    "Popups" = @{
+                        "en" = $fieldValue
+                    }
+                }
+            }
+        )
+    ImportContent -itemsToCreate $updates
+     
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250317T141742Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

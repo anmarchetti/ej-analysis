@@ -1,0 +1,120 @@
+.wrapper {
+    background: $clrSiteBgWhite;
+    border-radius: 0 0 4px 4px;
+
+    @include media-breakpoint-down(md) {
+        padding: 16px 0 0;
+        line-height: 1.8;
+    }
+}
+
+.wrapperPostBooking {
+    @include media-breakpoint-down(md) {
+        padding: 8px 0;
+        padding-bottom: 0;
+        line-height: 1.8;
+    }
+
+    .container {
+        &::before {
+            @include media-breakpoint-down(md) {
+                display: none;
+            }
+        }
+    }
+
+    .text {
+        @include media-breakpoint-down(lg) {
+            padding: 16px 0;
+        }
+    }
+}
+
+.container {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+
+    &::before {
+        content: '';
+        position: absolute;
+        right: 0;
+        left: 0;
+        display: block;
+        border-top: 1px solid $borderColorGray;
+
+        @include media-breakpoint-down(md) {
+            right: -10px;
+            left: -10px;
+        }
+    }
+}
+
+.passengerType {
+    align-items: flex-start;
+    height: auto;
+    padding: 24px 0;
+    font-size: 14px;
+
+    @include media-breakpoint-down(lg) {
+        align-items: center;
+        padding: 9px 0;
+        border-top: none;
+    }
+}
+
+.header {
+    display: grid;
+    grid-template-columns: 3fr 5fr 5fr;
+
+    @include media-breakpoint-down(lg) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.headerAlt {
+    grid-template-columns: 1fr 2.5fr;
+
+    @include media-breakpoint-down(lg) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.readMoreButton {
+    display: block;
+    padding-top: 16px;
+    padding-bottom: 16px;
+
+    @include media-breakpoint-down(lg) {
+        min-height: initial;
+    }
+}
+
+.routesTitle {
+    display: flex;
+    padding-left: 48px;
+
+    @include media-breakpoint-down(lg) {
+        padding: 0;
+    }
+}
+
+.text {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 16px 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: $colorBlack;
+
+    @include media-breakpoint-down(lg) {
+        padding-top: 11px;
+        line-height: 1.3;
+    }
+}
+
+.icon {
+    margin-right: 4px;
+}

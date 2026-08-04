@@ -1,0 +1,89 @@
+﻿---
+ID: "e0179b99-52aa-41f2-9259-e5dc1c67f06f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/MAN-544 Add Change Fee Info"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$template) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $template
+    	}
+    	return $item
+    }
+    
+    function Add-Or-Update-Page-Rendering ($page,$renderingPath,$renderingPlaceholder,$dataSourcePath,$parameters = @{}) {
+    	$renderingItem = Get-Item -Database "master" -Path $renderingPath;
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath;
+    
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -DataSource $dataSourcePath
+    		Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder -DataSource $dataSourcePath | Set-RenderingParameter -Parameter $parameters | Set-Rendering -Item $page;
+    		Write-Host $renderingItem "Rendering instance added";
+    	}
+    	else {
+    		Write-Host $pageRenderingInstance "Already exists";
+    	}
+    }
+    
+    $changeFeesInfoDataItem = Get-Or-Create-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Change Fee Info" -Template "{53EABC83-8DBE-4F35-975D-F09C2E8B15D7}"
+    Add-ItemLanguage -Item $changeFeesInfoDataItem -TargetLanguage "fr-CH" -IfExist Skip -DoNotCopyFields
+    Add-ItemLanguage -Item $changeFeesInfoDataItem -TargetLanguage "fr-FR" -IfExist Skip -DoNotCopyFields
+    Add-ItemLanguage -Item $changeFeesInfoDataItem -TargetLanguage "de-DE" -IfExist Skip -DoNotCopyFields
+    Add-ItemLanguage -Item $changeFeesInfoDataItem -TargetLanguage "de-CH" -IfExist Skip -DoNotCopyFields
+    
+    $changeFeesItemPath = "/sitecore/content/EasyJet/Holidays/Data/Change Fee Info"
+    $renderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Change Fee Info";
+    
+    function Add-Change-Fee-Info-Rendering ($pagePath,$pageRenderingPath) {
+    	$page = Get-Or-Create-Item -Path $pagePath
+    	$renderingItem = Get-Item -Path $pageRenderingPath
+    	$renderedPage = Get-Rendering -Item $page -Render $renderingItem
+    	$renderingPlaceholder = "/body/change-fee-info-" + $renderedPage.UniqueId + "-0"
+    
+    	Add-Or-Update-Page-Rendering -page $page -renderingPath $renderingPath -renderingPlaceholder $renderingPlaceholder -dataSourcePath $changeFeesItemPath
+    	Write-Host "Change Fee Info rendering added to page"
+    }
+    
+    
+    Add-Change-Fee-Info-Rendering -pagePath "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Room And Board" -pageRenderingPath "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Room And Board/Amend Room And Board Page"
+    Add-Change-Fee-Info-Rendering -pagePath "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Dates/Summary" -pageRenderingPath "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Dates/Amend Dates Summary"
+    # Add-Change-Fee-Info-Rendering -pagePath "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Flight" -pageRenderingPath "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Flights"
+    
+    
+    # Change flight page has to be different :(
+    $changeFlightPagePath = "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Flight"
+    $changeFlightPage = Get-Or-Create-Item -Path $changeFlightPagePath
+    $changeFlightRendering = Get-Item -Path "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Flights";
+    $componentWrapperRendering = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper"
+    $renderedChangeFlight = Get-Rendering -Item $changeFlightPage -Render $changeFlightRendering;
+    $renderedComponentWrapper = Get-Rendering -Item $changeFlightPage -Render $componentWrapperRendering;
+    $changeFlightRenderingPlaceholder = "/body/component-wrapper-inner-" + $renderedComponentWrapper.UniqueId + "-0/change-fee-info-" + $renderedChangeFlight.UniqueId + "-0";
+    
+    Add-Or-Update-Page-Rendering -page $changeFlightPage -renderingPath $renderingPath -renderingPlaceholder $changeFlightRenderingPlaceholder -dataSourcePath $changeFeesItemPath
+    Write-Host "Change Fee Info rendering added to change flight page" 
+Languages:
+- Language: "de-CH"
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240723T174238Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\admin
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241007T131650Z

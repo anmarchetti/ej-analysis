@@ -1,0 +1,101 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: $clrSiteBgWhite;
+    padding: 16px;
+    border-radius: 4px;
+    box-shadow: 0px 2px 6px 2px rgba($colorBlackLight, 0.15);
+
+    :global {
+        .show-more {
+            padding: 0;
+        }
+
+        .show-more .btn {
+            font-size: 14px;
+            line-height: 1.3;
+        }
+    }
+
+    :global(.show-more .btn svg) {
+        transform: rotate(-90deg);
+    }
+}
+
+.title {
+    margin: 0;
+    font-family: $fontRoundedDemy;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: $clrTextMain;
+    
+    @include media-breakpoint-down(md) {
+        font-size: 18px;
+    }
+}
+
+.hotelName {
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.rating {
+    margin-top: 4px;
+}
+
+.card .gallery {
+    position: relative;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 4px;
+
+    :global {
+        .img-carousel-container,
+        .image-gallery-slide {
+            min-height: 165px;
+        }
+
+        .image-gallery-index,
+        .fullscreen-btn {
+            height: 36px;
+            opacity: 0.6;
+        }
+
+        .image-gallery-index {
+            background: $colorBlackMedium;
+            border-radius: 0 4px;
+        }
+
+        .fullscreen-btn {
+            width: 36px;
+            border-radius: 4px 0;
+        }
+
+        .image-gallery-index span {
+            font-size: 12px;
+            line-height: 1.2;
+            color: $colorWhite;
+        }
+
+        .slider-nav {
+            width: 26px;
+            height: 26px;
+            box-shadow: 0 0 4px 0 $clrBorderGray;
+
+            svg {
+                width: 8px;
+                height: 8px;
+            }
+        }
+
+        .slider-nav--next svg,
+        .slider-nav--prev svg {
+            margin: unset;
+        }
+    }
+}

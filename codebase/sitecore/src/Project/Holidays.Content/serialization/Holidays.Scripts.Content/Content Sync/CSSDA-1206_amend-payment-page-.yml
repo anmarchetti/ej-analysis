@@ -1,0 +1,163 @@
+﻿---
+ID: "4f8a02ea-8baa-4db5-93ff-10cf61f1a743"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-1206_amend-payment-page-restyle-promocode"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    ## UPDATE FILEDS WITH LANGS
+    function update-item-with-lang($data, $item) {
+        function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value;
+                $targetLangItem.Editing.EndEdit() | Out-Null
+            }
+    };
+    
+        if ($item -ne $null) {
+            $data | ForEach-Object {
+            $fieldName = $_.fieldName;
+            $values = $_.values;
+        
+            if ($values -ne $null) {
+              
+                if ($values.en -ne $null) {
+                    $item.Editing.BeginEdit();
+                    $item[$fieldName] = $values.en;
+                    $item.Editing.EndEdit() | Out-Null
+                }
+                 if ($values.fr -ne $null) {
+                     @('fr-CH', 'fr-FR') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.fr;
+                    }
+                }
+                 if ($values.de -ne $null) {
+                     @('de-CH', 'de-DE') | % {
+                        Create-Lang-Version -Item $item -Lang $_ -Field $fieldName -Value $values.de;
+                    }
+                }
+                
+                Write-Host $fieldName "Updated"
+            }
+        }
+        }
+    };
+    ##
+    
+    $maendPaymentItem = Get-Item "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Amend Payment" -ErrorAction SilentlyContinue;
+    
+    $data = @(
+      @{
+          fieldName = "PromoCodeUpdatedHeading";
+          values = @{
+              en = "Promo code updated";
+              fr = "Code promo mis à jour";
+              de = "Promo-Code aktualisiert";
+          }
+      },
+      @{
+         fieldName = "PromoCodeRemovedHeading";
+         values = @{
+             en = "Promo code removed";
+             fr = "Code promo supprimé";
+             de = "Promo-Code entfernt";
+         }
+      },
+      @{
+         fieldName = "PromoCodeChangedTitle";
+         values = @{
+             en = "Your promo code discount has changed";
+             fr = "Votre code promo a changé";
+             de = "Ihr Promo-Code-Rabatt hat sich geändert";
+         }
+      },
+      @{
+         fieldName = "PromoCodeDowngradeHeading";
+         values = @{
+             en = "Promo code updated";
+             fr = "Code promo mis à jour";
+             de = "Promo-Code aktualisiert";
+         }
+      },
+      @{
+         fieldName = "PromoCodeDowngradedSubtext";
+         values = @{
+             en = "Your original promo code has been downgraded to {promoCode}. This decrease in discount has been included in the total package price change.";
+             fr = "Votre code promo d'origine a été ramené à {promoCode}. Cette diminution de la réduction a été incluse dans le changement du prix total du paquet.";
+             de = "Ihr ursprünglicher Promo-Code wurde auf {promoCode} herabgestuft. Diese Verringerung des Rabatts ist in der Änderung des Gesamtpaketpreises enthalten.";
+         }
+      },
+      @{
+         fieldName = "PromoCodeUpdatedSubtext";
+         values = @{
+             en = "Your original promo code has been upgraded to {promoCode}. This increase in discount has been included in the total package price change.";
+             fr = "Votre code promo initial a été remplacé par {promoCode}. Cette augmentation de la réduction a été incluse dans le changement du prix total du paquet.";
+             de = "Ihr ursprünglicher Promo-Code wurde auf {promoCode} erhöht. Diese Erhöhung des Rabatts ist in der Änderung des Gesamtpaketpreises enthalten.";
+         }
+      },
+      @{
+         fieldName = "PromoCodeRemovedTitle";
+         values = @{
+             en = "Your promo code is no longer valid";
+             fr = "Votre code promo n'est plus valable";
+             de = "Ihr Promo-Code ist nicht mehr gültig";
+         }
+      },
+      @{
+         fieldName = "PromoCodeErrorTitle";
+         values = @{
+             en = "Promo code will be removed";
+             fr = "Le code promo sera supprimé";
+             de = "Promo-Code wird entfernt";
+         }
+      },
+      @{
+         fieldName = "PromoCodeErrorSubtext";
+         values = @{
+             en = '<span>Your original promo code can' + "'t" + ' be found and will be removed <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z?helpCategory=changes" target="_blank">What does this mean</a></span>';
+             fr = '<span>Votre code promo original est introuvable et sera supprimé <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z?helpCategory=changes" target="_blank">Qu' + "'est-ce que cela signifie</a></span>";
+             de = '<span>Ihr ursprünglicher Promo-Code kann nicht gefunden werden und wird entfernt <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z?helpCategory=changes" target="_blank">Was bedeutet das</a></span>';
+         }
+      },
+      @{
+         fieldName = "PromoCodeRemovedDefaultError";
+         values = @{
+             en = "This promocode is no longer valid and has been removed.";
+             fr = "Ce code promotionnel n'est plus valide et a été supprimé.";
+             de = "Dieser Promocode ist nicht mehr gültig und wurde entfernt.";
+         }
+      },
+      @{
+         fieldName = "PromoCodeIcon";
+         values = @{
+             en = '<image mediaid="{D69BC0AA-5047-4BCA-86AB-3A35BDCE1884}" />';
+         }
+      }
+    );
+    
+    update-item-with-lang -Data $data -Item $maendPaymentItem;
+    
+    
+    
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240321T101611Z

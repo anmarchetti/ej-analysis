@@ -1,0 +1,1710 @@
+﻿{
+    "Title": "Activities from musement service for France (api/v3/activities?country_in=FR)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/v3/activities",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Headers": [
+            {
+                "Name": "X-Musement-Version",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "3.4.0"
+                    }
+                ]
+            },
+            {
+                "Name": "X-Musement-Currency",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "GBP"
+                    }
+                ]
+            }
+        ],
+        "Params": [
+            {
+                "Name": "country_in",
+                "Matchers": [
+                    {
+                        "Name": "ExactMatcher",
+                        "Pattern": "FR"
+                    }
+                ]
+            },
+            {
+                "Name": "offset",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "0"
+                    }
+                ]
+            },
+            {
+                "Name": "limit",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "10"
+                    }
+                ]
+            },
+            {
+                "Name": "sort_by",
+                "Matchers": [
+                    {
+                        "Name": "ExactMatcher",
+                        "Pattern": "-relevance-city"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "meta": {
+                "count": 633,
+                "match_type": "countries",
+                "match_names": [
+                    "France"
+                ],
+                "match_ids": [
+                    "FR"
+                ]
+            },
+            "data": [
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "PT10H",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "002eadf0-75f3-424b-a540-5a19e71d805b",
+                    "city": {
+                        "id": 208,
+                        "name": "Aix en Provence",
+                        "country": {
+                            "id": 60,
+                            "name": "France",
+                            "iso_code": "FR"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0002/48/fotolia-197733614-subscription-xxl-jpg_header-147558.jpeg",
+                        "url": "https://musement.com/us/aix-en-provence/",
+                        "time_zone": "Europe/Paris"
+                    },
+                    "saves": 0,
+                    "title": "Morning tour of Cassis from Aix en Provence",
+                    "relevance": 500,
+                    "emergency_phone_number": "+33 4 90 14 70 00",
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Book this morning tour of Cassis from Aix en Provence with Musement. Admire a breathtaking view from Cap Canaille and stroll in the charming fishermen port of Cassis.",
+                    "about": "During this morning tour of Cassis from Aix en Provence, you will drive from Aix to the Cap Canaille, the highest maritime cliff in France and enjoy the panoramic view on the bay. Then you will reach a little paradise named Cassis, a small village on the sea.You will have free time to go around the streets and the fishermen’s port. If you feel adventurous you can choose to embark on a cruise boat (cruise ticket not included) to discover the Calanques! The Calanques are limestone cliffs that dive down into the clear blue waters of the Mediterranean Sea and creating natural coves.",
+                    "meeting_point": "In front of Apple Store, 2 place du Général de Gaulle, 13100 Aix-en-Provence",
+                    "operational_days": "Monday, Thursday and Saturday",
+                    "duration": "PT4H",
+                    "duration_range": {
+                        "max": "PT4H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "fr",
+                            "name": "French"
+                        },
+                        {
+                            "code": "es",
+                            "name": "Spanish"
+                        }
+                    ],
+                    "group_size": [
+                        {
+                            "code": "small",
+                            "name": "Small group"
+                        }
+                    ],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "pick-up",
+                            "name": "Hotel pick up"
+                        },
+                        {
+                            "code": "transport",
+                            "name": "Transport included"
+                        }
+                    ],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "highlights": [
+                        "A breathtaking view from Cap Canaille, the highest maritime cliff in Europe",
+                        "Stroll in the charming fishermen port of Cassis",
+                        "Discover the unique coastline of Cassis; the Calanques on a cruise boat (ticket not included)"
+                    ],
+                    "included": [
+                        "Transportation in 8-seater A/C minibus",
+                        "English-speaking professional driver/guide",
+                        "Pick-up from Apple Store in Aix en Provence"
+                    ],
+                    "not_included": [
+                        "Ticket for cruise boat in the Calanques",
+                        "Food and drinks, unless specified",
+                        "Personal expenses",
+                        "Gratuities (optional)"
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0002/63/thumb_162267_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 57.0,
+                        "formatted_value": "£ 57.00",
+                        "formatted_iso_value": "£57.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 57.0,
+                        "formatted_value": "£ 57.00",
+                        "formatted_iso_value": "£57.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 57.0,
+                        "formatted_value": "£ 57.00",
+                        "formatted_iso_value": "£57.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 57.0,
+                        "formatted_value": "£ 57.00",
+                        "formatted_iso_value": "£57.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 43.525718,
+                    "longitude": 5.445631,
+                    "url": "https://musement.com/us/aix-en-provence/tour-of-cassis-47081/",
+                    "flavours": [
+                        {
+                            "id": 111,
+                            "name": "Guided Tour",
+                            "active": true,
+                            "slug": "guided-tour"
+                        }
+                    ],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c18f2920-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/11/logotylene-jpg_header-10993.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "has_passenger_info": false,
+                    "has_extra_customer_data": false,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": true
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P0D",
+                    "booking_type": "NO-CALENDAR-FIXED-END",
+                    "uuid": "00bf1eb2-7293-4d39-9eb4-846c8a2eaed7",
+                    "city": {
+                        "id": 40,
+                        "name": "Paris",
+                        "country": {
+                            "id": 60,
+                            "name": "France",
+                            "iso_code": "FR"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0002/49/aerial-wide-angle-cityscape-view-of-paris-xxl-jpg_header-148745.jpeg",
+                        "url": "https://musement.com/us/paris/",
+                        "time_zone": "Europe/Paris"
+                    },
+                    "saves": 0,
+                    "title": "Marie- Antoinette Pass",
+                    "relevance": 100,
+                    "relevance_venue": 100,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": true,
+                    "description": "Book your Marie-Antoinette pass to visit the Conciergerie, the Expiatory Chapel, the Basilica of Saint-Denis and the Château de Rambouillet.",
+                    "about": "Discover the history of Queen Marie-Antoinette with this pass including entrances to the Conciergerie, the Expiatory Chapel, the Basilica of Saint-Denis and the Château de Rambouillet.\nVisit 4 monuments in Paris and the Paris region that set the backdrop for the exceptional destiny of Marie-Antoinette, one of France’s most famous queens. The Marie-Antoinette Pass gives you access to:\n- The Domaine de Rambouillet and its Queen’s Dairy, a gift from Louis XVI to Marie-Antoinette, where she sampled dairy produce and other delights.\n- The Conciergerie, a courthouse during the Revolution where Marie-Antoinette was incarcerated and where she was tried.\n- The Chapelle Expiatoire, built on the site where Louis XVI and Marie-Antoinette were buried after being sent to the guillotine.\n- The Basilica of Saint-Denis, the necropolis of the Kings of France, the final resting place of Marie-Antoinette.\n\nThe pass includes access to the exhibition “Marie-Antoinette: Metamorphoses of an Image” at the Conciergerie (from 16 October 2019 to 26 January 2020), and 5% off books and 10% off other products in gift shops!",
+                    "meeting_point": "Present your ticket at the entrance of the venues. Conciergerie: Open every from 9.30am - 6.00pm | Chapelle Expiatoire: Open Tuesdays, Thursdays, Fridays and Saturdays | Basilica of Saint Denis: Open Monday to Saturday from 10.00am to 5.15pm | Château de Rambouillet. Open from Wednesday to Monday from 10.00am to 5.00pm",
+                    "operational_days": "E very day",
+                    "duration": "P0D",
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": true,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [],
+                    "group_size": [],
+                    "food": [],
+                    "services": [],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        },
+                        {
+                            "code": "skip",
+                            "name": "SKIP THE LINE"
+                        }
+                    ],
+                    "highlights": [
+                        "Includes all entrance tickets so that you can book everything together",
+                        "A good bargain - see more for less",
+                        "Explore at your leisure and spend more time at your favorite parts"
+                    ],
+                    "included": [
+                        "Entrance ticket to the Conciergerie",
+                        "Entrance ticket to the Expiatory Chapel",
+                        "Entrance ticket to the Basilica of Saint-Denis",
+                        "Entrance ticket to the Château de Rambouillet",
+                        "5% off books and 10% off other products in giftshops",
+                        "Exhibition 'Marie-Antoinette: Metamorphoses of an Image' at the Conciergerie"
+                    ],
+                    "not_included": [
+                        "Transportation"
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0043/34/thumb_4233537_cover_header.png?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 23.0,
+                        "formatted_value": "£ 23.00",
+                        "formatted_iso_value": "£23.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 23.0,
+                        "formatted_value": "£ 23.00",
+                        "formatted_iso_value": "£23.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 23.0,
+                        "formatted_value": "£ 23.00",
+                        "formatted_iso_value": "£23.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 23.0,
+                        "formatted_value": "£ 23.00",
+                        "formatted_iso_value": "£23.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "url": "https://musement.com/us/paris/marie-antoinette-pass-171142/",
+                    "flavours": [
+                        {
+                            "id": 2,
+                            "name": "Entrance Tickets",
+                            "active": true,
+                            "slug": "entrance-tickets"
+                        }
+                    ],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c19bfd8d-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/45/thumb_44969_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "has_passenger_info": false,
+                    "has_extra_customer_data": false,
+                    "buy_multiplier": 1,
+                    "ticket": true,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "PT10H",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "01464b80-e35e-46b2-967a-3a0cd9c3e01f",
+                    "city": {
+                        "id": 208,
+                        "name": "Aix en Provence",
+                        "country": {
+                            "id": 60,
+                            "name": "France",
+                            "iso_code": "FR"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0002/48/fotolia-197733614-subscription-xxl-jpg_header-147558.jpeg",
+                        "url": "https://musement.com/us/aix-en-provence/",
+                        "time_zone": "Europe/Paris"
+                    },
+                    "saves": 0,
+                    "title": "Provence discovery day tour from Aix en Provence",
+                    "relevance": 1,
+                    "emergency_phone_number": "+33 4 90 14 70 00",
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Discover the French Provence in one day from Aix en Provence with Musement. Enjoy a full tour in the south of France and admire Pont du Gard, Les Baux de Provence, Châteauneuf-du-Pape, ...",
+                    "about": "Get a taste of traditional Provence life at a slower pace during this day tour from Aix en Provence.You will first reach the exceptional village of Les Baux de Provence. From the Middle Ages, the village has kept the narrow streets, the Renaissance-styled private mansions, the imposing ruins of a castle and the memory of the proud lords and troubadours. From the rocky spur, it's a breathtaking view on an exceptional scenery. Possibility to watch the sound and light show 'Van Gogh, the Starry Night' at Les Carrières de Lumières (entrance not included).Discover the Pont du Gard, a fascinating Unesco World Heritage site since 1985. The Roman architects and hydraulic engineers who designed this bridge, which stands almost 50 m high and is on three levels – the longest measuring 275 m – created a technical as well as an artistic masterpiece.To follow the path of the history, you will arrive in Avignon, the city of the Popes in the 14th century. Do not miss the breathtaking view on the Rhone River from the Saint-Bénezet Bridge famously called Pont d'Avignon and choose to visit the Popes' Palace, which remains the biggest Gothic palace in all Europe. (entrance fee not included)To last stop of the tour is Châteauneuf-du-Pape, a small typical village surrounded by vast vineyards. You will have the chance to taste whites and reds wines of the Côtes du Rhône label in a small winery.",
+                    "meeting_point": "In front of Apple Store, 2 place du Général de Gaulle, 13100 Aix-en-Provence",
+                    "operational_days": "See Calendar",
+                    "duration": "PT9H30M",
+                    "duration_range": {
+                        "max": "PT9H30M"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "fr",
+                            "name": "French"
+                        },
+                        {
+                            "code": "es",
+                            "name": "Spanish"
+                        }
+                    ],
+                    "group_size": [
+                        {
+                            "code": "small",
+                            "name": "Small group"
+                        }
+                    ],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "pick-up",
+                            "name": "Hotel pick up"
+                        },
+                        {
+                            "code": "transport",
+                            "name": "Transport included"
+                        }
+                    ],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "highlights": [
+                        "Admire the extraordinary architecture of the Roman aqueduct Pont du Gard",
+                        "Discover Les Baux de Provence, a renaissance style village",
+                        "Take part to a wine tasting in the renowned village of Chateauneuf-du-Pape",
+                        "Choose to visit the Popes's Palace, the biggest 14th gothic palace in Europe (optional)"
+                    ],
+                    "included": [
+                        "Transportation in 8-seater A/C minibus",
+                        "English-speaking professional driver/guide",
+                        "Entrance fee to Pont du Gard",
+                        "Wine tasting in Châteauneuf-du-Pape"
+                    ],
+                    "not_included": [
+                        "Entrance tickets to the Popes' Palace in Avignon",
+                        "Lunch",
+                        "Personal expenses",
+                        "Gratuities (optional)"
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0002/47/thumb_146846_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 96.0,
+                        "formatted_value": "£ 96.00",
+                        "formatted_iso_value": "£96.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 96.0,
+                        "formatted_value": "£ 96.00",
+                        "formatted_iso_value": "£96.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 96.0,
+                        "formatted_value": "£ 96.00",
+                        "formatted_iso_value": "£96.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 96.0,
+                        "formatted_value": "£ 96.00",
+                        "formatted_iso_value": "£96.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 43.525718,
+                    "longitude": 5.445631,
+                    "url": "https://musement.com/us/aix-en-provence/provence-discovery-day-tour-from-aix-en-provence-53907/",
+                    "flavours": [
+                        {
+                            "id": 111,
+                            "name": "Guided Tour",
+                            "active": true,
+                            "slug": "guided-tour"
+                        }
+                    ],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        },
+                        {
+                            "id": 3,
+                            "name": "Food & wine",
+                            "active": true,
+                            "code": "food-wine",
+                            "slug": "food-wine",
+                            "url": "https://musement.com/us/food-wine-t/",
+                            "meta_title": "Delight in local Food and Wine wherever you go",
+                            "meta_description": "Let Musement treat you to the wonders of the gastronomic world. Taste wine in France, eat tapas in Spain or make pasta in Italy...the choice is yours!",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/30/food-wine-01-jpg_header-29025.jpeg?w=540",
+                            "relevance": 70
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c18f2920-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/11/logotylene-jpg_header-10993.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "has_passenger_info": false,
+                    "has_extra_customer_data": false,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": true
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "PT1H",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "01d8f2dd-eebb-4ee2-892c-8336eb817e4f",
+                    "city": {
+                        "id": 547,
+                        "name": "Bayeux",
+                        "country": {
+                            "id": 60,
+                            "name": "France",
+                            "iso_code": "FR"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/56/normandy-bayeux-cathedral-jpg_header-55182.jpeg",
+                        "url": "https://musement.com/us/bayeux-1/",
+                        "time_zone": "Europe/Paris"
+                    },
+                    "saves": 0,
+                    "title": "Half-day Tour of the British  D-Day sites in Normandy",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Book now your Half-day Tour of the British D-Day sites in Normandy and discover all the most significant battlefield sites of WWII",
+                    "about": "During this half-day shared tour in Normandy, you will follow the footsteps of the British troops that landed on D-Day.You will discover one of the two important bridges for the D-day stories, Pegasus Bridge, now displayed in the Pegasus Museum. During the early hours of June 6, 1944, the airborne forces of the British Army launched Operation Deadstick in an attempt to capture two bridge roads without any damages made to them. The reason for that was that these road were the only way out for the British troops from Sword Beach. You will be driven to Sword Beach where the British troops also landed on the morning of June 6, 1944. It is the most easterly located beach of the D-Day landings.Then, this D-Day Normandy tour will take you to the Hillman bunker, one of the German strong points on the Atlantic Wall. 18 casemates, as well as underground fortifications, can still be seen, along with a memorial dedicated to the 1st Battalion, Suffolk Regiment, which liberated the place.You will finish up this Normandy battlefield tour with a visit of the Commonwealth Military Cemeteries. The largest one is located in Bayeux, where some German soldiers are also buried. The grounds of the cemetery have been gifted by France to the United Kingdom as a gesture for the sacrifice of British troops during the D-Day operations that led to the liberation of the country. A memorial to the unknown soldiers who died in Normandy is located just opposite the cemetery.",
+                    "meeting_point": "- You will meet your guide on the Place du Québec in Bayeux",
+                    "operational_days": "Everyday",
+                    "duration": "PT4H",
+                    "duration_range": {
+                        "max": "PT4H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        }
+                    ],
+                    "group_size": [
+                        {
+                            "code": "small",
+                            "name": "Small group"
+                        }
+                    ],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "transport",
+                            "name": "Transport included"
+                        }
+                    ],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "highlights": [
+                        "On the footsteps of the British troops that landed on D-Day.",
+                        "Reach Pegasus Bridge & Sword Beach where the D-Day landings began",
+                        "Explore the Hillman Fortress, a German Strong-point on the Atlantic Wall",
+                        "Visit the Commonwealth Military Cemeteries"
+                    ],
+                    "included": [
+                        "Entrance for sites as mentioned in the itinerary",
+                        "English speaking qualified guide/driver",
+                        "Travel in recent, fully equipped Mercedes minivans",
+                        "Small group option – maximum 8 passengers per group",
+                        "Free Wifi access on board",
+                        "Bottles of water in the vehicles"
+                    ],
+                    "not_included": [
+                        "Entrance fees or tasting fees unless mentioned",
+                        "Personal insurance & expenses",
+                        "Eventual Gratuities for the driver/guide",
+                        "Hotel pickup"
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0004/59/thumb_358511_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 61.0,
+                        "formatted_value": "£ 61.00",
+                        "formatted_iso_value": "£61.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 61.0,
+                        "formatted_value": "£ 61.00",
+                        "formatted_iso_value": "£61.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 61.0,
+                        "formatted_value": "£ 61.00",
+                        "formatted_iso_value": "£61.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 61.0,
+                        "formatted_value": "£ 61.00",
+                        "formatted_iso_value": "£61.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 49.275758,
+                    "longitude": -0.7007987,
+                    "url": "https://musement.com/us/bayeux-1/half-day-tour-of-the-british-d-day-sites-in-normandy-131010/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c19ab409-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/42/thumb_41287_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "has_passenger_info": false,
+                    "has_extra_customer_data": false,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": true
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P0D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "029e9eb8-0d3d-42c7-a0b0-141f38eecc19",
+                    "city": {
+                        "id": 40,
+                        "name": "Paris",
+                        "country": {
+                            "id": 60,
+                            "name": "France",
+                            "iso_code": "FR"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0002/49/aerial-wide-angle-cityscape-view-of-paris-xxl-jpg_header-148745.jpeg",
+                        "url": "https://musement.com/us/paris/",
+                        "time_zone": "Europe/Paris"
+                    },
+                    "saves": 0,
+                    "title": "Ghost and mysteries tour of Paris",
+                    "relevance": 100,
+                    "relevance_venue": 80,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Exploring Paris' murky past and hidden secrets with an expert, with the city bathed romantically in moonlight, will be a thrilling night out.",
+                    "about": "Exploring Paris’ murky past and hidden secrets with an expert, with the city bathed romantically in moonlight, will be a thrilling night out. Watch as Paris’ enigmatic past comes to life in a series of frightful tales and legends around every corner.Our tour begins on Ile-de-la-Cité, the city’s central island, to begin a unique trek through the darkest hours of French history. You’ll start with the Conciergerie, an infamous medieval prison that sent chills down the spine of all those trapped within its walls. You’ll hear about France’s most infamous assassin and the gruesome details of his public execution. Next door at Place Dauphine and Pont Neuf you’ll enter a world of famine, murder, royal mistresses, and the dark legend of the Knights Templar—one filled with curses, lost treasure…and the Holy Grail.In the courtyards of the Louvre you’ll hear some of the royal palace’s most sordid anecdotes as you take in unparalleled views of its illuminated glass pyramid (which some claim is made up of 666 panes of glass!). Your guide will then fascinate you with some classic Parisian ghost stories and the tale of the most ghastly serial killer you’re never heard of.We’ll take you down the very street where Marie Antoinette was carted toward the blade of the guillotine, describing the details of her final day and the bloody horrors of the French Revolution. From there you’ll visit sites linked to public tortures, death-predicting prophecies, and the insalubrious medieval cemetery that offered its skeletal remains to the ghoulish Catacombs of Paris.You’ll conclude your bone-chilling nighttime journey in front of the gothic wonders of Notre-Dame, with its frightening gargoyles, extraordinary bell towers, and concealed messages from the ancient alchemists. With any luck you’ll unlock a few of its mystical secrets and continue your own quest through the dark side of Paris!This tour offers gorgeously illuminated exteriors of Conciergerie, Place Dauphine, Pont Neuf, the Louvre, Notre Dame, etc. But you’ll also be led off the beaten path to explore quieter corners of the city where some of its darkest secrets lie dormant.",
+                    "meeting_point": "Meet your guide just outside the “Cité” metro station on line 4. There is only one exit when leaving the station. The exact address of the station is “Place Louis-Lépine” on rue de Lutèce.",
+                    "operational_days": "Monday, Tuesday, Wednesday, Thursday",
+                    "duration": "PT2H",
+                    "duration_range": {
+                        "max": "PT2H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "es",
+                            "name": "Spanish"
+                        }
+                    ],
+                    "group_size": [],
+                    "food": [],
+                    "services": [],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "highlights": [
+                        "Pedestrian guided visit of Ile de la Cité",
+                        "Special nighttime journey",
+                        "Explore the mystique and legends of lamp-lit Paris"
+                    ],
+                    "included": [
+                        "A night guided visit of Ile de la Cité"
+                    ],
+                    "not_included": [
+                        "Transportation"
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0012/16/thumb_1115560_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 43.0,
+                        "formatted_value": "£ 43.00",
+                        "formatted_iso_value": "£43.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 43.0,
+                        "formatted_value": "£ 43.00",
+                        "formatted_iso_value": "£43.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 43.0,
+                        "formatted_value": "£ 43.00",
+                        "formatted_iso_value": "£43.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 43.0,
+                        "formatted_value": "£ 43.00",
+                        "formatted_iso_value": "£43.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 48.8552528,
+                    "longitude": 2.3465228,
+                    "url": "https://musement.com/us/paris/ghost-and-mysteries-tour-of-paris-147842/",
+                    "flavours": [
+                        {
+                            "id": 111,
+                            "name": "Guided Tour",
+                            "active": true,
+                            "slug": "guided-tour"
+                        }
+                    ],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c18dc418-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/04/pariscityvision_header-3853.jpeg?w=540"
+                    },
+                    "giftable": false,
+                    "has_passenger_info": false,
+                    "has_extra_customer_data": false,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "PT2H",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "0311c915-5b05-4aa2-b00e-88223577dd4d",
+                    "city": {
+                        "id": 40,
+                        "name": "Paris",
+                        "country": {
+                            "id": 60,
+                            "name": "France",
+                            "iso_code": "FR"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0002/49/aerial-wide-angle-cityscape-view-of-paris-xxl-jpg_header-148745.jpeg",
+                        "url": "https://musement.com/us/paris/",
+                        "time_zone": "Europe/Paris"
+                    },
+                    "saves": 0,
+                    "title": "Food and wine tour of Paris with wine-tasting and lunch",
+                    "relevance": 100,
+                    "relevance_venue": 100,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Book a gourmet food tour through downtown Paris and taste breads, cheeses, charcuterie, pastries and chocolates from all over the nation.",
+                    "about": "Gourmet food, unsurpassed wines, and a tradition of culinary passion are essential to the national character of France. Strolling through the downtown district that once housed the city’s central market, our professional guide will give you a memorable “Tour de France” through the food shops. We’ll enjoy specialty breads, cheeses, charcuterie, pastries and chocolates from all over the nation.You'll meet your group (12 people) in central Paris and start the day as many French do, with a coffee and a croissant. You’ll learn how these flakey buns are made and your guide will stock up on baguettes for your lunch later on.We'll walk through the neighborhood of Les Halles, formerly known as the “the stomach of Paris” as it featured the massive wholesale food market that daily provisioned the city. Nowadays this district is still a must-see for our gourmet visitors, since it features a wide variety of gastronomical specialties and restaurants as well as kitchen supply stores.The busy rue Montorgueil will conduct us to the most delicious boutiques, offering us samples of artisanal cheeses from all around the country in a traditional fromagerie, and tasty and complex chocolates at a noted chocolatier’s. We’ll continue to the city’s oldest patisserie, founded in 1730 by the Queen’s baker (who also invented the baba au rhum). This shop is still famous today, recently winning the Best Chocolate Éclair; we’ll obtain our favorite desserts here for our lunch a bit later. The final food shop included is an épicerie full of atmosphere, which offers delicious typical products from Southwestern France.Other sights and opportunities will be available in addition to our partner food shops. You’ll admire the full range of specialist food purveyors including butchers, fishmongers, and vegetable markets as we amble down this pedestrian street that epitomizes the French respect for all foods. If you are a cook yourself, you may be drawn to the professional quality tools and supplies available in the kitchen boutiques along the way; one such shop is the oldest of its kind in Paris.Our visit culminates in highly rated wine bar, where we will be served a flight of wine by an expert sommelier. Your experience will end with an authentic picnic lunch of a variety of foods and wines, the ideal conclusion to your journey into French gastronomy.",
+                    "meeting_point": "Meet your guide 15 minutes before departure time outside the metro entrance/exit 'Etienne Marcel'(line 4). There is only one exit.",
+                    "operational_days": "Varies according to season",
+                    "duration": "PT3H",
+                    "duration_range": {
+                        "max": "PT3H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        }
+                    ],
+                    "group_size": [
+                        {
+                            "code": "group",
+                            "name": "Group tour"
+                        }
+                    ],
+                    "food": [],
+                    "services": [],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "highlights": [
+                        "Meet local artisans and shop owners",
+                        "Taste samples of traditional delicacies",
+                        "Enjoy wine at a noted wine bar served by a sommelier"
+                    ],
+                    "included": [
+                        "Guided walking tour of rue Montorgueil and Les Halles",
+                        "Stops at local producers including tasting",
+                        "3 glasses of wine at an award winning wine bar",
+                        "Picnic style lunch",
+                        "Expert, English-speaking tour guide"
+                    ],
+                    "not_included": [
+                        "Hotel pick-up/drop-off",
+                        "Gratuities (optional)"
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0002/32/thumb_131437_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 87.0,
+                        "formatted_value": "£ 87.00",
+                        "formatted_iso_value": "£87.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 87.0,
+                        "formatted_value": "£ 87.00",
+                        "formatted_iso_value": "£87.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 87.0,
+                        "formatted_value": "£ 87.00",
+                        "formatted_iso_value": "£87.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 87.0,
+                        "formatted_value": "£ 87.00",
+                        "formatted_iso_value": "£87.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 48.863694,
+                    "longitude": 2.348994,
+                    "url": "https://musement.com/us/paris/food-and-wine-tour-of-paris-with-wine-tasting-and-lunch-51631/",
+                    "flavours": [
+                        {
+                            "id": 111,
+                            "name": "Guided Tour",
+                            "active": true,
+                            "slug": "guided-tour"
+                        }
+                    ],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        },
+                        {
+                            "id": 3,
+                            "name": "Food & wine",
+                            "active": true,
+                            "code": "food-wine",
+                            "slug": "food-wine",
+                            "url": "https://musement.com/us/food-wine-t/",
+                            "meta_title": "Delight in local Food and Wine wherever you go",
+                            "meta_description": "Let Musement treat you to the wonders of the gastronomic world. Taste wine in France, eat tapas in Spain or make pasta in Italy...the choice is yours!",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/30/food-wine-01-jpg_header-29025.jpeg?w=540",
+                            "relevance": 70
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "a100ce89-86fa-4ec2-83d1-6e2573f34f9b",
+                        "logo_url": "https://images-sandbox.musement.com/default/0002/35/thumb_134938_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "has_passenger_info": true,
+                    "has_extra_customer_data": false,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P0D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "0366ef60-f472-41e7-ba5a-791ffd3e7f7c",
+                    "city": {
+                        "id": 40,
+                        "name": "Paris",
+                        "country": {
+                            "id": 60,
+                            "name": "France",
+                            "iso_code": "FR"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0002/49/aerial-wide-angle-cityscape-view-of-paris-xxl-jpg_header-148745.jpeg",
+                        "url": "https://musement.com/us/paris/",
+                        "time_zone": "Europe/Paris"
+                    },
+                    "saves": 0,
+                    "title": "Dinner cruise at 6.00pm",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Book an early bird 3-course dinner cruise on board of a Bateau Mouche and discover the most iconic monuments of Paris at sunset! Departure everyday at 6.00pm.",
+                    "about": "Come enjoy an early bird 3-course dinner cruise on board of a Bateau Mouche.The boarding starts at 5.30pm, the boat leaves the pier at 6.00pm and until 7.15pm you'll explore Paris at sundown while sailing on the Seine river.This à la carte menu includes a starter, main-course, dessert, and drinks (1 bottle of wine for 2 & 1 bottle of water for 2).MENU\nStarters\nDuck foie gras, toasted baguettine\nGreen bean salad, smoked salmon\nPumpkin cream soup, chestnut shavings, croutonsMains\nDuck tournedos, roasted potatoes, pepper sauce\nWalleye steak, purple cabbage puree and tomato sauce\nLentil casserole, fresh vegetables sauteed in soy milkDesserts\nDuo of seasonal cheese\nCaramel crisp\nBlack Forest cake\nExotic sorbet trilogyCoffee or tea\nWine (1 bottle for 2 people)\nPetit Chablis, La Chablisienne\nChâteau Tarin\n1 bottle of Evian (75 cl) for 2 people\nOr 1 soft drink (33 cl) for 1 person\nAny supplementary order will be at additional cost.",
+                    "meeting_point": "Present your voucher at our agent on Port de la Conférence located on the right bank of the river (opposite side from the Eiffel Tower) - Near the Alma bridge. Metro stop: Alma-Marceau (line 9).",
+                    "operational_days": "Every day",
+                    "duration": "PT1H30M",
+                    "duration_range": {
+                        "max": "PT1H30M"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "it",
+                            "name": "Italian"
+                        }
+                    ],
+                    "group_size": [],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "wheelchair",
+                            "name": "Wheelchair accessible"
+                        },
+                        {
+                            "code": "dress-code",
+                            "name": "Dress code"
+                        }
+                    ],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "highlights": [
+                        "Early bird 3-course dinner cruise",
+                        "Discover Paris at sunset",
+                        "Panoramic view of the parisian monuments"
+                    ],
+                    "included": [
+                        "3 course à la carte dinner",
+                        "Beverages",
+                        "1h15 cruise"
+                    ],
+                    "not_included": [
+                        "Photo souvenir",
+                        "Pick up and drop off"
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0001/94/thumb_93807_cover_header.png?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 69.0,
+                        "formatted_value": "£ 69.00",
+                        "formatted_iso_value": "£69.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 69.0,
+                        "formatted_value": "£ 69.00",
+                        "formatted_iso_value": "£69.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 69.0,
+                        "formatted_value": "£ 69.00",
+                        "formatted_iso_value": "£69.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 69.0,
+                        "formatted_value": "£ 69.00",
+                        "formatted_iso_value": "£69.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 48.8641429,
+                    "longitude": 2.3054563,
+                    "url": "https://musement.com/us/paris/dinner-cruise-at-6-00pm-24551/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c19493af-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/30/thumb_29674_default_header.png?w=540"
+                    },
+                    "giftable": true,
+                    "has_passenger_info": false,
+                    "has_extra_customer_data": false,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P0D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "03b1ecca-420b-4faa-a7c9-09f7206588f1",
+                    "city": {
+                        "id": 40,
+                        "name": "Paris",
+                        "country": {
+                            "id": 60,
+                            "name": "France",
+                            "iso_code": "FR"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0002/49/aerial-wide-angle-cityscape-view-of-paris-xxl-jpg_header-148745.jpeg",
+                        "url": "https://musement.com/us/paris/",
+                        "time_zone": "Europe/Paris"
+                    },
+                    "saves": 0,
+                    "title": "WW1 walking guided tour in Paris",
+                    "relevance": 100,
+                    "relevance_venue": 100,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "PRINTED",
+                    "temporary": false,
+                    "description": "Book the WW1 walking guided tour in Paris. You'll be introduced to the world of World War I and discover the atmosphere of the roaring twenties..",
+                    "about": "Your historical exploration of Paris will start at the Invalides where your guide will give you an introduction about the ‘domino effect’ events that led up to the World War I.You will then walk through the Invalides and learn how Paris entered the war, and how, after a few weeks only, the front lines got less than 40 kilometres of the Capital. You will relive the incredible departure of 4000 young soldiers carried away by 600 taxis and will discuss about the military strategies. Even the Eiffel Tower was used as an anti-aerial defence!The tour will then take you to the Alexandre 3 Bridge and the Grand Palais. Imagine that this cultural institution was converted in an 800-bed military hospital in less than a month! Parisian citizens quickly organized a great network of solidarity to assist the constant flow of injured soldiers. You will learn about all the medical innovations that scientists quickly came up with to palliate the lack of preparation of French government. Whilst you walk down the Champs-Elysées, you’ll also learn how Paris then adjusted to the life of a city at war. Theatres gradually reopened on the most famous Avenue in the World and were crowded. This will also be the time to discuss about the life of women, as men were drafted into the army. A walk through the today-glamorous Place Vendome will be the chance to hear about the rise of Coco Chanel, and the incredible social progress that was initiated then.After a coffee break in a Great War hotspot, your tour will conclude at the Arc de Triomphe, where lies the tomb of the soldat inconnu. He was buried under the Arch in 1920, and today, this is still the place of a daily commemoration that you’ll be able to attend after your tour. Your journey to the 1914-1918 will end there. The roaring 20s were just around the corner…",
+                    "meeting_point": "Meet your guide just outside the \"Varenne\" metro station on line 13, there is only one exit. Your guide will be wearing a special badge with the Localers logo, you can't miss it !",
+                    "operational_days": "Thursday and Sunday",
+                    "duration": "PT3H",
+                    "duration_range": {
+                        "max": "PT3H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        }
+                    ],
+                    "group_size": [
+                        {
+                            "code": "small",
+                            "name": "Small group"
+                        }
+                    ],
+                    "food": [],
+                    "services": [],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "highlights": [
+                        "A unique historical visit of Paris with the must-hear anecdotes on the Great War",
+                        "Quality time with a history expert and WWI buff",
+                        "The best Parisian monuments seen as a bonus",
+                        "A poignant grand final at a daily veteran commemoration"
+                    ],
+                    "included": [
+                        "Local expert guide",
+                        "Complementary coffe break"
+                    ],
+                    "not_included": [
+                        "Tips",
+                        "Entrance fees to attractions"
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0012/16/thumb_1115414_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 51.0,
+                        "formatted_value": "£ 51.00",
+                        "formatted_iso_value": "£51.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 51.0,
+                        "formatted_value": "£ 51.00",
+                        "formatted_iso_value": "£51.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 51.0,
+                        "formatted_value": "£ 51.00",
+                        "formatted_iso_value": "£51.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 51.0,
+                        "formatted_value": "£ 51.00",
+                        "formatted_iso_value": "£51.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 48.8568757,
+                    "longitude": 2.3131999,
+                    "url": "https://musement.com/us/paris/ww1-walking-guided-tour-in-paris-147835/",
+                    "flavours": [
+                        {
+                            "id": 111,
+                            "name": "Guided Tour",
+                            "active": true,
+                            "slug": "guided-tour"
+                        }
+                    ],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c18dc418-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/04/pariscityvision_header-3853.jpeg?w=540"
+                    },
+                    "giftable": false,
+                    "has_passenger_info": false,
+                    "has_extra_customer_data": false,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "PT12H",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "04a467b8-53cc-47ef-a7e0-0415af6f9c48",
+                    "city": {
+                        "id": 45,
+                        "name": "Nice",
+                        "country": {
+                            "id": 60,
+                            "name": "France",
+                            "iso_code": "FR"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0002/49/fotolia-199353438-subscription-xxl-jpg_header-148705.jpeg",
+                        "url": "https://musement.com/us/nice/",
+                        "time_zone": "Europe/Paris"
+                    },
+                    "saves": 0,
+                    "title": "Italy by San Remo and France by Menton tour",
+                    "relevance": 400,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "This 9-hour excursion begins in Nice when your driver/guide picks you up at your hotel. You'll soon be admiring the views along the French Riviera, en route to San Remo, Italy.",
+                    "about": "This 9-hour excursion begins in Nice when your driver/guide picks you up at your hotel. You’ll soon be admiring the views along the French Riviera, en route to San Remo, Italy.\nExplore the famous Italian markets and browse the shops offering handbags, leather goods, clothing and fashion accessories. Spend some time walking around the old town and try the delicious pizza, pasta and other local favorites at lunch.\nVisit the medieval village of Dolceaqua with ancient stone houses on narrow paved alleys, an attractive humpback bridge over a scenic river and a castle overlooking the village.You’ll return to France via the Italian Riviera, stopping in Menton, France, located on the border between Italy and France. You’ll have free time to visit the old town and admire the Basilica of Saint-Michel.After your visit the driver-guide will take you back to Nice and drop you off at your hotel.",
+                    "meeting_point": "From you hotel or your private address Please be ready between 8.40am and 9.00am in your hotel lobby the day of the tour. Your guide driver will ask for you at the hotel reception.",
+                    "operational_days": "Tuesdays and Saturdays",
+                    "duration": "PT9H",
+                    "duration_range": {
+                        "max": "PT9H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [
+                        {
+                            "code": "en",
+                            "name": "English"
+                        },
+                        {
+                            "code": "es",
+                            "name": "Spanish"
+                        }
+                    ],
+                    "group_size": [
+                        {
+                            "code": "small",
+                            "name": "Small group"
+                        }
+                    ],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "pick-up",
+                            "name": "Hotel pick up"
+                        },
+                        {
+                            "code": "transport",
+                            "name": "Transport included"
+                        }
+                    ],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "highlights": [
+                        "Visit two countries in one day",
+                        "Explore San Remo’s famous Italian markets",
+                        "Visit Menton and admire the architecture of the old town"
+                    ],
+                    "included": [
+                        "Hotel Pick up and drop off",
+                        "Bilingual driver"
+                    ],
+                    "not_included": [
+                        "Food and drinks",
+                        "Personal expenses"
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0002/35/thumb_134966_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 78.0,
+                        "formatted_value": "£ 78.00",
+                        "formatted_iso_value": "£78.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 78.0,
+                        "formatted_value": "£ 78.00",
+                        "formatted_iso_value": "£78.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 78.0,
+                        "formatted_value": "£ 78.00",
+                        "formatted_iso_value": "£78.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 78.0,
+                        "formatted_value": "£ 78.00",
+                        "formatted_iso_value": "£78.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 43.710173,
+                    "longitude": 7.261953,
+                    "url": "https://musement.com/us/nice/italy-by-san-remo-and-france-by-menton-tour-53750/",
+                    "flavours": [
+                        {
+                            "id": 111,
+                            "name": "Guided Tour",
+                            "active": true,
+                            "slug": "guided-tour"
+                        }
+                    ],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "3e169162-ef6c-42f7-b75f-7e573870fbef",
+                        "logo_url": "https://images-sandbox.musement.com/default/0002/28/thumb_127053_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "has_passenger_info": false,
+                    "has_extra_customer_data": false,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": true
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P0D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "04db373c-cf5c-4c11-afe5-1deaae09b65e",
+                    "city": {
+                        "id": 633,
+                        "name": "Perpignan",
+                        "country": {
+                            "id": 60,
+                            "name": "France",
+                            "iso_code": "FR"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0002/48/fotolia-191490458-subscription-xxl-jpg_header-147578.jpeg",
+                        "url": "https://musement.com/us/perpignan/",
+                        "time_zone": "Europe/Paris"
+                    },
+                    "saves": 0,
+                    "title": "La Beach Des Copains",
+                    "relevance": 0,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": true,
+                    "about": "CLOSING CLOSING CLOSING!\nWe weren't going to give up on you guys so easily! A September 11 unlike any other awaits you, we inflate these armbands one last time and we come to stomp our feet for the last!\nGenres: House,Melodic House & Techno,Nu-Disco / Disco\nDoor Policies: Come as you are\nAge Policies: 18+",
+                    "operational_days": "Saturday, 11 September 1:00 PM",
+                    "duration": "P0D",
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [],
+                    "group_size": [],
+                    "food": [],
+                    "services": [],
+                    "features": [],
+                    "highlights": [],
+                    "included": [],
+                    "not_included": [],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0047/14/thumb_4613669_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 9.0,
+                        "formatted_value": "£ 9.00",
+                        "formatted_iso_value": "£9.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 9.0,
+                        "formatted_value": "£ 9.00",
+                        "formatted_iso_value": "£9.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 9.0,
+                        "formatted_value": "£ 9.00",
+                        "formatted_iso_value": "£9.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 9.0,
+                        "formatted_value": "£ 9.00",
+                        "formatted_iso_value": "£9.00"
+                    },
+                    "discount": 0,
+                    "categories": [
+                        {
+                            "id": 214,
+                            "name": "Excursions & day trips",
+                            "level": "1",
+                            "code": "new-excursions-day-trips",
+                            "event_image_url": "https://images-sandbox.musement.com/cover/0047/14/thumb_4613669_cover_header.jpeg?w=540",
+                            "cover_image_url": "https://images-sandbox.musement.com/cover/0047/14/thumb_4613669_cover_header.jpeg?w=540",
+                            "url": "https://musement.com/us/perpignan/excursions-day-trips-c/"
+                        },
+                        {
+                            "id": 224,
+                            "name": "Nightlife",
+                            "level": "2",
+                            "code": "new-nightlife",
+                            "event_image_url": "https://images-sandbox.musement.com/cover/0047/14/thumb_4613669_cover_header.jpeg?w=540",
+                            "cover_image_url": "https://images-sandbox.musement.com/cover/0047/14/thumb_4613669_cover_header.jpeg?w=540",
+                            "url": "https://musement.com/us/perpignan/nightlife-c/",
+                            "parent_id": 214
+                        }
+                    ],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 42.72018,
+                    "longitude": 2.887644,
+                    "url": "https://musement.com/us/perpignan/la-beach-des-copains-closing-party-1-174595/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 7,
+                            "name": "Nightlife",
+                            "active": true,
+                            "code": "nightlife",
+                            "slug": "nightlife",
+                            "url": "https://musement.com/us/nightlife-t/",
+                            "meta_title": "Experience local Nightlife as you dance the night away",
+                            "meta_description": "Want to dance your heart out tonight? Visit the hottest clubs in top travel destinations with Musement.",
+                            "cover_image_url": "https://images-sandbox.musement.com/cover/0001/91/thumb_90786_cover_header.jpeg?w=540",
+                            "relevance": 40
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "a5b1826e-7a23-47ed-91d8-6f81e234d5b6"
+                    },
+                    "giftable": false,
+                    "has_passenger_info": false,
+                    "has_extra_customer_data": false,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                }
+            ]
+        }
+    }
+}

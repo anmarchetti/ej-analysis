@@ -1,0 +1,76 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    margin: 0 8px;
+    padding: 16px;
+    border: 1px $colorGeyser solid;
+    border-radius: 8px;
+
+    @include media-breakpoint-down(sm) {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 16px;
+        margin: 12px 0;
+    }
+}
+
+.textWrapper {
+    @include media-breakpoint-down(sm) {
+        flex: 1;
+    }
+}
+
+.name {
+    margin: 0;
+    font-family: $fontRoundedDemy;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.37;
+    color: $clrTextMain;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.category {
+    margin: 4px 0 0;
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    line-height: 1.28;
+    color: $clrTextMain;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+
+    @include media-breakpoint-down(sm) {
+        margin-top: 2px;
+    }
+}
+
+.distanceWrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.distance {
+    position: relative;
+    top: 2px;
+    margin: 0;
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    line-height: 1.3;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(sm) {
+        color: $colorBoulder;
+    }
+}
+
+.icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;  
+}

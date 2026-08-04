@@ -1,0 +1,67 @@
+﻿---
+ID: "51f131b2-d8c7-4d5b-bf7d-7461c6e0b4cf"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/MAN-259 Hotel change confirmation popup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item, $lang, $field, $value) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+            if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+                Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+            }
+            
+            if ($null -ne $field) {
+                $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+                $targetLangItem.Editing.BeginEdit()
+                $targetLangItem[$field] = $value
+                $targetLangItem.Editing.EndEdit() | Out-Null
+             }
+        }
+        
+        function updateTranslation($path) {
+        	
+        	$confirmationAmendPopup  = Get-Item -Path $path -ErrorAction SilentlyContinue
+        
+        	if ($confirmationAmendPopup-eq $null) {
+        		Write-Host "Missing ConfirmationAmendPopup item in EN language. Missing item: $($path)"
+        		return;
+        	}
+    		
+    		@('en') | % {
+        		Create-Lang-Version -Item $confirmationAmendPopup -Lang $_ -Field "HotelTitle" -Value "WE'VE SUCCESSFULY UPDATED YOUR HOTEL"
+    			Create-Lang-Version -Item $confirmationAmendPopup -Lang $_ -Field "HotelSubtitle" -Value "We've changed your hotel to:" 
+    		}
+    
+        	@('de-CH', 'de-DE') | % {
+        		Create-Lang-Version -Item $confirmationAmendPopup -Lang $_ -Field "HotelTitle" -Value "WIR HABEN IHR HOTEL ERFOLGREICH AKTUALISIERT"
+    			Create-Lang-Version -Item $confirmationAmendPopup -Lang $_ -Field "HotelSubtitle" -Value "Wir haben Ihr Hotel geändert in:" 
+        	}
+        
+        	@('fr-CH', 'fr-FR') | % {
+        		Create-Lang-Version -Item $confirmationAmendPopup -Lang $_ -Field "HotelTitle" -Value "NOUS AVONS RÉUSSI À METTRE À JOUR VOTRE HÔTEL"
+    			Create-Lang-Version -Item $confirmationAmendPopup -Lang $_ -Field "HotelSubtitle" -Value "Nous avons changé votre hôtel en :" 
+        	}
+    
+        	Write-Host "Updated translations"
+        }
+    
+        updateTranslation -path '/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Confirmation Amend Popup'
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 1010
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240724T125613Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

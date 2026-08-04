@@ -1,0 +1,52 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    @include media-breakpoint-up(md) {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    :global(.amendment-basket__flights) {
+        @include media-breakpoint-down(lg) {
+            margin-left: 0;
+        }
+    }
+}
+
+.durationDetails {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    color: $colorBlack;
+
+    svg {
+        @include sizeSquare(15px);
+
+        margin-right: 12px;
+        margin-bottom: 2px;
+    }
+}
+
+.flightDetails {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: $colorBlack;
+
+    svg {
+        margin-right: 12px;
+        @include sizeSquare(24px);
+    }
+
+    @include media-breakpoint-up(md) {
+        margin-bottom: 0;
+    }
+}
+
+.airport {
+    margin-right: 12px;
+    font-weight: 700;
+}

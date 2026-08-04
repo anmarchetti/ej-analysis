@@ -1,0 +1,35 @@
+﻿---
+ID: "8f588acf-5165-434c-848f-3d61df9d88ce"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/Set Default Pandemic Level
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $defaultItemPath = "/sitecore/content/EasyJet/Holidays/Settings/Pandemic Levels/Default"
+    
+    function Set-Default($path)
+    {
+        $item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if($item -ne $null)
+        {
+            $item.Editing.BeginEdit()
+            $item.Fields["IsDefault"].Value = "1"
+            $item.Editing.EndEdit()
+        }
+    }
+    
+    Set-Default -Path $defaultItemPath
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 28000
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210420T135909Z

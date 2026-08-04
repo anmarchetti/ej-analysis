@@ -1,0 +1,39 @@
+.createAccount {
+    width: 80%;
+    margin: 0 auto;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        padding: 35px 15px 45px;
+    }
+
+    h3 {
+        margin: 0 0 5px;
+        line-height: 1.625;
+    }
+
+    p {
+        margin: 0 0 20px;
+
+        @include media-breakpoint-down(md) {
+            margin: 0 0 15px;
+            font-size: 14px;
+            line-height: 1.29;
+        }
+    }
+
+    button {
+        font-size: 16px;
+        line-height: 1.25;
+
+        &:hover {
+            opacity: 1;
+        }
+
+        @include media-breakpoint-down(md) {
+            padding: 10px 25px;
+            font-size: 14px;
+            line-height: 1.29;
+        }
+    }
+}

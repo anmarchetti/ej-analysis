@@ -1,0 +1,120 @@
+.pricePromise {
+    margin-bottom: 80px;
+
+    @include media-breakpoint-down(md) {
+        margin: 30px 0 60px;
+    }
+
+    :global(.form-field) {
+        @include media-breakpoint-up(lg) {
+            :global(.callout__container + .form-control__error) {
+                flex-basis: 50%;
+            }
+
+            :global(.form-control__error) {
+                padding-top: 0;
+
+                :global(.form-control__error__icon) {
+                    top: 0;
+                    line-height: 1;
+                }
+
+                svg {
+                    vertical-align: baseline;
+                }
+            }
+        }
+    }
+
+    :global(.file-upload) {
+        margin: 25px 0 90px;
+
+        @include media-breakpoint-down(md) {
+            margin: 10px 0 40px;
+        }
+    }
+
+    .submit,
+    :global(.file-upload__control) {
+        min-width: 260px;
+
+        @include media-breakpoint-down(sm) {
+            width: 100%;
+        }
+    }
+}
+
+.title {
+    margin: 40px 0 10px;
+    font-family: $fontRoundedHeadline;
+    font-size: 26px;
+    font-weight: bold;
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 20px;
+    }
+}
+
+.sectionTitle {
+    margin: 50px 0 5px;
+    font-family: $fontRoundedBook;
+    font-size: 18px;
+
+    @include media-breakpoint-down(md) {
+        margin-top: 40px;
+        font-size: 16px;
+    }
+}
+
+.fieldMargin {
+    margin-top: 20px;
+}
+
+.text {
+    font-size: 15px;
+    line-height: 1.43;
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+
+    p {
+        font-size: inherit;
+        line-height: inherit;
+    }
+}
+
+.checkboxes {
+    .checkbox {
+        margin-top: 20px;
+    }
+
+    .checkboxError {
+        margin: 10px 0;
+        padding-left: 0;
+        line-height: 1;
+        background: none;
+        box-shadow: none;
+
+        :global(.col-sm-12) {
+            padding: 0;
+        }
+
+        :global(.row) {
+            margin: 0;
+        }
+
+        svg {
+            margin-left: 0;
+        }
+
+        span {
+            font-weight: 700;
+            color: $colorRed;
+        }
+    }
+}

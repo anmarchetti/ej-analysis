@@ -1,0 +1,162 @@
+.container {
+    overflow: hidden;
+    height: 98px;
+    min-height: 98px;
+    border-radius: 8px;
+}
+
+.input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.ribbonIcon {
+    @include sizeSquare(16px);
+    position: relative;
+}
+
+.mainContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.cheapestMonthRibbon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: $colorWhite;
+    font-size: 12px;
+    padding: 2px 10px;
+    background: $colorGreenDark;
+    left: -1px;
+    bottom: -1px;
+    width: calc(100% + 2px);
+    position: absolute;
+}
+
+.cheapestMonthLabel {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cheapestPrice {
+    font-size: 12px;
+    color: $colorBoulder;
+}
+
+.unavailable {
+    font-size: 12px;
+    color: $clrTxtLighter;
+}
+
+.monthLabel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border: 1px solid $colorGeyser;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s ease-in-out;
+    padding: 12px 0;
+
+    .tickIcon,
+    .monthName,
+    .year {
+        transition: color 0.2s ease-in-out;
+    }
+
+    .tickIcon {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 24px;
+        height: 24px;
+        color: transparent;
+    }
+}
+
+.monthLabel.withCheapestMonth {
+    justify-content: space-between;
+    padding-bottom: 0;
+}
+
+.disabledMonthLabel {
+    background: $colorPorcelain;
+    cursor: not-allowed;
+
+    .monthName {
+        color: $clrTxtLighter;
+    }
+
+    .year {
+        color: $clrTxtLighter;
+    }
+}
+
+.monthLabel.disabledMonthLabel:hover,
+.input:focus + .monthLabel.disabledMonthLabel {
+    border-color: $colorGeyser;
+
+    .monthName {
+        color: $clrTxtLighter;
+    }
+
+    .year {
+        color: $clrTxtLighter;
+    }
+}
+
+.monthLabel:hover,
+.input:focus + .monthLabel {
+    border-color: $colorOrange;
+
+    .year {
+        color: $clrTextMain;
+    }
+
+    .monthName {
+        color: $clrEjOrangeDarkShadow;
+    }
+}
+
+.selectedMonthLabel,
+.selectedMonthLabel:hover,
+.input:focus + .selectedMonthLabel {
+    border-color: $colorOrange;
+    box-shadow: inset 0 0 0 1px $colorOrange;
+
+    .tickIcon {
+        color: $colorOrange;
+    }
+}
+
+.monthName {
+    font-family: $fontRoundedDemy;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: $colorOrange;
+}
+
+.year {
+    font-family: $fontRoundedBook;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: $clrTextMain;
+}

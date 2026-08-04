@@ -1,0 +1,77 @@
+﻿<p1:ErrorResponse xmlns:p1="AtComRes/ErrorResponse" xmlns:p2="AtComRes/Common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="AtComRes/ErrorResponse ../api/ErrorResponse/ErrorResponse.xsd">
+    <!-- Response returned from: EZYPRD.EJH.ATCOM -->
+    <p2:Adm Xsd_Ver="0.0.0">
+        <p2:ReqId>47765409-f5cc-440a-bf9a-4d48a69be5d0</p2:ReqId>
+        <p2:Tm>2024-05-23T15:32:36.654381+01:00</p2:Tm>
+        <p2:Trk From="atcomres" To="easyjet" />
+        <p2:Full_View_Key>AAAbaaACgAAL54aAAJ</p2:Full_View_Key>
+        <p2:Ser_Msg>
+            <p2:Severity>WARN</p2:Severity>
+            <p2:Code>W11512</p2:Code>
+            <p2:Desc>Seats have been removed due to flight changes. Please rebook flights before adding seats</p2:Desc>
+        </p2:Ser_Msg>
+        <p2:Ser_Msg>
+            <p2:Severity>ERROR</p2:Severity>
+            <p2:Code>E14718</p2:Code>
+            <p2:Desc>CRS Error: {K1}</p2:Desc>
+            <p2:KeyValuePair Key="K1">Error selling transport - please retry (Unable to sell flights - The element 'PassengerList' has incomplete content. List of possible elements expected: 'Passenger'.)300001The element 'PassengerList' has incomplete content. List of possible elements expected: 'Passenger'.ValidationCallBackB2BRequestFlow</p2:KeyValuePair>
+        </p2:Ser_Msg>
+        <p2:Ser_Msg>
+            <p2:Severity>ERROR</p2:Severity>
+            <p2:Code>E1258</p2:Code>
+            <p2:Desc>Failed to Book External Service</p2:Desc>
+        </p2:Ser_Msg>
+        <p2:Ser_Msg>
+            <p2:Severity>ERROR</p2:Severity>
+            <p2:Code>E-0001</p2:Code>
+            <p2:Desc>E--1</p2:Desc>
+        </p2:Ser_Msg>
+        <p2:Ser_Msg>
+            <p2:Severity>ERROR</p2:Severity>
+            <p2:Code>E0999</p2:Code>
+            <p2:Desc>
+                <![CDATA[< VRP Oracle error >
+Last trace: VRP_INFOBKG: bookSeats: start: arBkg_Ent.SeatMapS.Count [0] msBkgStatus [BKG] abCheckSeatMap [False]
+ORA-20104: Fatal Booking Error
+ORA-06512: at "ATCOMRES.AR_PK_VRP_INFOMODBKG", line 8100
+ORA-06512: at "ATCOMRES.AR_PK_BOOKLOG", line 1403
+ORA-20104: Fatal Booking Error
+ORA-06512: at "ATCOMRES.AR_PK_BOOKLOG", line 1399
+ORA-06512: at "ATCOMRES.AR_PK_PRICE", line 6188
+ORA-01476: divisor is equal to zero
+ORA-06512: at "ATCOMRES.AR_PK_PRICE_FLIGHTEXTRA", line 1307
+ORA-06512: at "ATCOMRES.AR_PK_PRICE_FLIGHTEXTRA", line 1905
+ORA-06512: at "ATCOMRES.AR_PK_PRICE", line 5217
+ORA-06512: at "ATCOMRES.AR_PK_PRICE", line 5861
+ORA-06512: at "ATCOMRES.AR_PK_BOOK_RES", line 3951
+ORA-06512: at "ATCOMRES.AR_PK_VRP_INFOMODBKG", line 2452
+ORA-06512: at "ATCOMRES.AR_PK_VRP_INFOMODBKG", line 7908
+
+ORA-06512: at "ATCOMRES.AR_PK_BOOKLOG", line 1403
+ORA-06512: at "ATCOMRES.AR_PK_BOOKLOG", line 1399
+ORA-06512: at "ATCOMRES.AR_PK_PRICE", line 6188
+ORA-06512: at "ATCOMRES.AR_PK_PRICE_FLIGHTEXTRA", line 1307
+ORA-06512: at "ATCOMRES.AR_PK_PRICE_FLIGHTEXTRA", line 1905
+ORA-06512: at "ATCOMRES.AR_PK_PRICE", line 5217
+ORA-06512: at "ATCOMRES.AR_PK_PRICE", line 5861
+ORA-06512: at "ATCOMRES.AR_PK_BOOK_RES", line 3951
+ORA-06512: at "ATCOMRES.AR_PK_VRP_INFOMODBKG", line 2452
+ORA-06512: at "ATCOMRES.AR_PK_VRP_INFOMODBKG", line 7908
+------------
+ORA-06512: at "ATCOMRES.AR_PK_VRP_INFOMODBKG", line 8100
+ORA-06512: at "ATCOMRES.AR_PK_BOOKLOG", line 1403
+ORA-06512: at "ATCOMRES.AR_PK_BOOKLOG", line 1399
+ORA-06512: at "ATCOMRES.AR_PK_PRICE", line 6188
+ORA-06512: at "ATCOMRES.AR_PK_PRICE_FLIGHTEXTRA", line 1307
+ORA-06512: at "ATCOMRES.AR_PK_PRICE_FLIGHTEXTRA", line 1905
+ORA-06512: at "ATCOMRES.AR_PK_PRICE", line 5217
+ORA-06512: at "ATCOMRES.AR_PK_PRICE", line 5861
+ORA-06512: at "ATCOMRES.AR_PK_BOOK_RES", line 3951
+ORA-06512: at "ATCOMRES.AR_PK_VRP_INFOMODBKG", line 2452
+ORA-06512: at "ATCOMRES.AR_PK_VRP_INFOMODBKG", line 7908
+ORA-06512: at "ATCOMRES.AR_PK_VRP_CONTROL", line 1507
+]]>
+            </p2:Desc>
+        </p2:Ser_Msg>
+    </p2:Adm>
+</p1:ErrorResponse>

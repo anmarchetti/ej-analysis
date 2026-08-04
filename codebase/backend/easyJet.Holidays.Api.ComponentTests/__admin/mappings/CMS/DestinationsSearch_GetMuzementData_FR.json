@@ -1,0 +1,38 @@
+{
+    "Title": "CMS ExcursionMap data for FR (France country)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "ExactMatcher",
+                    "Pattern": "/api/DestinationsSearch/GetMuzementData",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "code",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "FR"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "MuzementIds": [
+                "FR"
+            ],
+            "Type": "Country",
+            "Radius": 100,
+            "Coordinates": null
+        }
+    }
+}

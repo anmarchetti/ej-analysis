@@ -1,0 +1,340 @@
+.card {
+    margin: 5px 10px;
+    background: $colorWhite;
+    border-radius: $card_border-radius;
+    box-shadow: 0 2px 4px 0 rgba(178, 178, 175, 0.5);
+
+    @include media-breakpoint-down(md) {
+        + .card,
+        :global(+ .view-all-block) {
+            margin-top: 20px;
+        }
+    }
+
+    &.gridCard {
+        margin: 0;
+        box-shadow: 0 2px 4px 0 rgba(178, 178, 175, 0.5);
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+
+            :global(+ .view-all-block) {
+                margin-top: 20px;
+            }
+        }
+    }
+
+    &.sponsored {
+        .hotelCard {
+            overflow: visible;
+        }
+
+        .hotelCardImgBoxWr {
+            overflow: visible;
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+    }
+}
+
+.card,
+.hotelCard,
+.hotelCardTextBox {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    max-width: 100%;
+}
+
+.imageBox {
+    position: relative;
+    flex: 0 0 156px;
+    width: 100%;
+    max-width: 100%;
+
+    .luxuryBadgeWrapper {
+        position: absolute;
+        z-index: 1;
+        top: 10px;
+        left: 10px;
+        padding: 5px;
+
+        svg {
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    :global {
+        .image-gallery {
+            overflow: hidden;
+            border-radius: 4px 4px 0 0;
+
+            .image-gallery-slide {
+                min-height: 156px;
+                padding-top: 0;
+            }
+        }
+
+        .img-carousel-container {
+            min-height: 156px;
+        }
+    }
+}
+
+.textBox {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+}
+
+.head {
+    display: flex; // IE Fix to limit width (max-width: 100% doesn't work)
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 8px;
+    overflow: hidden auto;
+
+    @include custom-scrollbar($colorWhite, $colorOrange, 4px, 20px);
+
+    @include media-breakpoint-up(lg) {
+        min-height: 90px;
+    }
+
+    .location {
+        font-size: 11px;
+        line-height: 1.18;
+    }
+
+    .rating {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+
+        :global {
+            .tripadvisor_rating {
+                --tripadvisor-logo-size: 16px;
+                --tripadvisor-icon-size: 8px;
+            }
+        }
+    }
+}
+
+.headInfo {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+
+    :global {
+        .hotel-card-head-bookmark svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .hotel-card-head-bookmark__tooltip {
+            z-index: 3;
+        }
+    }
+
+    .title {
+        margin: 0;
+        font-family: $fontRoundedBook;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 1.1;
+        color: $clrTextMain;
+        text-transform: capitalize;
+
+        a {
+            color: inherit;
+        }
+    }
+}
+
+.pills {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 6px;
+    padding: 12px 8px;
+    border-top: 1px solid $colorGeyser;
+
+    :global {
+        .price-pill {
+            display: flex;
+            align-self: flex-start;
+            padding: 2px 6px;
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1.45;
+            border-radius: 50px;
+        }
+    }
+}
+
+.details {
+    position: relative;
+    min-height: 40px;
+
+    .wrapper {
+        position: absolute;
+        z-index: 2;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        background: $colorWhite;
+        border-radius: 4px 4px 0 0;
+    }
+
+    .detailsTitle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        min-height: 40px;
+        padding: 8px;
+        font-size: 14px;
+        line-height: 1.28;
+        color: $clrTextMain;
+        background: $colorPorcelain;
+        border-radius: 4px 4px 0 0;
+
+        svg {
+            flex-shrink: 0;
+            width: 12px;
+            height: 12px;
+            margin-right: 6px;
+            color: $colorOrange;
+        }
+
+        path {
+            stroke: $colorOrange;
+            stroke-width: 1;
+        }
+    }
+
+    .detailsInfo {
+        display: none;
+        flex-direction: column;
+        max-height: 250px;
+        padding: 8px 8px 0;
+        overflow: hidden auto;
+
+        @include custom-scrollbar($colorWhite, $colorOrange, 4px, 20px);
+
+        :global {
+            .hotel-card-options {
+                padding: 0;
+            }
+
+            .hotel-card-options .list li,
+            .holiday-details__item {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 8px;
+                margin: 0 0 12px;
+                padding: 0;
+                font-size: 14px;
+                line-height: 1.28;
+            }
+
+            .holiday-details__item:last-child {
+                margin: 0;
+            }
+
+            .hotel-card-options li svg,
+            .hotel-card-options li img,
+            .hotel-card-options li .icon--bg-image,
+            .holiday-details__icon svg {
+                position: static;
+                flex-shrink: 0;
+                width: 24px;
+                height: 24px;
+                margin: 0;
+            }
+
+            .hotel-card-options li .more-info svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        &.isExpanded {
+            z-index: 10;
+            display: flex;
+
+            :global {
+                .hotel-card-options .callout__content {
+                    min-width: 180px;
+                }
+            }
+        }
+
+        &.disabledOverflow {
+            overflow: visible;
+        }
+    }
+}
+
+.offerCardPriceWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 4px 0;
+}
+
+.priceBox {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: flex-end;
+    padding: 0 8px 8px;
+    background: $clrSiteBgWhite;
+    border-top: 1px solid $colorGeyser;
+
+    .price {
+        display: flex;
+        align-items: baseline;
+        justify-content: flex-end;
+        gap: 4px;
+        font-size: 24px;
+        line-height: 1.33;
+
+        :global {
+            .price-big__from-label {
+                font-size: 13px;
+            }
+        }
+    }
+
+    .viewButton {
+        &.priceHidden {
+            padding-top: 8px;
+        }
+
+        a {
+            padding: 12px 16px;
+            font-size: 14px;
+            line-height: 1.15;
+        }
+    }
+}
+
+.sponsorPill {
+    background-color: $colorYellow3;
+    border-radius: 0 0 4px;
+}
+
+.sponsoredPillsContainer {
+    top: 0 !important;
+}
+
+.taxTooltipTrigger {
+    white-space: nowrap;
+}

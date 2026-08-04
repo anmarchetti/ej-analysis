@@ -1,0 +1,41 @@
+﻿---
+ID: "4e0aca01-828c-4552-82c4-5fbe30f03459"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14877-Sitemap"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Remove-Pages($path){
+        $item = Get-Item -Path $path 
+        $item.Editing.BeginEdit();
+        $item.Fields["Pages"].Value = ""
+        $item.Editing.EndEdit();
+    }
+    
+    Remove-Pages -path "/sitecore/content/EasyJet/Holidays/Home/Sitemap/Page Components/Sitemap Block/Countries"
+    Remove-Pages -path "/sitecore/content/EasyJet/Holidays/Home/Sitemap/Page Components/Sitemap Block/Regions"
+    Remove-Pages -path "/sitecore/content/EasyJet/Holidays/Home/Sitemap/Page Components/Sitemap Block/Resorts"
+    
+    $item = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Sitemap Setting" -ErrorAction SilentlyContinue
+    if($item -eq $null){
+        $parentItem = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/"
+        $item = New-Item -Parent $parentItem -Name "Sitemap Setting" -ItemType "{F579182D-33F1-4045-BA15-A05D87D6AAA3}"
+        $item.Editing.BeginEdit();
+        $item.Fields["PageTemplatesExclude"].Value = "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}|{41EC88AC-DCD5-47A1-A0CF-041C85E1BD5B}|{41831D30-A4BD-4AD0-B5F2-A3D0A6F7828A}|{28E5E169-8F72-4F90-A277-280A8302B607}"
+        $item.Editing.EndEdit();
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220629T164927Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

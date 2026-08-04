@@ -1,0 +1,37 @@
+{
+    "Title": "Seat map settings: /api/content/bypath",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/content/bypath",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "path",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "{site}/Settings/Ancillaries/Seat Map Settings"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "TimeDisplayBannerTapSelectedSeatToRemoveIt": 3000,
+            "MinNumberOfDaysToDeparture": 15,
+            "EnableSeatMapFlow": "1",
+            "EnableSeatMapPostBookingFlow": "1",
+            "EnableSeatMapDateChange": "1"
+        }
+    }
+}

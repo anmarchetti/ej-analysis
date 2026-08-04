@@ -1,0 +1,153 @@
+.container {
+    @include media-breakpoint-up(md) {
+        position: relative;
+    }
+}
+
+.accordionBtn {
+    display: flex;
+    align-items: center;
+
+    svg {
+        width: 24px;
+        height: 24px;
+        padding: 6px;
+    }
+}
+
+.accordionBtnText {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    margin-right: 3px;
+
+    @include media-breakpoint-up(md) {
+        align-items: center;
+        margin-right: 6px;
+    }
+}
+
+.refNumberLabel {
+    font-family: $fontRoundedBook;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.33;
+    color: $colorBlackLight;
+
+    @include media-breakpoint-up(md) {
+        font-size: 14px;
+        line-height: 1.28;
+    }
+}
+
+.refNumber {
+    font-family: $fontRoundedDemy;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.33;
+    color: $colorBlackLight;
+    text-align: left;
+
+    @include media-breakpoint-up(md) {
+        font-size: 14px;
+        line-height: 1.28;
+    }
+}
+
+.shareBtn:global(.btn--transparent) {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+
+    svg {
+        width: 24px;
+        height: 24px;
+        padding: 2px;
+        vertical-align: bottom;
+    }
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    gap: 16px;
+    width: 100%;
+    margin: 0;
+    padding: 16px;
+    list-style: none;
+    background: $colorWhite;
+    border-top: 1px solid $colorGeyser;
+    box-shadow: 0 3px 6px 0 rgba(178, 175, 175, 0.5);
+
+    @include media-breakpoint-up(md) {
+        top: 100%;
+        right: unset;
+        left: 0;
+        width: 320px;
+        margin-top: 44px;
+        border-top: unset;
+        border-radius: $box_border-radius_md;
+        box-shadow: 0 0 15px 0 rgba(178, 175, 175, 0.5);
+    }
+
+    @media (width >= 1400px) {
+        right: -65px;
+    }
+
+    &.isExpanded {
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &.multipleFlights {
+        @include media-breakpoint-up(md) {
+            margin-top: 20px;
+            left: -7px;
+        }
+    }
+
+    &::before {
+        position: absolute;
+        right: unset;
+        bottom: 100%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-color: $colorTransparent $colorTransparent $colorWhite $colorTransparent;
+        border-style: solid;
+        border-width: 0 15px 15px;
+        transform: translateX(-8px);
+
+        @include media-breakpoint-up(md) {
+            content: '';
+        }
+    }
+
+    .dropdownItem {
+        display: flex;
+        flex-direction: column;
+
+        &::after {
+            content: '';
+            padding-top: 16px;
+            border-bottom: 1px solid $colorGeyser;
+        }
+
+        &:last-child::after {
+            content: unset;
+        }
+    }
+
+    .dropdownItemTitle {
+        font-size: 13px;
+    }
+
+    .dropdownItemText {
+        padding: 8px 0 0 16px;
+        font-size: 14px;
+        line-height: 1.2;
+    }
+}

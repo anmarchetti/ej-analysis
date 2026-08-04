@@ -1,0 +1,139 @@
+﻿---
+ID: "be594044-beef-4cbf-8826-702f03058350"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EHD-397 - Clean up DG"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function RemoveFeaturedRegions () {
+    	$pathRendering_FeaturedRegions = "master:/sitecore/layout/Renderings/Feature/Destinations/Featured Regions";
+    	$rendering_FeaturedRegions = Get-Item -Path $pathRendering_FeaturedRegions;
+    
+    	if ($rendering_FeaturedRegions -ne $null) {
+    		$references_FeaturedRegions = Get-ItemReferrer -Item $rendering_FeaturedRegions | Where-Object { ($_.TemplateName -eq 'Region') -or ($_.TemplateName -eq 'Country') };
+    
+    		foreach ($reference in $references_FeaturedRegions) {
+    			$renderingToRemove = Get-Rendering -Item $reference -Rendering $rendering_FeaturedRegions;
+    			if ($renderingToRemove -ne $null) {
+    				Remove-Rendering -Item $reference -Rendering $rendering_FeaturedRegions;
+    				Write-Host "Rendering FeaturedRegions removed from $($reference.DisplayName) $($reference.ID)";
+    			}
+    		}
+    
+    		Remove-Item -Path $pathRendering_FeaturedRegions;
+    		Write-Host "Rendering FeaturedRegions $($rendering_FeaturedRegions.ID) removed";
+    	} else {
+    		Write-Host "Rendering FeaturedRegions not found";
+    	}
+    }
+    
+    
+    function RemoveAllRegions () {
+    	#Placeholders contain All Regions and Text Block component
+    	$placeholder1 = "/body/component-wrapper-inner-{4d0f7bc0-4f86-4154-9770-817ca3ac74dc}-0";
+    	$placeholder2 = "/body/component-wrapper-inner-{80a3c110-269c-465e-b284-5df92016909a}-0";
+    	$placeholder3 = "/body/component-wrapper-inner-{b6311904-b364-4021-8be1-9867137af0a6}-0";
+    	$placeholders = $placeholder1,$placeholder2,$placeholder3
+    
+    	$pathRendering_AllRegions = "master:/sitecore/layout/Renderings/Feature/Destinations/All Regions";
+    	$pathRendering_TextBlock = "master:/sitecore/layout/Renderings/Feature/PageContent/Text Block";
+    
+    	$rendering_AllRegions = Get-Item -Path $pathRendering_AllRegions;
+    	$rendering_TextBlock = Get-Item -Path $pathRendering_TextBlock;
+    
+    
+    	if ($rendering_AllRegions -ne $null) {
+    		$references_AllRegions = Get-ItemReferrer -Item $rendering_AllRegions | Where-Object { ($_.TemplateName -eq 'Region') -or ($_.TemplateName -eq 'Country') };
+    
+    		foreach ($reference in $references_AllRegions) {
+    			$renderingAllRegionsToRemove = Get-Rendering -Item $reference | Where-Object { ($placeholders -contains $_.Placeholder) -and ($_.ItemID -eq $rendering_AllRegions.ID) };
+    
+    			if ($renderingAllRegionsToRemove -ne $null) {
+    				Remove-Rendering -Item $reference -Instance $renderingAllRegionsToRemove;
+    				Write-Host "Rendering AllRegion removed from $($reference.DisplayName) $($reference.ID)";
+    			}
+    		}
+    
+    		Remove-Item -Path $pathRendering_AllRegions;
+    		Write-Host "Rendering AllRegionas removed";
+    
+    		#Remove Text Block related to AllRegions component
+    		if ($rendering_TextBlock -ne $null) {
+    			foreach ($reference in $references_AllRegions) {
+    				$renderingTextBlockToRemove = Get-Rendering -Item $reference | Where-Object { ($placeholders -contains $_.Placeholder) -and ($_.ItemID -eq $rendering_TextBlock.ID) };
+    				if ($renderingTextBlockToRemove -ne $null) {
+    					Remove-Rendering -Item $reference -Instance $renderingTextBlockToRemove;
+    					Write-Host "Rendering TextBlock removed from $($reference.DisplayName) $($reference.ID)";
+    				}
+    
+    				$datasourceTextBlockToRemove = Get-Item -Path "master:" -Id $renderingTextBlockToRemove.Datasource
+    				if ($datasourceTextBlockToRemove -ne $null) {
+    					Remove-Item -Path $datasourceTextBlockToRemove;
+    					Write-Host "Datasource TextBlock removed from $($reference.DisplayName) $($reference.ID)";
+    				}
+    			}
+    		}
+    	} else {
+    		Write-Host "Rendering AllRegionas not found";
+    	}
+    }
+    
+    function ReplaceLinksList () {
+    	$pathRendering_LinkList = "master:/sitecore/layout/Renderings/Feature/Destinations/Links List"
+    	$pathRendering_HotelsWithReviews = "master:/sitecore/layout/Renderings/Feature/Destinations/Hotels With Reviews"
+    	$pathStandardValues_ResortPage = "master:/sitecore/templates/Project/Holidays/Pages/Destinations/Resort/__Standard Values"
+    
+    	$rendering_LinkList = Get-Item -Path $pathRendering_LinkList;
+    
+    	if ($rendering_LinkList -ne $null) {
+    	    #Replace LinksList in Resort standrd value
+    		$standardValues_ResortPage = Get-Item -Path $pathStandardValues_ResortPage;
+    
+    		$newRenderingDefinition = Get-Item -Path $pathRendering_HotelsWithReviews | New-Rendering
+    		$oldRenderingDefinition = Get-Rendering -Item $standardValues_ResortPage -Rendering $rendering_LinkList;
+    
+    		if ($oldRenderingDefinition -ne $null) {
+    			Switch-Rendering -Item $standardValues_ResortPage -Instance $oldRenderingDefinition -NewRendering $newRenderingDefinition;
+    			Write-Host "Rendering LinksList $($oldRenderingDefinition.ItemID) replaced with HotelsWithReviews $($newRenderingDefinition.ItemID)";
+    		}
+    		
+    		#Find links for Regions and replace LinksList there
+    		$references_LinkList = Get-ItemReferrer -Item $rendering_LinkList | Where-Object { ($_.TemplateName -eq 'Region') };
+    		foreach ($reference in $references_LinkList) {
+    			$oldRenderingDefinition = Get-Rendering -Item $reference -Rendering $rendering_LinkList;
+    
+    			if ($oldRenderingDefinition -ne $null) {
+    				Switch-Rendering -Item $reference -Instance $oldRenderingDefinition -NewRendering $newRenderingDefinition;
+    				Write-Host "Rendering LinkList replaced with HotelWithReviews component on $($reference.DisplayName) $($reference.ID)";
+    			}
+    		}
+    
+    		Remove-Item -Path $pathRendering_LinkList;
+    		Write-Host "Rendering LinkList $($rendering_LinkList.ID) removed";
+    	} else {
+    		Write-Host "Rendering LinksList not found";
+    	}
+    }
+    
+    
+    RemoveFeaturedRegions;
+    RemoveAllRegions;  
+    ReplaceLinksList; 
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 200
+Languages:
+- Language: en
+  Fields:
+  - ID: "b5e02ad9-d56f-4c41-a065-a133db87bdeb"
+    Hint: __Display name
+    Value: "EHD-397 - Clean up DG"
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20191023T135555Z

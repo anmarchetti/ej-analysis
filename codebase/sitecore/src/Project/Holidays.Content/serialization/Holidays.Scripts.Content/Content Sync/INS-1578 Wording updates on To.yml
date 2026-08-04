@@ -1,0 +1,121 @@
+﻿---
+ID: "e8e97008-78fe-4ac2-9e89-621128190485"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-1578 Wording updates on Tourist Tax dictionaries"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Set-TranslatedFieldValue (
+    	[Parameter(Mandatory = $true)]
+    	[Sitecore.Data.Items.Item]$sourceItem,
+    
+    	[Parameter(Mandatory = $true)]
+    	[string]$lang,
+    
+    	[Parameter(Mandatory = $true)]
+    	[string]$fieldName,
+    
+    	[Parameter(Mandatory = $true)]
+    	[string]$fieldValue
+    ) {
+    	$targetLangItem = Get-Item -Path $sourceItem.Paths.FullPath -Language $lang
+    	if ($null -eq $targetLangItem -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $sourceItem -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+    		$targetLangItem = Get-Item -Path $sourceItem.Paths.FullPath -Language $lang
+    	}
+    	
+    	$targetLangItem.Editing.BeginEdit()
+    	$targetLangItem[$fieldName] = $fieldValue
+    	$targetLangItem.Editing.EndEdit() | Out-Null
+    	Write-Host ("Updated field '{0}' for language '{1}' on item '{2}'" -f $fieldName,$lang,$targetLangItem.Paths.FullPath)
+    }
+    
+    function Update-Translations {
+    	param(
+    		[string]$dictionaryPath,
+    		[string]$englishText,
+    		[string]$germanText,
+    		[string]$frenchText
+    	)
+    
+    
+    	$item = Get-Item -Path $dictionaryPath -ErrorAction SilentlyContinue
+    
+    	if ($null -ne $item) {
+    		Set-TranslatedFieldValue -sourceItem $item -lang "en" -fieldName "Phrase" -fieldValue $englishText
+    
+    		if (![string]::IsNullOrWhiteSpace($germanText)) {
+    		    @( "de-DE","de-CH") | ForEach-Object {
+    				Set-TranslatedFieldValue -sourceItem $item -lang $_ -fieldName "Phrase" -fieldValue $germanText
+    			}
+    		}
+    
+    		if (![string]::IsNullOrWhiteSpace($frenchText)) { 
+    		    @( "fr-FR","fr-CH") | ForEach-Object {
+    				Set-TranslatedFieldValue -sourceItem $item -lang $_ -fieldName "Phrase" -fieldValue $frenchText
+    			}
+    		}
+    	}
+    }
+    
+    $holidaysDictionaryPath = "master:/sitecore/content/EasyJet/Holidays/Dictionary"
+    $tradeDictionaryPath = "master:/sitecore/content/EasyJet/TradePortal/Dictionary"
+    
+    # Merchandising components label
+    $merchandisingLabelPath = "/Tourist Tax/Labels/Prices Include Local Tax"
+    $merchandisingLabelContent = "Prices shown include taxes and charges."
+    Update-Translations -dictionaryPath ($holidaysDictionaryPath + $merchandisingLabelPath) -englishText $merchandisingLabelContent
+    Update-Translations -dictionaryPath ($tradeDictionaryPath + $merchandisingLabelPath) -englishText $merchandisingLabelContent
+    
+    # Price labels
+    $noTaxLabelPath = "/Tourist Tax/Labels/Tax Not Applicable"
+    $noTaxLabelContent = "No taxes &amp; charges due"
+    Update-Translations -dictionaryPath ($holidaysDictionaryPath + $noTaxLabelPath) -englishText $noTaxLabelContent
+    Update-Translations -dictionaryPath ($tradeDictionaryPath + $noTaxLabelPath) -englishText $noTaxLabelContent
+    
+    $priceLabelPath = "/Tourist Tax/Labels/Add Local Tax"
+    $priceLabelContent = "+&pound;{price} in taxes &amp; charges"
+    Update-Translations -dictionaryPath ($holidaysDictionaryPath + $priceLabelPath) -englishText $priceLabelContent
+    Update-Translations -dictionaryPath ($tradeDictionaryPath + $priceLabelPath) -englishText $priceLabelContent
+    
+    $pricePPLabelPath = "/Tourist Tax/Labels/Add Local Tax Per Person"
+    $pricePPLabelContent = "+&pound;{price} pp in taxes &amp; charges"
+    Update-Translations -dictionaryPath ($holidaysDictionaryPath + $pricePPLabelPath) -englishText $pricePPLabelContent
+    Update-Translations -dictionaryPath ($tradeDictionaryPath + $pricePPLabelPath) -englishText $pricePPLabelContent
+    
+    # Tooltips
+    $genericTooltipPath = "/Tourist Tax/Tooltips/Generic Content"
+    $genericTooltipContent = "Price includes tourist taxes &amp; charges where applicable, payable at the property. A full breakdown will be shown in the checkout."
+    Update-Translations -dictionaryPath ($holidaysDictionaryPath + $genericTooltipPath) -englishText $genericTooltipContent
+    Update-Translations -dictionaryPath ($tradeDictionaryPath + $genericTooltipPath) -englishText $genericTooltipContent
+    
+    $noTaxTooltipPath = "/Tourist Tax/Tooltips/No Tax Tooltip"
+    $noTaxTooltipContent = "At the time of booking, we're not aware of any taxes or additional charges payable at the property."
+    Update-Translations -dictionaryPath ($holidaysDictionaryPath + $noTaxTooltipPath) -englishText $noTaxTooltipContent
+    Update-Translations -dictionaryPath ($tradeDictionaryPath + $noTaxTooltipPath) -englishText $noTaxTooltipContent
+    
+    $exchangeTooltipPath = "/Tourist Tax/Tooltips/Exchange Tax Content"
+    $exchangeTooltipContent = @"
+    <span>&pound;{touristTax} of taxes &amp; charges are to be paid at the property.</span> <br />
+    <span>Pay in local currency approx. {currencyCode} {touristTaxLocal}.</span> <br />
+    <span>Based on current exchange rate {exchangeRate}.</span> <br />
+    <span>Exchange rate and local taxes may change before you pay at the hotel.</span>
+    "@
+    
+    Update-Translations -dictionaryPath ($holidaysDictionaryPath + $exchangeTooltipPath) -englishText $exchangeTooltipContent
+    Update-Translations -dictionaryPath ($tradeDictionaryPath + $exchangeTooltipPath) -englishText $exchangeTooltipContent
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260324T132019Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

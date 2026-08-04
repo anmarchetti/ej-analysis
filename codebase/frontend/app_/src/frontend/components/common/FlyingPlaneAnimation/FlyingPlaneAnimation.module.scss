@@ -1,0 +1,128 @@
+$base-step: 1000ms;
+
+.animationContainer {
+    display: flex;
+    width: 192px;
+}
+
+.dots {
+    display: flex;
+}
+
+.dot {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    margin: 8px;
+    background: #D7E2E5;
+    border-radius: 50%;
+    animation: dot-1 5 * $base-step ease-in-out infinite;
+}
+
+.dot_2 {
+    animation: dot-2 5 * $base-step ease-in-out infinite;
+}
+
+.dot_3 {
+    animation: dot-3 5 * $base-step ease-in-out infinite;
+}
+
+.dot_4 {
+    animation: dot-4 5 * $base-step ease-in-out infinite;
+}
+
+.dot_5 {
+    animation: dot-5 5 * $base-step ease-in-out infinite;
+}
+
+.planeIcon {
+    z-index: 1;
+    height: 32px;
+    animation: plane-desktop 5 * $base-step ease-in-out infinite;
+}
+
+@keyframes dot-1 {
+    0% {
+        background: #D7E2E5;
+        transform: translate(0, 0);
+    }
+
+    20%, 100% {
+        background: $colorOrange;
+        transform: translate(-32px, 0);
+    }
+}
+
+@keyframes dot-2 {
+    0%, 20% {
+        background: #D7E2E5;
+        transform: translate(0, 0);
+    }
+
+    40%, 100% {
+        background: $colorOrange;
+        transform: translate(-32px, 0);
+    }
+}
+
+@keyframes dot-3 {
+    0%, 40% {
+        background: #D7E2E5;
+        transform: translate(0, 0);
+    }
+
+    60%, 100% {
+        background: $colorOrange;
+        transform: translate(-32px, 0);
+    }
+}
+
+@keyframes dot-4 {
+    0%, 60% {
+        background: #D7E2E5;
+        transform: translate(0, 0);
+    }
+
+    80%, 100% {
+        background: $colorOrange;
+        transform: translate(-32px, 0);
+    }
+}
+
+@keyframes dot-5 {
+    0%, 80% {
+        background: #D7E2E5;
+        transform: translate(0, 0);
+    }
+
+    100% {
+        background: $colorOrange;
+        transform: translate(-32px, 0);
+    }
+}
+
+@keyframes plane-desktop {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    20% {
+        transform: translate(32px, 0);
+    }
+
+    40% {
+        transform: translate(64px, 0);
+    }
+
+    60% {
+        transform: translate(96px, 0);
+    }
+
+    80% {
+        transform: translate(128px, 0);
+    }
+
+    100% {
+        transform: translate(160px, 0);
+    }
+}

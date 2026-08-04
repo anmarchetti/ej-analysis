@@ -1,0 +1,48 @@
+﻿---
+ID: "5ac420e0-fbf0-41d6-9194-11bb90efaf10"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/BOOK-1171 - social proofing settings"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Settings/Social Proofing Settings"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/Social Proofing Settings"
+            Fields      = @{
+                "IsSocialProofingEnabled" = @{
+                    "de-CH" = "0"
+                    "en" = "1"
+                    "fr-FR" = "0"
+                    "de-DE" = "0"
+                    "fr-CH" = "0"
+                }
+            }
+        },
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Settings/Social Proofing Settings"
+            TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/Social Proofing Settings"
+            Fields      = @{
+                "IsSocialProofingEnabled" = @{
+                    "en" = "0"
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250704T131940Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

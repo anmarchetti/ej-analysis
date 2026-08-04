@@ -1,0 +1,215 @@
+﻿---
+ID: "2f0c513b-7a88-48c7-8092-36a408f1552f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-1163 view bookings"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+        
+        $pagePath = "/sitecore/content/EasyJet/Holidays/Home/Login"
+        $loginFormRenderingId = "{AB955C69-CF5B-460C-97EB-EB15C06F9911}"
+        $flightAndHotelRenderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Expandable Mobile Banner"
+        $flightAndHotelDatasoursePath = "/sitecore/content/EasyJet/Holidays/Data/Flight And Hotel Banner"
+        $flightAndHotelTemplatePath = "/sitecore/templates/Feature/PageContent/Flight and Hotel Banner" 
+        
+        $pagePath2 = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings"
+        $viewBookingsRenderingId = "{E0130087-EFD0-432B-9DA2-0463D3B8B89D}"
+            
+            
+                            $page = Get-Item -Path $pagePath
+                            $loginFormRenderings = Get-Rendering -Item $page | Where-Object {$_.ItemId -eq $loginFormRenderingId} 
+                            
+                            $page2 = Get-Item -Path $pagePath2
+                            $viewBookingsRenderings = Get-Rendering -Item $page2 | Where-Object {$_.ItemId -eq $viewBookingsRenderingId} 
+                            
+                            $flightAndHotelRendering = Get-Item -Path $flightAndHotelRenderingPath
+                            $flightAndHotelInstance = New-Rendering -Item $flightAndHotelRendering
+                            
+                            Add-Rendering -Item $page -Instance $flightAndHotelInstance -Index 2 -Placeholder "/body/flight-and-hotel-banner-$($loginFormRenderings[0].UniqueId)-0" -DataSource $flightAndHotelDatasoursePath
+                            Add-Rendering -Item $page2 -Instance $flightAndHotelInstance -Index 1 -Placeholder "/body/flight-and-hotel-banner-$($viewBookingsRenderings[0].UniqueId)-0" -DataSource $flightAndHotelDatasoursePath
+        
+                             $content = @(
+                                                       @{
+                                                         Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/Page Components/View Bookings"
+                                                         TemplatePath = "/sitecore/templates/Feature/Destinations/View Bookings"
+                                                         Fields      = @{
+                                                             "FlightHotelPillIcon" = @{
+                                                                 "en" = "<image mediaid='{A93190A5-300B-4A99-9D0B-3E2D4A350EC8}' width='54' height='12' />"
+                                                                 "fr-CH" = "<image mediaid='{A93190A5-300B-4A99-9D0B-3E2D4A350EC8}' width='54' height='12' />"
+                                                                 "de-CH" = "<image mediaid='{A93190A5-300B-4A99-9D0B-3E2D4A350EC8}' width='54' height='12' />"
+                                                                 "fr-FR" ="<image mediaid='{A93190A5-300B-4A99-9D0B-3E2D4A350EC8}' width='54' height='12' />"
+                                                                 "de-DE" = "<image mediaid='{A93190A5-300B-4A99-9D0B-3E2D4A350EC8}' width='54' height='12' />"
+                                                             }
+                                                             "RegularPillIcon" = @{
+                                                                 "en" = "<image mediaid='{1CB9AEA8-F299-4483-9450-A0EAAF5D3504}' width='52' height='32' />"
+                                                                 "fr-CH" = "<image mediaid='{1CB9AEA8-F299-4483-9450-A0EAAF5D3504}' width='52' height='32' />"
+                                                                 "de-CH" = "<image mediaid='{1CB9AEA8-F299-4483-9450-A0EAAF5D3504}' width='52' height='32' />"
+                                                                 "fr-FR" ="<image mediaid='{1CB9AEA8-F299-4483-9450-A0EAAF5D3504}' width='52' height='32' />"
+                                                                 "de-DE" = "<image mediaid='{1CB9AEA8-F299-4483-9450-A0EAAF5D3504}' width='52' height='32' />"
+                                                             }
+                                                             "FlightHotelPillText" = @{
+                                                                 "en" = "Flight + Hotel"
+                                                                 "fr-CH" = "Flight + Hotel"
+                                                                 "de-CH" = "Flight + Hotel"
+                                                                 "fr-FR" ="Flight + Hotel"
+                                                                 "de-DE" = "Flight + Hotel"
+                                                             }
+                                                         }
+                                                      }
+                                                      
+                                                       @{
+                                                         Path         = $flightAndHotelDatasoursePath
+                                                         TemplatePath = $flightAndHotelTemplatePath
+                                                         Fields      = @{
+                                                              "Title" = @{
+                                                                 "en" = "Looking for a Flight only booking?"
+                                                                 "fr-CH" = "Vous rechercher une réservation de vols uniquement?"
+                                                                 "de-CH" = "Suchst du nach einer Flugbuchung bei easyJet?"
+                                                                 "fr-FR" ="Vous rechercher une réservation de vols uniquement?"
+                                                                 "de-DE" = "Suchst du nach einer Flugbuchung bei easyJet?"
+                                                             }
+        
+                                                             "Description" = @{
+                                                                 "en" = "Flight only bookings are managed on the easyjet airline website, where you can view and manage your  details."
+                                                                 "fr-CH" = "Les réservations de vols uniquement sont gérées sur le site de la compagnie aérienne easyJet, où vous pouvez consulter et gérer vos informations."
+                                                                 "de-CH" = "Buchungen, die nur den Flug betreffen, werden auf der easyJet Website verwaltet. Hier kannst du deine Buchungsdetails einsehen und bearbeiten."
+                                                                 "fr-FR" ="Les réservations de vols uniquement sont gérées sur le site de la compagnie aérienne easyJet, où vous pouvez consulter et gérer vos informations."
+                                                                 "de-DE" = "Buchungen, die nur den Flug betreffen, werden auf der easyJet Website verwaltet. Hier kannst du deine Buchungsdetails einsehen und bearbeiten."
+                                                             }
+        
+                                                             "Icon" = @{
+                                                                 "en" = "<image mediaid='{CF25BE3C-DE61-49F6-B331-3B1F3909E3DC}' />"
+                                                                 "fr-CH" = "<image mediaid='{CF25BE3C-DE61-49F6-B331-3B1F3909E3DC}' />"
+                                                                 "de-CH" = "<image mediaid='{CF25BE3C-DE61-49F6-B331-3B1F3909E3DC}' />"
+                                                                 "fr-FR" ="<image mediaid='{CF25BE3C-DE61-49F6-B331-3B1F3909E3DC}' />"
+                                                                 "de-DE" = "<image mediaid='{CF25BE3C-DE61-49F6-B331-3B1F3909E3DC}' />"
+                                                             }
+                                                             "CTA" = @{
+                                                                 "en" = "<link text='Go to easyjet airline' linktype='external' target='_blank' url='https://www.easyjet.com/en'/>"
+                                                                 "fr-CH" = "<link text='Aller sur easyJet' linktype='external' target='_blank' url='https://www.easyjet.com/ch-fr'/>"
+                                                                 "de-CH" = "<link text='Zu easyJet.ch' linktype='external' target='_blank' url='https://www.easyjet.com/ch-de'/>"
+                                                                 "fr-FR" ="<link text='Aller sur easyJet' linktype='external' target='_blank' url='https://www.easyjet.com/fr'/>"
+                                                                 "de-DE" = "<link text='Zu easyJet.de' linktype='external' target='_blank' url='https://www.easyjet.com/de' />"
+                                                             }
+                                                         }
+                                                      }
+                                         )
+        
+                                     ImportContent -itemsToCreate $content
+                                     
+                                     
+                                     
+                                     $content2 = @(
+                                                       @{
+                                                         Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Amend Restrictions F and H/Time Warning"
+                                                         TemplatePath = "/sitecore/templates/Feature/Destinations/Amend/Amend Restriction Item"
+                                                         Fields      = @{
+                                                             "Link" = @{
+                                                                 "en" = "<link text='Get help' linktype='external' url='/en/holidays/flight-plus-hotel/help' anchor='' target='_blank' />"
+                                                             }
+                                                         }
+                                                      }
+                                                      
+                                                      @{
+                                                         Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Bottom Help Links F and H/Help Centre"
+                                                         TemplatePath = "/sitecore/templates/Feature/PageContent/Help Link"
+                                                         Fields      = @{
+                                                             "Link" = @{
+                                                                 "en" = "<link text='Get help' linktype='external' url='/en/holidays/flight-plus-hotel/help' anchor='' target='_blank' />"
+                                                             }
+                                                         }
+                                                      }
+                                                      
+                                                       @{
+                                                         Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Booking Cancelled/Page Components/Cancelation Breakdown F and H"
+                                                         TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Cancellation Breakdown Folder/Cancellation Breakdown"
+                                                         Fields      = @{
+                                                             "BottomText" = @{
+                                                                 "en" = "Have a problem with your cancellation or refund? <a href='/en/holidays/flight-plus-hotel/help/contact-us'>Get in touch</a> with our support team."
+                                                             }
+                                                         }
+                                                      }
+                                                      
+                                                      @{
+                                                         Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel/Page Components/Contact Us Banner F and H/Pre travel"
+                                                         TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Popup Channel"
+                                                         Fields      = @{
+                                                             "Description" = @{
+                                                                 "en" = "<p>If you have any questions about your holiday, check our <a href='/en/holidays/flight-plus-hotel/help' target='_blank'>help centre</a>&nbsp;to see if we have the answer for you. We also have our easyJet holidays chatbot in the bottom right corner of this page.<br />If you still can&rsquo;t find the information you&rsquo;re looking for, you can reach out to our team by visiting our <a href='/en/holidays/flight-plus-hotel/help/contact-us' target='_blank'>contact us</a>&nbsp;page</p>"
+                                                             }
+                                                         }
+                                                      }
+                                                      @{
+                                                         Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination/Page Components/Contact Us Banner F and H/Chat to us"
+                                                         TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Popup Channel"
+                                                         Fields      = @{
+                                                             "Description" = @{
+                                                                 "en" = "<p>If you have any questions about your holiday, check our <strong><a style='text-decoration: underline;' href='/en/holidays/flight-plus-hotel/help' target='_blank'>help centre</a></strong>&nbsp;to see if we have the answer for you. We also have our easyJet holidays chatbot in the bottom right corner of this page.<br />If you still can&rsquo;t find the information you&rsquo;re looking for, you can reach out to our team by visiting our <strong><a style='text-decoration: underline;' id='live-chat-btn'>live chat</a></strong></p>"
+                                                             }
+                                                         }
+                                                      }
+                                                       @{
+                                                         Path         = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H/Credit And Cash Refund"
+                                                         TemplatePath = "/sitecore/templates/Feature/Destinations/Refund Info"
+                                                         Fields      = @{
+                                                             "Description" = @{
+                                                                 "en" = "Has something changed and you need to cancel? You're able to cancel this booking with ease online.&nbsp;<strong><a style='text-decoration: underline;' href='/en/holidays/flight-plus-hotel/booking-conditions' target='_blank'>Terms and conditions apply.</a></strong>"
+                                                             }
+                                                         }
+                                                      }
+                                                       @{
+                                                         Path         = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H/Credit Refund By Destination rules"
+                                                         TemplatePath = "/sitecore/templates/Feature/Destinations/Refund Info"
+                                                         Fields      = @{
+                                                             "Description" = @{
+                                                                 "en" = "Not sure if this booking's still right for you? You&rsquo;re able to cancel your booking with ease online, in line with our <strong><a style='text-decoration: underline;' rel='noopener noreferrer' href='/en/holidays/flight-plus-hotel/booking-conditions' target='_blank'>booking conditions.</a></strong> So you can book something else instead."
+                                                             }
+                                                         }
+                                                      }
+                                                       @{
+                                                         Path         = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H/No Refund"
+                                                         TemplatePath = "/sitecore/templates/Feature/Destinations/Refund Info"
+                                                         Fields      = @{
+                                                             "Description" = @{
+                                                                 "en" = "Has something changed and you need to cancel? You're able to cancel this booking with ease online.&nbsp;<strong><a style='text-decoration: underline;' href='/en/holidays/flight-plus-hotel/booking-conditions' target='_blank'>Terms and conditions apply.</a></strong>"
+                                                             }
+                                                         }
+                                                      }
+                                                      @{
+                                                         Path         = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H/Only Credit Refund"
+                                                         TemplatePath = "/sitecore/templates/Feature/Destinations/Refund Info"
+                                                         Fields      = @{
+                                                             "Description" = @{
+                                                                 "en" = "Has something changed and you need to cancel? You're able to cancel this booking with ease online.&nbsp;<strong><a style='text-decoration: underline;' href='/en/holidays/flight-plus-hotel/booking-conditions' target='_blank'>Terms and conditions apply.</a></strong>"
+                                                             }
+                                                         }
+                                                      }
+                                                       @{
+                                                         Path         = "/sitecore/content/EasyJet/Holidays/Data/View Booking Data/Refund Infos F and H/Original Payment Refund"
+                                                         TemplatePath = "/sitecore/templates/Feature/Destinations/Refund Info"
+                                                         Fields      = @{
+                                                             "Description" = @{
+                                                                 "en" = "Has something changed and you need to cancel? You're able to cancel this booking with ease online.&nbsp;<strong><a style='text-decoration: underline;' href='/en/holidays/flight-plus-hotel/booking-conditions' target='_blank'>Terms and conditions apply.</a></strong>"
+                                                             }
+                                                         }
+                                                      }
+                                                    
+                                         )
+        
+                                     ImportContent -itemsToCreate $content2
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260615T165350Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

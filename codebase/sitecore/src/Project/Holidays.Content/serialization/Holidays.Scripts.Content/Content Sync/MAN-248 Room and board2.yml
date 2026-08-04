@@ -1,0 +1,127 @@
+﻿---
+ID: "2dda448b-b4ce-4a4c-88c5-5444699a9610"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/MAN-248 Room and board2"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Add-Or-Update-Page-Rendering ($page,$renderingPath,$renderingPlaceholder,$dataSourcePath,$parameters = @{}) {
+    	$renderingItem = Get-Item -Database "master" -Path $renderingPath -ErrorAction SilentlyContinue;
+    	$pageRenderingInstance = Get-Rendering -Item $page -PlaceHolder $renderingPlaceholder;
+    
+    	if ($pageRenderingInstance -eq $null) {
+    		$renderingInstance = $renderingItem | New-Rendering -PlaceHolder $renderingPlaceholder;
+    		Add-Rendering -Item $page -PlaceHolder $renderingPlaceholder -Instance $renderingInstance -DataSource $dataSourcePath -Parameter $params;
+    		Write-Host "Rendering instance added";
+    	}
+    	else {
+            Set-Rendering -Item $page -Instance $pageRenderingInstance -Parameter $parameters
+    		Write-Host $pageRenderingInstance "Already exists";
+    	}
+    }
+    
+    function create-lang-version ($item,$lang,$field,$value) {
+    	$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+    	if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+    		Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip
+    	}
+    
+    	if ($null -ne $field) {
+    		$targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang -ErrorAction SilentlyContinue;
+    		$targetLangItem.Editing.BeginEdit()
+    		$targetLangItem[$field] = $value
+    		$targetLangItem.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    function Get-Or-Create-Item ($path,$template) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue;
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType $template
+    	}
+    	return $item
+    }
+    
+    function Create-Folders ($slug = "") {
+    	$amendmentDataPath = "/sitecore/content/EasyJet/Holidays/Data/Amendment Data";
+    	$folderAnc = Get-Or-Create-Item -Path ($amendmentDataPath + $slug) -Template "{A87A00B1-E6DB-45AB-8B54-636FEC3B5523}";
+    
+    	Write-Host ($amendmentDataPath + $slug) ", folder was added/updated";
+    }
+    
+    $dataSourcePath = "/sitecore/content/EasyJet/Holidays/Data/Amendment Data/Room and board/Room and board popup";
+    $summaryPage = Get-Item "/sitecore/content/EasyJet/Holidays/Home/Booking/Change Hotel/Summary" -ErrorAction SilentlyContinue;
+    
+    # Creating folders for fields
+    Create-Folders;
+    Create-Folders -Slug "/Room and board";
+    
+    Get-Or-Create-Item -Path $dataSourcePath -Template "{92190C88-4D82-4366-8930-22FADD2CD5D2}"
+    
+    # Updating hotelChange page rendering: Amend/Amend Room And Board Popup
+    $changeHotelSummaryRenderingId = "{87265033-8DAA-4548-8FE4-E55E7DE99998}"
+    
+    $amendRoomAndBoardRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Amend/Amend Room And Board Popup";
+    $changeHotelSummaryRendering = Get-Rendering -Item $summaryPage | Where-Object { $_.ItemId -eq $changeHotelSummaryRenderingId }
+    
+    if ($changeHotelSummaryRendering -eq $null) {
+    	Write-Host "Amend Room And Board Popup rendering does not exists"
+    	return
+    }
+    
+    $amendRoomAndBoardPopoupRendering = "/body/amend-room-and-board-popup-$($changeHotelSummaryRendering.UniqueId)-0";
+    
+    Add-Or-Update-Page-Rendering -page $summaryPage -renderingPath $amendRoomAndBoardRenderingPath -renderingPlaceholder $amendRoomAndBoardPopoupRendering -dataSourcePath $dataSourcePath;
+    
+    # Updating hotelChange page rendering: Board Types
+    $amendRoomAndBoardPopupRenderingId = "{7464AF82-859C-4F2E-869A-83575F80F92E}"
+    $amendRoomAndBoardPopupRenderingRendering = Get-Rendering -Item $summaryPage | Where-Object { $_.ItemId -eq $amendRoomAndBoardPopupRenderingId }
+    
+    if ($amendRoomAndBoardPopupRenderingRendering -eq $null) {
+    	Write-Host "Board Types rendering does not exists"
+    	return
+    }
+    
+    $boardTypesRenderingPath = "/sitecore/layout/Renderings/Feature/Destinations/Board Types";
+    $boardTypesPath = "/sitecore/content/EasyJet/Holidays/Data/Amendment Data/Room and board/Board Types";
+    $boardTypesRenderingPlaceholder = "/body/amend-room-and-board-popup-$($changeHotelSummaryRendering.UniqueId)-0/board-types-$($amendRoomAndBoardPopupRenderingRendering.UniqueId)-0";
+    
+    $boardTypesItem = Get-Or-Create-Item -Path $boardTypesPath -Template "{635B2103-34B9-4D3B-840D-6BBEABC08A98}"
+    Add-Or-Update-Page-Rendering -page $summaryPage -renderingPath $boardTypesRenderingPath -renderingPlaceholder $boardTypesRenderingPlaceholder -dataSourcePath $boardTypesPath -Parameters @{ "isPostBooking" = "1" };
+    
+    $board = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Amendment Data/Room and board/Board Types"
+    
+    @( 'en') | % {
+    	Create-Lang-Version -Item $board -Lang $_ -Field "Title" -Value "Your board"
+    	Create-Lang-Version -Item $board -Lang $_ -Field "AlternativeBoardsTitleSingular" -Value "other board option available"
+    	Create-Lang-Version -Item $board -Lang $_ -Field "AlternativeBoardsTitlePlural" -Value "other board options available"
+    }
+    
+    @( 'de-CH','de-DE') | % {
+    	Create-Lang-Version -Item $board -Lang $_ -Field "Title" -Value "Ihr Vorstand"
+    	Create-Lang-Version -Item $board -Lang $_ -Field "AlternativeBoardsTitleSingular" -Value "andere Plattenoptionen verfügbar"
+    	Create-Lang-Version -Item $board -Lang $_ -Field "AlternativeBoardsTitlePlural" -Value "andere Plattenoptionen verfügbar"
+    }
+    
+    @( 'fr-CH','fr-FR') | % {
+    	Create-Lang-Version -Item $board -Lang $_ -Field "Title" -Value "Votre conseil d'administration"
+    	Create-Lang-Version -Item $board -Lang $_ -Field "AlternativeBoardsTitleSingular" -Value "autres options de cartes disponibles"
+    	Create-Lang-Version -Item $board -Lang $_ -Field "AlternativeBoardsTitlePlural" -Value "autres options de cartes disponibles"
+    }
+    
+    Write-Host $myBookingPage.Name "Render was updated"; 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241219T100708Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

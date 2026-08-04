@@ -1,0 +1,34 @@
+{
+  "Guid": "3b0bb031-f965-408c-a3c7-e22d09a57e9e",
+  "UpdatedAt": "2023-11-10T14:05:12.9932722Z",
+  "Title": "ModifyCustPayment 43c146d0-719a-4fa1-814b-b1778cec233d",
+  "Priority": 0,
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/EZYDMO/VRPWebservice/AniteGateway/AniteGateway.aspx",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "POST"
+    ],
+    "Body": {
+      "Matcher": {
+        "Name": "WildcardMatcher",
+        "Pattern": "*<p2:ModifyCustPaymentRequest xmlns:p1=\"AtComRes/Common\" xmlns:p2=\"AtComRes/ModifyCustPaymentRequest\"><p1:Adm><p1:SessId>580f370e-34b5-4982-a971-fbd705dbae2b@0</p1:SessId><p1:ReqId>43c146d0-719a-4fa1-814b-b1778cec233d</p1:ReqId>*",
+        "IgnoreCase": true
+      }
+    }
+  },
+  "Response": {
+      "Headers": {
+          "Content-Type": "application/xml; charset=utf-8"
+      },
+      "StatusCode": 200,
+      "BodyAsFile": "__admin/files/Atcom/commit/ModifyCustPayment_with_seats_43c146d0-719a.xml"
+  }
+}

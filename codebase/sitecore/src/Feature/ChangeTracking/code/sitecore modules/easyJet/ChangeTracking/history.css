@@ -1,0 +1,156 @@
+/*!
+[ExcludeFromCodeCoverage]
+*/
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font: normal 12px/1.5 "Helvetica Neue", sans-serif;
+    color: #666;
+    overflow-x: hidden;
+    padding-bottom: 50px;
+}  
+
+.tl-date {
+    
+}
+
+
+.timeline > ul > li {
+    list-style-type: none;
+    position: relative;
+    width: 3px;
+    margin: 0 150px;
+    padding-top: 18px;
+    background: #777;
+}
+ 
+.timeline > ul > li::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: inherit;
+}
+
+.timeline > ul > li.date::after {
+    width: 25px;
+    height: 25px;
+}
+
+.timeline > ul > li .tl-date {
+    position: relative;
+    top: -2px;
+    left: -70px;
+    width: 100px;  
+}
+
+.timeline > ul > li .tl-item {
+    position: relative;
+    top: -20px;
+    left: 15px;
+    width: 500px;  
+}
+
+
+.tl-changes-container {
+   margin-left:20px;
+}
+
+
+ul.tl-changes {
+    list-style-type: none;
+    padding-left:20px;
+}
+
+ul.tl-changes li {
+    
+}
+
+@keyframes hide {
+   from { background-color: red;}
+   to { background-color: white;}
+}
+
+
+.tl-changes-summary:hover {
+    color: #111;
+    cursor: pointer;
+}
+
+
+.hidden {
+    display: none;
+}
+
+
+.tl-versions {
+    list-style-type: none;
+    display:inline-block;
+    margin-left:10px;
+}
+
+.tl-versions li {
+    border:1px solid #444;
+    line-height:10px;
+    padding:2px;
+}
+
+.cs-item {
+    margin-top:5px;
+    text-decoration:underline;
+    font-weight:bold;
+}
+.cs-item[data-openuri]{
+    cursor:pointer;
+}
+#reloadButton {
+    cursor:pointer;
+}
+.red {
+    color:red;
+}
+.green {
+    color: green;
+}
+.grey {
+    color: #333;
+}
+
+.diff {
+    background: #fff;
+    padding: 5px;
+    box-shadow: 2px 2px 5px #888888;
+    margin:5px 0 0 50px;
+}
+
+.diffwrapper {
+    padding-bottom:20px;
+}
+
+#reloadButton {
+    margin-left:20px;
+    margin-top:10px;
+    padding: 5px;
+    background: #f0f0f0;
+    display:inline-block;
+}
+
+#reloadButton:hover {
+       background: #d0d0d0;
+}
+
+.tl-no-changes {
+    font-size:20px;
+    text-align:center;
+    
+}

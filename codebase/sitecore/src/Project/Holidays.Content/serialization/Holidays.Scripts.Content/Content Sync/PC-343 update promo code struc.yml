@@ -1,0 +1,139 @@
+﻿---
+ID: "23a4be07-2c83-4d17-b718-ea754ecabea2"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/PC-343 update promo code structure"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Update-PromoCode-Structure($parentPath){
+    
+    $parentItem = Get-Item -Path $parentPath
+    
+    if ($parentItem -eq $null -or -not $parentItem.HasChildren) {
+        Write-Host "Item not found or has no children." -ForegroundColor Red
+        return
+    }
+    
+    # Initialize hashtable for grouping
+    $groups = @{}
+    
+    foreach ($item in $parentItem.Children) {
+        $created = $item.Statistics.Created
+        $customerPromoCode = $item.Fields["CustomerPromoCode"].Value
+    
+        if ($created -eq $null -or [string]::IsNullOrWhiteSpace($customerPromoCode)) {
+            continue
+        }
+    
+        $itemName = $item.Name.Trim()
+    
+        # Extract item name prefix before digits/suffixes
+        if ($itemName -match "^(.*?)(\d+\s?[xXvV]?\d*)?$") {
+            $prefix = $matches[1].Trim()
+        } else {
+            $prefix = $itemName
+        }
+    
+        $month = $created.ToString("MMMM")
+        $groupKey = "$prefix - $month"
+    
+        if (-not $groups.ContainsKey($groupKey)) {
+            $groups[$groupKey] = @()
+        }
+    
+        $groups[$groupKey] += $item
+    }
+    
+    # Process each group
+    foreach ($groupKey in $groups.Keys) {
+        $items = $groups[$groupKey]
+        if ($items.Count -eq 0) { continue }
+    
+        # Check if group parent already exists
+        $existingGroup = Get-ChildItem -Path $parentItem.Paths.FullPath | Where-Object { $_.Name -eq $groupKey }
+        if ($existingGroup) {
+            Write-Host "Skipping '$groupKey' — already exists." -ForegroundColor Yellow
+            continue
+        }
+    
+        # Use first item as template to copy
+        $firstItem = $items[0]
+        $newGroupPath = "$($parentItem.Paths.FullPath)/$groupKey"
+        Copy-Item -Path $firstItem.Paths.FullPath -Destination $newGroupPath -Force
+        $copy = Get-Item -Path $newGroupPath
+    
+        foreach ($child in $items) {
+            $valuesByLanguage = @{}
+    
+            foreach ($lang in $child.Languages) {
+                $version = $child.Database.GetItem($child.ID, $lang)
+                if ($version.Versions.Count -gt 0) {
+                    $valuesByLanguage[$lang.Name] = @{
+                        AtcomPromoCode = $version.Fields["AtcomPromoCode"].Value
+                        MinimumSpend = $version.Fields["Budget"].Value
+                        MinimumSpendPerPerson = $version.Fields["PerPersonBudget"].Value
+                        DiscountAmountPerBooking = $version.Fields["DiscountAmountPerBooking"].Value
+                        PercentageDiscountPerBooking = $version.Fields["PercentageDiscountPerBooking"].Value
+                        AdultDiscountAmountPerPerson = $version.Fields["AdultDiscountAmountPerPerson"].Value
+                        AdultPercentageAmountPerPerson = $version.Fields["AdultPercentageAmountPerPerson"].Value
+                        ChildDiscountAmountPerPerson = $version.Fields["ChildDiscountAmountPerPerson"].Value
+                        ChildPercentageAmountPerPerson = $version.Fields["ChildPercentageAmountPerPerson"].Value
+                        IsPromotionInVoucherify = $version.Fields["IsPromotionInVoucherify"].Value
+                    }
+                }
+            }
+    
+            Set-ItemTemplate -Item $child -Template "/sitecore/templates/Foundation/Voucherify/Promotion/Promotion Code"
+    
+            foreach ($langName in $valuesByLanguage.Keys) {
+                $lang = [Sitecore.Globalization.Language]::Parse($langName)
+                $targetVersion = $child.Database.GetItem($child.ID, $lang)
+    
+                if ($targetVersion -ne $null) {
+                    $fieldValues = $valuesByLanguage[$langName]
+    
+                    $targetVersion.Editing.BeginEdit()
+                    $targetVersion.Fields["AtcomPromoCode"].Value = $fieldValues["AtcomPromoCode"]
+                    $targetVersion.Fields["MinimumSpend"].Value = $fieldValues["MinimumSpend"]
+                    $targetVersion.Fields["MinimumSpendPerPerson"].Value = $fieldValues["MinimumSpendPerPerson"]
+                    $targetVersion.Fields["DiscountAmountPerBooking"].Value = $fieldValues["DiscountAmountPerBooking"]
+                    $targetVersion.Fields["PercentageDiscountPerBooking"].Value = $fieldValues["PercentageDiscountPerBooking"]
+                    $targetVersion.Fields["AdultDiscountAmountPerPerson"].Value = $fieldValues["AdultDiscountAmountPerPerson"]
+                    $targetVersion.Fields["AdultPercentageAmountPerPerson"].Value = $fieldValues["AdultPercentageAmountPerPerson"]
+                    $targetVersion.Fields["ChildDiscountAmountPerPerson"].Value = $fieldValues["ChildDiscountAmountPerPerson"]
+                    $targetVersion.Fields["ChildPercentageAmountPerPerson"].Value = $fieldValues["ChildPercentageAmountPerPerson"]
+                    $targetVersion.Fields["IsPromotionInVoucherify"].Value = $fieldValues["IsPromotionInVoucherify"]
+                    $targetVersion.Editing.EndEdit()
+                }
+            }
+    
+            Move-Item -Path $child.Paths.FullPath -Destination $copy.Paths.FullPath
+        }
+    
+        Write-Host "✅ Created group '$groupKey' with items:" -ForegroundColor Cyan
+        $items | ForEach-Object { Write-Host " - $($_.Name)" }
+    }
+    }
+    
+    Update-PromoCode-Structure -parentPath "/sitecore/content/EasyJet/TradePortal/Data/Promotions/UK"
+    Update-PromoCode-Structure -parentPath "/sitecore/content/EasyJet/Holidays/Data/Promotions/Promotions - All markets"
+    Update-PromoCode-Structure -parentPath "/sitecore/content/EasyJet/Holidays/Data/Promotions/Promotions - France"
+    Update-PromoCode-Structure -parentPath "/sitecore/content/EasyJet/Holidays/Data/Promotions/Promotions - Germany"
+    Update-PromoCode-Structure -parentPath "/sitecore/content/EasyJet/Holidays/Data/Promotions/Promotions - Swiss"
+    Update-PromoCode-Structure -parentPath "/sitecore/content/EasyJet/Holidays/Data/Promotions/Promotions - UK"
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250806T162737Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

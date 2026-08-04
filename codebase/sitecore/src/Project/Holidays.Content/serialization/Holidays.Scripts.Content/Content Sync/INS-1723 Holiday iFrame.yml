@@ -1,0 +1,92 @@
+﻿---
+ID: "e3574253-eac9-4ce9-a74b-e39e40f47061"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/INS-1723 Holiday iFrame"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Set-TranslatedFieldValue(
+        [Parameter(Mandatory = $true)]
+        [Sitecore.Data.Items.Item]$sourceItem,
+    
+        [Parameter(Mandatory = $true)]
+        [string]$lang,
+    
+        [Parameter(Mandatory = $true)]
+        [string]$fieldName,
+    
+        [Parameter(Mandatory = $true)]
+        [string]$fieldValue
+    ) {
+        $targetLangItem = Get-Item -Path $sourceItem.Paths.FullPath -Language $lang
+        if ($null -eq $targetLangItem -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $sourceItem -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+        }
+    
+        $targetLangItem = Get-Item -Path $sourceItem.Paths.FullPath -Language $lang
+        $targetLangItem.Editing.BeginEdit()
+        $targetLangItem[$fieldName] = $fieldValue
+        $targetLangItem.Editing.EndEdit() | Out-Null
+        Write-Host ("Updated field '{0}' for language '{1}' on item '{2}'" -f $fieldName, $lang, $targetLangItem.Paths.FullPath)
+    }
+    
+    $iframePromotingHeaderPath = "master:/sitecore/content/EasyJet/Holidays/Home/Iframe Promoting Holidays/Page Components/Iframe Holidays Promoting Header"
+    $iframePromotingHeaderItem = Get-Item -Path $iframePromotingHeaderPath -ErrorAction SilentlyContinue
+    
+    if ($null -ne $iframePromotingHeaderItem) {
+        Set-TranslatedFieldValue -sourceItem $iframePromotingHeaderItem -lang "en" -fieldName "Title" -fieldValue "Have you thought about a package holiday? Includes <strong>Hotel and Flight</strong>"
+        Set-TranslatedFieldValue -sourceItem $iframePromotingHeaderItem -lang "en" -fieldName "CityBreakTitle" -fieldValue "Have you thought about a city break? Includes&nbsp;<strong>Hotel and Flight</strong>"
+        Set-TranslatedFieldValue -sourceItem $iframePromotingHeaderItem -lang "en" -fieldName "Subtitle" -fieldValue "Departing <strong>{date}</strong> for <strong>{duration}</strong> for <strong>{people}</strong>"
+        @("de-DE", "de-CH") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $iframePromotingHeaderItem -lang $_ -fieldName "Title" -fieldValue "Wie wär's mit einer Pauschalreise? <strong>Flüge und Hotel</strong> in einem Paket"
+            Set-TranslatedFieldValue -sourceItem $iframePromotingHeaderItem -lang $_ -fieldName "CityBreakTitle" -fieldValue "Wie wär's mit einem Städtetrip? <strong>Flüge und Hotel</strong> in einem Paket"
+            Set-TranslatedFieldValue -sourceItem $iframePromotingHeaderItem -lang $_ -fieldName "Subtitle" -fieldValue "Abreise am <strong>{date}</strong> für <strong>{duration}</strong> für <strong>{people}</strong>"
+        }
+        @("fr-FR", "fr-CH") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $iframePromotingHeaderItem -lang $_ -fieldName "Title" -fieldValue "Envie de partir en vacances avec nous ? <strong>Les vols et l'hôtel</strong> sont compris"
+            Set-TranslatedFieldValue -sourceItem $iframePromotingHeaderItem -lang $_ -fieldName "CityBreakTitle" -fieldValue "Envie d'une escapade en ville ? <strong>Les vols et l'hôtel</strong> sont compris"
+            Set-TranslatedFieldValue -sourceItem $iframePromotingHeaderItem -lang $_ -fieldName "Subtitle" -fieldValue "Départ <strong>{date}</strong> pour <strong>{duration}</strong> pour <strong>{people}</strong>"
+        }
+    }
+    
+    $showMoreWithPricePath = "master:/sitecore/content/EasyJet/Holidays/Dictionary/Iframe Promoting Holidays/Buttons/Show More With Price"
+    $showMoreWithPriceItem = Get-Item -Path $showMoreWithPricePath -ErrorAction SilentlyContinue
+    
+    if ($null -ne $showMoreWithPriceItem) {
+        Set-TranslatedFieldValue -sourceItem $showMoreWithPriceItem -lang "en" -fieldName "Phrase" -fieldValue "Flight and hotel deals from {price}"
+        @("de-DE", "de-CH") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $showMoreWithPriceItem -lang $_ -fieldName "Phrase" -fieldValue "Deals für Flüge und Hotel ab {price}"
+        }
+        @("fr-FR", "fr-CH") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $showMoreWithPriceItem -lang $_ -fieldName "Phrase" -fieldValue "Séjours comprenant les vols et l'hôtel à partir de {price}"
+        }
+    }
+    
+    $showMorePath = "master:/sitecore/content/EasyJet/Holidays/Dictionary/Iframe Promoting Holidays/Buttons/Show More"
+    $showMoreItem = Get-Item -Path $showMorePath -ErrorAction SilentlyContinue
+    
+    if ($null -ne $showMoreItem) {
+        Set-TranslatedFieldValue -sourceItem $showMoreItem -lang "en" -fieldName "Phrase" -fieldValue "Flight and hotel deals"
+        @("de-DE", "de-CH") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $showMoreItem -lang $_ -fieldName "Phrase" -fieldValue "Deals für Flüge und Hotel"
+        }
+        @("fr-FR", "fr-CH") | ForEach-Object {
+            Set-TranslatedFieldValue -sourceItem $showMoreItem -lang $_ -fieldName "Phrase" -fieldValue "Séjours comprenant les vols et l'hôtel"
+        }
+    }
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260324T132019Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

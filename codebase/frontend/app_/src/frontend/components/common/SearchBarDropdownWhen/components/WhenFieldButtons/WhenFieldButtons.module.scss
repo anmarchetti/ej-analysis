@@ -1,0 +1,26 @@
+.clearButton {
+    display: none;
+
+    &.shown {
+        display: block;
+    }
+
+    @include media-breakpoint-down(sm) {
+        display: block;
+    }
+}
+
+.applyButton:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px $colorBlack;
+}
+
+.nightsLabel {
+    display: none;
+
+    @include media-breakpoint-down(sm) {
+        &.shown {
+            display: block;
+        }
+    }
+}

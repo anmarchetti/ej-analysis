@@ -1,0 +1,32 @@
+﻿---
+ID: "bdfbff63-ea50-42a6-82e6-bbe1fda892ab"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/CSSDA-1421 Change name link"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $PDDataSource = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Passenger Details/Page Components/Attention Passengers Count Change Message";
+    
+    if ($PDDataSource -ne $null) {
+    	$PDDataSource.Editing.BeginEdit();
+    
+    	$PDDataSource["Description"] = "On this page, you can make one free of charge change of up to three characters to the full names of anyone on your booking (excluding the lead passenger). If you need to change more than {amount} characters, or want to add or remove anyone from your booking, please <a href=`"~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z`">get in touch</a>&nbsp;with our team.";
+    	Write-Host "PDDataSource updated";
+    
+    	$PDDataSource.Editing.EndEdit();
+    } 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240417T091054Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

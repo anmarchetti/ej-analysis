@@ -1,0 +1,91 @@
+.wrapper {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.actions {
+    display: flex;
+    gap: 20px;
+    margin-left: auto;
+
+    @include media-breakpoint-down(md) {
+        gap: 8px;
+    }
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    font-family: $fontRoundedHeadline;
+    font-size: 16px;
+    font-weight: 700;
+    color: $colorBlack;
+}
+
+.counter {
+    display: inline-block;
+    min-width: 28px;
+    margin-right: 15px;
+    padding: 2px 7px;
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    line-height: 1.2;
+    color: $colorWhite;
+    text-align: center;
+    background-color: $clrTextMainLight;
+    border-radius: 10px;
+
+    @include media-breakpoint-down(md) {
+        font-size: 12px;
+    }
+}
+
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    margin-right: 20px;
+    color: $colorWhite;
+    background-color: $colorOrange;
+    border-radius: 50%;
+
+    @include media-breakpoint-down(md) {
+        width: 20px;
+        height: 20px;
+        margin-right: 15px;
+    }
+
+    svg {
+        width: 65%;
+        height: 65%;
+    }
+}
+
+.cancelButton,
+.removeButton {
+    font-size: 16px;
+    flex: 1 0 !important;
+    min-width: auto !important;
+
+    @include media-breakpoint-down(md) {
+        padding: 8px !important;
+        font-size: 14px;
+    }
+
+    svg {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 0.5em;
+        vertical-align: top;
+
+        @include media-breakpoint-down(sm) {
+            width: 16px;
+            height: 16px;
+        }
+    }
+}

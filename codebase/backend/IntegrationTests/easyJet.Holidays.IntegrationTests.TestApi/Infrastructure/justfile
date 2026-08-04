@@ -1,0 +1,19 @@
+export AWS_PROFILE := env('AWS_PROFILE', 'ejh-web-dev')
+
+help:
+  @just --list
+
+init *args:
+  terraform init -backend-config=".config.local.tfbackend" {{ args }}
+
+workspace:
+  terraform workspace select 'Web-CI-IntegrationTestsApi'
+
+plan:
+  terraform plan --var-file='vars/variables.local.tfvars'
+
+apply:
+  terraform apply --var-file='vars/variables.local.tfvars'
+
+fmt:
+  terraform fmt -recursive

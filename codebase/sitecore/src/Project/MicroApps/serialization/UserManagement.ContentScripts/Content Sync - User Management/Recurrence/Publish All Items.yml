@@ -1,0 +1,49 @@
+﻿---
+ID: "a765abb3-becd-46cf-ba21-e7242dda0499"
+Parent: "dd053204-f2c2-4665-b954-4879e68bc982"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync - User Management/Recurrence/Publish All Items"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $database = Get-Database -Name "master"
+    
+    $appName = "UserManagement";
+    
+    $paths = @(
+        "/sitecore/content/EasyJet/$appName",
+        "/sitecore/templates/Project/MicroApps/$appName",
+        "/sitecore/layout/Layouts/Project/MicroApps/$appName",
+        "/sitecore/layout/Renderings/Project/MicroApps/$appName",
+        "/sitecore/layout/Placeholder Settings/Project/MicroApps/$appName",
+        "/sitecore/system/Settings/Project/MicroApps/$appName",
+        "/sitecore/media library/Project/MicroApps/$appName"
+    );
+    
+    $targets = @()
+    foreach ($publishingTarget in [Sitecore.Publishing.PublishManager]::GetPublishingTargets($database)) {
+        $targets += Get-Database -Name $publishingTarget[[Sitecore.FieldIDs]::PublishingTargetDatabase]
+    }
+    
+    $languages = [Sitecore.Data.Managers.LanguageManager]::GetLanguages($database)
+    
+    # Item publish with children
+    $paths | ForEach-Object {
+        $item = Get-Item -Path "master:$_"
+        [Sitecore.Publishing.PublishManager]::PublishItem($item, $targets, $languages, $true, $true, $true)
+    }
+    
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 900
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20200414T115951Z

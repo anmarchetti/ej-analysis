@@ -1,0 +1,81 @@
+// node_modules
+@import "../../../app_/node_modules/normalize.css/normalize.css";
+@import "../../../app_/node_modules/flatpickr/dist/flatpickr.css";
+
+@import "../../../app_/node_modules/bootstrap/scss/functions";
+@import "../../../app_/node_modules/bootstrap/scss/variables";
+
+@import "../../../app_/node_modules/bootstrap/scss/mixins/breakpoints";
+@import "../../../app_/node_modules/bootstrap/scss/mixins/grid-framework";
+@import "../../../app_/node_modules/bootstrap/scss/mixins/grid";
+
+@import "../../../app_/node_modules/bootstrap/scss/grid";
+@import "../../../app_/node_modules/bootstrap/scss/utilities/display";
+@import "../../../app_/node_modules/bootstrap/scss/utilities/flex";
+@import "../../../app_/node_modules/bootstrap/scss/utilities/spacing";
+
+// variables
+@import "../../../app_/src/styles/configs/colors";
+@import "../../../app_/src/styles/configs/fonts";
+@import "../../../app_/src/styles/configs/values";
+
+// mixins and functions
+@import "../../../app_/src/styles/configs/mixins";
+@import "../../../app_/src/styles/configs/animation";
+
+// global
+@import "../../../app_/src/styles/configs/globals";
+
+// fonts
+@import "../../../app_/src/styles/fonts";
+@import "fonts-on-js"; // load all fonts in CSS in iframe
+@import "../../../app_/src/styles/typography";
+
+// atoms
+@import "atomic/atoms/icon";
+@import "atomic/atoms/button";
+@import "atomic/atoms/num-control";
+@import "atomic/atoms/checkbox";
+@import "atomic/atoms/field";
+@import "atomic/atoms/toggle";
+@import "atomic/atoms/select";
+@import "atomic/atoms/custom_select";
+@import "atomic/atoms/error_message";
+@import "atomic/atoms/placeholder-shimmer";
+
+// molecules
+@import "atomic/molecules/drawer";
+@import "atomic/molecules/date_picker";
+@import "atomic/molecules/what-is-included";
+@import "atomic/molecules/year_select";
+
+// organisms
+@import "atomic/organisms/search_bar";
+@import "atomic/organisms/search_bar_v3";
+@import "atomic/organisms/search_bar_popup";
+
+$search-pod-input-box_padding-y: 8px;
+
+/* stylelint-disable selector-max-compound-selectors */
+html {
+    height: 100%;
+}
+
+* {
+    &::-webkit-scrollbar-track {
+        background-color: $colorGrayLight;
+        border-radius: 6px;
+    }
+
+    &::-webkit-scrollbar {
+        width: 10px;
+        height: 3px;
+        background-color: $colorGrayLight;
+        border-radius: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $clrEjOrange;
+        border-radius: 6px;
+    }
+}

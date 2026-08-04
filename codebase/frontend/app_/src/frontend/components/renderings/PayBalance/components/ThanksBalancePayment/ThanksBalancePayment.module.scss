@@ -1,0 +1,141 @@
+@import 'src/styles/configs/colors';
+@import 'src/styles/configs/fonts';
+@import 'src/styles/configs/mixins';
+
+$paymentBookingPaddingX: 30px;
+
+.wrapperSolid {
+    background-color: $colorTransparent;
+}
+
+.wrapperContainer {
+    box-sizing: border-box;
+    max-width: 1230px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0 15px 20px;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px $paymentBookingPaddingX;
+    font-size: 35px;
+    line-height: 1.2;
+    background-color: $colorGrayLighter;
+
+    &:first-child {
+        margin-top: 30px;
+    }
+
+    @include media-breakpoint-down(lg) {
+        padding: 15px 20px;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 18px;
+    }
+}
+
+.bigPrice {
+    font-family: $fontRoundedBook;
+    font-size: 35px;
+    color: $clrTextHeading;
+    @include media-breakpoint-down(md) {
+        font-size: 18px;
+    }
+
+    .subtext {
+        font-size: 60%;
+    }
+}
+
+.title {
+    margin: 40px 0;
+    font-family: $fontRoundedHeadline;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.166;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(md) {
+        margin: 20px 0;
+    }
+}
+
+.list {
+    padding-right: $paymentBookingPaddingX;
+    padding-left: $paymentBookingPaddingX;
+
+    @include media-breakpoint-down(lg) {
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
+
+.listItem {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px 0 $paymentBookingPaddingX 0;
+    font-size: 18px;
+    border-top: 1px solid $clrBorderGray;
+
+    &:first-child {
+        border-top: 0;
+    }
+
+    @include media-breakpoint-down(lg) {
+        padding: 10px 20px;
+    }
+
+    @include media-breakpoint-down(md) {
+        font-size: 14px;
+    }
+}
+
+.greyText {
+    color: $clrTxtLight;
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 27px;
+    margin-right: 0.5em;
+    background: $clrSiteBgWhite;
+    border-radius: 3px;
+    box-shadow: 0 0 4px 0 rgba(178, 175, 175, 0.3);
+
+    img {
+        max-height: 21px;
+    }
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 1.5rem;
+}
+
+.paymentMethodWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    .paymentMethod {
+        display: flex;
+        align-items: center;
+    }
+
+    .price {
+        margin-top: 0.5rem;
+    }
+}

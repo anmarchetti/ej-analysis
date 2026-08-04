@@ -1,0 +1,37 @@
+.arrowUp {
+    transform: rotate(270deg);
+    transform-origin: center;
+}
+
+.arrowDown {
+    transform: rotate(90deg);
+    transform-origin: center;
+}
+
+.open {
+    animation: expand 0.4s linear;
+}
+
+@keyframes expand {
+    from {
+        grid-template-rows: 0fr;
+    }
+
+    to {
+        grid-template-rows: 1fr;
+    }
+}
+
+.close {
+    animation: collapse 0.4s linear;
+}
+
+@keyframes collapse {
+    from {
+        grid-template-rows: 1fr;
+    }
+
+    to {
+        grid-template-rows: 0fr;
+    }
+}

@@ -1,0 +1,18 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgTransfer = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        className={classNames('icon-svg', props.className)}
+        data-tid={props['data-tid'] ?? 'transfer-icon'}
+    >
+        <path d='M21.06 16H9.4l2.33-2.33a1 1 0 000-1.42 1 1 0 00-1.41 0l-4 4a.91.91 0 00-.22.33A1 1 0 006 17a1 1 0 00.08.39.87.87 0 00.22.32l4 4a1 1 0 001.42-1.41L9.4 18h11.66a1 1 0 100-2zm-8.79-5.67a1 1 0 001.41 1.42l4-4a1 1 0 00.22-1.09.83.83 0 00-.22-.33l-4-4a1 1 0 00-1.42 1.41L14.6 6H2.94a1 1 0 100 2H14.6z' />
+    </svg>
+);
+
+export default SvgTransfer;

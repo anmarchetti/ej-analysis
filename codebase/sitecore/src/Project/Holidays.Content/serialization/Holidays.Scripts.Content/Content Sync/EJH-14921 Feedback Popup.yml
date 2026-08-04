@@ -1,0 +1,108 @@
+﻿---
+ID: "79e0efbb-e75d-4b82-9822-a6742a4f6e53"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-14921 Feedback Popup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$itemName,$templateId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId
+    		Write-Host $item.Name "created";
+    	}
+    	return $item
+    }
+    
+    function Create-Scale-Items ($path) {
+    	$scaleItems = @(
+    		@{
+    			Name = "Extremely difficult";
+    			ScaleValue = 0;
+    			Icon = '<image mediaid="{e65ab320-e379-4d52-acb3-1d3b2742b3c4}" />';
+    			SortOrder = 100
+    		},
+    		@{
+    			Name = "Difficult";
+    			ScaleValue = 1;
+    			Icon = '<image mediaid="{a34751d1-386b-44c0-ba05-93d7787c450c}" />';
+    			SortOrder = 200
+    		},
+    		@{
+    			Name = "Neither";
+    			ScaleValue = 2;
+    			Icon = '<image mediaid="{cd35ef27-07c0-4f89-8840-e08d439b47ad}" />';
+    			SortOrder = 300
+    		},
+    		@{
+    			Name = "Easy";
+    			ScaleValue = 3;
+    			Icon = '<image mediaid="{14b2c1ae-6c1b-4413-835c-ddefd7337a6d}" />';
+    			SortOrder = 400
+    		},
+    		@{
+    			Name = "Extremely easy";
+    			ScaleValue = 4;
+    			Icon = '<image mediaid="{1c62c484-9d4e-4c21-a463-b17e9650896e}" />';
+    			SortOrder = 500
+    		}
+    	)
+    
+    	$scaleItemsIds = @();
+    
+    	foreach ($scale in $scaleItems) {
+    		$scaleItem = Get-Or-Create-Item -Path $path -ItemName $scale.Name -TemplateId "{C99CE286-8595-4EA7-A8EC-F83C08C6BD3B}"
+    		$scaleItemsIds += $scaleItem.ID
+    
+    		$scaleItem.Editing.BeginEdit()
+    		$scaleItem["Name"] = $scale.Name
+    		$scaleItem["Icon"] = $scale.Icon
+    		$scaleItem["ScaleValue"] = $scale.ScaleValue
+    		$scaleItem.__SortOrder = $scale.SortOrder
+    		$scaleItem.Editing.EndEdit() | Out-Null
+    	}
+    
+    	return $scaleItemsIds;
+    }
+    
+    
+    $confirmationPage = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation" -ErrorAction SilentlyContinue;
+    $popup = Get-Or-Create-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Booking/Confirmation/Page Components" -ItemName "Feedback Pop Up" -TemplateId "{5B23B0AE-7A43-41A2-BA71-2053DD01A05B}"
+    
+    if ($popup -ne $null) {
+    	$scaleItemsIds = Create-Scale-Items -Path $popup.FullPath;
+    
+    	$popup.Editing.BeginEdit()
+    	$popup["Title"] = "Have you got a moment? We’d love to get your feedback";
+    	$popup["ScaleTitle"] = "How was your experience booking with us today?";
+    	$popup["Scale"] = ($scaleItemsIds -join "|")
+    	$popup["IsCommentFieldEnabled"] = "1";
+    	$popup["CommentTitle"] = "Any additional comments? (We’d love to know)";
+    	$popup["Delay"] = "5000";
+    	$popup.Editing.EndEdit() | Out-Null
+    
+    	# Add FeedBack Pop Up Rendering To Booking Confirmation
+    
+    	$placeholder = "/body/feedback-{5d228e7e-0347-4e8e-ac47-d911eba730d7}-0";
+    	$renderingID = "{0D1D051B-009A-40C3-BADF-F654B8EE7958}"
+    	$rendering = Get-Rendering -Item $confirmationPage -PlaceHolder $placeholder
+    
+    	if ($rendering -eq $null) {
+    		$renderingInstance = Get-Item -Path "master:" -Id $renderingID | New-Rendering -PlaceHolder $placeholder
+    		Add-Rendering -Item $confirmationPage -PlaceHolder $placeholder -Instance $renderingInstance -DataSource $popup.ID -Index 9
+    		Write-Host "FeedBack Rendering added"
+    	}
+    }
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20220201T095137Z

@@ -1,0 +1,110 @@
+.excursionsCarousel {
+    display: grid;
+    grid-template-columns: 1fr max-content 1fr;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 15px;
+    }
+
+    :global {
+        .react-multi-carousel-item {
+            display: flex;
+            justify-content: center;
+        }
+
+        .react-multi-carousel-dot-list {
+            position: relative;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            order: 3;
+            grid-column-start: 2;
+            margin: 20px 42px;
+
+            @include media-breakpoint-down(md) {
+                margin: 0
+            }
+        }
+
+        .react-multi-carousel-dot-list li:last-child button {
+            margin-right: 0;
+        }
+
+        .react-multi-carousel-list {
+            order: 1;
+            grid-column: 1/ span 3;
+
+            @include media-breakpoint-down(md) {
+                margin: -10px;
+                padding-bottom: 5px;
+            }
+        }
+
+        .react-multi-carousel-dot button {
+            width: 8px;
+            height: 8px;
+            background: $clrBorderGray;
+            border: 0;
+        }
+
+        .react-multi-carousel-dot button:focus {
+            outline: 2px solid $colorBlack !important;
+        }
+
+        .react-multi-carousel-dot--active button {
+            width: 10px;
+            height: 10px;
+            background: $colorOrange;
+        }
+    }
+}
+
+.item {
+    @include media-breakpoint-up(md) {
+        max-width: 300px;
+    }
+}
+
+.centralSlider {
+    margin: 0 auto;
+}
+
+.item .excursionItem {
+    @include media-breakpoint-down(md) {
+        margin-bottom: 30px;
+    }
+}
+
+.slideButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: $clrSiteBgWhite;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 0 4px $colorGrayDark;
+    cursor: pointer;
+
+    svg {
+        width: 10px;
+        margin: auto;
+        color: $clrEjOrange;
+    }
+
+    &:global(.next) {
+        order: 4;
+        place-self: center start;
+    }
+
+    &:global(.prev) {
+        order: 2;
+        place-self: center end;
+    }
+}
+
+.leftAligned {
+    margin-top: 16px;
+}

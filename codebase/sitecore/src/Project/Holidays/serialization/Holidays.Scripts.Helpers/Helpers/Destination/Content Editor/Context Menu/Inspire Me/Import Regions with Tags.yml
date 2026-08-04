@@ -1,0 +1,187 @@
+﻿---
+ID: "fd9f9c2d-11d2-466f-ba2b-006293175ef1"
+Parent: "a91f7399-5759-4096-a0ad-95f2207e8c6c"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/Destination/Content Editor/Context Menu/Inspire Me/Import Regions with Tags
+DB: master
+SharedFields:
+- ID: "06d5295c-ed2f-4a54-9bf2-26228d113318"
+  Hint: __Icon
+  Value: office/32x32/tags.png
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    <#
+        .SYNOPSIS
+            Import destinations with tags for Inspire Me.
+    #>
+    
+    $errorList = New-Object System.Collections.Generic.List[System.Object]
+    
+    $database = "master"
+    $root = Get-Item -Path (@{ $true = "$($database):\sitecore\media library"; $false = "$($database):\sitecore\media library" }[(Test-Path -Path "$($database):\sitecore\media library\Files")])
+    $baseTemplate = Get-Item master:\templates
+    
+    $props = @{
+    	Parameters = @(
+    		@{ Name = "root"; Title = "Choose the file" }
+    	)
+    	Title = "Import destination tags"
+    	Description = "Only region is allowed to import for Inspire Me destinations."
+    	Width = 550
+    	Height = 300
+    	ShowHints = $true
+    	Icon = [regex]::Replace($PSScript.Appearance.Icon,"Office","OfficeWhite",[System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    }
+    
+    $result = Read-Variable @props
+    
+    if ($result -eq "cancel") {
+    	exit
+    }
+    
+    function Get-Or-Create-Item ($path) {
+    	$item = Get-Item -Database "master" -Path $path -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -ItemType "/sitecore/templates/Feature/PageContent/Inspire Me/Recommended Destination"
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    $regionTemplateId = "{2F42EC14-7E56-467A-B300-AB9723C74546}"
+    $countryTemplateId = "{5F03C6EF-EF52-4F2E-BC5A-B1F065A1E745}"
+    $regionCityTemplateId = "{33B3542E-1316-40CA-8971-1CDB3C1D452D}"
+    
+    function Get-Regions ()
+    {
+    	$list = @{}
+    	$countries = Get-ChildItem "master:/sitecore/content/EasyJet/Holidays/Home/Destinations" | Where-Object { $_.TemplateId -eq $countryTemplateId }
+        foreach($country in $countries){
+           	foreach ($region in $country.Children) {
+    		    if ($region.TemplateId -eq $regionTemplateId -or $region.TemplateId -eq $regionCityTemplateId )
+    		    {
+    			    $list.Add($region.Name, $region)
+    		    }
+    		}
+    	}
+    	return $list
+    }
+    
+    function Import-Tags ($item,$columValue,$tagType) {
+    	$tags = $columValue -split ';\s*'
+    	if ($item) {
+    		$item.Editing.BeginEdit()
+    		foreach ($tag in $tags) {
+    			$tagItem = Get-Item -Path "master" -Query "/sitecore/content/EasyJet/Holidays/Data/Tags/$($tagType)/*[startswith(@name,'$($tag)')]"
+    
+    			if ($tagItem) {
+    				[Sitecore.Data.Fields.MultilistField]$tagsField = $item.Fields["Tags"];
+    
+    				if (!$tagsField.Contains($tagItem.ID)) {
+    					$tagsField.Add($tagItem.ID);
+    				}
+    			}
+    			else {
+    				$msg = "Cannot resolve tag $($tagType)/$($tag) for $($item.Name) destination"
+    				Write-Warning $msg
+    				Write-Output $msg
+    				$errorList.Add($msg)
+    			}
+    		}
+    
+    		$item.Editing.EndEdit() | Out-Null
+    	}
+    }
+    
+    
+    function Import-Data {
+    	param(
+    		[Sitecore.Data.Items.Item]$item
+    	)
+    
+    	[System.IO.Stream]$body = $item.Fields["Blob"].GetBlobStream()
+    	try
+    	{
+    		$contents = New-Object byte[] $body.Length
+    		$body.Read($contents,0,$body.Length) | Out-Null
+    	}
+    	finally
+    	{
+    		$body.Close()
+    	}
+    
+    	$csv = [System.Text.Encoding]::UTF8.GetString($contents) | ConvertFrom-Csv -Delimiter ","
+    	$count = 0;
+    	$regions = Get-Regions
+    	foreach ($row in $csv) {
+    
+    		Write-Output "Proccessing row: " $count
+    		try {
+    			if ([string]::IsNullOrEmpty($row.Destination)) {
+    				$msg = "Destination name is empty cannot create Item: "
+    				Write-Warning $msg
+    				Write-Output $msg
+    				$errorList.Add($msg)
+    				continue
+    			}
+    
+    			#Create new item based on template
+    			$path = "master:/sitecore/content/EasyJet/Holidays/Data/Inspire Me Destinations/$($row.Destination)"
+    			$item = Get-Or-Create-Item -Path $path
+    			if ($item) {
+    				$destintion = $regions[$row.Destination]
+    				$item.Editing.BeginEdit()
+    				$item["Destination"] = $destintion.ID
+    				$item.Editing.EndEdit() | Out-Null
+    
+    
+    				Import-Tags -Item $item -columValue $row."Travel Group" -tagType "Travel Group"
+    				Import-Tags -Item $item -columValue $row."Holiday Type" -tagType "Holiday Type"
+    				Import-Tags -Item $item -columValue $row."Holiday Vibe" -tagType "Holiday Vibe"
+    			}
+    			else {
+    
+    				$msg = "Couldn't find: $($row.ItemPath)"
+    				Write-Warning $msg
+    				Write-Output $msg
+    				$errorList.Add($msg)
+    			}
+    		} catch {
+    			$msg = $_
+    			Write-Warning $msg
+    			Write-Output $msg
+    			$errorList.Add($msg)
+    		}
+    		$count = $count + 1
+    	}
+    
+    	return $count
+    }
+    
+    $count = Import-Data $root
+    
+    if ($errorList.Count -ne 0) {
+    	$errMsg = $errorList -join '</br>'
+    	Show-Alert "Cannot upload items please contact administrator. </br> <b> $($errMsg) </b>"
+    } else {
+    	Show-Alert "Inspire Me destination tags were imported succesfully."
+    }
+    
+    Close-Window
+    
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240514T091126Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

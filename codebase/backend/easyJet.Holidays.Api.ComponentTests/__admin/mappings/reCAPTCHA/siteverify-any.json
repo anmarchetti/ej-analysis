@@ -1,0 +1,25 @@
+{
+    "Title": "reCAPTCHA verify all valid",
+    "Priority": 100,
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/recaptcha/api/siteverify",
+                    "IgnoreCase": true
+                }
+            ]
+        },        
+        "Methods": [ "Post" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "success": true
+        },
+        "BodyAsFileIsCached": false,
+        "UseTransformer": false
+    }
+}

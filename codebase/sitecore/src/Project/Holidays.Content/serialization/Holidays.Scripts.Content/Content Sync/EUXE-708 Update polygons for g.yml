@@ -1,0 +1,168 @@
+﻿---
+ID: "5120b920-854d-41a5-aad3-5b02624653cc"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUXE-708 Update polygons for geolocation"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $GeolocationSettings = Get-Item -Path "/sitecore/content/EasyJet/Holidays/Settings/Geolocation Settings"
+    
+    $AirportsBasePath = "/sitecore/content/EasyJet/Holidays/Data/Airports/"
+    
+    $Airports = @{
+        "Switzerland" = @{
+            "Basel" = @{
+                "latitude" = 47.587330984
+                "longitude" = 7.52416457
+            }
+            "Geneva" = @{
+                "latitude" = 46.236332388
+                "longitude" = 6.105666244
+            }
+            "Zurich" = @{
+                "latitude" = 47.458831498
+                "longitude" = 8.542831162
+            }
+        }
+        "France" = @{
+            "Biarritz" = @{
+                "latitude" = 43.467664796
+                "longitude" = -1.520664584
+            }
+            "Bordeaux" = @{
+                "latitude" = 44.823663372
+                "longitude" = -0.709330496
+            }
+            "Grenoble" = @{
+                "latitude" = 45.357831902
+                "longitude" = 5.324332036
+            }
+            "Lille" = @{
+                "latitude" = 50.557997768
+                "longitude" = 3.085499658
+            }
+            "Limoges" = @{
+                "latitude" = 45.856496574
+                "longitude" = 1.174832634
+            }
+            "Lyon" = @{
+                "latitude" = 45.721997112
+                "longitude" = 5.075333032
+            }
+            "Marseille" = @{
+                "latitude" = 43.435331592
+                "longitude" = 5.208999164
+            }
+            "Montpellier" = @{
+                "latitude" = 43.57249771
+                "longitude" = 3.957829502
+            }
+            "Nantes" = @{
+                "latitude" = 47.15416605
+                "longitude" = -1.604664248
+            }
+            "Nice" = @{
+                "latitude" = 43.65916403
+                "longitude" = 7.208999164
+            }
+            "Paris Charles De Gaulle" = @{
+                "latitude" = 49.0083899664
+                "longitude" = 2.53844117956
+            }
+            "Paris Orly" = @{
+                "latitude" = 48.7262433
+                "longitude" = 2.3652472
+            }
+            "Paris-Beauvais" = @{
+                "latitude" = 49.454444
+                "longitude" = 2.112778
+            }
+            "Rennes" = @{
+                "latitude" = 48.069833054
+                "longitude" = -1.725997096
+            }
+            "Toulon" = @{
+                "latitude" = 43.0916663
+                "longitude" = 6.140999436
+            }
+            "Toulouse" = @{
+                "latitude" = 43.634330796
+                "longitude" = 1.367331864
+            }
+        }
+        "Germany" = @{
+            "Berlin Brandenburg" = @{
+                "latitude" = 52.3666652
+                "longitude" = 13.501997992
+            }
+            "Hamburg" = @{
+                "latitude" = 53.624830834
+                "longitude" = 9.987996048
+            }
+            "Munich" = @{
+                "latitude" = 48.135999456
+                "longitude" = 11.68749725
+            }
+        }
+    }
+    
+    function create-lang-version($item,$lang,$field,$value) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+        }
+        
+        if ($null -ne $field) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            $targetLangItem.Editing.BeginEdit()
+            $targetLangItem[$field] = $value;
+            $targetLangItem.Editing.EndEdit()
+        }
+    }
+    
+    function update-airport-coordinates {
+        param(
+            [hashtable]$airports
+        )
+    
+        foreach ($country in $airports.Keys) {
+            foreach ($airport in $airports[$country].Keys) {
+                $latitude = $airports[$country][$airport]["latitude"]
+                $longitude = $airports[$country][$airport]["longitude"]
+                
+                $airportPath = $AirportsBasePath + $country + "/" + $airport
+                $airportItem = Get-Item -Path $airportPath
+                
+                @('en') | % {
+                    Create-Lang-Version -Item $airportItem -Lang $_ -Field "Latitude" -Value $latitude
+                    Create-Lang-Version -Item $airportItem -Lang $_ -Field "Longitude" -Value $longitude
+                }
+                
+                Write-Host "Item" $airport "successfully updated"
+            }
+        }
+    }
+    
+    @('de-CH', 'fr-CH') | % {
+        Create-Lang-Version -Item $GeolocationSettings -Lang $_ -Field "GeolocationBounds" -Value "46.111239,5.922574;47.494852,6.977261;47.835200,8.581265;47.398265,9.789761;47.077519,9.657925;46.995156,10.459927;45.821056,10.514859;45.790422,9.031705;45.851674,7.131070"
+    }
+    @('de-DE') | % {
+        Create-Lang-Version -Item $GeolocationSettings -Lang $_ -Field "GeolocationBounds" -Value "54.912955,8.608416;54.583225,11.333025;54.748426,13.442400;53.250447,14.387224;50.901323,14.980486;49.963612,12.475603;48.761644,13.837908;47.455975,13.068865;47.396514,7.421892;48.935154,8.212908;49.480640,5.905779;51.793350,5.927752;53.682089,7.004412"
+    }
+    @('fr-FR') | % {
+        Create-Lang-Version -Item $GeolocationSettings -Lang $_ -Field "GeolocationBounds" -Value "51.170546,1.975868;48.927717,8.282020;46.185329,6.326454;45.926111,7.117469;43.586143,7.556923;42.380645,3.294227;43.554304,-2.111045;49.115036,-6.022178"
+    }
+    
+    Update-Airport-Coordinates -airports $Airports
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20191118T132901:637096805412053434Z"

@@ -1,0 +1,41 @@
+.route {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+   
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        gap: 0;
+        margin-bottom: 0;
+        padding: 4px 0;
+    }
+}
+
+.routeRow {
+    width: 120px;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+    }
+}
+
+.text {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 700;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(lg) {
+        gap: 10px;
+        font-size: 16px;
+        line-height: 1.4;
+    }
+
+    @include media-breakpoint-down(md) {
+        gap: 10px;
+        font-size: 14px;
+        line-height: 1.3;
+    }
+}

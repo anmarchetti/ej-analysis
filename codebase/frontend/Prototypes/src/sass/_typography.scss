@@ -1,0 +1,161 @@
+body {
+    font-family: $body_font-family;
+    font-size: $body_font-size;
+    line-height: $body_line-height;
+    color: $body_color;
+
+    @include media-breakpoint-down(md) {
+        font-size: $body_font-size_mobile;
+    }
+}
+
+p {
+    font-size: $body_font-size;
+
+    @include media-breakpoint-down(md) {
+        font-size: $body_font-size_mobile;
+    }
+}
+
+h1 {
+    margin: 1rem 0;
+    font-family: $fontGenerationHeadline;
+    font-size: 70px;
+    font-weight: normal;
+    line-height: 1;
+    color: $clrTextHeading;
+
+    @include media-breakpoint-down(md) {
+        font-size: 50px;
+    }
+}
+
+h2 {
+    font-family: $fontRoundedHeadline;
+    font-size: 40px;
+    font-weight: normal;
+    line-height: 1.25;
+    color: $clrTextHeading;
+
+    @include media-breakpoint-down(md) {
+        font-size: 30px;
+    }
+}
+
+h3 {
+    font-family: $fontGenerationHeadline;
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 1.25;
+    color: $clrTextHeading;
+
+    @include media-breakpoint-down(md) {
+        font-size: 18px;
+    }
+}
+
+h4 {
+    font-family: $fontRoundedBook;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.333;
+}
+
+a {
+    &,
+    &:visited,
+    &:focus,
+    &:hover,
+    &:active {
+        color: $colorOrange;
+        text-decoration: none;
+    }
+
+    &:hover {
+        @include media-breakpoint-up(lg) {
+            opacity: 0.8;
+        }
+    }
+
+    &.text-link {
+        text-decoration: underline;
+    }
+}
+
+.link-overlay {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.link-pseudo-overlay {
+    &, &:visited {
+        color: inherit;
+    }
+
+    // Use pseudo content to stretch the link's layout over the whole card
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+}
+
+.link-popup {
+    &::after {
+        content: '';
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        margin-left: 5px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23f60' d='M2,4 L0,4 L0,20 C0,21.1 0.9,22 2,22 L18,22 L18,20 L2,20 L2,4 Z M20,0 L6,0 C4.9,0 4,0.9 4,2 L4,16 C4,17.1 4.9,18 6,18 L20,18 C21.1,18 22,17.1 22,16 L22,2 C22,0.9 21.1,0 20,0 Z M20,16 L6,16 L6,2 L20,2 L20,16 Z' /%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-bold {
+    font-weight: bolder;
+}
+
+.text-big {
+    font-size: 18px;
+}
+
+.text-bigger {
+    font-size: 28px;
+}
+
+.text-small {
+    font-size: 14px;
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+        .text#{$infix}-left {
+            text-align: left !important;
+        }
+        .text#{$infix}-right {
+            text-align: right !important;
+        }
+        .text#{$infix}-center {
+            text-align: center !important;
+        }
+    }
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}

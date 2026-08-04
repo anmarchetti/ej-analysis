@@ -1,0 +1,98 @@
+﻿---
+ID: "8a8e958a-081c-4201-ac3e-910fb2d6710c"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EUX-623 - Add new Partial Design for Market based Footer"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $partialDesignItemPath = "master:/sitecore/content/EasyJet/Holidays/Presentation/Partial Designs/Footer for Swiss Market"
+    $partialDesignTemplateID = "{7C12F137-9A9F-40B6-96A8-4F37F8CBC632}"
+    $partialDesignItemID = "{DD56FDD8-70A1-476D-B845-4CAA6D7A2C8B}"
+    $fullHeaderPartialDesignItemID = "{B628B4D0-99B4-4E94-ABA6-F5596D6E4E57}"
+    
+    $pageDesignItemPath = "master:/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Default Design for Swiss Market"
+    $pageDesignTemplateID = "{4B960AA8-24C3-4A4E-A27F-F4718D189EF6}"
+    $pageDesignItemID = "{308D7F0C-9DB7-4C5E-BBAF-4D0B23B59FDC}"
+    
+    $homeItemTemplateID = "{5CB2E852-45B1-47C9-A315-4038EB539CDC}"
+    $sustainabilityItemTemplateID = "{CA44C600-239E-40CF-8E8A-B4F417C935D9}"
+    $targetPageTemplatesArray = [System.Collections.ArrayList]@()
+    $targetPageTemplatesArray.Add($homeItemTemplateID)
+    $targetPageTemplatesArray.Add($sustainabilityItemTemplateID)
+    $targetPageTemplatesAsString = $targetPageTemplatesArray -join "|"
+    
+    $ukMarketPageDesignPath = "master:/sitecore/content/EasyJet/Holidays/Presentation/Page Designs/Full Header And Footer With Phone Number"
+    
+    # remove swiss market languages from UK page design
+    $ukMarketDesignItem = Get-Item -Path $ukMarketPageDesignPath -ErrorAction SilentlyContinue | 
+        Remove-ItemLanguage -Language "de-CH" |
+        Remove-ItemLanguage -Language "fr-CH"
+    
+    # add new partial design for the swiss footer
+    $partialDesignItem = Get-Item -path $partialDesignItemPath -ErrorAction SilentlyContinue
+    if ($partialDesignItem -eq $null){
+        $partialDesignItem = New-Item -Path $partialDesignItemPath -ItemType $partialDesignTemplateID -ForceId $partialDesignItemID | 
+            Add-ItemLanguage -TargetLanguage "de-CH" -IfExist Skip |
+            Add-ItemLanguage -TargetLanguage "fr-CH" -IfExist Skip | 
+            Remove-ItemLanguage -Language "en"  
+            
+        $partialDesignItem = Get-Item -path $partialDesignItemPath -Language "de-CH"
+            
+        $renderingsAsXML =  '<r xmlns:xsd="http://www.w3.org/2001/XMLSchema"><d id="{FE5D7FDF-89C0-4D99-9AA3-B5FBD009C9F3}" l="{4696E3CC-7DA0-4264-BF00-B6E49C11B857}"><r ds="" id="{1BE9E86B-46EE-4D90-AA80-9873341F1324}" par="IsTriangleStart=1&amp;IsGreyBackground&amp;ForceReloadChildren" ph="/footer" uid="{1CB3648B-572B-4EAD-A67B-0FFDC5886393}" ccb="Clear on publish" /><r ds="" id="{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}" par="Theme=Dropdowns" ph="/footer/footer-row-{1cb3648b-572b-4ead-a67b-0ffdc5886393}-0" uid="{E2276111-5783-4462-8321-61D1FBCC6567}" /><r ds="" id="{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}" par="" ph="/footer/footer-row-{1cb3648b-572b-4ead-a67b-0ffdc5886393}-0/footer-column-{e2276111-5783-4462-8321-61d1fbcc6567}-0" uid="{9EAAC274-8909-4E93-AE87-2ABA2307C034}" /><r ds="{4CE57C6A-194E-4CCD-A0EB-737DB5672CC2}" id="{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}" par="" ph="/footer/footer-row-{1cb3648b-572b-4ead-a67b-0ffdc5886393}-0/footer-column-{e2276111-5783-4462-8321-61d1fbcc6567}-0/footer-column-inner-{9eaac274-8909-4e93-ae87-2aba2307c034}-0" uid="{D171101E-AEE1-4083-8D3B-52FF8DE4177B}" /><r ds="" id="{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}" par="" ph="/footer/footer-row-{1cb3648b-572b-4ead-a67b-0ffdc5886393}-0/footer-column-{e2276111-5783-4462-8321-61d1fbcc6567}-0" uid="{84B33103-1954-402D-8706-2FD372148919}" /><r ds="{42534DF8-87FF-4FB6-8B9B-47B56095BFBA}" id="{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}" par="" ph="/footer/footer-row-{1cb3648b-572b-4ead-a67b-0ffdc5886393}-0/footer-column-{e2276111-5783-4462-8321-61d1fbcc6567}-0/footer-column-inner-{84b33103-1954-402d-8706-2fd372148919}-0" uid="{0482181F-89B7-47DC-A7DB-9233950BD37E}" /><r ds="" id="{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}" par="" ph="/footer/footer-row-{1cb3648b-572b-4ead-a67b-0ffdc5886393}-0/footer-column-{e2276111-5783-4462-8321-61d1fbcc6567}-0" uid="{9A42D287-7152-465B-8C16-CD0A57523611}" /><r ds="{C7E92958-5A37-4AE2-ADD8-CD8DCE4C847A}" id="{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}" par="" ph="/footer/footer-row-{1cb3648b-572b-4ead-a67b-0ffdc5886393}-0/footer-column-{e2276111-5783-4462-8321-61d1fbcc6567}-0/footer-column-inner-{9a42d287-7152-465b-8c16-cd0a57523611}-0" uid="{23CEA6FA-7756-469E-BC90-000DA9044491}" /><r id="{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}" ph="/footer/footer-row-{1cb3648b-572b-4ead-a67b-0ffdc5886393}-0/footer-column-{e2276111-5783-4462-8321-61d1fbcc6567}-0" uid="{030D40D9-CEC4-4EF6-BD1E-9028F7D8E679}" /><r ds="{9A95F165-610E-4BF2-9CFF-8F1AF63148AE}" id="{E16882CE-B715-4A4C-B39F-6CDBED4D0E66}" par="" ph="/footer/footer-row-{1cb3648b-572b-4ead-a67b-0ffdc5886393}-0/footer-column-{e2276111-5783-4462-8321-61d1fbcc6567}-0/footer-column-inner-{030d40d9-cec4-4ef6-bd1e-9028f7d8e679}-0" uid="{6DCD3D3A-BE17-4057-8FCE-6B23C9F00707}" /><r id="{1BE9E86B-46EE-4D90-AA80-9873341F1324}" par="" ph="/footer" uid="{4F65BA74-1AA0-431E-99DC-5DA19638D9F7}" /><r ds="" id="{72AD99A5-FFDA-44A9-9E69-B63F2474CBCD}" par="Theme=Need%20Help" ph="/footer/footer-row-{4F65BA74-1AA0-431E-99DC-5DA19638D9F7}-0" uid="{A71D01E3-4429-430B-B256-D06F55B9656C}" /><r ds="" id="{C002A035-1BB7-4CDC-AFD7-D1F1844B4A19}" par="" ph="/footer/footer-row-{4F65BA74-1AA0-431E-99DC-5DA19638D9F7}-0/footer-column-{a71d01e3-4429-430b-b256-d06f55b9656c}-0" uid="{A3074AC2-2753-4B5C-B2D6-7B00B9BCE486}" /><r ds="{B9C258D4-D857-40A8-8799-DE7106A47E2B}" id="{A38F8E39-55D0-4E54-91D5-95F8D7F19E01}" par="" ph="/footer/footer-row-{4F65BA74-1AA0-431E-99DC-5DA19638D9F7}-0/footer-column-{a71d01e3-4429-430b-b256-d06f55b9656c}-0/footer-column-inner-{a3074ac2-2753-4b5c-b2d6-7b00b9bce486}-0" uid="{1650ECBE-322D-4ACE-ABCB-084DCA7AC5D6}" /><r ds="{04D32BF2-4079-4CB3-9FDA-0232B7056F59}" id="{D40C1427-9E42-45F4-9302-DD063A4F8F24}" par="" ph="/footer" uid="{D96BF732-0300-46C9-9F4B-DB8691C4AA9A}" /><r ds="{D917FF91-1629-4A1A-BA99-178674454348}" id="{B6732EB5-D407-4D55-B596-A0816C062804}" par="" ph="/footer/footer-column-inner-{D96BF732-0300-46C9-9F4B-DB8691C4AA9A}-0" uid="{60AC62AD-4BDE-4470-8F99-3C87CACC55A6}" /></d></r>'
+            
+        $partialDesignItem.Editing.BeginEdit()
+        $partialDesignItem["__Renderings"] = $renderingsAsXML
+        $partialDesignItem.Editing.EndEdit()
+            
+        Write-Host "Item" $partialDesignItem.Name "successfully created."
+    }
+    
+    # get the new swiss page design..
+    $pageDesignItem = Get-Item -path $pageDesignItemPath -ErrorAction SilentlyContinue
+    if ($pageDesignItem -eq $null) {
+        # .. or create it, add swiss languages, remove english
+        $pageDesignItem = New-Item -Path $pageDesignItemPath -ItemType $pageDesignTemplateID -ForceId $pageDesignItemID | 
+            Add-ItemLanguage -TargetLanguage "de-CH" -IfExist Skip |
+            Add-ItemLanguage -TargetLanguage "fr-CH" -IfExist Skip | 
+            Remove-ItemLanguage -Language "en" 
+        Write-Host "Item" $pageDesignItem.Name "successfully created."
+        # get the newly created swiss-german version
+        $pageDesignItem = Get-Item -path $pageDesignItemPath -ErrorAction SilentlyContinue -Language "de-CH"
+        
+        $partialDesignIDs = [System.Collections.ArrayList]@()
+        $partialDesignIDs.Add($fullHeaderPartialDesignItemID)
+        $partialDesignIDs.Add($partialDesignItemID)
+        
+        $IDsAsString = $partialDesignIDs -join "|"
+        
+        # add shared designs and version specific templates
+        $pageDesignItem.Editing.BeginEdit()
+        $pageDesignItem["PartialDesigns"] = $IDsAsString
+        $pageDesignItem["PageTemplates"] = $targetPageTemplatesAsString
+        $pageDesignItem.Editing.EndEdit() | Out-Null
+        
+        # get the french version
+        $pageDesignItem = Get-Item -path $pageDesignItemPath -ErrorAction SilentlyContinue -Language "fr-CH"
+        
+        # add version specific templates
+        $pageDesignItem.Editing.BeginEdit()
+        $pageDesignItem["PageTemplates"] = $targetPageTemplatesAsString
+        $pageDesignItem.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Item" $pageDesignItem.Name "successfully updated with Partial Design references."
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230504T113018Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,124 @@
+.fphWrapper.priority {
+    width: 1170px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 32px 0;
+    border-bottom: 1px solid $colorGeyser;
+
+    @include media-breakpoint-down(md) {
+        padding: 24px 0;
+    }
+
+    &.lastStep {
+        width: 1200px;
+        max-width: calc(100% - 30px);
+    }
+
+    :global {
+        .bread-item {
+            margin: 0 36px;
+            padding: 0;
+            background: transparent;
+            border: none;
+
+            @include media-breakpoint-down(lg) {
+                margin: 0 20px;
+            }
+
+            @include media-breakpoint-down(md) {
+                width: 62px;
+                margin: 0 2px;
+            }
+
+            div::before {
+                margin-right: 12px;
+                border-color: $colorGeyser;
+
+                @include media-breakpoint-down(lg) {
+                    width: 24px;
+                    margin-right: 8px;
+                }
+
+                @include media-breakpoint-down(md) {
+                    display: none;
+                }
+            }
+
+            div {
+                @include sizeSquare(32px);
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: $fontRoundedDemy;
+                font-size: 16px;
+                line-height: 1;
+                color: $colorSurfaceDisabled;
+                background-color: $colorDisabledLight;
+                border-color: $colorGeyser;
+
+                @include media-breakpoint-down(md) {
+                    @include sizeSquare(24px);
+
+                    font-size: 14px;
+                    line-height: 1.5;
+                }
+            }
+
+            svg {
+                @include sizeSquare(22px);
+
+                @include media-breakpoint-down(md) {
+                    @include sizeSquare(18px);
+                }
+            }
+        }
+
+        .bread-item__title {
+            font-family: $fontRoundedBook;
+            font-size: 16px;
+            line-height: 1.37;
+
+            @include media-breakpoint-down(md) {
+                margin-top: 8px;
+                font-size: 14px;
+            }
+        }
+
+        .bread-item--ready {
+            cursor: pointer;
+
+            div {
+                color: $colorWhite;
+                background-color: $colorOrange;
+                border-color: $colorOrange;
+            }
+
+            svg {
+                fill: $colorWhite;
+            }
+
+            .bread-item__title {
+                font-family: $fontRoundedDemy;
+            }
+
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+
+        .bread-item.active {
+            color: $clrTextMain;
+
+            div {
+                color: $clrTextMain;
+                background-color: $colorWhite;
+                border-color: $clrTextMain;
+            }
+
+            .bread-item__title {
+                font-family: $fontRoundedDemy;
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+.navigationActions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: $container-padding-x_mobile * 2;
+
+    @include media-breakpoint-down(md) {
+        flex: 1;
+    }
+}
+
+.button {
+    height: 43px;
+    padding: 0 25px;
+    font-size: 14px;
+}
+
+.buttonMobile {
+    justify-content: center;
+    width: 100%;
+    padding: 0 4px;
+    font-size: 14px;
+
+    @include media-breakpoint-down(md) {
+        flex: 1;
+    }
+}

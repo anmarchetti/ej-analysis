@@ -1,0 +1,30 @@
+.container {
+    margin-top: 84px;
+    margin-bottom: 24px;
+}
+
+.containerAlt {
+    margin-bottom: 24px;
+}
+
+.internalFlightContainer {
+    padding: 0;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 8px;
+    }
+}
+
+.placeholderCabinBags {
+    height: 356px;
+
+    @include media-breakpoint-down(sm) {
+        height: 499px;
+    }
+}
+
+@media print {
+    .containerAlt {
+        break-inside: avoid;
+    }
+}

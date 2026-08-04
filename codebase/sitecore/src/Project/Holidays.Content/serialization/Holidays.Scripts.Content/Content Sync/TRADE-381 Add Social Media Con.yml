@@ -1,0 +1,89 @@
+﻿---
+ID: "aa64ac48-475c-4f6a-a48d-7e4883731b85"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/TRADE-381 Add Social Media Content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item($path, $templateId){
+        $item = Get-Item -Path $path -Language "en" -ErrorAction SilentlyContinue
+        
+        if (-Not $item){
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item $($item.Name) successfully created"
+        }
+        
+        return $item
+    }
+    
+    function Get-Rendering-Index{
+        param($item, $templateId)
+        $i = 0
+        
+        Get-Rendering -Item $item -Language "en" | ForEach-Object{
+            if ($_.ItemId -eq $templateId){
+                return $i
+            }
+            $i++
+        }
+        
+        return -1
+    }
+    
+    function Add-Rendering-With-Datasource($renderingId, $item, $datasource, $placeholderName, $index){
+        $existsRendering = Get-Rendering -Item $item -PlaceHolder $placeholderName  | Where-Object {$_.ItemId -eq $renderingId}
+        $renderingItem = Get-Item -Path "master:" -ID $renderingId | New-Rendering  -Placeholder $placeholderName
+        if($existsRendering -eq $null){
+            Add-Rendering -Item $item -PlaceHolder $placeholderName -Index $index -DataSource $datasource -Instance $renderingItem
+    	}
+    }
+    
+    $hotelDetailsPagePath = '/sitecore/content/EasyJet/TradePortal/Home/Hotel Details'
+    $pageComponentsPath = "$($hotelDetailsPagePath)/Page Components"
+    $dataSourcePath = "$($pageComponentsPath)/Social Media Poster"
+    $dataSourceTemplateId = "{66EC3497-E5EE-4091-B761-11E0789B5810}";
+    $exportButtonPath = '/sitecore/content/EasyJet/TradePortal/Home/Hotel Details/Page Components/Export Buttons/Social Media'
+    $hotelPosterRenderingTemplateId = "{705184BB-B790-4EF3-8DF8-C49FB1D9E89C}"
+    $newRenderingTemplateId = "{2801CF06-38F9-4936-80EB-F6DE114635F0}"
+    
+    # Set HideDownloadButton, ExportAsImage as true for Social Content Export Button
+    $exportButton = Get-Item -Path $exportButtonPath -Language "en" -ErrorAction SilentlyContinue
+    
+    if ($exportButton -ne $null) {
+        $exportButton.Editing.BeginEdit()
+        $exportButton["HideDownloadButton"] = "1"
+        $exportButton["ExportAsImage"] = "1"
+        $exportButton.Editing.EndEdit() | Out-Null
+        
+        Write-Host "Set HideDownloadButton, ExportAsImage"
+    }
+    
+    # Add datasource
+    $datasource = Get-Or-Create-Item -Path $dataSourcePath -TemplateId $dataSourceTemplateId
+    
+    # Add Social Media rendering after Hotel Poster 
+    $page = Get-Item -Path $hotelDetailsPagePath -ErrorAction SilentlyContinue
+    $hotelPosterRenderingIndex = Get-Rendering-Index -Item $page -TemplateId $hotelPosterRenderingTemplateId | Select -First 1
+    $hotelPosterRendering = Get-Rendering -Item $page -Index $hotelPosterRenderingIndex -Language "en" | Select -First 1
+    
+    if($hotelPosterRendering -ne $null) {
+        $hotelPosterPlaceholder = $hotelPosterRendering.Placeholder
+        Add-Rendering-With-Datasource -RenderingId $newRenderingTemplateId -Item $page -Index ($hotelPosterRenderingIndex+1) -Datasource $dataSourcePath -PlaceholderName $hotelPosterPlaceholder
+        
+        Write-Host "Social Media rendering added"
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231220T145001Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

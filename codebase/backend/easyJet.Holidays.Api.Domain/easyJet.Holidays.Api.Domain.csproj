@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Nullable>warnings</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.Core" />
+    <PackageReference Include="AWSSDK.CloudFront" />
+    <PackageReference Include="AWSSDK.Extensions.CloudFront.Signers" />
+    <PackageReference Include="AWSSDK.Core" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" />
+    <PackageReference Include="AWSSDK.SimpleNotificationService" />
+    <PackageReference Include="Confluent.Kafka" />
+    <PackageReference Include="CsvHelper" />
+    <PackageReference Include="DeepCloner" />
+    <PackageReference Include="GeoJSON.Net" />
+    <PackageReference Include="HtmlAgilityPack" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" />
+    <PackageReference Include="Polly" />
+    <PackageReference Include="System.DirectoryServices.Protocols" />
+    <PackageReference Include="Utf8Json" />
+    <PackageReference Include="Voucherify" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="EzSmb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\AmendBooking\Payment\" />
+    <Folder Include="Data\DynamoDB\ErrataInfo\" />
+    <Folder Include="Data\TradePortal\TradePortalSearch\" />
+    <Folder Include="Binders\" />
+    <Folder Include="ContractResolvers\" />
+    <Folder Include="Interfaces\UserValidation\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(MSBuildProjectName).Tests</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="easyJet.Holidays.External.AWS" />
+    <InternalsVisibleTo Include="easyJet.Holidays.External.AWS.BoardUpgradeDataSync.Tests" />
+  </ItemGroup>
+</Project>

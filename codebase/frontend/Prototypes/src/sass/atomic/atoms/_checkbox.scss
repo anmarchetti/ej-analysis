@@ -1,0 +1,221 @@
+.checkbox {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+
+    .form-group & {
+        font-size: 15px;
+    }
+
+    &.checkbox--multiple {
+        pointer-events: none;
+    }
+
+    input {
+        position: absolute;
+        opacity: 0;
+
+        &:focus + .checkbox__control {
+            outline: rgb(59, 153, 252) auto 5px;
+        }
+
+        &:checked ~ .checkbox__control {
+            border-color: $colorOrange;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 3px;
+                right: 3px;
+                bottom: 3px;
+                left: 3px;
+                background: $colorOrange;
+                border-radius: 4px;
+            }
+        }
+    }
+
+    &__control {
+        position: relative;
+        display: inline-block;
+        align-self: flex-start;
+        min-width: 22px;
+        max-width: 22px;
+        height: 22px;
+        border: 1px solid $borderColorGrayMiddle;
+        border-radius: 6px;
+
+        &--error {
+            border-color: $colorRed;
+        }
+    }
+
+    &--tick {
+        .checkbox__control {
+            background-color: $colorWhite;
+
+            &::after {
+                display: none;
+            }
+
+            svg {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                display: none;
+                width: 80%;
+                height: 80%;
+                color: $colorOrange;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        input {
+            &:checked ~ .checkbox__control {
+                border-color: $colorOrange;
+
+                svg {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    &--indeterminate {
+        .checkbox__control {
+            border-color: $colorOrange;
+
+            svg {
+                display: block;
+            }
+        }
+    }
+
+    &--radio {
+        .checkbox__control {
+            background-color: transparent;
+            border-radius: 50%;
+
+            &::after {
+                display: none;
+            }
+
+            svg {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                display: none;
+                width: 70%;
+                height: 70%;
+                color: $colorWhite;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        input {
+            &:checked ~ .checkbox__control {
+                background-color: $colorOrange;
+                border-color: $colorOrange;
+
+                svg {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    &--large {
+        .checkbox__control {
+            min-width: 33px;
+            max-width: 33px;
+            height: 33px;
+
+            @include media-breakpoint-down(md) {
+                min-width: 26px;
+                max-width: 26px;
+                height: 26px;
+            }
+        }
+    }
+
+    &--medium {
+        .checkbox__control {
+            min-width: 20px;
+            max-width: 20px;
+            height: 20px;
+            border-width: 1px;
+            border-radius: 4px;
+        }
+
+        input:checked ~ .checkbox__control::after {
+            top: 2px;
+            left: 6px;
+            width: 5px;
+            height: 9px;
+            border-right-width: 2px;
+            border-bottom-width: 2px;
+            border-radius: 0;
+        }
+    }
+
+    &--small {
+        .checkbox__control {
+            min-width: 18px;
+            max-width: 18px;
+            height: 18px;
+            border-radius: 4px;
+        }
+    }
+
+    &--text-left {
+        flex-direction: row-reverse;
+    }
+
+    &--text-big {
+        font-size: 100%;
+    }
+
+    &--text-bold {
+        font-weight: bolder;
+    }
+
+    &--text-right {
+        display: flex;
+        justify-content: flex-start;
+        margin: auto 0;
+
+        .checkbox--label {
+            padding-left: 15px;
+        }
+    }
+
+    &--text-error,
+    &--text-error a {
+        color: $colorRed;
+    }
+
+    .checkbox--text-orange {
+        color: $colorOrange;
+    }
+
+    &.checkbox--disabled {
+        color: #ccc;
+
+        .checkbox__control {
+            border-color: #eee;
+        }
+    }
+
+    &--right-aligned.checkbox--text-left {
+        justify-content: flex-start;
+        gap: 24px;
+    }
+
+    &--right-aligned {
+        justify-content: flex-end;
+        gap: 24px;
+    }
+}

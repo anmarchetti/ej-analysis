@@ -1,0 +1,99 @@
+﻿---
+ID: "865a84b7-9232-479a-9278-612e881b72c2"
+Parent: "b1e3c34e-a209-4730-a266-ecc77072d88c"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/SPE/Extensions/EasyJet/Functions/Update Dictionary
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $ingnoredPaths = @(
+    "/sitecore/content/EasyJet/Holidays/Dictionary/Travel Companion",
+    "/sitecore/content/EasyJet/TradePortal/Dictionary/Travel Companion" )
+    
+    function UpdateDictionaries($sourceDictionaryPath, $destinationDictionaryPath) {
+        $stopWatch = [System.Diagnostics.Stopwatch]::StartNew()
+        $db = 'master:'
+    
+        $sourceDictionary = Get-Item -Path ($db + $sourceDictionaryPath) -ErrorAction SilentlyContinue
+        if ($sourceDictionary -ne $null) {
+    
+            $destinationDictionary = Get-Item -Path ($db + $destinationDictionaryPath) -ErrorAction SilentlyContinue
+            if ($destinationDictionary -ne $null) {
+                $sourceDictionaryItems = Get-ChildItem -Path ($db + $sourceDictionary.ItemPath) -Recurse -ErrorAction SilentlyContinue
+                $destinationDictionaryItems = Get-ChildItem -Path ($db + $destinationDictionary.ItemPath) -Recurse -ErrorAction SilentlyContinue
+                $sourceItemPaths = BuildItemPathHashTable $sourceDictionaryItems
+                $destinationItemPaths = BuildItemPathHashTable $destinationDictionaryItems
+    
+                RemoveObsoleteDictionaryitems $db $sourceDictionaryPath $destinationDictionaryPath $sourceItemPaths $destinationDictionaryItems
+    
+                AddNewDictionaryitems $db $sourceDictionaryPath $destinationDictionaryPath $destinationItemPaths $sourceDictionaryItems
+    
+            } else {
+                Write-Host 'Error: Destination dictionary not found.' -ForegroundColor Red
+            }
+        } else {
+            Write-Host 'Error: Source dictionary not found.' -ForegroundColor Red
+        }
+    
+        $stopWatch.Stop()
+        Write-Host 'Info: Total elapsed time -' $stopWatch.Elapsed  -ForegroundColor Green
+    }
+    
+    function BuildItemPathHashTable($items) {
+        $hashTable = @{}
+        foreach ($item in $items) {
+            $hashTable[$item.ItemPath.ToLower()] = $item
+        }
+    
+        return $hashTable
+    }
+    
+    function RemoveObsoleteDictionaryitems($db, $sourceDictionaryPath, $destinationDictionaryPath, $sourceItemPaths, $destinationDictionaryItems) {
+        $count = 0
+        foreach ($destinationItem in $destinationDictionaryItems) {
+            $sourceItemPathSuffix = $destinationItem.ItemPath -ireplace [regex]::Escape($destinationDictionaryPath), '' # case insensitive string replace
+        	$sourceItemPath = $sourceDictionaryPath + $sourceItemPathSuffix
+            $foundIgnoredPath = $false
+    
+            foreach($ingnoredPath in $ingnoredPaths) {
+                if($destinationItem.ItemPath.StartsWith($ingnoredPath)) {
+                    $foundIgnoredPath = $true
+                }
+            }
+    
+            if (!$foundIgnoredPath -and -not($sourceItemPaths.ContainsKey($sourceItemPath))) {
+                $destinationItem | Remove-Item -Recurse -ErrorAction SilentlyContinue | Out-Null
+                $count++
+            }
+        }
+        
+        Write-Host $count ' obsolete dictionary items removed.'
+    }
+    
+    function AddNewDictionaryitems($db, $sourceDictionaryPath, $destinationDictionaryPath, $destinationItemPaths, $sourceDictionaryItems) {
+        $count = 0
+        foreach ($sourceItem in $sourceDictionaryItems) {
+            $destinationItemPathSuffix = $sourceItem.ItemPath -ireplace [regex]::Escape($sourceDictionaryPath), '' # case insensitive string replace
+        	$destinationItemPath = $destinationDictionaryPath + $destinationItemPathSuffix
+    
+            if (-not $destinationItemPaths.ContainsKey($destinationItemPath)) {
+                Copy-Item -Path ($db + $sourceItem.ItemPath) -Destination ($db + $destinationItemPath) -ErrorAction SilentlyContinue | Out-Null
+                $count++
+            }
+        }
+        Write-Host $count ' dictionary items added.'
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240125T082214Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,35 @@
+﻿---
+ID: "98814e1f-1933-4475-9654-74739e18c2a7"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SEATS-363 Trade 9 - Seats on Confirm Page"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+        $page = Get-Item -Path "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirmation"
+        
+        # Set datasource for Seat And Bags
+        $dataSource = Get-Item -Path  "/sitecore/content/EasyJet/TradePortal/Data/Seat And Bags"
+        $renderingId = "{7910DC7C-14B7-48F1-9256-C570F700F085}"
+    $renderingWrapper = Get-Rendering -Item $page  | Where-Object {$_.ItemId -eq '{355B5C34-78DB-4494-AA2C-33C453186F2C}'}
+    $renderigPlaceholder = "/body/seats-and-bags-$($renderingWrapper.UniqueId)-0"
+    
+    $seatAndBagsRendering= Get-Item -Database "master" -Path $renderingId | New-Rendering
+    Add-Rendering -Item $page -Instance $seatAndBagsRendering -PlaceHolder $renderigPlaceholder -DataSource $dataSource.ID 
+- ID: "ba3f86a2-4a1c-4d78-b63d-91c2779c1b5e"
+  Hint: __Sortorder
+  Value: 0
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230316T184243Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

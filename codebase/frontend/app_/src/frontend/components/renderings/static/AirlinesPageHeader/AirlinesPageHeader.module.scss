@@ -1,0 +1,89 @@
+.header {
+    position: relative;
+    width: 100%;
+}
+
+.column {
+    max-width: 100%;
+    height: 100%;
+    text-align: left;
+
+    .link {
+        display: flex;
+        width: fit-content;
+
+        &:hover {
+           opacity: 1;
+        }
+    }
+}
+
+.nav {
+    width: 100%;
+    height: 50px;
+    padding: 13px 16px 12px;
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAB9AAAAAyBAMAAAD2PV1NAAAAGFBMVEX/ZgD/cwD/ewD/WgD/UgD/awD/XwX/ggFRRCwnAAADqUlEQVR4Ae3cMW/bPBAG4PMncPeXxWtjIMgq4FV/gYnOTItD1wAFvCeL/n5rqnaSxhZi04yO1PugQ7fWNqk73R0pJVisi7KUFA3gaQyAOS2nLzIbN+uiBEmDyL9HiCTRuii3MhvrotxJxKhuMZpH/1UQOMyr/3fRRBLBH0GPsqOJKo4c9jGgO43i34IIDik84a/hmxGNwlxCh6QrtRTXR+vPcN/3CaW4hE0vgp3O0wY7rQybO93irJ+075/X+Y0s6qVUjI9fpyISIzoN2zzItaxYjrPnvo+P1Dk2Q1SVIT0GdFGdZ/CIqz9I/VgibXCCrw1OaFn3MYZN9Ds90xlb3c/NGftcz/STuTtr7in+D5JDg1G+ZBjVShaL5wqGLe1i5p6g87OzfZRcVszdbeEPctB0flbAAHIwqyY6pxUb+A0OOl+XNx8NLV8JX1kyc59ZhgVwop0ra2J87uppci3oqm+by7XoCOaKDOgXunV6GW71F5tzk3a90A1DuukmOq8IcKo/4OsEtBrkUyx6luPMYHp1ejTW1yd91JWLyzYWTHg7Rfp0DFeXYWyBJKhmMBY7MobTcUFM4C/xpMcEyQq+DptWcnJ6zIpxxGjm3h8x99wKMR5GXZnzMd5j7m+G/RFV5u6sliRcRNNg2DW+NMOzCa1IeubDBWYfiyVJNAjiVt/9KQc6H7c5xClX2KwveF/xefsx+ser5H1jOoff7P+TA1GV6ZRVjuN5FgtcevktSYMD4xv9FZmEu3g6juU45lX6Xphmq1dzc0z+yvsD3w6nV/GBYZ5tA77KxbjImLnzYdt4+75tJQnLcczc2fqIGXxn+g2deSMviaw7qeIUfOqrOVs79nHMne/qgFwN7ypj4s6UCt4itOVeecBaEDOqpdODoY8j09IwTMYCZiL5EM2dyrSGrqe+eODQzEfxBKGOCNMNhfwCTJ02d9N9GSP4kvhR7Hq4bFs7gdMgQGel2C7Ozhfzxnfm7gl4rMgE1S06A9t8q8rFxtydwzI5NWAFjkMzNlVz1oDdNoBhhUMzTKZqH4wFlxtb6bXcOKE7QYzDns8Pe2KcYzkuAZ+w9sT+Nf7V5TpnHsV+Phccy3EsxU1UmMu70ff/BFNIttL5tU+m6fhqztDCROpsT1IagIV2nmEzgI/XPZdjnFZVgS7rgXNVix+eSSSb6Ak0swxrPU7Bd7m2eaua4SmXG1vpn6/A3poUqKnqiqgEKR02hnReIWUfuitH85bhxez74m9EsP9mVwPT0QAAAABJRU5ErkJggg==");
+}
+
+.titleBar, .subheader {
+    .column {
+        max-width: 1230px;
+        margin: 0 auto;
+        padding: 16px;
+    }
+}
+
+.titleBar {
+    height: 58px;
+    color: $colorWhite;
+    background: $clrTextMain;
+
+    .column div {
+        display: inline-block;
+        width: 100%;
+        overflow: hidden;
+        font-family: $fontRoundedDemy;
+        font-size: 18px;
+        font-weight: 400;
+        color: $clrSiteBgWhite;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        @include media-breakpoint-down(lg) {
+            font-size: 16px;
+        }
+
+        span {
+            font-family: $fontRoundedBook;
+            font-size: 16px;
+            font-weight: 400;
+            color: $clrTxtLighter;
+
+            @include media-breakpoint-down(lg) {
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+.subheader {
+    height: 58px;
+    background: $colorPorcelain;
+    box-shadow: 0 0 12px 3px rgba(51, 51, 51, 0.15);
+
+    .column div {
+        display: inline-block;
+        width: 100%;
+        overflow: hidden;
+        font-family: $fontRoundedBook;
+        font-size: 18px;
+        font-weight: 400;
+        color: $clrTextMain;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        @include media-breakpoint-down(lg) {
+            font-size: 16px;
+        }
+    }
+}

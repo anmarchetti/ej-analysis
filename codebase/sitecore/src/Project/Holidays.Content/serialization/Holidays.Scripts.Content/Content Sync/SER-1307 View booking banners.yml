@@ -1,0 +1,332 @@
+﻿---
+ID: "b16fca81-fab0-4583-a445-59bc6b663fd3"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-1307 View booking banners
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+                                         
+        function Get-RenderingFromPage {
+            param (
+                [string]$PagePath,
+                [string]$RenderingId,
+                [int]$Index = 0
+            )
+            $item = Get-Item -Path $PagePath
+            $layoutField = New-Object -TypeName "Sitecore.Data.Fields.LayoutField" -ArgumentList $item
+            if ([string]::IsNullOrEmpty($layoutField.Value)) { return $null }
+    
+            $layoutXml = [Sitecore.Layouts.LayoutDefinition]::Parse($layoutField.Value)
+            $device = $layoutXml.Devices[0]
+            
+            $matchingRenderings = @($device.Renderings | Where-Object { $_.ItemID -eq $RenderingId })
+            
+            if ($Index -lt $matchingRenderings.Count) {
+                $rendering = $matchingRenderings[$Index]
+                return @{
+                    Placeholder = $rendering.Placeholder
+                    UniqueId    = $rendering.UniqueId
+                    Parameters  = $rendering.Parameters
+                    DataSource  = $rendering.Datasource
+                }
+            }
+            return $null
+        }
+                                             
+        function Get-PageConfiguration {
+            param (
+                [Parameter(Mandatory=$true)] [string]$PagePath
+            )
+    
+            filter ConvertTo-Params {
+                param($ds, $ph, $extraParams)
+                $p = [ordered]@{
+                    "Placeholder" = $ph
+                    "Data Source" = $ds
+                }
+                $params = ($p.Keys | ForEach-Object { 
+                    $k = [System.Web.HttpUtility]::UrlEncode($_).Replace("%20", "+")
+                    $v = [System.Web.HttpUtility]::UrlEncode($p[$_]).Replace("%20", "+")
+                    "$k=$v"
+                }) -join "&"
+                if (-not [string]::IsNullOrEmpty($extraParams)) {
+                    $params += "&$extraParams"
+                }
+                return $params
+            }
+         
+            $renderings = @(
+                @{ id = "{D80590E8-7A27-422E-95E2-D7A686A9206C}"; index = 0; ds = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Contact Us Banner"}
+                @{ id = "{D80590E8-7A27-422E-95E2-D7A686A9206C}"; index = 1; ds = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Contact Us Button"; keepDs = $true} 
+            )
+    
+            $simpleList = @()
+            $complexMapping = @()
+    
+            $dsRenderingIdCounts = @{}
+            foreach ($r in $renderings) {
+                if (($null -ne $r.ds -and $r.ds -ne "") -or $r.readFromPage -eq $true) {
+                    if ($dsRenderingIdCounts.ContainsKey($r.id)) { $dsRenderingIdCounts[$r.id]++ } else { $dsRenderingIdCounts[$r.id] = 1 }
+                }
+            }
+    
+            foreach ($r in $renderings) {
+                if ($simpleList -notcontains $r.id) {
+                    $simpleList += $r.id
+                }
+                $finalDs = ""
+    
+                if ($null -ne $r.ds -and $r.ds -ne "") {
+                    $renderingIndex = if ($null -ne $r.index) { [int]$r.index } else { 0 }
+                    $renderingInfo = Get-RenderingFromPage -PagePath "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking" -RenderingId $r.id -Index $renderingIndex
+                    
+                    $currentPh = if ($null -ne $renderingInfo) { $renderingInfo.Placeholder } else { "" }
+                    $uniqueId = if ($null -ne $renderingInfo) { $renderingInfo.UniqueId } else { "" }
+                    $extraParams = if ($null -ne $renderingInfo -and -not [string]::IsNullOrEmpty($renderingInfo.Parameters)) { $renderingInfo.Parameters } else { "" }
+    
+                    if ($extraParams.StartsWith("?")) { $extraParams = $extraParams.Substring(1) }
+    
+    
+                    if ($r.keepDs -eq $true) {
+                        $sourceItem = Get-Item -Path $r.ds
+                        $finalDs = $sourceItem.ID.ToString()
+    
+                        $pString = ConvertTo-Params -ds $finalDs -ph $currentPh -extraParams $extraParams
+                        $mappingEntry = "$($r.id):$($r.id):$pString"
+                        if (($dsRenderingIdCounts[$r.id] -gt 1 -or $renderingIndex -gt 0) -and -not [string]::IsNullOrEmpty($uniqueId)) {
+                            $mappingEntry += ":$uniqueId"
+                            $r["TargetUniqueId"] = $uniqueId 
+                        }
+                        $complexMapping += $mappingEntry
+                        continue
+                    }
+                        
+                    $sourceItem = Get-Item -Path $r.ds
+                    $newName = "$($sourceItem.Name) F and H"
+                    $parentPath = $sourceItem.Parent.Paths.FullPath
+                    $targetPath = "$parentPath/$newName"
+                        
+                    $existingItem = Get-Item -Path $targetPath -ErrorAction SilentlyContinue
+                        
+                    if ($null -eq $existingItem) {
+                        $duplicateItem = $sourceItem.Duplicate()
+                        $duplicateItem.Editing.BeginEdit()
+                        try {
+                            $duplicateItem.Name = $newName
+                            $duplicateItem["__Display name"] = "$($sourceItem.Name) F&H"
+                        } finally {
+                            $duplicateItem.Editing.EndEdit() | Out-Null
+                        }
+                        
+                        $duplicateItem = Get-Item -Path "$parentPath/$newName"
+                        
+                        $childMapping = @{}
+                        function Build-ChildMapping {
+                            param($SourceParent, $DuplicateParent, [hashtable]$Mapping)
+                            foreach ($oldChild in $SourceParent.Children) {
+                                $newChild = $DuplicateParent.Children | Where-Object { $_.Name -eq $oldChild.Name }
+                                if ($null -ne $newChild) {
+                                    $Mapping[$oldChild.ID.ToString()] = $newChild.ID.ToString()
+                                    Build-ChildMapping -SourceParent $oldChild -DuplicateParent $newChild -Mapping $Mapping
+                                } else {
+                                    Write-Host "WARNING: No match for '$($oldChild.Name)' in duplicate!" -ForegroundColor Red
+                                }
+                            }
+                        }
+                        Build-ChildMapping -SourceParent $sourceItem -DuplicateParent $duplicateItem -Mapping $childMapping
+                        
+                        $duplicateItem.Fields.ReadAll()
+                        $duplicateItem.Editing.BeginEdit()
+                        try {
+                            foreach ($field in $duplicateItem.Fields) {
+                                if ($field.Name.StartsWith("__") -or [string]::IsNullOrEmpty($field.Value)) { continue }
+                                $fieldValue = $field.Value
+                                $isFieldUpdated = $false
+                                foreach ($oldId in $childMapping.Keys) {
+                                    if ($fieldValue.ToLower().Contains($oldId.ToLower())) {
+                                        $newId = $childMapping[$oldId]
+                                        $fieldValue = $fieldValue -ireplace [regex]::Escape($oldId), $newId
+                                        $isFieldUpdated = $true
+                                    }
+                                }
+                                if ($isFieldUpdated) {
+                                    $duplicateItem[$field.Name] = $fieldValue
+                                }
+                            }
+                        } finally {
+                            $duplicateItem.Editing.EndEdit() | Out-Null
+                        }
+               
+                        function Update-DescendantFields {
+                            param($ParentItem, [hashtable]$Mapping)
+                            foreach ($child in $ParentItem.Children) {
+                                $child.Fields.ReadAll()
+                                $child.Editing.BeginEdit()
+                                $childUpdated = $false
+                                try {
+                                    foreach ($field in $child.Fields) {
+                                        if ($field.Name.StartsWith("__") -or [string]::IsNullOrEmpty($field.Value)) { continue }
+                                        $fieldValue = $field.Value
+                                        $isFieldUpdated = $false
+                                        foreach ($oldId in $Mapping.Keys) {
+                                            if ($fieldValue.ToLower().Contains($oldId.ToLower())) {
+                                                $newId = $Mapping[$oldId]
+                                                $fieldValue = $fieldValue -ireplace [regex]::Escape($oldId), $newId
+                                                $isFieldUpdated = $true
+                                            }
+                                        }
+                                        if ($isFieldUpdated) {
+                                            $child[$field.Name] = $fieldValue
+                                            $childUpdated = $true
+                                        }
+                                    }
+                                } finally {
+                                    if ($childUpdated) { $child.Editing.EndEdit() | Out-Null } else { $child.Editing.CancelEdit() }
+                                }
+                                Update-DescendantFields -ParentItem $child -Mapping $Mapping
+                            }
+                        }
+                        Update-DescendantFields -ParentItem $duplicateItem -Mapping $childMapping
+                        $finalDs = $duplicateItem.ID.ToString()
+                    } else {
+                        $finalDs = $existingItem.ID.ToString()
+                    }
+               
+                    $pString = ConvertTo-Params -ds $finalDs -ph $currentPh -extraParams $extraParams
+                    $mappingEntry = "$($r.id):$($r.id):$pString"
+                    
+                    if (($dsRenderingIdCounts[$r.id] -gt 1 -or $renderingIndex -gt 0) -and -not [string]::IsNullOrEmpty($uniqueId)) {
+                        $mappingEntry += ":$uniqueId"
+                        $r["TargetUniqueId"] = $uniqueId 
+                    }
+                    $complexMapping += $mappingEntry
+                }
+            }
+    
+            $targetConfigItem = Get-Item -Path $PagePath -ErrorAction SilentlyContinue
+            
+            $finalReplacementsList = @()
+            $existingAllowed = @()
+    
+            if ($null -ne $targetConfigItem) {
+                if (-not [string]::IsNullOrEmpty($targetConfigItem["RenderingReplacements"])) {
+                    $existingReplacements = $targetConfigItem["RenderingReplacements"].Split('|', [System.StringSplitOptions]::RemoveEmptyEntries)
+                    
+                    foreach ($oldMapping in $existingReplacements) {
+                        $parts = $oldMapping.Split(':')
+                        $oldUniqueId = if ($parts.Count -eq 4) { $parts[3] } else { $null }
+    
+                        $matchedNewMapping = $complexMapping | Where-Object { 
+                            $newParts = $_.Split(':')
+                            $newUniqueId = if ($newParts.Count -eq 4) { $newParts[3] } else { $null }
+                            $null -ne $oldUniqueId -and $oldUniqueId -eq $newUniqueId
+                        }
+    
+                        if ($null -ne $matchedNewMapping) {
+                            $finalReplacementsList += $matchedNewMapping
+                            $complexMapping = $complexMapping | Where-Object { $_ -ne $matchedNewMapping }
+                        } else {
+                            $finalReplacementsList += $oldMapping
+                        }
+                    }
+                }
+                
+                if (-not [string]::IsNullOrEmpty($targetConfigItem["AllowedRenderings"])) {
+                    $existingAllowed = $targetConfigItem["AllowedRenderings"].Split('|', [System.StringSplitOptions]::RemoveEmptyEntries)
+                }
+            }
+    
+            $finalReplacementsList = ($finalReplacementsList + $complexMapping) | Select-Object -Unique
+            $finalAllowedList = ($existingAllowed + $simpleList) | Select-Object -Unique
+    
+            return @(
+                @{
+                    Path         = $PagePath
+                    TemplatePath = "/sitecore/templates/Project/Holidays/Site Settings/ExperienceContextProvider/ExperienceContextProviderPage"
+                    Fields       = @{
+                        "RenderingReplacements" = @{ "en" = ($finalReplacementsList -join "|") }
+                        "AllowedRenderings"     = @{ "en" = ($finalAllowedList -join "|") }
+                    }
+                }
+            )
+        }
+                            
+        $updates = Get-PageConfiguration -PagePath "/sitecore/content/EasyJet/Holidays/Settings/Experience Context Providers/Flight plus Hotel Provider/Pages/View Booking"
+        ImportContent -itemsToCreate $updates
+    
+    
+         $updates1 = @(
+                       @{
+                          Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Contact Us Banner F and H/Contact Us"
+                          TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Popup Channel"
+                          Fields      = @{
+                               "Title" = @{
+                                  "en" = "We’re having trouble cancelling your booking online"
+                                  "fr-CH" = ""
+                                  "de-CH" = ""
+                                  "fr-FR" = ""
+                                  "de-DE" = ""
+                              }
+                               "Description" = @{
+                                  "en" = "It looks like your cancellation hasn’t gone through yet, but don’t worry our team can sort this for you. Please launch a chat with one of our advisors for free using Wi-Fi. Our team are available from Monday to Sunday, 8am - 8pm.<p><strong><a href='#'>Click here to open the chat</a></strong></p>Thanks, your easyJet holidays team"
+                                  "fr-CH" = ""
+                                  "de-CH" = ""
+                                  "fr-FR" = ""
+                                  "de-DE" = "" 
+                              }
+                              "OpenChatBot" = @{
+                                  "en" = "1"
+                                  "fr-CH" = ""
+                                  "de-CH" = ""
+                                  "fr-FR" = ""
+                                  "de-DE" = ""
+                              }
+                          }
+                          }
+                          @{
+                          Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Booking/Page Components/Contact Us Banner F and H/Contact Us"
+                          TemplatePath = "/sitecore/templates/Feature/Booking/View Booking/Contact Us/Contact Us Popup Channel"
+                          Fields      = @{
+                               "Title" = @{
+                                  "en" = "We’re having trouble cancelling your booking online"
+                                  "fr-CH" = ""
+                                  "de-CH" = ""
+                                  "fr-FR" = ""
+                                  "de-DE" = ""
+                              }
+                               "Description" = @{
+                                  "en" = "It looks like your cancellation hasn’t gone through yet, but don’t worry our team can sort this for you. Please launch a chat with one of our advisors for free using Wi-Fi. Our team are available from Monday to Sunday, 8am - 8pm.<p><strong><a href='#'>Click here to open the chat</a></strong></p>Thanks, your easyJet holidays team"
+                                  "fr-CH" = ""
+                                  "de-CH" = ""
+                                  "fr-FR" = ""
+                                  "de-DE" = "" 
+                              }
+                              "OpenChatBot" = @{
+                                  "en" = "1"
+                                  "fr-CH" = ""
+                                  "de-CH" = ""
+                                  "fr-FR" = ""
+                                  "de-DE" = ""
+                              }
+                          }
+                          }
+                          )
+                ImportContent -itemsToCreate $updates1
+    
+                                
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20260608T154404Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

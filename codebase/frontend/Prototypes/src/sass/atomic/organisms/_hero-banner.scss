@@ -1,0 +1,1197 @@
+$hero-banner-height: 500px;
+$stripe-slant-angle: 12deg;
+$stripe-image-heigh_sm: 230px;
+$stripe-image-hidden-part_sm: 60px;
+
+.hero-banner {
+    position: relative;
+    white-space: normal;
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .credit-anchor {
+        position: absolute;
+        z-index: 1;
+        bottom: 60px;
+        left: $container-padding-x_mobile;
+
+        @include media-breakpoint-down(md) {
+            position: static;
+            margin-top: 40px;
+        }
+    }
+}
+
+.hero-banner.low {
+    padding-top: 180px;
+
+    @include media-breakpoint-down(md) {
+        padding-top: 0;
+    }
+
+    &.hero-banner--opaque-stripe,
+    &.hero-banner--translucent-stripe {
+        &::before {
+            @include media-breakpoint-down(lg) {
+                width: calc(80% - 140px);
+            }
+
+            width: calc(50% - 80px);
+        }
+    }
+}
+
+.hero-banner__content-wrapper {
+    .wrapper-container {
+        position: relative;
+        min-height: $hero-banner-height;
+        padding-top: 100px;
+        padding-bottom: 150px;
+    }
+
+    .flexible-container {
+        padding-top: 47px;
+        min-height: 0;
+    }
+
+    @include media-breakpoint-down(md) {
+        flex-basis: 200px;
+        flex-grow: 1;
+
+        .wrapper-container {
+            min-height: 200px;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        .flexible-container {
+        padding-top: 30px;
+        padding-bottom: 0;
+        min-height: 0;
+        }
+    }
+}
+
+.hero-banner__image {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.hero-banner__icon {
+    display: inline-block;
+    margin-right: 10px;
+
+    img {
+        width: 61px;
+        height: 61px;
+
+        @include media-breakpoint-down(md) {
+            width: 27px;
+            height: 27px;
+        }
+    }
+}
+
+
+.hero-banner--centered-content-dual-lightbox {
+
+    .hero-banner__dual-lightbox-container {
+        display: flex;
+        align-items: center;
+
+        @include media-breakpoint-down(md) {
+            display: block;
+        }
+    }
+
+    .hero-banner__title-container {
+        width: 45%;
+        margin: 0 2%;
+
+        @include media-breakpoint-down(md) {
+            display: flex;
+            width: 100%;
+            margin: 0;
+            text-align: center;
+        }
+    }
+
+    .hero-banner__title {
+        font-size: 81px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 40px;
+        }
+    }
+
+    .text-color--orange {
+        color: $clrEjOrange;
+    }
+
+    .text-color--black {
+        color: $colorBlack;
+    }
+
+    .text-color--white {
+        color: $colorWhite;
+    }
+
+    .text-color--grey {
+        color: $clrTextMain;
+    }
+    
+    .content-box-slim {
+        position: relative;
+        width: 50%;
+        padding: 20px;
+        background-color: $colorWhite;
+        border-radius: 4px;
+    
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: 4px;
+            left: 4px;
+            width: 100%;
+            height: 100%;
+            background: $colorOrange;
+            border-radius: 4px;
+        }
+    
+        &::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 10%;
+            width: 1px;
+            height: 80%;
+            margin-left: -1px;
+            background: $colorGray;
+        }
+
+        @include media-breakpoint-down(md) {
+            display: flex;
+            width: 85%;
+            margin: auto;
+            margin-top: 14px;
+            text-align: center;
+            padding: 0 16px;
+
+            &::after {
+                content: "";
+                position: absolute;
+                left: 10%;
+                top: 50%;
+                width: 80%;
+                height: 1px;
+                margin-top: -1px;
+                background: $colorGray;
+            }
+        }
+    }
+    
+    .dual-lightbox-slim__container {
+        display: flex;
+        width: 100%;
+
+        @include media-breakpoint-down(md) {
+           display: block;
+        }
+    }
+
+    .dual-lightbox-slim__container-left {
+        margin: auto;
+        width: 45%;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            width: 95%;
+        }
+    
+        .hero-banner__subtitle {
+            font-size: 24px;
+            line-height: 28px;
+            text-shadow: none;
+
+            @include media-breakpoint-down(md) {
+                font-size: 20px;
+                margin-top: 16px;
+            }
+        }
+
+        .hero-banner__subtitle-without-description {
+            margin-bottom: 16px;
+
+            @include media-breakpoint-down(md) {
+            margin-bottom: 8px;
+            }
+        }
+    
+        .hero-banner__description {
+            font-size: 16px;
+            line-height: 22px;
+            margin-top: 4px;
+            margin-bottom: 8px;
+
+            @include media-breakpoint-down(md) {
+                font-size: 14px;
+                margin-top: 8px;
+                margin-bottom: 10px;
+            }
+        }
+    
+        .hero-banner__btn {
+            width: 95%;
+            font-size: 16px;
+            line-height: 1.5;
+
+            @include media-breakpoint-down(md) {
+                width: 100%;
+                font-size: 14px;
+                margin-bottom: 16px;
+            }
+        }
+    }
+
+    .hero-banner__anchor {
+        @include media-breakpoint-down(md) {
+           text-align: center;
+        }
+    }
+
+    .credit-anchor {
+        position: static;
+        margin-top: 56px;
+        margin-bottom: 10px;
+        float: right;   
+        padding: 8px 20px;
+        font-family: $fontRoundedDemy;
+        font-size: 14px;
+        line-height: 1.2857;
+        color: $colorOrange;
+        text-align: center;
+        background: $colorWhite;
+        border-radius: 50px;
+
+        @include media-breakpoint-down(md) {
+            position: static;
+            margin-top: 20px;
+            margin-bottom: 12px;
+            float: none;
+            padding: 5px 8px;
+            font-size: 10px;
+            line-height: 1.3;
+        }
+    }
+
+    a.credit-anchor {
+        color: $colorOrange;
+
+        &:hover {
+            color: $colorOrange;
+            background: rgba(255, 255, 255, 0.7);
+        }
+    }
+}
+
+
+.hero-banner__title {
+    margin: 0;
+    font-family: $fontGenerationHeadline;
+    font-size: 80px;
+    line-height: 0.8;
+    color: $colorWhite;
+    white-space: normal;
+
+    @include media-breakpoint-down(md) {
+        font-size: 40px;
+    }
+}
+
+.hero-banner__subtitle {
+    font-family: $fontRoundedHeadline;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+
+    @include media-breakpoint-down(md) {
+        font-size: 16px;
+    }
+}
+
+.hero-banner__title,
+.hero-banner__subtitle {
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.hero-banner__promo-wrapper {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
+    @include media-breakpoint-down(md) {
+        position: relative;
+
+        .wrapper-container--px {
+            padding: 0;
+        }
+    }
+}
+
+.hero-banner__promo {
+    position: relative;
+    float: right;
+    min-width: 220px;
+    padding: 15px 30px 60px;
+    font-size: 18px;
+    line-height: 1.1;
+    background: $clrEjOrange;
+
+    p {
+        margin: 0;
+        font-size: inherit;
+        line-height: inherit;
+    }
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        float: none;
+        padding: 5px $container-padding-x_mobile 60px;
+
+        > div {
+            flex: 1;
+        }
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: -28px;
+        left: 0;
+        display: block;
+        background: linear-gradient(
+            -3.5deg,
+            $clrEjOrange 49%,
+            $colorTransparent 51%
+        );
+
+        @include media-breakpoint-down(md) {
+            background: linear-gradient(
+                2deg,
+                $clrEjOrange 49%,
+                $colorTransparent 51%
+            );
+        }
+    }
+
+    img {
+        display: block;
+        max-width: 80px;
+        max-height: 80px;
+        margin: 0 auto 10px;
+
+        @include media-breakpoint-down(md) {
+            max-width: 60px;
+            max-height: 60px;
+            margin-right: 0;
+            margin-left: 0;
+        }
+    }
+
+    .btn {
+        position: relative;
+        z-index: 1;
+        margin-top: 10px;
+        padding: 10px 30px;
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        color: $colorOrange;
+        background: $colorWhite;
+        border-radius: 5px;
+
+        &:hover {
+            color: $colorOrange;
+            background: $colorWhite;
+            opacity: 1;
+        }
+
+        @include media-breakpoint-down(md) {
+            margin-top: 0;
+            margin-left: 10px;
+        }
+    }
+}
+
+.hero-banner__total {
+    font-family: $fontRoundedBook;
+    font-size: 60px;
+    font-weight: 300;
+    line-height: 1.2;
+
+    @include media-breakpoint-down(md) {
+        font-size: 40px;
+    }
+
+    small {
+        margin-left: 0.5em;
+        font-size: 14px;
+        vertical-align: middle;
+
+        @include media-breakpoint-down(md) {
+            font-size: 12px;
+        }
+    }
+}
+
+.hero-banner__price-currency {
+    font-size: 38px;
+    vertical-align: 0.4em;
+
+    @include media-breakpoint-down(md) {
+        font-size: 16px;
+        vertical-align: 0.1em;
+    }
+}
+
+.hero-banner__promo-footer {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba($colorWhite, 0.3);
+}
+
+// Other hero banner configurations
+.hero-banner--centered-content {
+    @include media-breakpoint-down(md) {
+        display: block;
+    }
+
+    .text-color--orange {
+        color: $clrEjOrange;
+    }
+
+    .text-color--black {
+        color: $colorBlack;
+    }
+
+    .text-color--white {
+        color: $colorWhite;
+    }
+
+    .text-color--grey {
+        color: $clrTextMain;
+    }
+
+    .content {
+        display: inline-flex;
+        width: 100%;
+        padding: 0 102px;
+
+        .content-box {
+            width: 50%;
+            color: $colorBlack;
+
+            @include media-breakpoint-down(md) {
+                width: 100%;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 0;
+        }
+    }
+
+    .content-box {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 16px 40px 20px;
+        background-color: $colorWhite;
+        border-radius: 4px;
+
+        .hero-banner__title {
+            font-size: 70px;
+            line-height: 1;
+
+            @include media-breakpoint-down(md) {
+                font-size: 40px;
+            }
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: 4px;
+            left: 4px;
+            width: 100%;
+            height: 100%;
+            background: $colorOrange;
+            border-radius: 4px;
+        }
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            padding: 17px 20px 20px;
+        }
+    }
+
+    .content-box + .credit-anchor,
+    .content + .credit-anchor {
+        @include media-breakpoint-down(md) {
+            margin-top: 24px;
+        }
+    }
+
+    .content-box + .content-box {
+        margin-left: 24px;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 24px;
+            margin-left: 0;
+        }
+    }
+
+    .hero-banner__content-wrapper {
+        display: flex;
+        height: 100%;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+        }
+    }
+
+    .wrapper-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding-top: 30px;
+        padding-bottom: 60px;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            justify-content: center;
+            padding: 37px 20px 40px;
+        }
+    }
+
+    .wrapper-container.single-slide {
+        min-height: 400px;
+        padding-bottom: 42px;
+
+        @include media-breakpoint-down(md) {
+            min-height: 200px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        a.credit-anchor {
+            margin-bottom: 0;
+        }
+    }
+
+    .wrapper-container.unbounded-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 30px 15px;
+
+        @include media-breakpoint-down(md) {
+            min-height: 350px;
+
+            .btn {
+                margin-top: 0;
+                padding: 16px 24px;
+                font-size: 16px;
+            }
+        }
+    }
+
+    .hero-banner__logo {
+        display: flex;
+        align-items: center;
+        margin-bottom: 13px;
+        font-family: $fontRoundedHeadline;
+        font-size: 24px;
+        line-height: 1.334;
+        white-space: nowrap;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 18px;
+            font-size: 16px;
+            line-height: 1.5625;
+        }
+
+        img {
+            max-width: 50px;
+            max-height: 50px;
+            margin-right: 14px;
+
+            @include media-breakpoint-down(md) {
+                max-width: 35px;
+                max-height: 35px;
+                margin-right: 7px;
+            }
+        }
+    }
+
+    .hero-banner__title {
+        margin-bottom: 16px;
+        font-size: 88px;
+        line-height: 1;
+        color: inherit;
+        text-shadow: none;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 20px;
+            font-size: 40px;
+        }
+    }
+
+    .hero-banner__subtitle {
+        width: 100%;
+        margin-bottom: 20px;
+        font-size: 24px;
+        line-height: 1.334;
+        text-shadow: none;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.25;
+        }
+    }
+
+    .hero-banner__price-currency {
+        margin-bottom: 4px;
+        font-size: 18px;
+        line-height: 1.556;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 7px;
+            font-size: 14px;
+            line-height: 1.2857;
+        }
+    }
+
+    .hero-banner__total {
+        margin-bottom: 16px;
+        font-family: $fontRoundedBook;
+        font-size: 30px;
+        line-height: 1.334;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 23px;
+            font-size: 24px;
+            line-height: 0.75;
+        }
+    }
+
+    .dual-button-container {
+        margin: 20px 0;
+
+        @include media-breakpoint-down(md) {
+            margin: 0;
+        }
+    }
+
+    .hero-banner__btn {
+        min-width: 235px;
+        padding: 16px 80px;
+        font-size: 16px;
+        line-height: 1.5;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 13px;
+            line-height: 1.231;
+        }
+
+        &.orange {
+            color: $colorWhite;
+            background: $colorOrange;
+
+            &:hover {
+                background-color: $clrEjOrangeShadow;
+            }
+        }
+
+        &.white {
+            color: $colorOrange;
+            background: $colorWhite;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.7);
+            }
+        }
+
+        &.inline {
+            margin: 0 10px;
+
+            @include media-breakpoint-down(md) {
+                display: block;
+                margin: 10px 0 0 0;
+            }
+        }
+    }
+
+    .credit-anchor {
+        position: static;
+        margin-top: 24px;
+        margin-bottom: 10px;
+        margin-left: auto;
+        padding: 8px 20px;
+        font-family: $fontRoundedDemy;
+        font-size: 14px;
+        line-height: 1.2857;
+        color: $colorOrange;
+        text-align: center;
+        background: $colorWhite;
+        border-radius: 50px;
+
+        @include media-breakpoint-down(md) {
+            position: static;
+            margin-top: 20px;
+            margin-right: auto;
+            margin-bottom: 12px;
+            padding: 5px 8px;
+            font-size: 10px;
+            line-height: 1.3;
+        }
+    }
+
+    a.credit-anchor {
+        color: $colorOrange;
+
+        &:hover {
+            color: $colorOrange;
+            background: rgba(255, 255, 255, 0.7);
+        }
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .hero-banner__content-wrapper.single-slide {
+        .hero-banner__stripe-content {
+            padding-bottom: 20px;
+        }
+    }
+}
+
+.hero-banner--opaque-stripe,
+.hero-banner--translucent-stripe {
+    overflow: hidden;
+    line-height: 1.2;
+    color: $clrTextMain;
+
+    @include media-breakpoint-up(md) {
+        box-shadow: inset 0 1px 5px rgba(152, 148, 148, 0.2);
+
+        // Desktop stripe slant block, that added to main parent
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: calc(60% - 120px);
+            min-width: $container-max-width / 2 - 120px;
+            height: 200%;
+            transform: rotate($stripe-slant-angle);
+            transform-origin: 100% 0;
+
+            @include media-breakpoint-only(xl) {
+                width: calc(50% - 120px);
+            }
+        }
+
+        .hero-banner__content-wrapper {
+            display: flex;
+            height: 100%;
+        }
+
+        .wrapper-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            padding-top: 30px;
+            padding-bottom: 60px;
+        }
+
+        .hero-banner__stripe-content {
+            display: flex;
+            flex: 1 0 auto;
+            flex-direction: column;
+            width: 35%;
+            min-width: 400px;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        display: block;
+
+        .hero-banner__content-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 100%;
+        }
+
+        .wrapper-container {
+            position: static;
+            width: 100%;
+            min-height: 0;
+            padding: 0;
+        }
+
+        .hero-banner__stripe-content {
+            position: relative;
+            padding: 0 $container-padding-x_mobile 50px;
+
+            // Mobile stripe slant block, that added to inner content.
+            // It should overlay only content and to be at the bottom
+            &::before {
+                content: "";
+                position: absolute;
+                z-index: -1;
+                top: -($stripe-image-heigh_sm - $stripe-image-hidden-part_sm);
+                bottom: 0;
+                left: 0;
+                width: 100%;
+            }
+        }
+    }
+
+    .hero-banner__logo {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+        font-family: $fontRoundedBook;
+        font-size: 15px;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+
+        img {
+            max-width: 44px;
+            max-height: 44px;
+            margin-right: 10px;
+
+            @include media-breakpoint-down(md) {
+                max-width: 24px;
+                max-height: 24px;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    .hero-banner__title,
+    .hero-banner__subtitle {
+        color: $clrTextMain;
+        text-shadow: 0 0 9px rgba(255, 255, 255, 0.66);
+    }
+
+    .hero-banner__title {
+        font-size: 69px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 47px;
+        }
+    }
+
+    .hero-banner__subtitle {
+        font-size: 21px;
+        line-height: 1;
+
+        @include media-breakpoint-down(md) {
+            font-size: 16px;
+        }
+    }
+
+    .hero-banner__bottom-content {
+        margin-top: auto;
+        padding-top: 20px;
+        font-size: 18px;
+
+        @include media-breakpoint-down(md) {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 0;
+            font-size: 12px;
+        }
+
+        @include media-breakpoint-down(sm) {
+            justify-content: space-between;
+
+            span:first-child:not(.hero-banner__total) {
+                display: block;
+            }
+        }
+    }
+
+    .hero-banner__total {
+        font-family: $fontRoundedBook;
+        font-size: 40px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 28px;
+            line-height: 1;
+        }
+    }
+
+    .hero-banner__btn {
+        min-width: 280px;
+        margin-top: 10px;
+        padding: 21px 30px;
+        font-size: 16px;
+
+        &:hover {
+            opacity: 1;
+        }
+
+        @include media-breakpoint-down(md) {
+            flex-grow: 1;
+            min-width: 140px;
+            max-width: 200px;
+            margin-top: 0;
+            margin-left: 15px;
+            padding: 14px 20px;
+            font-size: 14px;
+        }
+    }
+
+    .credit-anchor {
+        right: $container-padding-x_mobile;
+        left: auto;
+        margin-bottom: 10px;
+
+        @include media-breakpoint-down(md) {
+            position: absolute;
+            top: 20px;
+            bottom: auto;
+            margin-top: 0;
+        }
+    }
+
+    .hero-banner__anchor {
+        @include media-breakpoint-down(md) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .credit-anchor {
+            right: $container-padding-x_mobile;
+            left: auto;
+            margin-bottom: 10px;
+
+            @include media-breakpoint-down(md) {
+                position: inherit;
+                top: none;
+                bottom: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        .credit-anchor--pill span {
+            @include media-breakpoint-down(md) {
+                padding: 5px 8px;
+                background: rgba(197, 197, 197, 0.58);
+                border-radius: 12px;
+            }
+        }
+    }
+
+    a.hero-banner__credit:hover {
+        color: $clrTextMain;
+        opacity: 0.9;
+    }
+}
+
+.hero-banner--translucent-stripe {
+    @include media-breakpoint-up(md) {
+        &::before {
+            background: linear-gradient(
+                (180deg - $stripe-slant-angle),
+                rgba(#fff, 0.64) 25%,
+                rgba(#fff, 0.9) 60%
+            );
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        padding-top: $stripe-image-heigh_sm - $stripe-image-hidden-part_sm !important;
+
+        .hero-banner__stripe-content::before {
+            background: linear-gradient(
+                -174deg,
+                rgba(#fff, 0) 170px,
+                rgba(#fff, 0.64) 171px,
+                rgba(#fff, 0.9) 100%
+            );
+        }
+    }
+}
+
+.hero-banner--opaque-stripe {
+    @include media-breakpoint-up(md) {
+        &::before {
+            background: linear-gradient(
+                -($stripe-slant-angle + 90deg),
+                rgba(#fff, 0.8),
+                #fff 250px
+            );
+        }
+
+        // Background image should be 2/3 screen width
+        .hero-banner__image {
+            width: calc(50% + 400px);
+            max-width: 80%;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        .hero-banner__stripe-content::before {
+            background: linear-gradient(
+                -174deg,
+                rgba(#fff, 0) 170px,
+                rgba(#fff, 0.8) 171px,
+                #fff $stripe-image-heigh_sm
+            );
+        }
+
+        // Background image should be not full banner height, it should overlap only part of content
+        .hero-banner__image {
+            position: static;
+            flex-basis: $stripe-image-heigh_sm;
+            flex-grow: 1;
+            height: $stripe-image-heigh_sm;
+
+            // Using negative margin to overlap content
+            margin-bottom: -$stripe-image-hidden-part_sm;
+        }
+    }
+}
+
+.sustainability-hero-banner {
+    .hero-banner__image {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    @include media-breakpoint-up(md) {
+        &::before {
+            width: 58%;
+            min-width: 580px;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.45),
+                #fff 40%
+            );
+        }
+
+        .wrapper-container {
+            padding-top: 100px;
+            padding-bottom: 100px;
+        }
+
+        .hero-banner__stripe-content {
+            width: 43%;
+        }
+
+        @include media-breakpoint-only(xl) {
+            .hero-banner__title {
+                font-size: 85px;
+                line-height: 0.97;
+            }
+        }
+    }
+
+    .hero-banner__logo {
+        img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+    }
+
+    .hero-banner__subtitle {
+        margin-top: 8px;
+        font-family: $fontRoundedBook;
+        font-size: 18px;
+        font-weight: normal;
+        line-height: 1.66;
+    }
+
+    @include media-breakpoint-down(md) {
+        .hero-banner__stripe-content::before {
+            background: linear-gradient(
+                -12deg,
+                rgba(255, 255, 255, 0) 135px,
+                rgba(255, 255, 255, 0.7) 0
+            );
+        }
+
+        .hero-banner__stripe-content {
+            padding-top: 25px;
+            padding-bottom: 110px;
+        }
+
+        .hero-banner__content-wrapper {
+            position: relative;
+        }
+
+        .hero-banner__image {
+            position: absolute;
+            top: 0;
+            height: 100%;
+        }
+
+        .hero-banner__logo {
+            display: none;
+        }
+
+        .hero-banner__title {
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .hero-banner__logo-for-title {
+                display: block !important;
+                align-self: flex-start;
+                width: 66px;
+                height: 66px;
+                margin-left: 20px;
+            }
+        }
+
+        .hero-banner__subtitle {
+            font-size: 15px;
+        }
+    }
+}

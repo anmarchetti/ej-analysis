@@ -1,0 +1,45 @@
+.holdLuggage {
+    display: flex;
+    flex-direction: column;
+    margin: 80px 0;
+
+    @include media-breakpoint-down(md) {
+        margin: 48px 0;
+    }
+}
+
+.holdLuggageConfirmation {
+    padding: 24px;
+    background-color: $colorWhite;
+    border: 1px solid $borderColorGray;
+    border-radius: 4px;
+
+    @include media-breakpoint-down(md) {
+        padding: 16px;
+    }
+}
+
+.container {
+    background-color: $colorWhite;
+    border-radius: 4px;
+}
+
+.luggageContainer {
+    padding: 0 24px;
+
+    @include media-breakpoint-down(md) {
+        padding: 0 15px;
+    }
+}
+
+.internalFlightContainer {
+    margin-top: 0;
+}
+
+.placeholderHoldLuggage {
+    height: 230px;
+
+    @include media-breakpoint-down(sm) {
+        height: 309px;
+    }
+}

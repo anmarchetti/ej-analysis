@@ -1,0 +1,58 @@
+﻿---
+ID: "a21ea07b-9da4-437c-96d7-3e0cac4c830a"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-535 - Price Breakdown fixes"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking"
+                TemplatePath = "/sitecore/templates/Feature/Booking/Cancel Booking/Cancel Booking"
+                Fields      = @{
+                    "CancellationChargeLabel" = @{
+                        "en" = 'Cancellation Charge'
+                        "fr-CH" = "Frais d'annulation"
+                        "de-CH" = 'Stornierungsgebühr'
+                        "fr-FR" = "Frais d'annulation"
+                        "de-DE" = 'Stornierungsgebühr'
+                    }
+                    "ChangeFeeLabel" = @{
+                        "en" = "Change Fee(s)"
+                        "fr-CH" = "Frais de modification"
+                        "de-CH" = "Änderungsgebühr(en)"
+                        "fr-FR" = "Frais de modification"
+                        "de-DE" = "Änderungsgebühr(en)"
+                    }
+                    "CancellationChargeTotalLabel" = @{
+                        "en" = "Total fees"
+                        "fr-CH" = "Total des frais"
+                        "de-CH" = "Gesamtgebühren"
+                        "fr-FR" = "Total des frais"
+                        "de-DE" = "Gesamtgebühren"
+                    }
+                    "AmountPaidExcludeDeposit" = @{
+                        "en" = "Holiday balance paid"
+                        "fr-CH" = "Solde des congés payés"
+                        "de-CH" = "Urlaubsguthaben ausgezahlt"
+                        "fr-FR" = "Solde des congés payés"
+                        "de-DE" = "Urlaubsguthaben ausgezahlt"
+                    }
+                }
+            }
+        )
+        
+    ImportContent -itemsToCreate $updates
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

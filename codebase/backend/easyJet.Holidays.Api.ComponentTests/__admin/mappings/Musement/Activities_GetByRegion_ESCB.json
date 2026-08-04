@@ -1,0 +1,749 @@
+﻿{
+    "Title": "Activities from musement service for Costa Blanca (api/v3/activities?city_in=335,614,7089,4659)",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/v3/activities",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Headers": [
+            {
+                "Name": "X-Musement-Version",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "3.4.0"
+                    }
+                ]
+            },
+            {
+                "Name": "X-Musement-Currency",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "GBP"
+                    }
+                ]
+            }
+        ],
+        "Params": [
+            {
+                "Name": "city_in",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "335*"
+                    }
+                ]
+            },
+            {
+                "Name": "offset",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "0"
+                    }
+                ]
+            },
+            {
+                "Name": "limit",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "10"
+                    }
+                ]
+            },
+            {
+                "Name": "sort_by",
+                "Matchers": [
+                    {
+                        "Name": "ExactMatcher",
+                        "Pattern": "-relevance-city"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "meta": {
+                "count": 5,
+                "match_type": "cities",
+                "match_names": [
+                    "Alicante",
+                    "Benidorm",
+                    "Costa Brava"
+                ],
+                "match_ids": [
+                    "335",
+                    "614",
+                    "4659"
+                ]
+            },
+            "data": [
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P0D",
+                    "booking_type": "CALENDAR-NO-TIMESLOTS",
+                    "uuid": "165abf1c-2046-11e7-9cc9-06a7e332783f",
+                    "city": {
+                        "id": 614,
+                        "name": "Benidorm",
+                        "country": {
+                            "id": 161,
+                            "name": "Spain",
+                            "iso_code": "ES"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/75/benidorm-city-jpg_header-74547.jpeg",
+                        "url": "https://musement.com/us/benidorm/",
+                        "time_zone": "Europe/Madrid"
+                    },
+                    "title": "Terra Natura Zoo tickets",
+                    "relevance": 200,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "PRINTED",
+                    "temporary": false,
+                    "description": "Buy tickets to visit Terra Natura Zoo. Discover the Zooimmersion, a new zoo concept in habitat design. Spend a lovely day with family and friends in Benidorm.",
+                    "about": "Terra Natura is a next generation zoo where you can discover \"Zooimmersion\": a new zoo concept in habitat design that allows you to come into contact with the animals through barriers invisible to the human eye.The 320,000 square metres of the Benidorm Park are divided into four areas: Pangea, America, Asia and Europe.\n- Pangea: \nDiscover the mysterious and extraordinary world of the poisonous creatures. Come and learn things about the poison and the animals that produces it and uses it to defend and to capture their prey: tarantulas of America and of Asia, African scorpions, poisonous lizards, deadly snakes, up to small dart frogs whose simple drop of sweat can kill an elephant.\n- America\nThis is the area that will attract you most for this exuberant vegetation and the remains of the Mayan ruins where you can find numerous species of its fauna: the temple of life, an enormous aviary with a tropical forest inside where a walk through it is a pleasure for all your senses, accompanied by the presence of multiple species of birds; chatterboxes, peacocks, trumpeters, different toucans, golden orioles, parrots and others awaiting to be discovered by you.\n- Asia\nA landscape and a fauna that they you will transport you to the land of Asia: the land of the elephants with one of the biggest herds in Europe, the monsoon meadow where you will see other big herbivores of India live placidly in groups, or the territory of the Indian rhinoceroses, these zoological jewels of prehistoric aspect almost impossible to see in other places of Spain, the temple of the felines with tigers and leopards and some other animals, where they await you to discover their natural way of life.\n- Europe\nThe placid Mediterranean climate gives place an area where the typical animals of our fauna move freely; bucks, deer, boar, etc. they will come close to you in this contact area. Someone will let you touch the skin that you will find rough unlike that of a domestic animal.",
+                    "meeting_point": "Partida Foia del Verdader, 1, 03502 Benidorm, Alicante. Car: on the AP-7 motorway, take exit 65 if approaching from Valencia or exit 65A if coming from Alicante. You can also get here by the N-332 highway. Access to the Park is well signposted. GPS directions: Avda. Alcalde Eduardo Zaplana, cross with CV-70. Bus: from Benidorm Loix area Line 1. Taxi: there are taxi ranks in both Benidorm and the park itself providing services to and from the park",
+                    "operational_days": "Daily",
+                    "duration_range": {
+                        "max": "PT24H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": true,
+                    "languages": [],
+                    "group_size": [],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "wheelchair",
+                            "name": "Wheelchair accessible"
+                        }
+                    ],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0004/65/thumb_364161_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 24.0,
+                        "formatted_value": "£ 24.00",
+                        "formatted_iso_value": "£24.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 24.0,
+                        "formatted_value": "£ 24.00",
+                        "formatted_iso_value": "£24.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 24.0,
+                        "formatted_value": "£ 24.00",
+                        "formatted_iso_value": "£24.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 24.0,
+                        "formatted_value": "£ 24.00",
+                        "formatted_iso_value": "£24.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 38.568951,
+                    "longitude": -0.144929,
+                    "url": "https://musement.com/us/benidorm/terra-natura-zoo-tickets-9689/",
+                    "flavours": [
+                        {
+                            "id": 2,
+                            "name": "Entrance Tickets",
+                            "active": true,
+                            "slug": "entrance-tickets"
+                        }
+                    ],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c1a10826-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/60/thumb_59430_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P0D",
+                    "booking_type": "CALENDAR-NO-TIMESLOTS",
+                    "uuid": "3f86a1da-5c21-4f40-87e2-63f74a49d1fb",
+                    "city": {
+                        "id": 614,
+                        "name": "Benidorm",
+                        "country": {
+                            "id": 161,
+                            "name": "Spain",
+                            "iso_code": "ES"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/75/benidorm-city-jpg_header-74547.jpeg",
+                        "url": "https://musement.com/us/benidorm/",
+                        "time_zone": "Europe/Madrid"
+                    },
+                    "title": "Benidorm bus turistic tickets",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "PRINTED",
+                    "temporary": false,
+                    "description": "Discover Benidorm on board a tourist bus! Explanations available in eight languages with individual sound system. Admire the city from a different point of view.",
+                    "about": "Discover the real Benidorm on board the tourist bus! Explanations available in eight languages (Spanish, English, French, German, Dutch, Japanese, Portuguese and Valencian) with individual sound system. You will travel in a vehicle of unique features: a fun tram from where you will discover the city from a different point of view. You can get on and off with the same ticket at any stop for a validity of 24 hours.",
+                    "meeting_point": "Please show your printed voucher directly to the driver at any of the bus stops",
+                    "operational_days": "Daily",
+                    "duration_range": {
+                        "max": "PT24H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": true,
+                    "languages": [],
+                    "group_size": [],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "audioguide",
+                            "name": "With audioguide"
+                        }
+                    ],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0003/31/thumb_230546_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 6.0,
+                        "formatted_value": "£ 6.00",
+                        "formatted_iso_value": "£6.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 6.0,
+                        "formatted_value": "£ 6.00",
+                        "formatted_iso_value": "£6.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 6.0,
+                        "formatted_value": "£ 6.00",
+                        "formatted_iso_value": "£6.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 6.0,
+                        "formatted_value": "£ 6.00",
+                        "formatted_iso_value": "£6.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "url": "https://musement.com/us/benidorm/benidorm-bus-turistic-tickets-94298/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "e048ea93-fcfb-4646-8441-93c68f8380ea",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/100/thumb_99240_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P1D",
+                    "booking_type": "CALENDAR-TIMESLOTS",
+                    "uuid": "aa0b06ce-9917-4ad2-8411-f28f86ead723",
+                    "city": {
+                        "id": 335,
+                        "name": "Alicante",
+                        "country": {
+                            "id": 161,
+                            "name": "Spain",
+                            "iso_code": "ES"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/36/alicante-spain-jpg_header-35103.jpeg",
+                        "url": "https://musement.com/us/alicante/",
+                        "time_zone": "Europe/Madrid"
+                    },
+                    "title": "Live flamenco show with tapas dinner",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "MOBILE",
+                    "temporary": false,
+                    "description": "Enjoy a flamenco show at a traditional tablao and discover the typical flavors of Spanish cuisine with a tapas dinner in the heart of Alicante's old town.",
+                    "about": "Discover the typical flavors of Spanish cuisine during a tapas dinner in the heart of Alicante's old town. Experience the culinary art of the tapas, typically small, hot or cold snacks served for sharing with your fellow diners. Savor typical tapas dishes, including tropical salads, ham croquettes, Portuguese pâtés, Manchego cheeses, fried calamari, Iberian meats with young garlic and desserts with drinks.\nIn addition, spend the evening at a live flamenco show in an authentic tablao (flamenco bar) next to the restaurant. Watch a dynamic performance by premier artists from Spain, and enjoy the passion of this unique music and dance form. Get a complimentary drink of wine, beer or soft beverage.",
+                    "meeting_point": "La Casona Alicantina Restaurant at Calle Mayor 14. Flamenco La Guitarrería at Calle Mayor 16 (about 25 meters from the restaurant).",
+                    "operational_days": "Wednesday, Thursday Friday, Saturday, Sunday",
+                    "duration_range": {
+                        "max": "PT3H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": false,
+                    "languages": [],
+                    "group_size": [
+                        {
+                            "code": "group",
+                            "name": "Group tour"
+                        }
+                    ],
+                    "food": [
+                        {
+                            "code": "dinner",
+                            "name": "Dinner"
+                        }
+                    ],
+                    "services": [],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0002/10/thumb_109792_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 63.0,
+                        "formatted_value": "£ 63.00",
+                        "formatted_iso_value": "£63.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 63.0,
+                        "formatted_value": "£ 63.00",
+                        "formatted_iso_value": "£63.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 63.0,
+                        "formatted_value": "£ 63.00",
+                        "formatted_iso_value": "£63.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 63.0,
+                        "formatted_value": "£ 63.00",
+                        "formatted_iso_value": "£63.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 38.4064964,
+                    "longitude": -0.584723,
+                    "url": "https://musement.com/us/alicante/live-flamenco-show-with-tapas-dinner-35761/",
+                    "flavours": [],
+                    "verticals": [
+                        {
+                            "id": 4,
+                            "name": "Performances",
+                            "active": true,
+                            "code": "entertainment",
+                            "slug": "performances",
+                            "url": "https://musement.com/us/performances-t/",
+                            "meta_title": "Exciting live performances in a variety of destinations",
+                            "meta_description": "Live jazz, musicals, plays, concerts or opera; attend performances at some of the most outstanding entertainment venues with Musement.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/entertainment-01-jpg_header-30036.jpeg?w=540",
+                            "relevance": 80
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c19bcc6f-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/45/thumb_44539_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P0D",
+                    "booking_type": "CALENDAR-NO-TIMESLOTS",
+                    "uuid": "bd38d22e-a67e-42ff-adf2-2572d10e39a3",
+                    "city": {
+                        "id": 614,
+                        "name": "Benidorm",
+                        "country": {
+                            "id": 161,
+                            "name": "Spain",
+                            "iso_code": "ES"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/75/benidorm-city-jpg_header-74547.jpeg",
+                        "url": "https://musement.com/us/benidorm/",
+                        "time_zone": "Europe/Madrid"
+                    },
+                    "title": "Terra Natura Zoo + Aqua Natura combined tickets",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "PRINTED",
+                    "temporary": false,
+                    "description": "Buy online on Musement your combined tickets to visit Terra Natura Zoo and Acqua Natura in one or two days. An unforgettable experience for the whole family!",
+                    "about": "Enjoy a combined ticket to Terra Natura Zoo and Acqua Natura Water park! You will have complete access to both of these spectacular parks!Terra Natura is a next generation zoo where you can discover \"Zooimmersion\": a new zoo concept in habitat design that allows you to come into contact with the animals through barriers invisible to the human eye.Aqua Natura is a spectacular water park with more than 40.000 square meters of fun for the whole family, emphasizing wide-open views that let parents keep an eye on their kids and admire the scenery on the Spanish coast.",
+                    "meeting_point": "Benidorm",
+                    "operational_days": "Daily",
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": true,
+                    "languages": [],
+                    "group_size": [],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "wheelchair",
+                            "name": "Wheelchair accessible"
+                        }
+                    ],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0004/65/thumb_364339_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 33.0,
+                        "formatted_value": "£ 33.00",
+                        "formatted_iso_value": "£33.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 33.0,
+                        "formatted_value": "£ 33.00",
+                        "formatted_iso_value": "£33.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 33.0,
+                        "formatted_value": "£ 33.00",
+                        "formatted_iso_value": "£33.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 33.0,
+                        "formatted_value": "£ 33.00",
+                        "formatted_iso_value": "£33.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "url": "https://musement.com/us/benidorm/terra-natura-zoo-aqua-natura-combined-tickets-132909/",
+                    "flavours": [
+                        {
+                            "id": 2,
+                            "name": "Entrance Tickets",
+                            "active": true,
+                            "slug": "entrance-tickets"
+                        }
+                    ],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c1a10826-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/60/thumb_59430_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                },
+                {
+                    "max_confirmation_time": "P0D",
+                    "cutoff_time": "P0D",
+                    "booking_type": "CALENDAR-NO-TIMESLOTS",
+                    "uuid": "f13c450b-11f0-4ef8-ae9c-2ad8b3f92192",
+                    "city": {
+                        "id": 614,
+                        "name": "Benidorm",
+                        "country": {
+                            "id": 161,
+                            "name": "Spain",
+                            "iso_code": "ES"
+                        },
+                        "cover_image_url": "https://images-sandbox.musement.com/cover/0001/75/benidorm-city-jpg_header-74547.jpeg",
+                        "url": "https://musement.com/us/benidorm/",
+                        "time_zone": "Europe/Madrid"
+                    },
+                    "title": "Aqua Natura Benidorm tickets",
+                    "relevance": 1,
+                    "relevance_venue": 1,
+                    "must_see": false,
+                    "last_chance": false,
+                    "top_seller": false,
+                    "voucher_access_usage": "PRINTED",
+                    "temporary": false,
+                    "description": "Buy your tickets to Aqua Natura, a spectacular water park in Benidorm Alicante, with more than 40.000 square meters of fun for the whole family!",
+                    "about": "Aqua Natura is a spectacular water park with more than 4,000 square meters of fun for the whole family, with wide-open views which is perfect for parents to keep an eye on their children as well as admire the scenery on the Spanish coast.With a Greek-themed layout that includes more than 3,200 feet (1km) of waterslides, beach bars, and three dedicated children's pool, Aqua Natura has something for guests of any age. A promenade leads you to the beach, where you can relax under the sun or go for a swim in the pool. You can experience the thrill of La Cresta, a rollercoaster of a waterslide that reaches more than 50 feet (15 meters) in height and lets you feel the sense of weightlessness as you splash through a fully enclosed path.Try out the winding route of the Aqua Snake, the fast-paced descent of the Rio Aventura, or a half-dozen other unique thrill rides to experience the excitement and sheer exhilaration that Aqua Natura has in store. When you're ready to relax, visit the sun deck or head to Zorba Beach and kick back at the 1.2 acre (5,000-sq-m) pool. With attractions that range from 3 artificial islands to waterfalls and geysers.",
+                    "meeting_point": "The Aqua Natura park is just 1-minute from the AP-7 motorway and the N-332 highway, right alongside the Terra Mitica Theme Park in Alicante province. Drive along the AP-7 motorway. Take exit 65 if approaching from Valencia, or exit 65A if coming from Alicante. You can also get there on the N-332. Alternatively, take bus routes 21 or 22 from Benidorm, or the train to Terra Natura-Terra Mitica Station, from where there are buses to the park.",
+                    "operational_days": "Daily",
+                    "duration_range": {
+                        "max": "PT24H"
+                    },
+                    "validity": "P0D",
+                    "has_price_info_on_date": true,
+                    "open": false,
+                    "ticket_not_included": false,
+                    "likely_to_sell_out": false,
+                    "special_offer": false,
+                    "exclusive": false,
+                    "best_price": false,
+                    "daily": true,
+                    "languages": [],
+                    "group_size": [],
+                    "food": [],
+                    "services": [
+                        {
+                            "code": "wheelchair",
+                            "name": "Wheelchair accessible"
+                        }
+                    ],
+                    "features": [
+                        {
+                            "code": "istant",
+                            "name": "Instant confirmation"
+                        }
+                    ],
+                    "is_available_today": false,
+                    "is_available_tomorrow": false,
+                    "cover_image_url": "https://images-sandbox.musement.com/cover/0004/65/thumb_364313_cover_header.jpeg?w=540",
+                    "service_fee": {
+                        "currency": "GBP",
+                        "value": 0.0,
+                        "formatted_value": "£ 0.00",
+                        "formatted_iso_value": "£0.00"
+                    },
+                    "retail_price": {
+                        "currency": "GBP",
+                        "value": 24.0,
+                        "formatted_value": "£ 24.00",
+                        "formatted_iso_value": "£24.00"
+                    },
+                    "retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 24.0,
+                        "formatted_value": "£ 24.00",
+                        "formatted_iso_value": "£24.00"
+                    },
+                    "original_retail_price_without_service_fee": {
+                        "currency": "GBP",
+                        "value": 24.0,
+                        "formatted_value": "£ 24.00",
+                        "formatted_iso_value": "£24.00"
+                    },
+                    "original_retail_price": {
+                        "currency": "GBP",
+                        "value": 24.0,
+                        "formatted_value": "£ 24.00",
+                        "formatted_iso_value": "£24.00"
+                    },
+                    "discount": 0,
+                    "categories": [],
+                    "reviews_number": 0,
+                    "reviews_avg": 0.0,
+                    "reviews_aggregated_info": {
+                        "1": 0,
+                        "2": 0,
+                        "3": 0,
+                        "4": 0,
+                        "5": 0
+                    },
+                    "latitude": 38.5689838,
+                    "longitude": -0.1438043,
+                    "url": "https://musement.com/us/benidorm/aqua-natura-benidorm-tickets-132887/",
+                    "flavours": [
+                        {
+                            "id": 2,
+                            "name": "Entrance Tickets",
+                            "active": true,
+                            "slug": "entrance-tickets"
+                        }
+                    ],
+                    "verticals": [
+                        {
+                            "id": 2,
+                            "name": "Tours & attractions",
+                            "active": true,
+                            "code": "sightseeing",
+                            "slug": "tours-attractions",
+                            "url": "https://musement.com/us/tours-attractions-t/",
+                            "meta_title": "Access Top Tours and Attractions",
+                            "meta_description": "Live every city like a local with Musement. Skip the line at some of the world's most popular attractions and discover hidden gems.",
+                            "cover_image_url": "https://images-sandbox.musement.com/vertical/0001/31/sightseeing-00-jpg_header-30549.jpeg?w=540",
+                            "relevance": 90
+                        }
+                    ],
+                    "supplier": {
+                        "uuid": "c1a10826-2044-11e7-9cc9-06a7e332783f",
+                        "logo_url": "https://images-sandbox.musement.com/default/0001/60/thumb_59430_default_header.jpeg?w=540"
+                    },
+                    "giftable": true,
+                    "buy_multiplier": 1,
+                    "ticket": false,
+                    "free_cancellation": false
+                }
+            ]
+        }
+    }
+}

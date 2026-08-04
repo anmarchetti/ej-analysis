@@ -1,0 +1,153 @@
+﻿---
+ID: "eaa1d7e1-5cea-4aa4-9190-1cc52c3847b4"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-13214-pandemic-levels-content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$itemName,$templateId,$forceId) {
+    	$item = Get-Item "$($path)/$itemName" -ErrorAction SilentlyContinue
+    	if ($item -eq $null) {
+    		$item = New-Item -Path $path -Name $itemName -ItemType $templateId -ForceId $forceId
+    		Write-Host "Item" $item.Name "successfully created";
+    	}
+    	return $item
+    }
+    
+    function Get-Rendering-Index ($item, $renderingItemId) {
+    	$i = 0
+    	Get-Rendering -Item $item | ForEach-Object {
+    		if ($_.ItemID -eq $renderingItemId) {
+    			return $i
+    		}
+    		$i++
+    	}
+    }
+    
+    $pandemicLevelsList = @(
+    	@{
+    		Name = "Default";
+    		Level = "{0C0A9DC2-BC4C-4CB8-AAA8-57F17215778C}";
+    		Icon = '<image mediaid="{A3CC8F49-259B-40F7-BC89-0CA1173A5FB0}" />';
+    		SortOrder = 0
+    	},
+    	@{
+    		Name = "Green";
+    		Level = "{907AB48D-F8A5-48FE-9A94-952BD98BB5AB}";
+    		Icon = '<image mediaid="{70582406-C93C-471E-85EE-D2D038D32E2A}" />';
+    		SortOrder = 100
+    	},
+    	@{
+    		Name = "Amber";
+    		Level = "{9958B5F2-E06D-4B15-86FE-0D72F2BED359}";
+    		Icon = '<image mediaid="{A793C845-605A-4DC7-B157-B62A625995EB}" />';
+    		SortOrder = 200
+    	},
+    	@{
+    		Name = "Red";
+    		Level = "{2F62BB3B-66AB-45EA-A552-CF2DDAB9E3AB}";
+    		Icon = '<image mediaid="{D5C0FE9B-FAF6-4CCF-A107-FAA9663DE98A}" />';
+    		SortOrder = 300
+    	}
+    )
+    
+    $pandemicLevelsBannersList = @(
+    	@{
+    		Name = "Default";
+    		Level = "{0C0A9DC2-BC4C-4CB8-AAA8-57F17215778C}";
+    		Title = "The new traffic light system";
+    		Icon = '<image mediaid="{70582406-C93C-471E-85EE-D2D038D32E2A}" />';
+    		SortOrder = 0
+    	},
+    	@{
+    		Name = "Green";
+    		Level = "{907AB48D-F8A5-48FE-9A94-952BD98BB5AB}";
+    		Title = "{destinationName} is a green level {destinationType}";
+    		Icon = '<image mediaid="{70582406-C93C-471E-85EE-D2D038D32E2A}" />';
+    		SortOrder = 100
+    	},
+    	@{
+    		Name = "Amber";
+    		Level = "{9958B5F2-E06D-4B15-86FE-0D72F2BED359}";
+    		Title = "{destinationName} is an amber level {destinationType}";
+    		Icon = '<image mediaid="{A793C845-605A-4DC7-B157-B62A625995EB}" />';
+    		SortOrder = 200
+    	},
+    	@{
+    		Name = "Red";
+    		Level = "{2F62BB3B-66AB-45EA-A552-CF2DDAB9E3AB}";
+    		Title = "{destinationName} is a red level {destinationType}";
+    		Icon = '<image mediaid="{D5C0FE9B-FAF6-4CCF-A107-FAA9663DE98A}" />';
+    		SortOrder = 300
+    	}
+    )
+    
+    function Create-Pandemic-Levels () {
+    	$pandemicSettings = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Settings/Pandemic Levels" -ErrorAction SilentlyContinue
+    
+    	if ($pandemicSettings -ne $null) {
+    		foreach ($level in $pandemicLevelsList) {
+    			$levelItem = Get-Or-Create-Item -Path $pandemicSettings.FullPath -ItemName $level.Name -TemplateId "{022A24BB-9A3A-4271-8EC4-4C09E55E27CE}"
+    			$levelItem.Editing.BeginEdit()
+    			$levelItem["Name"] = $level.Name
+    			$levelItem["Level"] = $level.Level
+    			$levelItem["Icon"] = $level.Icon
+    			$levelItem.__SortOrder = $level.SortOrder
+    			$levelItem.Editing.EndEdit() | Out-Null
+    		}
+    	}
+    }
+    
+    function Create-Pandemic-Levels-Banners () {
+    	$bannersFolder = Get-Or-Create-Item -Path "master:/sitecore/content/EasyJet/Holidays/Data" -ItemName "Pandemic Levels Banners" -TemplateId "{B8B092EC-0EA5-4B08-8BEC-CD1DF7D6C32A}" -ForceId "{6DD4D64B-5988-41E5-836A-A238776F4D5C}"
+    
+    	foreach ($banner in $pandemicLevelsBannersList) {
+    		$bannerItem = Get-Or-Create-Item -Path $bannersFolder.FullPath -ItemName $banner.Name -TemplateId "{9E12F886-E62F-4E86-8295-A2091E3D2F1E}"
+    		$bannerItem.Editing.BeginEdit()
+    		$bannerItem["Name"] = $banner.Name
+    		$bannerItem["Title"] = $banner.Title
+    		$bannerItem["Level"] = $banner.Level
+    		$bannerItem.__SortOrder = $banner.SortOrder
+    		$bannerItem.Editing.EndEdit() | Out-Null
+    	}
+    	
+    	return $bannersFolder
+    }
+    
+    function Set-Pandemic-Banner-Rendering ($dataSource){
+        $pandemicLevelBannerRenderingId = "{1DED9C91-5753-4C0A-917B-B44AF0E57DB1}"
+        
+        # Add Rendering to Home Page
+        $homePageItem = Get-Item -Path "master://sitecore/content/EasyJet/Holidays/Home"
+        $homePageBannerRendering = Get-Rendering -Item $homePageItem | Where-Object { $_.ItemId -eq $pandemicLevelBannerRenderingId } | Select -First 1
+        
+        if($homePageBannerRendering -eq $null) {
+            # Get index of SearchPod and insert banner before SearchPod
+            $renderingIndex = Get-Rendering-Index -Item $homePageItem -renderingItemId "{216FE85C-936E-4135-894B-E7DE8BF8A4C2}"
+            $homePageBannerRendering = Get-Item -Database "master" -Path $pandemicLevelBannerRenderingId | New-Rendering
+            Add-Rendering -Item $homePageItem -Instance $homePageBannerRendering -Index $renderingIndex -DataSource $dataSource -Placeholder '/header'
+        }
+    }
+    
+    
+    Create-Pandemic-Levels
+    $bannersFolder = Create-Pandemic-Levels-Banners
+    Set-Pandemic-Banner-Rendering -DataSource $bannersFolder.ID
+    
+    
+    
+    
+    
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20210414T151911Z

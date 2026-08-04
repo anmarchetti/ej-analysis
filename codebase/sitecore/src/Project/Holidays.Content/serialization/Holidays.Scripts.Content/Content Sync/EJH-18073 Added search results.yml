@@ -1,0 +1,100 @@
+﻿---
+ID: "e01aa666-6128-4e6c-a3c3-f6acadaa7027"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/EJH-18073 Added search results map on MixedResultsList"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-Or-Create-Item ($path,$templateId) {
+    	$item = Get-Item -Path $path -ErrorAction SilentlyContinue
+        if ($item -eq $null) {
+            $item = New-Item -Path $path -ItemType $templateId
+            Write-Host "Item" $item.Name "successfully created"
+        }
+    	return $item
+    }
+     
+    $ItemPath = '/sitecore/content/EasyJet/Holidays/Home/MixedResultList/Page Components/Search Results Map'
+    $Item = Get-Or-Create-Item -Path $ItemPath -ItemName "Search Results Map" -TemplateId "{2488CF45-91CF-4728-9D4A-DD0501E41958}"
+     
+    if ($Item -ne $null) {
+    	$Item.Editing.BeginEdit();
+    	$Item["IsSearchResultsMapButtonDisabled"] = '1';
+    	$Item["DesktopButton"] = 'Map view';
+    	$Item["MobileButton"] = 'View map';
+    	$Item["Icon"] = '<image mediaid="{D6999BA0-1234-4350-AF79-151B9A1FD84E}" />';
+    	$Item.Editing.EndEdit() | Out-Null;
+    }
+     
+    #Desktop version
+    $pagePath = Get-Item -Path "master://sitecore/content/EasyJet/Holidays/Home/MixedResultList"
+    $dataSourcePath = "/sitecore/content/EasyJet/Holidays/Home/MixedResultList/Page Components/Search Results Map" 
+    $placeholderPath = '/body/component-wrapper-inner-{3ede0aec-2846-45a7-b9da-d77e2f356021}-0/search-results-map-{9ed3c2b4-6fbb-4cf6-9464-9d14a0984c93}-0'
+    $renderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Search Results Map"
+    $rendering = Get-Item -Database "master" -Path $renderingPath | New-Rendering -Placeholder $placeholderPath
+    
+    Add-Rendering -Item $pagePath -Instance $rendering -DataSource $dataSourcePath -Placeholder $placeholderPath -Index 0
+    Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/MixedResultList/Page Components" -templateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+     
+     
+     
+    #Mobile version
+    $pagePath = Get-Item -Path "master://sitecore/content/EasyJet/Holidays/Home/MixedResultList"
+    $dataSourcePath = "/sitecore/content/EasyJet/Holidays/Home/MixedResultList/Page Components/Search Results Map" 
+    $placeholderPath = '/body/component-wrapper-inner-{3ede0aec-2846-45a7-b9da-d77e2f356021}-0/search-results-map-{06f285a0-4e6f-470c-851b-6412a37d129a}-0'
+    $renderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Search Results Map"
+    $rendering = Get-Item -Database "master" -Path $renderingPath | New-Rendering -Placeholder $placeholderPath
+    
+    Add-Rendering -Item $pagePath -Instance $rendering -DataSource $dataSourcePath -Placeholder $placeholderPath -Index 0
+    Get-Or-Create-Item -path "master:/content/EasyJet/Holidays/Home/MixedResultList/Page Components" -templateId "{05BBE519-F066-4B38-B0FC-CBC9C2F1C567}"
+     
+     
+     
+    #TradePortal
+    $ItemPath = '/sitecore/content/EasyJet/TradePortal/Home/MixedResultList/Page Components/Search Results Map'
+    $Item = Get-Or-Create-Item -Path $ItemPath -ItemName "Search Results Map" -TemplateId "{2488CF45-91CF-4728-9D4A-DD0501E41958}"
+     
+    if ($Item -ne $null) {
+    	$Item.Editing.BeginEdit();
+    	$Item["IsSearchResultsMapButtonDisabled"] = '1';
+    	$Item["DesktopButton"] = 'Map view';
+    	$Item["MobileButton"] = 'View map';
+    	$Item["Icon"] = '<image mediaid="{D6999BA0-1234-4350-AF79-151B9A1FD84E}" />';
+    	$Item.Editing.EndEdit() | Out-Null;
+    }
+     
+    #Desktop version
+    $pagePath = Get-Item -Path "master://sitecore/content/EasyJet/TradePortal/Home/MixedResultList"
+    $dataSourcePath = "/sitecore/content/EasyJet/TradePortal/Home/MixedResultList/Page Components/Search Results Map" 
+    $placeholderPath = '/body/component-wrapper-inner-{3ec4afc7-9857-4894-9552-b00c1f45c41a}-0/search-results-map-{9ed3c2b4-6fbb-4cf6-9464-9d14a0984c93}-0'
+    $renderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Search Results Map"
+    $rendering = Get-Item -Database "master" -Path $renderingPath | New-Rendering -Placeholder $placeholderPath
+    
+    Add-Rendering -Item $pagePath -Instance $rendering -DataSource $dataSourcePath -Placeholder $placeholderPath -Index 0
+    Get-Or-Create-Item -path "master:/content/EasyJet/TradePortal/Home/MixedResultList/Page Components" -templateId "{577146F6-301B-4514-BF73-D6E73E337452}"
+     
+     
+    #Mobile version
+    $pagePath = Get-Item -Path "master://sitecore/content/EasyJet/TradePortal/Home/MixedResultList"
+    $dataSourcePath = "/sitecore/content/EasyJet/TradePortal/Home/MixedResultList/Page Components/Search Results Map" 
+    $placeholderPath = '/body/component-wrapper-inner-{dcbaa19e-0992-45d8-b434-891653b166ac}-0/search-results-map-{7fa3d29d-afad-4fb5-8bd6-d9fc7a827514}-0'
+    $renderingPath = "/sitecore/layout/Renderings/Feature/PageContent/Search Results Map"
+    $rendering = Get-Item -Database "master" -Path $renderingPath | New-Rendering -Placeholder $placeholderPath
+    
+    Add-Rendering -Item $pagePath -Instance $rendering -DataSource $dataSourcePath -Placeholder $placeholderPath -Index 0
+    Get-Or-Create-Item -path "master:/content/EasyJet/TradePortal/Home/MixedResultList/Page Components" -templateId "{577146F6-301B-4514-BF73-D6E73E337452}"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20231128T144409Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+    <Sitecore>
+        <Processing>
+            <Services>
+                <Condition.AnonymousCondition>
+                    <Type>Sitecore.XConnect.DataTools.Conditions.AnonymousCondition, Sitecore.XConnect.DataTools.Conditions</Type>
+                    <As>Sitecore.XConnect.DataTools.Abstractions.Conditions.ICondition, Sitecore.XConnect.DataTools.Abstractions</As>
+                    <LifeTime>Singleton</LifeTime>
+                </Condition.AnonymousCondition>
+                <Condition.AnonymousWithoutPushNotificationsCondition>
+                    <Type>easyJet.Foundation.XConnect.Common.PurgeConditions.AnonymousWithoutPushNotificationsCondition, easyJet.Foundation.XConnect.Common</Type>
+                    <As>Sitecore.XConnect.DataTools.Abstractions.Conditions.ICondition, Sitecore.XConnect.DataTools.Abstractions</As>
+                    <LifeTime>Singleton</LifeTime>
+                </Condition.AnonymousWithoutPushNotificationsCondition>
+            </Services>
+        </Processing>
+    </Sitecore>
+</Settings>

@@ -1,0 +1,146 @@
+﻿---
+ID: "39dd3206-13e7-47e2-8a25-e06342552fd5"
+Parent: "a526d511-21c8-4534-a668-c72875bbbf40"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/Helpers/Bulk run AB Test
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $rootPath = "/sitecore/content/EasyJet/Holidays/Home/Root"
+    $testLabPath = "/sitecore/system/Marketing Control Panel/Test Lab"
+    
+    $promoPageTemplateId = "{C0CB2F05-AFD2-41CE-B53F-6F15A1033740}"
+    $testDefenitionTemplateId = "{45FB02E9-70B3-4CFE-8050-06EAD4B5DB3E}"
+    $multivariateTestVariableTemplateId = "{72296CFA-6354-47AD-901A-17F1651E9505}"
+    $multivariateTestValueTemplateId = "{6D00D695-0CAB-47D7-8929-A03EA002EB19}"
+    
+    $promopageSearchPodId = "{216FE85C-936E-4135-894B-E7DE8BF8A4C2}" #"{0DD57D31-2820-446D-9763-26FBFD3021BE}"
+    $searchPodWithHeaderId = "{5E2E2A85-2A21-4CD2-B8BC-BB34A2FDA822}"
+    $ph = "/body/component-wrapper-inner-{d0fc43a3-cacb-4636-8f84-fa95e6b5bf06}-0" #"body"
+    
+    $url = "https://sc.holidays.local/api/CreateTestDialog/StartTest"
+    $deviceId = "{FE5D7FDF-89C0-4D99-9AA3-B5FBD009C9F3}"
+    $goalId = "{00000000-0000-0000-0000-000000000000}"
+    $confidenceLevel = "95"
+    $trafficAllocation = 100
+    $winnerStrategy = "{9551FA9B-2C25-40A1-9C00-038DE67ABDC2}"
+    
+    $postParams = @{
+        ConfidenceLevel= $confidenceLevel
+        DeviceId= $deviceId
+        Expectation= 0
+        GoalId= $goalId
+        Language= "en"
+        MaxDuration= "90"
+        MinDuration= "7"
+        SelectWinnerStrategy= $winnerStrategy
+        TrackWithEngagementValue= $true
+        TrafficAllocation= $trafficAllocation
+        autoShowWinner= $true
+    }
+    
+    #$testLabItem = Get-Item $testLabPath 
+    
+    function Get-RenderingUniqId {
+    	param(
+    		[item]$Item,
+    		[string]$RenderingItemId,
+    		[string]$Placeholder
+    	)
+    
+    	$renderingItem = Get-Item -Path "master:" -Id $RenderingItemId
+    	return (Get-Rendering -Item $Item -PlaceHolder $Placeholder -Rendering $renderingItem).UniqueId
+    }
+    
+    function Add-MultivariateTest{
+    	param(
+    		$item,
+    		$renderingId,
+    		$multivariateTestVariable
+    	)
+    	$renderingId
+    	
+    	<# Get the rules as an XML Element #>
+    	$sourceItemSharedLayoutField = $item.Fields[[Sitecore.FieldIDs]::LayoutField]
+        $sourceSharedLayoutXml = [Sitecore.Data.Fields.LayoutField]::GetFieldValue($sourceItemSharedLayoutField)
+        
+    	[xml]$sourceRenderingsXML = New-Object -TypeName XML
+    	$sourceRenderingsXML.loadxml($sourceSharedLayoutXml)
+    	$sourceXpathQ = "r/d/r[@uid='$($renderingId)']"
+    	$sourceRuleElement = $sourceRenderingsXML.SelectSingleNode($sourceXpathQ)
+    	$sourceRuleElement.SetAttribute("mvt", $multivariateTestVariable.ID)
+    	$sourceRuleElement
+    	
+    	<# Output the Renderings XML to the final renderings field on the target #>
+    	$item.Editing.BeginEdit()
+    	$item."__Renderings" = $sourceRenderingsXML.OuterXML
+    	$item.Editing.EndEdit() > $null
+    }
+    
+    function StartTest {
+    	param($id, $version)
+        try
+        {
+            $postParams.itemUri = "sitecore://$($id)?lang=en&ver=$($version)"
+            Write-Host $postParams.itemUri
+            #$response = Invoke-WebRequest -Uri $url -Method POST -Body $postParams -UseBasicParsing
+            return $response;
+        }
+        catch [Net.WebException]
+        {
+            Write-Error $_
+            return $null
+        }
+    }
+    
+    function CreateTestLabItem {
+        param($id, $name)
+        
+        $testDefenition = New-Item -Path $testLabPath -Name $name -ItemType $testDefenitionTemplateId
+        
+        $testDefenition.Editing.BeginEdit()
+        $testDefenition["Device"] = $deviceId;
+        $testDefenition.Editing.EndEdit() | Out-Null;
+        
+        $multivariateTestVariable = New-Item -Parent $testDefenition -Name "Search Pod" -ItemType $multivariateTestVariableTemplateId
+    
+        $multivariateTestOriginal = New-Item -Parent $multivariateTestVariable -Name "Original" -ItemType $multivariateTestValueTemplateId
+        $multivariateTestOriginal.Editing.BeginEdit()
+        $multivariateTestOriginal["Datasource"] = "{00000000-0000-0000-0000-000000000000}";
+        $multivariateTestOriginal.Editing.EndEdit() | Out-Null;
+        
+        $multivariateTestVariant2 = New-Item -Parent $multivariateTestVariable -Name "Variant2" -ItemType $multivariateTestValueTemplateId
+        $multivariateTestVariant2.Editing.BeginEdit()
+        $multivariateTestVariant2["Datasource"] = "{00000000-0000-0000-0000-000000000000}";
+        $multivariateTestVariant2["Replacement Component"] = "{00000000-0000-0000-0000-000000000000}";
+        $multivariateTestVariant2.Editing.EndEdit() | Out-Null;
+        
+        $multivariateTestVariable.Editing.BeginEdit()
+        #$testDefenition["Name"] = $multivariateTestOriginal.ID.Guid;
+        $multivariateTestVariable["Original Value"] = $multivariateTestOriginal.ID;
+        $multivariateTestVariable.Editing.EndEdit() | Out-Null;
+        
+        return $multivariateTestVariable
+    }
+    
+    $promoPages = Get-ChildItem -Path $rootPath -Recurse | Where-Object { $_.TemplateID -eq  $promoPageTemplateId } | Select -First 1
+    foreach($promoPage in $promoPages){
+        $sourceRenderingId = Get-RenderingUniqId -Item $promoPage -RenderingItemId $promopageSearchPodId -PlaceHolder $ph
+        
+        $multivariateTestVariable = CreateTestLabItem -id $promoPage.ID -name $promoPage.name
+        
+        Add-MultivariateTest -item $promoPage -renderingId $sourceRenderingId -multivariateTestVariable $multivariateTestVariable
+        
+        StartTest -id $promoPage.ID -version $promoPage.Version
+    }
+    #Run
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20201012T082130Z

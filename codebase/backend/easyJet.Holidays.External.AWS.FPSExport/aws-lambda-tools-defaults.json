@@ -1,0 +1,26 @@
+
+{
+    "Information" : [
+        "This file provides default values for the deployment wizard inside Visual Studio and the AWS Lambda commands added to the .NET Core CLI.",
+        "To learn more about the Lambda commands with the .NET Core CLI execute the following command at the command line in the project root directory.",
+        "dotnet lambda help",
+        "All the command line options for the Lambda command can be specified in this file."
+    ],
+    "profile"     : "default",
+    "region"      : "eu-west-1",
+    "configuration" : "Release",
+    "function-runtime" : "dotnet10",
+    "function-memory-size" : 10240,
+    "function-timeout"     : 900,
+    "function-handler"     : "easyJet.Holidays.External.AWS.FPSExport::easyJet.Holidays.External.AWS.FPSExport.Function_Run_Generated::Run",
+    "function-name"        : "HolidaysNonprodFPSExport",
+    "function-description" : "",
+    "package-type"         : "Zip",
+    "function-role"        : "arn:aws:iam::195883475623:role/HolidaysNonprodFPSExport",
+    "function-architecture" : "x86_64",
+    "function-subnets"      : "subnet-0b684bb086d408dfd",
+    "function-security-groups" : "sg-052e97455cc1b8e4f",
+    "tracing-mode"             : "PassThrough",
+    "environment-variables"    : "\"DailyTriggerName\"=\"HolidaysNonprodFPSExportDailyTrigger\";\"FtpRetryAttemptSleepSec\"=\"3\";\"SQSWithUpdates\"=\"easyjet-holidays-fps-updates.fifo\";\"DynamoDbTableName\"=\"HOL-NONPROD-FLIGHT-PRICE-STOREDATA\";\"FtpOutputDirectoryPath\"=\"/fps\";\"FtpRetryAttempts\"=\"5\";\"FtpSecretName\"=\"Holidays/FPSFilesFtps\";\"AwsSecretManagerServiceUrl\"=\"https://vpce-0d880ba7072dd6c94-2jsf5u99.secretsmanager.eu-west-1.vpce.amazonaws.com\";\"FtpPort\"=\"22\";\"SQSServiceUrl\"=\"https://vpce-0246e38562276b3f9-reka8e31.sqs.eu-west-1.vpce.amazonaws.com\";\"Currency\"=\"GBP,CHF\";\"S3BucketName\"=\"easyjet-holidays-fps-files-nonprod\";\"UseS3InsteadOfFTP\"=\"true\"",
+    "image-tag"                : ""
+}

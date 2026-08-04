@@ -1,0 +1,40 @@
+{
+  "Guid": "2ed4397c-d4ee-4954-b88c-a82f6f1AAdf3",
+  "UpdatedAt": "2023-11-07T13:15:29.8810665Z",
+  "Title": "InfoBookingRequest with extra luggage",
+  "Priority": 0,
+  "Request": {
+    "Path": {
+      "Matchers": [
+        {
+          "Name": "WildcardMatcher",
+          "Pattern": "/EZYDMO/VRPWebservice/AniteGateway/AniteGateway.aspx",
+          "IgnoreCase": false
+        }
+      ]
+    },
+    "Methods": [
+      "POST"
+    ],
+      "Body": {
+          "Matcher": {
+              "Name": "XPathMatcher",
+              "Pattern": "/*:ItemSearchRequest//*:Acc_Cd/text()='EGHR0028'"
+          }
+      }
+  },
+  "Response": {
+    "StatusCode": 200,
+    "BodyAsFile": "__admin/files/Atcom/ItemSearchResponse_EGHR0028.xml",
+    "Headers": {
+      "Content-Type": "text/xml",
+      "Cache-Control": "private",
+      "Vary": "Accept-Encoding",
+      "Server": "Microsoft-IIS/10.0",
+      "Set-Cookie": "ASP.NET_SessionId=i04x0thumy4fryxhsqdf5trg; path=/; HttpOnly; SameSite=Lax",
+      "X-AspNet-Version": "4.0.30319",
+      "X-Powered-By": "ASP.NET",
+      "Date": "Tue, 07 Nov 2023 13:15:29 GMT"
+    }
+  }
+}

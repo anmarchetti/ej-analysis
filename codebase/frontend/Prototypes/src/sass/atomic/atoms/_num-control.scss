@@ -1,0 +1,24 @@
+$input-border-color: $colorGray;
+
+.num-control {
+    .num-controls {
+        display: flex;
+        justify-content: center;
+
+        input {
+            width: 34px;
+            height: 34px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid $input-border-color;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            margin: 0;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+    }
+}

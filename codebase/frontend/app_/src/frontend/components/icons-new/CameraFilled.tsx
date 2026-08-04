@@ -1,0 +1,19 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgCameraFilled = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'camera-filled-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <circle cx={12} cy={13} r={2} />
+        <path d='M20.7 6h-4.2v-.7A1.3 1.3 0 0015.2 4H8.75a1.3 1.3 0 00-1.3 1.3V6H3.3A1.3 1.3 0 002 7.28v11.44A1.3 1.3 0 003.3 20h17.4a1.3 1.3 0 001.3-1.3V7.28A1.3 1.3 0 0020.7 6zM12 17a4 4 0 114-4 4 4 0 01-4 4zm6-6a1 1 0 111-1 1 1 0 01-1 1z' />
+    </svg>
+);
+
+export default SvgCameraFilled;

@@ -1,0 +1,55 @@
+.playButton {
+    position: absolute;
+    z-index: 2;
+    top: calc(50% - 60px);
+    left: calc(50% - 60px);
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    @include media-breakpoint-down(md) {
+        top: calc(50% - 28px);
+        left: calc(50% - 28px);
+    }
+}
+
+.transparentWrapper {
+    @include sizeSquare(100%);
+
+    position: absolute;
+    z-index: 3;
+    background-color: transparent;
+}
+
+.playButton:focus-visible {
+    svg {
+        outline: auto;
+    }
+}
+
+.playIcon {
+    height: 120px;
+    fill: $colorPorcelain;
+
+    @include media-breakpoint-down(md) {
+        height: 56px;
+    }
+}
+
+.smallPlayButton {
+    top: calc(50% - 12px);
+    left: calc(50% - 12px);
+
+    .playIcon {
+        height: 24px;
+    }
+}
+
+.thumbnailImage {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+}

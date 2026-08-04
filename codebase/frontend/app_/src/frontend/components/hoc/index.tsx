@@ -1,0 +1,1 @@
+export { withRerender } from './withRerender';

@@ -1,0 +1,385 @@
+﻿---
+ID: "17b32fc0-3bb2-4286-8535-64100420eba2"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/7 - SER-788 - Claim compensation form"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation Form"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form"
+                Fields      = @{
+                    "FormTitle" = @{
+                        "en" = "Compensation"
+                        "fr-CH" = "Indemnisation"
+                        "de-CH" = "Entschädigung"
+                        "fr-FR" = "Indemnisation"
+                        "de-DE" = "Entschädigung"
+                    }
+                    "FormIcon" = @{
+                        "en" = '<image mediaid="{7651BBB7-A35C-4D25-AB01-16C1C4AF77CE}" alt="cash" height="" width="" hspace="" vspace="" />'
+                    }
+                    "EligibleItemsSectionTitle" = @{
+                        "en" = 'May be eligible when'
+                        "fr-CH" = 'Peut être admissible lorsque'
+                        "de-CH" = 'Kann in Frage kommen, wenn'
+                        "fr-FR" = 'Peut être admissible lorsque'
+                        "de-DE" = 'Kann in Frage kommen, wenn'
+                    }
+                    "EligibleItemsDescription" = @{
+                        "en" = ''
+                        "fr-CH" = ''
+                        "de-CH" = ''
+                        "fr-FR" = ''
+                        "de-DE" = ''
+                    }
+                    "NotEligibleItemsSectionTitle" = @{
+                        "en" = 'Not eligible when'
+                        "fr-CH" = 'Non admissible lorsque'
+                        "de-CH" = 'Nicht berechtigt, wenn'
+                        "fr-FR" = 'Non admissible lorsque'
+                        "de-DE" = 'Nicht berechtigt, wenn'
+                    }
+                    "NotEligibleItemsDescription" = @{
+                        "en" = "Where your flight is delayed or cancelled due to an ""extraordinary circumstance"" or completely out of our control, then there won’t be any compensation due."
+                        "fr-CH" = "Si votre vol est retardé ou annulé en raison d'une « circonstance extraordinaire » ou d'un événement totalement indépendant de notre volonté, aucune indemnisation ne sera due."
+                        "de-CH" = "Wenn Ihr Flug aufgrund ""außergewöhnlicher Umstände"" oder aus Gründen, die völlig außerhalb unserer Kontrolle liegen, verspätet ist oder gestrichen wird, besteht kein Anspruch auf Entschädigung."
+                        "fr-FR" = "Si votre vol est retardé ou annulé en raison d'une « circonstance extraordinaire » ou d'un événement totalement indépendant de notre volonté, aucune indemnisation ne sera due."
+                        "de-DE" = "Wenn Ihr Flug aufgrund ""außergewöhnlicher Umstände"" oder aus Gründen, die völlig außerhalb unserer Kontrolle liegen, verspätet ist oder gestrichen wird, besteht kein Anspruch auf Entschädigung."
+                    }
+                    "EnableFullOverviewPopup" = @{
+                        "en" = "1"
+                        "fr-CH" = "1"
+                        "de-CH" = "1"
+                        "fr-FR" = "1"
+                        "de-DE" = "1"
+                    }
+                    "SeeFullOverviewButtonLabel" = @{
+                        "en" = 'See examples'
+                        "fr-CH" = "Voir des exemples"
+                        "de-CH" = "Siehe Beispiele"
+                        "fr-FR" = "Voir des exemples"
+                        "de-DE" = "Siehe Beispiele"
+                    }
+                    "FullOverviewPopupIcon" = @{
+                        "en" = '<image mediaid="{56AF2B32-BF7E-4E53-86FB-848F2B502C30}" />'
+                        "fr-CH" = '<image mediaid="{56AF2B32-BF7E-4E53-86FB-848F2B502C30}" />'
+                        "de-CH" = '<image mediaid="{56AF2B32-BF7E-4E53-86FB-848F2B502C30}" />'
+                        "fr-FR" = '<image mediaid="{56AF2B32-BF7E-4E53-86FB-848F2B502C30}" />'
+                        "de-DE" = '<image mediaid="{56AF2B32-BF7E-4E53-86FB-848F2B502C30}" />'
+                    }
+                    "FullOverviewPopupTitle" = @{
+                        "en" = 'Examples of extraordinary circumstances'
+                        "fr-CH" = "Exemples de circonstances exceptionnelles"
+                        "de-CH" = "Beispiele für außergewöhnliche Umstände"
+                        "fr-FR" = "Exemples de circonstances exceptionnelles"
+                        "de-DE" = "Beispiele für außergewöhnliche Umstände"
+                    }
+                    "FullOverviewPopupDescription" = @{
+                        "en" = @'
+    Examples of extraordinary circumstances:<br />
+    - your hotel or resort is affected by a natural disaster, or severe weather, which causes flight cancellations<br />
+    - air traffic control restrictions, industrial action which cause flight delays or cancellations a natural disaster occurs very close to your hotel, resort, or city meaning we&rsquo;re unable to safely or operationally fulfil the rest of your holiday<br />
+    - the government travel advice issued by the FCDO changes to advise travellers against all non-essential travel.
+    <p><strong>What happens if widespread disruption means my holiday can&rsquo;t go ahead?</strong></p>
+    If travel disruption or another situation beyond our control means we can&rsquo;t fulfil 
+    your holiday, we&rsquo;ll cancel it and you can either have a full refund, choose to 
+    receive account credit (subject to our Credit on Account Terms and Conditions), 
+    or accept a replacement holiday from us of which is at least equivalent in 
+    standard and price (if we&rsquo;re able to offer you one) or a lower quality holiday, if 
+    that&rsquo;s all we can offer, and then we&rsquo;ll refund you any difference in price between 
+    your original holiday purchased and the new one.
+    '@
+                        "fr-CH" = @'
+    Exemples de circonstances exceptionnelles :<br />
+    - votre hôtel ou votre complexe touristique est touché par une catastrophe naturelle ou des conditions météorologiques extrêmes entraînant l'annulation de vols<br />
+    - des restrictions imposées par le contrôle aérien ou des grèves entraînent des retards ou des annulations de vols une catastrophe naturelle se produit à proximité immédiate de votre hôtel, complexe touristique ou ville, nous empêchant ainsi d'assurer la sécurité et le bon déroulement du reste de votre séjour<br />
+    - les conseils aux voyageurs émis par le FCDO changent et déconseillent tout voyage non essentiel.
+    <p><strong>Que se passe-t-il si des perturbations généralisées empêchent le déroulement de mes vacances ?</strong></p>
+    Si des perturbations de voyage ou une autre situation indépendante de notre volonté nous empêchent d'assurer 
+    vos vacances, nous les annulerons et vous pourrez soit obtenir un remboursement complet, soit choisir de 
+    recevoir un crédit sur votre compte (sous réserve de nos conditions générales relatives aux crédits sur compte), 
+    soit accepter des vacances de remplacement de notre part, d'un niveau et d'un prix au moins équivalents 
+    (si nous en mesure de vous en proposer un) ou un séjour de qualité inférieure, si 
+    c'est tout ce que nous pouvons vous offrir, auquel cas nous vous rembourserons la différence de prix entre 
+    le séjour initialement acheté et le nouveau séjour.
+    '@
+                        "de-CH" = @'
+    Beispiele für außergewöhnliche Umstände:<br />
+    - Ihr Hotel oder Resort ist von einer Naturkatastrophe oder Unwettern betroffen, die zu Flugausfällen führen. <br />
+    - Flugverkehrsbeschränkungen, Arbeitskämpfe, die zu Flugverspätungen oder -ausfällen führen. Eine Naturkatastrophe ereignet sich in unmittelbarer Nähe Ihres Hotels, Resorts oder Ihrer Stadt, sodass wir den Rest Ihres Urlaubs nicht sicher oder operativ durchführen können. <br />
+    - Die Reisewarnung der britischen Außenministeriums (FCDO) wird geändert und Reisenden wird von allen nicht unbedingt notwendigen Reisen abgeraten.
+    <p><strong>Was passiert, wenn mein Urlaub aufgrund weitreichender Störungen nicht stattfinden kann?</strong></p>
+    Wenn wir aufgrund von Reiseunterbrechungen oder anderen Umständen, die außerhalb unserer Kontrolle liegen, Ihren Urlaub nicht durchführen können,
+     stornieren wir ihn und Sie können entweder eine vollständige Rückerstattung erhalten, sich für eine 
+    Gutschrift auf Ihr Konto entscheiden (gemäß unseren Allgemeinen Geschäftsbedingungen für Gutschriften) 
+    oder einen Ersatzurlaub von uns annehmen, der mindestens dem gleichen 
+    Standard und Preis entspricht (sofern wir Ihnen einen solchen anbieten können) oder einen Urlaub von geringerer Qualität, wenn 
+    wir Ihnen nichts anderes anbieten können, und erstatten Ihnen dann die Preisdifferenz zwischen 
+    Ihrem ursprünglich gebuchten Urlaub und dem neuen Urlaub.
+    '@
+                        "fr-FR" = @'
+    Exemples de circonstances exceptionnelles :<br />
+    - votre hôtel ou votre complexe touristique est touché par une catastrophe naturelle ou des conditions météorologiques extrêmes entraînant l'annulation de vols<br />
+    - des restrictions imposées par le contrôle aérien ou des grèves entraînent des retards ou des annulations de vols une catastrophe naturelle se produit à proximité immédiate de votre hôtel, complexe touristique ou ville, nous empêchant ainsi d'assurer la sécurité et le bon déroulement du reste de votre séjour<br />
+    - les conseils aux voyageurs émis par le FCDO changent et déconseillent tout voyage non essentiel.
+    <p><strong>Que se passe-t-il si des perturbations généralisées empêchent le déroulement de mes vacances ?</strong></p>
+    Si des perturbations de voyage ou une autre situation indépendante de notre volonté nous empêchent d'assurer 
+    vos vacances, nous les annulerons et vous pourrez soit obtenir un remboursement complet, soit choisir de 
+    recevoir un crédit sur votre compte (sous réserve de nos conditions générales relatives aux crédits sur compte), 
+    soit accepter des vacances de remplacement de notre part, d'un niveau et d'un prix au moins équivalents 
+    (si nous en mesure de vous en proposer un) ou un séjour de qualité inférieure, si 
+    c'est tout ce que nous pouvons vous offrir, auquel cas nous vous rembourserons la différence de prix entre 
+    le séjour initialement acheté et le nouveau séjour.
+    '@
+                        "de-DE" = @'
+    Beispiele für außergewöhnliche Umstände:<br />
+    - Ihr Hotel oder Resort ist von einer Naturkatastrophe oder Unwettern betroffen, die zu Flugausfällen führen. <br />
+    - Flugverkehrsbeschränkungen, Arbeitskämpfe, die zu Flugverspätungen oder -ausfällen führen. Eine Naturkatastrophe ereignet sich in unmittelbarer Nähe Ihres Hotels, Resorts oder Ihrer Stadt, sodass wir den Rest Ihres Urlaubs nicht sicher oder operativ durchführen können. <br />
+    - Die Reisewarnung der britischen Außenministeriums (FCDO) wird geändert und Reisenden wird von allen nicht unbedingt notwendigen Reisen abgeraten.
+    <p><strong>Was passiert, wenn mein Urlaub aufgrund weitreichender Störungen nicht stattfinden kann?</strong></p>
+    Wenn wir aufgrund von Reiseunterbrechungen oder anderen Umständen, die außerhalb unserer Kontrolle liegen, Ihren Urlaub nicht durchführen können,
+     stornieren wir ihn und Sie können entweder eine vollständige Rückerstattung erhalten, sich für eine 
+    Gutschrift auf Ihr Konto entscheiden (gemäß unseren Allgemeinen Geschäftsbedingungen für Gutschriften) 
+    oder einen Ersatzurlaub von uns annehmen, der mindestens dem gleichen 
+    Standard und Preis entspricht (sofern wir Ihnen einen solchen anbieten können) oder einen Urlaub von geringerer Qualität, wenn 
+    wir Ihnen nichts anderes anbieten können, und erstatten Ihnen dann die Preisdifferenz zwischen 
+    Ihrem ursprünglich gebuchten Urlaub und dem neuen Urlaub.
+    '@
+                    }
+                    "InstructionsSectionTitle" = @{
+                        "en" = 'Ready to claim?'
+                        "fr-CH" = "Prêt à faire valoir vos droits ?"
+                        "de-CH" = "Bereit zum Einlösen?"
+                        "fr-FR" = "Prêt à faire valoir vos droits ?"
+                        "de-DE" = "Bereit zum Einlösen?"
+                    }
+                    "InstructionsSectionDescription" = @{
+                        "en" = @'
+    Flight compensation, known as EC261, can only be claimed for easyJet flight   
+    disruptions as listed above. If you're eligible, please complete the claim form to   
+    follow procedures governed by aviation regulation. <a href="https://www.easyjet.com/en/terms-and-conditions/notice-of-rights-for-flight-delays-and-cancellations"><strong><span style="text-decoration: underline;">See your rights here</span></strong></a>
+    '@
+                        "fr-CH" = @'
+    L'indemnisation des passagers, connue sous le nom de règlement CE 261, ne peut être réclamée que pour les perturbations des vols easyJet   
+    énumérées ci-dessus. Si vous êtes éligible, veuillez remplir le formulaire de réclamation afin de   
+    suivre les procédures régies par la réglementation aérienne. <a href="https://www.easyjet.com/fr/terms-and-conditions/notice-of-rights-for-flight-delays-and-cancellations"><strong><span style="text-decoration: underline;">Consultez vos droits ici</span></strong></a>
+    '@
+                        "de-CH" = @'
+    Flugentschädigungen gemäß EC261 können nur für die oben aufgeführten Flugstörungen bei easyJet geltend gemacht werden.   
+    Wenn Sie anspruchsberechtigt sind, füllen Sie bitte das Antragsformular aus, um   
+    die in den Luftfahrtvorschriften festgelegten Verfahren zu befolgen. <a href="https://www.easyjet.com/de/terms-and-conditions/notice-of-rights-for-flight-delays-and-cancellations"><strong><span style="text-decoration: underline;">Informieren Sie sich hier über Ihre Rechte</span></strong></a>
+    '@
+                        "fr-FR" = @'
+    L'indemnisation des passagers, connue sous le nom de règlement CE 261, ne peut être réclamée que pour les perturbations des vols easyJet   
+    énumérées ci-dessus. Si vous êtes éligible, veuillez remplir le formulaire de réclamation afin de   
+    suivre les procédures régies par la réglementation aérienne. <a href="https://www.easyjet.com/fr/terms-and-conditions/notice-of-rights-for-flight-delays-and-cancellations"><strong><span style="text-decoration: underline;">Consultez vos droits ici</span></strong></a>
+    '@
+                        "de-DE" = @'
+    Flugentschädigungen gemäß EC261 können nur für die oben aufgeführten Flugstörungen bei easyJet geltend gemacht werden.   
+    Wenn Sie anspruchsberechtigt sind, füllen Sie bitte das Antragsformular aus, um   
+    die in den Luftfahrtvorschriften festgelegten Verfahren zu befolgen. <a href="https://www.easyjet.com/de/terms-and-conditions/notice-of-rights-for-flight-delays-and-cancellations"><strong><span style="text-decoration: underline;">Informieren Sie sich hier über Ihre Rechte</span></strong></a>
+    '@
+                    }
+                    "OpenFormButtonLabel" = @{
+                        "en" = 'Start your compensation claim'
+                        "fr-CH" = "Commencez votre demande d'indemnisation"
+                        "de-CH" = "Beginnen Sie Ihren Entschädigungsantrag"
+                        "fr-FR" = "Commencez votre demande d'indemnisation"
+                        "de-DE" = "Beginnen Sie Ihren Entschädigungsantrag"
+                    }
+                    "OpenFormButtonLink" = @{
+                        "en" = "<link linktype=""external"" url=""https://www.easyjet.com/claim/en/eu261"" anchor="""" target=""_blank"" rel="""" />"
+                        "fr-CH" = "<link linktype=""external"" url=""https://www.easyjet.com/claim/fr/eu261"" anchor="""" target=""_blank"" rel="""" />"
+                        "de-CH" = "<link linktype=""external"" url=""https://www.easyjet.com/claim/de/eu261"" anchor="""" target=""_blank"" rel="""" />"
+                        "fr-FR" = "<link linktype=""external"" url=""https://www.easyjet.com/claim/fr/eu261"" anchor="""" target=""_blank"" rel="""" />"
+                        "de-DE" = "<link linktype=""external"" url=""https://www.easyjet.com/claim/de/eu261"" anchor="""" target=""_blank"" rel="""" />"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "1000"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation Form/Eligible Items"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Eligible Items Folder"
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation Form/Eligible Items/Flight"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "Fight arrives 3+ hours after scheduled time of arrival"
+                        "fr-CH" = "Le combat commence plus de 3 heures après l'heure prévue."
+                        "de-CH" = "Der Kampf beginnt mehr als drei Stunden nach der geplanten Ankunftszeit."
+                        "fr-FR" = "Le combat commence plus de 3 heures après l'heure prévue."
+                        "de-DE" = "Der Kampf beginnt mehr als drei Stunden nach der geplanten Ankunftszeit."
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation Form/Eligible Items/Flight Cancelled"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "Flight cancelled within 14 days of departure"
+                        "fr-CH" = "Vol annulé dans les 14 jours précédant le départ"
+                        "de-CH" = "Flug innerhalb von 14 Tagen vor Abflug storniert"
+                        "fr-FR" = "Vol annulé dans les 14 jours précédant le départ"
+                        "de-DE" = "Flug innerhalb von 14 Tagen vor Abflug storniert"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation Form/Eligible Items/Not extraordinary circumstances"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "The cause of the delay or cancellation is for reasons other than extraordinary circumstances"
+                        "fr-CH" = "La cause du retard ou de l'annulation est due à des raisons autres que des circonstances extraordinaires."
+                        "de-CH" = "Der Grund für die Verspätung oder Annullierung liegt in anderen Gründen als außergewöhnlichen Umständen"
+                        "fr-FR" = "La cause du retard ou de l'annulation est due à des raisons autres que des circonstances extraordinaires."
+                        "de-DE" = "Der Grund für die Verspätung oder Annullierung liegt in anderen Gründen als außergewöhnlichen Umständen"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "300"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation Form/Eligible Items/Involuntarily denied boarding"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "Involuntarily denied boarding"
+                        "fr-CH" = "Refus d'embarquement involontaire"
+                        "de-CH" = "Unfreiwillige Nichtbeförderung"
+                        "fr-FR" = "Refus d'embarquement involontaire"
+                        "de-DE" = "Unfreiwillige Nichtbeförderung"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "400"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation Form/Not Eligible Items"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Not Eligible Items Folder"
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation Form/Not Eligible Items/Extraordinary circumstances"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "Extraordinary circumstances"
+                        "fr-CH" = "Circonstances exceptionnelles"
+                        "de-CH" = "Außergewöhnliche Umstände"
+                        "fr-FR" = "Circonstances exceptionnelles"
+                        "de-DE" = "Außergewöhnliche Umstände"
+                    }
+                    "ItemTooltip" = @{
+                        "en" = "These are events outside our control for which compensation may not apply, some examples include natural disasters or adverse weather, industrial action, air traffic control restrictions or other reasons beyond our control."
+                        "fr-CH" = "Il s'agit d'événements indépendants de notre volonté pour lesquels aucune indemnisation ne peut être accordée, par exemple les catastrophes naturelles ou les conditions météorologiques défavorables, les grèves, les restrictions imposées par le contrôle aérien ou d'autres raisons indépendantes de notre volonté."
+                        "de-CH" = "Dies sind Ereignisse außerhalb unserer Kontrolle, für die möglicherweise keine Entschädigung gezahlt wird, darunter Naturkatastrophen oder widrige Wetterbedingungen, Arbeitskämpfe, Einschränkungen durch die Flugsicherung oder andere Gründe, die außerhalb unserer Kontrolle liegen."
+                        "fr-FR" = "Il s'agit d'événements indépendants de notre volonté pour lesquels aucune indemnisation ne peut être accordée, par exemple les catastrophes naturelles ou les conditions météorologiques défavorables, les grèves, les restrictions imposées par le contrôle aérien ou d'autres raisons indépendantes de notre volonté."
+                        "de-DE" = "Dies sind Ereignisse außerhalb unserer Kontrolle, für die möglicherweise keine Entschädigung gezahlt wird, darunter Naturkatastrophen oder widrige Wetterbedingungen, Arbeitskämpfe, Einschränkungen durch die Flugsicherung oder andere Gründe, die außerhalb unserer Kontrolle liegen."
+                    }
+                    "__Sortorder" = @{
+                        "en" = "100"
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation Form/Not Eligible Items/A delay of 3 hours or less"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form Item"
+                Fields      = @{
+                    "ItemText" = @{
+                        "en" = "A delay of 3 hours or less"
+                        "fr-CH" = "Un retard de 3 heures ou moins"
+                        "de-CH" = "Eine Verspätung von 3 Stunden oder weniger"
+                        "fr-FR" = "Un retard de 3 heures ou moins"
+                        "de-DE" = "Eine Verspätung von 3 Stunden oder weniger"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "200"
+                    }
+                }
+            }
+        )
+        
+    ImportContent -itemsToCreate $updates
+    
+    $itemsNotEligible = Get-ChildItem -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation Form/Not Eligible Items" -Recurse
+    $idsNotEligible = ($itemsNotEligible | ForEach-Object { $_.ID }) -join "|"
+    
+    $itemsEligible = Get-ChildItem -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation Form/Eligible Items" -Recurse
+    $idsEligible = ($itemsEligible | ForEach-Object { $_.ID }) -join "|"
+    
+    $updates = @(
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation Form"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Claim Form/Claim Form"
+                Fields      = @{
+                    "EligibleItems" = @{
+                        "en" = $idsEligible
+                    }
+                    "NotEligibleItems" = @{
+                        "en" = $idsNotEligible
+                    }
+                }
+            }
+            @{
+                Path         = "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation - Section Title"
+                TemplatePath = "/sitecore/templates/Feature/PageContent/Text Block"
+                Fields      = @{
+                    "Title" = @{
+                        "en" = "CLAIM COMPENSATION"
+                        "fr-CH" = "INDEMNISATION DES RÉCLAMATIONS"
+                        "de-CH" = "ANSPRUCH AUF ENTSCHÄDIGUNG"
+                        "fr-FR" = "INDEMNISATION DES RÉCLAMATIONS"
+                        "de-DE" = "ANSPRUCH AUF ENTSCHÄDIGUNG"
+                    }
+                    "__Sortorder" = @{
+                        "en" = "900"
+                    }
+                }
+            }
+        )
+        
+    ImportContent -itemsToCreate $updates
+    
+    $page= Get-Item -Path "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption"
+    $componentWrapper = Get-Item -Path "/sitecore/layout/Renderings/Feature/Page Structure/Component Wrapper"
+    $renderingComponentWrapper = New-Rendering -Item $componentWrapper
+    
+    Add-Rendering -Item $page -PlaceHolder "/body" -Instance $renderingComponentWrapper -Index 13 -Parameter @{ "PaddingTop" = "Padding Top 32px"; "PaddingTopMobile" = "Padding Top Mobile 32px" }
+    $renderingComponentWrapper = Get-Rendering -Item $page -Rendering $componentWrapper
+    
+    $textBlock = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/Text Block"
+    $renderingTextBlock = New-Rendering -Item $textBlock
+    Add-Rendering -Item $page -PlaceHolder "/body/component-wrapper-inner-$($renderingComponentWrapper[4].UniqueId)-0" -Instance $renderingTextBlock -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation - Section Title" -Parameter @{ "TitleTag" = "h2"; "TitleFontStyle" = "rounded demi"; "TitleFontSize" = "Mobile - 20px Desktop - 32px"; "TitleWeight" = 400; "PaddingSize" = "0px"; "IsIconAboveTitle" = "0" } -Index 14 
+    
+    $Form = Get-Item -Path "/sitecore/layout/Renderings/Feature/PageContent/Claim Form"
+    $renderingForm = New-Rendering -Item $Form
+    Add-Rendering -Item $page -PlaceHolder "/body/component-wrapper-inner-$($renderingComponentWrapper[4].UniqueId)-0" -Instance $renderingForm -DataSource "/sitecore/content/EasyJet/Holidays/Home/Root/Info/Disruption/Page Components/Claim Compensation Form" -Index 15 
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241016T142814Z

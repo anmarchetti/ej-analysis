@@ -1,0 +1,83 @@
+$footer-slim-link-margin-x: 15px;
+
+.footer-slim {
+    background: $clrEjOrange;
+
+    .wrapper-container {
+        padding-top: 0;
+        padding-bottom: 40px;
+
+        @include media-breakpoint-down(md) {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+    }
+
+    // Don't show triangle between slim and grey footers on desktop
+    @include media-breakpoint-up(md) {
+        + .footer--grey {
+            &::before {
+                display: none;
+            }
+        }
+    }
+}
+
+.footer-slim-nav {
+    ul {
+        display: flex;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+        }
+    }
+
+    li:not(:first-child) {
+        @include media-breakpoint-up(md) {
+            margin-left: $footer-slim-link-margin-x;
+            position: relative;
+
+            &::before {
+                content: "";
+                display: inline-block;
+                width: 5px;
+                height: 5px;
+                vertical-align: 0.2em;
+                background-color: $colorWhite;
+                border-radius: 50%;
+                opacity: 0.4;
+                position: absolute;
+                top: 7px;
+                left: 0px;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            margin-top: 25px;
+        }
+    }
+
+    a {
+        font-family: $fontRoundedBook;
+        font-size: 16px;
+        line-height: 1.2;
+        color: $colorWhite;
+        text-decoration: underline;
+        display: block;
+
+        :not(:first-child) {
+            padding-left: 20px;
+        }
+
+        @include media-breakpoint-down(md) {
+            padding-left: 0;
+        }
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}

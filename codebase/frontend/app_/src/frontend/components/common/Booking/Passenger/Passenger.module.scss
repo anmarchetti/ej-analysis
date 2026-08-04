@@ -1,0 +1,105 @@
+.guestWithIcon {
+    display: flex;
+    gap: 16px;
+    max-width: 240px;
+    align-items: center;
+
+    @include media-breakpoint-down(md) {
+        gap: 8px;
+        width: unset;
+        height: unset;
+    }
+}
+
+.guest {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    @include media-breakpoint-down(md) {
+        gap: 16px;
+        width: 100%;
+    }
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    @include media-breakpoint-down(md) {
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+
+.icon {
+    height: 24px;
+    width: 24px;
+    min-height: 24px;
+    min-width: 24px;
+    color: $clrEjOrange;
+}
+
+.guestName {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    gap: 8px;
+    font-family: $fontRoundedBook;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: normal;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(md) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.leadLabel {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: $clrTextMain;
+    background: #ffd9b3;
+    border-radius: 4px;
+    font-family: $fontRoundedDemy;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.infoItem {
+    font-family: $fontRoundedBook;
+    font-size: 14px;
+    line-height: 1.2;
+    color: $clrTextMain;
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+}
+
+.label {
+    display: inline-block;
+    min-width: 70px;
+    margin-right: 5px;
+    font-weight: 700;
+
+    @include media-breakpoint-down(md) {
+        margin-right: 0;
+    }
+}
+
+.value {
+    overflow-wrap: break-word;
+}

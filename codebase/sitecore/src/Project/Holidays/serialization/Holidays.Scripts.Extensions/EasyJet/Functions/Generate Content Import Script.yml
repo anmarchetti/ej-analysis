@@ -1,0 +1,250 @@
+﻿---
+ID: "58b6af78-323d-443b-b988-bc636598f9ab"
+Parent: "b1e3c34e-a209-4730-a266-ecc77072d88c"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: /sitecore/system/Modules/PowerShell/Script Library/SPE/Extensions/EasyJet/Functions/Generate Content Import Script Bootstrapper
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $rootItem = Get-Item -Path .
+    Import-Function "Get Field Values For Item"
+    Import-Function "Get Referenced Items"
+    Import-Function "Select Fields For Items"
+    Import-Function "Generate Content Import Script"
+    
+    function Get-SubItemCount($item, $max) {
+        $count = 0
+        if ($item -and $item.Children -and $item.Children.Count -gt 0) {
+            foreach ($child in $item.Children) {
+                if ($count -ge $max) { break }
+                $count++
+                if ($count -lt $max) {
+                    $childCount = Get-SubItemCount $child $max
+                    $count += $childCount
+                    if ($count -ge $max) { break }
+                }
+            }
+        }
+        return $count
+    }
+    
+    function Prompt-UserForOptions {
+    
+        $langReferenceItem = Get-Item -Path "master:/sitecore/content/EasyJet/Holidays/Home"
+        
+        $languages = foreach ($lang in $langReferenceItem.Database.Languages) {
+          $itemInLang = $langReferenceItem.Database.GetItem($langReferenceItem.ID, $lang)
+          if ($itemInLang -and $itemInLang.Versions.Count -gt 0) {
+            $itemInLang.Language
+          }
+        }
+        $subitemsPostfix=""
+        $countSubItems=Get-SubItemCount $rootItem 15
+        if($countSubItems -ge 15)
+        {
+            $subitemsPostfix="($($countSubItems)+ items)"
+        }
+        else
+        {
+             $subitemsPostfix="($($countSubItems) items)"
+        }
+        $AvailableLanguages = $languages | Select-Object -Unique | 
+                         Select-Object -ExpandProperty Name
+    
+        $languagesOptions = @{}
+        foreach ($lang in $AvailableLanguages) {
+            $languagesOptions[$lang] = $lang
+        }
+    
+    
+        $result =  Read-Variable -Parameters @(
+            @{
+                Name    = "SelectedLanguages"
+                Title   = "Select Languages"
+                Editor  = "checklist"
+                Options = $languagesOptions
+                Value   = $AvailableLanguages
+            }
+            @{
+                Name    = "ConsiderLinkedItems"
+                Title   = "Related Items"
+                Editor  = "checkbox"
+                Value   = $false
+            },
+            @{
+                Name   = "  "
+                Editor = "info"
+                Value  = "If checked, related items will also be considered."
+            },
+            @{
+                Name    = "ConsiderSubItems"
+                Title   = "Subitems $($subitemsPostfix)"
+                Editor  = "checkbox"
+                Value   = $false
+            },
+            @{
+                Name   = "    "
+                Editor = "info"
+                Value  = "If checked, subitems will also be considered recursively."
+            }
+        ) -Title "Select Languages and Options" -Description "Please select the desired languages and options." -Width 800 -Height 300
+        
+        if($result -ne "ok" ) {
+            Write-Host "No languages found, exiting..."
+            exit
+        }
+        # Rückgabe der ausgewählten Werte als Objekt
+        return @{
+            SelectedLanguages   = $SelectedLanguages
+            ConsiderLinkedItems = $ConsiderLinkedItems
+            ConsiderSubItems    = $ConsiderSubItems
+        }
+    }
+    
+    function Get-AllRelevantItems {
+        param (
+            [Sitecore.Data.Items.Item]$RootItem,
+            [bool]$IncludeSubItems,
+            [bool]$IncludeLinkedItems,
+            [string[]]$Languages
+        )
+    
+        $allItems = @($RootItem)
+    
+        if ($IncludeSubItems) {
+            $childItems = Get-ChildItem ("master:" + $RootItem.FullPath) -Recurse -ErrorAction SilentlyContinue
+            if ($childItems) {
+                $allItems += $childItems
+            }
+        }
+    
+        if ($IncludeLinkedItems) {
+            $processed = @()
+            $toProcess = $allItems | Where-Object { -not $processed.Contains($_) }
+            
+            while ($toProcess.Count -gt 0) {
+                $newItems = Get-ReferencedItems -itemsToCheck $toProcess -languages $Languages
+                $processed = $($processed+$toProcess)
+    
+                foreach ($ni in $newItems) {
+                    if (-not $allItems.Contains($ni)) {
+                        $allItems += $ni
+                    }
+                }
+                $toProcess = $allItems | Where-Object { -not $processed.Contains($_) }
+            }
+        }
+    
+        return $allItems
+    }
+    
+    
+    function Prompt-ForTargetLocation {
+        param (
+            [string]$DefaultItemName
+        )
+    
+        $result = Read-Variable -Parameters @(
+            @{
+                Name        = "RootPath"
+                Title       = "Root Path"
+                Description = "Specify the root path where the script item will be created."
+                Editor      = "text"
+                Value       = "/sitecore/system/Modules/PowerShell/Script Library/Content Sync"
+            },
+            @{
+                Name        = "ItemName"
+                Title       = "Item Name"
+                Description = "Specify the name of the script item to create."
+                Editor      = "text"
+                Value       = "$($DefaultItemName) Update"
+            }
+        ) -Title "Specify Target Location and Item Name" `
+          -Description "Please specify the path and name."
+          
+        if($result -ne "ok" ) {
+            Write-Host "Aborted by User..."
+            exit
+        }
+        if ([string]::IsNullOrEmpty($RootPath) -or [string]::IsNullOrEmpty($ItemName)) {
+            Write-Host "RootPath or ItemName not specified, exiting..."
+            exit
+        }
+        $newItemName = $ItemName
+        $newItemPath = Join-Path $RootPath $newItemName
+        $newItemPath = $newItemPath -replace "\\", "/"
+          Write-Host "ScriptPath: $($newItemPath)"
+    
+        return $newItemPath
+    }
+    
+    
+    $optionsResult = Prompt-UserForOptions
+    
+    if (-not $optionsResult.SelectedLanguages -or $optionsResult.SelectedLanguages.Count -eq 0) {
+        Write-Host "No Languages selected...."
+        exit
+    }
+    
+    if (-not $rootItem) {
+        Write-Host "RootItem not found at, exiting..."
+        exit
+    }
+    
+    $allItems = Get-AllRelevantItems -RootItem $rootItem -IncludeSubItems $optionsResult.ConsiderSubItems -IncludeLinkedItems $optionsResult.ConsiderLinkedItems -Languages $optionsResult.SelectedLanguages
+    
+    $result =  Read-Variable -Parameters @(
+    @{
+        Name   = "  "
+        Editor = "info"
+        Value  = "<b style=`"font-size:1.1em`">You decided to create a contentsync script for $($allItems.Count) items.</b><br><br><b style=`"font-size:1.1em`">For every item you will see a dialog asking you for the fields to include into the script.</b>"+
+        "<b style=`"font-size:1em`">Fields that already have values will be checked automatically.</b><br><br>"+
+        "<b style=`"font-size:1em;color:red;`">Note: Only select '__Renderings' Field if you introduce a new item, otherwise you probably would overwrite existing renderings.</b><br>"
+    }
+    
+    ) -Title "Field Selection pending" -Description "Select corresponding fields for the considired items." -Width 800 -Height 300 -OkButton "Continue" -CancelButton "Abort" `
+    
+    if($result -ne "ok" ) {
+        Write-Host "No languages found, exiting..."
+        exit
+    }
+    
+    
+    $itemsSelections = Select-FieldsForItems -Items $allItems -Languages $optionsResult.SelectedLanguages
+    
+    $scriptItemPath = Prompt-ForTargetLocation -DefaultItemName $rootItem.Name
+    
+    Generate-ContentImportScript -ItemsSelections $itemsSelections -Languages $optionsResult.SelectedLanguages -TargetItemPath $scriptItemPath
+    Write-Host "Content import script created successfully at '$($scriptItemPath)'."
+    $result = Read-Variable -Parameters @(
+        @{
+            Name   = ""
+            Editor = "info"
+            Value  = "The item:<br><b syle=`"font-size:1.4em`">$($scriptItemPath)</b><br>has been generate successfully!<br>Do you want to open it now?"
+        }
+    ) -Title "Script has been generate successfully" `
+    -OkButton "Yes" `
+    -CancelButton "No" `
+      -Description "What do you want to do next?."
+      
+    if($result -ne "ok" ) {
+        Write-Host "Aborted by User..."
+        exit
+    }
+    $item = Get-Item -Path $scriptItemPath
+    Show-Application `
+        -Application "Content Editor" `
+        -Parameter @{id ="$($item.ID)"; fo="$($item.ID)";la="$($item.Language.Name)"; vs="$($item.Version.Number)";sc_content="$($item.Database.Name)"} `
+        -Modal -Width 1600 -Height 800
+        
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241217T162605Z

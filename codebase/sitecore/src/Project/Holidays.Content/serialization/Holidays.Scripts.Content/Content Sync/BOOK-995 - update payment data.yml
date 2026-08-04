@@ -1,0 +1,77 @@
+﻿---
+ID: "e9637024-14ad-4e2b-a94d-f077f761c89f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/BOOK-995 - update payment data source"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $holidaysUpdates = @(
+        @{ 
+            Path = "/sitecore/content/EasyJet/Holidays/Home/Booking/Payment/Page Components/Payment"
+            TemplatePath = "/sitecore/templates/Feature/Destinations/Payment"
+            Fields = @{  
+                "PriceJumpPopupTitle" = @{ 
+                    "en"    = "The price of your holiday has changed"
+                    "fr-CH" = "Le prix de votre séjour a changé"
+                    "fr-FR" = "Le prix de votre séjour a changé"
+                    "de-CH" = "Der Preis für deine Ferien hat sich geändert"
+                    "de-DE" = "Der Preis für deinen Urlaub hat sich geändert"
+                }
+                "PriceJumpPopupDescription" = @{ 
+                    "en"    = "We’re sorry, but the price has changed on this holiday. It’s now {price}. If you’re happy with the new price, you can continue with this booking, or you can head back to the search page to look for a different holiday."
+                    "fr-CH" = "Désolé, le prix de ce séjour a changé. Il coûte désormais {price}. Si le nouveaux prix vous convient, vous pouvez continuer la réservation du séjour, sinon vous pouvez retourner à la page de recherche pour trouver un autre séjour."
+                    "fr-FR" = "Désolé, le prix de ce séjour a changé. Il coûte désormais {price}. Si le nouveaux prix vous convient, vous pouvez continuer la réservation du séjour, sinon vous pouvez retourner à la page de recherche pour trouver un autre séjour."
+                    "de-CH" = "Wir passen unsere Preise ständig an, um dir immer die bestmöglichen Angebote zu bieten. Der Preis für diese Ferien hat sich geändert und beträgt jetzt {price}. Wenn du mit dem neuen Preis zufrieden bist, kannst du mit dieser Buchung weitermachen. Oder du kannst zur Suche zurückkehren, um nach anderen Ferien zu suchen."
+                    "de-DE" = "Wir passen unsere Preise ständig an, um dir immer die bestmöglichen Angebote zu bieten. Der Preis für diesen Urlaub hat sich geändert und beträgt jetzt {price}. Wenn du mit dem neuen Preis zufrieden bist, kannst du mit dieser Buchung weitermachen. Oder du kannst zur Suche zurückkehren, um einen anderen Urlaub zu finden."
+                }
+                "PriceJumpPopupAccept" = @{ 
+                    "en"    = "Continue with new price"
+                    "fr-CH" = "Continuer avec ce prix"
+                    "fr-FR" = "Continuer avec ce prix"
+                    "de-CH" = "Weiter mit neuem Preis"
+                    "de-DE" = "Weiter mit neuem Preis"
+                }
+                "PriceJumpPopupDecline" = @{ 
+                    "en"    = "Search again"
+                    "fr-CH" = "Recommencer la recherche"
+                    "fr-FR" = "Recommencer la recherche"
+                    "de-CH" = "Zurück zur Suche"
+                    "de-DE" = "Zurück zur Suche"
+                }
+            }
+        },
+        @{ 
+            Path = "/sitecore/content/EasyJet/TradePortal/Home/Booking/Confirm/Page Components/Payment"
+            TemplatePath = "/sitecore/templates/Feature/Destinations/Payment"
+            Fields = @{  
+                "PriceJumpPopupTitle" = @{ 
+                    "en"    = "The price of your holiday has changed"
+                }
+                "PriceJumpPopupDescription" = @{ 
+                    "en"    = "We’re sorry, but the price has changed on this holiday. It’s now {price}. If you’re happy with the new price, you can continue with this booking, or you can head back to the search page to look for a different holiday."
+                }
+                "PriceJumpPopupAccept" = @{ 
+                    "en"    = "Continue with new price"
+                }
+                "PriceJumpPopupDecline" = @{ 
+                    "en"    = "Search again"
+                }
+            }
+        }
+    )
+        
+        ImportContent -itemsToCreate $holidaysUpdates
+    
+        Write-Host "Payment content changed"; 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Value: "20250402T112954:638791901946174017Z"

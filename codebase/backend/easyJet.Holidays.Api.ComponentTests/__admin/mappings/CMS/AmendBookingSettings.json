@@ -1,0 +1,52 @@
+{
+    "Title": "Get amend booking settings from CMS",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/content/bypath",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "path",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "{site}/Settings/Amend Booking Settings"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "IsAmendFlightsEnabled": "1",
+            "AmendFlightsThresholdHours": -2147483647,
+            "IsAmendTransfersEnabled": "1",
+            "AmendTransfersThresholdHours": -2147483647,
+            "AmendFlightCount": 10,
+            "AmendTransferCount": 10,
+            "IsAmendPassengerNameEnable": "1",
+            "AmendPassengerThresholdHours": -2147483647,
+            "AmendPassengerNameCharacterCount": 3,
+            "AmendPassengerNameCount": 1,
+            "EnableSSRAmendForDynamicInventoryHotels": true,
+            "EnablePassengerAmendForDynamicInventoryHotels": true,
+            "AmendChangeDateCount": 1,
+            "EnableForDirectlyContractedBookings": "1",
+            "IsChangeDatesEnable": 1,
+            "IsRoomAndBoardEnabled": "1",
+            "RoomAndBoardThresholdHours": -2147483647,
+            "RoomAndBoardAmendCount": 1,
+            "AmendHotelThresholdHours": -2147483647,
+            "IsAmendHotelEnabled": 1
+        }
+    }
+}

@@ -1,0 +1,45 @@
+import { ISportEquipmentRestrictedSeasonsFields } from 'models/data/IHoldLuggage';
+import { ISitecoreCompositeField, ISitecoreField, ISitecoreImage } from 'models/sitecore/generic/ISitecoreField';
+
+export interface IHoldLuggageFields {
+    AddButtonText: ISitecoreField<string>;
+    BagExtraDescription: ISitecoreField<string>;
+    BagExtraIcon: ISitecoreField<ISitecoreImage>;
+    BagExtraPrice: ISitecoreField<string>;
+    BagExtraSportDescription: ISitecoreField<string>;
+    EditButtonText: ISitecoreField<string>;
+    EditLabel: ISitecoreField<string>;
+    ExtraBagsAndSportsNotAvailable: ISitecoreField<string>;
+    HoldLuggageAndSportHeading: ISitecoreField<string>;
+    HoldLuggageAndSportsSubtitle: ISitecoreField<string>;
+    HoldLuggageHeading: ISitecoreField<string>;
+    HoldLuggageLuxurySubtitle: ISitecoreField<string>;
+    HoldLuggageSubtitle: ISitecoreField<string>;
+    IncludedForFreeText: ISitecoreField<string>;
+    InternalFlightDescription: ISitecoreField<string>;
+    InternalFlightHeader: ISitecoreField<string>;
+    NoAddHeading: ISitecoreField<string>;
+    NoDefaultBagsSubtitle: ISitecoreField<string>;
+    OutboundAndReturnIcon: ISitecoreField<ISitecoreImage>;
+    OutboundAndReturnTextMultiple: ISitecoreField<string>;
+    OutboundAndReturnTextSingular: ISitecoreField<string>;
+    OutlineBannerTextContent: ISitecoreField<string>;
+    PramDescription: ISitecoreField<string>;
+    PramHeading: ISitecoreField<string>;
+    PramIcon: ISitecoreField<ISitecoreImage>;
+    RequestFailureAltSubtitle: ISitecoreField<string>;
+    RequestFailureDescription: ISitecoreField<string>;
+    RequestFailureHeader: ISitecoreField<string>;
+    SportDescription: ISitecoreField<string>;
+    SportEquipmentIcon: ISitecoreField<ISitecoreImage>;
+    SportEquipmentRestrictedSeasons: ISitecoreCompositeField<ISportEquipmentRestrictedSeasonsFields>;
+    SportTitle: ISitecoreField<string>;
+    SportTransferFees: ISitecoreField<string>;
+    SportsExtraPrice: ISitecoreField<string>;
+    SportsHeading: ISitecoreField<string>;
+    SportsSubtitle: ISitecoreField<string>;
+    Title: ISitecoreField<string>;
+    UnavailableMessageDescription: ISitecoreField<string>;
+    UnavailableMessageHeader: ISitecoreField<string>;
+    BagExtraDescriptionTrade?: ISitecoreField<string>;
+}

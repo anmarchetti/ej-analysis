@@ -1,0 +1,41 @@
+{
+    "Title": "CMS BD4 Travel",
+    "Request": {
+        "Path": {
+            "Matchers": [
+                {
+                    "Name": "WildcardMatcher",
+                    "Pattern": "/api/Content/ByPath",
+                    "IgnoreCase": true
+                }
+            ]
+        },
+        "Params": [
+            {
+                "Name": "path",
+                "Matchers": [
+                    {
+                        "Name": "WildcardMatcher",
+                        "Pattern": "{site}/Settings/SmartSeer"
+                    }
+                ]
+            }
+        ],
+        "Methods": [ "Get" ]
+    },
+    "Response": {
+        "Headers": { "Content-Type": "application/json; charset=utf-8" },
+        "StatusCode": 200,
+        "BodyAsJson": {
+            "IsSortActive": "1",
+            "EnableNoFollowLinksInSmartSeerCarousels": "1",
+            "IsRecommendedActive": "1",
+            "MinimumHotelsAvailable": "3",
+            "NumberOfRequestedHotelsAtcom": "9",
+            "NumberOfRequestedHotelsSmartSeer": "18",
+            "IsPublic": "1",
+            "AutoTranslate": "",
+            "SkipTranslate": ""
+        }
+    }
+}

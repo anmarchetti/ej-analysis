@@ -1,0 +1,62 @@
+.tourGuideBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tourGuideBlockDesc {
+    display: flex;
+    justify-content: center;
+}
+
+.carousel {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 0 50px;
+
+    @include media-breakpoint-down(md) {
+        padding: 0;
+    }
+
+    :global(.react-multi-carousel-dot-list) {
+        bottom: 10px;
+        display: flex;
+        margin-top: 20px;
+
+        button {
+            background-color: $colorGrayDark;
+            border: 0;
+        }
+    }
+    :global(.react-multi-carousel-dot--active button) {
+        background-color: $colorOrange;
+    }
+
+    :global(.carousel-button-group) {
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+    &.tourGuideBlockSmart {
+        display: none;
+    }
+    & .carouselContainer {
+        position: static;
+        width: 1225px;
+        padding-bottom: 35px;
+    }
+    & .carouselItem {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media only screen and (width <= 1024px) {
+    .carousel.tourGuideBlockSmart {
+        display: flex;
+    }
+    .tourGuideBlockDesc {
+        display: none;
+    }
+}

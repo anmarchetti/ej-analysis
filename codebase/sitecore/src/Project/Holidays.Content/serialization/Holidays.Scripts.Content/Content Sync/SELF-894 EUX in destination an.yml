@@ -1,0 +1,255 @@
+﻿---
+ID: "b5fcbf7c-d1f8-470b-a241-5fee1346b042"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-894 EUX in destination and pre travel page components"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function create-lang-version($item, $lang, $fieldValuePairs) {
+        $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+        
+        if ($targetLangItem -eq $null -or $targetLangItem.Versions.GetVersions().Count -eq 0) {
+            Add-ItemLanguage -Item $item -TargetLanguage $lang -IfExist Skip -DoNotCopyFields
+        }
+        
+        if ($fieldValuePairs -ne $null) {
+            $targetLangItem = Get-Item -Path $item.Paths.FullPath -Language $lang
+            $targetLangItem.Editing.BeginEdit()
+            foreach ($pair in $fieldValuePairs.GetEnumerator()) {
+                $targetLangItem[$pair.Key] = $pair.Value
+            }
+            $targetLangItem.Editing.EndEdit() | Out-Null
+        }
+    }
+    
+    # update translation fields
+    $preTravelPagePageComponentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel/Page Components"
+    $preTravelPageComponent = Get-Item -Path $preTravelPagePageComponentPath -ErrorAction SilentlyContinue
+        		
+    @('de-CH', 'de-DE') | % {
+    	Create-Lang-Version -Item $preTravelPageComponent -Lang $_
+    }
+    
+    @('fr-CH', 'fr-FR') | % {
+    	Create-Lang-Version -Item $preTravelPageComponent -Lang $_
+    }
+    
+    $preTravelContactUsBannerPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel/Page Components/Contact Us Banner"
+    $preTravelContactUsBanner = Get-Item -Path $preTravelContactUsBannerPath -ErrorAction SilentlyContinue
+    
+    $preTravelContactUsBannerDE = @{
+        "Title" = "Kontakt"
+        "InfoText" = '<p>Wenn Sie Fragen zu Ihrem Urlaub haben, schauen Sie in unserem <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z" target="_blank">Hilfe-Center</a>&nbsp;nach, ob wir die Antwort für Sie haben. Wir haben auch unseren easyJet-Urlaubs-Chatbot in der unteren rechten Ecke dieser Seite.<br />Wenn Sie die gesuchten Informationen nicht finden, können Sie unser Team über unsere <a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z" target="_blank">Kontakt-Seite</a>&nbsp;erreichen</p>'
+        "CTATitle" = "Brauchen Sie Unterstützung? Kontaktieren Sie uns"
+        "CTAOpenButtonLabel" = "Kontakt"
+        "CTAOpenButtonScreenReaderLabel" = "Kontakt-Formular öffnen"
+        "CTACloseButtonLabel" = "Schließen Sie"
+        "CTACloseButtonScreenReaderLabel" = "Kontakt-Formular schließen"
+    }
+    
+    $preTravelContactUsBannerFR = @{
+        "Title" = "Contactez nous"
+        "InfoText" = '<p>Si vous avez des questions sur vos vacances, consultez notre <a href="~/link.aspx?_id=01FA2D692BB34BA9B98D15DA2DF1D8AC&amp;_z=z" target="_blank">centre d''aide</a>&nbsp;pour voir si nous avons la réponse à vos questions. Vous trouverez également notre chatbot easyJet holidays dans le coin inférieur droit de cette page.<br />Si vous ne trouvez toujours pas l''information que vous cherchez, vous pouvez contacter notre équipe en visitant notre page <a href="~/link.aspx?_id=2E3D3AB01BB143608729E411F5496F54&amp;_z=z" target="_blank">de contact.</a></p>'
+        "CTATitle" = "Besoin d'aide? Prenez contact avec nous"
+        "CTAOpenButtonLabel" = "Contactez nous"
+        "CTAOpenButtonScreenReaderLabel" = "Ouvrir le formulaire de contact"
+        "CTACloseButtonLabel" = "Fermer"
+        "CTACloseButtonScreenReaderLabel" = "Fermer le formulaire de contact"
+    }
+    
+    @('de-CH', 'de-DE') | % {
+        Create-Lang-Version -Item $preTravelContactUsBanner -Lang $_ -FieldValuePairs $preTravelContactUsBannerDE
+    }
+    @('fr-CH', 'fr-FR') | % {
+        Create-Lang-Version -Item $preTravelContactUsBanner -Lang $_ -FieldValuePairs $preTravelContactUsBannerFR
+    }
+    
+    $preTravelBreadcrumbsPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel/Page Components/Breadcrumbs"
+    $preTravelMyBookingsBreadcrumbsPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel/Page Components/Breadcrumbs/My Bookings"
+    $preTravelBreadcrumbsPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel/Page Components/Breadcrumbs/Pre Travel"
+    
+    $preTravelBreadcrumbs = Get-Item -Path $preTravelBreadcrumbsPath -ErrorAction SilentlyContinue
+    $preTravelMyBookingsBreadcrumbs = Get-Item -Path $preTravelMyBookingsBreadcrumbsPath -ErrorAction SilentlyContinue
+    $preTravelBreadcrumbs = Get-Item -Path $preTravelBreadcrumbsPath -ErrorAction SilentlyContinue
+    
+    @('de-CH', 'de-DE') | % {
+    	Create-Lang-Version -Item $preTravelBreadcrumbs -Lang $_ 
+    	Create-Lang-Version -Item $preTravelMyBookingsBreadcrumbs -Lang $_ -FieldValuePairs @{ "Text" = "Meine Buchungen" }
+    	Create-Lang-Version -Item $preTravelBreadcrumbs -Lang $_ -FieldValuePairs @{ "Text" = "Vor der Reise" }
+    }
+    
+    @('fr-CH', 'fr-FR') | % {
+    	Create-Lang-Version -Item $preTravelBreadcrumbs -Lang $_
+    	Create-Lang-Version -Item $preTravelMyBookingsBreadcrumbs -Lang $_ -FieldValuePairs @{ "Text" = "Mes réservations" }
+    	Create-Lang-Version -Item $preTravelBreadcrumbs -Lang $_ -FieldValuePairs @{ "Text" = "Pré voyage" }
+    }
+    
+    $preTravelTravelChecklistPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/pre-travel/Page Components/Travel Checklist"
+    $preTravelTravelChecklist = Get-Item -Path $preTravelTravelChecklistPath -ErrorAction SilentlyContinue
+    
+    $preTravelTravelChecklistDE = @{
+        "Title" = "Was Sie wissen müssen"
+        "Description" = 'Lesen Sie sich vor Ihrer Reise die folgenden FCDO-Updates durch und stellen Sie sicher, dass es zu keinen Komplikationen kommt. Besuchen Sie&nbsp;<a rel="noopener noreferrer" href="https://www.gov.uk/guidance/foreign-travel-checklist" target="_blank">https://www.gov.uk/guidance/foreign-travel-checklist</a>'
+        "TitleKeys" = "{5034D2B9-250D-429F-9F34-774A4C6A67B2}|{08BB3315-3B24-4CC9-B7ED-AF86A0EC38BC}|{3B4248CF-1593-460F-8C33-D51FBFF5403E}|{E5C74C21-6AA1-427B-A48B-7E04E4134280}"
+        "FCDO" = "Reisehinweise"
+        "Passport" = "Reisepass- und Visabestimmungen"
+        "Insurance" = "Reiseversicherung"
+        "Safety" = "Sicherheit und Wohlbefinden"
+    }
+    
+    $preTravelTravelChecklistFR = @{
+        "Title" = "Ce qu'il faut savoir"
+        "Description" = 'Avant de partir en voyage, lisez les mises à jour suivantes de l''OEDT et assurez-vous que vous ne rencontrez pas de complications. Consultez le site&nbsp;<a rel="noopener noreferrer" href="https://www.gov.uk/guidance/foreign-travel-checklist" target="_blank">https://www.gov.uk/guidance/foreign-travel-checklist</a>'
+        "TitleKeys" = "{5034D2B9-250D-429F-9F34-774A4C6A67B2}|{08BB3315-3B24-4CC9-B7ED-AF86A0EC38BC}|{3B4248CF-1593-460F-8C33-D51FBFF5403E}|{E5C74C21-6AA1-427B-A48B-7E04E4134280}"
+        "FCDO" = "Conseils aux voyageurs"
+        "Passport" = "Exigences en matière de passeport et de visa"
+        "Insurance" = "Assurance voyage"
+        "Safety" = "Sécurité et bien-être"
+    }
+    
+    @('de-CH', 'de-DE') | % {
+        Create-Lang-Version -Item $preTravelTravelChecklist -Lang $_ -FieldValuePairs $preTravelTravelChecklistDE
+    }
+    @('fr-CH', 'fr-FR') | % {
+        Create-Lang-Version -Item $preTravelTravelChecklist -Lang $_ -FieldValuePairs $preTravelTravelChecklistFR
+    }
+    
+    Write-Host "Updated translations in Pre Travel Page components"
+    
+    $inDestinationPageComponentPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination/Page Components"
+    $inDestinationPageComponent = Get-Item -Path $inDestinationPageComponentPath -ErrorAction SilentlyContinue
+        		
+    @('de-CH', 'de-DE') | % {
+    	Create-Lang-Version -Item $inDestinationPageComponent -Lang $_
+    }
+    
+    @('fr-CH', 'fr-FR') | % {
+    	Create-Lang-Version -Item $inDestinationPageComponent -Lang $_
+    }
+    
+    $inDestinationContactUsBannerPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination/Page Components/Contact Us Banner"
+    $inDestinationContactUsBanner = Get-Item -Path $inDestinationContactUsBannerPath -ErrorAction SilentlyContinue
+    
+    $inDestinationContactUsBannerDE = @{
+        "Title" = "Kontakt"
+        "InfoText" = '<p>Wenn Sie während Ihrer Abwesenheit irgendwelche Probleme haben, sind wir rund um die Uhr für Sie da - mit unserem On Holiday Support Team in Großbritannien. Sie können uns erreichen unter</p><p><a href="tel:+493022027350">+49 3022 027 350.</a></p><p>Bitte halten Sie Ihre siebenstellige easyJet-Urlaubsbuchungsnummer bereit. Erkundigen Sie sich bei Ihrem Netzbetreiber nach den Gebühren für Anrufe während Ihrer Abwesenheit.</p>'
+        "ExtraInfoText" = '<p>Alternativ können Sie unser Team auch per E-Mail erreichen: <a href="mailto:serviceteam@easyjet.com">serviceteam@easyjet.com</a></p>'
+        "ExtraInfoTextCountries" = "MA, TN, IL, JO, ME, EG, TR"
+        "CTATitle" = "Brauchen Sie Unterstützung? Kontaktieren Sie uns"
+        "CTAOpenButtonLabel" = "Kontakt"
+        "CTAOpenButtonScreenReaderLabel" = "Kontakt-Formular öffnen"
+        "CTACloseButtonLabel" = "Schließen Sie"
+        "CTACloseButtonScreenReaderLabel" = "Kontakt-Formular schließen"
+    }
+    
+    $inDestinationContactUsBannerDE_CH = @{
+        "Title" = "Kontakt"
+        "InfoText" = '<p>Wenn Sie während Ihrer Abwesenheit irgendwelche Probleme haben, sind wir rund um die Uhr für Sie da - mit unserem On Holiday Support Team in Großbritannien. Sie können uns erreichen unter</p><p><a href="tel:+41225680449">+41 22 568 0449.</a></p><p>Bitte halten Sie Ihre siebenstellige easyJet-Urlaubsbuchungsnummer bereit. Erkundigen Sie sich bei Ihrem Netzbetreiber nach den Gebühren für Anrufe während Ihrer Abwesenheit.</p>'
+        "ExtraInfoText" = '<p>Alternativ können Sie unser Team auch per E-Mail erreichen: <a href="mailto:serviceteam@easyjet.com">serviceteam@easyjet.com</a></p>'
+        "ExtraInfoTextCountries" = "MA, TN, IL, JO, ME, EG, TR"
+        "CTATitle" = "Brauchen Sie Unterstützung? Kontaktieren Sie uns"
+        "CTAOpenButtonLabel" = "Kontakt"
+        "CTAOpenButtonScreenReaderLabel" = "Kontakt-Formular öffnen"
+        "CTACloseButtonLabel" = "Schließen Sie"
+        "CTACloseButtonScreenReaderLabel" = "Kontakt-Formular schließen"
+    }
+    
+    $inDestinationContactUsBannerFR = @{
+        "Title" = "Contactez nous"
+        "InfoText" = '<p>Si vous rencontrez des problèmes pendant votre absence, nous sommes à votre disposition 24 heures sur 24 et 7 jours sur 7 par l''intermédiaire de notre équipe d''assistance "On Holiday" basée au Royaume-Uni. Vous pouvez nous joindre au</p><p><a href="tel:+33187216376">+33 187 216 376.</a></p><p>Veuillez vous munir de votre numéro de réservation easyJet à sept chiffres. N''oubliez pas de vérifier auprès de votre fournisseur de réseau les frais d''appel pendant votre absence.</p>'
+        "ExtraInfoText" = '<p>Vous pouvez également contacter notre équipe en envoyant un courriel à <a href="mailto:assistance.vacances@easyjet.com">assistance.vacances@easyjet.com</a></p>'
+        "ExtraInfoTextCountries" = "MA, TN, IL, JO, ME, EG, TR"
+        "CTATitle" = "Besoin d'aide? Prenez contact avec nous"
+        "CTAOpenButtonLabel" = "Contactez nous"
+        "CTAOpenButtonScreenReaderLabel" = "Ouvrir le formulaire de contact"
+        "CTACloseButtonLabel" = "Fermer"
+        "CTACloseButtonScreenReaderLabel" = "Fermer le formulaire de contact"
+    }
+    
+    $inDestinationContactUsBannerFR_CH = @{
+        "Title" = "Contactez nous"
+        "InfoText" = '<p>Si vous rencontrez des problèmes pendant votre absence, nous sommes à votre disposition 24 heures sur 24 et 7 jours sur 7 par l''intermédiaire de notre équipe d''assistance "On Holiday" basée au Royaume-Uni. Vous pouvez nous joindre au</p><p><a href="tel:+41225680449">+41 22 568 0449.</a></p><p>Veuillez vous munir de votre numéro de réservation easyJet à sept chiffres. N''oubliez pas de vérifier auprès de votre fournisseur de réseau les frais d''appel pendant votre absence.</p>'
+        "ExtraInfoText" = '<p>Vous pouvez également contacter notre équipe en envoyant un courriel à <a href="mailto:assistance.vacances@easyjet.com">assistance.vacances@easyjet.com</a></p>'
+        "ExtraInfoTextCountries" = "MA, TN, IL, JO, ME, EG, TR"
+        "CTATitle" = "Besoin d'aide? Prenez contact avec nous"
+        "CTAOpenButtonLabel" = "Contactez nous"
+        "CTAOpenButtonScreenReaderLabel" = "Ouvrir le formulaire de contact"
+        "CTACloseButtonLabel" = "Fermer"
+        "CTACloseButtonScreenReaderLabel" = "Fermer le formulaire de contact"
+    }
+    
+    @('de-CH') | % {
+        Create-Lang-Version -Item $inDestinationContactUsBanner -Lang $_ -FieldValuePairs $inDestinationContactUsBannerDE_CH
+    }
+    @('fr-CH') | % {
+        Create-Lang-Version -Item $inDestinationContactUsBanner -Lang $_ -FieldValuePairs $inDestinationContactUsBannerFR_CH
+    }
+    @('de-DE') | % {
+        Create-Lang-Version -Item $inDestinationContactUsBanner -Lang $_ -FieldValuePairs $inDestinationContactUsBannerDE
+    }
+    @('fr-FR') | % {
+        Create-Lang-Version -Item $inDestinationContactUsBanner -Lang $_ -FieldValuePairs $inDestinationContactUsBannerFR
+    }
+    
+    $inDestinationBreadcrumbsPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination/Page Components/Breadcrumbs"
+    $inDestinationMyBookingsBreadcrumbsPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination/Page Components/Breadcrumbs/My Bookings"
+    $inDestinationBreadcrumbsPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination/Page Components/Breadcrumbs/In Destination"
+    
+    $inDestinationBreadcrumbs = Get-Item -Path $inDestinationBreadcrumbsPath -ErrorAction SilentlyContinue
+    $inDestinationlMyBookingsBreadcrumbs = Get-Item -Path $inDestinationMyBookingsBreadcrumbsPath -ErrorAction SilentlyContinue
+    $inDestinationBreadcrumbs = Get-Item -Path $inDestinationBreadcrumbsPath -ErrorAction SilentlyContinue
+    
+    @('de-CH', 'de-DE') | % {
+    	Create-Lang-Version -Item $inDestinationBreadcrumbs -Lang $_ 
+    	Create-Lang-Version -Item $inDestinationlMyBookingsBreadcrumbs -Lang $_ -FieldValuePairs @{ "Text" = "Meine Buchungen" }
+    	Create-Lang-Version -Item $inDestinationBreadcrumbs -Lang $_ -FieldValuePairs @{ "Text" = "Vor der Reise" }
+    }
+    
+    @('fr-CH', 'fr-FR') | % {
+    	Create-Lang-Version -Item $inDestinationBreadcrumbs -Lang $_
+    	Create-Lang-Version -Item $inDestinationlMyBookingsBreadcrumbs -Lang $_ -FieldValuePairs @{ "Text" = "Mes réservations" }
+    	Create-Lang-Version -Item $inDestinationBreadcrumbs -Lang $_ -FieldValuePairs @{ "Text" = "Pré voyage" }
+    }
+    
+    $inDestinationTravelChecklistPath = "/sitecore/content/EasyJet/Holidays/Home/Booking/My_Bookings/in-destination/Page Components/Travel Checklist"
+    $inDestinationTravelChecklist = Get-Item -Path $inDestinationTravelChecklistPath -ErrorAction SilentlyContinue
+    
+    $inDestinationTravelChecklistDE = @{
+        "Title" = "Was Sie wissen müssen"
+        "Description" = 'Lesen Sie sich vor Ihrer Reise die folgenden FCDO-Updates durch und stellen Sie sicher, dass es zu keinen Komplikationen kommt. Besuchen Sie&nbsp;<a rel="noopener noreferrer" href="https://www.gov.uk/guidance/foreign-travel-checklist" target="_blank">https://www.gov.uk/guidance/foreign-travel-checklist</a>'
+        "TitleKeys" = "{5034D2B9-250D-429F-9F34-774A4C6A67B2}|{08BB3315-3B24-4CC9-B7ED-AF86A0EC38BC}|{E5C74C21-6AA1-427B-A48B-7E04E4134280}"
+        "FCDO" = "Reisehinweise"
+        "Passport" = "Reisepass- und Visabestimmungen"
+        "Insurance" = "Reiseversicherung"
+        "Safety" = "Sicherheit und Wohlbefinden"
+    }
+    
+    $inDestinationTravelChecklistFR = @{
+        "Title" = "Ce qu'il faut savoir"
+        "Description" = 'Avant de partir en voyage, lisez les mises à jour suivantes de l''OEDT et assurez-vous que vous ne rencontrez pas de complications. Consultez le site&nbsp;<a rel="noopener noreferrer" href="https://www.gov.uk/guidance/foreign-travel-checklist" target="_blank">https://www.gov.uk/guidance/foreign-travel-checklist</a>'
+        "TitleKeys" = "{5034D2B9-250D-429F-9F34-774A4C6A67B2}|{08BB3315-3B24-4CC9-B7ED-AF86A0EC38BC}|{E5C74C21-6AA1-427B-A48B-7E04E4134280}"
+        "FCDO" = "Conseils aux voyageurs"
+        "Passport" = "Exigences en matière de passeport et de visa"
+        "Insurance" = "Assurance voyage"
+        "Safety" = "Sécurité et bien-être"
+    }
+    
+    @('de-CH', 'de-DE') | % {
+        Create-Lang-Version -Item $inDestinationTravelChecklist -Lang $_ -FieldValuePairs $inDestinationTravelChecklistDE
+    }
+    @('fr-CH', 'fr-FR') | % {
+        Create-Lang-Version -Item $inDestinationTravelChecklist -Lang $_ -FieldValuePairs $inDestinationTravelChecklistFR
+    }
+    
+    Write-Host "Updated translations in In Destination Page components"
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: "20191118T132901:637096805412053434Z"

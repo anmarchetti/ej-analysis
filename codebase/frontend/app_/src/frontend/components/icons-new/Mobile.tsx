@@ -1,0 +1,18 @@
+import * as React from 'react';
+import classNames from 'classnames';
+
+const SvgMobile = (props: React.SVGProps<SVGSVGElement>): JSX.Element => (
+    <svg
+        viewBox='1 1 22 22'
+        width='1em'
+        height='1em'
+        aria-hidden='true'
+        focusable='false'
+        data-tid={props['data-tid'] ?? 'mobile-icon'}
+        className={classNames('icon-svg', props.className)}
+    >
+        <path d='M16.46 2H7.54A1.5 1.5 0 006 3.46v17.08A1.5 1.5 0 007.54 22h8.92A1.5 1.5 0 0018 20.54V3.46A1.5 1.5 0 0016.46 2zM10 3h4a.5.5 0 01.5.5.5.5 0 01-.5.5h-4a.5.5 0 01-.5-.5.5.5 0 01.5-.5zm2 18a1 1 0 111-1 1 1 0 01-1 1zm4-3H8V5h8z' />
+    </svg>
+);
+
+export default SvgMobile;

@@ -1,0 +1,222 @@
+.poster.priority {
+    position: relative;
+    width: 764px;
+    margin: auto;
+    background: $colorWhite;
+    border: none;
+
+    .luxuryBanner {
+        border-radius: 0;
+    }
+
+    &:not(:global(.pdf-format)) {
+        width: 100%;
+        max-width: 1200px;
+
+        .price {
+            font-size: 100px;
+        }
+
+        .roomAndBoard {
+            margin-bottom: 60px;
+        }
+
+        .body {
+            padding: 37px 50px 110px;
+            font-size: 34px;
+        }
+
+        .hotelName {
+            margin-bottom: 75px;
+            font-size: 44px;
+        }
+
+        .facilities {
+            margin: 90px 0 51px;
+
+            :global(.hotel-card__icons-summ) {
+                :global(.icons-summ__icon-item) {
+                    width: 160px;
+                }
+
+                :global(.title) {
+                    width: 160px;
+                    font-size: 24px;
+                    line-height: 34px;
+                }
+
+                :global(.icon--bg-image) {
+                    width: 92px;
+                    height: 92px;
+                    padding: 15px;
+                    background-size: 60px 60px;
+                }
+            }
+
+            :global(.hotel-card__icons-summ > .icons-summ__icon-item:first-child) {
+                width: 130px;
+
+                :global(.title) {
+                    width: 100px;
+                }
+            }
+        }
+    }
+}
+
+.logo {
+    position: absolute;
+    z-index: 1;
+    top: 50px;
+    right: 50px;
+    max-width: 125px;
+    max-height: 125px;
+}
+
+.logo.luxury {
+    top: 88px;
+}
+
+.header {
+    position: relative;
+}
+
+.background {
+    position: relative;
+    width: 100%;
+    min-height: 350px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+
+    &::after {
+        content: '';
+        position: absolute;
+        z-index: 1;
+        right: 0;
+        bottom: 0;
+        display: block;
+        width: 0;
+        height: 0;
+        border-color: transparent transparent $colorWhite;
+        border-style: solid;
+        border-width: 0 0 130px 1200px;
+    }
+}
+
+.location {
+    padding: 50px;
+    font-family: $fontRoundedBook;
+    font-size: 75px;
+    line-height: 1em;
+    color: $colorWhite;
+    text-transform: uppercase;
+}
+
+.body {
+    position: relative;
+    z-index: 1;
+    top: -1px;
+    padding: 0 24px 24px;
+    font-size: 28px;
+    line-height: 1.2em;
+    color: $colorBlackLight;
+    background: $colorWhite;
+}
+
+.hotelName {
+    margin-bottom: 24px;
+    font-family: $fontRoundedDemy;
+    font-size: 32px;
+    line-height: 1.2em;
+    color: $colorOrange;
+}
+
+.hotelLocation {
+    margin-bottom: 12px;
+}
+
+.date {
+    margin-bottom: 5px;
+}
+
+.departureDate {
+    font-weight: bold;
+}
+
+.roomAndBoard {
+    margin-bottom: 20px;
+    line-height: 1.4em;
+}
+
+.price {
+    margin: 20px 0;
+    font-family: $fontRoundedDemy;
+    font-size: 70px;
+    line-height: 1em;
+    color: $colorOrange;
+}
+
+.facilities {
+    margin: 36px 0;
+
+    :global(.hotel-card__icons-summ) {
+        align-items: flex-start;
+
+        :global(.icons-summ__icon-item) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 108px;
+            margin: 0;
+
+            :global(.title) {
+                width: 108px;
+                max-width: none;
+                margin: 6px auto 0;
+                font-family: $fontRoundedDemy;
+                font-size: 18px;
+                line-height: 18px;
+            }
+        }
+
+        :global(.icons-summ__plus-box) {
+            display: none;
+        }
+
+        :global(.icon--bg-image) {
+            width: 60px;
+            height: 60px;
+            padding: 10px;
+            background-size: 30px 30px;
+        }
+    }
+
+    :global(.hotel-card__icons-summ > .icons-summ__icon-item:first-child) {
+        align-items: flex-start;
+        width: 86px;
+
+        :global(.title) {
+            width: 70px;
+            margin-left: 0;
+            text-align: center;
+        }
+    }
+}
+
+.iconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid $clrEjOrangeDarkShadow;
+    border-radius: 100%;
+}
+
+.facilities.luxury {
+    margin: 20px 0;
+}
+
+.touristTax {
+    font-size: 20px;
+}

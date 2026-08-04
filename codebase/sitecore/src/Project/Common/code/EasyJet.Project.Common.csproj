@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <Import Project="$(SolutionDir)SitecoreProject.props" />
+    <PropertyGroup>
+        <TargetFramework>$(FrameworkVersion)</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="App_Config\Include\Project\easyJet.Project.Common.ScalabilitySettings.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <Content Include="App_Config\Include\Project\easyJet.Project.Common.AuditTrail.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <None Include="App_Config\Include\Project\easyJet.Project.Common.AuditTrail.CI.config">
+            <DependentUpon>easyJet.Project.Common.AuditTrail.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\easyJet.Project.Common.AuditTrail.Debug.config">
+            <DependentUpon>easyJet.Project.Common.AuditTrail.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\easyJet.Project.Common.AuditTrail.Release.config">
+            <DependentUpon>easyJet.Project.Common.AuditTrail.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\easyJet.Project.Common.Caching.Debug.config">
+            <DependentUpon>easyJet.Project.Common.Caching.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\easyJet.Project.Common.Caching.Release.config">
+            <DependentUpon>easyJet.Project.Common.Caching.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\EasyJet.Project.Common.CI.config">
+            <DependentUpon>EasyJet.Project.Common.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\EasyJet.Project.Common.Debug.config">
+            <DependentUpon>EasyJet.Project.Common.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\EasyJet.Project.Common.Release.config">
+            <DependentUpon>EasyJet.Project.Common.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\easyJet.Project.Common.ScalabilitySettings.CI.config">
+            <DependentUpon>easyJet.Project.Common.ScalabilitySettings.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\easyJet.Project.Common.ScalabilitySettings.Debug.config">
+            <DependentUpon>easyJet.Project.Common.ScalabilitySettings.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\easyJet.Project.Common.ScalabilitySettings.Release.config">
+            <DependentUpon>easyJet.Project.Common.ScalabilitySettings.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <Content Include="App_Config\Include\z.Spe\z.Spe.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <Content Include="App_Config\Include\Project\EasyJet.Project.Common.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <Content Include="App_Config\Include\Project\easyJet.Project.Common.Caching.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <Content Include="App_Config\Include\Project\zzz.easyJet.Project.Common.Diagnostic.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <Content Include="App_Config\Include\Project\z.easyJet.Project.Performance.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <None Include="App_Config\Include\Project\easyJet.Project.Common.Caching.CI.config">
+            <DependentUpon>easyJet.Project.Common.Caching.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\z.easyJet.Project.Performance.CI.config">
+            <DependentUpon>z.easyJet.Project.Performance.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\z.easyJet.Project.Performance.Debug.config">
+            <DependentUpon>z.easyJet.Project.Performance.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\z.easyJet.Project.Performance.Release.config">
+            <DependentUpon>z.easyJet.Project.Performance.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\zzz.easyJet.Project.Common.Diagnostic.CI.config">
+            <DependentUpon>zzz.easyJet.Project.Common.Diagnostic.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\zzz.easyJet.Project.Common.Diagnostic.Debug.config">
+            <DependentUpon>zzz.easyJet.Project.Common.Diagnostic.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\Project\zzz.easyJet.Project.Common.Diagnostic.Release.config">
+            <DependentUpon>zzz.easyJet.Project.Common.Diagnostic.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\z.Spe\z.Spe.CI.config">
+            <DependentUpon>z.Spe.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\z.Spe\z.Spe.Debug.config">
+            <DependentUpon>z.Spe.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <None Include="App_Config\Include\z.Spe\z.Spe.Release.config">
+            <DependentUpon>z.Spe.config</DependentUpon>
+            <IsTransformFile>true</IsTransformFile>
+        </None>
+        <Content Include="Web.config">
+            <TransformOnBuild>true</TransformOnBuild>
+        </Content>
+        <None Include="Web.Debug.config">
+            <DependentUpon>Web.config</DependentUpon>
+        </None>
+        <None Include="Web.Release.config">
+            <DependentUpon>Web.config</DependentUpon>
+        </None>
+        <None Include="Web.CI.config">
+            <DependentUpon>Web.config</DependentUpon>
+        </None>
+    </ItemGroup>
+</Project>

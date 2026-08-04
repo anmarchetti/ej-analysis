@@ -1,0 +1,62 @@
+﻿---
+ID: "69865af6-1802-487b-8416-099867fac10f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SER-287 - Update Price Breakdown content"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Set-Translation-Value($itemPath, $language, $key, $translation) {
+        $item = Get-Item -Path $itemPath -Language $language -ErrorAction SilentlyContinue;
+    
+        if($item -eq $null -or $item.Versions.GetVersions().Count -eq 0){
+            $item = Add-ItemLanguage -Path $itemPath -TargetLanguage $language -IfExist Skip -DoNotCopyFields;
+            Write-Host "Created" $language "version for" $item.Name "item"
+        } else {
+            Write-Host $language "version for Item" $item.Name "already exist"
+        }
+    
+        if($item -ne $null) {
+            $item.Editing.BeginEdit()
+            $item[$key] = $translation
+            $item.Editing.EndEdit() | Out-Null
+            Write-Host "Field" $key "for" $item.Name "item updated with value" $translation
+        }
+    }
+    
+    function Update-PriceBreakdown-Content() {
+        $path = '/sitecore/content/EasyJet/Holidays/Home/Booking/Cancel Booking/Page Components/Cancel Booking'
+        ### en
+        Set-Translation-Value -ItemPath $path -Language 'en' -Key 'PriceBreakdownTitle' -Translation "Refund Breakdown"
+        Set-Translation-Value -ItemPath $path -Language 'en' -Key 'PriceBreakdownTitleStepOne' -Translation "Price Breakdown"
+        
+        ### fr-FR
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'PriceBreakdownTitle' -Translation "Détails du remboursement"
+        Set-Translation-Value -ItemPath $path -Language 'fr-FR' -Key 'PriceBreakdownTitleStepOne' -Translation "Détail du prix"
+    
+        ### de-DE
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'PriceBreakdownTitle' -Translation "Erstattungsübersicht"
+        Set-Translation-Value -ItemPath $path -Language 'de-DE' -Key 'PriceBreakdownTitleStepOne' -Translation "Preisaufstellung"
+    
+        ### fr-CH
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'PriceBreakdownTitle' -Translation "Détails du remboursement"
+        Set-Translation-Value -ItemPath $path -Language 'fr-CH' -Key 'PriceBreakdownTitleStepOne' -Translation "Détail du prix"
+    
+        ### de-CH
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'PriceBreakdownTitle' -Translation "Erstattungsübersicht"
+        Set-Translation-Value -ItemPath $path -Language 'de-CH' -Key 'PriceBreakdownTitleStepOne' -Translation "Preisaufstellung"
+    }
+    
+    
+    Update-PriceBreakdown-Content;
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20241011T142205Z

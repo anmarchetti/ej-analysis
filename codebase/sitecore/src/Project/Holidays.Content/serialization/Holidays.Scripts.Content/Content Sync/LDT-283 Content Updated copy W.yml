@@ -1,0 +1,228 @@
+﻿---
+ID: "a7475e91-64c4-46e4-8ac6-3135a86e2c62"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/LDT-283 Content Updated copy Whats included"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    Import-Function "Import Content"
+    
+    $templateItemPath = '/sitecore/templates/Feature/PageContent/Listed Items/Listed Item'
+    
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/Dedicated customer service"
+    $updates = @(
+            @{
+                Path         = $datasourcePath
+                TemplatePath = $templateItemPath
+                Id = '{CCC6C08B-0C01-4EA6-A070-05969C1AEC69}'
+                Fields      = @{
+                    "Label" = @{
+                        "en" = "Dedicated customer service"
+                        "fr-CH" = "Service client dédié"
+                        "de-CH" = "Engagierter Kundenservice"
+                        "fr-FR" = "Service client dédié"
+                        "de-DE" = "Engagierter Kundenservice"
+                    }
+                    "Icon" = @{
+                        "en" = "<image mediaid='{89A4512F-2559-4710-988C-A997F7652FCE}' />"
+                    }
+                    "__Sortorder"= @{
+                        "en" = "1000"
+                    }
+                }
+            }
+        )
+    ImportContent -itemsToCreate $updates
+    
+    $datasourcePath = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/Dedicated customer service"
+    $updates = @(
+            @{
+                Path         = $datasourcePath
+                TemplatePath = $templateItemPath
+                Id = '{8E4E40BF-90A1-4B8A-B19B-454D0324437D}'
+                Fields      = @{
+                    "Label" = @{
+                        "en" = "Dedicated customer service"
+                    }
+                    "Icon" = @{
+                        "en" = "<image mediaid='{89A4512F-2559-4710-988C-A997F7652FCE}' />"
+                    }
+                    "__Sortorder"= @{
+                        "en" = "1000"
+                    }
+                }
+            }
+        )
+    ImportContent -itemsToCreate $updates
+    
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/26kg bag"
+    $updates = @(
+            @{
+                Path         = $datasourcePath
+                TemplatePath = $templateItemPath
+                Fields      = @{
+                    "Label" = @{
+                        "en" = "1 x 26kg hold bag each"
+                        "fr-CH" = "1 x 26kg de bagage en soute par personne"
+                        "de-CH" = "1 x 26kg Aufgabegepäck pro Person"
+                        "fr-FR" = "1 x 26kg de bagage en soute par personne"
+                        "de-DE" = "1 x 26kg Aufgabegepäck pro Person"
+                    }
+                }
+            }
+        )
+    ImportContent -itemsToCreate $updates
+    
+    $datasourcePath = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/26kg bag"
+    $updates = @(
+            @{
+                Path         = $datasourcePath
+                TemplatePath = $templateItemPath
+                Fields      = @{
+                    "Label" = @{
+                        "en" = "1 x 26kg hold bag each"
+                    }
+                }
+            }
+        )
+    ImportContent -itemsToCreate $updates
+    
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/Small cabin bag"
+    $updates = @(
+            @{
+                Path         = $datasourcePath
+                TemplatePath = $templateItemPath
+                Fields      = @{
+                    "Label" = @{
+                        "en" = "1 x Small cabin bag each"
+                        "fr-CH" = "1 x Petit bagage cabine par personne"
+                        "de-CH" = "1 x Kleine Kabinentasche pro Person"
+                        "fr-FR" = "1 x Petit bagage cabine par personne"
+                        "de-DE" = "1 x Kleine Kabinentasche pro Person"
+                    }
+                }
+            }
+        )
+    ImportContent -itemsToCreate $updates
+    
+    $datasourcePath = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/Small cabin bag"
+    $updates = @(
+            @{
+                Path         = $datasourcePath
+                TemplatePath = $templateItemPath
+                Fields      = @{
+                    "Label" = @{
+                        "en" = "1 x Small cabin bag each"
+                    }
+                }
+            }
+        )
+    ImportContent -itemsToCreate $updates
+    
+    $datasourcePath = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/Large cabin bag"
+    $updates = @(
+            @{
+                Path         = $datasourcePath
+                TemplatePath = $templateItemPath
+                Fields      = @{
+                    "Label" = @{
+                        "en" = "1 x Large cabin bag each"
+                        "fr-CH" = "Grand bagage cabine par personne"
+                        "de-CH" = "1 x Großes Handgepäck pro Person"
+                        "fr-FR" = "Grand bagage cabine par personne"
+                        "de-DE" = "1 x Großes Handgepäck pro Person"
+                    }
+                }
+            }
+        )
+    ImportContent -itemsToCreate $updates
+    
+    $datasourcePath = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/Large cabin bag"
+    $updates = @(
+            @{
+                Path         = $datasourcePath
+                TemplatePath = $templateItemPath
+                Fields      = @{
+                    "Label" = @{
+                        "en" = "1 x Large cabin bag each"
+                    }
+                }
+            }
+        )
+    ImportContent -itemsToCreate $updates
+    
+    Remove-Item -Path "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included/Prioritised customer service" -Permanently
+    Remove-Item -Path "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included/Prioritised customer service" -Permanently
+    
+    Import-Function "Import Content"
+    $items_baf4515370b74012927594d4c052c13c_frch_v1 = @"
+    {30CA3010-58B8-4BD0-83A7-B87E59B20AE5}|{1F362491-2A40-4055-94AE-E9DDD92DCEC4}|{24067E01-3439-414C-ABAF-4A83145F1F39}|{A9CA3120-A8E5-4C8C-AA0C-8EB12B39AC7E}|{F48DE200-6F39-484E-917F-0D1D5EE1A362}|{7C0B66B9-B586-4015-8D5E-ABB0C7E24A0F}|{E59449C1-270F-4FFC-BE82-C8C09A9E303B}|{DE19D9C3-1181-427D-BACA-FA9313D900A6}|{9787247F-1E25-4D33-9AB4-4795DF1BB625}|{955D14CA-4CA4-41EB-851A-CA9DC26D68B6}
+    "@
+    $items_baf4515370b74012927594d4c052c13c_frfr_v1 = @"
+    {30CA3010-58B8-4BD0-83A7-B87E59B20AE5}|{1F362491-2A40-4055-94AE-E9DDD92DCEC4}|{24067E01-3439-414C-ABAF-4A83145F1F39}|{A9CA3120-A8E5-4C8C-AA0C-8EB12B39AC7E}|{F48DE200-6F39-484E-917F-0D1D5EE1A362}|{7C0B66B9-B586-4015-8D5E-ABB0C7E24A0F}|{E59449C1-270F-4FFC-BE82-C8C09A9E303B}|{DE19D9C3-1181-427D-BACA-FA9313D900A6}|{9787247F-1E25-4D33-9AB4-4795DF1BB625}|{955D14CA-4CA4-41EB-851A-CA9DC26D68B6}
+    "@
+    $items_baf4515370b74012927594d4c052c13c_en_v1 = @"
+    {30CA3010-58B8-4BD0-83A7-B87E59B20AE5}|{1F362491-2A40-4055-94AE-E9DDD92DCEC4}|{24067E01-3439-414C-ABAF-4A83145F1F39}|{A9CA3120-A8E5-4C8C-AA0C-8EB12B39AC7E}|{F48DE200-6F39-484E-917F-0D1D5EE1A362}|{7C0B66B9-B586-4015-8D5E-ABB0C7E24A0F}|{E59449C1-270F-4FFC-BE82-C8C09A9E303B}|{DE19D9C3-1181-427D-BACA-FA9313D900A6}|{9787247F-1E25-4D33-9AB4-4795DF1BB625}|{CCC6C08B-0C01-4EA6-A070-05969C1AEC69}
+    "@
+    $items_baf4515370b74012927594d4c052c13c_dech_v1 = @"
+    {30CA3010-58B8-4BD0-83A7-B87E59B20AE5}|{1F362491-2A40-4055-94AE-E9DDD92DCEC4}|{24067E01-3439-414C-ABAF-4A83145F1F39}|{A9CA3120-A8E5-4C8C-AA0C-8EB12B39AC7E}|{F48DE200-6F39-484E-917F-0D1D5EE1A362}|{7C0B66B9-B586-4015-8D5E-ABB0C7E24A0F}|{E59449C1-270F-4FFC-BE82-C8C09A9E303B}|{DE19D9C3-1181-427D-BACA-FA9313D900A6}|{9787247F-1E25-4D33-9AB4-4795DF1BB625}|{955D14CA-4CA4-41EB-851A-CA9DC26D68B6}
+    "@
+    $items_baf4515370b74012927594d4c052c13c_dede_v1 = @"
+    {30CA3010-58B8-4BD0-83A7-B87E59B20AE5}|{1F362491-2A40-4055-94AE-E9DDD92DCEC4}|{24067E01-3439-414C-ABAF-4A83145F1F39}|{A9CA3120-A8E5-4C8C-AA0C-8EB12B39AC7E}|{F48DE200-6F39-484E-917F-0D1D5EE1A362}|{7C0B66B9-B586-4015-8D5E-ABB0C7E24A0F}|{E59449C1-270F-4FFC-BE82-C8C09A9E303B}|{DE19D9C3-1181-427D-BACA-FA9313D900A6}|{9787247F-1E25-4D33-9AB4-4795DF1BB625}|{955D14CA-4CA4-41EB-851A-CA9DC26D68B6}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/Holidays/Data/Listed Items/Luxury Whats Included"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Items"
+            Id          = [GUID]"{BAF45153-70B7-4012-9275-94D4C052C13C}"
+            Fields      = @{
+                "Items" = @{
+                    "de-CH" = $items_baf4515370b74012927594d4c052c13c_dech_v1
+                    "en" = $items_baf4515370b74012927594d4c052c13c_en_v1
+                    "fr-FR" = $items_baf4515370b74012927594d4c052c13c_frfr_v1
+                    "de-DE" = $items_baf4515370b74012927594d4c052c13c_dede_v1
+                    "fr-CH" = $items_baf4515370b74012927594d4c052c13c_frch_v1
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    Import-Function "Import Content"
+    $items_beca3ee75d7c4f93936c9a2d1ce22924_en_v1 = @"
+    {BB53F68C-0D9D-4F03-B7A0-ACB42A5444AD}|{76FF65EB-D82C-4059-B1BB-494CDFD57299}|{8F22A516-26F1-4D17-ABA4-55ACC6F8F3E7}|{1916B429-0BE9-4B87-B1FC-1E4F90FC72C1}|{27B0B301-CC00-4AC3-BBC9-3E7DE73BD82F}|{D2E4B0F8-CADD-45C2-BB62-5579BB26FD44}|{716AE70F-0486-4469-B792-EB4751E2C58A}|{8D2E8D41-9DEC-484C-B9F5-34C3562A295D}|{7EA0EA49-E4E6-4C6D-A930-3020CE5F381F}|{8E4E40BF-90A1-4B8A-B19B-454D0324437D}
+    "@
+    $itemsToCreate = @(
+        @{
+            Path        = "/sitecore/content/EasyJet/TradePortal/Data/Listed Items/Luxury Whats Included"
+            TemplatePath = "Feature/PageContent/Listed Items/Listed Items"
+            Id          = [GUID]"{BECA3EE7-5D7C-4F93-936C-9A2D1CE22924}"
+            Fields      = @{
+                "Items" = @{
+                    "de-CH" = ""
+                    "en" = $items_beca3ee75d7c4f93936c9a2d1ce22924_en_v1
+                    "fr-FR" = ""
+                    "de-DE" = ""
+                    "fr-CH" = ""
+                }
+            }
+        }
+    )
+    ImportContent -itemsToCreate $itemsToCreate
+    
+    
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20250716T114820Z
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\Admin

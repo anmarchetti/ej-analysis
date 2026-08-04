@@ -1,0 +1,26 @@
+.price {
+    margin-left: 10px;
+    font-weight: 700;
+}
+
+.infoLabel {
+    display: inline-block;
+    margin-right: 25px;
+
+    @include media-breakpoint-down(md) {
+        display: none;
+    }
+}
+
+.mobileInfoLabel {
+    display: none;
+
+    @include media-breakpoint-down(md) {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 9px 0 9px 15px;
+        font-size: 12px;
+        line-height: 1.16;
+    }
+}

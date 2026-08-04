@@ -1,0 +1,33 @@
+﻿---
+ID: "1c642a9c-605e-4fc6-8f2f-d1c346326b5f"
+Parent: "02f89113-4c03-40f8-988b-5ae62329b681"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Content Sync/SELF-769_Payments-error-popup"
+DB: master
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    $amendPaymentItem = Get-Item -path "/sitecore/content/EasyJet/Holidays/Home/Booking/Amend Payment/Page Components/Amend Payment" -ErrorAction SilentlyContinue;
+    
+    if ($amendPaymentItem -ne $null) {
+        $amendPaymentItem.Editing.BeginEdit();
+        
+        $amendPaymentItem["PaymentAtcomErrorCTA"] = "Back to View Booking";
+        $amendPaymentItem["PaymentErrorTitle"] = "CHANGE FAILED";
+        $amendPaymentItem["PaymentErrorIcon"] = '<image mediaid="{A484212A-377A-4DC9-8754-BABFE7701E3D}" />';
+        $amendPaymentItem["PaymentErrorDescription"] = "We've been unable to make this change to your flight.<br />If you have been charged, this will be refunded";
+        $amendPaymentItem["PaymentErrorSubText"] = "Please call the call centre for additional support";
+        $amendPaymentItem["PaymentErrorCTA"] = "Close";
+        
+        Write-Host $amendPaymentItem.Name "Updated"
+        $amendPaymentItem.Editing.EndEdit() | Out-Null;
+    }
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20230512T073306Z
