@@ -7,6 +7,7 @@
   'use strict';
 
   // Application State
+  // Application State
   const state = {
     cy: null,
     currentDataset: 'unified_multilang',
@@ -28,8 +29,157 @@
     buildHierarchy: true,
     expandedNodes: new Set(),
     density: 'spread', // 'spread' vs 'compact'
-    allUnifiedData: null
+    allUnifiedData: null,
+    customMicroappMapping: loadCustomMicroappMapping()
   };
+
+  // Macro Apps & Microapps Configuration Dictionary
+  const MICROAPPS_CONFIG = {
+    inspire: {
+      id: 'inspire',
+      macroApp: 'INSPIRE',
+      macroSubtitle: "I'm open, show me something",
+      name: 'Inspire Microapp',
+      badge: 'CMS Heavy',
+      badgeBg: 'rgba(234, 179, 8, 0.25)',
+      badgeBorder: '#eab308',
+      badgeText: '#fef08a',
+      color: '#eab308',
+      borderColor: 'rgba(234, 179, 8, 0.55)',
+      bgColor: 'rgba(234, 179, 8, 0.06)'
+    },
+    search: {
+      id: 'search',
+      macroApp: 'SEARCH',
+      macroSubtitle: "I know what I want, help me find it",
+      name: 'Search Microapp',
+      badge: 'CMS / PIM Heavy',
+      badgeBg: 'rgba(6, 182, 212, 0.25)',
+      badgeBorder: '#06b6d4',
+      badgeText: '#67e8f9',
+      color: '#06b6d4',
+      borderColor: 'rgba(6, 182, 212, 0.55)',
+      bgColor: 'rgba(6, 182, 212, 0.06)'
+    },
+    flight_hotel: {
+      id: 'flight_hotel',
+      macroApp: 'SEARCH',
+      macroSubtitle: "I know what I want, help me find it",
+      name: 'Flight + Hotel Microapp',
+      badge: 'CMS / PIM Heavy',
+      badgeBg: 'rgba(59, 130, 246, 0.25)',
+      badgeBorder: '#3b82f6',
+      badgeText: '#93c5fd',
+      color: '#3b82f6',
+      borderColor: 'rgba(59, 130, 246, 0.55)',
+      bgColor: 'rgba(59, 130, 246, 0.06)'
+    },
+    book: {
+      id: 'book',
+      macroApp: 'BOOK',
+      macroSubtitle: "I've chosen, let me finalise and complete the purchase",
+      name: 'Book Microapp',
+      badge: 'CMS / PIM Light',
+      badgeBg: 'rgba(16, 185, 129, 0.25)',
+      badgeBorder: '#10b981',
+      badgeText: '#6ee7b7',
+      color: '#10b981',
+      borderColor: 'rgba(16, 185, 129, 0.55)',
+      bgColor: 'rgba(16, 185, 129, 0.06)'
+    },
+    manage: {
+      id: 'manage',
+      macroApp: 'POST BOOK',
+      macroSubtitle: "I've booked, I want to view or amend something",
+      name: 'Manage Microapp',
+      badge: 'CMS / PIM Light',
+      badgeBg: 'rgba(168, 85, 247, 0.25)',
+      badgeBorder: '#a855f7',
+      badgeText: '#e9d5ff',
+      color: '#a855f7',
+      borderColor: 'rgba(168, 85, 247, 0.55)',
+      bgColor: 'rgba(168, 85, 247, 0.06)'
+    },
+    view_bookings: {
+      id: 'view_bookings',
+      macroApp: 'POST BOOK',
+      macroSubtitle: "I've booked, I want to view or amend something",
+      name: 'View Bookings Microapp',
+      badge: 'CMS / PIM Light',
+      badgeBg: 'rgba(236, 72, 153, 0.25)',
+      badgeBorder: '#ec4899',
+      badgeText: '#f472b6',
+      color: '#ec4899',
+      borderColor: 'rgba(236, 72, 153, 0.55)',
+      bgColor: 'rgba(236, 72, 153, 0.06)'
+    },
+    help: {
+      id: 'help',
+      macroApp: 'SUPPORT',
+      macroSubtitle: "I need help or useful information about my holiday",
+      name: 'Help Microapp',
+      badge: 'CMS Heavy',
+      badgeBg: 'rgba(245, 158, 11, 0.25)',
+      badgeBorder: '#f59e0b',
+      badgeText: '#fcd34d',
+      color: '#f59e0b',
+      borderColor: 'rgba(245, 158, 11, 0.55)',
+      bgColor: 'rgba(245, 158, 11, 0.06)'
+    },
+    transfers: {
+      id: 'transfers',
+      macroApp: 'SUPPORT',
+      macroSubtitle: "I need help or useful information about my holiday",
+      name: 'Transfers Microapp',
+      badge: 'CMS TBC',
+      badgeBg: 'rgba(148, 163, 184, 0.25)',
+      badgeBorder: '#94a3b8',
+      badgeText: '#cbd5e1',
+      color: '#94a3b8',
+      borderColor: 'rgba(148, 163, 184, 0.55)',
+      bgColor: 'rgba(148, 163, 184, 0.06)'
+    }
+  };
+
+  function loadCustomMicroappMapping() {
+    try {
+      const stored = localStorage.getItem('ej_custom_microapp_mapping');
+      return stored ? new Map(JSON.parse(stored)) : new Map();
+    } catch {
+      return new Map();
+    }
+  }
+
+  function saveCustomMicroappMapping() {
+    try {
+      const arr = Array.from(state.customMicroappMapping.entries());
+      localStorage.setItem('ej_custom_microapp_mapping', JSON.stringify(arr));
+    } catch (e) {
+      console.warn('LocalStorage save failed', e);
+    }
+  }
+
+  function getMicroappForRoute(routePath) {
+    if (!routePath) return 'inspire';
+    const clean = routePath.toLowerCase().trim();
+
+    // 1. Check user custom assignment override
+    if (state.customMicroappMapping && state.customMicroappMapping.has(clean)) {
+      return state.customMicroappMapping.get(clean);
+    }
+
+    // 2. Default architectural rules matching diagram
+    if (clean.includes('hotel')) return 'search';
+    if (clean.includes('flight')) return 'flight_hotel';
+    if (clean.includes('booking') || clean.includes('extras') || clean.includes('passenger') || clean.includes('payment')) return 'book';
+    if (clean.includes('amend') || clean.includes('cancel')) return 'manage';
+    if (clean.includes('my-booking') || clean.includes('wallet')) return 'view_bookings';
+    if (clean.includes('help') || clean.includes('faq') || clean.includes('aide') || clean.includes('hilfe') || clean.includes('contact')) return 'help';
+    if (clean.includes('transfer')) return 'transfers';
+    if (clean.includes('free-child') || clean.includes('places-enfants') || clean.includes('kinder-gratis')) return 'help';
+
+    return 'inspire';
+  }
 
   // Node Pill Colors
   const pillColors = {
@@ -233,6 +383,36 @@
     }
   }
 
+  /**
+   * Green gradient for API nodes based on page usage count.
+   * ratio = 0 (least used) → pale green-teal
+   * ratio = 1 (most used)  → deep emerald
+   */
+  function getApiGreenShade(usageCount, maxUsage) {
+    const count = usageCount || 1;
+    const max = maxUsage || 1;
+    const ratio = max <= 1 ? 0.5 : (count - 1) / (max - 1); // 0..1
+
+    // Interpolate HSL: from hsl(152, 40%, 72%) light to hsl(152, 80%, 28%) dark
+    const lightness = Math.round(72 - ratio * 44);  // 72 → 28
+    const saturation = Math.round(40 + ratio * 40); // 40 → 80
+    const bgAlpha = (0.18 + ratio * 0.28).toFixed(2); // 0.18 → 0.46
+
+    const hue = 152;
+    const border = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    const text   = ratio > 0.6
+      ? `hsl(${hue}, 80%, 80%)`
+      : `hsl(${hue}, 60%, 75%)`;
+    const bg = `hsla(${hue}, ${saturation}%, ${lightness}%, ${bgAlpha})`;
+
+    let tier;
+    if (ratio >= 0.75) tier = `🟩 Dark Green · Most Used (${count} pages)`;
+    else if (ratio >= 0.4) tier = `🟢 Mid Green · Moderate Use (${count} pages)`;
+    else tier = `🪴 Light Green · Least Used (${count} pages)`;
+
+    return { bg, border, text, tier, count };
+  }
+
   // DOM Elements
   const dom = {};
 
@@ -345,7 +525,7 @@
       applyLayerFilters();
     });
 
-    dom.layoutSelect.addEventListener('change', () => runLayout());
+    dom.layoutSelect.addEventListener('change', () => rebuildGraph());
     if (dom.densitySelect) {
       dom.densitySelect.addEventListener('change', (e) => {
         state.density = e.target.value;
@@ -479,6 +659,25 @@
           }
         },
         {
+          selector: 'node[type="MicroappContainer"]',
+          style: {
+            'shape': 'round-rectangle',
+            'background-color': 'data(bgColor)',
+            'background-opacity': 0.15,
+            'border-color': 'data(borderColor)',
+            'border-width': 2,
+            'border-style': 'solid',
+            'label': 'data(label)',
+            'color': 'data(textColor)',
+            'font-size': '13px',
+            'font-weight': '800',
+            'text-valign': 'top',
+            'text-halign': 'center',
+            'text-margin-y': -10,
+            'padding': '24px'
+          }
+        },
+        {
           selector: 'node[type="Language"]',
           style: {
             'font-size': '13px',
@@ -563,6 +762,30 @@
             'z-index': 998
           }
         },
+        // Direct API call: Page → API edge highlighted in solid amber
+        {
+          selector: 'edge.direct-api-edge',
+          style: {
+            'line-color': '#f59e0b',
+            'target-arrow-color': '#f59e0b',
+            'width': 3,
+            'line-style': 'solid',
+            'opacity': 1,
+            'z-index': 999
+          }
+        },
+        // Indirect API call: Page → Rendering and Rendering → API highlighted in violet dashed
+        {
+          selector: 'edge.indirect-api-edge',
+          style: {
+            'line-color': '#a78bfa',
+            'target-arrow-color': '#a78bfa',
+            'width': 2.5,
+            'line-style': 'dashed',
+            'opacity': 1,
+            'z-index': 999
+          }
+        },
         {
           selector: 'edge.dimmed',
           style: {
@@ -590,6 +813,95 @@
 
     state.cy.on('mouseout', 'node', () => {
       if (!state.selectedNode) resetHighlights();
+    });
+
+    // Update overlay +/- badges when the canvas is panned or zoomed
+    state.cy.on('pan zoom', () => updateExplodeOverlays());
+    state.cy.on('layoutstop', () => updateExplodeOverlays());
+
+    // Auto-save layout positions after dragging nodes (debounced 800ms)
+    state.cy.on('dragfree', 'node', () => {
+      clearTimeout(state._dragSaveTimer);
+      state._dragSaveTimer = setTimeout(() => saveLayoutPositions(false), 800);
+      updateExplodeOverlays();
+    });
+  }
+
+  function getExplodeOverlayContainer() {
+    let container = document.getElementById('explode-overlay-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'explode-overlay-container';
+      container.style.position = 'absolute';
+      container.style.top = '0';
+      container.style.left = '0';
+      container.style.width = '100%';
+      container.style.height = '100%';
+      container.style.pointerEvents = 'none';
+      container.style.zIndex = '200';
+      document.getElementById('cy').appendChild(container);
+    }
+    return container;
+  }
+
+  function updateExplodeOverlays() {
+    if (!state.cy) return;
+    const cy = state.cy;
+    const container = getExplodeOverlayContainer();
+    container.innerHTML = '';
+
+    cy.nodes('[type="Page"]').forEach(node => {
+      const details = node.data('details') || {};
+      const groupedUrls = details.groupedUrls;
+      if (!groupedUrls || groupedUrls.length <= 1) return;
+
+      const pos = node.renderedPosition();
+      const isExpanded = state.expandedNodes.has(node.id());
+
+      const btn = document.createElement('button');
+      btn.style.position = 'absolute';
+      btn.style.left = `${pos.x + 18}px`;
+      btn.style.top = `${pos.y - 18}px`;
+      btn.style.transform = 'translate(-50%, -50%)';
+      btn.style.width = '20px';
+      btn.style.height = '20px';
+      btn.style.borderRadius = '50%';
+      btn.style.fontSize = '13px';
+      btn.style.fontWeight = '900';
+      btn.style.lineHeight = '1';
+      btn.style.cursor = 'pointer';
+      btn.style.pointerEvents = 'all';
+      btn.style.display = 'flex';
+      btn.style.alignItems = 'center';
+      btn.style.justifyContent = 'center';
+      btn.style.padding = '0';
+      btn.style.border = 'none';
+      btn.style.boxShadow = '0 1px 6px rgba(0,0,0,0.6)';
+      btn.style.transition = 'transform 0.15s ease, background 0.15s ease';
+      btn.title = isExpanded
+        ? `Collapse ${groupedUrls.length} sub-pages`
+        : `Explode ${groupedUrls.length} sub-pages`;
+
+      if (isExpanded) {
+        btn.style.background = '#ef4444';
+        btn.style.color = '#fff';
+        btn.textContent = '−';
+      } else {
+        btn.style.background = '#06b6d4';
+        btn.style.color = '#fff';
+        btn.textContent = '+';
+      }
+
+      btn.addEventListener('mouseenter', () => { btn.style.transform = 'translate(-50%, -50%) scale(1.25)'; });
+      btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(-50%, -50%) scale(1)'; });
+
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        explodeParentNode(node);
+        updateExplodeOverlays();
+      });
+
+      container.appendChild(btn);
     });
   }
 
@@ -624,7 +936,7 @@
       const count = groupedUrls.length;
 
       const childX = parentPos.x + 320;
-      const yStep = 42;
+      const yStep = 52;
       const startY = parentPos.y - ((count - 1) * yStep) / 2;
 
       groupedUrls.forEach((url, idx) => {
@@ -693,6 +1005,8 @@
       let p0 = `/${parts[0]}`;
       let p0_lbl = `📁 /${parts[0]}`;
 
+      const isGeoSection = first.includes('holiday') || first.includes('hotel') || first.includes('destination') || first.includes('resort');
+
       if (first.endsWith('-holidays') || first.endsWith('holidays') || (first.includes('holiday') && first !== 'holidays')) {
         p0 = '/*-holidays';
         p0_lbl = '📁 /*-holidays';
@@ -718,16 +1032,19 @@
           label = p0_lbl;
           type = 'RouteLevel1';
         } else if (depth === 2) {
-          key = `${p0}/{country_page}`;
-          label = `📄 ${p0}/{country_page}`;
+          const varName = isGeoSection ? '{country_page}' : '{sub_route}';
+          key = `${p0}/${varName}`;
+          label = `📄 ${p0}/${varName}`;
           type = 'RouteLevel2';
         } else if (depth === 3) {
-          key = `${p0}/{sub_route}/{city_page}`;
-          label = `📍 ${p0}/{sub_route}/{city_page}`;
+          const var2Name = isGeoSection ? '{sub_route}/{city_page}' : '{sub_route}/{endpoint}';
+          key = `${p0}/${var2Name}`;
+          label = `📍 ${p0}/${var2Name}`;
           type = 'RouteLevel3';
         } else {
-          key = `${p0}/{sub_route}/{city}/{detail_page}`;
-          label = `🔹 ${p0}/{sub_route}/{city}/{detail_page}`;
+          const var3Name = isGeoSection ? '{sub_route}/{city}/{detail_page}' : '{sub_route}/{endpoint}/{detail}';
+          key = `${p0}/${var3Name}`;
+          label = `🔹 ${p0}/${var3Name}`;
           type = 'RouteLevel4';
         }
 
@@ -841,18 +1158,24 @@
         const styleType = details.routeType || (isFolder ? 'Folder' : type);
         const style = pillColors[styleType] || pillColors.Page;
 
-        nodeMap.set(id, {
-          data: {
-            id: id,
-            label: label,
-            type: type,
-            isFolder: isFolder,
-            bgColor: details.bgColor || style.bg,
-            borderColor: details.borderColor || style.border,
-            textColor: details.textColor || style.text,
-            details: details
-          }
-        });
+        const nodeData = {
+          id: id,
+          label: label,
+          type: type,
+          isFolder: isFolder,
+          bgColor: details.bgColor || style.bg,
+          borderColor: details.borderColor || style.border,
+          textColor: details.textColor || style.text,
+          details: details
+        };
+
+        if (details.parent) {
+          nodeData.parent = details.parent;
+        }
+
+        nodeMap.set(id, { data: nodeData });
+      } else if (details.parent) {
+        nodeMap.get(id).data.parent = details.parent;
       }
     }
 
@@ -866,9 +1189,38 @@
       }
     }
 
+    const isMicroappMode = dom.layoutSelect && dom.layoutSelect.value === 'microapp_architecture';
+
+    if (isMicroappMode) {
+      Object.values(MICROAPPS_CONFIG).forEach(cfg => {
+        const containerId = `MAP:${cfg.id}`;
+        addNode(containerId, `${cfg.macroApp} · ${cfg.name} (${cfg.badge})`, 'MicroappContainer', {
+          microappId: cfg.id,
+          macroApp: cfg.macroApp,
+          badge: cfg.badge,
+          bgColor: cfg.bgColor,
+          borderColor: cfg.borderColor,
+          textColor: cfg.color
+        });
+      });
+    }
+
+    const rawPageComponentsMap = new Map();
+    const rawPageApisMap = new Map();
+
     function processRow(lang, rawPage, rend, api) {
       if (!lang || !rawPage) return;
       languagesSet.add(lang);
+
+      if (rend) {
+        if (!rawPageComponentsMap.has(rawPage)) rawPageComponentsMap.set(rawPage, new Set());
+        rawPageComponentsMap.get(rawPage).add(rend);
+      }
+
+      if (api) {
+        if (!rawPageApisMap.has(rawPage)) rawPageApisMap.set(rawPage, new Map());
+        rawPageApisMap.get(rawPage).set(api, getApiSystemAndPayload(api));
+      }
 
       const levels = parseRoutingHierarchy(rawPage, state.groupSimilarUrls);
       const leafLevel = levels[levels.length - 1];
@@ -894,17 +1246,29 @@
       levels.forEach(lvl => {
         const nodeId = lvl.key === '/' ? `P:${lang}:/` : `P:${lang}:${lvl.key}`;
         const style = pillColors[lvl.type] || pillColors.Page;
+        const assignedMicroapp = getMicroappForRoute(lvl.key === '/' ? rawPage : lvl.key);
 
-        addNode(nodeId, lvl.label, 'Page', {
+        const nodeDetails = {
           lang: lang,
           rawPage: rawPage,
           routeLevel: lvl.level,
           routeType: lvl.type,
           parentRoute: lvl.parent,
+          microappId: assignedMicroapp,
           bgColor: style.bg,
           borderColor: style.border,
           textColor: style.text
-        });
+        };
+
+        if (isMicroappMode) {
+          nodeDetails.parent = `MAP:${assignedMicroapp}`;
+        }
+
+        addNode(nodeId, lvl.label, 'Page', nodeDetails);
+
+        if (isMicroappMode && nodeMap.has(nodeId)) {
+          nodeMap.get(nodeId).data.parent = `MAP:${assignedMicroapp}`;
+        }
 
         if (lvl.parent) {
           const parentId = lvl.parent === '/' ? `P:${lang}:/` : `P:${lang}:${lvl.parent}`;
@@ -925,7 +1289,7 @@
           const apiId = `A:${api}`;
           const sysInfo = getApiSystemAndPayload(api);
           addNode(apiId, api, 'API', { systemInfo: sysInfo });
-          addEdge(leafNodeId, apiId, 'CALLS_API');
+          // API is called VIA the rendering — only add Rendering→API edge, not Page→API directly
           addEdge(rendId, apiId, 'CALLS_API_DIRECT');
 
           addNode(sysInfo.id, sysInfo.label, 'System', {
@@ -1019,14 +1383,7 @@
               icon: sysInfo.icon
             });
             addEdge(apiId, sysInfo.id, 'TARGETS_SYSTEM');
-
-            nodeMap.forEach((pNode, pId) => {
-              if (pNode.data.type === 'Page') {
-                if (edgeMap.has(`${rendId}->${pId}`)) {
-                  addEdge(pId, apiId, 'CALLS_API');
-                }
-              }
-            });
+            // Note: we do NOT add Page→API directly. The path is Page→Rendering→API (indirect)
           });
         }
       }
@@ -1050,7 +1407,7 @@
       }
     });
 
-    // 5. Apply dynamic green gradation shading based on 1 to N rendering usage count
+    // 5a. Apply dynamic green gradation shading based on 1 to N rendering usage count
     nodeMap.forEach((node, id) => {
       if (node.data.type === 'Rendering' || node.data.type === 'Component') {
         const connectedSet = renderingUsageMap.get(id) || new Set();
@@ -1071,6 +1428,43 @@
         }
       }
     });
+
+    // 5b. Compute API usage: count distinct Page nodes that call each API via edges
+    const apiPageUsageMap = new Map(); // apiId -> Set of page node IDs
+    edgeMap.forEach(edge => {
+      const { source, target } = edge.data;
+      const sourceNode = nodeMap.get(source);
+      const targetNode = nodeMap.get(target);
+      if (targetNode && targetNode.data.type === 'API') {
+        if (!apiPageUsageMap.has(target)) apiPageUsageMap.set(target, new Set());
+        apiPageUsageMap.get(target).add(source);
+      }
+      if (sourceNode && sourceNode.data.type === 'API') {
+        if (!apiPageUsageMap.has(source)) apiPageUsageMap.set(source, new Set());
+        apiPageUsageMap.get(source).add(target);
+      }
+    });
+
+    // Determine max usage for gradient scaling
+    let maxApiUsage = 1;
+    apiPageUsageMap.forEach(set => { if (set.size > maxApiUsage) maxApiUsage = set.size; });
+
+    // Apply green gradient color to API nodes sorted by usage
+    nodeMap.forEach((node, id) => {
+      if (node.data.type === 'API') {
+        const usageCount = (apiPageUsageMap.get(id) || new Set()).size || 1;
+        const shade = getApiGreenShade(usageCount, maxApiUsage);
+        node.data.usageCount = usageCount;
+        node.data.bgColor = shade.bg;
+        node.data.borderColor = shade.border;
+        node.data.textColor = shade.text;
+        node.data.details = node.data.details || {};
+        node.data.details.apiUsageTier = shade.tier;
+      }
+    });
+
+    state.rawPageComponentsMap = rawPageComponentsMap;
+    state.rawPageApisMap = rawPageApisMap;
 
     state.graphElements = {
       nodes: Array.from(nodeMap.values()),
@@ -1177,7 +1571,7 @@
     setTimeout(() => {
       const cy = state.cy;
       const isSpread = state.density === 'spread';
-      const yStep = isSpread ? 52 : 36;
+      const yStep = isSpread ? 66 : 50;
 
       const langNodes = [];
       const rootNodes = [];
@@ -1218,7 +1612,7 @@
       langNodes.sort(sortAlpha);
       rootNodes.sort(sortAlpha);
 
-      // Sort Level 1 nodes: Grouped nodes (multiple child pages) IN CIMA (AT THE TOP)
+      // Sort Level 1 nodes: Grouped nodes (multiple child pages) AT THE TOP
       level1Nodes.sort((a, b) => {
         const urlsA = (a.data('details') && a.data('details').groupedUrls) ? a.data('details').groupedUrls.length : 1;
         const urlsB = (b.data('details') && b.data('details').groupedUrls) ? b.data('details').groupedUrls.length : 1;
@@ -1240,7 +1634,8 @@
         return (a.data('label') || '').localeCompare(b.data('label') || '');
       });
 
-      apis.sort((a, b) => (b.indegree() + b.outdegree()) - (a.indegree() + a.outdegree()));
+      // Sort APIs by page usage count (most used at top)
+      apis.sort((a, b) => (b.data('usageCount') || 0) - (a.data('usageCount') || 0));
       systems.sort((a, b) => (b.indegree() + b.outdegree()) - (a.indegree() + a.outdegree()));
 
       const colLangX = 80;
@@ -1266,6 +1661,7 @@
 
       cy.viewport({ zoom: 0.65, pan: { x: 30, y: 40 } });
       hideLoading();
+      updateExplodeOverlays();
     }, 25);
   }
 
@@ -1278,7 +1674,7 @@
     setTimeout(() => {
       const cy = state.cy;
       const isSpread = state.density === 'spread';
-      const yStep = isSpread ? 54 : 38;
+      const yStep = isSpread ? 68 : 52;
 
       const languages = [];
       const renderings = [];
@@ -1317,7 +1713,8 @@
         return a.data('label').localeCompare(b.data('label'));
       });
 
-      apis.sort((a, b) => (b.indegree() + b.outdegree()) - (a.indegree() + a.outdegree()));
+      // Sort APIs by page usage count (most used at top)
+      apis.sort((a, b) => (b.data('usageCount') || 0) - (a.data('usageCount') || 0));
       systems.sort((a, b) => (b.indegree() + b.outdegree()) - (a.indegree() + a.outdegree()));
 
       const colLangX = 100;
@@ -1351,6 +1748,7 @@
 
       cy.viewport({ zoom: 0.7, pan: { x: 30, y: 40 } });
       hideLoading();
+      updateExplodeOverlays();
     }, 25);
   }
 
@@ -1435,6 +1833,127 @@
 
       cy.viewport({ zoom: 0.85, pan: { x: 40, y: 40 } });
       hideLoading();
+      updateExplodeOverlays();
+    }, 25);
+  }
+
+  /**
+   * Microapp Architecture View (Macro Apps ➔ Microapps ➔ Routes)
+   * Sub-Columns per Microapp: Level 1 (Left) ➔ Level 2 (Center) ➔ Level 3 (Right)
+   * Sorting: Grouped template nodes at top, single pages at bottom.
+   */
+  function runMicroappArchitectureLayout() {
+    showLoading('Generating Microapp Architecture View (Sub-Columns: Level 1 ➔ Level 2 ➔ Level 3)...');
+
+    setTimeout(() => {
+      const cy = state.cy;
+      const isSpread = state.density === 'spread';
+      const yStep = isSpread ? 66 : 50;
+
+      const microappNodes = new Map();
+      Object.keys(MICROAPPS_CONFIG).forEach(id => microappNodes.set(id, []));
+
+      cy.nodes('[type="Page"]').forEach(node => {
+        const details = node.data('details') || {};
+        const routeKey = details.rawPage || node.data('label') || '';
+        const microappId = getMicroappForRoute(routeKey);
+        if (microappNodes.has(microappId)) {
+          microappNodes.get(microappId).push(node);
+        }
+      });
+
+      const macroX = {
+        INSPIRE: 400,
+        SEARCH: 1400,
+        BOOK: 2400,
+        'POST BOOK': 3400,
+        SUPPORT: 4400
+      };
+
+      function isGroupedNode(n) {
+        const d = n.data('details') || {};
+        const label = n.data('label') || '';
+        return n.data('isFolder') || (d.groupedUrls && d.groupedUrls.length > 1) || label.includes('(') || label.includes('*');
+      }
+
+      function sortLevelNodes(arr) {
+        return arr.sort((a, b) => {
+          const gA = isGroupedNode(a);
+          const gB = isGroupedNode(b);
+          if (gA !== gB) return gA ? -1 : 1;
+
+          const dA = a.data('details') || {};
+          const dB = b.data('details') || {};
+          const lenA = dA.groupedUrls ? dA.groupedUrls.length : 1;
+          const lenB = dB.groupedUrls ? dB.groupedUrls.length : 1;
+          if (lenB !== lenA) return lenB - lenA;
+
+          return (a.data('label') || '').localeCompare(b.data('label') || '');
+        });
+      }
+
+      cy.batch(() => {
+        Object.entries(MICROAPPS_CONFIG).forEach(([appId, cfg]) => {
+          const nodes = microappNodes.get(appId) || [];
+          const colX = macroX[cfg.macroApp] || 400;
+          
+          let startY = 120;
+          if (appId === 'flight_hotel') startY = 700;
+          if (appId === 'view_bookings') startY = 700;
+          if (appId === 'transfers') startY = 700;
+
+          // Partition into 3 Sub-Columns: Level 1, Level 2, Level 3+
+          const l1Nodes = [];
+          const l2Nodes = [];
+          const l3Nodes = [];
+
+          nodes.forEach(n => {
+            const d = n.data('details') || {};
+            const lvl = typeof d.routeLevel === 'number' ? d.routeLevel : 1;
+            if (lvl <= 1) l1Nodes.push(n);
+            else if (lvl === 2) l2Nodes.push(n);
+            else l3Nodes.push(n);
+          });
+
+          sortLevelNodes(l1Nodes);
+          sortLevelNodes(l2Nodes);
+          sortLevelNodes(l3Nodes);
+
+          const subColOffset = 260;
+          
+          l1Nodes.forEach((n, idx) => n.position({ x: colX - subColOffset, y: startY + idx * yStep }));
+          l2Nodes.forEach((n, idx) => n.position({ x: colX, y: startY + idx * yStep }));
+          l3Nodes.forEach((n, idx) => n.position({ x: colX + subColOffset, y: startY + idx * yStep }));
+
+          const maxItems = Math.max(1, l1Nodes.length, l2Nodes.length, l3Nodes.length);
+
+          const containerNode = cy.nodes(`#MAP:${appId}`);
+          if (containerNode.length > 0) {
+            containerNode.position({
+              x: colX,
+              y: startY + (maxItems * yStep) / 2 - 10
+            });
+          }
+        });
+
+        const renderings = cy.nodes('[type="Rendering"], [type="Component"]');
+        // Sort APIs: most used at top, least used at bottom
+        const apis = cy.nodes('[type="API"]').toArray()
+          .sort((a, b) => (b.data('usageCount') || 0) - (a.data('usageCount') || 0));
+        const systems = cy.nodes('[type="System"]');
+
+        const rendX = 5200;
+        const apiX = 5800;
+        const sysX = 6400;
+
+        renderings.forEach((n, idx) => n.position({ x: rendX, y: 100 + idx * yStep }));
+        apis.forEach((n, idx) => n.position({ x: apiX, y: 100 + idx * yStep }));
+        systems.forEach((n, idx) => n.position({ x: sysX, y: 100 + idx * (yStep + 24) }));
+      });
+
+      cy.viewport({ zoom: 0.35, pan: { x: 30, y: 30 } });
+      hideLoading();
+      updateExplodeOverlays();
     }, 25);
   }
 
@@ -1442,6 +1961,8 @@
     const layoutMode = dom.layoutSelect ? dom.layoutSelect.value : 'routing_tree';
     if (layoutMode === 'routing_tree') {
       runRoutingHierarchyLayout();
+    } else if (layoutMode === 'microapp_architecture') {
+      runMicroappArchitectureLayout();
     } else if (layoutMode === 'dependency_matrix') {
       runDependencyMatrixLayout();
     } else {
@@ -1654,6 +2175,104 @@
     buildUnifiedGraph();
   }
 
+  // ── Layout persistence ──────────────────────────────────────────────────
+
+  /**
+   * Save current node positions to data/layout-positions.json via the dev server.
+   * @param {boolean} showFeedback - if true, briefly flash the save button
+   */
+  async function saveLayoutPositions(showFeedback = true) {
+    if (!state.cy) return;
+
+    const positions = {};
+    state.cy.nodes().forEach(node => {
+      const pos = node.position();
+      positions[node.id()] = { x: Math.round(pos.x), y: Math.round(pos.y) };
+    });
+
+    const payload = {
+      nodes: positions,
+      savedAt: new Date().toISOString(),
+      dataset: state.currentDataset,
+      layout: dom.layoutSelect ? dom.layoutSelect.value : 'routing_tree'
+    };
+
+    try {
+      const res = await fetch('/api/save-layout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      if (showFeedback) {
+        const btn = document.getElementById('btn-save-layout');
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = '<i class="fa-solid fa-check"></i> Saved!';
+          btn.style.color = '#10b981';
+          setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; }, 1500);
+        }
+      } else {
+        // Subtle status indicator in the toolbar
+        const btn = document.getElementById('btn-save-layout');
+        if (btn) {
+          btn.title = `Last saved: ${new Date().toLocaleTimeString()}`;
+        }
+      }
+    } catch (e) {
+      console.warn('Layout save failed (is server.py running?):', e.message);
+      if (showFeedback) {
+        const btn = document.getElementById('btn-save-layout');
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = '<i class="fa-solid fa-xmark"></i> Save failed';
+          btn.style.color = '#ef4444';
+          setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; }, 2000);
+        }
+      }
+    }
+  }
+
+  /**
+   * Load saved node positions from data/layout-positions.json and apply them.
+   * Positions are applied only to nodes that currently exist in the graph.
+   */
+  async function loadLayoutPositions() {
+    try {
+      const res = await fetch(`/data/layout-positions.json?t=${Date.now()}`);
+      if (!res.ok) return;
+
+      const data = await res.json();
+      const positions = data.nodes || {};
+      if (Object.keys(positions).length === 0) return;
+
+      let applied = 0;
+      state.cy.batch(() => {
+        state.cy.nodes().forEach(node => {
+          const saved = positions[node.id()];
+          if (saved) {
+            node.position({ x: saved.x, y: saved.y });
+            applied++;
+          }
+        });
+      });
+
+      if (applied > 0) {
+        state.cy.fit(state.cy.elements(), 60);
+        updateExplodeOverlays();
+        console.log(`✅ Loaded layout: ${applied} node positions restored (saved ${data.savedAt ? new Date(data.savedAt).toLocaleString() : 'unknown'})`);
+
+        // Show feedback in toolbar
+        const btn = document.getElementById('btn-save-layout');
+        if (btn) btn.title = `Layout loaded (saved ${data.savedAt ? new Date(data.savedAt).toLocaleTimeString() : '?'})`;
+      }
+    } catch (e) {
+      // Silently ignore — no saved layout yet
+    }
+  }
+
   function selectNode(node) {
     state.selectedNode = node;
     highlightNeighborhood(node);
@@ -1661,22 +2280,199 @@
   }
 
   function highlightNeighborhood(node) {
+    const isPage = node.data('type') === 'Page';
+
     state.cy.batch(() => {
-      state.cy.elements().removeClass('highlighted').addClass('dimmed');
-      const neighborhood = node.closedNeighborhood();
-      neighborhood.removeClass('dimmed').addClass('highlighted');
+      state.cy.elements().removeClass('highlighted dimmed direct-api-edge indirect-api-edge').addClass('dimmed');
+
+      if (!isPage) {
+        // Non-page nodes: highlight immediate neighborhood
+        const neighborhood = node.closedNeighborhood();
+        neighborhood.removeClass('dimmed').addClass('highlighted');
+        return;
+      }
+
+      // --- Page node: walk 2 hops and distinguish direct vs indirect API paths ---
+      const highlighted = new Set([node.id()]);
+      node.removeClass('dimmed').addClass('highlighted');
+
+      // Hop 1: direct neighbors (Renderings, AND any direct Page→API edges if present)
+      node.connectedEdges().forEach(edge => {
+        const label = edge.data('label');
+        const other = edge.source().id() === node.id() ? edge.target() : edge.source();
+        const otherType = other.data('type');
+
+        if (label === 'CALLS_API' || label === 'CALLS_API_DIRECT') {
+          // Direct Page → API edge
+          edge.removeClass('dimmed').addClass('direct-api-edge');
+          other.removeClass('dimmed').addClass('highlighted');
+          highlighted.add(other.id());
+        } else {
+          // Page → Rendering (or other direct neighbor)
+          edge.removeClass('dimmed').addClass('highlighted');
+          other.removeClass('dimmed').addClass('highlighted');
+          highlighted.add(other.id());
+
+          if (otherType === 'Rendering' || otherType === 'Component') {
+            // Hop 2: Rendering → API  (indirect call)
+            other.connectedEdges().forEach(edge2 => {
+              const label2 = edge2.data('label');
+              if (label2 === 'CALLS_API_DIRECT' || label2 === 'CALLS_API') {
+                const api = edge2.source().id() === other.id() ? edge2.target() : edge2.source();
+                edge2.removeClass('dimmed').addClass('indirect-api-edge');
+                api.removeClass('dimmed').addClass('highlighted');
+                highlighted.add(api.id());
+              }
+            });
+          }
+        }
+      });
     });
   }
 
   function resetHighlights() {
     state.selectedNode = null;
     state.cy.batch(() => {
-      state.cy.elements().removeClass('highlighted dimmed');
+      state.cy.elements().removeClass('highlighted dimmed direct-api-edge indirect-api-edge');
     });
   }
 
   function focusNeighborhood(node) {
     state.cy.fit(node.closedNeighborhood(), 50);
+  }
+
+  function explodeParentNode(node) {
+    const data = node.data();
+    const details = data.details || {};
+    const groupedUrls = details.groupedUrls ? Array.from(details.groupedUrls) : [];
+    if (groupedUrls.length <= 1) return;
+
+    const nodeId = node.id();
+    const isExpanded = state.expandedNodes.has(nodeId);
+
+    if (isExpanded) {
+      state.expandedNodes.delete(nodeId);
+      const subNodes = state.cy.nodes(`[parentGroup="${nodeId}"]`);
+      const shiftY = subNodes.length * 54 + 20;
+      const parentY = node.position('y');
+
+      state.cy.batch(() => {
+        // Remove sub-nodes AND their edges (edges to APIs/renderings added during explosion)
+        const subIds = new Set(subNodes.map(n => n.id()));
+        state.cy.edges().filter(e => subIds.has(e.data('source')) || subIds.has(e.data('target'))).remove();
+        subNodes.remove();
+        state.cy.nodes().forEach(n => {
+          if (n.id() !== nodeId && Math.abs(n.position('x') - node.position('x')) < 40 && n.position('y') > parentY) {
+            n.position('y', n.position('y') - shiftY);
+          }
+        });
+      });
+
+      openInspector(node);
+      return;
+    }
+
+    state.expandedNodes.add(nodeId);
+    const parentPos = node.position();
+    const shiftY = groupedUrls.length * 54 + 20;
+    const subElements = [];
+    const subEdges = [];
+    const childX = parentPos.x;
+    const startY = parentPos.y + 56;
+    const subStyle = pillColors.SubPage;
+
+    // Pre-shift nodes below the parent in the same column
+    state.cy.batch(() => {
+      state.cy.nodes().forEach(n => {
+        if (n.id() !== nodeId && Math.abs(n.position('x') - parentPos.x) < 40 && n.position('y') > parentPos.y) {
+          n.position('y', n.position('y') + shiftY);
+        }
+      });
+    });
+
+    groupedUrls.forEach((url, idx) => {
+      const subId = `SUB:${nodeId}:${url}`;
+      const y = startY + idx * 54;
+
+      // Gather this sub-URL's APIs and components from state maps
+      const urlApis = state.rawPageApisMap ? (state.rawPageApisMap.get(url) || new Map()) : new Map();
+      const urlComps = state.rawPageComponentsMap ? (state.rawPageComponentsMap.get(url) || new Set()) : new Set();
+
+      subElements.push({
+        data: {
+          id: subId,
+          label: `📄 ${url}`,
+          type: 'Page',
+          bgColor: subStyle.bg,
+          borderColor: subStyle.border,
+          textColor: subStyle.text,
+          parentGroup: nodeId,
+          details: {
+            isSubNode: true,
+            rawPage: url,
+            routeLevel: (details.routeLevel || 1) + 1,
+            urlApis: Array.from(urlApis.keys()),
+            urlComps: Array.from(urlComps)
+          }
+        },
+        position: { x: childX, y: y }
+      });
+
+      // Edge: parent → sub-page
+      subEdges.push({
+        data: {
+          id: `${nodeId}->${subId}`,
+          source: nodeId,
+          target: subId,
+          label: 'CONTAINS',
+          weight: 2
+        }
+      });
+
+      // Edges: sub-page → existing API nodes in the graph
+      urlApis.forEach((sysInfo, apiName) => {
+        const apiId = `A:${apiName}`;
+        if (state.cy.getElementById(apiId).length > 0) {
+          subEdges.push({
+            data: {
+              id: `${subId}->${apiId}`,
+              source: subId,
+              target: apiId,
+              label: 'CALLS_API',
+              weight: 1
+            }
+          });
+        }
+      });
+
+      // Edges: sub-page → existing Rendering/Component nodes in the graph
+      urlComps.forEach(rendName => {
+        const rendId = `R:${rendName}`;
+        if (state.cy.getElementById(rendId).length > 0) {
+          subEdges.push({
+            data: {
+              id: `${subId}->${rendId}`,
+              source: subId,
+              target: rendId,
+              label: 'USES_RENDERING',
+              weight: 1
+            }
+          });
+        }
+      });
+    });
+
+    state.cy.batch(() => {
+      state.cy.add(subElements);
+      state.cy.add(subEdges);
+    });
+
+    state.cy.animate({
+      fit: { eles: node.closedNeighborhood(), padding: 80 },
+      duration: 350
+    });
+
+    openInspector(node);
   }
 
   function openInspector(node) {
@@ -1703,21 +2499,114 @@
     if (dom.incomingList) dom.incomingList.innerHTML = '';
     dom.outgoingList.innerHTML = '';
 
-    // --- SUB-LIST 1: USED COMPONENTS ---
-    const usedComps = new Set();
-    const rendNodes = node.successors('node[type="Rendering"], node[type="Component"]')
-      .union(node.neighborhood('node[type="Rendering"], node[type="Component"]'));
-    rendNodes.forEach(r => usedComps.add(r.data('label')));
-    if (data.details && data.details.componentsList) {
-      data.details.componentsList.forEach(c => usedComps.add(c));
+    const details = data.details || {};
+    const groupedUrls = details.groupedUrls ? Array.from(details.groupedUrls) : (details.rawPage ? [details.rawPage] : []);
+    const isGroupedParent = groupedUrls.length > 1;
+
+    // --- EXPLODE / COLLAPSE BUTTON FOR PARENT NODES ---
+    if (isGroupedParent) {
+      const isExpanded = state.expandedNodes.has(node.id());
+      const explodeBtn = document.createElement('button');
+      explodeBtn.style.width = '100%';
+      explodeBtn.style.padding = '0.55rem';
+      explodeBtn.style.marginBottom = '0.85rem';
+      explodeBtn.style.borderRadius = '8px';
+      explodeBtn.style.fontWeight = '700';
+      explodeBtn.style.fontSize = '0.8rem';
+      explodeBtn.style.cursor = 'pointer';
+      explodeBtn.style.display = 'flex';
+      explodeBtn.style.alignItems = 'center';
+      explodeBtn.style.justifyContent = 'center';
+      explodeBtn.style.gap = '0.5rem';
+      explodeBtn.style.transition = 'all 0.2s ease';
+
+      if (isExpanded) {
+        explodeBtn.style.background = 'rgba(239, 68, 68, 0.2)';
+        explodeBtn.style.border = '1px solid #ef4444';
+        explodeBtn.style.color = '#fca5a5';
+        explodeBtn.innerHTML = `<i class="fa-solid fa-compress"></i> ➖ Collapse Sub-Pages (${groupedUrls.length})`;
+      } else {
+        explodeBtn.style.background = 'rgba(6, 182, 212, 0.2)';
+        explodeBtn.style.border = '1px solid #06b6d4';
+        explodeBtn.style.color = '#67e8f9';
+        explodeBtn.innerHTML = `<i class="fa-solid fa-expand"></i> ➕ Explode Sub-Pages (${groupedUrls.length})`;
+      }
+
+      explodeBtn.addEventListener('click', () => {
+        explodeParentNode(node);
+      });
+
+      dom.outgoingList.appendChild(explodeBtn);
     }
-    const compsArray = Array.from(usedComps);
+
+    // --- MICROAPP ASSIGNMENT CONTROL (FOR PAGES / ROUTES) ---
+    if (data.type === 'Page') {
+      const routeKey = (data.details && data.details.rawPage) ? data.details.rawPage : data.label;
+      const currentMicroappId = getMicroappForRoute(routeKey);
+
+      const assignBox = document.createElement('div');
+      assignBox.className = 'microapp-assign-box';
+      assignBox.innerHTML = `
+        <div class="microapp-assign-label">
+          <span><i class="fa-solid fa-cubes" style="color: var(--accent-cyan);"></i> Microapp Architecture Assignment</span>
+          <span style="font-size: 0.68rem; color: #94a3b8;">(Editable)</span>
+        </div>
+        <select class="microapp-select-input">
+          ${Object.values(MICROAPPS_CONFIG).map(cfg => `
+            <option value="${cfg.id}" ${cfg.id === currentMicroappId ? 'selected' : ''}>
+              ${cfg.macroApp} ➔ ${cfg.name} (${cfg.badge})
+            </option>
+          `).join('')}
+        </select>
+      `;
+
+      const selectEl = assignBox.querySelector('select');
+      selectEl.addEventListener('change', (e) => {
+        const newAppId = e.target.value;
+        const cleanKey = routeKey.toLowerCase().trim();
+        state.customMicroappMapping.set(cleanKey, newAppId);
+        saveCustomMicroappMapping();
+        rebuildGraph();
+      });
+
+      dom.outgoingList.appendChild(assignBox);
+    }
+
+    // --- SUB-LIST 1: USED COMPONENTS (INTERSECTION / AND LOGIC FOR PARENT NODES) ---
+    let compsArray = [];
+    if (isGroupedParent) {
+      let commonComps = null;
+      groupedUrls.forEach(url => {
+        const uComps = state.rawPageComponentsMap ? (state.rawPageComponentsMap.get(url) || new Set()) : new Set();
+        if (commonComps === null) {
+          commonComps = new Set(uComps);
+        } else {
+          commonComps = new Set([...commonComps].filter(c => uComps.has(c)));
+        }
+      });
+      compsArray = Array.from(commonComps || []);
+    } else {
+      const singleUrl = details.rawPage || data.label.replace(/^📄\s*/, '').replace(/^📍\s*/, '');
+      const uComps = state.rawPageComponentsMap ? state.rawPageComponentsMap.get(singleUrl) : null;
+      if (uComps) {
+        compsArray = Array.from(uComps);
+      } else {
+        const usedComps = new Set();
+        const rendNodes = node.successors('node[type="Rendering"], node[type="Component"]')
+          .union(node.neighborhood('node[type="Rendering"], node[type="Component"]'));
+        rendNodes.forEach(r => usedComps.add(r.data('label')));
+        if (details.componentsList) details.componentsList.forEach(c => usedComps.add(c));
+        compsArray = Array.from(usedComps);
+      }
+    }
+
+    const compSubtitle = isGroupedParent ? `(Common to ALL ${groupedUrls.length} pages)` : '(Exact Page Components)';
 
     const compSection = document.createElement('div');
     compSection.className = 'inspector-sublist-section';
     compSection.innerHTML = `
       <div style="font-size: 0.82rem; font-weight: 700; color: #10b981; margin-bottom: 0.45rem; display: flex; align-items: center; justify-content: space-between;">
-        <span><i class="fa-solid fa-puzzle-piece"></i> 1. Used Components</span>
+        <span><i class="fa-solid fa-puzzle-piece"></i> 1. Used Components <span style="font-size:0.68rem; color:#94a3b8; font-weight:normal;">${compSubtitle}</span></span>
         <span class="count-pill pill-green">${compsArray.length}</span>
       </div>
     `;
@@ -1737,33 +2626,76 @@
         compBox.appendChild(item);
       });
     } else {
-      compBox.innerHTML = `<div style="color: var(--text-dim); font-style: italic;">No directly associated components</div>`;
+      compBox.innerHTML = `<div style="color: var(--text-dim); font-style: italic;">No common components in ALL pages</div>`;
     }
     compSection.appendChild(compBox);
     dom.outgoingList.appendChild(compSection);
 
-    // --- SUB-LIST 2: INVOKED APIS (PAGE & COMPONENTS) ---
-    const apiMap = new Map();
-    const apiNodes = node.successors('node[type="API"]')
-      .union(node.neighborhood('node[type="API"]'));
-    
-    apiNodes.forEach(a => {
-      const aData = a.data();
-      if (!apiMap.has(aData.label)) {
-        apiMap.set(aData.label, aData.details && aData.details.systemInfo);
+    // --- SUB-LIST 2: INVOKED APIS (INTERSECTION / AND LOGIC FOR PARENT NODES) ---
+    let apiArray = [];
+    if (isGroupedParent) {
+      let commonApisMap = null;
+      groupedUrls.forEach(url => {
+        const uApis = state.rawPageApisMap ? (state.rawPageApisMap.get(url) || new Map()) : new Map();
+        if (commonApisMap === null) {
+          commonApisMap = new Map(uApis);
+        } else {
+          for (const k of commonApisMap.keys()) {
+            if (!uApis.has(k)) commonApisMap.delete(k);
+          }
+        }
+      });
+      apiArray = Array.from((commonApisMap || new Map()).entries());
+    } else {
+      const singleUrl = details.rawPage || data.label.replace(/^📄\s*/, '').replace(/^📍\s*/, '');
+      const uApis = state.rawPageApisMap ? state.rawPageApisMap.get(singleUrl) : null;
+      if (uApis) {
+        apiArray = Array.from(uApis.entries());
+      } else {
+        const apiMap = new Map();
+        const apiNodes = node.successors('node[type="API"]').union(node.neighborhood('node[type="API"]'));
+        apiNodes.forEach(a => {
+          const aData = a.data();
+          if (!apiMap.has(aData.label)) apiMap.set(aData.label, aData.details && aData.details.systemInfo);
+        });
+        apiArray = Array.from(apiMap.entries());
       }
-    });
+    }
 
-    const apiArray = Array.from(apiMap.entries());
+    const apiSubtitle = isGroupedParent ? `(Common to ALL ${groupedUrls.length} pages)` : '(Via Component)';
+
+    // Build direct API list: APIs directly connected to the page node via CALLS_API edge
+    const directApiSet = new Set();
+    node.connectedEdges('[label="CALLS_API"]').forEach(e => {
+      const t = e.target();
+      if (t && t.data('type') === 'API') directApiSet.add(t.data('label'));
+    });
 
     const apiSection = document.createElement('div');
     apiSection.className = 'inspector-sublist-section';
-    apiSection.innerHTML = `
-      <div style="font-size: 0.82rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.45rem; display: flex; align-items: center; justify-content: space-between;">
-        <span><i class="fa-solid fa-bolt"></i> 2. Invoked APIs (Page & Components)</span>
-        <span class="count-pill pill-yellow">${apiArray.length}</span>
+
+    // Legend
+    const legendHtml = `
+      <div style="display:flex; gap:0.6rem; margin-bottom:0.5rem; flex-wrap:wrap; font-size:0.7rem;">
+        <span style="display:flex;align-items:center;gap:4px;">
+          <span style="display:inline-block;width:20px;height:3px;background:#f59e0b;border-radius:2px;"></span>
+          <span style="color:#fcd34d;">Direct (on load)</span>
+        </span>
+        <span style="display:flex;align-items:center;gap:4px;">
+          <span style="display:inline-block;width:20px;height:3px;background:#a78bfa;border-radius:2px;border-top:1px dashed #a78bfa;"></span>
+          <span style="color:#c4b5fd;">Indirect (via component)</span>
+        </span>
       </div>
     `;
+
+    apiSection.innerHTML = `
+      <div style="font-size: 0.82rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.45rem; display: flex; align-items: center; justify-content: space-between;">
+        <span><i class="fa-solid fa-bolt"></i> 2. Invoked APIs <span style="font-size:0.68rem; color:#94a3b8; font-weight:normal;">${apiSubtitle}</span></span>
+        <span class="count-pill pill-yellow">${apiArray.length}</span>
+      </div>
+      ${legendHtml}
+    `;
+
 
     const apiBox = document.createElement('div');
     apiBox.className = 'inspector-sublist-box';
@@ -1772,17 +2704,23 @@
 
     if (apiArray.length > 0) {
       apiArray.forEach(([apiName, sys]) => {
+        const isDirect = directApiSet.has(apiName);
         const item = document.createElement('div');
-        item.style.padding = '4px 0';
+        item.style.padding = '4px 0 4px 6px';
         item.style.borderBottom = '1px solid rgba(255,255,255,0.04)';
+        item.style.borderLeft = `3px solid ${isDirect ? '#f59e0b' : '#a78bfa'}`;
+        item.style.marginBottom = '2px';
         item.innerHTML = `
-          <div style="font-weight: 600; color: #fcd34d;">⚡ ${apiName}</div>
+          <div style="font-weight: 600; color: ${isDirect ? '#fcd34d' : '#c4b5fd'};">
+            ${isDirect ? '⚡' : '🔀'} ${apiName}
+            <span style="font-size:0.65rem; font-weight:400; margin-left:4px; opacity:0.7;">${isDirect ? 'direct' : 'via component'}</span>
+          </div>
           ${sys ? `<div style="font-size: 0.71rem; color: var(--text-dim); margin-top: 1px;">↳ <strong>System:</strong> ${sys.name}</div>` : ''}
         `;
         apiBox.appendChild(item);
       });
     } else {
-      apiBox.innerHTML = `<div style="color: var(--text-dim); font-style: italic;">No associated API calls</div>`;
+      apiBox.innerHTML = `<div style="color: var(--text-dim); font-style: italic;">No API calls found</div>`;
     }
     apiSection.appendChild(apiBox);
     dom.outgoingList.appendChild(apiSection);
@@ -1828,6 +2766,23 @@
 
     if (data.type === 'API' && data.details && data.details.systemInfo) {
       const sys = data.details.systemInfo;
+
+      // Usage tier badge
+      if (data.details.apiUsageTier || data.usageCount) {
+        const tierBadge = document.createElement('div');
+        tierBadge.style.padding = '0.4rem 0.75rem';
+        tierBadge.style.marginBottom = '0.6rem';
+        tierBadge.style.borderRadius = '6px';
+        tierBadge.style.background = data.bgColor || 'rgba(16,185,129,0.18)';
+        tierBadge.style.border = `1px solid ${data.borderColor || '#10b981'}`;
+        tierBadge.style.color = data.textColor || '#6ee7b7';
+        tierBadge.style.fontSize = '0.78rem';
+        tierBadge.style.fontWeight = '600';
+        tierBadge.innerHTML = `<i class="fa-solid fa-chart-bar" style="margin-right:5px;"></i>
+          ${data.details.apiUsageTier || `Used by ${data.usageCount} pages`}`;
+        dom.outgoingList.appendChild(tierBadge);
+      }
+
       const sysBox = document.createElement('div');
       sysBox.style.padding = '0.75rem';
       sysBox.style.marginBottom = '0.75rem';
