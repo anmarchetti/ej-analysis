@@ -689,6 +689,21 @@
     ];
 
     if (groupSimilar) {
+      const first = (parts[0] || '').toLowerCase();
+      let p0 = `/${parts[0]}`;
+      let p0_lbl = `📁 /${parts[0]}`;
+
+      if (first.endsWith('-holidays') || first.endsWith('holidays') || (first.includes('holiday') && first !== 'holidays')) {
+        p0 = '/*-holidays';
+        p0_lbl = '📁 /*-holidays';
+      } else if (first.endsWith('-hotels') || first.endsWith('hotels') || (first.includes('hotel') && first !== 'hotels')) {
+        p0 = '/*-hotels';
+        p0_lbl = '📁 /*-hotels';
+      } else if (first.includes('free-child') || first.includes('places-enfants') || first.includes('kinder-gratis')) {
+        p0 = '/free-child-places-*';
+        p0_lbl = '📁 /free-child-places-*';
+      }
+
       let accumKey = '';
       for (let idx = 0; idx < parts.length; idx++) {
         const depth = idx + 1;
@@ -699,20 +714,20 @@
         let type = '';
 
         if (depth === 1) {
-          key = `/${parts[0]}`;
-          label = `📁 /${parts[0]}`;
+          key = p0;
+          label = p0_lbl;
           type = 'RouteLevel1';
         } else if (depth === 2) {
-          key = `/${parts[0]}/{country_page}`;
-          label = `📄 /${parts[0]}/{country_page}`;
+          key = `${p0}/{country_page}`;
+          label = `📄 ${p0}/{country_page}`;
           type = 'RouteLevel2';
         } else if (depth === 3) {
-          key = `/${parts[0]}/{sub_route}/{city_page}`;
-          label = `📍 /${parts[0]}/{sub_route}/{city_page}`;
+          key = `${p0}/{sub_route}/{city_page}`;
+          label = `📍 ${p0}/{sub_route}/{city_page}`;
           type = 'RouteLevel3';
         } else {
-          key = `/${parts[0]}/{sub_route}/{city}/{detail_page}`;
-          label = `🔹 /${parts[0]}/{sub_route}/{city}/{detail_page}`;
+          key = `${p0}/{sub_route}/{city}/{detail_page}`;
+          label = `🔹 ${p0}/{sub_route}/{city}/{detail_page}`;
           type = 'RouteLevel4';
         }
 
@@ -949,9 +964,17 @@
         if (pageGroupUrls.has(fullKey)) {
           const urls = Array.from(pageGroupUrls.get(fullKey));
           node.data.details.groupedUrls = urls;
-          if (urls.length > 1 && !node.data.label.includes('(')) {
+          if (urls.length > 1) {
             node.data.isFolder = true;
-            node.data.label = `${node.data.label} (${urls.length})`;
+            if (!node.data.label.includes('(')) {
+              node.data.label = `${node.data.label} (${urls.length})`;
+            }
+            // Darker cyan/blue styling ONLY for Level 1 nodes with multiple children
+            if (node.data.details && node.data.details.routeLevel === 1) {
+              node.data.bgColor = 'rgba(14, 116, 144, 0.65)';    // Darker Electric Cyan / Deep Blue
+              node.data.borderColor = '#0284c7';                 // Solid Deep Cyan-Blue Border
+              node.data.textColor = '#f0f9ff';                   // Bright Crisp White-Cyan Text
+            }
           }
         }
       }
@@ -1194,7 +1217,19 @@
       const sortAlpha = (a, b) => (a.data('label') || '').localeCompare(b.data('label') || '');
       langNodes.sort(sortAlpha);
       rootNodes.sort(sortAlpha);
-      level1Nodes.sort(sortAlpha);
+
+      // Sort Level 1 nodes: Grouped nodes (multiple child pages) IN CIMA (AT THE TOP)
+      level1Nodes.sort((a, b) => {
+        const urlsA = (a.data('details') && a.data('details').groupedUrls) ? a.data('details').groupedUrls.length : 1;
+        const urlsB = (b.data('details') && b.data('details').groupedUrls) ? b.data('details').groupedUrls.length : 1;
+        const isGroupedA = urlsA > 1 ? 1 : 0;
+        const isGroupedB = urlsB > 1 ? 1 : 0;
+
+        if (isGroupedB !== isGroupedA) return isGroupedB - isGroupedA; // Grouped (isGrouped = 1) at top
+        if (urlsB !== urlsA) return urlsB - urlsA;                     // Higher count first
+        return (a.data('label') || '').localeCompare(b.data('label') || '');
+      });
+
       level2Nodes.sort(sortAlpha);
       level3Nodes.sort(sortAlpha);
 
@@ -1665,156 +1700,131 @@
     dom.statOutDegree.textContent = outDegree;
     dom.statTotalDegree.textContent = inDegree + outDegree;
 
-    dom.incomingList.innerHTML = '';
-    node.incomers('node').forEach(inNode => {
-      dom.incomingList.appendChild(createConnItem(inNode));
-    });
-
+    if (dom.incomingList) dom.incomingList.innerHTML = '';
     dom.outgoingList.innerHTML = '';
 
-    if (data.type === 'Page' && data.details && data.details.groupedUrls && data.details.groupedUrls.length > 1) {
-      const titleDiv = document.createElement('div');
-      titleDiv.style.fontSize = '0.8rem';
-      titleDiv.style.fontWeight = '700';
-      titleDiv.style.color = 'var(--accent-cyan)';
-      titleDiv.style.marginBottom = '0.4rem';
-      titleDiv.textContent = `📦 Grouped Pages in Template (${data.details.groupedUrls.length}):`;
-      dom.outgoingList.appendChild(titleDiv);
+    // --- SUB-LIST 1: USED COMPONENTS ---
+    const usedComps = new Set();
+    const rendNodes = node.successors('node[type="Rendering"], node[type="Component"]')
+      .union(node.neighborhood('node[type="Rendering"], node[type="Component"]'));
+    rendNodes.forEach(r => usedComps.add(r.data('label')));
+    if (data.details && data.details.componentsList) {
+      data.details.componentsList.forEach(c => usedComps.add(c));
+    }
+    const compsArray = Array.from(usedComps);
 
-      const urlBox = document.createElement('div');
-      urlBox.style.maxHeight = '180px';
-      urlBox.style.overflowY = 'auto';
-      urlBox.style.background = 'rgba(17, 24, 39, 0.6)';
-      urlBox.style.padding = '0.5rem';
-      urlBox.style.borderRadius = '8px';
-      urlBox.style.fontSize = '0.78rem';
-      urlBox.style.marginBottom = '0.75rem';
+    const compSection = document.createElement('div');
+    compSection.className = 'inspector-sublist-section';
+    compSection.innerHTML = `
+      <div style="font-size: 0.82rem; font-weight: 700; color: #10b981; margin-bottom: 0.45rem; display: flex; align-items: center; justify-content: space-between;">
+        <span><i class="fa-solid fa-puzzle-piece"></i> 1. Used Components</span>
+        <span class="count-pill pill-green">${compsArray.length}</span>
+      </div>
+    `;
 
-      data.details.groupedUrls.forEach(u => {
+    const compBox = document.createElement('div');
+    compBox.className = 'inspector-sublist-box';
+    compBox.style.background = 'rgba(16, 185, 129, 0.08)';
+    compBox.style.border = '1px solid rgba(16, 185, 129, 0.25)';
+
+    if (compsArray.length > 0) {
+      compsArray.forEach(c => {
         const item = document.createElement('div');
-        item.style.padding = '2px 0';
-        item.style.color = 'var(--text-muted)';
-        item.textContent = `• ${u}`;
-        urlBox.appendChild(item);
+        item.style.padding = '3px 0';
+        item.style.color = '#6ee7b7';
+        item.style.borderBottom = '1px solid rgba(255,255,255,0.04)';
+        item.textContent = `🟢 ${c}`;
+        compBox.appendChild(item);
       });
-      dom.outgoingList.appendChild(urlBox);
+    } else {
+      compBox.innerHTML = `<div style="color: var(--text-dim); font-style: italic;">No directly associated components</div>`;
     }
+    compSection.appendChild(compBox);
+    dom.outgoingList.appendChild(compSection);
 
-    if (data.type === 'Rendering' || data.type === 'Component') {
-      const usageCount = data.usageCount || (node.indegree() + node.outdegree()) || 1;
-      const shade = getRenderingGreenShade(usageCount);
-
-      const usageBadge = document.createElement('div');
-      usageBadge.style.padding = '0.5rem 0.75rem';
-      usageBadge.style.marginBottom = '0.75rem';
-      usageBadge.style.borderRadius = '8px';
-      usageBadge.style.background = shade.bg;
-      usageBadge.style.border = `1px solid ${shade.border}`;
-      usageBadge.style.color = shade.text;
-      usageBadge.style.fontSize = '0.8rem';
-      usageBadge.style.fontWeight = '600';
-      usageBadge.style.display = 'flex';
-      usageBadge.style.alignItems = 'center';
-      usageBadge.style.justifyContent = 'space-between';
-
-      usageBadge.innerHTML = `
-        <span><i class="fa-solid fa-layer-group"></i> ${shade.tier}</span>
-        <span style="background: rgba(0,0,0,0.35); padding: 2px 7px; border-radius: 4px; font-weight: 700;">${usageCount} Use(s)</span>
-      `;
-      dom.outgoingList.appendChild(usageBadge);
-
-      if (data.details && data.details.componentsList && data.details.componentsList.length > 0) {
-        const subTitle = document.createElement('div');
-        subTitle.style.fontSize = '0.8rem';
-        subTitle.style.fontWeight = '700';
-        subTitle.style.color = 'var(--color-rendering)';
-        subTitle.style.marginBottom = '0.4rem';
-        subTitle.textContent = `🧩 Sub-Components (${data.details.numComponents || data.details.componentsList.length}):`;
-        dom.outgoingList.appendChild(subTitle);
-
-        const compBox = document.createElement('div');
-        compBox.style.maxHeight = '130px';
-        compBox.style.overflowY = 'auto';
-        compBox.style.background = 'rgba(17, 24, 39, 0.6)';
-        compBox.style.padding = '0.5rem';
-        compBox.style.borderRadius = '8px';
-        compBox.style.fontSize = '0.78rem';
-        compBox.style.marginBottom = '0.75rem';
-
-        data.details.componentsList.forEach(c => {
-          const item = document.createElement('div');
-          item.style.padding = '2px 0';
-          item.style.color = 'var(--text-muted)';
-          item.textContent = `• ${c}`;
-          compBox.appendChild(item);
-        });
-        dom.outgoingList.appendChild(compBox);
+    // --- SUB-LIST 2: INVOKED APIS (PAGE & COMPONENTS) ---
+    const apiMap = new Map();
+    const apiNodes = node.successors('node[type="API"]')
+      .union(node.neighborhood('node[type="API"]'));
+    
+    apiNodes.forEach(a => {
+      const aData = a.data();
+      if (!apiMap.has(aData.label)) {
+        apiMap.set(aData.label, aData.details && aData.details.systemInfo);
       }
+    });
 
-      const directApis = node.neighborhood('node[type="API"]');
-      if (directApis.length > 0) {
-        const apiTitle = document.createElement('div');
-        apiTitle.style.fontSize = '0.8rem';
-        apiTitle.style.fontWeight = '700';
-        apiTitle.style.color = '#f59e0b';
-        apiTitle.style.marginBottom = '0.4rem';
-        apiTitle.textContent = `⚡ Directly Invoked APIs & Systems (${directApis.length}):`;
-        dom.outgoingList.appendChild(apiTitle);
+    const apiArray = Array.from(apiMap.entries());
 
-        const apiBox = document.createElement('div');
-        apiBox.style.background = 'rgba(245, 158, 11, 0.12)';
-        apiBox.style.border = '1px solid rgba(245, 158, 11, 0.3)';
-        apiBox.style.padding = '0.5rem';
-        apiBox.style.borderRadius = '8px';
-        apiBox.style.fontSize = '0.78rem';
-        apiBox.style.marginBottom = '0.75rem';
+    const apiSection = document.createElement('div');
+    apiSection.className = 'inspector-sublist-section';
+    apiSection.innerHTML = `
+      <div style="font-size: 0.82rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.45rem; display: flex; align-items: center; justify-content: space-between;">
+        <span><i class="fa-solid fa-bolt"></i> 2. Invoked APIs (Page & Components)</span>
+        <span class="count-pill pill-yellow">${apiArray.length}</span>
+      </div>
+    `;
 
-        directApis.forEach(aNode => {
-          const aData = aNode.data();
-          const sys = aData.details && aData.details.systemInfo;
-          const item = document.createElement('div');
-          item.style.padding = '3px 0';
-          item.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
-          item.innerHTML = `
-            <div style="font-weight: 600; color: #fcd34d;">⚡ ${aData.label}</div>
-            ${sys ? `<div style="font-size: 0.72rem; color: var(--text-dim);">↳ <strong>System:</strong> ${sys.name} (${sys.module})</div>` : ''}
-          `;
-          apiBox.appendChild(item);
-        });
-        dom.outgoingList.appendChild(apiBox);
-      }
+    const apiBox = document.createElement('div');
+    apiBox.className = 'inspector-sublist-box';
+    apiBox.style.background = 'rgba(245, 158, 11, 0.08)';
+    apiBox.style.border = '1px solid rgba(245, 158, 11, 0.25)';
+
+    if (apiArray.length > 0) {
+      apiArray.forEach(([apiName, sys]) => {
+        const item = document.createElement('div');
+        item.style.padding = '4px 0';
+        item.style.borderBottom = '1px solid rgba(255,255,255,0.04)';
+        item.innerHTML = `
+          <div style="font-weight: 600; color: #fcd34d;">⚡ ${apiName}</div>
+          ${sys ? `<div style="font-size: 0.71rem; color: var(--text-dim); margin-top: 1px;">↳ <strong>System:</strong> ${sys.name}</div>` : ''}
+        `;
+        apiBox.appendChild(item);
+      });
+    } else {
+      apiBox.innerHTML = `<div style="color: var(--text-dim); font-style: italic;">No associated API calls</div>`;
     }
+    apiSection.appendChild(apiBox);
+    dom.outgoingList.appendChild(apiSection);
 
-    if (data.type === 'API') {
-      const callerComps = node.neighborhood('node[type="Rendering"], node[type="Component"]');
-      if (callerComps.length > 0) {
-        const compTitle = document.createElement('div');
-        compTitle.style.fontSize = '0.8rem';
-        compTitle.style.fontWeight = '700';
-        compTitle.style.color = '#10b981';
-        compTitle.style.marginBottom = '0.4rem';
-        compTitle.textContent = `🧩 React Components Calling this API (${callerComps.length}):`;
-        dom.outgoingList.appendChild(compTitle);
+    // --- SUB-LIST 3: REACHABLE PAGES & SUB-ROUTES ---
+    const reachablePages = new Set();
+    const subRouteNodes = node.outgoers('node[type="Page"]');
+    subRouteNodes.forEach(p => reachablePages.add(p.data('label')));
 
-        const compBox = document.createElement('div');
-        compBox.style.background = 'rgba(16, 185, 129, 0.12)';
-        compBox.style.border = '1px solid rgba(16, 185, 129, 0.3)';
-        compBox.style.padding = '0.5rem';
-        compBox.style.borderRadius = '8px';
-        compBox.style.fontSize = '0.78rem';
-        compBox.style.marginBottom = '0.75rem';
-
-        callerComps.forEach(cNode => {
-          const cData = cNode.data();
-          const item = document.createElement('div');
-          item.style.padding = '2px 0';
-          item.style.color = '#6ee7b7';
-          item.textContent = `• ${cData.label}`;
-          compBox.appendChild(item);
-        });
-        dom.outgoingList.appendChild(compBox);
-      }
+    if (data.details && data.details.groupedUrls) {
+      data.details.groupedUrls.forEach(u => reachablePages.add(u));
     }
+    const pagesArray = Array.from(reachablePages);
+
+    const pageSection = document.createElement('div');
+    pageSection.className = 'inspector-sublist-section';
+    pageSection.innerHTML = `
+      <div style="font-size: 0.82rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.45rem; display: flex; align-items: center; justify-content: space-between;">
+        <span><i class="fa-solid fa-map-location-dot"></i> 3. Reachable Pages & Sub-Routes</span>
+        <span class="count-pill" style="background: rgba(56,189,248,0.2); color: #38bdf8; border: 1px solid #38bdf8;">${pagesArray.length}</span>
+      </div>
+    `;
+
+    const pageBox = document.createElement('div');
+    pageBox.className = 'inspector-sublist-box';
+    pageBox.style.background = 'rgba(56, 189, 248, 0.08)';
+    pageBox.style.border = '1px solid rgba(56, 189, 248, 0.25)';
+
+    if (pagesArray.length > 0) {
+      pagesArray.forEach(p => {
+        const item = document.createElement('div');
+        item.style.padding = '3px 0';
+        item.style.color = '#93c5fd';
+        item.style.borderBottom = '1px solid rgba(255,255,255,0.04)';
+        item.textContent = `• ${p}`;
+        pageBox.appendChild(item);
+      });
+    } else {
+      pageBox.innerHTML = `<div style="color: var(--text-dim); font-style: italic;">No child sub-pages</div>`;
+    }
+    pageSection.appendChild(pageBox);
+    dom.outgoingList.appendChild(pageSection);
 
     if (data.type === 'API' && data.details && data.details.systemInfo) {
       const sys = data.details.systemInfo;
@@ -1868,10 +1878,6 @@
       `;
       dom.outgoingList.appendChild(sysBox);
     }
-
-    node.outgoers('node').forEach(outNode => {
-      dom.outgoingList.appendChild(createConnItem(outNode));
-    });
 
     dom.inspector.classList.add('open');
   }
