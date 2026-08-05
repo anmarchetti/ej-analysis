@@ -30,7 +30,7 @@
     expandedNodes: new Set(),
     density: 'spread', // 'spread' vs 'compact'
     allUnifiedData: null,
-    customMicroappMapping: loadCustomMicroappMapping()
+    customMicroappMapping: new Map()
   };
 
   // Macro Apps & Microapps Configuration Dictionary
@@ -141,22 +141,64 @@
     }
   };
 
-  function loadCustomMicroappMapping() {
+  async function loadCustomMicroappMappingFromServer() {
+    try {
+      const res = await fetch(`/data/custom-microapp-mapping.json?t=${Date.now()}`);
+      if (res.ok) {
+        const data = await res.json();
+        state.customMicroappMapping = new Map(data);
+        console.log(`Loaded custom microapp mapping from repository: ${state.customMicroappMapping.size} rules.`);
+        return;
+      }
+    } catch (e) {
+      console.warn("Could not load custom microapp mapping from repository. Falling back to localStorage.", e);
+    }
+
+    // Fallback
     try {
       const stored = localStorage.getItem('ej_custom_microapp_mapping');
-      return stored ? new Map(JSON.parse(stored)) : new Map();
+      state.customMicroappMapping = stored ? new Map(JSON.parse(stored)) : new Map();
+      console.log(`Loaded custom microapp mapping from localStorage: ${state.customMicroappMapping.size} rules.`);
     } catch {
-      return new Map();
+      state.customMicroappMapping = new Map();
     }
   }
 
-  function saveCustomMicroappMapping() {
+  async function saveCustomMicroappMapping() {
+    const arr = Array.from(state.customMicroappMapping.entries());
     try {
-      const arr = Array.from(state.customMicroappMapping.entries());
       localStorage.setItem('ej_custom_microapp_mapping', JSON.stringify(arr));
     } catch (e) {
       console.warn('LocalStorage save failed', e);
     }
+
+    try {
+      const res = await fetch('/api/save-microapp-mapping', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(arr)
+      });
+      if (res.ok) {
+        console.log("Successfully saved custom microapp mapping to repository.");
+      } else {
+        console.warn("Failed to save custom microapp mapping to repository.");
+      }
+    } catch (e) {
+      console.warn("Failed to save custom microapp mapping to repository. Is server.py running?", e);
+    }
+  }
+
+  function getNodeRouteKey(node) {
+    if (!node) return '';
+    const id = node.id();
+    if (id.startsWith('P:')) {
+      const parts = id.split(':');
+      if (parts.length >= 3) {
+        return parts.slice(2).join(':').toLowerCase().trim();
+      }
+    }
+    const label = node.data('label') || '';
+    return label.replace(/^[📁📂📄📍]\s*/, '').replace(/\s*\(\d+\)$/, '').toLowerCase().trim();
   }
 
   function getMicroappForRoute(routePath) {
@@ -418,10 +460,11 @@
 
   document.addEventListener('DOMContentLoaded', initApp);
 
-  function initApp() {
+  async function initApp() {
     cacheDomElements();
     setupEventListeners();
     initCytoscape();
+    await loadCustomMicroappMappingFromServer();
     loadDataset(state.currentDataset);
   }
 
@@ -663,18 +706,21 @@
           style: {
             'shape': 'round-rectangle',
             'background-color': 'data(bgColor)',
-            'background-opacity': 0.15,
+            'background-opacity': 0,
             'border-color': 'data(borderColor)',
-            'border-width': 2,
+            'border-width': 2.5,
             'border-style': 'solid',
             'label': 'data(label)',
             'color': 'data(textColor)',
-            'font-size': '13px',
-            'font-weight': '800',
+            'font-size': '15px',
+            'font-weight': '900',
             'text-valign': 'top',
             'text-halign': 'center',
-            'text-margin-y': -10,
-            'padding': '24px'
+            'text-margin-y': -14,
+            'width': function(node) { return node.data('width') || 760; },
+            'height': function(node) { return node.data('height') || 600; },
+            'z-index': -1,
+            'events': 'no'
           }
         },
         {
@@ -820,11 +866,80 @@
     state.cy.on('layoutstop', () => updateExplodeOverlays());
 
     // Auto-save layout positions after dragging nodes (debounced 800ms)
-    state.cy.on('dragfree', 'node', () => {
+    state.cy.on('dragfree', 'node', (evt) => {
+      const node = evt.target;
+      
+      // If a Page node is dragged in Microapp View, check if it was dropped inside another microapp container
+      if (node.data('type') === 'Page') {
+        const isMicroappMode = dom.layoutSelect && dom.layoutSelect.value === 'microapp_architecture';
+        if (isMicroappMode) {
+          const pos = node.position();
+          let bestMicroappId = null;
+          let minDistance = Infinity;
+
+          // Check if pos is inside any MAP container node's area
+          Object.keys(MICROAPPS_CONFIG).forEach(appId => {
+            const containerNode = state.cy.getElementById(`MAP:${appId}`);
+            if (containerNode.length > 0) {
+              const cPos = containerNode.position();
+              const w = containerNode.data('width') || 760;
+              const h = containerNode.data('height') || 600;
+              const padding = 20; // extra drop area padding
+              const x1 = cPos.x - w/2 - padding;
+              const x2 = cPos.x + w/2 + padding;
+              const y1 = cPos.y - h/2 - padding;
+              const y2 = cPos.y + h/2 + padding;
+              
+              if (pos.x >= x1 && pos.x <= x2 && pos.y >= y1 && pos.y <= y2) {
+                bestMicroappId = appId;
+              }
+            }
+          });
+
+          // Fallback: Find closest container node by distance to center
+          if (!bestMicroappId) {
+            Object.keys(MICROAPPS_CONFIG).forEach(appId => {
+              const containerNode = state.cy.getElementById(`MAP:${appId}`);
+              if (containerNode.length > 0) {
+                const cPos = containerNode.position();
+                const dist = Math.hypot(pos.x - cPos.x, pos.y - cPos.y);
+                if (dist < minDistance) {
+                  minDistance = dist;
+                  bestMicroappId = appId;
+                }
+              }
+            });
+          }
+
+          const selectedNodes = state.cy.nodes('node[type="Page"]:selected');
+          const targets = (selectedNodes.length > 0 && selectedNodes.contains(node)) ? selectedNodes : state.cy.collection([node]);
+
+          let changed = false;
+          if (bestMicroappId) {
+            targets.forEach(t => {
+              const currentId = t.data('details') ? t.data('details').microappId : null;
+              if (currentId !== bestMicroappId) {
+                const cleanKey = getNodeRouteKey(t);
+                console.log(`Re-assigning page ${cleanKey} to microapp: ${bestMicroappId}`);
+                state.customMicroappMapping.set(cleanKey, bestMicroappId);
+                changed = true;
+              }
+            });
+          }
+
+          if (changed) {
+            saveCustomMicroappMapping();
+            rebuildGraph();
+            return;
+          }
+        }
+      }
+
       clearTimeout(state._dragSaveTimer);
       state._dragSaveTimer = setTimeout(() => saveLayoutPositions(false), 800);
       updateExplodeOverlays();
     });
+
   }
 
   function getExplodeOverlayContainer() {
@@ -1166,6 +1281,8 @@
           bgColor: details.bgColor || style.bg,
           borderColor: details.borderColor || style.border,
           textColor: details.textColor || style.text,
+          width: details.width,
+          height: details.height,
           details: details
         };
 
@@ -1260,15 +1377,7 @@
           textColor: style.text
         };
 
-        if (isMicroappMode) {
-          nodeDetails.parent = `MAP:${assignedMicroapp}`;
-        }
-
         addNode(nodeId, lvl.label, 'Page', nodeDetails);
-
-        if (isMicroappMode && nodeMap.has(nodeId)) {
-          nodeMap.get(nodeId).data.parent = `MAP:${assignedMicroapp}`;
-        }
 
         if (lvl.parent) {
           const parentId = lvl.parent === '/' ? `P:${lang}:/` : `P:${lang}:${lvl.parent}`;
@@ -1662,6 +1771,7 @@
       cy.viewport({ zoom: 0.65, pan: { x: 30, y: 40 } });
       hideLoading();
       updateExplodeOverlays();
+      loadLayoutPositions();
     }, 25);
   }
 
@@ -1749,6 +1859,7 @@
       cy.viewport({ zoom: 0.7, pan: { x: 30, y: 40 } });
       hideLoading();
       updateExplodeOverlays();
+      loadLayoutPositions();
     }, 25);
   }
 
@@ -1834,6 +1945,7 @@
       cy.viewport({ zoom: 0.85, pan: { x: 40, y: 40 } });
       hideLoading();
       updateExplodeOverlays();
+      loadLayoutPositions();
     }, 25);
   }
 
@@ -1927,8 +2039,15 @@
 
           const maxItems = Math.max(1, l1Nodes.length, l2Nodes.length, l3Nodes.length);
 
-          const containerNode = cy.nodes(`#MAP:${appId}`);
+          const containerHeight = maxItems * yStep + 60;
+          const containerNode = cy.getElementById(`MAP:${appId}`);
           if (containerNode.length > 0) {
+            containerNode.data('width', 760);
+            containerNode.data('height', containerHeight);
+            containerNode.style({
+              'width': 760,
+              'height': containerHeight
+            });
             containerNode.position({
               x: colX,
               y: startY + (maxItems * yStep) / 2 - 10
@@ -1936,10 +2055,21 @@
           }
         });
 
-        const renderings = cy.nodes('[type="Rendering"], [type="Component"]');
+        const renderings = cy.nodes('[type="Rendering"], [type="Component"]').toArray()
+          .sort((a, b) => {
+            const usageA = a.data('usageCount') || (a.indegree() + a.outdegree()) || 0;
+            const usageB = b.data('usageCount') || (b.indegree() + b.outdegree()) || 0;
+            if (usageB !== usageA) return usageB - usageA;
+            return (a.data('label') || '').localeCompare(b.data('label') || '');
+          });
         // Sort APIs: most used at top, least used at bottom
         const apis = cy.nodes('[type="API"]').toArray()
-          .sort((a, b) => (b.data('usageCount') || 0) - (a.data('usageCount') || 0));
+          .sort((a, b) => {
+            const usageA = a.data('usageCount') || (a.indegree() + a.outdegree()) || 0;
+            const usageB = b.data('usageCount') || (b.indegree() + b.outdegree()) || 0;
+            if (usageB !== usageA) return usageB - usageA;
+            return (a.data('label') || '').localeCompare(b.data('label') || '');
+          });
         const systems = cy.nodes('[type="System"]');
 
         const rendX = 5200;
@@ -1954,6 +2084,8 @@
       cy.viewport({ zoom: 0.35, pan: { x: 30, y: 30 } });
       hideLoading();
       updateExplodeOverlays();
+      state.cy.style().update();
+      loadLayoutPositions();
     }, 25);
   }
 
@@ -2184,24 +2316,39 @@
   async function saveLayoutPositions(showFeedback = true) {
     if (!state.cy) return;
 
+    const currentLayout = dom.layoutSelect ? dom.layoutSelect.value : 'routing_tree';
+    const currentDataset = state.currentDataset;
+    const key = `${currentLayout}_${currentDataset}`;
+
     const positions = {};
     state.cy.nodes().forEach(node => {
+      if (node.data('type') === 'MicroappContainer') return;
       const pos = node.position();
       positions[node.id()] = { x: Math.round(pos.x), y: Math.round(pos.y) };
     });
 
-    const payload = {
+    let fileData = { layouts: {} };
+    try {
+      const res = await fetch(`/data/layout-positions.json?t=${Date.now()}`);
+      if (res.ok) {
+        fileData = await res.json();
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    if (!fileData.layouts) fileData.layouts = {};
+    fileData.layouts[key] = {
       nodes: positions,
-      savedAt: new Date().toISOString(),
-      dataset: state.currentDataset,
-      layout: dom.layoutSelect ? dom.layoutSelect.value : 'routing_tree'
+      savedAt: new Date().toISOString()
     };
+    fileData.savedAt = new Date().toISOString();
 
     try {
       const res = await fetch('/api/save-layout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(fileData)
       });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -2242,15 +2389,21 @@
   async function loadLayoutPositions() {
     try {
       const res = await fetch(`/data/layout-positions.json?t=${Date.now()}`);
-      if (!res.ok) return;
+      if (!res.ok) return false;
 
-      const data = await res.json();
-      const positions = data.nodes || {};
-      if (Object.keys(positions).length === 0) return;
+      const fileData = await res.json();
+      const currentLayout = dom.layoutSelect ? dom.layoutSelect.value : 'routing_tree';
+      const currentDataset = state.currentDataset;
+      const key = `${currentLayout}_${currentDataset}`;
+
+      const layoutData = fileData.layouts ? fileData.layouts[key] : null;
+      if (!layoutData || !layoutData.nodes) return false;
+      const positions = layoutData.nodes;
 
       let applied = 0;
       state.cy.batch(() => {
         state.cy.nodes().forEach(node => {
+          if (node.data('type') === 'MicroappContainer') return;
           const saved = positions[node.id()];
           if (saved) {
             node.position({ x: saved.x, y: saved.y });
@@ -2262,15 +2415,17 @@
       if (applied > 0) {
         state.cy.fit(state.cy.elements(), 60);
         updateExplodeOverlays();
-        console.log(`✅ Loaded layout: ${applied} node positions restored (saved ${data.savedAt ? new Date(data.savedAt).toLocaleString() : 'unknown'})`);
+        console.log(`✅ Loaded layout: ${applied} node positions restored for ${key} (saved ${layoutData.savedAt ? new Date(layoutData.savedAt).toLocaleString() : 'unknown'})`);
 
         // Show feedback in toolbar
         const btn = document.getElementById('btn-save-layout');
-        if (btn) btn.title = `Layout loaded (saved ${data.savedAt ? new Date(data.savedAt).toLocaleTimeString() : '?'})`;
+        if (btn) btn.title = `Layout loaded (saved ${layoutData.savedAt ? new Date(layoutData.savedAt).toLocaleTimeString() : '?'})`;
+        return true;
       }
     } catch (e) {
-      // Silently ignore — no saved layout yet
+      console.warn("Could not load layout positions:", e);
     }
+    return false;
   }
 
   function selectNode(node) {
@@ -2541,8 +2696,8 @@
 
     // --- MICROAPP ASSIGNMENT CONTROL (FOR PAGES / ROUTES) ---
     if (data.type === 'Page') {
-      const routeKey = (data.details && data.details.rawPage) ? data.details.rawPage : data.label;
-      const currentMicroappId = getMicroappForRoute(routeKey);
+      const cleanKey = getNodeRouteKey(node);
+      const currentMicroappId = getMicroappForRoute(cleanKey);
 
       const assignBox = document.createElement('div');
       assignBox.className = 'microapp-assign-box';
@@ -2563,7 +2718,6 @@
       const selectEl = assignBox.querySelector('select');
       selectEl.addEventListener('change', (e) => {
         const newAppId = e.target.value;
-        const cleanKey = routeKey.toLowerCase().trim();
         state.customMicroappMapping.set(cleanKey, newAppId);
         saveCustomMicroappMapping();
         rebuildGraph();
@@ -2599,6 +2753,17 @@
         compsArray = Array.from(usedComps);
       }
     }
+
+    const getCompUsage = (compName) => {
+      const cyNode = state.cy.getElementById(`R:${compName}`);
+      return cyNode.length > 0 ? (cyNode.data('usageCount') || 0) : 0;
+    };
+    compsArray.sort((a, b) => {
+      const usageA = getCompUsage(a);
+      const usageB = getCompUsage(b);
+      if (usageB !== usageA) return usageB - usageA;
+      return a.localeCompare(b);
+    });
 
     const compSubtitle = isGroupedParent ? `(Common to ALL ${groupedUrls.length} pages)` : '(Exact Page Components)';
 
@@ -2661,6 +2826,17 @@
         apiArray = Array.from(apiMap.entries());
       }
     }
+
+    const getApiUsage = (apiName) => {
+      const cyNode = state.cy.getElementById(`A:${apiName}`);
+      return cyNode.length > 0 ? (cyNode.data('usageCount') || 0) : 0;
+    };
+    apiArray.sort((a, b) => {
+      const usageA = getApiUsage(a[0]);
+      const usageB = getApiUsage(b[0]);
+      if (usageB !== usageA) return usageB - usageA;
+      return a[0].localeCompare(b[0]);
+    });
 
     const apiSubtitle = isGroupedParent ? `(Common to ALL ${groupedUrls.length} pages)` : '(Via Component)';
 

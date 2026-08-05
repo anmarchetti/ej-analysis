@@ -46,6 +46,8 @@ class GraphServer(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         if self.path == '/api/save-layout':
             self._handle_save_layout()
+        elif self.path == '/api/save-microapp-mapping':
+            self._handle_save_microapp_mapping()
         else:
             self.send_error(404, f"Unknown POST endpoint: {self.path}")
 
@@ -69,6 +71,32 @@ class GraphServer(http.server.SimpleHTTPRequestHandler):
 
         except Exception as e:
             print(f"  ❌  Save error: {e}")
+            self.send_response(500)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': False, 'error': str(e)}).encode())
+
+    def _handle_save_microapp_mapping(self):
+        try:
+            length = int(self.headers.get('Content-Length', 0))
+            body   = self.rfile.read(length)
+            data   = json.loads(body)
+
+            mapping_file = DATA_DIR / "custom-microapp-mapping.json"
+            DATA_DIR.mkdir(parents=True, exist_ok=True)
+            with open(mapping_file, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+
+            print(f"  ✅  Microapp mapping saved → {mapping_file.relative_to(SERVE_DIR)}  "
+                  f"({len(data)} entries)")
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'ok': True}).encode())
+
+        except Exception as e:
+            print(f"  ❌  Save microapp mapping error: {e}")
             self.send_response(500)
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
