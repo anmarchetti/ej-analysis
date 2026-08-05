@@ -103,7 +103,8 @@
           <div class="sidebar-title">VIEW MODE</div>
           <div class="control-row">
             <select id="layout-select" class="select-input" style="width: 100%;">
-              <option value="dependency_matrix" selected>📊 Architectural Matrix (5-Column: Language ➔ Component ➔ Page ➔ API ➔ System)</option>
+              <option value="routing_tree" selected>🛣️ Routing Hierarchy View (Root ➔ Level 1 ➔ Level 2 ➔ Level 3 ➔ Renderings ➔ APIs)</option>
+              <option value="dependency_matrix">📊 Architectural Matrix (Ordered Columns Matrix)</option>
               <option value="custom_tree">🧠 Mindmap Tree (Horizontal Tree)</option>
             </select>
           </div>
@@ -182,27 +183,29 @@
 
         <!-- Floating Graph Legend -->
         <div class="floating-legend">
-          <div class="legend-header"><i class="fa-solid fa-layer-group"></i> Node Types & Heatmap</div>
+          <div class="legend-header"><i class="fa-solid fa-layer-group"></i> Routing Levels & Node Types</div>
           <div class="legend-group">
             <div class="legend-item"><span class="node-dot dot-language"></span> Language</div>
-            <div class="legend-item"><span class="node-dot dot-folder"></span> Folder</div>
-            <div class="legend-item"><span class="node-dot dot-page"></span> Page</div>
+            <div class="legend-item"><span class="node-dot dot-root"></span> Root (Home /)</div>
+            <div class="legend-item"><span class="node-dot dot-level1"></span> Level 1: Section (/holidays)</div>
+            <div class="legend-item"><span class="node-dot dot-level2"></span> Level 2: Country (/holidays/spain)</div>
+            <div class="legend-item"><span class="node-dot dot-level3"></span> Level 3: City (/holidays/spain/majorca)</div>
+            <div class="legend-item"><span class="node-dot dot-rendering"></span> Rendering</div>
             <div class="legend-item"><span class="node-dot dot-api"></span> API</div>
-            <div class="legend-item"><span class="node-dot dot-system"></span> System & Data (Level 5)</div>
-            <div class="legend-item"><span class="node-dot" style="background: #f59e0b; box-shadow: 0 0 6px rgba(245,158,11,0.8);"></span> Component ➔ API Direct Call</div>
+            <div class="legend-item"><span class="node-dot dot-system"></span> System</div>
           </div>
-          <div class="legend-sub-header">Component / Rendering Usage:</div>
+          <div class="legend-sub-header">Component / Rendering Reuse Heatmap:</div>
           <div class="legend-group flex-column-group">
             <div class="legend-item legend-item-badge">
-              <span><span class="node-dot dot-heatmap-green"></span> Green: Rarely used (1–2 uses)</span>
+              <span><span class="node-dot dot-heatmap-green"></span> Green: Low Usage (1–2 uses)</span>
               <span id="legend-count-green" class="count-pill pill-green">0</span>
             </div>
             <div class="legend-item legend-item-badge">
-              <span><span class="node-dot dot-heatmap-yellow"></span> Yellow: Moderately used (3–9 uses)</span>
+              <span><span class="node-dot dot-heatmap-yellow"></span> Yellow: Medium Usage (3–9 uses)</span>
               <span id="legend-count-yellow" class="count-pill pill-yellow">0</span>
             </div>
             <div class="legend-item legend-item-badge">
-              <span><span class="node-dot dot-heatmap-red"></span> Red: Heavily used (10+ uses / Core)</span>
+              <span><span class="node-dot dot-heatmap-red"></span> Red: High Usage (10+ uses)</span>
               <span id="legend-count-red" class="count-pill pill-red">0</span>
             </div>
           </div>
@@ -364,6 +367,8 @@
     </div>
   </div>
 
+  <!-- Embedded Datasets -->
+  <script src="datasets.js"></script>
   <!-- Main App Script -->
   <script src="app.js"></script>
 </body>

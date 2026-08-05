@@ -34,9 +34,14 @@
   // Node Pill Colors
   const pillColors = {
     Language: { bg: 'rgba(236, 72, 153, 0.18)', border: '#ec4899', text: '#f472b6' },
-    Folder: { bg: 'rgba(6, 182, 212, 0.22)', border: '#06b6d4', text: '#67e8f9' },   // Electric Cyan for Grouped Folders
-    Page: { bg: 'rgba(59, 130, 246, 0.18)', border: '#3b82f6', text: '#93c5fd' },     // Blue for Single Pages
-    SubPage: { bg: 'rgba(192, 132, 252, 0.22)', border: '#c084fc', text: '#e9d5ff' }, // Purple for Exploded Child Sub-Pages
+    RootRoute: { bg: 'rgba(234, 179, 8, 0.22)', border: '#eab308', text: '#fef08a' },     // Golden Yellow for Home Root (/)
+    RouteLevel1: { bg: 'rgba(6, 182, 212, 0.22)', border: '#06b6d4', text: '#67e8f9' },   // Electric Cyan for Level 1 Section Routes (/holidays)
+    RouteLevel2: { bg: 'rgba(192, 132, 252, 0.22)', border: '#c084fc', text: '#e9d5ff' }, // Purple for Level 2 Country Pages (/holidays/spain)
+    RouteLevel3: { bg: 'rgba(59, 130, 246, 0.22)', border: '#3b82f6', text: '#93c5fd' },   // Blue for Level 3 City Pages (/holidays/spain/majorca)
+    RouteLevel4: { bg: 'rgba(99, 102, 241, 0.22)', border: '#6366f1', text: '#c7d2fe' },   // Indigo for Detailed Endpoints
+    Folder: { bg: 'rgba(6, 182, 212, 0.22)', border: '#06b6d4', text: '#67e8f9' },
+    Page: { bg: 'rgba(59, 130, 246, 0.18)', border: '#3b82f6', text: '#93c5fd' },
+    SubPage: { bg: 'rgba(192, 132, 252, 0.22)', border: '#c084fc', text: '#e9d5ff' },
     Rendering: { bg: 'rgba(16, 185, 129, 0.18)', border: '#10b981', text: '#6ee7b7' },
     Component: { bg: 'rgba(16, 185, 129, 0.18)', border: '#10b981', text: '#6ee7b7' },
     API: { bg: 'rgba(245, 158, 11, 0.18)', border: '#f59e0b', text: '#fcd34d' },
@@ -569,11 +574,6 @@
 
     state.cy.on('tap', 'node', (evt) => {
       const node = evt.target;
-      const data = node.data();
-      
-      if (data.type === 'Page' && data.details && data.details.groupedUrls && data.details.groupedUrls.length > 1) {
-        toggleExplodeNode(node);
-      }
       selectNode(node);
     });
 
@@ -673,34 +673,83 @@
     }
   }
 
-  function normalizePageUrl(url) {
-    if (!url) return '/';
+  function parseRoutingHierarchy(url, groupSimilar = true) {
+    if (!url) {
+      return [{ key: '/', label: '🏠 / (Home)', level: 0, type: 'RootRoute', parent: null }];
+    }
     let clean = url.trim();
     if (clean.length > 1 && clean.endsWith('/')) clean = clean.slice(0, -1);
-    if (clean === '/' || clean === '') return '/';
-
-    const lower = clean.toLowerCase();
-
-    // 1. Literal System Folders
-    const parts = clean.split('/').filter(Boolean);
-    if (parts.length >= 2 && ['media-centre', 'information', 'informations', 'info', 'help', 'hilfe', 'aide', 'sustainability', 'booking', 'ppc'].includes(parts[0].toLowerCase())) {
-      return `/${parts[0]}/*`;
+    if (clean === '' || clean === '/') {
+      return [{ key: '/', label: '🏠 / (Home)', level: 0, type: 'RootRoute', parent: null }];
     }
 
-    // 2. Universal Hotels Rule
-    if (lower.includes('-hotels') || lower.endsWith('-hotels') || lower.includes('hotels-and-resorts')) return '/*-hotels';
+    const parts = clean.split('/').filter(Boolean);
+    const levels = [
+      { key: '/', label: '🏠 / (Home Root)', level: 0, type: 'RootRoute', parent: null }
+    ];
 
-    // 3. Universal Holidays Rule
-    if (lower.includes('holiday')) return '/*-holidays';
+    if (groupSimilar) {
+      let accumKey = '';
+      for (let idx = 0; idx < parts.length; idx++) {
+        const depth = idx + 1;
+        const prevKey = accumKey || '/';
 
-    // 4. Universal Deals Rule
-    if (lower.includes('-deals') || lower.endsWith('-deals')) return '/*-deals';
+        let key = '';
+        let label = '';
+        let type = '';
 
-    if (lower.startsWith('/free-child-places')) return '/free-child-places/*';
-    if (lower.startsWith('/last-minute-')) return '/last-minute-*';
+        if (depth === 1) {
+          key = `/${parts[0]}`;
+          label = `📁 /${parts[0]}`;
+          type = 'RouteLevel1';
+        } else if (depth === 2) {
+          key = `/${parts[0]}/{country_page}`;
+          label = `📄 /${parts[0]}/{country_page}`;
+          type = 'RouteLevel2';
+        } else if (depth === 3) {
+          key = `/${parts[0]}/{sub_route}/{city_page}`;
+          label = `📍 /${parts[0]}/{sub_route}/{city_page}`;
+          type = 'RouteLevel3';
+        } else {
+          key = `/${parts[0]}/{sub_route}/{city}/{detail_page}`;
+          label = `🔹 /${parts[0]}/{sub_route}/{city}/{detail_page}`;
+          type = 'RouteLevel4';
+        }
 
-    if (parts.length >= 2) return `/${parts[0]}/*`;
-    return clean;
+        accumKey = key;
+
+        levels.push({
+          key: key,
+          rawPath: clean,
+          label: label,
+          level: depth,
+          type: type,
+          parent: prevKey
+        });
+      }
+    } else {
+      let accum = '';
+      for (let idx = 0; idx < parts.length; idx++) {
+        const part = parts[idx];
+        const prevPath = accum || '/';
+        accum = accum + '/' + part;
+        const depth = idx + 1;
+
+        let type = depth === 1 ? 'RouteLevel1' : (depth === 2 ? 'RouteLevel2' : (depth === 3 ? 'RouteLevel3' : 'RouteLevel4'));
+        let label = depth === 1 ? `📁 /${part}` : (depth === 2 ? `📄 /${parts[0]}/${part}` : (depth === 3 ? `📍 /${parts[0]}/${parts[1]}/${part}` : `🔹 ${accum}`));
+
+        levels.push({
+          key: accum,
+          rawPath: accum,
+          label: label,
+          level: depth,
+          type: type,
+          parent: prevPath
+        });
+      }
+    }
+
+    return levels;
   }
 
   function extractLangFromName(name) {
@@ -718,15 +767,13 @@
       return;
     }
 
-    const config = window.EMBEDDED_DATASETS[datasetKey];
-    if (!config) {
-      hideLoading();
-      return;
-    }
+    const ds = window.EMBEDDED_DATASETS || {};
+    const config = ds[datasetKey];
+    const filePath = config && config.file ? config.file : `data/${datasetKey}.csv`;
 
-    fetch(config.file)
+    fetch(filePath)
       .then(res => res.text())
-      .then(csvText => parseCSVText(csvText, config.type))
+      .then(csvText => parseCSVText(csvText, config ? config.type : 'page_rendering'))
       .catch(err => {
         console.warn('Fetch fallback:', err);
         hideLoading();
@@ -734,30 +781,25 @@
   }
 
   async function loadUnifiedMultiLangData() {
-    showLoading('Unifying CSV data...');
+    showLoading('Loading & Analyzing Consolidated Routing Hierarchy...');
     try {
       if (!state.allUnifiedData) {
-        const fetchFile = async (url) => {
-          try {
-            const res = await fetch(url);
-            return res.ok ? await res.text() : '';
-          } catch (e) {
-            return '';
-          }
-        };
+        const ds = window.EMBEDDED_DATASETS || {};
+        const pathFile = (ds.PageRenderingApiPath && ds.PageRenderingApiPath.file) ? ds.PageRenderingApiPath.file : 'data/PageRenderingApiPath_new.csv';
+        const pageRendFile = (ds.pageRendering && ds.pageRendering.file) ? ds.pageRendering.file : 'data/pageRendering.csv';
+        const rendAnalysisFile = (ds.renderings_analysis && ds.renderings_analysis.file) ? ds.renderings_analysis.file : 'data/renderings_analysis.csv';
 
-        const [rawPath, rawPageRend, rawRendAnalysis] = await Promise.all([
-          fetchFile('data/PageRenderingApiPath_new.csv'),
-          fetchFile('data/pageRendering.csv'),
-          fetchFile('data/renderings_analysis.csv')
+        const [pathRes, pageRendRes, rendAnalysisRes] = await Promise.all([
+          fetch(pathFile).then(r => r.ok ? r.text() : '').catch(() => ''),
+          fetch(pageRendFile).then(r => r.ok ? r.text() : '').catch(() => ''),
+          fetch(rendAnalysisFile).then(r => r.ok ? r.text() : '').catch(() => '')
         ]);
 
-        const opts = { header: true, skipEmptyLines: true };
-        const pathData = rawPath ? Papa.parse(rawPath, opts).data : [];
-        const pageRendData = rawPageRend ? Papa.parse(rawPageRend, opts).data : [];
-        let rendAnalysisData = rawRendAnalysis ? Papa.parse(rawRendAnalysis, opts).data : [];
-
-        state.allUnifiedData = { pathData, pageRendData, rendAnalysisData };
+        state.allUnifiedData = {
+          pathData: pathRes ? Papa.parse(pathRes, { header: true, skipEmptyLines: true }).data || [] : [],
+          pageRendData: pageRendRes ? Papa.parse(pageRendRes, { header: true, skipEmptyLines: true }).data || [] : [],
+          rendAnalysisData: rendAnalysisRes ? Papa.parse(rendAnalysisRes, { header: true, skipEmptyLines: true }).data || [] : []
+        };
       }
 
       buildUnifiedGraph();
@@ -781,7 +823,7 @@
       if (!id) return;
       if (!nodeMap.has(id)) {
         const isFolder = details.isFolder || label.startsWith('📁') || label.includes('*');
-        const styleType = isFolder ? 'Folder' : type;
+        const styleType = details.routeType || (isFolder ? 'Folder' : type);
         const style = pillColors[styleType] || pillColors.Page;
 
         nodeMap.set(id, {
@@ -809,47 +851,66 @@
       }
     }
 
-    // 1. Process PageRenderingApiPath_new.csv
-    pathData.forEach(row => {
-      const lang = row.Language || 'en';
-      const rawPage = row.Page;
-      const rend = row.Rendering;
-      const api = row.API;
-
+    function processRow(lang, rawPage, rend, api) {
       if (!lang || !rawPage) return;
       languagesSet.add(lang);
 
-      const targetPageKey = state.groupSimilarUrls ? normalizePageUrl(rawPage) : rawPage;
+      const levels = parseRoutingHierarchy(rawPage, state.groupSimilarUrls);
+      const leafLevel = levels[levels.length - 1];
+      const targetPageKey = leafLevel.key;
+
       pageCallsCounter.set(targetPageKey, (pageCallsCounter.get(targetPageKey) || 0) + 1);
 
       if (!pagesByLang.has(lang)) pagesByLang.set(lang, new Set());
       pagesByLang.get(lang).add(targetPageKey);
 
-      if (!pageGroupUrls.has(`${lang}:${targetPageKey}`)) pageGroupUrls.set(`${lang}:${targetPageKey}`, new Set());
-      pageGroupUrls.get(`${lang}:${targetPageKey}`).add(rawPage);
+      levels.forEach(lvl => {
+        const groupKey = `${lang}:${lvl.key}`;
+        if (!pageGroupUrls.has(groupKey)) pageGroupUrls.set(groupKey, new Set());
+        pageGroupUrls.get(groupKey).add(rawPage);
+      });
 
       if (state.selectedLangFilter !== 'ALL' && lang !== state.selectedLangFilter) return;
-      if (state.selectedPageFilter !== 'ALL' && targetPageKey !== state.selectedPageFilter) return;
+      if (state.selectedPageFilter !== 'ALL' && targetPageKey !== state.selectedPageFilter && !rawPage.startsWith(state.selectedPageFilter)) return;
 
       const langId = `L:${lang}`;
       addNode(langId, `🌐 ${lang.toUpperCase()}`, 'Language');
 
-      const isFolder = targetPageKey.includes('*') || targetPageKey.endsWith('/');
-      const pageId = `P:${lang}:${targetPageKey}`;
-      addNode(pageId, targetPageKey, 'Page', { lang: lang, rawPage: rawPage, isFolder: isFolder });
+      levels.forEach(lvl => {
+        const nodeId = lvl.key === '/' ? `P:${lang}:/` : `P:${lang}:${lvl.key}`;
+        const style = pillColors[lvl.type] || pillColors.Page;
 
-      addEdge(langId, pageId, 'HAS_PAGE');
+        addNode(nodeId, lvl.label, 'Page', {
+          lang: lang,
+          rawPage: rawPage,
+          routeLevel: lvl.level,
+          routeType: lvl.type,
+          parentRoute: lvl.parent,
+          bgColor: style.bg,
+          borderColor: style.border,
+          textColor: style.text
+        });
+
+        if (lvl.parent) {
+          const parentId = lvl.parent === '/' ? `P:${lang}:/` : `P:${lang}:${lvl.parent}`;
+          addEdge(parentId, nodeId, 'HAS_SUBROUTE');
+        } else {
+          addEdge(langId, nodeId, 'HAS_ROOT_ROUTE');
+        }
+      });
+
+      const leafNodeId = leafLevel.key === '/' ? `P:${lang}:/` : `P:${lang}:${leafLevel.key}`;
 
       if (rend) {
         const rendId = `R:${rend}`;
         addNode(rendId, rend, 'Rendering');
-        addEdge(rendId, pageId, 'USES_RENDERING');
+        addEdge(leafNodeId, rendId, 'USES_RENDERING');
 
         if (api && api !== 'n_a') {
           const apiId = `A:${api}`;
           const sysInfo = getApiSystemAndPayload(api);
           addNode(apiId, api, 'API', { systemInfo: sysInfo });
-          addEdge(pageId, apiId, 'CALLS_API');
+          addEdge(leafNodeId, apiId, 'CALLS_API');
           addEdge(rendId, apiId, 'CALLS_API_DIRECT');
 
           addNode(sysInfo.id, sysInfo.label, 'System', {
@@ -866,6 +927,11 @@
           addEdge(apiId, sysInfo.id, 'TARGETS_SYSTEM');
         }
       }
+    }
+
+    // 1. Process PageRenderingApiPath_new.csv
+    pathData.forEach(row => {
+      processRow(row.Language || 'en', row.Page, row.Rendering, row.API);
     });
 
     // 2. Process pageRendering.csv
@@ -873,55 +939,19 @@
       const rawPage = row.PAGE;
       const name = row.NAME;
       const lang = extractLangFromName(name);
-      const rend = row.RENDERING;
-
-      if (!rawPage) return;
-      languagesSet.add(lang);
-
-      const targetPageKey = state.groupSimilarUrls ? normalizePageUrl(rawPage) : rawPage;
-      pageCallsCounter.set(targetPageKey, (pageCallsCounter.get(targetPageKey) || 0) + 1);
-
-      if (!pagesByLang.has(lang)) pagesByLang.set(lang, new Set());
-      pagesByLang.get(lang).add(targetPageKey);
-
-      if (!pageGroupUrls.has(`${lang}:${targetPageKey}`)) pageGroupUrls.set(`${lang}:${targetPageKey}`, new Set());
-      pageGroupUrls.get(`${lang}:${targetPageKey}`).add(rawPage);
-
-      if (state.selectedLangFilter !== 'ALL' && lang !== state.selectedLangFilter) return;
-      if (state.selectedPageFilter !== 'ALL' && targetPageKey !== state.selectedPageFilter) return;
-
-      const langId = `L:${lang}`;
-      addNode(langId, `🌐 ${lang.toUpperCase()}`, 'Language');
-
-      const isFolder = targetPageKey.includes('*') || targetPageKey.endsWith('/');
-      const pageId = `P:${lang}:${targetPageKey}`;
-      addNode(pageId, targetPageKey, 'Page', { lang: lang, rawPage: rawPage, isFolder: isFolder });
-
-      addEdge(langId, pageId, 'HAS_PAGE');
-
-      if (rend) {
-        const rendId = `R:${rend}`;
-        addNode(rendId, rend, 'Rendering');
-        addEdge(rendId, pageId, 'USES_RENDERING');
-      }
+      processRow(lang, rawPage, row.RENDERING, null);
     });
 
-    // Attach stored URL lists and distinct Cyan Folder styling
+    // Attach stored URL lists and append count to node labels
     nodeMap.forEach((node, id) => {
       if (node.data.type === 'Page') {
         const fullKey = id.replace(/^P:/, '');
         if (pageGroupUrls.has(fullKey)) {
           const urls = Array.from(pageGroupUrls.get(fullKey));
           node.data.details.groupedUrls = urls;
-
-          if (urls.length > 1 || node.data.label.includes('*')) {
+          if (urls.length > 1 && !node.data.label.includes('(')) {
             node.data.isFolder = true;
-            node.data.bgColor = pillColors.Folder.bg;
-            node.data.borderColor = pillColors.Folder.border;
-            node.data.textColor = pillColors.Folder.text;
-            node.data.label = `📁 ${node.data.label} (${urls.length})`;
-          } else if (!node.data.label.startsWith('📁') && !node.data.label.startsWith('🌐') && !node.data.label.startsWith('📄')) {
-            node.data.label = `📄 ${node.data.label}`;
+            node.data.label = `${node.data.label} (${urls.length})`;
           }
         }
       }
@@ -1115,10 +1145,100 @@
   }
 
   /**
+   * 8-Column URL Routing Hierarchy Layout Engine
+   * (Language ➔ Root / ➔ Level 1 Section ➔ Level 2 Country ➔ Level 3 City ➔ Renderings ➔ APIs ➔ Systems)
+   */
+  function runRoutingHierarchyLayout() {
+    showLoading('Generating Routing Hierarchy Layout (Root ➔ Level 1 ➔ Level 2 ➔ Level 3 ➔ Renderings ➔ APIs)...');
+
+    setTimeout(() => {
+      const cy = state.cy;
+      const isSpread = state.density === 'spread';
+      const yStep = isSpread ? 52 : 36;
+
+      const langNodes = [];
+      const rootNodes = [];
+      const level1Nodes = [];
+      const level2Nodes = [];
+      const level3Nodes = [];
+      const renderings = [];
+      const apis = [];
+      const systems = [];
+
+      cy.nodes().forEach(node => {
+        const type = node.data('type');
+        const details = node.data('details') || {};
+        const rLevel = details.routeLevel;
+
+        if (type === 'Language') {
+          langNodes.push(node);
+        } else if (type === 'Page') {
+          if (rLevel === 0) {
+            rootNodes.push(node);
+          } else if (rLevel === 1) {
+            level1Nodes.push(node);
+          } else if (rLevel === 2) {
+            level2Nodes.push(node);
+          } else {
+            level3Nodes.push(node);
+          }
+        } else if (type === 'Rendering' || type === 'Component') {
+          renderings.push(node);
+        } else if (type === 'API') {
+          apis.push(node);
+        } else if (type === 'System') {
+          systems.push(node);
+        }
+      });
+
+      const sortAlpha = (a, b) => (a.data('label') || '').localeCompare(b.data('label') || '');
+      langNodes.sort(sortAlpha);
+      rootNodes.sort(sortAlpha);
+      level1Nodes.sort(sortAlpha);
+      level2Nodes.sort(sortAlpha);
+      level3Nodes.sort(sortAlpha);
+
+      renderings.sort((a, b) => {
+        const usageA = a.data('usageCount') || (a.indegree() + a.outdegree()) || 0;
+        const usageB = b.data('usageCount') || (b.indegree() + b.outdegree()) || 0;
+        if (usageB !== usageA) return usageB - usageA;
+        return (a.data('label') || '').localeCompare(b.data('label') || '');
+      });
+
+      apis.sort((a, b) => (b.indegree() + b.outdegree()) - (a.indegree() + a.outdegree()));
+      systems.sort((a, b) => (b.indegree() + b.outdegree()) - (a.indegree() + a.outdegree()));
+
+      const colLangX = 80;
+      const colRootX = 260;
+      const colL1X = 540;
+      const colL2X = 860;
+      const colL3X = 1200;
+      const colRendX = 1540;
+      const colApiX = 1880;
+      const colSysX = 2220;
+      const startY = 80;
+
+      cy.batch(() => {
+        langNodes.forEach((n, idx) => n.position({ x: colLangX, y: startY + idx * 70 }));
+        rootNodes.forEach((n, idx) => n.position({ x: colRootX, y: startY + idx * 60 }));
+        level1Nodes.forEach((n, idx) => n.position({ x: colL1X, y: startY + idx * yStep }));
+        level2Nodes.forEach((n, idx) => n.position({ x: colL2X, y: startY + idx * yStep }));
+        level3Nodes.forEach((n, idx) => n.position({ x: colL3X, y: startY + idx * yStep }));
+        renderings.forEach((n, idx) => n.position({ x: colRendX, y: startY + idx * yStep }));
+        apis.forEach((n, idx) => n.position({ x: colApiX, y: startY + idx * yStep }));
+        systems.forEach((n, idx) => n.position({ x: colSysX, y: startY + idx * (yStep + 24) }));
+      });
+
+      cy.viewport({ zoom: 0.65, pan: { x: 30, y: 40 } });
+      hideLoading();
+    }, 25);
+  }
+
+  /**
    * 4-Column Architectural Dependency Matrix Layout Engine
    */
   function runDependencyMatrixLayout() {
-    showLoading('Generating 5-Column Matrix (Language ➔ Component ➔ Page ➔ API ➔ System)...');
+    showLoading('Generating Matrix View...');
 
     setTimeout(() => {
       const cy = state.cy;
@@ -1138,9 +1258,7 @@
         } else if (type === 'Rendering' || type === 'Component') {
           renderings.push(node);
         } else if (type === 'Page') {
-          if (state.activePagesSet.has(node.id())) {
-            pages.push(node);
-          }
+          pages.push(node);
         } else if (type === 'API') {
           apis.push(node);
         } else if (type === 'System') {
@@ -1150,7 +1268,6 @@
 
       languages.sort((a, b) => a.data('label').localeCompare(b.data('label')));
       
-      // Sort Renderings & Components: Most used (Red/Yellow) at top, least used (Green) at bottom
       renderings.sort((a, b) => {
         const usageA = a.data('usageCount') || (a.indegree() + a.outdegree()) || 0;
         const usageB = b.data('usageCount') || (b.indegree() + b.outdegree()) || 0;
@@ -1158,7 +1275,6 @@
         return a.data('label').localeCompare(b.data('label'));
       });
 
-      // Sort Pages by calls / degree descending
       pages.sort((a, b) => {
         const callsA = state.pageCallsMap.get(a.data('label')) || (a.indegree() + a.outdegree()) || 0;
         const callsB = state.pageCallsMap.get(b.data('label')) || (b.indegree() + b.outdegree()) || 0;
@@ -1166,21 +1282,8 @@
         return a.data('label').localeCompare(b.data('label'));
       });
 
-      // Sort APIs by degree descending
-      apis.sort((a, b) => {
-        const degA = a.indegree() + a.outdegree();
-        const degB = b.indegree() + b.outdegree();
-        if (degB !== degA) return degB - degA;
-        return a.data('label').localeCompare(b.data('label'));
-      });
-
-      // Sort Systems by degree descending
-      systems.sort((a, b) => {
-        const degA = a.indegree() + a.outdegree();
-        const degB = b.indegree() + b.outdegree();
-        if (degB !== degA) return degB - degA;
-        return a.data('label').localeCompare(b.data('label'));
-      });
+      apis.sort((a, b) => (b.indegree() + b.outdegree()) - (a.indegree() + a.outdegree()));
+      systems.sort((a, b) => (b.indegree() + b.outdegree()) - (a.indegree() + a.outdegree()));
 
       const colLangX = 100;
       const colLeftX = 440;
@@ -1208,14 +1311,6 @@
 
         systems.forEach((sNode, idx) => {
           sNode.position({ x: colSystemX, y: startY + idx * (yStep + 28) });
-        });
-
-        cy.nodes('[type="Page"]').forEach(node => {
-          if (state.activePagesSet.has(node.id())) {
-            node.style('display', 'element');
-          } else {
-            node.style('display', 'none');
-          }
         });
       });
 
@@ -1309,8 +1404,10 @@
   }
 
   function runLayout() {
-    const layoutMode = dom.layoutSelect.value;
-    if (layoutMode === 'dependency_matrix') {
+    const layoutMode = dom.layoutSelect ? dom.layoutSelect.value : 'routing_tree';
+    if (layoutMode === 'routing_tree') {
+      runRoutingHierarchyLayout();
+    } else if (layoutMode === 'dependency_matrix') {
       runDependencyMatrixLayout();
     } else {
       runCustomTreeLayout();
@@ -1550,7 +1647,16 @@
   function openInspector(node) {
     const data = node.data();
     dom.inspectorTitle.textContent = data.label;
-    dom.inspectorTypeBadge.textContent = data.isFolder ? 'Folder Group' : data.type;
+    
+    let badgeText = data.type;
+    if (data.details && typeof data.details.routeLevel === 'number') {
+      const rLvl = data.details.routeLevel;
+      badgeText = rLvl === 0 ? 'Root Route (/)' : (rLvl === 1 ? 'Level 1: Section' : (rLvl === 2 ? 'Level 2: Country Page' : (rLvl === 3 ? 'Level 3: City Page' : `Level ${rLvl}: Route`)));
+    } else if (data.isFolder) {
+      badgeText = 'Folder Group';
+    }
+    
+    dom.inspectorTypeBadge.textContent = badgeText;
     dom.inspectorTypeBadge.style.backgroundColor = data.borderColor || '#3b82f6';
 
     const inDegree = node.indegree();
@@ -1567,32 +1673,16 @@
     dom.outgoingList.innerHTML = '';
 
     if (data.type === 'Page' && data.details && data.details.groupedUrls && data.details.groupedUrls.length > 1) {
-      const isExploded = state.expandedNodes.has(node.id());
-      const explodeBtn = document.createElement('button');
-      explodeBtn.className = isExploded ? 'btn btn-accent' : 'btn btn-primary';
-      explodeBtn.style.width = '100%';
-      explodeBtn.style.marginBottom = '0.75rem';
-      explodeBtn.style.fontSize = '0.82rem';
-      explodeBtn.innerHTML = isExploded
-        ? `<i class="fa-solid fa-compress"></i> Collapse Child Pages (${data.details.groupedUrls.length})`
-        : `<i class="fa-solid fa-burst"></i> Explode Child Dependencies (${data.details.groupedUrls.length})`;
-      
-      explodeBtn.addEventListener('click', () => {
-        toggleExplodeNode(node);
-        openInspector(node);
-      });
-      dom.outgoingList.appendChild(explodeBtn);
-
       const titleDiv = document.createElement('div');
       titleDiv.style.fontSize = '0.8rem';
       titleDiv.style.fontWeight = '700';
       titleDiv.style.color = 'var(--accent-cyan)';
       titleDiv.style.marginBottom = '0.4rem';
-      titleDiv.textContent = `📦 Dependent Child Pages (${data.details.groupedUrls.length}):`;
+      titleDiv.textContent = `📦 Grouped Pages in Template (${data.details.groupedUrls.length}):`;
       dom.outgoingList.appendChild(titleDiv);
 
       const urlBox = document.createElement('div');
-      urlBox.style.maxHeight = '140px';
+      urlBox.style.maxHeight = '180px';
       urlBox.style.overflowY = 'auto';
       urlBox.style.background = 'rgba(17, 24, 39, 0.6)';
       urlBox.style.padding = '0.5rem';
